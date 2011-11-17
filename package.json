@@ -1,15 +1,15 @@
 {
   "author": "Paul Vorbach <paul@vorb.de> (https://vorb.de/)",
   "name": "api",
-  "description": "A server for RESTful APIs",
-  "tags": [ "REST", "API", "server" ],
-  "version": "0.0.0",
+  "description": "A server framework for easy routing",
+  "tags": [ "server", "middleware", "router" ],
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/pvorb/node-api.git"
   },
   "bugs": {
-    "web": "https://github.com/pvorb/node-api/issues"
+    "url": "https://github.com/pvorb/node-api/issues"
   },
   "main": "api.js",
   "engines": {
