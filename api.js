@@ -22,10 +22,10 @@ function Server () {
   // 'regularRequest' is emitted, when there are no listeners for the event.
   this.addListener('request', function(req, resp) {
     var method,
-        parsed = url.parse(req.url),
-        path = parsed.pathname;
+        path;
 
-    req.urlParsed = parsed;
+    req.urlParsed= url.parse(req.url);
+    path = req.urlParsed.pathname;
 
     if (this.listeners(path).length > 0)
       this.emit(path, req, resp);
@@ -38,7 +38,7 @@ function Server () {
                 p = method[listener].pattern;
 
             // match it
-            if ((match = p.exec(path)) != null) {
+            if ((match = p.exec(req.url)) != null) {
               // add to resp
               resp.match = match;
               // callback
@@ -72,13 +72,13 @@ Server.prototype.extend = function (method, override) {
   this.methods[method] = [];
 
   this[fn] = function (p, cb) {
-    this.methods[method].push({ pattern: p, callback: cb });
+    this.methods[method].push({ pattern: Server.util.regExp(p), callback: cb });
   };
 };
 
 Server.util = {};
-Server.util.escPath = function(path) {
-  return path.replace(/\//g, '\\/');
+Server.util.regExp = function(path) {
+  return new RegExp(path.replace(/\//g, '\\/'));
 };
 
 api.Server = Server;
