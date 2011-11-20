@@ -45,7 +45,6 @@ function Server () {
               method[listener].callback(req, resp);
               return;
             }
-            console.log(match);
           }
       this.emit('regularRequest', req, resp);
     }
