@@ -3,7 +3,7 @@
   "name": "api",
   "description": "A server framework for easy routing",
   "tags": [ "server", "middleware", "router" ],
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/pvorb/node-api.git"

@@ -24,7 +24,7 @@ function Server () {
     var method,
         path;
 
-    req.urlParsed= url.parse(req.url);
+    req.urlParsed = url.parse(req.url, true, true);
     path = req.urlParsed.pathname;
 
     if (this.listeners(path).length > 0)
