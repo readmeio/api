@@ -57,6 +57,7 @@ module.exports.run = () => {
         fs.writeFile('package.json', JSON.stringify(packageJson, undefined, 2), () => {
           console.log('');
           console.log(`Great! We've created it! Just edit ${answers.name}.js and type`.green + ' api deploy '.yellow + 'when you are ready!'.green);
+          console.log('');
         });
       });
     });
