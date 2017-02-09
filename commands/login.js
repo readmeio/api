@@ -3,8 +3,9 @@ const request = require('request-promise');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const creds = require('../data/creds.json');
+const credPath = path.join(__dirname, '..', 'data/creds.json');
 
-const basePath = path.join(__dirname, '..');
 const questions = [
   {
     type: 'input',
@@ -12,6 +13,7 @@ const questions = [
     message: 'Enter your email address'
   }
 ];
+
 
 const getEmail = () => {
   console.log('To start making request, please log in');
@@ -23,24 +25,24 @@ const getEmail = () => {
 }
 
 const getToken = (input) => {
-  const data = input
-
   request
     .post('http://localhost:5000/users', {
       json: true,
-      body: data
+      body: input
     })
-    .then(res => {
-      writeToken(res.token);
-      console.log(res);
-    })
+    .then(writeToken)
     .catch(res => {
       console.warn(res.error);
     });
 };
 
 const writeToken = (token) => {
+  const data = Object.assign({}, creds, { [token.email]: token});
   
+  fs.writeFile(credPath, JSON.stringify(data), (err) => {
+    if (err) console.error(err);
+    console.log('Profile added for user')
+  });
 }
 
 module.exports.run = getEmail;
