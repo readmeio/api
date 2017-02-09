@@ -1,3 +1,3 @@
-module.exports.run = function() {
+module.exports.run = () => {
   console.log('deploying!'.green);
-}
+};
