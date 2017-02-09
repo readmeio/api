@@ -4,6 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+const basePath = path.join(__dirname, '..');
 const questions = [
   {
     type: 'input',
@@ -22,18 +23,16 @@ const getEmail = () => {
 }
 
 const getToken = (input) => {
-  const data = Object.assign({}, input, {
-    machine: machine.machineIdSync()
-  });
+  const data = input
 
   request
-    .post('http://localhost:5001/cli/login', {
+    .post('http://localhost:5000/users', {
       json: true,
       body: data
     })
     .then(res => {
       writeToken(res.token);
-      if (res.message) { console.log(res.message); }
+      console.log(res);
     })
     .catch(res => {
       console.warn(res.error);
