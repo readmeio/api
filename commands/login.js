@@ -3,9 +3,8 @@ const request = require('request-promise');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const creds = require('../data/creds.json');
+const exists = require('../utils/utils').fileExists;
 const credPath = path.join(__dirname, '..', 'data/creds.json');
-
 const questions = [
   {
     type: 'input',
@@ -14,8 +13,11 @@ const questions = [
   }
 ];
 
+let creds;
 
 const getEmail = () => {
+  creds = exists(credPath) ? require(credPath) : {};
+  
   console.log('To start making request, please log in');
 
   inquirer
