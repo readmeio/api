@@ -14,6 +14,8 @@
     "colors": "^1.1.2",
     "inquirer": "^3.0.1",
     "lodash": "^4.17.4",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
     "minimist": "^1.2.0"
   },
   "devDependencies": {
