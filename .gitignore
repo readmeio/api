@@ -1,2 +1,2 @@
 node_modules/*
-creds.json
+data/creds.json
