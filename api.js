@@ -1,5 +1,7 @@
 // TODO: This isn't gonna work here
-require('./utils/logger');
+// require('./utils/logger');
+
+const request = require('request-promise');
 
 module.exports.actions = {};
 
@@ -20,7 +22,9 @@ module.exports.error = callback => (
 );
 
 module.exports.do = (action, data, callback) => {
-  console.log(this.service, action, data, callback);
+  request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
+    callback(undefined, response.result);
+  });
 };
 
 module.exports.config = (apiKey) => {
