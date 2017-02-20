@@ -12,11 +12,18 @@ const opts = _.clone(parseArgs);
 delete opts._;
 
 const action = load(args[0]);
-action.run();
+action.run(args);
 
 function load(verb = 'help') {
-  const file = path.join(__dirname, 'commands', `${verb}.js`);
+  let file = path.join(__dirname, 'commands', `${verb}.js`);
+
   if (utils.fileExists(file)) {
+    return require(file);
+  }
+
+  const alias = utils.getAliasFile(verb);
+  if (alias) {
+    file = path.join(__dirname, 'commands', `${alias}.js`);
     return require(file);
   }
 
