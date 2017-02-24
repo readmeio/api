@@ -12,6 +12,7 @@ const opts = _.clone(parseArgs);
 delete opts._;
 
 const action = load(args[0]);
+
 action.run(args);
 
 function load(verb = 'help') {

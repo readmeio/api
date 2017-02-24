@@ -22,7 +22,11 @@ module.exports.error = callback => (
 );
 
 module.exports.do = (action, data, callback) => {
-  request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
+  const body = {
+    data,
+    key: this.key,
+  };
+  request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body, json: true }).then((response) => {
     callback(undefined, response.result);
   });
 };
