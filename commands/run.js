@@ -3,6 +3,8 @@ const path = require('path');
 const handler = require(path.join(process.cwd(), 'handler.js'));
 const pjson = require(path.join(process.cwd(), 'package.json'));
 
+module.exports.aliases = ['invoke'];
+
 module.exports.run = (args) => {
   const data = {};
   const passedData = parseArgs(args.splice(2));
