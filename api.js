@@ -2,6 +2,10 @@
 // require('./utils/logger');
 
 const request = require('request-promise');
+const path = require('path');
+const exists = require('./utils/utils').fileExists;
+
+const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 
 module.exports.actions = {};
 
@@ -26,9 +30,25 @@ module.exports.do = (action, data, callback) => {
     data,
     key: this.key,
   };
-  request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body, json: true }).then((response) => {
-    callback(undefined, response.result);
-  });
+
+  const localLinks = exists(localLinksPath) ? require(localLinksPath) : {};
+  if (localLinks[this.service]) {
+    const handler = require(path.join(localLinks[this.service], '/handler.js'));
+    const pjson = require(path.join(localLinks[this.service], '/package.json'));
+    const event = {
+      entrypoint: pjson.main,
+      name: action,
+      data,
+    };
+
+    handler.go(event, undefined, (err, response) => {
+      callback(err, response);
+    });
+  } else {
+    request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body, json: true }).then((response) => {
+      callback(undefined, response.result);
+    });
+  }
 };
 
 module.exports.config = (apiKey) => {

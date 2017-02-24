@@ -40,11 +40,12 @@ module.exports.run = (args) => {
 // Spaces confuse minimist
 function parseArgs(args) {
   const parsed = [];
-  for (const i in args) {
-    if (args[i].indexOf('=') === -1) {
-      parsed[parsed.length - 1] += args[i];
+  for (const arg of args) {
+    const stringArg = arg.toString();
+    if (stringArg.indexOf('=') === -1) {
+      parsed[parsed.length - 1] += stringArg;
     } else {
-      parsed.push(args[i]);
+      parsed.push(arg);
     }
   }
   return parsed;
