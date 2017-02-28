@@ -31,12 +31,11 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const req = request.post('http://localhost:5000/services/');
+      const req = request.post(`http://${cred['mjcuva@gmail.com'].key}:@localhost:5000/services/`);
       const form = req.form();
       form.append('entryPoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);
-      form.append('key', cred['mjcuva@gmail.com'].key);
       form.append('service', fs.createReadStream(zipDir), {
         filename: `${pjson.name}.zip`,
         contentType: 'application/zip',

@@ -26,10 +26,6 @@ module.exports.error = callback => (
 );
 
 module.exports.do = (action, data, callback) => {
-  const body = {
-    data,
-    key: this.key,
-  };
 
   const localLinks = exists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {
@@ -45,7 +41,7 @@ module.exports.do = (action, data, callback) => {
       callback(err, response);
     });
   } else {
-    request.post(`http://localhost:5000/services/${this.service}/${action}/invoke`, { body, json: true }).then((response) => {
+    request.post(`http://${this.key}:@localhost:5000/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
       callback(undefined, response.result);
     });
   }
