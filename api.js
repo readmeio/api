@@ -26,7 +26,6 @@ module.exports.error = callback => (
 );
 
 module.exports.do = (action, data, callback) => {
-
   const localLinks = exists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {
     const handler = require(path.join(localLinks[this.service], '/handler.js'));

@@ -10,7 +10,13 @@ module.exports.aliases = ['list'];
 
 module.exports.run = (args) => {
   if (args.length === 1) {
-    console.log('listing all deployed services');
+    request.get(`http://${cred['mjcuva@gmail.com'].key}:@localhost:5000/services/list-deployed`).then((response) => {
+      const services = JSON.parse(response);
+      console.log('Listing deployed services'.blue);
+      for (const service of services) {
+        console.log(service.name);
+      }
+    });
   } else if (args[1] === 'versions') {
     request.get(`http://${cred['mjcuva@gmail.com'].key}:@localhost:5000/services/${pjson.name}`).then((response) => {
       const service = JSON.parse(response);
