@@ -1,7 +1,12 @@
 const path = require('path');
 
-const handler = require(path.join(process.cwd(), 'handler.js'));
-const pjson = require(path.join(process.cwd(), 'package.json'));
+const exists = require('../utils/utils').fileExists;
+
+const pjsonPath = path.join(process.cwd(), 'package.json');
+const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
+
+const handlerPath = path.join(process.cwd(), 'handler.js');
+const handler = exists(handlerPath) ? require(handlerPath) : {};
 
 module.exports.aliases = ['invoke'];
 

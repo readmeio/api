@@ -3,9 +3,11 @@ const fs = require('fs');
 const request = require('request-promise');
 const path = require('path');
 const inquirer = require('inquirer');
+const exists = require('../utils/utils').fileExists;
+const getKey = require('../utils/utils').getKey;
 
-const pjson = require(path.join(process.cwd(), 'package.json'));
-const cred = require('../data/creds.json');
+const pjsonPath = path.join(process.cwd(), 'package.json');
+const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
 
 const zipDir = path.join(__dirname, '../data/output.zip');
 
@@ -31,9 +33,11 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const req = request.post(`http://${cred['mjcuva@gmail.com'].key}:@localhost:5000/services/`);
+      const key = getKey();
+
+      const req = request.post(`http://${key}:@localhost:5000/services/`);
       const form = req.form();
-      form.append('entryPoint', pjson.main);
+      form.append('entrypoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);
       form.append('service', fs.createReadStream(zipDir), {

@@ -2,7 +2,8 @@ const exists = require('../utils/utils').fileExists;
 const path = require('path');
 const fs = require('fs');
 
-const pjson = require(path.join(process.cwd(), 'package.json'));
+const pjsonPath = path.join(process.cwd(), 'package.json');
+const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 

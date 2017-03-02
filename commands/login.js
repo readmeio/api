@@ -4,8 +4,10 @@ const fs = require('fs');
 const path = require('path');
 const exists = require('../utils/utils').fileExists;
 
+module.exports.aliases = ['signup'];
+
 const credPath = path.join(__dirname, '..', 'data/creds.json');
-const questions = [
+const emailQ = [
   {
     type: 'input',
     name: 'email',
@@ -13,37 +15,70 @@ const questions = [
   },
 ];
 
-let creds;
+const passwordQ = [
+  {
+    type: 'password',
+    name: 'password',
+    message: 'Enter your password',
+  },
+];
 
 const getEmail = () => {
-  creds = exists(credPath) ? require(credPath) : {};
-
-  console.log('To start making requests, please log in');
-
-  inquirer
-    .prompt(questions)
-    .then(getToken)
-    .catch(console.log);
+  if (exists(credPath)) {
+    console.log('You are already logged in. Please log out to switch accounts.');
+  } else {
+    inquirer
+      .prompt(emailQ)
+      .then(getToken)
+      .catch(console.log);
+  }
 };
 
 const getToken = (input) => {
-  request
-    .post('http://localhost:5000/users', {
-      json: true,
-      body: input,
-    })
-    .then(writeToken)
-    .catch((res) => {
-      console.warn(res.error);
-    });
+  request.post('http://localhost:5000/users/action', {
+    json: true,
+    body: input,
+  }).then((res) => {
+    if (res === 'signup') {
+      console.log('Hmm, it seems like you need to sign up!');
+      signup(input.email);
+    } else if (res === 'login') {
+      inquirer
+        .prompt(passwordQ)
+        .then(p => login(input.email, p.password)).catch(console.log);
+    } else if (res === 'incomplete') {
+      console.log('This user hasn\'t been completely set up yet! Check your email to proceed.');
+    }
+  });
 };
 
-const writeToken = (token) => {
-  const data = Object.assign({}, creds, { [token.email]: token });
+const login = (email, password) => {
+  request.post('http://localhost:5000/login/cli', {
+    json: true,
+    body: {
+      email,
+      password,
+    },
+  }).then(writeToken).catch((res) => {
+    console.log(res.error.error);
+  });
+};
 
-  fs.writeFile(credPath, JSON.stringify(data), (err) => {
+const signup = (email) => {
+  request.post('http://localhost:5000/users', {
+    json: true,
+    body: {
+      email,
+    },
+  }).then(writeToken).catch(console.log);
+  console.log(`We've created an account for you with the email ${email.green}`);
+  console.log('Check your email to complete registration!');
+  console.log('However, don\'t fret, we have already set up your api key so you can get started right away.');
+};
+
+const writeToken = (res) => {
+  fs.writeFile(credPath, JSON.stringify(res), (err) => {
     if (err) console.error(err);
-    console.log('Profile added for user');
   });
 };
 

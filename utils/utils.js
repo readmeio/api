@@ -21,3 +21,16 @@ exports.getAliasFile = (unknownAction) => {
   }
   return foundAction;
 };
+
+exports.getKey = () => {
+  const credPath = path.join(__dirname, '..', 'data/creds.json');
+  if (exports.fileExists(credPath)) {
+    const creds = require(credPath);
+    if (Object.keys(creds).length > 1) {
+      console.log('pick team');
+    } else {
+      return creds[Object.keys(creds)[0]];
+    }
+  }
+  return new Error('Not logged in');
+};
