@@ -5,6 +5,7 @@ const path = require('path');
 const inquirer = require('inquirer');
 const exists = require('../utils/utils').fileExists;
 const getKey = require('../utils/utils').getKey;
+const getProxyUrl = require('../utils/utils').getProxyUrl;
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
@@ -33,9 +34,11 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const key = getKey();
+      const base = getProxyUrl(getKey());
 
-      const req = request.post(`http://${key}:@localhost:5000/services/`);
+      console.log(`Deploying to ${base}`);
+
+      const req = request.post(`${base}/services/`);
       const form = req.form();
       form.append('entrypoint', pjson.main);
       form.append('version', response.version);

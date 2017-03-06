@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const config = require('config');
+
+const BUILD_URL = config.get('BUILD_URL');
 
 exports.fileExists = (file) => {
   try {
@@ -33,4 +36,11 @@ exports.getKey = () => {
     }
   }
   return new Error('Not logged in');
+};
+
+exports.getProxyUrl = (key) => {
+  const url = BUILD_URL;
+  if (!key) return url;
+  const parts = url.split('://');
+  return `${parts[0]}://${key}:@${parts[1]}`;
 };

@@ -4,6 +4,7 @@
 const request = require('request-promise');
 const path = require('path');
 const exists = require('./utils/utils').fileExists;
+const getProxyUrl = require('./utils/utils').getProxyUrl;
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 
@@ -40,7 +41,8 @@ module.exports.do = (action, data, callback) => {
       callback(err, response);
     });
   } else {
-    request.post(`http://${this.key}:@localhost:5000/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
+    const base = getProxyUrl(this.key);
+    request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
       callback(undefined, response.result);
     });
   }

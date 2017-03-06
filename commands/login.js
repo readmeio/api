@@ -3,6 +3,9 @@ const request = require('request-promise');
 const fs = require('fs');
 const path = require('path');
 const exists = require('../utils/utils').fileExists;
+const utils = require('../utils/utils');
+
+const proxyUrl = utils.getProxyUrl();
 
 module.exports.aliases = ['signup'];
 
@@ -35,7 +38,7 @@ const getEmail = () => {
 };
 
 const getToken = (input) => {
-  request.post('http://localhost:5000/users/action', {
+  request.post(`${proxyUrl}/users/action`, {
     json: true,
     body: input,
   }).then((res) => {
@@ -53,7 +56,7 @@ const getToken = (input) => {
 };
 
 const login = (email, password) => {
-  request.post('http://localhost:5000/login/cli', {
+  request.post(`${proxyUrl}/login/cli`, {
     json: true,
     body: {
       email,
@@ -65,7 +68,7 @@ const login = (email, password) => {
 };
 
 const signup = (email) => {
-  request.post('http://localhost:5000/users', {
+  request.post(`${proxyUrl}/users`, {
     json: true,
     body: {
       email,
