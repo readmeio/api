@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const config = require('config');
 
-const BUILD_URL = config.get('BUILD_URL');
+const BUILD_URL = 'http://staging.bips.tech';
 
 exports.fileExists = (file) => {
   try {

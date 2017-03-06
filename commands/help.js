@@ -1,3 +1,3 @@
-module.exports.run = function() {
-  console.log("Hey!");
-}
+module.exports.run = () => {
+  console.log('Hey!');
+};

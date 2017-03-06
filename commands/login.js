@@ -59,7 +59,7 @@ const login = (email, password) => {
   request.post(`${proxyUrl}/login/cli`, {
     json: true,
     body: {
-      email,
+      usermail: email,
       password,
     },
   }).then(writeToken).catch((res) => {
