@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
-const BUILD_URL = 'http://localhost:5000';
+const BUILD_URL = 'http://staging.bips.tech';
 
 exports.fileExists = (file) => {
   try {
