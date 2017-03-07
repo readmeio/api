@@ -1,8 +1,7 @@
 const request = require('request-promise');
 const path = require('path');
 require('colors');
-const getKey = require('../utils/utils').getKey;
-const getProxyUrl = require('../utils/utils').getProxyUrl;
+const utils = require('../utils/utils');
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const exists = require('../utils/utils').fileExists;
@@ -10,11 +9,12 @@ const exists = require('../utils/utils').fileExists;
 module.exports.aliases = ['list'];
 
 module.exports.run = (args) => {
-  const proxyUrl = getProxyUrl(getKey());
+  const creds = utils.getCredentials();
+  const proxyUrl = utils.getProxyUrl(creds.key);
   if (args.length === 1) {
-    request.get(`${proxyUrl}/services/list-deployed`).then((response) => {
+    request.get(`${proxyUrl}/services/${creds.teamName}/deployed`).then((response) => {
       const services = JSON.parse(response);
-      console.log('Listing deployed services'.blue);
+      console.log(`Listing deployed services for team ${creds.teamName}`.blue);
       for (const service of services) {
         console.log(service.name);
       }
@@ -28,6 +28,16 @@ module.exports.run = (args) => {
       for (const version of versions) {
         console.log(version);
       }
+    }).catch(() => {
+      console.log(`Service "${pjson.name}" is not deployed`.red);
+    });
+  } else if (args[1] === 'used') {
+    request.get(`${proxyUrl}/services/${creds.teamName}/used`).then((response) => {
+      const services = JSON.parse(response);
+      console.log('Listing used services'.blue);
+      for (const name in services) {
+        console.log(`${name} v${services[name].version.version}`);
+      }
     });
   }
 };
@@ -36,7 +46,7 @@ function getVersions(service) {
   const versions = service.versions;
   const out = [];
   for (const v of versions) {
-    out.push(v.semver);
+    out.push(v.version);
   }
   return out;
 }

@@ -9,5 +9,6 @@ module.exports = {
       "global-require": "off",
       "import/no-dynamic-require": "off",
       "no-restricted-syntax": "off",
+      "guard-for-in": "off",
     }
 };

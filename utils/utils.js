@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
-const BUILD_URL = 'http://staging.bips.tech';
+const BUILD_URL = 'http://localhost:5000';
 
 exports.fileExists = (file) => {
   try {
@@ -24,14 +24,15 @@ exports.getAliasFile = (unknownAction) => {
   return foundAction;
 };
 
-exports.getKey = () => {
+exports.getCredentials = () => {
   const credPath = path.join(__dirname, '..', 'data/creds.json');
   if (exports.fileExists(credPath)) {
     const creds = require(credPath);
     if (Object.keys(creds).length > 1) {
       console.log('pick team');
     } else {
-      return creds[Object.keys(creds)[0]];
+      const teamName = Object.keys(creds)[0];
+      return { teamName, key: creds[teamName] };
     }
   }
   return new Error('Not logged in');
