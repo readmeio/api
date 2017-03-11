@@ -1,26 +1,34 @@
-const aws = require('aws-sdk');
+'use strict';
 
-const kinesis = new aws.Kinesis({region: 'us-east-1'});
+const Primus = require('primus');
 
-function putRecord(log) {
-  return function() {
-    kinesis.putRecord({
-      Data: [...arguments].toString(),
-      StreamName: 'test',
-      PartitionKey: '1'
-    }, (err, data) => {
-      log(...arguments);
-    });
+const Socket = Primus.createSocket();
+let client;
+let open = false;
+
+module.exports.initLog = () => {
+  if (!client) {
+    client = new Socket('ws://b922805b.ngrok.io');
   }
-}
 
-console.log = putRecord(console.log);
-console.assert = putRecord(console.assert);
-console.debug = putRecord(console.debug);
-console.dir = putRecord(console.dir);
-console.error = putRecord(console.error);
-console.exception = putRecord(console.exception);
-console.info = putRecord(console.info);
-console.table = putRecord(console.table);
-console.trace = putRecord(console.trace);
-console.warn = putRecord(console.warn);
+  client.on('open', () => {
+    open = true;
+  });
+};
+
+module.exports.log = (log) => {
+  const key = process.env.apiKey;
+  if (key) {
+    client.write({ room: key, msg: log });
+  }
+};
+
+module.exports.close = () => {
+  if (open) {
+    client.end();
+    open = false;
+    client = undefined;
+  } else {
+    setTimeout(module.exports.close, 1000);
+  }
+};

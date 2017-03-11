@@ -4,7 +4,7 @@ const request = require('request-promise');
 const path = require('path');
 const inquirer = require('inquirer');
 const exists = require('../utils/utils').fileExists;
-const getKey = require('../utils/utils').getKey;
+const getCredentials = require('../utils/utils').getCredentials;
 const getProxyUrl = require('../utils/utils').getProxyUrl;
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
@@ -34,7 +34,7 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const base = getProxyUrl(getKey());
+      const base = getProxyUrl(getCredentials().key);
 
       console.log(`Deploying to ${base}`);
 

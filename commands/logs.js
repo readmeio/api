@@ -1,40 +1,26 @@
-const aws = require('aws-sdk');
 const clc = require('cli-color');
+const Primus = require('primus');
+const getCredentials = require('../utils/utils').getCredentials;
 
-const kinesis = new aws.Kinesis({region: 'us-east-1'});
+const Socket = Primus.createSocket();
+const client = Socket('ws://localhost:5000');
 
-module.exports.run = function() {
+module.exports.run = () => {
   console.log(clc.green('Tailing logs...'));
-  kinesis.describeStream({
-    StreamName: 'test'
-  }, function(err, data){
-    const ShardId = data.StreamDescription.Shards[0].ShardId;
-    kinesis.getShardIterator({
-      ShardId,
-      ShardIteratorType: 'LATEST',
-      StreamName: 'test',
-    }, (err, data) => {
-      getRecords(data.ShardIterator)
-    });
-  });
-}
 
-function getRecords(ShardIterator) {
-  kinesis.getRecords({
-    ShardIterator,
-  }, (err, data) => {
-    const output = [];
-    for(const log of data.Records) {
-      console.log(clc.cyan(log.ApproximateArrivalTimestamp), bin2String(log.Data).replace(',', ' '));
-    }
-    getRecords(data.NextShardIterator);
+  client.on('open', () => {
+    client.write({ action: 'join', room: getCredentials().key });
   });
-}
 
-function bin2String(array) {
-  var result = "";
-  for (var i = 0; i < array.length; i++) {
-    result += String.fromCharCode(parseInt(array[i], 10));
-  }
-  return result;
-}
+  client.on('data', (data) => {
+    console.log(data);
+  });
+
+  client.on('end', () => {
+    client.end();
+  });
+
+  client.on('error', () => {
+    client.end();
+  });
+};
