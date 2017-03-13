@@ -6,15 +6,20 @@ const Socket = Primus.createSocket();
 let client;
 let open = false;
 
-module.exports.initLog = () => {
-  if (!client) {
-    client = new Socket('ws://b922805b.ngrok.io');
-  }
+if (!client) {
+  client = new Socket('ws://staging.bips.tech');
 
   client.on('open', () => {
     open = true;
   });
-};
+
+  client.on('error', (e) => {
+    console.log(e);
+    // Make sure is marked open, even on error
+    // so it closes properly and doesn't timeout
+    open = true;
+  });
+}
 
 module.exports.log = (log) => {
   const key = process.env.apiKey;
