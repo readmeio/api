@@ -9,8 +9,6 @@ require('colors');
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 
-// logger.initLog();
-
 module.exports.actions = {};
 
 module.exports.create = (name, func) => {

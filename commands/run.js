@@ -5,8 +5,7 @@ const exists = require('../utils/utils').fileExists;
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
 
-const handlerPath = path.join(process.cwd(), 'handler.js');
-const handler = exists(handlerPath) ? require(handlerPath) : {};
+const handler = require('../utils/handler');
 
 module.exports.aliases = ['invoke'];
 
@@ -25,9 +24,9 @@ module.exports.run = (args) => {
     }
     data[parsedArg[0]] = value;
   }
-
+  const p = path.join(process.cwd(), pjson.main);
   const event = {
-    entrypoint: pjson.main,
+    entrypoint: p,
     name: args[1],
     data,
   };

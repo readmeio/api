@@ -2,11 +2,11 @@
 
 const Primus = require('primus');
 
-const Socket = Primus.createSocket();
 let client;
 let open = false;
 
-if (!client) {
+if (!client && process.env.apiKey) {
+  const Socket = Primus.createSocket();
   client = new Socket('ws://staging.bips.tech');
 
   client.on('open', () => {
@@ -33,7 +33,7 @@ module.exports.close = () => {
     client.end();
     open = false;
     client = undefined;
-  } else {
+  } else if (client) {
     setTimeout(module.exports.close, 1000);
   }
 };

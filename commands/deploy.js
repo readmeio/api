@@ -64,6 +64,9 @@ module.exports.run = () => {
 
     archive.pipe(output);
 
+    const handler = path.join(__dirname, '../utils/handler.js');
+    archive.append(fs.createReadStream(handler), { name: 'handler.js' });
+
     archive.glob('**');
 
     archive.finalize();

@@ -10,5 +10,6 @@ module.exports = {
       "import/no-dynamic-require": "off",
       "no-restricted-syntax": "off",
       "guard-for-in": "off",
+      "strict": "off",
     }
 };
