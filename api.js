@@ -2,8 +2,7 @@
 
 const request = require('request-promise');
 const path = require('path');
-const exists = require('./utils/utils').fileExists;
-const getProxyUrl = require('./utils/utils').getProxyUrl;
+const utils = require('./utils/utils');
 const logger = require('./utils/logger');
 require('colors');
 
@@ -30,7 +29,7 @@ module.exports.error = callback => (
 );
 
 module.exports.do = (action, data, callback) => {
-  const localLinks = exists(localLinksPath) ? require(localLinksPath) : {};
+  const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {
     const handler = require(path.join(localLinks[this.service], '/handler.js'));
     const pjson = require(path.join(localLinks[this.service], '/package.json'));
@@ -44,7 +43,7 @@ module.exports.do = (action, data, callback) => {
       callback(err, response);
     });
   } else {
-    const base = getProxyUrl(this.key);
+    const base = utils.getKeyUrl(this.key);
     request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
       logger.close();
       callback(undefined, response.result);

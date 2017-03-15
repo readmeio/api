@@ -3,9 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const request = require('request-promise');
+const CookieJar = require('tough-cookie').CookieJar;
 
-const BUILD_URL = 'http://staging.bips.tech';
-// const BUILD_URL = 'http://localhost:5000';
+exports.credPath = path.join(__dirname, '..', 'data/creds.json');
+
+// const BUILD_URL = 'http://staging.bips.tech';
+exports.BUILD_URL = 'http://localhost:5000';
 
 exports.fileExists = (file) => {
   try {
@@ -27,22 +31,16 @@ exports.getAliasFile = (unknownAction) => {
   return foundAction;
 };
 
-exports.getCredentials = () => {
-  const credPath = path.join(__dirname, '..', 'data/creds.json');
-  if (exports.fileExists(credPath)) {
-    const creds = require(credPath);
-    if (Object.keys(creds).length > 1) {
-      console.log('pick team');
-    } else {
-      const teamName = Object.keys(creds)[0];
-      return { teamName, key: creds[teamName] };
-    }
-  }
-  return new Error('Not logged in');
+exports.getJar = () => {
+  const jar = request.jar();
+  const s = fs.readFileSync(exports.credPath).toString();
+  CookieJar.deserializeSync(s, jar._jar.store);
+
+  return jar;
 };
 
-exports.getProxyUrl = (key) => {
-  const url = BUILD_URL;
+exports.getKeyUrl = (key) => {
+  const url = exports.BUILD_URL;
   if (!key) return url;
   const parts = url.split('://');
   return `${parts[0]}://${key}:@${parts[1]}`;

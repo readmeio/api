@@ -3,7 +3,7 @@ const Primus = require('primus');
 const getCredentials = require('../utils/utils').getCredentials;
 
 const Socket = Primus.createSocket();
-const client = Socket('ws://localhost:5000');
+const client = Socket('ws://staging.bips.tech');
 
 module.exports.run = () => {
   console.log(clc.green('Tailing logs...'));

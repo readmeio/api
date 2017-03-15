@@ -3,12 +3,10 @@ const fs = require('fs');
 const request = require('request-promise');
 const path = require('path');
 const inquirer = require('inquirer');
-const exists = require('../utils/utils').fileExists;
-const getCredentials = require('../utils/utils').getCredentials;
-const getProxyUrl = require('../utils/utils').getProxyUrl;
+const utils = require('../utils/utils');
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
-const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
+const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
 
 const zipDir = path.join(__dirname, '../data/output.zip');
 
@@ -34,12 +32,14 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const base = getProxyUrl(getCredentials().key);
+      const jar = utils.getJar();
+      const base = utils.BUILD_URL;
 
       console.log(`Deploying to ${base}`);
 
-      const req = request.post(`${base}/services/`);
+      const req = request.post(`${base}/services/`, { jar });
       const form = req.form();
+      form.append('team', pjson.author);
       form.append('entrypoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);

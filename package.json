@@ -20,6 +20,7 @@
     "primus": "^6.1.0",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
+    "tough-cookie": "^2.3.2",
     "ws": "1.1.2"
   },
   "devDependencies": {

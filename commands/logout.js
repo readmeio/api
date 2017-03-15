@@ -4,6 +4,7 @@ const exists = require('../utils/utils').fileExists;
 
 const credPath = path.join(__dirname, '..', 'data/creds.json');
 
+// TODO: log out on server
 module.exports.run = () => {
   if (exists(credPath)) {
     fs.unlinkSync(credPath);

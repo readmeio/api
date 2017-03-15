@@ -11,5 +11,6 @@ module.exports = {
       "no-restricted-syntax": "off",
       "guard-for-in": "off",
       "strict": "off",
+      "no-underscore-dangle": "off",
     }
 };
