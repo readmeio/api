@@ -4,7 +4,7 @@ const fs = require('fs');
 const exists = require('../utils/utils').fileExists;
 const utils = require('../utils/utils');
 
-const proxyUrl = utils.getProxyUrl();
+const proxyUrl = utils.BUILD_URL;
 
 module.exports.aliases = ['signup'];
 

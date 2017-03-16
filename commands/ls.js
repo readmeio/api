@@ -14,9 +14,12 @@ module.exports.run = (args) => {
   if (args.length === 1) {
     request.get(`${base}/services/deployed`, { jar }).then((response) => {
       const services = JSON.parse(response);
-      console.log('Listing deployed services'.blue);
-      for (const service in services) {
-        console.log(service);
+      console.log('\nListing deployed services'.green);
+      for (const team in services) {
+        console.log(`\n${team.blue}`);
+        for (const service in services[team]) {
+          console.log(`  ${service}`);
+        }
       }
     });
   } else if (args[1] === 'versions') {
@@ -34,9 +37,12 @@ module.exports.run = (args) => {
   } else if (args[1] === 'used') {
     request.get(`${base}/services/used`, { jar }).then((response) => {
       const services = JSON.parse(response);
-      console.log('Listing used services'.blue);
-      for (const name in services) {
-        console.log(`${name} v${services[name].version.version}`);
+      console.log('\nListing used services'.green);
+      for (const team in services) {
+        console.log(`\n${team.blue}`);
+        for (const name in services[team]) {
+          console.log(`  ${name} v${services[team][name].version.version}`);
+        }
       }
     });
   }
