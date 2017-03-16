@@ -8,8 +8,8 @@ const CookieJar = require('tough-cookie').CookieJar;
 
 exports.credPath = path.join(__dirname, '..', 'data/creds.json');
 
-// const BUILD_URL = 'http://staging.bips.tech';
-exports.BUILD_URL = 'http://localhost:5000';
+exports.BUILD_URL = 'http://staging.bips.tech';
+// exports.BUILD_URL = 'http://localhost:5000';
 
 exports.fileExists = (file) => {
   try {
