@@ -5,8 +5,8 @@ const request = require('request-promise');
 const utils = require('../utils/utils');
 
 const Socket = Primus.createSocket();
-// const client = Socket('ws://staging.bips.tech');
-const client = Socket('ws://localhost:5000');
+const client = Socket('ws://staging.bips.tech');
+// const client = Socket('ws://localhost:5000');
 
 module.exports.run = () => {
   console.log(clc.green('Tailing logs...'));
