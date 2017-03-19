@@ -16,14 +16,12 @@ module.exports.create = (name, func) => {
 
 module.exports.success = callback => (
   (response) => {
-    logger.close();
     callback(null, response);
   }
 );
 
 module.exports.error = callback => (
   (response) => {
-    logger.close();
     callback(response);
   }
 );
@@ -45,10 +43,10 @@ module.exports.do = (action, data, callback) => {
   } else {
     const base = utils.getKeyUrl(this.key);
     request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
-      logger.close();
+      // logger.close();
       callback(undefined, response.result);
     }).catch((err) => {
-      logger.close();
+      // logger.close();
       console.log(`Error calling ${this.service}.${action} v${err.response.headers['x-build-version']}`.red);
       console.log(`\n${err.response.body.error.red}`);
     });
@@ -65,15 +63,6 @@ module.exports.config = (apiKey) => {
 
 module.exports.log = function log() {
   const args = Array.prototype.slice.call(arguments);
-  let out = '';
-  for (const i of args) {
-    if (typeof i === 'object') {
-      out += JSON.stringify(i);
-    } else {
-      out += i;
-    }
-    out += ' ';
-  }
-  logger.log(out);
+  logger.log(args);
   console.log.apply(undefined, args);
 };
