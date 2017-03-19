@@ -39,7 +39,9 @@ module.exports.run = () => {
 
       const req = request.post(`${base}/services/`, { jar });
       const form = req.form();
-      form.append('team', pjson.author);
+      if (pjson.author) {
+        form.append('team', pjson.author);
+      }
       form.append('entrypoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);

@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-const api = require(path.join(process.cwd(), 'node_modules/api/api'));
+const api = require(path.join(process.cwd(), 'node_modules/api-build/api'));
 
 exports.go = (event, context, callback) => {
   require(`${event.entrypoint}`);
