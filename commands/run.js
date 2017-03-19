@@ -1,17 +1,14 @@
-const path = require('path');
+const request = require('request-promise');
 
-const exists = require('../utils/utils').fileExists;
-
-const pjsonPath = path.join(process.cwd(), 'package.json');
-const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
-
-const handler = require('../utils/handler-local');
+const utils = require('../utils/utils');
 
 module.exports.aliases = ['invoke'];
 
 module.exports.run = (args) => {
   const data = {};
-  const passedData = parseArgs(args.splice(2));
+  const service = args[1];
+  const action = args[2];
+  const passedData = utils.parseArgs(args.splice(3));
   for (const arg of passedData) {
     const i = arg.indexOf('=');
     const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
@@ -24,33 +21,15 @@ module.exports.run = (args) => {
     }
     data[parsedArg[0]] = value;
   }
-  const p = path.join(process.cwd(), pjson.main);
-  const event = {
-    entrypoint: p,
-    name: args[1],
-    data,
-  };
 
-  handler.go(event, undefined, (err, response) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(response);
-    }
+  const jar = utils.getJar();
+  request.get(`${utils.BUILD_URL}/users/me`, { jar }).then((user) => {
+    const parsedUser = JSON.parse(user);
+    const key = parsedUser.teams[0].key;
+    const keyUrl = utils.getKeyUrl(key);
+    const invokeUrl = `${keyUrl}/services/${service}/${action}/invoke`;
+    request.post(invokeUrl, { json: data }).then((response) => {
+      console.log(response.result);
+    });
   });
 };
-
-// fixes args like numbers=[1, 3, 2]
-// Spaces confuse minimist
-function parseArgs(args) {
-  const parsed = [];
-  for (const arg of args) {
-    const stringArg = arg.toString();
-    if (stringArg.indexOf('=') === -1) {
-      parsed[parsed.length - 1] += stringArg;
-    } else {
-      parsed.push(arg);
-    }
-  }
-  return parsed;
-}
