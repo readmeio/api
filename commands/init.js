@@ -2,6 +2,7 @@ require('colors');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
+const exec = require('child_process').exec;
 
 module.exports.run = () => {
   console.log('We are going to walk you through initial setup!'.green);
@@ -35,7 +36,7 @@ module.exports.run = () => {
       type: 'input',
       name: 'action',
       message: 'What is the name of your first action?',
-      default: 'makePhoneCall',
+      default: 'sayHello',
     },
   ];
 
@@ -50,13 +51,16 @@ module.exports.run = () => {
           main: `${answers.name}.js`,
           private: answers.internal === 'private',
           dependencies: {
-            api: '0.0.1',
+            'api-build': 'latest',
           },
         };
 
         fs.writeFile('package.json', JSON.stringify(packageJson, undefined, 2), () => {
-          const filename = `${answers.name}.js`;
-          console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
+          console.log(`Running ${'npm install'.yellow}...`);
+          exec('npm install', () => {
+            const filename = `${answers.name}.js`;
+            console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
+          });
         });
       });
     });

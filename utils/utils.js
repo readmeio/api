@@ -44,3 +44,18 @@ exports.getKeyUrl = (key) => {
   const parts = url.split('://');
   return `${parts[0]}://${key}:@${parts[1]}`;
 };
+
+// fixes args like numbers=[1, 3, 2]
+// Spaces confuse minimist
+exports.parseArgs = (args) => {
+  const parsed = [];
+  for (const arg of args) {
+    const stringArg = arg.toString();
+    if (stringArg.indexOf('=') === -1) {
+      parsed[parsed.length - 1] += stringArg;
+    } else {
+      parsed.push(arg);
+    }
+  }
+  return parsed;
+};
