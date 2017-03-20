@@ -53,8 +53,15 @@ const getToken = (input) => {
   });
 };
 
+const j = request.jar();
+function saveCookie() {
+  fs.writeFile(utils.credPath, JSON.stringify(j._jar), (err) => {
+    if (err) console.log(err);
+    console.log('Logged In!');
+  });
+}
+
 const login = (email, password) => {
-  const j = request.jar();
   request.post(`${proxyUrl}/login/cli`, {
     json: true,
     jar: j,
@@ -62,12 +69,7 @@ const login = (email, password) => {
       usermail: email,
       password,
     },
-  }).on('response', () => {
-    fs.writeFile(utils.credPath, JSON.stringify(j._jar), (err) => {
-      if (err) console.log(err);
-      console.log('Logged In!');
-    });
-  }).catch((res) => {
+  }).then(saveCookie).catch((res) => {
     console.log(res.error.error);
   });
 };
@@ -75,10 +77,11 @@ const login = (email, password) => {
 const signup = (email) => {
   request.post(`${proxyUrl}/users`, {
     json: true,
+    jar: j,
     body: {
       email,
     },
-  }).then().catch(console.log);
+  }).then(saveCookie).catch(console.log);
   console.log(`We've created an account for you with the email ${email.green}`);
   console.log('Check your email to complete registration!');
   console.log('However, don\'t fret, we have already set up your api key so you can get started right away.');
