@@ -44,24 +44,27 @@ module.exports.run = () => {
     fs.readFile(path.join(__dirname, '../utils/stub.js'), 'utf8', (err, data) => {
       const stub = data.replace('<<action>>', answers.action);
 
-      fs.writeFile(`${answers.name}.js`, stub, () => {
-        const packageJson = {
-          name: answers.name,
-          version: answers.version,
-          main: `${answers.name}.js`,
-          private: answers.internal === 'private',
-          dependencies: {
-            'api-build': 'latest',
-          },
-        };
+      fs.writeFileSync(`${answers.name}.js`, stub);
 
-        fs.writeFile('package.json', JSON.stringify(packageJson, undefined, 2), () => {
-          console.log(`Running ${'npm install'.yellow}...`);
-          exec('npm install', () => {
-            const filename = `${answers.name}.js`;
-            console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
-          });
-        });
+      const packageJson = {
+        name: answers.name,
+        version: answers.version,
+        main: `${answers.name}.js`,
+        private: answers.internal === 'private',
+        dependencies: {
+          'api-build': 'latest',
+        },
+      };
+
+      const README = `Welcome to ${answers.name}!`;
+      fs.writeFileSync('readme.md', README);
+
+      fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
+
+      console.log(`Running ${'npm install'.yellow}...`);
+      exec('npm install', () => {
+        const filename = `${answers.name}.js`;
+        console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
       });
     });
   });
