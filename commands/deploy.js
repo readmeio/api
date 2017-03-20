@@ -1,6 +1,7 @@
 const archiver = require('archiver');
 const fs = require('fs');
 const request = require('request-promise');
+const buildDocs = require('build-docs');
 const path = require('path');
 const inquirer = require('inquirer');
 const utils = require('../utils/utils');
@@ -43,6 +44,7 @@ module.exports.run = () => {
       form.append('entrypoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);
+      form.append('docs', JSON.stringify(buildDocs(fs.readFileSync(path.join(process.cwd(), pjson.main)))));
       form.append('service', fs.createReadStream(zipDir), {
         filename: `${pjson.name}.zip`,
         contentType: 'application/zip',
