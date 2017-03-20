@@ -8,6 +8,8 @@ const utils = require('../utils/utils');
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
 
+const readmePath = path.join(process.cwd(), 'readme.md');
+
 const zipDir = path.join(__dirname, '../data/output.zip');
 
 module.exports.run = () => {
@@ -28,6 +30,11 @@ module.exports.run = () => {
 
     console.log('Converting to travel size...');
 
+    let readme;
+    if (utils.fileExists(readmePath)) {
+      readme = fs.readFileSync(readmePath, 'utf8');
+    }
+
     // listen for all archive data to be written
     output.on('close', () => {
       console.log('Flying up to the cloud...');
@@ -42,6 +49,11 @@ module.exports.run = () => {
       if (pjson.author) {
         form.append('team', pjson.author);
       }
+
+      if (readme) {
+        form.append('readme', readme);
+      }
+
       form.append('entrypoint', pjson.main);
       form.append('version', response.version);
       form.append('name', pjson.name);
