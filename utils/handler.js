@@ -1,6 +1,6 @@
 'use strict';
 
-const api = require('api');
+const api = require('api-build'); // eslint-disable-line import/no-extraneous-dependencies import/no-unresolved
 
 exports.go = (event, context, callback) => {
   require(`./${event.entrypoint}`);

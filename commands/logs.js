@@ -1,4 +1,4 @@
-const clc = require('cli-color');
+require('colors');
 const Primus = require('primus');
 const request = require('request-promise');
 
@@ -9,7 +9,7 @@ const client = Socket('ws://staging.bips.tech');
 // const client = Socket('ws://localhost:5000');
 
 module.exports.run = () => {
-  console.log(clc.green('Tailing logs...'));
+  console.log('Tailing logs...'.green);
 
   client.on('open', () => {
     const jar = utils.getJar();
