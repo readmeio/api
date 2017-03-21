@@ -13,7 +13,7 @@ delete opts._;
 
 const action = load(args[0]);
 
-action.run(args);
+action.run(args, opts);
 
 function load(verb = 'help') {
   let file = path.join(__dirname, 'commands', `${verb}.js`);
