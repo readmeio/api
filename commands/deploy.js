@@ -1,4 +1,5 @@
 const archiver = require('archiver');
+const semver = require('semver');
 const fs = require('fs');
 const request = require('request-promise');
 const buildDocs = require('build-docs');
@@ -20,6 +21,12 @@ module.exports.run = () => {
       name: 'version',
       message: 'What should the version number be?',
       default: `${pjson.version}`,
+      validate: (v) => {
+        if (!semver.valid(v)) {
+          return `${v} is not a valid semver version`;
+        }
+        return true;
+      },
     },
   ];
 
