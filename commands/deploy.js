@@ -1,3 +1,7 @@
+module.exports.usage = `Deploys a function to build
+
+Usage: api deploy <version>`;
+
 const archiver = require('archiver');
 const semver = require('semver');
 const fs = require('fs');
