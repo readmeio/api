@@ -42,7 +42,7 @@ module.exports.run = () => {
 
   inquirer.prompt(questions).then((answers) => {
     fs.readFile(path.join(__dirname, '../utils/stub.js'), 'utf8', (err, data) => {
-      const stub = data.replace('<<action>>', answers.action);
+      const stub = data.replace(/<<action>>/g, answers.action);
 
       fs.writeFileSync(`${answers.name}.js`, stub);
 
