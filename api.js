@@ -14,17 +14,9 @@ module.exports.create = (name, func) => {
   module.exports.actions[name] = func;
 };
 
-module.exports.success = callback => (
-  (response) => {
-    callback(null, response);
-  }
-);
+module.exports.success = callback => response => callback(null, response);
 
-module.exports.error = callback => (
-  (response) => {
-    callback(response);
-  }
-);
+module.exports.error = callback => response => callback(response);
 
 module.exports.do = (action, data, callback) => {
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
