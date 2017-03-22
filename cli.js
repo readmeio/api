@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const _ = require('lodash');
 const parseArgs = require('minimist')(process.argv.slice(2));
 const path = require('path');
 require('colors');
@@ -8,12 +7,8 @@ require('colors');
 const utils = require('./utils/utils');
 
 const args = parseArgs._;
-const opts = _.clone(parseArgs);
-delete opts._;
-
 const action = load(args[0]);
-
-action.run(args, opts);
+action.run(args);
 
 function load(verb = 'help') {
   let file = path.join(__dirname, 'commands', `${verb}.js`);
