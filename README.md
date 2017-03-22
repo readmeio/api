@@ -26,7 +26,7 @@ api
 api init
 ```
 
-### Usage (node module)
+## Usage (node module)
 With npm:
 ```
 npm install api-build --save
