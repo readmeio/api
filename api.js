@@ -43,10 +43,8 @@ module.exports.do = (action, data, callback) => {
   } else {
     const base = utils.getKeyUrl(this.key);
     request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
-      // logger.close();
       callback(undefined, response.result);
     }).catch((err) => {
-      // logger.close();
       console.log(`Error calling ${this.service}.${action} v${err.response.headers['x-build-version']}`.red);
       console.log(`\n${err.response.body.error.red}`);
     });
@@ -66,3 +64,7 @@ module.exports.log = function log() {
   logger.log(args);
   console.log.apply(undefined, args);
 };
+
+/*
+ * docsTest: This is an example for docs.test.js
+ */
