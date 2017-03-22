@@ -55,7 +55,7 @@ module.exports.run = () => {
       const jar = utils.getJar();
       const base = utils.BUILD_URL;
 
-      console.log(`Deploying to ${base}`);
+      // console.log(`Deploying to ${base}`);
 
       const req = request.post(`${base}/services/`, { jar });
       const form = req.form();
@@ -93,10 +93,11 @@ module.exports.run = () => {
         progressBar.tick(data.length);
       });
 
-      req.then(() => {
+      req.then((newService) => {
         console.log('Cleaning up...');
         fs.unlinkSync(zipDir);
-        console.log('Done!');
+        const parsedService = JSON.parse(newService);
+        console.log(`\nDeployed to http://bips.tech/app/${parsedService.team.name}/${parsedService.name}/overview\n`);
       }).catch((err) => {
         console.log(err.error);
       });
