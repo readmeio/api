@@ -17,6 +17,7 @@
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "primus": "^6.1.0",
+    "progress": "1.1.8",
     "request": "^2.81.0",
     "request-promise": "^4.1.1",
     "semver": "^5.3.0",

@@ -9,6 +9,7 @@ const request = require('request-promise');
 const buildDocs = require('build-docs');
 const path = require('path');
 const inquirer = require('inquirer');
+const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
@@ -73,6 +74,23 @@ module.exports.run = () => {
       form.append('service', fs.createReadStream(zipDir), {
         filename: `${pjson.name}.zip`,
         contentType: 'application/zip',
+      });
+
+      let progressBar;
+
+      // get upload size
+      form.getLength((err, size) => {
+        progressBar = new ProgressBar('Uploading [:bar] :percent :etas', {
+          total: size,
+          complete: '=',
+          incomplete: ' ',
+          width: 50,
+        });
+      });
+
+      // calculate uploaded size chunk by chunk
+      form.on('data', (data) => {
+        progressBar.tick(data.length);
       });
 
       req.then(() => {
