@@ -19,29 +19,49 @@ const readmePath = path.join(process.cwd(), 'readme.md');
 
 const zipDir = path.join(__dirname, '../data/output.zip');
 
-module.exports.run = () => {
+module.exports.run = async () => {
+  let newVersion = pjson.version;
+  const jar = utils.getJar();
+  const service = await request.get(`${utils.BUILD_URL}/services/${pjson.name}`, { jar });
+  const deployed = JSON.parse(service);
+  let versionCheck = deployed.versions.filter(version => version.version === newVersion);
+
+
   const questions = [
     {
       type: 'input',
       name: 'version',
-      message: 'What should the version number be?',
-      default: `${pjson.version}`,
+      message: 'What should the new version be?',
+      when: () => versionCheck.length,
       validate: (v) => {
         if (!semver.valid(v)) {
           return `${v} is not a valid semver version`;
+        }
+
+        versionCheck = deployed.versions.filter(version => version.version === v);
+        if (versionCheck.length >= 1) {
+          return `Version ${v} has already been deployed.`;
         }
         return true;
       },
     },
   ];
 
+  if (versionCheck.length) {
+    console.log(`\nv${newVersion} has already been deployed.`.red);
+  }
+
   inquirer.prompt(questions).then((response) => {
+    if (response.version) {
+      newVersion = response.version;
+    }
+
     const output = fs.createWriteStream(zipDir);
     const archive = archiver('zip', {
       store: true,
     });
 
-    console.log('Converting to travel size...');
+    console.log('\nConverting to travel size...');
 
     let readme;
     if (utils.fileExists(readmePath)) {
@@ -52,12 +72,7 @@ module.exports.run = () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const jar = utils.getJar();
-      const base = utils.BUILD_URL;
-
-      // console.log(`Deploying to ${base}`);
-
-      const req = request.post(`${base}/services/`, { jar });
+      const req = request.post(`${utils.BUILD_URL}/services/`, { jar });
       const form = req.form();
       if (pjson.author) {
         form.append('team', pjson.author);
@@ -68,7 +83,7 @@ module.exports.run = () => {
       }
 
       form.append('entrypoint', pjson.main);
-      form.append('version', response.version);
+      form.append('version', newVersion);
       form.append('name', pjson.name);
       form.append('docs', JSON.stringify(buildDocs(fs.readFileSync(path.join(process.cwd(), pjson.main)))));
       form.append('service', fs.createReadStream(zipDir), {
@@ -93,9 +108,15 @@ module.exports.run = () => {
         progressBar.tick(data.length);
       });
 
+      form.on('end', () => {
+        console.log('Building App...');
+      });
+
       req.then((newService) => {
         console.log('Cleaning up...');
         fs.unlinkSync(zipDir);
+        pjson.version = newVersion;
+        fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
         const parsedService = JSON.parse(newService);
         console.log(`\nDeployed to http://bips.tech/app/${parsedService.team.name}/${parsedService.name}/overview\n`);
       }).catch((err) => {
