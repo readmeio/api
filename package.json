@@ -6,6 +6,11 @@
   "bin": {
     "api": "cli.js"
   },
+  "scripts": {
+    "pretest": "eslint . -f unix",
+    "test": "nyc --reporter=none mocha",
+    "posttest": "./bin/posttest.sh"
+  },
   "author": "ReadMe.io",
   "license": "ISC",
   "dependencies": {
@@ -26,6 +31,8 @@
   "devDependencies": {
     "eslint": "^3.15.0",
     "eslint-config-airbnb-base": "^11.1.0",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.1.2"
   }
 }

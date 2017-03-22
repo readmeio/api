@@ -3,6 +3,9 @@ module.exports.usage = 'Displays this usage information';
 const fs = require('fs');
 const path = require('path');
 
+const console = require('../utils/console');
+const exit = require('../utils/exit');
+
 const commands = fs.readdirSync(__dirname).map(getAliases);
 
 function getAliases(file) {
@@ -16,7 +19,7 @@ function getAliases(file) {
 
 function singleUsage(command) {
   console.log(command.usage || `\`${command.cmd}\` Not yet documented`);
-  process.exit(0);
+  return exit(0);
 }
 
 module.exports.run = (args) => {
@@ -34,6 +37,5 @@ ${
     .join('\n')
 }
 `);
-
-  return process.exit(0);
+  return exit(0);
 };
