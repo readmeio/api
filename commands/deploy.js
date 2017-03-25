@@ -22,10 +22,13 @@ const zipDir = path.join(__dirname, '../data/output.zip');
 module.exports.run = async () => {
   let newVersion = pjson.version;
   const jar = utils.getJar();
-  const service = await request.get(`${utils.BUILD_URL}/services/${pjson.name}`, { jar });
-  const deployed = JSON.parse(service);
-  let versionCheck = deployed.versions.filter(version => version.version === newVersion);
-
+  let versionCheck = [];
+  let deployed = { versions: [] };
+  try {
+    const service = await request.get(`${utils.BUILD_URL}/services/${pjson.name}`, { jar });
+    deployed = JSON.parse(service);
+    versionCheck = deployed.versions.filter(version => version.version === newVersion);
+  } catch (e) {} // eslint-disable-line no-empty
 
   const questions = [
     {
