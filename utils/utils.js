@@ -1,14 +1,21 @@
 'use strict';
 
 const fs = require('fs');
+const url = require('url');
 const path = require('path');
 const glob = require('glob');
 const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
 
+const console = require('./console');
+const exit = require('./exit');
+
 exports.credPath = path.join(__dirname, '..', 'data/creds.json');
 
-exports.BUILD_URL = process.env.BUILD_URL || 'http://staging.bips.tech';
+const host = process.env.BUILD_HOST || 'staging.bips.tech';
+
+exports.BUILD_URL = url.format({ host, protocol: 'http' });
+exports.WS_URL = url.format({ host, protocol: 'ws', slashes: true });
 
 exports.fileExists = (file) => {
   try {
@@ -32,10 +39,20 @@ exports.getAliasFile = (unknownAction) => {
 
 exports.getJar = () => {
   const jar = request.jar();
-  const s = fs.readFileSync(exports.credPath).toString();
-  CookieJar.deserializeSync(s, jar._jar.store);
+  try {
+    const s = fs.readFileSync(exports.credPath).toString();
+    CookieJar.deserializeSync(s, jar._jar.store);
+    return jar;
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
 
-  return jar;
+    console.error(`You must be logged in to perform that action:
+
+  api login
+    `);
+
+    return exit(1);
+  }
 };
 
 exports.getKeyUrl = (key) => {

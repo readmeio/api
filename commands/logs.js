@@ -5,14 +5,13 @@ const request = require('request-promise');
 const utils = require('../utils/utils');
 
 const Socket = Primus.createSocket();
-const client = Socket('ws://staging.bips.tech');
-// const client = Socket('ws://localhost:5000');
+const client = Socket(utils.WS_URL);
 
 module.exports.run = () => {
-  console.log('Tailing logs...'.green);
+  const jar = utils.getJar();
 
   client.on('open', () => {
-    const jar = utils.getJar();
+    console.log('Tailing logs...'.green);
     request(`${utils.BUILD_URL}/users/me`, { jar }).then((user) => {
       const parsedUser = JSON.parse(user);
       client.write({ action: 'join', room: parsedUser.teams[0]._id });
