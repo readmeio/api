@@ -12,7 +12,7 @@ module.exports.run = (args, opts) => {
     const jar = utils.getJar();
     request.put(`${utils.BUILD_URL}/services/${opts.team}/${args[1]}/update`, { jar }).then((s) => {
       const service = JSON.parse(s);
-      console.log(`${args[1]} updated to version ${service.versions[0].version.green}`);
+      console.log(`${args[1]} updated to version ${service.version.green}`);
     });
   }
 };

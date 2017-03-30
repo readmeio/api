@@ -26,7 +26,7 @@ module.exports.run = (args) => {
     const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
     request.get(`${base}/services/${pjson.name}`, { jar }).then((response) => {
       const service = JSON.parse(response);
-      const versions = getVersions(service);
+      const versions = service.versions;
       console.log(`Listing deployed versions for ${pjson.name}`.blue);
       for (const version of versions) {
         console.log(version);
@@ -47,12 +47,3 @@ module.exports.run = (args) => {
     });
   }
 };
-
-function getVersions(service) {
-  const versions = service.versions;
-  const out = [];
-  for (const v of versions) {
-    out.push(v.version);
-  }
-  return out;
-}

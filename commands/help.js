@@ -6,9 +6,10 @@ const path = require('path');
 const console = require('../utils/console');
 const exit = require('../utils/exit');
 
-const commands = fs.readdirSync(__dirname).map(getAliases);
+const commands = fs.readdirSync(__dirname).map(getAliases).filter(Boolean);
 
 function getAliases(file) {
+  if (!file.match(/.js$/)) return undefined;
   const command = require(path.join(__dirname, file));
   return {
     cmd: file.replace('.js', ''),
