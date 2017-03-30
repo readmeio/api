@@ -121,7 +121,7 @@ module.exports.run = async () => {
         pjson.version = newVersion;
         fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
         const parsedService = JSON.parse(newService);
-        console.log(`\nDeployed to http://bips.tech/app/${parsedService.team.name}/${parsedService.name}/overview\n`);
+        console.log(`\nDeployed to ${utils.WWW_URL}/${parsedService.team.name}/${parsedService.name}\n`);
       }).catch((err) => {
         console.log(err.error);
       });
