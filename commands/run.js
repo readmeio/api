@@ -4,7 +4,7 @@ const utils = require('../utils/utils');
 
 module.exports.aliases = ['invoke'];
 
-module.exports.run = (args) => {
+module.exports.run = (args, opts) => {
   const data = {};
   const service = args[1];
   const action = args[2];
@@ -25,7 +25,16 @@ module.exports.run = (args) => {
   const jar = utils.getJar();
   request.get(`${utils.BUILD_URL}/users/me`, { jar }).then((user) => {
     const parsedUser = JSON.parse(user);
-    const key = parsedUser.teams[0].key;
+    let team = parsedUser.teams[0];
+    if (opts.team) {
+      team = parsedUser.teams.find(t => t.name === opts.team);
+    }
+
+    if (!team) {
+      console.log(`Cannot find team ${opts.team}`.red);
+      return;
+    }
+    const key = team.key;
     const keyUrl = utils.getKeyUrl(key);
     const invokeUrl = `${keyUrl}/services/${service}/${action}/invoke`;
     request.post(invokeUrl, { json: data }).then((response) => {
