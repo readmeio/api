@@ -2,6 +2,7 @@ module.exports.usage = `Deploys a function to build
 
 Usage: api deploy <version>`;
 
+const validName = require('validate-npm-package-name');
 const archiver = require('archiver');
 const semver = require('semver');
 const fs = require('fs');
@@ -20,6 +21,12 @@ const readmePath = path.join(process.cwd(), 'readme.md');
 const zipDir = path.join(__dirname, '../data/output.zip');
 
 module.exports.run = async () => {
+  const valid = validName(pjson.name);
+  if (!valid.validForNewPackages) {
+    console.log('Invalid Package Name'.red);
+    return;
+  }
+
   let newVersion = pjson.version;
   const jar = utils.getJar();
   let versionCheck = [];

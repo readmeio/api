@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 const exec = require('child_process').exec;
+const validName = require('validate-npm-package-name');
 
 module.exports.run = () => {
   console.log('We are going to walk you through initial setup!'.green);
@@ -15,6 +16,21 @@ module.exports.run = () => {
       name: 'name',
       message: 'Name your service',
       default: process.cwd().split('/').slice(-1)[0],
+      validate: (input) => {
+        const valid = validName(input);
+        if (!valid.validForNewPackages) {
+          const warnings = [];
+          if (valid.warnings) {
+            for (const warning of valid.warnings) {
+              // npms package used to allow this, so the warning
+              // isn't very good for our case
+              warnings.push(warning.replace('can no longer', 'cannot'));
+            }
+          }
+          return valid.errors || warnings;
+        }
+        return true;
+      },
     },
     {
       type: 'list',
