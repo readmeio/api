@@ -93,6 +93,7 @@ module.exports.run = async () => {
       }
 
       form.append('entrypoint', pjson.main);
+      form.append('private', `${pjson.private}`);
       form.append('version', newVersion);
       form.append('name', pjson.name);
       form.append('docs', JSON.stringify(buildDocs(fs.readFileSync(path.join(process.cwd(), pjson.main)))));
