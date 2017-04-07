@@ -38,7 +38,7 @@ module.exports.run = () => {
         'public',
         'private',
       ],
-      name: 'internal',
+      name: 'private',
       message: 'Should it be public or private?',
       default: 'public',
     },
@@ -66,10 +66,10 @@ module.exports.run = () => {
         name: answers.name,
         version: answers.version,
         main: `${answers.name}.js`,
-        private: answers.internal === 'private',
         dependencies: {
           'api-build': 'latest',
         },
+        private: answers.private === 'private',
       };
 
       const README = `Welcome to ${answers.name}!`;
