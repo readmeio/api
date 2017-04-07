@@ -58,8 +58,7 @@ exports.getJar = () => {
 };
 
 exports.getKeyUrl = (key) => {
-  const url = exports.BUILD_URL;
-  if (!key) return url;
+  if (!key) return exports.BUILD_URL;
   const parts = url.split('://');
   return `${parts[0]}://${key}:@${parts[1]}`;
 };
