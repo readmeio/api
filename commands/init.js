@@ -66,9 +66,6 @@ module.exports.run = () => {
         name: answers.name,
         version: answers.version,
         main: `${answers.name}.js`,
-        dependencies: {
-          'api-build': 'latest',
-        },
         private: answers.private === 'private',
       };
 
@@ -78,7 +75,7 @@ module.exports.run = () => {
       fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
 
       console.log(`Running ${'npm install'.yellow}...`);
-      exec('npm install', () => {
+      exec('npm install api-build --save', () => {
         const filename = `${answers.name}.js`;
         console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
       });
