@@ -69,9 +69,7 @@ module.exports.run = () => {
         private: answers.private === 'private',
       };
 
-      const README = `Welcome to ${answers.name}!`;
-      fs.writeFileSync('readme.md', README);
-
+      fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
       fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
 
       console.log(`Running ${'npm install'.yellow}...`);
