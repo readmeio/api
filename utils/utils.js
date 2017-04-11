@@ -79,12 +79,14 @@ exports.parseArgs = (args) => {
 };
 
 exports.parseErrors = (event, error) => {
-  const e = error;
+  // Don't want to modify error passed in
+  const e = Object.assign({}, error);
+
   const file = fs.readFileSync(`${event.entrypoint}`);
   const docs = buildDocs(file);
 
   // Get errors for called action
-  let errors;
+  let errors = [];
   for (const doc of docs) {
     if (doc.name === event.name) {
       errors = doc.throws;

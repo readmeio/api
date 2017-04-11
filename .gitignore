@@ -4,3 +4,4 @@ data/links.json
 data/output.zip
 .DS_Store
 .nyc_output
+coverage/
