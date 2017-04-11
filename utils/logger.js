@@ -1,5 +1,3 @@
-'use strict';
-
 const request = require('request-promise');
 const BUILD_URL = require('../utils/utils').BUILD_URL;
 

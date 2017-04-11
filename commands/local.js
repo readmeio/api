@@ -7,7 +7,7 @@ const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
 
 const handler = require('../utils/handler-local');
 
-module.exports.aliases = ['invoke-local'];
+module.exports.aliases = ['invoke-local', 'dev'];
 
 module.exports.run = (args) => {
   const data = {};
@@ -33,7 +33,8 @@ module.exports.run = (args) => {
 
   handler.go(event, undefined, (err, response) => {
     if (err) {
-      console.log(err);
+      const parsedError = JSON.parse(err);
+      console.log(parsedError);
     } else {
       console.log(response);
     }
