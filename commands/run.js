@@ -39,6 +39,8 @@ module.exports.run = (args, opts) => {
     const invokeUrl = `${keyUrl}/services/${service}/${action}/invoke`;
     request.post(invokeUrl, { json: data }).then((response) => {
       console.log(response.result);
+    }).catch((err) => {
+      console.log(err.error.message.red);
     });
   });
 };

@@ -1,18 +1,16 @@
-'use strict';
-
 const path = require('path');
 
 exports.go = (event, context, callback) => {
   require(`${event.entrypoint}`);
+  const api = require(path.join(process.cwd(), 'node_modules/api-build/api'));
   try {
-    const api = require(path.join(process.cwd(), 'node_modules/api-build/api'));
     api.actions[event.name](event.data, {
       success: api.success(callback),
-      error: api.error(callback),
-      log: api.log,
+      error: api.error,
+      log: () => {},
     });
   } catch (e) {
-    const err = new Error(`Cannot run ${event.name}: ${e.message}`);
-    callback(err, null);
+    const error = api._handlerUtils.parseErrors(event, e);
+    callback(JSON.stringify(error), null);
   }
 };

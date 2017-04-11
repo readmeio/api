@@ -1,5 +1,3 @@
-'use strict';
-
 const request = require('request-promise');
 const path = require('path');
 const utils = require('./utils/utils');
@@ -16,7 +14,13 @@ module.exports.create = (name, func) => {
 
 module.exports.success = callback => response => callback(null, response);
 
-module.exports.error = callback => response => callback(response);
+module.exports.error = (name, props) => {
+  const e = new Error();
+  e.name = name;
+  e.handled = true;
+  e.props = props;
+  throw e;
+};
 
 module.exports.do = (action, data, callback) => {
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
@@ -37,8 +41,7 @@ module.exports.do = (action, data, callback) => {
     request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
       callback(undefined, response.result);
     }).catch((err) => {
-      console.log(`Error calling ${this.service}.${action} v${err.response.headers['x-build-version']}`.red);
-      console.log(`\n${err.response.body.error.red}`);
+      callback(err.response.body);
     });
   }
 };
@@ -55,6 +58,10 @@ module.exports.log = function log() {
   const args = Array.prototype.slice.call(arguments);
   logger.log(args);
   console.log.apply(undefined, args);
+};
+
+module.exports._handlerUtils = {
+  parseErrors: utils.parseErrors,
 };
 
 /*

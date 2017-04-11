@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint-disable */
 const api = require('api-build');
 /* eslint-enable */
@@ -9,11 +7,11 @@ exports.go = (event, context, callback) => {
   try {
     api.actions[event.name](event.data, {
       success: api.success(callback),
-      error: api.error(callback),
+      error: api.error,
       log: api.log,
     });
   } catch (e) {
-    const err = new Error(`Cannot run ${event.name}: ${e.message}`);
-    callback(err, null);
+    const error = api._handlerUtils.parseErrors(event, e);
+    callback(JSON.stringify(error), null);
   }
 };

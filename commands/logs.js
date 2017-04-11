@@ -4,10 +4,10 @@ const request = require('request-promise');
 
 const utils = require('../utils/utils');
 
-const Socket = Primus.createSocket();
-const client = Socket(utils.WS_URL);
-
 module.exports.run = () => {
+  const Socket = Primus.createSocket();
+  const client = Socket(utils.WS_URL);
+
   const jar = utils.getJar();
 
   client.on('open', () => {

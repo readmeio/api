@@ -1,11 +1,11 @@
-'use strict';
-
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const glob = require('glob');
 const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
+const template = require('lodash.template');
+const buildDocs = require('build-docs');
 
 const console = require('./console');
 const exit = require('./exit');
@@ -28,7 +28,7 @@ exports.fileExists = (file) => {
 };
 
 exports.getAliasFile = (unknownAction) => {
-  const files = glob.sync(path.join(__dirname, '../commands', '*'));
+  const files = glob.sync(path.join(__dirname, '../commands', '*.js'));
   let foundAction = false;
   for (const file of files) {
     const actionInfo = require(file);
@@ -59,7 +59,7 @@ exports.getJar = () => {
 
 exports.getKeyUrl = (key) => {
   if (!key) return exports.BUILD_URL;
-  const parts = url.split('://');
+  const parts = exports.BUILD_URL.split('://');
   return `${parts[0]}://${key}:@${parts[1]}`;
 };
 
@@ -76,4 +76,48 @@ exports.parseArgs = (args) => {
     }
   }
   return parsed;
+};
+
+exports.parseErrors = (event, error) => {
+  const e = error;
+  const file = fs.readFileSync(`${event.entrypoint}`);
+  const docs = buildDocs(file);
+
+  // Get errors for called action
+  let errors;
+  for (const doc of docs) {
+    if (doc.name === event.name) {
+      errors = doc.throws;
+    }
+  }
+
+  // Match error in docs with message
+  let message;
+  let found = false;
+  for (const err of errors) {
+    if (err.type === e.name) {
+      message = err.description;
+      found = true;
+    }
+  }
+
+  // Normallize api.error('message')
+  if (!found && e.handled) {
+    e.message = e.name;
+    e.name = 'Error';
+  }
+
+  const outError = {
+    name: e.name,
+    message: message || e.message,
+    handled: e.handled || false,
+    data: event.data,
+  };
+
+  // Parse if error message is a template
+  if (e.props && outError.message) {
+    const interpolate = /\${([\s\S]+?)}/g;
+    outError.message = template(outError.message, { interpolate })(e.props);
+  }
+  return outError;
 };
