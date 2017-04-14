@@ -82,7 +82,7 @@ module.exports.run = async () => {
     output.on('close', () => {
       console.log('Flying up to the cloud...');
 
-      const req = request.post(`${utils.BUILD_URL}/services/`, { jar });
+      const req = request.post(`${utils.BUILD_URL}/services/`, { jar, resolveWithFullResponse: true });
       const form = req.form();
       if (pjson.author) {
         form.append('team', pjson.author);
@@ -123,13 +123,12 @@ module.exports.run = async () => {
         console.log('Building App...');
       });
 
-      req.then((newService) => {
+      req.then((res) => {
         console.log('Cleaning up...');
         fs.unlinkSync(zipDir);
         pjson.version = newVersion;
         fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
-        const parsedService = JSON.parse(newService);
-        console.log(`\nDeployed to ${utils.WWW_URL}/${parsedService.team.name}/${parsedService.name}\n`);
+        console.log(`\nDeployed to ${res.headers.location}`);
       }).catch((err) => {
         console.log(err.error);
       });
