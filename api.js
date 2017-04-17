@@ -38,9 +38,12 @@ module.exports.do = (action, data, callback) => {
     });
   } else {
     const base = utils.getKeyUrl(this.key);
-    request.post(`${base}/services/${this.service}/${action}/invoke`, { body: data, json: true }).then((response) => {
-      callback(undefined, response.result);
+    const opts = { body: data, json: true, resolveWithFullResponse: true };
+    request.post(`${base}/services/${this.service}/${action}/invoke`, opts).then((response) => {
+      utils.checkDeprecated(response);
+      callback(undefined, response.body.result);
     }).catch((err) => {
+      utils.checkDeprecated(err.response);
       callback(err.response.body);
     });
   }
