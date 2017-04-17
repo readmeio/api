@@ -37,9 +37,11 @@ module.exports.run = (args, opts) => {
     const key = team.key;
     const keyUrl = utils.getKeyUrl(key);
     const invokeUrl = `${keyUrl}/services/${service}/${action}/invoke`;
-    request.post(invokeUrl, { json: data }).then((response) => {
-      console.log(response.result);
+    request.post(invokeUrl, { json: data, resolveWithFullResponse: true }).then((response) => {
+      utils.checkDeprecated(response);
+      console.log(response.body.result);
     }).catch((err) => {
+      utils.checkDeprecated(err.response);
       console.log(err.error.message.red);
     });
   });
