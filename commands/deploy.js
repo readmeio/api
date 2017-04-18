@@ -92,11 +92,17 @@ module.exports.run = async () => {
         form.append('readme', readme);
       }
 
+      const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
+      require(path.join(process.cwd(), pjson.main));
+      const actions = Object.keys(api.actions);
+
+      const main = fs.readFileSync(path.join(process.cwd(), pjson.main));
+
       form.append('entrypoint', pjson.main);
       form.append('private', `${pjson.private}`);
       form.append('version', newVersion);
       form.append('name', pjson.name);
-      form.append('docs', JSON.stringify(buildDocs(fs.readFileSync(path.join(process.cwd(), pjson.main)))));
+      form.append('docs', JSON.stringify(buildDocs(main, actions)));
       form.append('service', fs.createReadStream(zipDir), {
         filename: `${pjson.name}.zip`,
         contentType: 'application/zip',
