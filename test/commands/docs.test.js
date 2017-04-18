@@ -2,7 +2,7 @@ const assert = require('assert');
 const docs = require('../../commands/docs');
 const logger = require('../../utils/console');
 
-describe('docs command', () => {
+describe.skip('docs command', () => {
   it('should output built docs', () => {
     docs.run();
     const output = logger._flush();
