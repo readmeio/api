@@ -6,6 +6,7 @@ cli and node module to create, manage and run services
 [![](https://d3vv6lp55qjaqc.cloudfront.net/items/1M3C3j0I0s0j3T362344/Untitled-2.png)](https://readme.io)
 
 ## Usage (CLI)
+
 With npm:
 ```
 npm install api-build -g
@@ -26,7 +27,8 @@ api
 api init
 ```
 
-## Usage (node module)
+## Usage (node module)
+
 With npm:
 ```
 npm install api-build --save
