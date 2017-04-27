@@ -42,7 +42,8 @@ const getToken = (input) => {
   }).then((res) => {
     if (res === 'signup') {
       console.log('Hmm, it seems like you need to sign up!');
-      signup(input.email);
+      const signupUrl = `${utils.WWW_URL}/signup`.blue;
+      console.log(`Visit ${signupUrl} to create an account`);
     } else if (res === 'login') {
       inquirer
         .prompt(passwordQ)
@@ -72,19 +73,6 @@ const login = (email, password) => {
   }).then(saveCookie).catch((res) => {
     console.log(res.error.error);
   });
-};
-
-const signup = (email) => {
-  request.post(`${proxyUrl}/users`, {
-    json: true,
-    jar: j,
-    body: {
-      email,
-    },
-  }).then(saveCookie).catch(console.log);
-  console.log(`We've created an account for you with the email ${email.green}`);
-  console.log('Check your email to complete registration!');
-  console.log('However, don\'t fret, we have already set up your api key so you can get started right away.');
 };
 
 module.exports.run = getEmail;
