@@ -3,6 +3,7 @@ const path = require('path');
 const utils = require('./utils/utils');
 const logger = require('./utils/logger');
 require('colors');
+const maybe = require('call-me-maybe');
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 
@@ -23,6 +24,7 @@ module.exports.error = (name, props) => {
 };
 
 module.exports.do = (action, data, callback) => {
+  // Don't call api if there is a local link
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {
     const handler = require(path.join(localLinks[this.service], '/handler.js'));
@@ -33,20 +35,26 @@ module.exports.do = (action, data, callback) => {
       data,
     };
 
-    handler.go(event, undefined, (err, response) => {
-      callback(err, response);
-    });
-  } else {
-    const base = utils.getKeyUrl(this.key);
-    const opts = { body: data, json: true, resolveWithFullResponse: true };
+    return maybe(callback, new Promise((resolve, reject) => {
+      handler.go(event, undefined, (err, response) => {
+        if (err) return reject(err);
+
+        return resolve(response);
+      });
+    }));
+  }
+
+  const base = utils.getKeyUrl(this.key);
+  const opts = { body: data, json: true, resolveWithFullResponse: true };
+  return maybe(callback, new Promise((resolve, reject) => (
     request.post(`${base}/services/${this.service}/${action}/invoke`, opts).then((response) => {
       utils.checkDeprecated(response);
-      callback(undefined, response.body.result);
+      return resolve(response.body.result);
     }).catch((err) => {
       utils.checkDeprecated(err.response);
-      callback(err.response.body);
-    });
-  }
+      return reject(err.response.body);
+    })
+  )));
 };
 
 module.exports.config = (apiKey) => {
