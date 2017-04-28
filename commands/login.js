@@ -6,8 +6,6 @@ const utils = require('../utils/utils');
 
 const proxyUrl = utils.BUILD_URL;
 
-module.exports.aliases = ['signup'];
-
 const emailQ = [
   {
     type: 'input',
