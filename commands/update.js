@@ -1,8 +1,9 @@
 const request = require('request-promise');
 require('colors');
-const enquirer = require('../lib/enquirer');
-
+const createEnquirer = require('../lib/enquirer');
 const utils = require('../utils/utils');
+
+const enquirer = createEnquirer();
 
 module.exports.run = (args, opts) => {
   if (!args[1]) {

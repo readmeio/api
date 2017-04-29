@@ -1,10 +1,11 @@
-const enquirer = require('../lib/enquirer');
+const createEnquirer = require('../lib/enquirer');
 const request = require('request-promise');
 const fs = require('fs');
 const exists = require('../utils/utils').fileExists;
 const utils = require('../utils/utils');
 
 const proxyUrl = utils.BUILD_URL;
+const enquirer = createEnquirer();
 
 const getEmail = () => {
   if (exists(utils.credPath)) {

@@ -9,7 +9,7 @@ const fs = require('fs');
 const request = require('request-promise');
 const buildDocs = require('build-docs');
 const path = require('path');
-const enquirer = require('../lib/enquirer');
+const createEnquirer = require('../lib/enquirer');
 const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
@@ -19,6 +19,7 @@ const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
 const readmePath = path.join(process.cwd(), 'readme.md');
 
 const zipDir = path.join(__dirname, '../data/output.zip');
+const enquirer = createEnquirer();
 
 module.exports.run = async () => {
   const valid = validName(pjson.name);
