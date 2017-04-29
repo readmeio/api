@@ -9,7 +9,7 @@ const fs = require('fs');
 const request = require('request-promise');
 const buildDocs = require('build-docs');
 const path = require('path');
-const inquirer = require('inquirer');
+const enquirer = require('../lib/enquirer');
 const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
@@ -61,7 +61,7 @@ module.exports.run = async () => {
     console.log(`\nv${newVersion} has already been deployed.`.red);
   }
 
-  inquirer.prompt(questions).then((response) => {
+  enquirer.ask(questions).then((response) => {
     if (response.version) {
       newVersion = response.version;
     }

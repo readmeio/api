@@ -1,11 +1,13 @@
 require('colors');
 const fs = require('fs');
 const path = require('path');
-const inquirer = require('inquirer');
 const exec = require('child_process').exec;
 const validName = require('validate-npm-package-name');
+const createEnquirer = require('../lib/enquirer');
 
 module.exports.run = () => {
+  const enquirer = createEnquirer();
+
   console.log('We are going to walk you through initial setup!'.green);
   console.log('');
 
@@ -56,7 +58,7 @@ module.exports.run = () => {
     },
   ];
 
-  inquirer.prompt(questions).then((answers) => {
+  enquirer.ask(questions).then((answers) => {
     fs.readFile(path.join(__dirname, '../utils/stub.js'), 'utf8', (err, data) => {
       const stub = data.replace(/<<action>>/g, answers.action);
 
@@ -72,11 +74,18 @@ module.exports.run = () => {
       fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
       fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
 
+      if (process.env.NODE_ENV === 'testing') {
+        enquirer.rl.emit('close');
+        return enquirer.rl.close();
+      }
+
       console.log(`Running ${'npm install'.yellow}...`);
-      exec('npm install api-build --save', () => {
+      return exec('npm install api-build --save', () => {
         const filename = `${answers.name}.js`;
         console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
       });
     });
   });
+
+  return enquirer;
 };

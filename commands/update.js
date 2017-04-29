@@ -1,6 +1,6 @@
 const request = require('request-promise');
 require('colors');
-const inquirer = require('inquirer');
+const enquirer = require('../lib/enquirer');
 
 const utils = require('../utils/utils');
 
@@ -15,13 +15,12 @@ module.exports.run = (args, opts) => {
       console.log(`${args[1]} updated to version ${s.version.green}`);
     }).catch((e) => {
       if (e.error.code === 'TeamSelectionRequired') {
-        const teamQ = {
+        enquirer.ask([{
           type: 'list',
           name: 'team',
           message: 'Which team should be updated?',
           choices: e.error.data.teams,
-        };
-        inquirer.prompt([teamQ]).then(results => module.exports.run(args, results));
+        }]).then(results => module.exports.run(args, results));
       }
     });
   }

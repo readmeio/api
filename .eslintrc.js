@@ -4,6 +4,7 @@ module.exports = {
     "import"
   ],
   "rules": {
+    "arrow-body-style": 0,
     "no-console": "off",
     "no-use-before-define": "off",
     "global-require": "off",
