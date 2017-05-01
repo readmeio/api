@@ -1,7 +1,6 @@
 const path = require('path');
 require('colors');
-const utils = require('../utils/utils');
-const request = require('request-promise');
+const request = require('../lib/request');
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const exists = require('../utils/utils').fileExists;
@@ -9,10 +8,8 @@ const exists = require('../utils/utils').fileExists;
 module.exports.aliases = ['list'];
 
 module.exports.run = (args) => {
-  const jar = utils.getJar();
-  const base = utils.BUILD_URL;
   if (args.length === 1) {
-    request.get(`${base}/services/deployed`, { jar }).then((response) => {
+    request.get('/services/deployed').then((response) => {
       const services = JSON.parse(response);
       console.log('\nListing deployed services'.green);
       for (const team in services) {
@@ -24,7 +21,7 @@ module.exports.run = (args) => {
     });
   } else if (args[1] === 'versions') {
     const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
-    request.get(`${base}/services/${pjson.name}`, { jar }).then((response) => {
+    request.get(`/services/${pjson.name}`).then((response) => {
       const service = JSON.parse(response);
       const versions = service.versions;
       console.log(`Listing deployed versions for ${pjson.name}`.blue);
@@ -35,7 +32,7 @@ module.exports.run = (args) => {
       console.log(`Service "${pjson.name}" is not deployed`.red);
     });
   } else if (args[1] === 'used') {
-    request.get(`${base}/services/used`, { jar }).then((response) => {
+    request.get('/services/used').then((response) => {
       const services = JSON.parse(response);
       console.log('\nListing used services'.green);
       for (const team in services) {
