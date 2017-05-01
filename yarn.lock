@@ -2389,6 +2389,14 @@ prompt-list@^0.2.0:
     prompt-base "^0.6.0"
     terminal-paginator "^0.2.1"
 
+prompt-password@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/prompt-password/-/prompt-password-0.1.1.tgz#3f804c255d2f3b3aad4ea7972145eff0b14ddfa3"
+  dependencies:
+    ansi-cyan "^0.1.1"
+    ansi-red "^0.1.1"
+    prompt-base "^0.5.0"
+
 prompt-question@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/prompt-question/-/prompt-question-0.4.1.tgz#51738e5505efed48d5fc3bbd185abe493fa02644"
