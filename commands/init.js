@@ -1,3 +1,9 @@
+module.exports.usage = `Init a new service
+
+Usage: api init
+
+Asks a series of questions which will be used to generate a new service in the current directory`;
+
 require('colors');
 const fs = require('fs');
 const path = require('path');
@@ -58,34 +64,32 @@ module.exports.run = () => {
     },
   ];
 
-  enquirer.ask(questions).then((answers) => {
-    fs.readFile(path.join(__dirname, '../utils/stub.js'), 'utf8', (err, data) => {
-      const stub = data.replace(/<<action>>/g, answers.action);
+  return enquirer.ask(questions).then(module.exports.init);
+};
 
-      fs.writeFileSync(`${answers.name}.js`, stub);
+module.exports.init = (answers) => {
+  const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
+  const stub = data.replace(/<<action>>/g, answers.action);
 
-      const packageJson = {
-        name: answers.name,
-        version: answers.version,
-        main: `${answers.name}.js`,
-        private: answers.private === 'private',
-      };
+  fs.writeFileSync(`${answers.name}.js`, stub);
 
-      fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
-      fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
+  const packageJson = {
+    name: answers.name,
+    version: answers.version,
+    main: `${answers.name}.js`,
+    private: answers.private === 'private',
+  };
 
-      if (process.env.NODE_ENV === 'testing') {
-        enquirer.rl.emit('close');
-        return enquirer.rl.close();
-      }
+  fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
+  fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
 
-      console.log(`Running ${'npm install'.yellow}...`);
-      return exec('npm install api-build --save', () => {
-        const filename = `${answers.name}.js`;
-        console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
-      });
-    });
+  if (process.env.NODE_ENV === 'testing') {
+    return undefined;
+  }
+
+  console.log(`Running ${'npm install'.yellow}...`);
+  return exec('npm install api-build --save', () => {
+    const filename = `${answers.name}.js`;
+    console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
   });
-
-  return enquirer;
 };
