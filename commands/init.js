@@ -61,8 +61,21 @@ module.exports.questions = (existingPackageJson) => {
   ];
 };
 
+
+// If there is already a property set, then add it to the `build` object
+function setPackageProperty(packageJson, key, value) {
+  if (packageJson[key]) {
+    // Ignore property if it's the same
+    if (packageJson[key] === value) return;
+
+    if (!packageJson.build) packageJson.build = {};
+    packageJson.build[key] = value;
+  } else {
+    packageJson[key] = value;
+  }
+}
+
 module.exports.init = (answers) => {
-  const main = `${answers.name}.js`;
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
   const stub = data.replace(/<<action>>/g, answers.action);
 
@@ -76,16 +89,9 @@ module.exports.init = (answers) => {
     packageJson = {};
   }
 
-  packageJson.name = answers.name;
-  packageJson.version = answers.version;
-
-  // If there is already a `main` property, then add a `build`
-  // property which will get picked up by `deploy`
-  if (packageJson.main) {
-    packageJson.build = { main };
-  } else {
-    packageJson.main = main;
-  }
+  setPackageProperty(packageJson, 'name', answers.name);
+  setPackageProperty(packageJson, 'version', answers.version);
+  setPackageProperty(packageJson, 'main', `${answers.name}.js`);
 
   fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
 

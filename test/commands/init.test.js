@@ -58,7 +58,31 @@ describe('init command', () => {
     const packageJson = require(join(tmpDir, 'package.json'));
 
     assert.deepEqual(packageJson, Object.assign({}, existingPackageJson, {
-      name: 'name',
+      build: {
+        name: answers.name,
+        version: answers.version,
+        main: `${answers.name}.js`,
+      },
+    }));
+  });
+
+  it('should not add properties to `build` for matching values', () => {
+    const existingPackage = fs.readFileSync(join(__dirname, '../fixtures/existing-package.json'));
+    fs.writeFileSync('package.json', existingPackage);
+
+    const existingPackageJson = require(join(__dirname, '../fixtures/existing-package.json'));
+
+    const answers = {
+      name: existingPackageJson.name,
+      version: existingPackageJson.version,
+      action: 'sayHello',
+    };
+
+    init(answers);
+
+    const packageJson = require(join(tmpDir, 'package.json'));
+
+    assert.deepEqual(packageJson, Object.assign({}, existingPackageJson, {
       build: {
         main: `${answers.name}.js`,
       },

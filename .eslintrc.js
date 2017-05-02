@@ -13,6 +13,7 @@ module.exports = {
     "guard-for-in": "off",
     "strict": "off",
     "no-underscore-dangle": "off",
-    "prefer-rest-params": "off"
+    "prefer-rest-params": "off",
+    "no-param-reassign": ["error", { "props": false }],
   }
 };
