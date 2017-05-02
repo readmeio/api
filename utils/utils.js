@@ -48,6 +48,8 @@ exports.getJar = () => {
   } catch (e) {
     if (e.code !== 'ENOENT') throw e;
 
+    if (process.env.NODE_ENV === 'testing') return undefined;
+
     console.error(`You must be logged in to perform that action:
 
   api login
