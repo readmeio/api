@@ -17,44 +17,40 @@ module.exports.run = () => {
   console.log('We are going to walk you through initial setup!'.green);
   console.log('');
 
-  // TODO: Make sure there isn't already a package.json
-  const questions = [
+  let existingPackageJson;
+
+  try {
+    existingPackageJson = require(path.join(process.cwd(), 'package.json'));
+    console.log('Existing package.json found, will provide defaults from this');
+  } catch (e) {
+    existingPackageJson = {};
+  }
+
+  return enquirer.ask(module.exports.questions(existingPackageJson)).then(module.exports.init);
+};
+
+module.exports.questions = (existingPackageJson) => {
+  return [
     {
       type: 'input',
       name: 'name',
       message: 'Name your service',
-      default: process.cwd().split('/').slice(-1)[0],
+      default: existingPackageJson.name || path.basename(process.cwd()),
       validate: (input) => {
         const valid = validName(input);
         if (!valid.validForNewPackages) {
-          const warnings = [];
-          if (valid.warnings) {
-            for (const warning of valid.warnings) {
-              // npms package used to allow this, so the warning
-              // isn't very good for our case
-              warnings.push(warning.replace('can no longer', 'cannot'));
-            }
-          }
-          return valid.errors || warnings;
+          // npms package used to allow this, so the warning
+          // isn't very good for our case
+          return (valid.errors || valid.warnings.map(warning => warning.replace('can no longer', 'cannot'))).join('\n');
         }
         return true;
       },
     },
     {
-      type: 'list',
-      choices: [
-        'public',
-        'private',
-      ],
-      name: 'private',
-      message: 'Should it be public or private?',
-      default: 'public',
-    },
-    {
       type: 'input',
       name: 'version',
       message: 'Version number',
-      default: '1.0.0',
+      default: existingPackageJson.version || '1.0.0',
     },
     {
       type: 'input',
@@ -63,25 +59,40 @@ module.exports.run = () => {
       default: 'sayHello',
     },
   ];
-
-  return enquirer.ask(questions).then(module.exports.init);
 };
 
 module.exports.init = (answers) => {
+  const main = `${answers.name}.js`;
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
   const stub = data.replace(/<<action>>/g, answers.action);
 
   fs.writeFileSync(`${answers.name}.js`, stub);
 
-  const packageJson = {
-    name: answers.name,
-    version: answers.version,
-    main: `${answers.name}.js`,
-    private: answers.private === 'private',
-  };
+  let packageJson;
 
-  fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
+  try {
+    packageJson = require(path.join(process.cwd(), 'package.json'));
+  } catch (e) {
+    packageJson = {};
+  }
+
+  packageJson.name = answers.name;
+  packageJson.version = answers.version;
+
+  // If there is already a `main` property, then add a `build`
+  // property which will get picked up by `deploy`
+  if (packageJson.main) {
+    packageJson.build = { main };
+  } else {
+    packageJson.main = main;
+  }
+
   fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
+
+  // Only add a readme if one does not exist
+  if (!fs.existsSync('readme.md')) {
+    fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
+  }
 
   if (process.env.NODE_ENV === 'testing') {
     return undefined;
