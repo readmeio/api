@@ -52,26 +52,30 @@ module.exports.run = async () => {
     .then(module.exports.deploy.bind(null, packageJson));
 };
 
-module.exports.deploy = (packageJson, answers) => {
-  const version = answers.version || packageJson.get('version');
-  const isServicePrivate = answers.private ? answers.private === 'private' : packageJson.get('private', { build: true });
-
-  let team;
-
-  if (answers.team) {
-    const parsedTeam = JSON.parse(answers.team);
-    team = parsedTeam.name;
-    if (parsedTeam.personal === false) {
-      packageJson.set('name', `@${team}/${packageJson.get('name')}`);
-    }
-  } else {
-    team = packageJson.get('team', { build: true });
+function prepareDeploy(packageJson, answers) {
+  let team = null;
+  if (answers.team && !answers.team.match(/No team/)) {
+    team = answers.team;
+    packageJson.set('name', `@${answers.team}/${packageJson.get('name')}`);
   }
+
+  if (answers.version) {
+    packageJson.set('version', answers.version);
+  }
+
+  // Set team to the selected team, or null so that we dont ask again
+  packageJson.set('team', team, { build: true });
+}
+
+module.exports.prepareDeploy = prepareDeploy;
+
+module.exports.deploy = (packageJson, answers) => {
+  prepareDeploy(packageJson, answers);
 
   const output = fs.createWriteStream(zipDir);
   const archive = archiver('zip', { store: true });
 
-  console.log(`Deploying version: ${version}`.green);
+  console.log(`Deploying version: ${packageJson.get('version')}`.green);
   console.log('Converting to travel size...');
 
   const readme = utils.fileExists(readmePath) ? fs.readFileSync(readmePath, 'utf8') : false;
@@ -94,9 +98,7 @@ module.exports.deploy = (packageJson, answers) => {
     const main = fs.readFileSync(path.join(process.cwd(), packageJson.get('main')));
 
     form.append('entrypoint', packageJson.get('main'));
-    form.append('private', `${isServicePrivate}`);
-    form.append('team', team);
-    form.append('version', version);
+    form.append('version', packageJson.get('version'));
     form.append('name', packageJson.get('name'));
     form.append('docs', JSON.stringify(buildDocs(main, actions)));
     form.append('readme', readme);
@@ -125,9 +127,8 @@ module.exports.deploy = (packageJson, answers) => {
     req.then((res) => {
       console.log('Cleaning up...');
       fs.unlinkSync(zipDir);
-      packageJson.set('version', version, { root: true });
-      packageJson.set('team', team, { build: true });
-      packageJson.set('private', isServicePrivate, { build: true });
+
+      console.log('Persisting changes back to package.json');
       packageJson.write();
       console.log(`\nDeployed to ${res.headers.location}`);
     }).catch(request.errorHandler);
@@ -176,18 +177,9 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
     },
   }];
 
-  // Checking for `build.private` and only asking if unset
-  if (!packageJson.has('private', { build: true })) {
-    questions.push({
-      type: 'list',
-      name: 'private',
-      message: 'Should this package be public or private?',
-      choices: ['public', 'private'],
-    });
-  }
-
   // Checking for `build.team` and only asking if unset
   if (!packageJson.has('team', { build: true })) {
+    teams.unshift({ name: 'No team (i.e public package)' });
     questions.push({
       type: 'list',
       name: 'team',
@@ -195,7 +187,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
       // TODO bring this back in when I can figure out a way to display something
       // different than the value
       // choices: teams.map(constructTeamChoice.bind(null, packageJson.get('name'))),
-      choices: teams.map(t => JSON.stringify({ name: t.name, personal: t.personal })),
+      choices: teams.map(t => t.name),
     });
   }
 
