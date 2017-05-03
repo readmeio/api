@@ -42,7 +42,7 @@ module.exports.run = async () => {
   let teams = [];
   try {
     const response = await request.get('/teams');
-    teams = JSON.parse(response).map(t => t.name);
+    teams = JSON.parse(response);
   } catch (e) {
     //
   }
@@ -55,7 +55,18 @@ module.exports.run = async () => {
 module.exports.deploy = (packageJson, answers) => {
   const version = answers.version || packageJson.get('version');
   const isServicePrivate = answers.private ? answers.private === 'private' : packageJson.get('private', { build: true });
-  const team = answers.team ? answers.team : packageJson.get('team', { build: true });
+
+  let team;
+
+  if (answers.team) {
+    const parsedTeam = JSON.parse(answers.team);
+    team = parsedTeam.name;
+    if (parsedTeam.personal === false) {
+      packageJson.set('name', `@${team}/${packageJson.get('name')}`);
+    }
+  } else {
+    team = packageJson.get('team', { build: true });
+  }
 
   const output = fs.createWriteStream(zipDir);
   const archive = archiver('zip', { store: true });
@@ -136,6 +147,13 @@ module.exports.deploy = (packageJson, answers) => {
   archive.finalize();
 };
 
+function constructTeamChoice(name, team) {
+  if (team.personal) {
+    return `${team.name}: personal team - will be deployed as \`${name}\``;
+  }
+
+  return `${team.name}: non-personal team - will be deployed as \`@${team.name}/${name}\``;
+}
 
 module.exports.questions = (versions, hasDeployedVersion, teams) => {
   const packageJson = require('../lib/package-json')();
@@ -174,9 +192,14 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
       type: 'list',
       name: 'team',
       message: 'Which team should this service be deployed to?',
-      choices: teams,
+      // TODO bring this back in when I can figure out a way to display something
+      // different than the value
+      // choices: teams.map(constructTeamChoice.bind(null, packageJson.get('name'))),
+      choices: teams.map(t => JSON.stringify({ name: t.name, personal: t.personal })),
     });
   }
 
   return questions;
 };
+
+module.exports.constructTeamChoice = constructTeamChoice;
