@@ -6,7 +6,7 @@ const validName = require('validate-npm-package-name');
 const archiver = require('archiver');
 const semver = require('semver');
 const fs = require('fs');
-const request = require('request-promise');
+const request = require('../lib/request');
 const buildDocs = require('build-docs');
 const path = require('path');
 const createEnquirer = require('../lib/enquirer');
@@ -15,6 +15,7 @@ const utils = require('../utils/utils');
 
 const pjsonPath = path.join(process.cwd(), 'package.json');
 const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
+const packageJson = require('../lib/package-json')(pjson);
 
 const readmePath = path.join(process.cwd(), 'readme.md');
 
@@ -28,131 +29,126 @@ module.exports.run = async () => {
     return;
   }
 
-  let newVersion = pjson.version;
-  const jar = utils.getJar();
-  let versionCheck = [];
   let deployed = { versions: [] };
+  let hasDeployedVersion = false;
   try {
-    const service = await request.get(`${utils.BUILD_URL}/services/${pjson.name}`, { jar });
+    const service = await request.get(`/services/${pjson.name}`, { defaultErrorHandler: false });
     deployed = JSON.parse(service);
-    versionCheck = deployed.versions.filter(version => version === newVersion);
-  } catch (e) {} // eslint-disable-line no-empty
+    hasDeployedVersion = deployed.versions.some(version => version === packageJson.get('version'));
+  } catch (e) {
+    //
+  }
 
-  const questions = [
+  if (hasDeployedVersion) {
+    console.log(`\nv${packageJson.get('version')} has already been deployed.`.red);
+  }
+
+  enquirer
+    .ask(module.exports.questions(deployed.versions, hasDeployedVersion))
+    .then(module.exports.deploy);
+};
+
+module.exports.deploy = (answers) => {
+  const version = answers.version || pjson.version;
+
+  const output = fs.createWriteStream(zipDir);
+  const archive = archiver('zip', { store: true });
+
+  console.log(`Deploying version: ${version}`.green);
+  console.log('Converting to travel size...');
+
+  const readme = utils.fileExists(readmePath) ? fs.readFileSync(readmePath, 'utf8') : false;
+
+  if (!readme) {
+    console.warn('No readme.md file is present'.yellow);
+  }
+
+  // listen for all archive data to be written
+  output.on('close', () => {
+    console.log('Flying up to the cloud...');
+
+    const req = request.post('/services/', { resolveWithFullResponse: true, sendRequest: false });
+    const form = req.form();
+    if (pjson.author) {
+      form.append('team', pjson.author);
+    }
+
+    const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
+    require(path.join(process.cwd(), packageJson.get('main')));
+    const actions = Object.keys(api.actions);
+
+    const main = fs.readFileSync(path.join(process.cwd(), packageJson.get('main')));
+
+    form.append('entrypoint', packageJson.get('main'));
+    // form.append('private', `${pjson.private}`);
+    form.append('version', version);
+    form.append('name', packageJson.get('name'));
+    form.append('docs', JSON.stringify(buildDocs(main, actions)));
+    form.append('readme', readme);
+    form.append('service', fs.createReadStream(zipDir), {
+      filename: `${packageJson.get('name')}.zip`,
+      contentType: 'application/zip',
+    });
+
+    let progressBar;
+
+    // get upload size
+    form.getLength((err, size) => {
+      progressBar = new ProgressBar('Uploading [:bar] :percent :etas', {
+        total: size,
+        complete: '=',
+        incomplete: ' ',
+        width: 50,
+      });
+    });
+
+    // calculate uploaded size chunk by chunk
+    form.on('data', (data) => {
+      progressBar.tick(data.length);
+    });
+
+    req.then((res) => {
+      console.log('Cleaning up...');
+      fs.unlinkSync(zipDir);
+      pjson.version = version;
+      fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
+      console.log(`\nDeployed to ${res.headers.location}`);
+    }).catch(request.errorHandler);
+  });
+
+  archive.on('error', (err) => {
+    console.error('Error during upload', err);
+  });
+
+  archive.pipe(output);
+
+  const handler = path.join(__dirname, '../utils/handler.js');
+  archive.append(fs.createReadStream(handler), { name: 'handler.js' });
+
+  archive.glob('**');
+
+  archive.finalize();
+};
+
+module.exports.questions = (versions, hasDeployedVersion) => {
+  return [
     {
       type: 'input',
       name: 'version',
-      message: 'What should the new version be?',
-      when: () => versionCheck.length,
+      message: 'What version do you want to deploy?',
+      // Ask what version to deploy if this version has already
+      // been deployed once
+      when: () => hasDeployedVersion,
       validate: (v) => {
         if (!semver.valid(v)) {
           return `${v} is not a valid semver version`;
         }
 
-        versionCheck = deployed.versions.filter(version => version === v);
-        if (versionCheck.length >= 1) {
+        if (versions.find(version => version === v)) {
           return `Version ${v} has already been deployed.`;
         }
         return true;
       },
     },
   ];
-
-  if (versionCheck.length) {
-    console.log(`\nv${newVersion} has already been deployed.`.red);
-  }
-
-  enquirer.ask(questions).then((response) => {
-    if (response.version) {
-      newVersion = response.version;
-    }
-
-    const output = fs.createWriteStream(zipDir);
-    const archive = archiver('zip', {
-      store: true,
-    });
-
-    console.log('\nConverting to travel size...');
-
-    let readme;
-    if (utils.fileExists(readmePath)) {
-      readme = fs.readFileSync(readmePath, 'utf8');
-    }
-
-    // listen for all archive data to be written
-    output.on('close', () => {
-      console.log('Flying up to the cloud...');
-
-      const req = request.post(`${utils.BUILD_URL}/services/`, { jar, resolveWithFullResponse: true });
-      const form = req.form();
-      if (pjson.author) {
-        form.append('team', pjson.author);
-      }
-
-      if (readme) {
-        form.append('readme', readme);
-      }
-
-      const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
-      require(path.join(process.cwd(), pjson.main));
-      const actions = Object.keys(api.actions);
-
-      const main = fs.readFileSync(path.join(process.cwd(), pjson.main));
-
-      form.append('entrypoint', pjson.main);
-      form.append('private', `${pjson.private}`);
-      form.append('version', newVersion);
-      form.append('name', pjson.name);
-      form.append('docs', JSON.stringify(buildDocs(main, actions)));
-      form.append('service', fs.createReadStream(zipDir), {
-        filename: `${pjson.name}.zip`,
-        contentType: 'application/zip',
-      });
-
-      let progressBar;
-
-      // get upload size
-      form.getLength((err, size) => {
-        progressBar = new ProgressBar('Uploading [:bar] :percent :etas', {
-          total: size,
-          complete: '=',
-          incomplete: ' ',
-          width: 50,
-        });
-      });
-
-      // calculate uploaded size chunk by chunk
-      form.on('data', (data) => {
-        progressBar.tick(data.length);
-      });
-
-      form.on('end', () => {
-        console.log('Building App...');
-      });
-
-      req.then((res) => {
-        console.log('Cleaning up...');
-        fs.unlinkSync(zipDir);
-        pjson.version = newVersion;
-        fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
-        console.log(`\nDeployed to ${res.headers.location}`);
-      }).catch((err) => {
-        console.log(err.error);
-      });
-    });
-
-    // good practice to catch this error explicitly
-    archive.on('error', (err) => {
-      throw err;
-    });
-
-    archive.pipe(output);
-
-    const handler = path.join(__dirname, '../utils/handler.js');
-    archive.append(fs.createReadStream(handler), { name: 'handler.js' });
-
-    archive.glob('**');
-
-    archive.finalize();
-  });
 };
