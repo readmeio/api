@@ -10,6 +10,7 @@ const path = require('path');
 const exec = require('child_process').exec;
 const validName = require('validate-npm-package-name');
 const createEnquirer = require('../lib/enquirer');
+const packageJson = require('../lib/package-json');
 
 module.exports.run = () => {
   const enquirer = createEnquirer();
@@ -61,39 +62,19 @@ module.exports.questions = (existingPackageJson) => {
   ];
 };
 
-
-// If there is already a property set, then add it to the `build` object
-function setPackageProperty(packageJson, key, value) {
-  if (packageJson[key]) {
-    // Ignore property if it's the same
-    if (packageJson[key] === value) return;
-
-    if (!packageJson.build) packageJson.build = {};
-    packageJson.build[key] = value;
-  } else {
-    packageJson[key] = value;
-  }
-}
-
 module.exports.init = (answers) => {
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
   const stub = data.replace(/<<action>>/g, answers.action);
 
   fs.writeFileSync(`${answers.name}.js`, stub);
 
-  let packageJson;
-
-  try {
-    packageJson = require(path.join(process.cwd(), 'package.json'));
-  } catch (e) {
-    packageJson = {};
-  }
-
-  setPackageProperty(packageJson, 'name', answers.name);
-  setPackageProperty(packageJson, 'version', answers.version);
-  setPackageProperty(packageJson, 'main', `${answers.name}.js`);
-
-  fs.writeFileSync('package.json', JSON.stringify(packageJson, undefined, 2));
+  // Need to initialise the package.json object down here
+  // so that process.cwd() is different in tests
+  const pjson = packageJson();
+  pjson.set('name', answers.name);
+  pjson.set('version', answers.version);
+  pjson.set('main', `${answers.name}.js`);
+  pjson.write();
 
   // Only add a readme if one does not exist
   if (!fs.existsSync('readme.md')) {

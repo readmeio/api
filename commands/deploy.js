@@ -13,17 +13,14 @@ const createEnquirer = require('../lib/enquirer');
 const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
-const pjsonPath = path.join(process.cwd(), 'package.json');
-const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
-const packageJson = require('../lib/package-json')(pjson);
+const packageJson = require('../lib/package-json')();
 
 const readmePath = path.join(process.cwd(), 'readme.md');
-
 const zipDir = path.join(__dirname, '../data/output.zip');
 const enquirer = createEnquirer();
 
 module.exports.run = async () => {
-  const valid = validName(pjson.name);
+  const valid = validName(packageJson.get('name'));
   if (!valid.validForNewPackages) {
     console.log('Invalid Package Name'.red);
     return;
@@ -32,7 +29,7 @@ module.exports.run = async () => {
   let deployed = { versions: [] };
   let hasDeployedVersion = false;
   try {
-    const service = await request.get(`/services/${pjson.name}`, { defaultErrorHandler: false });
+    const service = await request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false });
     deployed = JSON.parse(service);
     hasDeployedVersion = deployed.versions.some(version => version === packageJson.get('version'));
   } catch (e) {
@@ -49,7 +46,7 @@ module.exports.run = async () => {
 };
 
 module.exports.deploy = (answers) => {
-  const version = answers.version || pjson.version;
+  const version = answers.version || packageJson.get('version');
 
   const output = fs.createWriteStream(zipDir);
   const archive = archiver('zip', { store: true });
@@ -110,8 +107,8 @@ module.exports.deploy = (answers) => {
     req.then((res) => {
       console.log('Cleaning up...');
       fs.unlinkSync(zipDir);
-      pjson.version = version;
-      fs.writeFileSync(pjsonPath, JSON.stringify(pjson, undefined, 2));
+      packageJson.set('version', version);
+      packageJson.write();
       console.log(`\nDeployed to ${res.headers.location}`);
     }).catch(request.errorHandler);
   });
