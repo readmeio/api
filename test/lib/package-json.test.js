@@ -51,6 +51,20 @@ describe('package-json', () => {
       pjson.set('name', 'name');
       assert.equal(pjson.packageJson.name, 'name');
     });
+
+    it('should allow manually setting in the root if required', () => {
+      const pjson = packageJson({ version: '1.0.0' });
+      pjson.set('version', '2.0.0', { root: true });
+      assert.equal(pjson.packageJson.version, '2.0.0');
+      assert.equal(pjson.packageJson.build, undefined);
+    });
+
+    it('should not set in the root if property is set in sub object', () => {
+      const pjson = packageJson({ version: '1.0.0', build: { version: '1.5.0' } });
+      pjson.set('version', '2.0.0', { root: true });
+      assert.equal(pjson.packageJson.version, '1.0.0');
+      assert.equal(pjson.packageJson.build.version, '2.0.0');
+    });
   });
 
   describe('#write()', () => {

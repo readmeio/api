@@ -107,7 +107,7 @@ module.exports.deploy = (answers) => {
     req.then((res) => {
       console.log('Cleaning up...');
       fs.unlinkSync(zipDir);
-      packageJson.set('version', version);
+      packageJson.set('version', version, { root: true });
       packageJson.write();
       console.log(`\nDeployed to ${res.headers.location}`);
     }).catch(request.errorHandler);
