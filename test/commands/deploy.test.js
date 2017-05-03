@@ -1,7 +1,26 @@
 const assert = require('assert');
+const fs = require('fs');
+const os = require('os');
+const { join, basename } = require('path');
 const { questions } = require('../../commands/deploy');
+const packageJson = require('../../lib/package-json');
+
+let cwd;
+let tmpDir;
 
 describe('deploy command', () => {
+  beforeEach(() => {
+    cwd = process.cwd();
+
+    tmpDir = fs.mkdtempSync(`${os.tmpdir()}/`);
+
+    process.chdir(tmpDir);
+  });
+
+  afterEach(() => {
+    process.chdir(cwd);
+  });
+
   describe('questions', () => {
     describe('version', () => {
       it('should not ask if version has not yet been deployed', () => {
@@ -25,6 +44,58 @@ describe('deploy command', () => {
       it('should error if version has already been deployed', () => {
         const versionQuestion = questions(['1.0.0'], true).find(question => question.name === 'version');
         assert.equal(versionQuestion.validate('1.0.0'), 'Version 1.0.0 has already been deployed.');
+      });
+    });
+
+    describe('private', () => {
+      it('should ask public/private if not set in `build.private`', () => {
+        const privateQuestion = questions(['1.0.0'], true).find(question => question.name === 'private');
+        assert.equal(typeof privateQuestion, 'object');
+      });
+
+      it('should not ask public/private if `build.private` is set to true', () => {
+        const pjson = packageJson();
+        pjson.set('private', true, { build: true });
+        pjson.write();
+
+        const privateQuestion = questions(['1.0.0'], true).find(question => question.name === 'private');
+        assert.equal(privateQuestion, undefined);
+      });
+
+      it('should not ask public/private if `build.private` is set to false', () => {
+        const pjson = packageJson();
+        pjson.set('private', false, { build: true });
+        pjson.write();
+
+        const privateQuestion = questions(['1.0.0'], true).find(question => question.name === 'private');
+        assert.equal(privateQuestion, undefined);
+      });
+    });
+
+    describe('team', () => {
+      it('should ask for team if not set in `build.team`', () => {
+        const teams = ['1', '2', '3'];
+        const teamQuestion = questions(['1.0.0'], true, teams).find(question => question.name === 'team');
+        assert.equal(typeof teamQuestion, 'object');
+        assert.deepEqual(teamQuestion.choices, teams);
+      });
+
+      it('should not ask for team if `build.team` is set', () => {
+        const pjson = packageJson();
+        pjson.set('team', 'team-name', { build: true });
+        pjson.write();
+
+        const teamQuestion = questions(['1.0.0'], true).find(question => question.name === 'team');
+        assert.equal(teamQuestion, undefined);
+      });
+
+      it('should not ask for team if `build.team` is set', () => {
+        const pjson = packageJson();
+        pjson.set('team', 'team-name', { build: true });
+        pjson.write();
+
+        const teamQuestion = questions(['1.0.0'], true).find(question => question.name === 'team');
+        assert.equal(teamQuestion, undefined);
       });
     });
   });

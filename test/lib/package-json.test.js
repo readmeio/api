@@ -30,6 +30,44 @@ describe('package-json', () => {
       assert.equal(packageJson({ name: 'name', build: {} }).get('name'), 'name');
       assert.equal(packageJson({ name: 'name' }).get('name'), 'name');
     });
+
+    describe('`opts.build`', () => {
+      it('should return value if it is set in `build`', () => {
+        assert.equal(packageJson({ build: { private: true } }).get('private', { build: true }), true);
+        assert.equal(packageJson({ build: { private: false } }).get('private', { build: true }), false);
+      });
+
+      it('should return undefined if it is not set in `build`', () => {
+        assert.equal(packageJson({ build: {} }).get('private', { build: true }), undefined);
+        assert.equal(packageJson({ private: true }).get('private', { build: true }), undefined);
+        assert.equal(packageJson({ private: false }).get('private', { build: true }), undefined);
+      });
+    });
+  });
+
+  describe('#has()', () => {
+    it('should return true if the property is set on either', () => {
+      assert.equal(packageJson({ name: 'name' }).has('name'), true);
+      assert.equal(packageJson({ build: { name: 'build-name' } }).has('name'), true);
+    });
+
+    it('should return false if it is not set on either', () => {
+      assert.equal(packageJson({}).has('name'), false);
+      assert.equal(packageJson({ build: {} }).has('name'), false);
+    });
+
+    describe('`opts.build`', () => {
+      it('should return true if it is set in `build` or not', () => {
+        assert.equal(packageJson({ build: { private: true } }).has('private', { build: true }), true);
+        assert.equal(packageJson({ build: { private: false } }).has('private', { build: true }), true);
+      });
+
+      it('should return false if it is not set in `build`', () => {
+        assert.equal(packageJson({ build: {} }).has('private', { build: true }), false);
+        assert.equal(packageJson({ private: true }).has('private', { build: true }), false);
+        assert.equal(packageJson({ private: false }).has('private', { build: true }), false);
+      });
+    });
   });
 
   describe('#set()', () => {
@@ -52,18 +90,30 @@ describe('package-json', () => {
       assert.equal(pjson.packageJson.name, 'name');
     });
 
-    it('should allow manually setting in the root if required', () => {
-      const pjson = packageJson({ version: '1.0.0' });
-      pjson.set('version', '2.0.0', { root: true });
-      assert.equal(pjson.packageJson.version, '2.0.0');
-      assert.equal(pjson.packageJson.build, undefined);
+    describe('`opts.root`', () => {
+      it('should allow manually setting in the root if required', () => {
+        const pjson = packageJson({ version: '1.0.0' });
+        pjson.set('version', '2.0.0', { root: true });
+        assert.equal(pjson.packageJson.version, '2.0.0');
+        assert.equal(pjson.packageJson.build, undefined);
+      });
+
+      it('should not set in the root if property is set in sub object', () => {
+        const pjson = packageJson({ version: '1.0.0', build: { version: '1.5.0' } });
+        pjson.set('version', '2.0.0', { root: true });
+        assert.equal(pjson.packageJson.version, '1.0.0');
+        assert.equal(pjson.packageJson.build.version, '2.0.0');
+      });
     });
 
-    it('should not set in the root if property is set in sub object', () => {
-      const pjson = packageJson({ version: '1.0.0', build: { version: '1.5.0' } });
-      pjson.set('version', '2.0.0', { root: true });
-      assert.equal(pjson.packageJson.version, '1.0.0');
-      assert.equal(pjson.packageJson.build.version, '2.0.0');
+    describe('`opts.build`', () => {
+      it('should set in `build` object if `opts.build` is true', () => {
+        const pjson = packageJson({});
+        pjson.set('private', true, { build: true });
+
+        assert.equal(pjson.packageJson.private, undefined);
+        assert.equal(pjson.packageJson.build.private, true);
+      });
     });
   });
 

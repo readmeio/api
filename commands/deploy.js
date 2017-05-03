@@ -13,13 +13,12 @@ const createEnquirer = require('../lib/enquirer');
 const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
-const packageJson = require('../lib/package-json')();
-
 const readmePath = path.join(process.cwd(), 'readme.md');
 const zipDir = path.join(__dirname, '../data/output.zip');
 const enquirer = createEnquirer();
 
 module.exports.run = async () => {
+  const packageJson = require('../lib/package-json')();
   const valid = validName(packageJson.get('name'));
   if (!valid.validForNewPackages) {
     console.log('Invalid Package Name'.red);
@@ -40,13 +39,23 @@ module.exports.run = async () => {
     console.log(`\nv${packageJson.get('version')} has already been deployed.`.red);
   }
 
+  let teams = [];
+  try {
+    const response = await request.get('/teams');
+    teams = JSON.parse(response).map(t => t.name);
+  } catch (e) {
+    //
+  }
+
   enquirer
-    .ask(module.exports.questions(deployed.versions, hasDeployedVersion))
-    .then(module.exports.deploy);
+    .ask(module.exports.questions(deployed.versions, hasDeployedVersion, teams))
+    .then(module.exports.deploy.bind(null, packageJson));
 };
 
-module.exports.deploy = (answers) => {
+module.exports.deploy = (packageJson, answers) => {
   const version = answers.version || packageJson.get('version');
+  const isServicePrivate = answers.private ? answers.private === 'private' : packageJson.get('private', { build: true });
+  const team = answers.team ? answers.team : packageJson.get('team', { build: true });
 
   const output = fs.createWriteStream(zipDir);
   const archive = archiver('zip', { store: true });
@@ -66,9 +75,6 @@ module.exports.deploy = (answers) => {
 
     const req = request.post('/services/', { resolveWithFullResponse: true, sendRequest: false });
     const form = req.form();
-    if (pjson.author) {
-      form.append('team', pjson.author);
-    }
 
     const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
     require(path.join(process.cwd(), packageJson.get('main')));
@@ -77,7 +83,8 @@ module.exports.deploy = (answers) => {
     const main = fs.readFileSync(path.join(process.cwd(), packageJson.get('main')));
 
     form.append('entrypoint', packageJson.get('main'));
-    // form.append('private', `${pjson.private}`);
+    form.append('private', `${isServicePrivate}`);
+    form.append('team', team);
     form.append('version', version);
     form.append('name', packageJson.get('name'));
     form.append('docs', JSON.stringify(buildDocs(main, actions)));
@@ -108,6 +115,8 @@ module.exports.deploy = (answers) => {
       console.log('Cleaning up...');
       fs.unlinkSync(zipDir);
       packageJson.set('version', version, { root: true });
+      packageJson.set('team', team, { build: true });
+      packageJson.set('private', isServicePrivate, { build: true });
       packageJson.write();
       console.log(`\nDeployed to ${res.headers.location}`);
     }).catch(request.errorHandler);
@@ -127,25 +136,47 @@ module.exports.deploy = (answers) => {
   archive.finalize();
 };
 
-module.exports.questions = (versions, hasDeployedVersion) => {
-  return [
-    {
-      type: 'input',
-      name: 'version',
-      message: 'What version do you want to deploy?',
-      // Ask what version to deploy if this version has already
-      // been deployed once
-      when: () => hasDeployedVersion,
-      validate: (v) => {
-        if (!semver.valid(v)) {
-          return `${v} is not a valid semver version`;
-        }
 
-        if (versions.find(version => version === v)) {
-          return `Version ${v} has already been deployed.`;
-        }
-        return true;
-      },
+module.exports.questions = (versions, hasDeployedVersion, teams) => {
+  const packageJson = require('../lib/package-json')();
+  const questions = [{
+    type: 'input',
+    name: 'version',
+    message: 'What version do you want to deploy?',
+    // Ask what version to deploy if this version has already
+    // been deployed once
+    when: () => hasDeployedVersion,
+    validate: (v) => {
+      if (!semver.valid(v)) {
+        return `${v} is not a valid semver version`;
+      }
+
+      if (versions.find(version => version === v)) {
+        return `Version ${v} has already been deployed.`;
+      }
+      return true;
     },
-  ];
+  }];
+
+  // Checking for `build.private` and only asking if unset
+  if (!packageJson.has('private', { build: true })) {
+    questions.push({
+      type: 'list',
+      name: 'private',
+      message: 'Should this package be public or private?',
+      choices: ['public', 'private'],
+    });
+  }
+
+  // Checking for `build.team` and only asking if unset
+  if (!packageJson.has('team', { build: true })) {
+    questions.push({
+      type: 'list',
+      name: 'team',
+      message: 'Which team should this service be deployed to?',
+      choices: teams,
+    });
+  }
+
+  return questions;
 };
