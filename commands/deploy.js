@@ -34,7 +34,7 @@ module.exports.run = async () => {
   try {
     const service = await request.get(`${utils.BUILD_URL}/services/${pjson.name}`, { jar });
     deployed = JSON.parse(service);
-    versionCheck = deployed.versions.filter(version => version === newVersion);
+    versionCheck = deployed.versions.filter(version => version.version === newVersion);
   } catch (e) {} // eslint-disable-line no-empty
 
   const questions = [

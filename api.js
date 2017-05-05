@@ -23,6 +23,8 @@ module.exports.error = (name, props) => {
   throw e;
 };
 
+module.exports.secrets = secrets => secret => secrets.find(s => s.key === secret).value;
+
 module.exports.do = (action, data, callback) => {
   // Don't call api if there is a local link
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
