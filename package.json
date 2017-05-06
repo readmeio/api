@@ -1,6 +1,6 @@
 {
   "name": "api-build",
-  "version": "0.4.1",
+  "version": "0.0.1",
   "description": "",
   "main": "api.js",
   "bin": {
@@ -28,6 +28,7 @@
     "request-promise": "^4.1.1",
     "semver": "^5.3.0",
     "tough-cookie": "^2.3.2",
+    "update-notifier": "^2.1.0",
     "validate-npm-package-name": "^3.0.0",
     "ws": "1.1.2"
   },
