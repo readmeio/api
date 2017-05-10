@@ -59,12 +59,6 @@ exports.getJar = () => {
   }
 };
 
-exports.getKeyUrl = (key) => {
-  if (!key) return exports.BUILD_URL;
-  const parts = exports.BUILD_URL.split('://');
-  return `${parts[0]}://${key}:@${parts[1]}`;
-};
-
 // fixes args like numbers=[1, 3, 2]
 // Spaces confuse minimist
 exports.parseArgs = (args) => {
