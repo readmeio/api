@@ -10,6 +10,6 @@ describe('help command', () => {
 
   it('should output specific command help information', () => {
     help.run(['help', 'deploy']);
-    assert(logger._flush().indexOf('Deploys a function to build') > -1, 'Should output help information');
+    assert(logger._flush().indexOf('Deploys a service to build') > -1, 'Should output help information');
   });
 });
