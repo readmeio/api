@@ -24,7 +24,21 @@ module.exports.error = (name, props) => {
   throw e;
 };
 
-module.exports.do = (action, data, callback) => {
+module.exports.secrets = secrets => secret => secrets.find(s => s.key === secret).value;
+
+module.exports.do = (action, d, cb) => {
+  // Can't reassign params
+  let data = d;
+  let callback = cb;
+
+  // If no data is passed in, defualt to {}
+  if (typeof data === 'function') {
+    callback = data;
+    data = {};
+  } else if (!data) {
+    data = {};
+  }
+
   // Don't call api if there is a local link
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {

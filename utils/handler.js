@@ -9,6 +9,7 @@ exports.go = (event, context, callback) => {
       success: api.success(callback),
       error: api.error,
       log: api.log,
+      getSecret: api.secrets(event.secrets),
     });
   } catch (e) {
     const error = api._handlerUtils.parseErrors(event, e);

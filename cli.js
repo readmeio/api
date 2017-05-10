@@ -3,8 +3,13 @@
 const parseArgs = require('minimist')(process.argv.slice(2));
 const path = require('path');
 require('colors');
+const updateNotifier = require('update-notifier');
+const pkg = require('./package.json');
 
 const utils = require('./utils/utils');
+
+// Notifies the user if there is an update to the api module
+updateNotifier({ pkg }).notify();
 
 const args = parseArgs._;
 const action = load(args[0]);
