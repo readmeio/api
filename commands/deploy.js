@@ -1,6 +1,6 @@
-module.exports.usage = `Deploys a function to build
+module.exports.usage = `Deploys a service to build
 
-Usage: api deploy <version>`;
+Usage: api deploy`;
 
 const validName = require('validate-npm-package-name');
 const archiver = require('archiver');
