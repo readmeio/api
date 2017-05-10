@@ -55,9 +55,11 @@ module.exports.run = (args, opts) => {
     return invoke(team.key, service, action, data).then((response) => {
       console.log(response.body.result);
     }).catch((err) => {
-      console.log(err);
-      console.log(err.message);
-      console.error((err.error ? err.error.message : 'Unexpected error occured').red);
+      try {
+        console.error(err.response.body.error.red);
+      } catch (e) {
+        console.error('Unexpected error occured'.red);
+      }
     });
   });
 };
