@@ -101,10 +101,8 @@ describe('deploy command', () => {
         pjson.write();
         const teamQuestion = questions(['1.0.0'], true, teams).find(question => question.name === 'team');
         assert.equal(typeof teamQuestion, 'object');
-// assert.deepEqual(teamQuestion.choices, [
-//   `test: personal team - will be deployed as \`${pjson.get('name')}\``,
-//   `another-team: non-personal team - will be deployed as \`@another-team/${pjson.get('name')}\``,
-// ]);
+        assert.equal(teamQuestion.choices.length, teams.length + 1);
+        assert(teamQuestion.choices[0].indexOf('No team') > -1);
       });
 
       it('should not ask for team if `build.team` is set', () => {
@@ -124,14 +122,6 @@ describe('deploy command', () => {
         const teamQuestion = questions(['1.0.0'], true).find(question => question.name === 'team');
         assert.equal(teamQuestion, undefined);
       });
-    });
-  });
-
-  // TODO now we can remove this?
-  describe.skip('constructTeamChoice()', () => {
-    it('should construct the team choice', () => {
-      assert.equal(constructTeamChoice('service', { name: 'test', personal: true }), 'test: personal team - will be deployed as `service`');
-      assert.equal(constructTeamChoice('service', { name: 'another-team', personal: false }), 'another-team: non-personal team - will be deployed as `@another-team/service`');
     });
   });
 });

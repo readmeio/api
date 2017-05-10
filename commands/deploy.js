@@ -148,14 +148,6 @@ module.exports.deploy = (packageJson, answers) => {
   archive.finalize();
 };
 
-function constructTeamChoice(name, team) {
-  if (team.personal) {
-    return `${team.name}: personal team - will be deployed as \`${name}\``;
-  }
-
-  return `${team.name}: non-personal team - will be deployed as \`@${team.name}/${name}\``;
-}
-
 module.exports.questions = (versions, hasDeployedVersion, teams) => {
   const packageJson = require('../lib/package-json')();
   const questions = [{
@@ -179,19 +171,15 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
 
   // Checking for `build.team` and only asking if unset
   if (!packageJson.has('team', { build: true })) {
-    teams.unshift({ name: 'No team (i.e public package)' });
+    const choices = teams.slice();
+    choices.unshift({ name: 'No team (i.e public package)' });
     questions.push({
       type: 'list',
       name: 'team',
       message: 'Which team should this service be deployed to?',
-      // TODO bring this back in when I can figure out a way to display something
-      // different than the value
-      // choices: teams.map(constructTeamChoice.bind(null, packageJson.get('name'))),
-      choices: teams.map(t => t.name),
+      choices: choices.map(t => t.name),
     });
   }
 
   return questions;
 };
-
-module.exports.constructTeamChoice = constructTeamChoice;
