@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const { questions, constructTeamChoice, prepareDeploy } = require('../../commands/deploy');
+const { questions, prepareDeploy } = require('../../commands/deploy');
 const packageJson = require('../../lib/package-json');
 
 let cwd;
