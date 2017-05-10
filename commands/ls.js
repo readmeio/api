@@ -1,8 +1,15 @@
-const path = require('path');
+module.exports.usage = `List deployed/versions/used from the server
+
+Usage:
+  api ls # Returns deployed services by team
+  api ls versions # Returns deployed versions of this service
+  api ls used # Returns versions that you are using
+`;
+
 require('colors');
 const request = require('../lib/request');
 
-const pjsonPath = path.join(process.cwd(), 'package.json');
+const packageJson = require('../lib/package-json')();
 const exists = require('../utils/utils').fileExists;
 
 module.exports.aliases = ['list'];
@@ -20,16 +27,15 @@ module.exports.run = (args) => {
       }
     });
   } else if (args[1] === 'versions') {
-    const pjson = exists(pjsonPath) ? require(pjsonPath) : {};
-    request.get(`/services/${pjson.name}`).then((response) => {
+    request.get(`/services/${packageJson.get('name')}`).then((response) => {
       const service = JSON.parse(response);
       const versions = service.versions;
-      console.log(`Listing deployed versions for ${pjson.name}`.blue);
+      console.log(`Listing deployed versions for ${packageJson.get('name')}`.blue);
       for (const version of versions) {
         console.log(version);
       }
     }).catch(() => {
-      console.log(`Service "${pjson.name}" is not deployed`.red);
+      console.log(`Service "${packageJson.get('name')}" is not deployed`.red);
     });
   } else if (args[1] === 'used') {
     request.get('/services/used').then((response) => {

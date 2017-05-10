@@ -1,10 +1,14 @@
+module.exports.usage = `Run a service locally
+
+Usage: api local <action> [arg1=val1, arg2=val2...argn=valn]
+
+Runs your api locally. Useful for testing changes before deploying`;
+
 const path = require('path');
 
 const utils = require('../utils/utils');
 
-const pjsonPath = path.join(process.cwd(), 'package.json');
-const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
-
+const packageJson = require('../lib/package-json')();
 const handler = require('../utils/handler-local');
 
 module.exports.aliases = ['invoke-local', 'dev'];
@@ -24,7 +28,7 @@ module.exports.run = (args) => {
     }
     data[parsedArg[0]] = value;
   }
-  const p = path.join(process.cwd(), pjson.main);
+  const p = path.join(process.cwd(), packageJson.get('main'));
   const event = {
     entrypoint: p,
     name: args[1],
