@@ -30,7 +30,7 @@ module.exports.run = async () => {
   try {
     const service = await request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false });
     deployed = JSON.parse(service);
-    hasDeployedVersion = deployed.versions.some(version => version === packageJson.get('version'));
+    hasDeployedVersion = deployed.versions.some(version => version.version === packageJson.get('version'));
   } catch (e) {
     //
   }
