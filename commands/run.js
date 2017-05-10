@@ -12,6 +12,7 @@ The team defaults to your personal user team.
 const request = require('../lib/request');
 const utils = require('../utils/utils');
 const console = require('../utils/console');
+const invoke = require('../lib/invoke');
 
 module.exports.aliases = ['invoke'];
 
@@ -51,16 +52,12 @@ module.exports.run = (args, opts) => {
       service = `@${service}`;
     }
 
-    return request.post(`/services/${service}/${action}/invoke`, {
-      json: data,
-      resolveWithFullResponse: true,
-      auth: { user: team.key },
-    }).then((response) => {
-      utils.checkDeprecated(response);
+    return invoke(team.key, service, action, data).then((response) => {
       console.log(response.body.result);
     }).catch((err) => {
-      utils.checkDeprecated(err.response);
-      console.log(err.error.message.red);
+      console.log(err);
+      console.log(err.message);
+      console.error((err.error ? err.error.message : 'Unexpected error occured').red);
     });
   });
 };

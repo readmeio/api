@@ -1,9 +1,10 @@
-const request = require('request-promise');
 const path = require('path');
+const maybe = require('call-me-maybe');
+require('colors');
+
 const utils = require('./utils/utils');
 const logger = require('./utils/logger');
-require('colors');
-const maybe = require('call-me-maybe');
+const invoke = require('./lib/invoke');
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
 
@@ -44,17 +45,13 @@ module.exports.do = (action, data, callback) => {
     }));
   }
 
-  const base = utils.getKeyUrl(this.key);
-  const opts = { body: data, json: true, resolveWithFullResponse: true };
-  return maybe(callback, new Promise((resolve, reject) => (
-    request.post(`${base}/services/${this.service}/${action}/invoke`, opts).then((response) => {
-      utils.checkDeprecated(response);
+  return maybe(callback, new Promise((resolve, reject) => {
+    return invoke(this.key, this.service, action, data).then((response) => {
       return resolve(response.body.result);
     }).catch((err) => {
-      utils.checkDeprecated(err.response);
       return reject(err.response.body);
-    })
-  )));
+    });
+  }));
 };
 
 module.exports.config = (apiKey) => {

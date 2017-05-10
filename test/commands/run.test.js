@@ -17,10 +17,11 @@ describe('run command', () => {
     }, 'Missing action');
   });
 
+  const key = '123456';
+  const action = 'action';
+
   it('should default team to personal team', () => {
-    const key = '123456';
     const service = 'service';
-    const action = 'action';
     const teamsMock = nock(BUILD_URL).get('/users/me').reply(200, JSON.stringify({
       teams: [
         { key, personal: true },
@@ -31,7 +32,9 @@ describe('run command', () => {
     const invokeMock = nock(BUILD_URL)
       .post(`/services/${service}/${action}/invoke`)
       .basicAuth({ user: key })
-      .reply(200, {});
+      .reply(() => {
+        return [200, {}, {}];
+      });
 
     return run(['run', service, action], {}).then(() => {
       teamsMock.done();
@@ -40,9 +43,7 @@ describe('run command', () => {
   });
 
   it('should report invalid team', () => {
-    const key = '123456';
     const service = 'service';
-    const action = 'action';
     nock(BUILD_URL).get('/users/me').reply(200, JSON.stringify({
       teams: [
         { key, personal: true, name: 'team1' },
@@ -56,9 +57,7 @@ describe('run command', () => {
   });
 
   it('should prefix service name with @ if it contains a slash', () => {
-    const key = '123456';
     const service = 'team/service-1';
-    const action = 'action';
     nock(BUILD_URL).get('/users/me').reply(200, JSON.stringify({
       teams: [{ key, personal: true }],
     }));
@@ -66,7 +65,9 @@ describe('run command', () => {
     const invokeMock = nock(BUILD_URL)
       .post(`/services/@${service}/${action}/invoke`)
       .basicAuth({ user: key })
-      .reply(200, {});
+      .reply(() => {
+        return [200, {}, {}];
+      });
 
     return run(['run', service, action], {}).then(() => {
       return invokeMock.done();

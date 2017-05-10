@@ -125,11 +125,3 @@ exports.parseErrors = (event, error) => {
   }
   return outError;
 };
-
-exports.checkDeprecated = (response) => {
-  const service = response.headers['x-build-service'];
-  const version = response.headers['x-build-version'];
-  if (response.headers['x-build-deprecated']) {
-    console.log(`${service} v${version} is deprecated! Run \`api update ${service}\` to use the latest version`.red);
-  }
-};
