@@ -3,8 +3,8 @@ const api = require('api-build');
 /* eslint-enable */
 
 exports.go = (event, context, callback) => {
-  require(`./${event.entrypoint}`);
   try {
+    require(`./${event.entrypoint}`);
     api.actions[event.name](event.data, {
       success: api.success(callback),
       error: api.error,
