@@ -22,10 +22,10 @@ describe('deploy command', () => {
 
   describe('prepareDeploy()', () => {
     describe('name', () => {
-      it('should prefix with @team if it is a team package', () => {
+      it('should prefix with @team if it is a private package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, { team: 'team' });
+        prepareDeploy(pjson, { team: 'team', private: 'private' });
 
         assert.equal(pjson.get('name'), '@team/service');
         assert.equal(pjson.get('team', { build: true }), 'team');
@@ -34,12 +34,19 @@ describe('deploy command', () => {
       it('should not prefix with @team if it is a public package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, {
-          team: 'No team (i.e public package)',
-        });
+        prepareDeploy(pjson, { team: 'test', private: 'public' });
 
         assert.equal(pjson.get('name'), 'service');
-        assert.equal(pjson.get('team', { build: true }), null);
+        assert.equal(pjson.get('team', { build: true }), 'test');
+      });
+
+      it('should not overwrite team if it is already set and no answer provided', () => {
+        const pjson = packageJson();
+        pjson.set('name', 'service');
+        pjson.set('team', 'team', { build: true });
+        prepareDeploy(pjson, {});
+
+        assert.equal(pjson.get('team', { build: true }), 'team');
       });
     });
 
@@ -101,8 +108,7 @@ describe('deploy command', () => {
         pjson.write();
         const teamQuestion = questions(['1.0.0'], true, teams).find(question => question.name === 'team');
         assert.equal(typeof teamQuestion, 'object');
-        assert.equal(teamQuestion.choices.length, teams.length + 1);
-        assert(teamQuestion.choices[0].indexOf('No team') > -1);
+        assert.equal(teamQuestion.choices.length, teams.length);
       });
 
       it('should not ask for team if `build.team` is set', () => {
@@ -121,6 +127,23 @@ describe('deploy command', () => {
 
         const teamQuestion = questions(['1.0.0'], true).find(question => question.name === 'team');
         assert.equal(teamQuestion, undefined);
+      });
+    });
+
+    describe('private', () => {
+      it('should ask question', () => {
+        const privateQuestion = questions(['1.0.0'], true, []).find(question => question.name === 'private');
+
+        assert.deepEqual(privateQuestion.choices, ['public', 'private']);
+      });
+
+      it('should not ask if `build.team` is set', () => {
+        const pjson = packageJson();
+        pjson.set('team', 'team-name', { build: true });
+        pjson.write();
+
+        const privateQuestion = questions(['1.0.0'], true, []).find(question => question.name === 'private');
+        assert.equal(privateQuestion, undefined);
       });
     });
   });

@@ -59,9 +59,7 @@ module.exports.run = () => {
 };
 
 function prepareDeploy(packageJson, answers) {
-  let team = null;
-  if (answers.team && !answers.team.match(/No team/)) {
-    team = answers.team;
+  if (answers.private === 'private') {
     packageJson.set('name', `@${answers.team}/${packageJson.get('name')}`);
   }
 
@@ -69,8 +67,11 @@ function prepareDeploy(packageJson, answers) {
     packageJson.set('version', answers.version);
   }
 
-  // Set team to the selected team, or null so that we dont ask again
-  packageJson.set('team', team, { build: true });
+  // If there is a team answer, then this must be a newly deployed
+  // service, so persist it to the package.json
+  if (answers.team) {
+    packageJson.set('team', answers.team, { build: true });
+  }
 }
 
 module.exports.prepareDeploy = prepareDeploy;
@@ -108,6 +109,7 @@ module.exports.deploy = (packageJson, answers) => {
     form.append('name', packageJson.get('name'));
     form.append('docs', JSON.stringify(buildDocs(main, actions)));
     form.append('readme', readme);
+    form.append('team', packageJson.get('team'));
     form.append('service', fs.createReadStream(zipDir), {
       filename: `${packageJson.get('name')}.zip`,
       contentType: 'application/zip',
@@ -177,13 +179,18 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
 
   // Checking for `build.team` and only asking if unset
   if (!packageJson.has('team', { build: true })) {
-    const choices = teams.slice();
-    choices.unshift({ name: 'No team (i.e public package)' });
+    questions.push({
+      type: 'list',
+      name: 'private',
+      message: 'Is your service public or private?',
+      choices: ['public', 'private'],
+    });
+
     questions.push({
       type: 'list',
       name: 'team',
       message: 'Which team should this service be deployed to?',
-      choices: choices.map(t => t.name),
+      choices: teams.map(t => t.name),
     });
   }
 
