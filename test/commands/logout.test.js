@@ -12,13 +12,13 @@ describe('`logout` command', () => {
   it('should call `/logout`', async () => {
     const mock = nock(BUILD_URL).post('/logout').reply(200);
 
-    await logout.run();
+    return logout.run().then(() => {
+      mock.done();
 
-    mock.done();
-
-    // Need to do this on next tick, as it logs after the response
-    process.nextTick(() => {
-      assert(logger._flush().indexOf() > -1, 'You have been logged out', 'Should show logout message');
+      // Need to do this on next tick, as it logs after the response
+      process.nextTick(() => {
+        assert(logger._flush().indexOf() > -1, 'You have been logged out', 'Should show logout message');
+      });
     });
   });
 });

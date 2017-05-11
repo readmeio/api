@@ -17,39 +17,45 @@ const readmePath = path.join(process.cwd(), 'readme.md');
 const zipDir = path.join(__dirname, '../data/output.zip');
 const enquirer = createEnquirer();
 
-module.exports.run = async () => {
+function fetchDeployedVersion(packageJson) {
+  let deployed = { versions: [] };
+  let hasDeployedVersion = false;
+
+  return request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false })
+    .then((response) => {
+      deployed = JSON.parse(response);
+      hasDeployedVersion = deployed.versions.some(version => version.version === packageJson.get('version'));
+
+      if (hasDeployedVersion) {
+        console.log(`\nv${packageJson.get('version')} has already been deployed.`.red);
+      }
+
+      return { deployed, hasDeployedVersion };
+    })
+    .catch(() => ({ deployed, hasDeployedVersion }));
+}
+
+function fetchTeams() {
+  return request.get('/teams').then(response => JSON.parse(response));
+}
+
+module.exports.run = () => {
   const packageJson = require('../lib/package-json')();
   const valid = validName(packageJson.get('name'));
   if (!valid.validForNewPackages) {
     console.log('Invalid Package Name'.red);
-    return;
+    return undefined;
   }
 
-  let deployed = { versions: [] };
-  let hasDeployedVersion = false;
-  try {
-    const service = await request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false });
-    deployed = JSON.parse(service);
-    hasDeployedVersion = deployed.versions.some(version => version.version === packageJson.get('version'));
-  } catch (e) {
-    //
-  }
+  return Promise.all([fetchDeployedVersion(packageJson), fetchTeams()])
+    .then((results) => {
+      const { deployed, hasDeployedVersion } = results[0];
+      const teams = results[1];
 
-  if (hasDeployedVersion) {
-    console.log(`\nv${packageJson.get('version')} has already been deployed.`.red);
-  }
-
-  let teams = [];
-  try {
-    const response = await request.get('/teams');
-    teams = JSON.parse(response);
-  } catch (e) {
-    //
-  }
-
-  enquirer
-    .ask(module.exports.questions(deployed.versions, hasDeployedVersion, teams))
-    .then(module.exports.deploy.bind(null, packageJson));
+      enquirer
+        .ask(module.exports.questions(deployed.versions, hasDeployedVersion, teams))
+        .then(module.exports.deploy.bind(null, packageJson));
+    });
 };
 
 function prepareDeploy(packageJson, answers) {

@@ -31,7 +31,7 @@ module.exports.do = (action, d, cb) => {
   let data = d;
   let callback = cb;
 
-  // If no data is passed in, defualt to {}
+  // If no data is passed in, default to {}
   if (typeof data === 'function') {
     callback = data;
     data = {};

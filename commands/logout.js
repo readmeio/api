@@ -9,13 +9,14 @@ const console = require('../utils/console');
 
 const { credPath } = require('../utils/utils');
 
-module.exports.run = async () => {
-  await request.post('/logout');
-  console.log('You have been logged out.');
+module.exports.run = () => {
+  return request.post('/logout').then(() => {
+    console.log('You have been logged out.');
 
-  try {
-    fs.unlinkSync(credPath);
-  } catch (e) {
-    //
-  }
+    try {
+      fs.unlinkSync(credPath);
+    } catch (e) {
+      //
+    }
+  });
 };
