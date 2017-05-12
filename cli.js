@@ -13,7 +13,14 @@ updateNotifier({ pkg }).notify();
 
 const args = parseArgs._;
 const action = load(args[0]);
-action.run(args, parseArgs);
+// TODO change this to be `args.slice(1)` so that the command
+// doesnt get passed down
+
+try {
+  action.run(args, parseArgs);
+} catch (e) {
+  console.error(`Error running \`${args[0]}\`:\n\n `, e.message.red, '\n');
+}
 
 function load(verb = 'help') {
   let file = path.join(__dirname, 'commands', `${verb}.js`);

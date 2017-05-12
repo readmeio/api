@@ -1,33 +1,22 @@
-const inquirer = require('inquirer');
+const createEnquirer = require('../lib/enquirer');
 const request = require('request-promise');
 const fs = require('fs');
 const exists = require('../utils/utils').fileExists;
 const utils = require('../utils/utils');
 
 const proxyUrl = utils.BUILD_URL;
-
-const emailQ = [
-  {
-    type: 'input',
-    name: 'email',
-    message: 'Enter your email address',
-  },
-];
-
-const passwordQ = [
-  {
-    type: 'password',
-    name: 'password',
-    message: 'Enter your password',
-  },
-];
+const enquirer = createEnquirer();
 
 const getEmail = () => {
   if (exists(utils.credPath)) {
     console.log('You are already logged in. Please log out to switch accounts.');
   } else {
-    inquirer
-      .prompt(emailQ)
+    enquirer
+      .ask({
+        type: 'input',
+        name: 'email',
+        message: 'Enter your email address',
+      })
       .then(getToken)
       .catch(console.log);
   }
@@ -43,8 +32,12 @@ const getToken = (input) => {
       const signupUrl = `${utils.WWW_URL}/signup`.blue;
       console.log(`Visit ${signupUrl} to create an account`);
     } else if (res === 'login') {
-      inquirer
-        .prompt(passwordQ)
+      enquirer
+        .ask({
+          type: 'password',
+          name: 'password',
+          message: 'Enter your password',
+        })
         .then(p => login(input.email, p.password)).catch(console.log);
     } else if (res === 'incomplete') {
       console.log('This user hasn\'t been completely set up yet! Check your email to proceed.');

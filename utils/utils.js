@@ -48,6 +48,8 @@ exports.getJar = () => {
   } catch (e) {
     if (e.code !== 'ENOENT') throw e;
 
+    if (process.env.NODE_ENV === 'testing') return undefined;
+
     console.error(`You must be logged in to perform that action:
 
   api login
@@ -55,12 +57,6 @@ exports.getJar = () => {
 
     return exit(1);
   }
-};
-
-exports.getKeyUrl = (key) => {
-  if (!key) return exports.BUILD_URL;
-  const parts = exports.BUILD_URL.split('://');
-  return `${parts[0]}://${key}:@${parts[1]}`;
 };
 
 // fixes args like numbers=[1, 3, 2]
@@ -122,12 +118,4 @@ exports.parseErrors = (event, error) => {
     outError.message = template(outError.message, { interpolate })(e.props);
   }
   return outError;
-};
-
-exports.checkDeprecated = (response) => {
-  const service = response.headers['x-build-service'];
-  const version = response.headers['x-build-version'];
-  if (response.headers['x-build-deprecated']) {
-    console.log(`${service} v${version} is deprecated! Run \`api update ${service}\` to use the latest version`.red);
-  }
 };

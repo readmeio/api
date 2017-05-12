@@ -4,6 +4,7 @@ module.exports = {
     "import"
   ],
   "rules": {
+    "arrow-body-style": 0,
     "no-console": "off",
     "no-use-before-define": "off",
     "global-require": "off",
@@ -12,6 +13,7 @@ module.exports = {
     "guard-for-in": "off",
     "strict": "off",
     "no-underscore-dangle": "off",
-    "prefer-rest-params": "off"
+    "prefer-rest-params": "off",
+    "no-param-reassign": ["error", { "props": false }],
   }
 };

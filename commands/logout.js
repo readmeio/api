@@ -1,14 +1,22 @@
-const path = require('path');
+module.exports.usage = `Logout the current user
+
+Usage: api logout`;
+
 const fs = require('fs');
-const exists = require('../utils/utils').fileExists;
 
-const credPath = path.join(__dirname, '..', 'data/creds.json');
+const request = require('../lib/request');
+const console = require('../utils/console');
 
-// TODO: log out on server
+const { credPath } = require('../utils/utils');
+
 module.exports.run = () => {
-  if (exists(credPath)) {
-    fs.unlinkSync(credPath);
-  }
+  return request.post('/logout').then(() => {
+    console.log('You have been logged out.');
 
-  console.log('You have been logged out.');
+    try {
+      fs.unlinkSync(credPath);
+    } catch (e) {
+      //
+    }
+  });
 };
