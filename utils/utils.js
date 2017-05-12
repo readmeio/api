@@ -12,11 +12,12 @@ const exit = require('./exit');
 
 exports.credPath = path.join(__dirname, '..', 'data/creds.json');
 
-const host = process.env.BUILD_HOST || 'staging.bips.tech';
-const www = process.env.WWW_HOST || 'bips.tech';
+const host = process.env.BUILD_HOST || 'api.readme.build';
+const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
+const www = process.env.WWW_HOST || 'readme.build';
 
-exports.WWW_URL = url.format({ host: www, protocol: 'http' });
-exports.BUILD_URL = url.format({ host, protocol: 'http' });
+exports.WWW_URL = url.format({ host: www, protocol });
+exports.BUILD_URL = url.format({ host, protocol });
 exports.WS_URL = url.format({ host, protocol: 'ws', slashes: true });
 
 exports.fileExists = (file) => {
