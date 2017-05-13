@@ -1,15 +1,19 @@
 const createEnquirer = require('../lib/enquirer');
 const request = require('request-promise');
 const fs = require('fs');
-const exists = require('../utils/utils').fileExists;
 const utils = require('../utils/utils');
 
 const proxyUrl = utils.BUILD_URL;
 const enquirer = createEnquirer();
 
-const getEmail = () => {
-  if (exists(utils.credPath)) {
-    console.log('You are already logged in. Please log out to switch accounts.');
+module.exports.aliases = ['signup'];
+
+let action;
+
+const getEmail = (args) => {
+  action = args[0];
+  if (utils.fileExists(utils.credPath)) {
+    console.log(`You are already logged in. Run ${'api logout'.green} switch accounts.`);
   } else {
     enquirer
       .ask({
@@ -28,28 +32,52 @@ const getToken = (input) => {
     body: input,
   }).then((res) => {
     if (res === 'signup') {
-      console.log('Hmm, it seems like you need to sign up!');
-      const signupUrl = `${utils.WWW_URL}/signup`.blue;
-      console.log(`Visit ${signupUrl} to create an account`);
-    } else if (res === 'login') {
+      if (action !== 'signup') console.log('It seems like you need to sign up!');
       enquirer
         .ask({
-          type: 'password',
-          name: 'password',
-          message: 'Enter your password',
-        })
-        .then(p => login(input.email, p.password)).catch(console.log);
-    } else if (res === 'incomplete') {
-      console.log('This user hasn\'t been completely set up yet! Check your email to proceed.');
+          type: 'input',
+          name: 'username',
+          message: 'Enter a username',
+        }).then((u) => {
+          getPassword().then(p => signup(input.email, u.username, p.password));
+        }).catch(console.log);
+    } else if (res === 'login' && action !== 'signup') {
+      getPassword().then(p => login(input.email, p.password)).catch(console.log);
+    } else {
+      console.log('An account already exists with that email. Run `api login` to log in!');
     }
   });
+};
+
+const getPassword = () => {
+  return enquirer
+    .ask({
+      type: 'password',
+      name: 'password',
+      message: 'Enter your password',
+    });
+};
+
+const signup = (email, username, password) => {
+  request.post(`${proxyUrl}/users`, {
+    json: true,
+    body: {
+      email,
+      username,
+      password,
+    },
+  }).then(() => login(email, password)).catch(res => console.log(res.error.error.red));
 };
 
 const j = request.jar();
 function saveCookie() {
   fs.writeFile(utils.credPath, JSON.stringify(j._jar), (err) => {
     if (err) console.log(err);
-    console.log('Logged In!');
+    if (action === 'signup') {
+      console.log('Account Created!');
+    } else {
+      console.log('Successfully Logged In!'.green);
+    }
   });
 }
 
@@ -62,7 +90,7 @@ const login = (email, password) => {
       password,
     },
   }).then(saveCookie).catch((res) => {
-    console.log(res.error.error);
+    console.log(res.error.error.red);
   });
 };
 
