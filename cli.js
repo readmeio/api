@@ -11,10 +11,14 @@ const utils = require('./utils/utils');
 // Notifies the user if there is an update to the api module
 updateNotifier({ pkg }).notify();
 
+// --verson and -v
+if (parseArgs.version || parseArgs.v) {
+  console.log(pkg.version);
+  process.exit(0);
+}
+
 const args = parseArgs._;
 const action = load(args[0]);
-// TODO change this to be `args.slice(1)` so that the command
-// doesnt get passed down
 
 try {
   action.run(args, parseArgs);
