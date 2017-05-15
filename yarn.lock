@@ -539,9 +539,9 @@ buffer-shims@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
 
-build-docs@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/build-docs/-/build-docs-1.1.0.tgz#951a475002119d81979ccfd414dd88477d20794e"
+build-docs@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/build-docs/-/build-docs-1.2.0.tgz#89610aa2290adf1b3c5b04634919885f32788595"
   dependencies:
     comments-parser "^1.0.0"
 
