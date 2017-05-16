@@ -98,7 +98,7 @@ module.exports.deploy = (packageJson, answers) => {
     const req = request.post('/services/', { resolveWithFullResponse: true, sendRequest: false });
     const form = req.form();
 
-    const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
+    const api = require(path.join(process.cwd(), 'node_modules/api/api.js'));
     require(path.join(process.cwd(), packageJson.get('main')));
     const actions = Object.keys(api.actions);
 

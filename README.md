@@ -9,19 +9,19 @@ cli and node module to create, manage and run services
 
 With npm:
 ```
-npm install api-build -g
+npm install api -g
 ```
 
 With yarn:
 ```
-yarn global add api-build
+yarn global add api
 ```
 
 This gives you the `api` command line program
 
 ```sh
 # Displays usage information
-api 
+api
 
 # In a fresh directory
 api init
@@ -31,16 +31,16 @@ api init
 
 With npm:
 ```
-npm install api-build --save
+npm install api --save
 ```
 
 With yarn:
 ```
-yarn add api-build
+yarn add api
 ```
 
 ```js
-const api = require('api-build');
+const api = require('api');
 ```
 
 ### `api.create(name, function)`

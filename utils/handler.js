@@ -1,5 +1,5 @@
 /* eslint-disable */
-const api = require('api-build');
+const api = require('api');
 /* eslint-enable */
 
 exports.go = (event, context, callback) => {
