@@ -1,4 +1,4 @@
-const api = require('api-build');
+const api = require('api');
 
 /*
  * <<action>>: Add a one line description of your service here

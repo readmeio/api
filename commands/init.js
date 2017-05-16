@@ -86,7 +86,7 @@ module.exports.init = (answers) => {
   }
 
   console.log(`Running ${'npm install'.yellow}...`);
-  return exec('npm install api-build --save', () => {
+  return exec('npm install api --save', () => {
     const filename = `${answers.name}.js`;
     console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
   });

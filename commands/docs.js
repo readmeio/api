@@ -14,7 +14,7 @@ const buildDocs = require('build-docs');
 module.exports.run = () => {
   const pjson = require(path.join(process.cwd(), 'package.json'));
   const main = path.join(process.cwd(), pjson.main);
-  const api = require(path.join(process.cwd(), 'node_modules/api-build/api.js'));
+  const api = require(path.join(process.cwd(), 'node_modules/api/api.js'));
   require(main);
   const docs = buildDocs(fs.readFileSync(main), Object.keys(api.actions));
   console.log('Generated docs for', main.green, '\n');

@@ -2,7 +2,7 @@ const path = require('path');
 
 exports.go = (event, context, callback) => {
   require(`${event.entrypoint}`);
-  const api = require(path.join(process.cwd(), 'node_modules/api-build/api'));
+  const api = require(path.join(process.cwd(), 'node_modules/api/api'));
   try {
     api.actions[event.name](event.data, {
       success: api.success(callback),
