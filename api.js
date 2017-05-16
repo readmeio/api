@@ -17,6 +17,10 @@ module.exports.create = (name, func) => {
 module.exports.success = callback => response => callback(null, response);
 
 module.exports.error = (name, props) => {
+  if (name instanceof Error) {
+    throw name;
+  }
+
   const e = new Error();
   e.name = name;
   e.handled = true;

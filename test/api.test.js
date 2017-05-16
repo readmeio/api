@@ -15,6 +15,17 @@ describe('api', () => {
         assert.equal(e.handled, true);
       }
     });
+
+    it('should pass through if an Error object is provided', () => {
+      const msg = 'This is an error object';
+      const err = new Error(msg);
+      try {
+        api.error(err);
+      } catch (e) {
+        assert.equal(e.name, 'Error');
+        assert.equal(e.message, msg);
+      }
+    });
   });
 
   describe('#do()', () => {
