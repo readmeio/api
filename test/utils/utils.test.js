@@ -47,5 +47,17 @@ describe('utils', () => {
       assert.deepEqual(e.data, event.data);
       assert(e.handled);
     });
+
+    it('should handle thrown errors', () => {
+      const message = 'error message';
+      const error = new Error(message);
+      error.name = 'UnknownError';
+
+      const e = utils.parseErrors(event, error);
+      assert.equal(e.name, 'UnknownError');
+      assert.equal(e.message, message);
+      assert.deepEqual(e.data, event.data);
+      assert.equal(e.handled, false);
+    });
   });
 });

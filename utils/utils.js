@@ -76,9 +76,6 @@ exports.parseArgs = (args) => {
 };
 
 exports.parseErrors = (event, error) => {
-  // Don't want to modify error passed in
-  const e = Object.assign({}, error);
-
   const file = fs.readFileSync(`${event.entrypoint}`);
   const docs = buildDocs(file);
 
@@ -94,29 +91,30 @@ exports.parseErrors = (event, error) => {
   let message;
   let found = false;
   for (const err of errors) {
-    if (err.type === e.name) {
+    if (err.type === error.name) {
       message = err.description;
       found = true;
     }
   }
 
+  const e = {};
   // Normallize api.error('message')
-  if (!found && e.handled) {
-    e.message = e.name;
+  if (!found && error.handled) {
+    e.message = error.name;
     e.name = 'Error';
   }
 
   const outError = {
-    name: e.name,
-    message: message || e.message,
-    handled: e.handled || false,
+    name: e.name || error.name,
+    message: message || e.message || error.message,
+    handled: error.handled || false,
     data: event.data,
   };
 
   // Parse if error message is a template
-  if (e.props && outError.message) {
+  if (error.props && outError.message) {
     const interpolate = /\${([\s\S]+?)}/g;
-    outError.message = template(outError.message, { interpolate })(e.props);
+    outError.message = template(outError.message, { interpolate })(error.props);
   }
   return outError;
 };

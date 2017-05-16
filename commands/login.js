@@ -1,3 +1,7 @@
+module.exports.usage = `Login to Build
+
+Usage: api login`;
+
 const createEnquirer = require('../lib/enquirer');
 const request = require('request-promise');
 const fs = require('fs');
