@@ -43,7 +43,7 @@ const getToken = (input) => {
           name: 'username',
           message: 'Enter a username',
         }).then((u) => {
-          getPassword().then(p => signup(input.email, u.username, p.password));
+          getPassword().then(p => signup(input.email, u.username, p.password, p.inviteCode));
         }).catch(console.log);
     } else if (res === 'login' && action !== 'signup') {
       getPassword().then(p => login(input.email, p.password)).catch(console.log);
@@ -55,20 +55,28 @@ const getToken = (input) => {
 
 const getPassword = () => {
   return enquirer
-    .ask({
-      type: 'password',
-      name: 'password',
-      message: 'Enter your password',
-    });
+    .ask([
+      {
+        type: 'password',
+        name: 'password',
+        message: 'Enter your password',
+      },
+      {
+        type: 'input',
+        name: 'inviteCode',
+        message: 'Enter your invite code',
+      },
+    ]);
 };
 
-const signup = (email, username, password) => {
+const signup = (email, username, password, inviteCode) => {
   request.post(`${proxyUrl}/users`, {
     json: true,
     body: {
       email,
       username,
       password,
+      inviteCode,
     },
   }).then(() => login(email, password)).catch(res => console.log(res.error.error.red));
 };
