@@ -38,11 +38,18 @@ const getToken = (input) => {
     if (res === 'signup') {
       if (action !== 'signup') console.log('It seems like you need to sign up!');
       enquirer
-        .ask({
-          type: 'input',
-          name: 'username',
-          message: 'Enter a username',
-        }).then((u) => {
+        .ask([
+          {
+            type: 'input',
+            name: 'username',
+            message: 'Enter a username',
+          },
+          {
+            type: 'input',
+            name: 'inviteCode',
+            message: 'Enter your invite code',
+          },
+        ]).then((u) => {
           getPassword().then(p => signup(input.email, u.username, p.password, p.inviteCode));
         }).catch(console.log);
     } else if (res === 'login' && action !== 'signup') {
@@ -55,18 +62,11 @@ const getToken = (input) => {
 
 const getPassword = () => {
   return enquirer
-    .ask([
-      {
-        type: 'password',
-        name: 'password',
-        message: 'Enter your password',
-      },
-      {
-        type: 'input',
-        name: 'inviteCode',
-        message: 'Enter your invite code',
-      },
-    ]);
+    .ask({
+      type: 'password',
+      name: 'password',
+      message: 'Enter your password',
+    });
 };
 
 const signup = (email, username, password, inviteCode) => {
