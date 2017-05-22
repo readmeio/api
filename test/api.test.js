@@ -32,7 +32,7 @@ describe('api', () => {
     const key = '123456';
     const action = 'action';
     const body = { name: 'test' };
-    const responseBody = { result: 'hello world' };
+    const responseBody = 'hello world';
 
     it('should call invoke', () => {
       const service = 'service';

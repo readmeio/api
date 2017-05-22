@@ -65,7 +65,7 @@ module.exports.do = (action, d, cb) => {
 
   return maybe(callback, new Promise((resolve, reject) => {
     return invoke(this.key, this.service, action, data).then((response) => {
-      return resolve(response.body.result);
+      return resolve(response.body);
     }).catch((err) => {
       return reject(err.response.body);
     });
