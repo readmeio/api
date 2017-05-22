@@ -45,7 +45,7 @@ describe('api', () => {
         });
 
       return api.config(key)(service).do(action, body).then((response) => {
-        assert.equal(response, responseBody.result);
+        assert.equal(response, responseBody);
         invokeMock.done();
       });
     });
