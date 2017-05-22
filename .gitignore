@@ -5,3 +5,4 @@ data/output.zip
 .DS_Store
 .nyc_output
 coverage/
+npm-debug.log
