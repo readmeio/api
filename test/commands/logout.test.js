@@ -17,7 +17,7 @@ describe('`logout` command', () => {
 
       // Need to do this on next tick, as it logs after the response
       process.nextTick(() => {
-        assert(logger._flush().indexOf() > -1, 'You have been logged out', 'Should show logout message');
+        assert(logger._flush().indexOf('You have been logged out') > -1, 'Should show logout message');
       });
     });
   });

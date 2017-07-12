@@ -18,7 +18,7 @@ describe('`whoami` command', () => {
 
     // Need to do this on next tick, as it logs after the response
     process.nextTick(() => {
-      assert(logger._flush().indexOf() > -1, 'example', 'Should print the username');
+      assert(logger._flush().indexOf('example') > -1, 'Should print the username');
     });
   });
 });
