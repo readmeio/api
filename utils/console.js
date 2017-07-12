@@ -2,13 +2,16 @@ const logs = [];
 
 module.exports._flush = () => logs.splice(0).join('\n');
 
-module.exports.log = (...args) => {
+function createLog(method, ...args) {
   if (process.env.NODE_ENV === 'testing') {
     logs.push(...args);
     return args;
   }
 
-  return console.log(...args);
-};
+  return console[method](...args);
+}
 
-module.exports.error = console.error;
+module.exports.log = createLog.bind(null, 'log');
+
+module.exports.error = createLog.bind(null, 'error');
+module.exports.warn = console.warn;
