@@ -15,7 +15,7 @@ exports.credPath = path.join(__dirname, '..', 'data/creds.json');
 const host = process.env.BUILD_HOST || 'api.readme.build';
 const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
 const www = process.env.WWW_HOST || 'readme.build';
-const version = process.env.BUILD_HOST ? '' : 'v0';
+const version = process.env.BUILD_HOST ? '' : 'v1';
 
 exports.WWW_URL = url.format({ host: www, protocol });
 exports.BUILD_URL = url.format({ host, protocol, pathname: version });
