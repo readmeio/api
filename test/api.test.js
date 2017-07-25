@@ -38,7 +38,7 @@ describe('api', () => {
       const service = 'service';
 
       const invokeMock = nock(BUILD_URL)
-        .post(`/services/${service}/${action}/invoke`, body)
+        .post(`/run/${service}/${action}`, body)
         .basicAuth({ user: key })
         .reply(() => {
           return [200, responseBody, {}];
@@ -54,7 +54,7 @@ describe('api', () => {
       const service = 'team/service';
 
       const invokeMock = nock(BUILD_URL)
-        .post(`/services/@${service}/${action}/invoke`, body)
+        .post(`/run/@${service}/${action}`, body)
         .basicAuth({ user: key })
         .reply(() => {
           return [200, {}, {}];

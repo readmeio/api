@@ -30,7 +30,7 @@ describe('run command', () => {
     }));
 
     const invokeMock = nock(BUILD_URL)
-      .post(`/services/${service}/${action}/invoke`)
+      .post(`/run/${service}/${action}`)
       .basicAuth({ user: key })
       .reply(() => {
         return [200, {}, {}];
@@ -63,7 +63,7 @@ describe('run command', () => {
     }));
 
     const invokeMock = nock(BUILD_URL)
-      .post(`/services/@${service}/${action}/invoke`)
+      .post(`/run/@${service}/${action}`)
       .basicAuth({ user: key })
       .reply(() => {
         return [200, {}, {}];
