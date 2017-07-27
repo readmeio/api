@@ -7,6 +7,8 @@ const request = require('request-promise');
 const fs = require('fs');
 const utils = require('../utils/utils');
 
+const execSync = require('child_process').execSync;
+
 const proxyUrl = utils.BUILD_URL;
 const enquirer = createEnquirer();
 
@@ -19,11 +21,17 @@ const getEmail = (args) => {
   if (utils.fileExists(utils.credPath)) {
     console.log(`You are already logged in. Run ${'api logout'.green} switch accounts.`);
   } else {
+    let email = undefined;
+    try {
+      email = execSync('git config --global user.email').toString().trim();
+    } catch(e) { }
+
     enquirer
       .ask({
         type: 'input',
         name: 'email',
         message: 'Enter your email address',
+        default: email,
       })
       .then(getToken)
       .catch(console.log);
@@ -55,7 +63,7 @@ const getToken = (input) => {
     } else if (res === 'login' && action !== 'signup') {
       getPassword().then(p => login(input.email, p.password)).catch(console.log);
     } else {
-      console.log('An account already exists with that email. Run `api login` to log in!');
+      console.log(`An account already exists with that email. Run ${'api login'.green} to log in!`);
     }
   });
 };
