@@ -21,10 +21,12 @@ const getEmail = (args) => {
   if (utils.fileExists(utils.credPath)) {
     console.log(`You are already logged in. Run ${'api logout'.green} switch accounts.`);
   } else {
-    let email = undefined;
+    let email;
     try {
       email = execSync('git config --global user.email').toString().trim();
-    } catch(e) { }
+    } catch (e) {
+      // hi
+    }
 
     enquirer
       .ask({
