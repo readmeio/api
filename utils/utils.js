@@ -54,7 +54,11 @@ exports.getJar = () => {
 
     console.error(`You must be logged in to perform that action:
 
-  api login
+  ${'api login'.green}
+
+Don't have an account? Signup is free and takes 5 seconds!
+
+  ${'api signup'.green}
     `);
 
     return exit(1);
