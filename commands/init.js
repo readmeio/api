@@ -16,14 +16,14 @@ const packageJson = require('../lib/package-json');
 module.exports.run = () => {
   const enquirer = createEnquirer();
 
-  console.log('We are going to walk you through initial setup!'.green);
+  console.log('Let\'s create your new API!'.cyan);
+  console.log('ReadMe Build is a really, really simple way to create awesome APIs.');
   console.log('');
 
   let existingPackageJson;
 
   try {
     existingPackageJson = require(path.join(process.cwd(), 'package.json'));
-    console.log('Existing package.json found, will provide defaults from this');
   } catch (e) {
     existingPackageJson = {};
   }
