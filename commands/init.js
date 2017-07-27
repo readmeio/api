@@ -19,8 +19,11 @@ const packageJson = require('../lib/package-json');
 module.exports.run = () => {
   const enquirer = createEnquirer();
 
+  console.log('');
   console.log('Let\'s create your new API!'.cyan);
+  console.log('');
   console.log('ReadMe Build is a really, really simple way to create awesome APIs.');
+  console.log('Learn more at https://readme.build'.grey);
   console.log('');
 
   let existingPackageJson;
@@ -101,13 +104,13 @@ module.exports.init = (answers) => {
 
 1. Try running it locally first:
 
-  ${'$'.grey} ${(`api local sayHello name=${name}`).green}
+  ${'$'.grey} ${(`api local sayHello name=${name}`).yellow}
 
-2. Edit ${filename.yellow} and build your API!
+2. Edit ${filename.cyan} and build your API!
 
 3. When you're ready to release, run:
 
-  ${'$'.grey} ${('api deploy').green}
+  ${'$'.grey} ${('api deploy').yellow}
 `);
   });
 };
