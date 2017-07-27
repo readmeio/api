@@ -2,6 +2,8 @@ module.exports.usage = `Returns the current logged in user
 
 Usage: api whoami`;
 
+module.exports.category = 'utility';
+
 const request = require('../lib/request');
 const console = require('../utils/console');
 

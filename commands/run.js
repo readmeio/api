@@ -16,6 +16,9 @@ const invoke = require('../lib/invoke');
 
 module.exports.aliases = ['invoke'];
 
+module.exports.category = 'using';
+module.exports.weight = 1;
+
 module.exports.run = (args, opts) => {
   if (!args[1]) throw new Error('Missing service');
   if (!args[2]) throw new Error('Missing action');

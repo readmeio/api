@@ -1,6 +1,9 @@
 module.exports.usage = `Logout the current user
 
 Usage: api logout`;
+module.exports.weight = 4;
+
+module.exports.category = 'utility';
 
 const fs = require('fs');
 

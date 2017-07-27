@@ -4,6 +4,9 @@ Usage: api local <action> [arg1=val1, arg2=val2...argn=valn]
 
 Runs your api locally. Useful for testing changes before deploying`;
 
+module.exports.category = 'using';
+module.exports.weight = 2;
+
 const path = require('path');
 
 const utils = require('../utils/utils');

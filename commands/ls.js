@@ -6,6 +6,8 @@ Usage:
   api ls used # Returns versions that you are using
 `;
 
+module.exports.category = 'utility';
+
 require('colors');
 const request = require('../lib/request');
 

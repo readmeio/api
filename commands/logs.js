@@ -1,8 +1,14 @@
+module.exports.usage = `See recent logs
+
+Usage: api logs
+`;
 require('colors');
 const Primus = require('primus');
 const request = require('request-promise');
 
 const utils = require('../utils/utils');
+
+module.exports.category = 'using';
 
 module.exports.run = () => {
   const Socket = Primus.createSocket();

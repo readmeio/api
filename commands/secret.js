@@ -2,6 +2,8 @@ module.exports.usage = `Sets a secret for a build service
 
 Usage: api secret key=value`;
 
+module.exports.category = 'basic';
+
 const request = require('request-promise');
 
 const utils = require('../utils/utils');

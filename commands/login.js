@@ -2,6 +2,8 @@ module.exports.usage = `Login to Build
 
 Usage: api login`;
 
+module.exports.weight = 3;
+
 const createEnquirer = require('../lib/enquirer');
 const request = require('request-promise');
 const fs = require('fs');
@@ -11,6 +13,8 @@ const proxyUrl = utils.BUILD_URL;
 const enquirer = createEnquirer();
 
 module.exports.aliases = ['signup'];
+
+module.exports.category = 'utility';
 
 let action;
 

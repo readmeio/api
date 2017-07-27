@@ -5,6 +5,9 @@ Usage: api update <service> [<version>] [--team <team>]
 The version is optional, and will by default update you to the latest.
 --team is used to designate which team you would like to update
 `;
+module.exports.weight = 5;
+
+module.exports.category = 'utility';
 
 require('colors');
 const createEnquirer = require('../lib/enquirer');

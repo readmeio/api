@@ -2,6 +2,10 @@ module.exports.usage = `Deploys a service to build
 
 Usage: api deploy`;
 
+module.exports.weight = 2;
+
+module.exports.category = 'basic';
+
 const validName = require('validate-npm-package-name');
 const archiver = require('archiver');
 const semver = require('semver');

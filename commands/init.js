@@ -1,8 +1,11 @@
-module.exports.usage = `Init a new service
+module.exports.usage = `Set up a new service
 
 Usage: api init
 
 Asks a series of questions which will be used to generate a new service in the current directory`;
+
+module.exports.category = 'basic';
+module.exports.weight = 1;
 
 require('colors');
 const fs = require('fs');
