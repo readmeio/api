@@ -55,7 +55,7 @@ module.exports.run = (args, opts) => {
       service = `@${service}`;
     }
 
-    return invoke(team.key, service, action, data).then((response) => {
+    return invoke(team.key, service, action, data, true).then((response) => {
       console.log(response.body);
     }).catch((err) => {
       try {

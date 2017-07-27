@@ -135,6 +135,15 @@ exports.getGitConfig = (config) => {
   return val;
 };
 
+exports.getPackageJson = () => {
+  try {
+    return require(path.join(process.cwd(), 'package.json'));
+  } catch (e) {
+    // Couldn't get it
+  }
+  return {};
+};
+
 exports.makeUsername = () => {
   if (exports.getGitConfig('github.user')) {
     return exports.getGitConfig('github.user');
