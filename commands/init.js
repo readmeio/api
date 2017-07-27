@@ -54,18 +54,20 @@ module.exports.questions = (existingPackageJson) => {
       message: 'Version number',
       default: existingPackageJson.version || '0.0.1',
     },
+    /*
     {
       type: 'input',
       name: 'action',
       message: 'What is the name of your first action?',
       default: 'sayHello',
     },
+    */
   ];
 };
 
 module.exports.init = (answers) => {
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
-  const stub = data.replace(/<<action>>/g, answers.action).replace(/<<name>>/g, answers.name);
+  const stub = data.replace(/<<action>>/g, 'sayHello').replace(/<<name>>/g, answers.name);
 
   fs.writeFileSync(`${answers.name}.js`, stub);
 
@@ -92,11 +94,11 @@ module.exports.init = (answers) => {
 
     const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
 
-    console.log(`\nGreat! We've created it!
+    console.log(`\nGreat! We've set up your api!
 
 1. Try running it locally first:
 
-  ${'$'.grey} ${(`api local ${answers.action} name=${name}`).green}
+  ${'$'.grey} ${(`api local sayHello name=${name}`).green}
 
 2. Edit ${filename.yellow} and build your API!
 
