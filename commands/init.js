@@ -8,6 +8,7 @@ require('colors');
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const utils = require('../utils/utils');
 const validName = require('validate-npm-package-name');
 const createEnquirer = require('../lib/enquirer');
 const packageJson = require('../lib/package-json');
@@ -51,7 +52,7 @@ module.exports.questions = (existingPackageJson) => {
       type: 'input',
       name: 'version',
       message: 'Version number',
-      default: existingPackageJson.version || '1.0.0',
+      default: existingPackageJson.version || '0.0.1',
     },
     {
       type: 'input',
@@ -64,7 +65,7 @@ module.exports.questions = (existingPackageJson) => {
 
 module.exports.init = (answers) => {
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
-  const stub = data.replace(/<<action>>/g, answers.action);
+  const stub = data.replace(/<<action>>/g, answers.action).replace(/<<name>>/g, answers.name);
 
   fs.writeFileSync(`${answers.name}.js`, stub);
 
@@ -88,6 +89,20 @@ module.exports.init = (answers) => {
   console.log(`Running ${'npm install'.yellow}...`);
   return exec('npm install api --save', () => {
     const filename = `${answers.name}.js`;
-    console.log(`\nGreat! We've created it! Just edit ${filename.yellow} and type ${'api deploy'.yellow} when you are ready!\n`);
+
+    const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
+
+    console.log(`\nGreat! We've created it!
+
+1. Try running it locally first:
+
+  ${'$'.grey} ${(`api local ${answers.action} name=${name}`).green}
+
+2. Edit ${filename.yellow} and build your API!
+
+3. When you're ready to release, run:
+
+  ${'$'.grey} ${('api deploy').green}
+`);
   });
 };

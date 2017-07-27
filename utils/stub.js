@@ -11,5 +11,6 @@ const api = require('api');
  * @returns {Object} The created user object
  */
 api.create('<<action>>', (data, api) => {
-  api.success('Hey there ' + data.name + '! It worked!');
+  if (!data.name) return api.error('ValidationError');
+  api.success('Hey there ' + data.name + '! It worked!\n\nNow edit <<name>>.js to write your own code!');
 });

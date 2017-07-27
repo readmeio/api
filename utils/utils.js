@@ -6,6 +6,7 @@ const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
 const template = require('lodash.template');
 const buildDocs = require('build-docs');
+const execSync = require('child_process').execSync;
 
 const console = require('./console');
 const exit = require('./exit');
@@ -123,3 +124,28 @@ exports.parseErrors = (event, error) => {
   }
   return outError;
 };
+
+exports.getGitConfig = (config) => {
+  let val;
+  try {
+    val = execSync(`git config --global ${config}`).toString().trim();
+  } catch (e) {
+    // hi
+  }
+  return val;
+};
+
+exports.makeUsername = () => {
+  if (exports.getGitConfig('github.user')) {
+    return exports.getGitConfig('github.user');
+  }
+
+  const name = exports.getGitConfig('user.name');
+  if (!name) return undefined;
+
+  const split = name.split(' ');
+  split[0] = split[0][0]; // first character of first name
+
+  return split.join('').replace(/[^\w]/g, '').toLowerCase();
+};
+
