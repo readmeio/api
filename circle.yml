@@ -4,6 +4,12 @@ machine:
   environment:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
 
+deployment:
+  prod:
+    branch: master
+    commands:
+      - zip -r node_modules.zip node_modules && aws s3 sync node_modules s3://build-node-modules/ --delete
+
 dependencies:
   override:
     - yarn
