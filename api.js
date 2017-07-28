@@ -30,7 +30,12 @@ module.exports.error = (name, props) => {
 
 module.exports.secrets = secrets => secret => secrets.find(s => s.key === secret).value;
 
-module.exports.do = (action, d, cb) => {
+module.exports.do = (...args) => {
+  console.log('.do() is deprecated, use .run() instead.');
+  module.exports.run(...args);
+};
+
+module.exports.run = (action, d, cb) => {
   // Can't reassign params
   let data = d;
   let callback = cb;

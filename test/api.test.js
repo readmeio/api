@@ -28,7 +28,7 @@ describe('api', () => {
     });
   });
 
-  describe('#do()', () => {
+  describe('#run()', () => {
     const key = '123456';
     const action = 'action';
     const body = { name: 'test' };
@@ -44,7 +44,7 @@ describe('api', () => {
           return [200, responseBody, {}];
         });
 
-      return api.config(key)(service).do(action, body).then((response) => {
+      return api.config(key)(service).run(action, body).then((response) => {
         assert.equal(response, responseBody);
         invokeMock.done();
       });
@@ -60,7 +60,7 @@ describe('api', () => {
           return [200, {}, {}];
         });
 
-      return api.config(key)(service).do(action, body).then(() => invokeMock.done());
+      return api.config(key)(service).run(action, body).then(() => invokeMock.done());
     });
   });
 });
