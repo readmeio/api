@@ -11,6 +11,7 @@ require('colors');
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const semver = require('semver');
 const utils = require('../utils/utils');
 const validName = require('validate-npm-package-name');
 const createEnquirer = require('../lib/enquirer');
@@ -59,6 +60,12 @@ module.exports.questions = (existingPackageJson) => {
       name: 'version',
       message: 'Version number',
       default: existingPackageJson.version || '0.0.1',
+      validate: (v) => {
+        if (!semver.valid(v)) {
+          return `${v} is not a valid semver version`;
+        }
+        return true;
+      },
     },
     /*
     {
