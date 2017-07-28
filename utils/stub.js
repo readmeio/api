@@ -8,7 +8,7 @@ const api = require('api');
  *
  * @param {string} name Name of the person
  * @throws {ValidationError} Must provide all required fields
- * @returns {Object} The created user object
+ * @returns {string} A very friendly greeting
  */
 api.create('<<action>>', (data, api) => {
   if (!data.name) return api.error('ValidationError');
