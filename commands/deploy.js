@@ -58,11 +58,11 @@ module.exports.run = () => {
 
       enquirer
         .ask(module.exports.questions(deployed.versions, hasDeployedVersion, teams))
-        .then(module.exports.deploy.bind(null, packageJson));
+        .then(module.exports.deploy.bind(null, packageJson, teams[0]));
     });
 };
 
-function prepareDeploy(packageJson, answers) {
+function prepareDeploy(packageJson, defaultTeam, answers) {
   if (answers.private === 'private') {
     packageJson.set('name', `@${answers.team}/${packageJson.get('name')}`);
   }
@@ -75,13 +75,15 @@ function prepareDeploy(packageJson, answers) {
   // service, so persist it to the package.json
   if (answers.team) {
     packageJson.set('team', answers.team, { build: true });
+  } else if (!packageJson.has('team', { build: true })) {
+    packageJson.set('team', defaultTeam.name, { build: true });
   }
 }
 
 module.exports.prepareDeploy = prepareDeploy;
 
-module.exports.deploy = (packageJson, answers) => {
-  prepareDeploy(packageJson, answers);
+module.exports.deploy = (packageJson, defaultTeam, answers) => {
+  prepareDeploy(packageJson, defaultTeam, answers);
 
   const output = fs.createWriteStream(zipDir);
   const archive = archiver('zip', { store: true });
@@ -161,7 +163,6 @@ module.exports.deploy = (packageJson, answers) => {
 };
 
 module.exports.questions = (versions, hasDeployedVersion, teams) => {
-  const packageJson = require('../lib/package-json')();
   const questions = [{
     type: 'input',
     name: 'version',
@@ -182,7 +183,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
   }];
 
   // Checking for `build.team` and only asking if unset
-  if (!packageJson.has('team', { build: true })) {
+  if (!hasDeployedVersion) {
     questions.push({
       type: 'list',
       name: 'private',
@@ -195,6 +196,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
       name: 'team',
       message: 'Which team should this service be deployed to?',
       choices: teams.map(t => t.name),
+      when: () => teams.length > 1,
     });
   }
 
