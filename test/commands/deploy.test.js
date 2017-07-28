@@ -25,7 +25,7 @@ describe('deploy command', () => {
       it('should prefix with @team if it is a private package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, { team: 'team', private: 'private' });
+        prepareDeploy(pjson, { name: 'team' }, { team: 'team', private: 'private' });
 
         assert.equal(pjson.get('name'), '@team/service');
         assert.equal(pjson.get('team', { build: true }), 'team');
@@ -34,7 +34,7 @@ describe('deploy command', () => {
       it('should not prefix with @team if it is a public package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, { team: 'test', private: 'public' });
+        prepareDeploy(pjson, { name: 'team' }, { team: 'test', private: 'public' });
 
         assert.equal(pjson.get('name'), 'service');
         assert.equal(pjson.get('team', { build: true }), 'test');
@@ -44,7 +44,7 @@ describe('deploy command', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
         pjson.set('team', 'team', { build: true });
-        prepareDeploy(pjson, {});
+        prepareDeploy(pjson, { name: 'team' }, {});
 
         assert.equal(pjson.get('team', { build: true }), 'team');
       });
@@ -54,7 +54,7 @@ describe('deploy command', () => {
       it('should set version if provided', () => {
         const pjson = packageJson();
         pjson.set('version', '1.0.0');
-        prepareDeploy(pjson, {
+        prepareDeploy(pjson, { name: 'team' }, {
           version: '2.0.0',
         });
 
@@ -64,7 +64,7 @@ describe('deploy command', () => {
       it('should default to package.json version', () => {
         const pjson = packageJson();
         pjson.set('version', '1.0.0');
-        prepareDeploy(pjson, {});
+        prepareDeploy(pjson, { name: 'team' }, {});
 
         assert.equal(pjson.get('version'), '1.0.0');
       });

@@ -163,6 +163,7 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
 };
 
 module.exports.questions = (versions, hasDeployedVersion, teams) => {
+  const packageJson = require('../lib/package-json')();
   const questions = [{
     type: 'input',
     name: 'version',
@@ -183,7 +184,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
   }];
 
   // Checking for `build.team` and only asking if unset
-  if (!hasDeployedVersion) {
+  if (!packageJson.has('team', { build: true })) {
     questions.push({
       type: 'list',
       name: 'private',
