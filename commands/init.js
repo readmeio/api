@@ -106,17 +106,19 @@ module.exports.init = (answers) => {
     return undefined;
   }
 
-  console.log(`Running ${'npm install'.yellow}...`);
+  console.log(`\nRunning ${'npm install'.yellow}...`);
   return exec('npm install api --save', () => {
     const filename = `${answers.name}.js`;
 
     const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
 
-    console.log(`\nGreat! We've set up your api!
+    console.log(`\n${'============================='.grey}
+
+${'Great! We\'ve set up your api!'.green}
 
 1. Try running it locally first:
 
-  ${'$'.grey} ${(`api local sayHello name=${name}`).yellow}
+  ${'$'.grey} ${(`api local ${answers.action} name=${name}`).yellow}
 
 2. Edit ${filename.cyan} and build your API!
 
