@@ -144,7 +144,10 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
 
       console.log('Persisting changes back to package.json');
       packageJson.write();
-      console.log(`\nDeployed to ${res.headers.location}`);
+
+      const url = res.headers.location.replace(/www\./, '');
+      console.log(`\n🎉  ${'Success!'.green} Your API is deployed!`);
+      console.log(`\nSee the documentation: ${url.cyan.underline}`);
     }).catch(request.errorHandler);
   });
 
@@ -164,10 +167,21 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
 
 module.exports.questions = (versions, hasDeployedVersion, teams) => {
   const packageJson = require('../lib/package-json')();
+  let newVersion;
+  try {
+    // Increment minor if it ends with a 0, or patch if there's already a patch
+    newVersion = semver.inc(packageJson.get('version'), (
+      packageJson.get('version').split('.')[2] === '0' ?
+        'minor' : 'patch'));
+  } catch (e) {
+    // Carry on!
+  }
+
   const questions = [{
     type: 'input',
     name: 'version',
     message: 'What version do you want to deploy?',
+    default: newVersion,
     // Ask what version to deploy if this version has already
     // been deployed once
     when: () => hasDeployedVersion,
