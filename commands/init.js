@@ -24,7 +24,7 @@ module.exports.run = () => {
   console.log('Let\'s create your new API!'.cyan);
   console.log('');
   console.log('ReadMe Build is a really, really simple way to create awesome APIs.');
-  console.log('Learn more at https://readme.build'.grey);
+  console.log(`Learn more at ${'https://readme.build'.underline}`.grey);
   console.log('');
 
   let existingPackageJson;
