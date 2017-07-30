@@ -67,20 +67,25 @@ module.exports.questions = (existingPackageJson) => {
         return true;
       },
     },
-    /*
+    {
+      type: 'message',
+      message: () => {
+        console.log('Create your first action'.yellow);
+        console.log(`${'Each'.grey} ${'service'.cyan} ${'is made up of'.grey} ${'actions'.cyan}${'. They\'re similar to API endpoints.'.grey}`);
+      },
+    },
     {
       type: 'input',
       name: 'action',
       message: 'What is the name of your first action?',
-      default: 'sayHello',
+      default: 'helloWorld',
     },
-    */
   ];
 };
 
 module.exports.init = (answers) => {
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
-  const stub = data.replace(/<<action>>/g, 'sayHello').replace(/<<name>>/g, answers.name);
+  const stub = data.replace(/<<action>>/g, answers.action).replace(/<<name>>/g, answers.name);
 
   fs.writeFileSync(`${answers.name}.js`, stub);
 
