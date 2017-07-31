@@ -110,10 +110,18 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
 
     const main = fs.readFileSync(path.join(process.cwd(), packageJson.get('main')));
 
+    let docs;
+    try {
+      docs = JSON.stringify(buildDocs(main, actions));
+    } catch (e) {
+      console.error(`\nError generating documentation: ${e.message.red}\n`);
+      process.exit(1);
+    }
+
     form.append('entrypoint', packageJson.get('main'));
     form.append('version', packageJson.get('version'));
     form.append('name', packageJson.get('name'));
-    form.append('docs', JSON.stringify(buildDocs(main, actions)));
+    form.append('docs', docs);
     form.append('readme', readme || '');
     form.append('team', packageJson.get('team'));
     form.append('service', fs.createReadStream(zipDir), {
