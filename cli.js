@@ -21,6 +21,11 @@ if (parseArgs.version || parseArgs.v) {
 const args = parseArgs._;
 const action = load(args[0]);
 
+// -t readme and --team readme work
+if (parseArgs.t && !parseArgs.team) {
+  parseArgs.team = parseArgs.t;
+}
+
 try {
   action.run(args, parseArgs);
 } catch (e) {
