@@ -64,7 +64,7 @@ module.exports.run = () => {
 
 function prepareDeploy(packageJson, defaultTeam, answers) {
   if (answers.private === 'private') {
-    packageJson.set('name', `@${answers.team}/${packageJson.get('name')}`);
+    packageJson.set('name', `@${answers.team || defaultTeam}/${packageJson.get('name')}`);
   }
 
   if (answers.version) {
