@@ -14,6 +14,7 @@ updateNotifier({ pkg }).notify();
 // --verson and -v
 if (parseArgs.version || parseArgs.v) {
   console.log(pkg.version);
+  if (process.env.BUILD_HOST) console.log(`BUILD_HOST: ${utils.BUILD_URL}`);
   process.exit(0);
 }
 
