@@ -16,16 +16,17 @@ module.exports.create = (name, func) => {
 
 module.exports.success = callback => response => callback(null, response);
 
-module.exports.error = (name, props) => {
+module.exports.error = (event, callback) => (name, props) => {
   if (name instanceof Error) {
-    throw name;
+    return callback(JSON.stringify(utils.parseErrors(event, name)), null);
   }
 
   const e = new Error();
   e.name = name;
   e.handled = true;
   e.props = props;
-  throw e;
+
+  return callback(JSON.stringify(utils.parseErrors(event, e)), null);
 };
 
 module.exports.secrets = secrets => secret => secrets.find(s => s.key === secret).value;
