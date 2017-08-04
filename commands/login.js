@@ -79,7 +79,13 @@ const signup = (email, username, password, inviteCode) => {
       password,
       inviteCode,
     },
-  }).then(() => login(email, password)).catch(res => console.log(res.error.error.red));
+  }).then(() => login(email, password)).catch((res) => {
+    if (res.error.errors.password) {
+      console.log(res.error.errors.password.red);
+    } else {
+      console.log(res.error.error);
+    }
+  });
 };
 
 const j = request.jar();
