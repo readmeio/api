@@ -10,7 +10,7 @@ const api = require('api');
  * You can view the full docs for our documentation format at:
  * https://docs.readme.build/v1.0/docs/writing-documentation
  *
- * @param {string} name Name of the person
+ * @param {string} name=Name Name of the person
  * @throws {ValidationError} Must provide all required fields
  * @returns {string} A very friendly greeting
  */
