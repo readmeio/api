@@ -8,7 +8,7 @@ const api = require('api');
  * inform Build about various aspects of your service.
  *
  * You can view the full docs for our documentation format at:
- * https://docs.readme.build/v1.0/docs/writing-documentation
+ * https://docs.readme.build/docs/writing-documentation
  *
  * @param {string} name Name of the person
  * @throws {ValidationError} Must provide all required fields
