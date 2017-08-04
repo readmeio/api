@@ -99,7 +99,7 @@ module.exports.init = (answers) => {
 
   // Only add a readme if one does not exist
   if (!fs.existsSync('readme.md')) {
-    fs.writeFileSync('readme.md', `# ${answers.name}!\n\nWelcome to ${answers.name}\n`);
+    fs.writeFileSync('readme.md', `# ${answers.name}\n\nWelcome to ${answers.name}\n`);
   }
 
   if (process.env.NODE_ENV === 'testing') {
