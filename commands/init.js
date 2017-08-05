@@ -68,16 +68,9 @@ module.exports.questions = (existingPackageJson) => {
       },
     },
     {
-      type: 'message',
-      message: () => {
-        console.log('Create your first action'.yellow);
-        console.log(`${'Each'.grey} ${'service'.cyan} ${'is made up of'.grey} ${'actions'.cyan}${'. They\'re similar to API endpoints.'.grey}`);
-      },
-    },
-    {
       type: 'input',
       name: 'action',
-      message: 'What is the name of your first action?',
+      message: 'What is the name of your first endpoint?',
       default: 'helloWorld',
     },
   ];

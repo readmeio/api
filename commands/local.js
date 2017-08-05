@@ -1,6 +1,6 @@
 module.exports.usage = `Run a service locally
 
-Usage: api local <action> [arg1=val1, arg2=val2...argn=valn]
+Usage: api local <endpoint> [arg1=val1, arg2=val2...argn=valn]
 
 Runs your api locally. Useful for testing changes before deploying`;
 

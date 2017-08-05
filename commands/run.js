@@ -1,8 +1,8 @@
 module.exports.usage = `Run a service remotely
 
-Usage: api run <service> <action> [--team <team>]
+Usage: api run <service> <endpoint> [--team <team>]
 
---team is used to designate which team you would like to run this action against.
+--team is used to designate which team you would like to run this endpoint against.
 This roughly equates to which API key we will use when invoking the service.
 You may have access to some services from only certain teams, so this is important.
 
@@ -21,7 +21,7 @@ module.exports.weight = 1;
 
 module.exports.run = (args, opts) => {
   if (!args[1]) throw new Error('Missing service');
-  if (!args[2]) throw new Error('Missing action');
+  if (!args[2]) throw new Error('Missing endpoint');
 
   const data = {};
   let service = args[1];
