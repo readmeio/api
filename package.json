@@ -9,8 +9,7 @@
   "scripts": {
     "pretest": "eslint . -f unix",
     "test": "nyc --reporter=none mocha",
-    "posttest": "./bin/posttest.sh",
-    "postinstall": "node ./bin/postinstall.js"
+    "posttest": "./bin/posttest.sh"
   },
   "author": "ReadMe.io",
   "license": "ISC",
@@ -21,7 +20,6 @@
     "colors": "^1.1.2",
     "enquirer": "^0.4.1",
     "glob": "^7.1.1",
-    "is-installed-globally": "^0.1.0",
     "lodash.template": "^4.4.0",
     "minimist": "^1.2.0",
     "primus": "6.1.0",
