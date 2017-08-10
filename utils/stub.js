@@ -3,12 +3,12 @@ const api = require('api');
 /*
  * <<action>>: Edit the description of your service here
  *
- * In Build, the comments (including this one!) matter. Like javadoc,
- * these comments will be used to generate documentation, as well
- * inform Build about various aspects of your service.
- *
+ * THESE COMMENTS ARE YOUR DOCUMENTATION!
  * You can view the full docs for our documentation format at:
  * https://docs.readme.build/docs/writing-documentation
+ *
+ * Write a description and define your API in this
+ * code block.
  *
  * @param {string} name=Name Name of the person
  * @throws {ValidationError} Must provide all required fields
