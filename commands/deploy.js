@@ -25,7 +25,10 @@ function fetchDeployedVersion(packageJson) {
   let deployed = { versions: [] };
   let hasDeployedVersion = false;
 
-  return request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false })
+  // Pass in team as a query string if this is a private package
+  const qs = packageJson.get('team') ? { team: packageJson.get('team') } : null;
+
+  return request.get(`/services/${packageJson.get('name')}`, { defaultErrorHandler: false, qs })
     .then((response) => {
       deployed = JSON.parse(response);
       hasDeployedVersion = deployed.versions.some(version => version.version === packageJson.get('version'));
@@ -35,9 +38,10 @@ function fetchDeployedVersion(packageJson) {
       }
 
       return { deployed, hasDeployedVersion };
-    })
-    .catch(() => ({ deployed, hasDeployedVersion }));
+    });
 }
+
+module.exports.fetchDeployedVersion = fetchDeployedVersion;
 
 function fetchTeams() {
   return request.get('/teams').then(response => JSON.parse(response));
@@ -59,7 +63,7 @@ module.exports.run = () => {
       enquirer
         .ask(module.exports.questions(deployed.versions, hasDeployedVersion, teams))
         .then(module.exports.deploy.bind(null, packageJson, teams[0]));
-    });
+    }).catch(request.errorHandler);
 };
 
 function prepareDeploy(packageJson, defaultTeam, answers) {
