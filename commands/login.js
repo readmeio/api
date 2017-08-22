@@ -93,7 +93,14 @@ function saveCookie() {
   fs.writeFile(utils.credPath, JSON.stringify(j._jar), (err) => {
     if (err) console.log(err);
     if (action === 'signup') {
-      console.log('Account Created!');
+      console.log('Account Created!'.green);
+      console.log('');
+
+      // For people who run the demo code, and are sent this way
+      console.log('To see your API keys, run:');
+      console.log('');
+      console.log(`  ${'$'.grey} ${'api keys'.yellow}`);
+      console.log('');
     } else {
       console.log('Successfully Logged In!'.green);
     }
