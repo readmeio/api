@@ -1,13 +1,18 @@
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const { questions, prepareDeploy } = require('../../commands/deploy');
+const nock = require('nock');
+const BUILD_URL = require('../../utils/utils').BUILD_URL.replace('/v1', '');
+const { questions, prepareDeploy, fetchDeployedVersion } = require('../../commands/deploy');
 const packageJson = require('../../lib/package-json');
 
 let cwd;
 let tmpDir;
 
 describe('deploy command', () => {
+  before(() => nock.disableNetConnect());
+  after(() => nock.enableNetConnect());
+  after(() => nock.cleanAll());
   beforeEach(() => {
     cwd = process.cwd();
 
@@ -18,6 +23,37 @@ describe('deploy command', () => {
 
   afterEach(() => {
     process.chdir(cwd);
+  });
+
+  describe('fetchDeployedVersion()', () => {
+    it('should fetch deployed versions', async () => {
+      const pjson = packageJson();
+      pjson.set('name', 'service');
+
+      const mock = nock(BUILD_URL)
+        .get('/v1/services/service')
+        .reply(200, { versions: [] });
+
+      await fetchDeployedVersion(pjson);
+
+      return mock.done();
+    });
+
+    it('should pass team from package json if set', async () => {
+      const team = 'team-name';
+      const pjson = packageJson();
+      pjson.set('name', 'service');
+      pjson.set('team', team, { build: true });
+
+      const mock = nock(BUILD_URL)
+        .get('/v1/services/service')
+        .query({ team })
+        .reply(200, { versions: [] });
+
+      await fetchDeployedVersion(pjson);
+
+      return mock.done();
+    });
   });
 
   describe('prepareDeploy()', () => {
