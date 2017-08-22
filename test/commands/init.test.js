@@ -113,10 +113,10 @@ describe('init command', () => {
         assert.equal(nameQuestion.default, name);
       });
 
-      it('should give current folder directory if no package.json', () => {
+      it('should give lowercased current folder directory if no package.json', () => {
         const nameQuestion = questions({}).find(question => question.name === 'name');
 
-        assert.equal(nameQuestion.default, basename(tmpDir));
+        assert.equal(nameQuestion.default, basename(tmpDir).toLowerCase());
       });
 
       it('should error for invalid package names', () => {

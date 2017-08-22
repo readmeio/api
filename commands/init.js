@@ -44,7 +44,7 @@ module.exports.questions = (existingPackageJson) => {
       type: 'input',
       name: 'name',
       message: 'Name your service',
-      default: existingPackageJson.name || path.basename(process.cwd()),
+      default: existingPackageJson.name || path.basename(process.cwd()).toLowerCase(),
       validate: (input) => {
         const valid = validName(input);
         if (!valid.validForNewPackages) {
