@@ -38,6 +38,10 @@ function fetchDeployedVersion(packageJson) {
       }
 
       return { deployed, hasDeployedVersion };
+    }).catch((err) => {
+      if (err && err.statusCode !== 404) throw err;
+
+      return { deployed, hasDeployedVersion };
     });
 }
 

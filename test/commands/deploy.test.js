@@ -54,6 +54,41 @@ describe('deploy command', () => {
 
       return mock.done();
     });
+
+    it('should ignore error if it is a 404', async () => {
+      const pjson = packageJson();
+      pjson.set('name', 'service');
+
+      const mock = nock(BUILD_URL)
+        .get('/v1/services/service')
+        .reply(404, { versions: [] });
+
+      try {
+        const result = await fetchDeployedVersion(pjson);
+        assert.equal(result.deployed.versions.length, 0);
+        assert.equal(result.hasDeployedVersion, false);
+        return mock.done();
+      } catch (e) {
+        console.log(e);
+        throw new Error('Should not get here');
+      }
+    });
+
+    it('should pass along other errors', async () => {
+      const pjson = packageJson();
+      pjson.set('name', 'service');
+
+      const mock = nock(BUILD_URL)
+        .get('/v1/services/service')
+        .reply(500, { versions: [] });
+
+      try {
+        await fetchDeployedVersion(pjson);
+        throw new Error('Should not get here');
+      } catch (e) {
+        return mock.done();
+      }
+    });
   });
 
   describe('prepareDeploy()', () => {
