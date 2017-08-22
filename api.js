@@ -4,6 +4,7 @@ require('colors');
 
 const utils = require('./utils/utils');
 const logger = require('./utils/logger');
+const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
@@ -37,6 +38,18 @@ module.exports.do = (...args) => {
 };
 
 module.exports.run = (action, d, cb) => {
+  if (this.key && this.key.startsWith('demo')) {
+    return maybe(cb, new Promise((resolve) => {
+      console.log('This is a demo API key!'.red);
+      console.log('To get your own, run:');
+      console.log('');
+      console.log(`  ${'$'.grey} ${'api signup'.yellow}`);
+      console.log('');
+
+      return resolve();
+    }));
+  }
+
   // Can't reassign params
   let data = d;
   let callback = cb;

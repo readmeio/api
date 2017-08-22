@@ -3,6 +3,7 @@ const nock = require('nock');
 
 const { BUILD_URL } = require('../utils/utils');
 const api = require('../api');
+const logger = require('../utils/console');
 
 describe('api', () => {
   describe('.error', () => {
@@ -61,6 +62,12 @@ describe('api', () => {
         });
 
       return api.config(key)(service).run(action, body).then(() => invokeMock.done());
+    });
+
+    it('should log if demo API key used', async () => {
+      await api.config('demo_asdsdsa')('service').run('action', 'body');
+
+      assert(logger._flush().indexOf('This is a demo API key!') > -1, 'Should show error message');
     });
   });
 });
