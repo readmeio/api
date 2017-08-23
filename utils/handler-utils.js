@@ -41,8 +41,15 @@ module.exports.parseErrors = (event, error) => {
 
   // Parse if error message is a template
   if (errors[error.name]) {
-    const template = errors[error.name];
-    outError.message = eval(`(${template})`)(error.props); // eslint-disable-line no-eval
+    try {
+      // We compile the error with lodash.template in build-docs so that we don't
+      // to have it installed in lambda. This is a hack to replace the string and
+      // make the error message nice based on the docs. Eval isn't great, but it works
+      const template = errors[error.name];
+      outError.message = eval(`(${template})`)(error.props); // eslint-disable-line no-eval
+    } catch (err) {
+      outError.message = '';
+    }
   }
   return outError;
 };
