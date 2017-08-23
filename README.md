@@ -33,18 +33,6 @@ api
 api init
 ```
 
-## Usage (node module)
-
-With npm:
-```
-npm install api --save
-```
-
-With yarn:
-```
-yarn add api
-```
-
 ## Credits
 [Dom Harrington](https://github.com/domharrington)
 
