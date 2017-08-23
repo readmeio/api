@@ -11,7 +11,7 @@ $ api deploy
 
 There's a bunch of stuff below, but seriously... just run those commands above, and see how simple it is!
 
-## Usage (CLI)
+## Usage
 
 With npm:
 ```
