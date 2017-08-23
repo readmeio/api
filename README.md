@@ -45,20 +45,6 @@ With yarn:
 yarn add api
 ```
 
-```js
-const api = require('api');
-```
-
-### `api.create(name, function)`
-
-- `name` is the name of the of the action
-- `function` is the code to invoke when this action is run
-
-`function` is invoked with `(data, api)`
-
-- `data` is an object containing parameters passed to your actions
-- `api` is an object containing `error` and `success` methods to call on completion
-
 ## Credits
 [Dom Harrington](https://github.com/domharrington)
 
