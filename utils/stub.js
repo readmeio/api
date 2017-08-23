@@ -1,7 +1,5 @@
-const api = require('api');
-
 /*
- * <<action>>: Edit the description of your service here
+ * Edit the description of your service here
  *
  * THESE COMMENTS ARE YOUR DOCUMENTATION!
  * You can view the full docs for our documentation format at:
@@ -14,7 +12,7 @@ const api = require('api');
  * @throws {ValidationError} Must provide all required fields
  * @returns {string} A very friendly greeting
  */
-api.create('<<action>>', (data, api) => {
+module.exports = (data, api) => {
   if (!data.name) return api.error('ValidationError');
-  api.success('Hey there ' + data.name + '! It worked!\n\nNow edit <<name>>.js to write your own code!');
-});
+  api.success('Hey there ' + data.name + '! It worked!\n\nNow edit <<action>>.js to write your own code!');
+};

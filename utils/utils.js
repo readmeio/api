@@ -4,9 +4,8 @@ const path = require('path');
 const glob = require('glob');
 const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
-const template = require('lodash.template');
-const buildDocs = require('build-docs');
 const execSync = require('child_process').execSync;
+const buildDocs = require('build-docs');
 
 const console = require('./console');
 const exit = require('./exit');
@@ -81,50 +80,6 @@ exports.parseArgs = (args) => {
   return parsed;
 };
 
-exports.parseErrors = (event, error) => {
-  const file = fs.readFileSync(`${event.entrypoint}`);
-  const docs = buildDocs(file);
-
-  // Get errors for called action
-  let errors = [];
-  for (const doc of docs) {
-    if (doc.name === event.name) {
-      errors = doc.throws;
-    }
-  }
-
-  // Match error in docs with message
-  let message;
-  let found = false;
-  for (const err of errors) {
-    if (err.type === error.name) {
-      message = err.description;
-      found = true;
-    }
-  }
-
-  const e = {};
-  // Normallize api.error('message')
-  if (!found && error.handled) {
-    e.message = error.name;
-    e.name = 'Error';
-  }
-
-  const outError = {
-    name: e.name || error.name,
-    message: message || e.message || error.message,
-    handled: error.handled || false,
-    data: event.data,
-  };
-
-  // Parse if error message is a template
-  if (error.props && outError.message) {
-    const interpolate = /\${([\s\S]+?)}/g;
-    outError.message = template(outError.message, { interpolate })(error.props);
-  }
-  return outError;
-};
-
 exports.getGitConfig = (config) => {
   let val;
   try {
@@ -158,3 +113,11 @@ exports.makeUsername = () => {
   return split.join('').replace(/[^\w]/g, '').toLowerCase();
 };
 
+exports.buildErrors = () => {
+  const docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
+  const errors = {};
+  for (const doc of docs) {
+    errors[doc.name] = doc.errors.toString();
+  }
+  return errors;
+};

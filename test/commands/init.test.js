@@ -30,16 +30,15 @@ describe('init command', () => {
     init(answers);
 
     const packageJson = require(join(tmpDir, 'package.json'));
-    const main = `${answers.name}.js`;
+    const main = `${answers.action}.js`;
     assert.equal(packageJson.name, answers.name);
-    assert.equal(packageJson.main, main);
     assert.equal(packageJson.version, answers.version);
 
     const readme = fs.readFileSync(join(tmpDir, 'readme.md'), 'utf8');
     assert(readme.indexOf(`# ${answers.name}`) > -1, 'Should have readme title');
 
-    const mainFile = fs.readFileSync(join(tmpDir, main), 'utf8');
-    assert(mainFile.indexOf('api.create(\'sayHello\'') > -1, 'Should have default action');
+    const mainFile = fs.readFileSync(join(tmpDir, 'endpoints', main), 'utf8');
+    assert(mainFile.indexOf('module.exports =') > -1, 'Should have default action');
   });
 
   it('should extend existing package.json', () => {
@@ -61,7 +60,6 @@ describe('init command', () => {
       build: {
         name: answers.name,
         version: answers.version,
-        main: `${answers.name}.js`,
       },
     }));
   });
@@ -74,7 +72,7 @@ describe('init command', () => {
 
     const answers = {
       name: existingPackageJson.name,
-      version: existingPackageJson.version,
+      version: 'v1.0.0',
       action: 'sayHello',
     };
 
@@ -84,7 +82,7 @@ describe('init command', () => {
 
     assert.deepEqual(packageJson, Object.assign({}, existingPackageJson, {
       build: {
-        main: `${answers.name}.js`,
+        version: 'v1.0.0',
       },
     }));
   });

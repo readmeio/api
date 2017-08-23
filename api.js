@@ -3,39 +3,10 @@ const maybe = require('call-me-maybe');
 require('colors');
 
 const utils = require('./utils/utils');
-const logger = require('./utils/logger');
 const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
 const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
-
-module.exports.actions = {};
-
-module.exports.create = (name, func) => {
-  module.exports.actions[name] = func;
-};
-
-module.exports.success = callback => response => callback(null, response);
-
-module.exports.error = (event, callback) => (name, props) => {
-  if (name instanceof Error) {
-    return callback(JSON.stringify(utils.parseErrors(event, name)), null);
-  }
-
-  const e = new Error();
-  e.name = name;
-  e.handled = true;
-  e.props = props;
-
-  return callback(JSON.stringify(utils.parseErrors(event, e)), null);
-};
-
-module.exports.secrets = secrets => secret => secrets.find(s => s.key === secret).value;
-
-module.exports.do = (...args) => {
-  console.log('.do() is deprecated, use .run() instead.');
-  module.exports.run(...args);
-};
 
 module.exports.run = (action, d, cb) => {
   if (this.key && this.key.startsWith('demo')) {
@@ -66,9 +37,7 @@ module.exports.run = (action, d, cb) => {
   const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
   if (localLinks[this.service]) {
     const handler = require(path.join(localLinks[this.service], '/handler.js'));
-    const pjson = require(path.join(localLinks[this.service], '/package.json'));
     const event = {
-      entrypoint: pjson.main,
       name: action,
       data,
     };
@@ -97,16 +66,6 @@ module.exports.config = (apiKey) => {
     this.service = service;
     return this;
   };
-};
-
-module.exports.log = function log() {
-  const args = Array.prototype.slice.call(arguments);
-  logger.log(args);
-  console.log.apply(undefined, args);
-};
-
-module.exports._handlerUtils = {
-  parseErrors: utils.parseErrors,
 };
 
 /*

@@ -1,14 +1,40 @@
 const path = require('path');
 const assert = require('assert');
+const fs = require('fs');
+const buildDocs = require('build-docs');
 
-const utils = require('../../utils/utils');
+const utils = require('../../utils/handler-utils');
 
-describe('utils', () => {
+describe('handler-utils', () => {
+  describe('.error', () => {
+    it('should throw error when called', () => {
+      try {
+        utils.error('Name', { x: 1 });
+      } catch (e) {
+        assert.equal(e.name, 'Name');
+        assert.deepEqual(e.props, { x: 1 });
+        assert.equal(e.handled, true);
+      }
+    });
+
+    it('should pass through if an Error object is provided', () => {
+      const msg = 'This is an error object';
+      const err = new Error(msg);
+      try {
+        utils.error(err);
+      } catch (e) {
+        assert.equal(e.name, 'Error');
+        assert.equal(e.message, msg);
+      }
+    });
+  });
+
   describe('parseErrors', () => {
+    const docFile = path.join(__dirname, 'doc-fixture.js');
     const event = {
       name: 'createUser',
-      entrypoint: path.join(__dirname, 'doc-fixture.js'),
       data: { x: 1 },
+      errors: { createUser: buildDocs(fs.readFileSync(docFile)).errors.toString() },
     };
 
     it('should create error for api.error calls', () => {

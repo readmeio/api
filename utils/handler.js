@@ -1,18 +1,24 @@
-/* eslint-disable */
-const api = require('api');
-/* eslint-enable */
+const path = require('path');
+const fs = require('fs');
+const utils = require('./handler-utils');
 
 exports.go = (event, context, callback) => {
-  require(`./${event.entrypoint}`);
+  const endpointPath = path.join(process.cwd(), 'endpoints', `${event.name}.js`);
   try {
-    api.actions[event.name](event.data, {
-      success: api.success(callback),
-      error: api.error(event, callback),
-      log: api.log,
-      getSecret: api.secrets(event.secrets),
+    fs.statSync(endpointPath).isFile();
+  } catch (e) {
+    throw new Error('Endpoint does not exist');
+  }
+  const endpoint = require(endpointPath);
+  try {
+    endpoint(event.data, {
+      success: utils.success(callback),
+      error: utils.error(event, callback),
+      log: utils.log,
+      getSecret: utils.getSecret(event.secrets),
     });
   } catch (e) {
-    const error = api._handlerUtils.parseErrors(event, e);
+    const error = utils.parseErrors(event, e);
     callback(JSON.stringify(error), null);
   }
 };
