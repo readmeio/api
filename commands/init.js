@@ -98,7 +98,7 @@ module.exports.init = (answers) => {
     return undefined;
   }
 
-  const filename = `${answers.name}.js`;
+  const filename = `./endpoints/${answers.action}.js`;
 
   const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
 
