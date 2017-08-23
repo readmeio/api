@@ -7,12 +7,8 @@ Runs your api locally. Useful for testing changes before deploying`;
 module.exports.category = 'using';
 module.exports.weight = 2;
 
-const path = require('path');
-
 const utils = require('../utils/utils');
-
-const packageJson = require('../lib/package-json')();
-const handler = require('../utils/handler-local');
+const handler = require('../utils/handler');
 
 module.exports.aliases = ['invoke-local', 'dev'];
 
@@ -31,11 +27,13 @@ module.exports.run = (args) => {
     }
     data[parsedArg[0]] = value;
   }
-  const p = path.join(process.cwd(), packageJson.get('main'));
+
+  const errors = utils.buildErrors();
+
   const event = {
-    entrypoint: p,
     name: args[1],
     data,
+    errors,
   };
 
   handler.go(event, undefined, (err, response) => {

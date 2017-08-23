@@ -10,7 +10,6 @@ module.exports.weight = 1;
 require('colors');
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').exec;
 const semver = require('semver');
 const utils = require('../utils/utils');
 const validName = require('validate-npm-package-name');
@@ -78,16 +77,16 @@ module.exports.questions = (existingPackageJson) => {
 
 module.exports.init = (answers) => {
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
-  const stub = data.replace(/<<action>>/g, answers.action).replace(/<<name>>/g, answers.name);
+  const stub = data.replace(/<<action>>/g, answers.action);
 
-  fs.writeFileSync(`${answers.name}.js`, stub);
+  fs.mkdirSync('./endpoints');
+  fs.writeFileSync(`./endpoints/${answers.action}.js`, stub);
 
   // Need to initialise the package.json object down here
   // so that process.cwd() is different in tests
   const pjson = packageJson();
   pjson.set('name', answers.name);
   pjson.set('version', answers.version);
-  pjson.set('main', `${answers.name}.js`);
   pjson.write();
 
   // Only add a readme if one does not exist
@@ -99,13 +98,11 @@ module.exports.init = (answers) => {
     return undefined;
   }
 
-  console.log(`\nRunning ${'npm install'.yellow}...`);
-  return exec('npm install api --save', () => {
-    const filename = `${answers.name}.js`;
+  const filename = `${answers.name}.js`;
 
-    const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
+  const name = (utils.getGitConfig('user.name') || 'Julie').split(' ')[0];
 
-    console.log(`\n${'============================='.grey}
+  return console.log(`\n${'============================='.grey}
 
 ${'Great! We\'ve set up your api!'.green}
 
@@ -119,5 +116,4 @@ ${'Great! We\'ve set up your api!'.green}
 
   ${'$'.grey} ${('api deploy').yellow}
 `);
-  });
 };

@@ -112,24 +112,17 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
     const req = request.post('/services/', { resolveWithFullResponse: true, sendRequest: false });
     const form = req.form();
 
-    const api = require(path.join(process.cwd(), 'node_modules/api/api.js'));
-    require(path.join(process.cwd(), packageJson.get('main')));
-    const actions = Object.keys(api.actions);
-
-    const main = fs.readFileSync(path.join(process.cwd(), packageJson.get('main')));
-
     let docs;
     try {
-      docs = JSON.stringify(buildDocs(main, actions));
+      docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
     } catch (e) {
       console.error(`\nError generating documentation: ${e.message.red}\n`);
       process.exit(1);
     }
 
-    form.append('entrypoint', packageJson.get('main'));
     form.append('version', packageJson.get('version'));
     form.append('name', packageJson.get('name'));
-    form.append('docs', docs);
+    form.append('docs', JSON.stringify(docs));
     form.append('readme', readme || '');
     form.append('team', packageJson.get('team'));
     form.append('service', fs.createReadStream(zipDir), {
@@ -174,7 +167,10 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
   archive.pipe(output);
 
   const handler = path.join(__dirname, '../utils/handler.js');
+  const handlerUtils = path.join(__dirname, '../utils/handler-utils.js');
   archive.append(fs.createReadStream(handler), { name: 'handler.js' });
+  archive.append(fs.createReadStream(handlerUtils), { name: 'handler-utils.js' });
+  archive.append(`module.exports = ${JSON.stringify(utils.buildErrors())}`, { name: '_errors.js' });
 
   archive.glob('**');
 
