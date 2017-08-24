@@ -6,7 +6,7 @@ const utils = require('./utils/utils');
 const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
-const linksPath = path.join(utils.sharedDirectoryPath, 'links.json');
+const linksPath = path.join(utils.sharedDirectoryPath(), 'links.json');
 
 module.exports.run = (action, d, cb) => {
   if (this.key && this.key.startsWith('demo')) {

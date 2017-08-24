@@ -22,14 +22,14 @@ exports.WS_URL = url.format({ host, protocol: 'ws', slashes: true });
 
 // Sets up ~/.readme-build/ if it doesn't exist
 exports.setupSharedDirectory = () => {
-  const homePath = exports.sharedDirectoryPath;
+  const homePath = exports.sharedDirectoryPath();
   if (!fs.existsSync(homePath)) {
     fs.mkdirSync(homePath);
   }
 };
 
-exports.sharedDirectoryPath = path.join(os.homedir(), '.readme-build');
-exports.credPath = path.join(exports.sharedDirectoryPath, 'creds.json');
+exports.sharedDirectoryPath = () => path.join(process.env.HOME_DIR || os.homedir(), '.readme-build');
+exports.credPath = path.join(exports.sharedDirectoryPath(), 'creds.json');
 
 exports.fileExists = (file) => {
   try {

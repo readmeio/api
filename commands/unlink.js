@@ -11,20 +11,21 @@ const utils = require('../utils/utils');
 const path = require('path');
 const fs = require('fs');
 
-const pjsonPath = path.join(process.cwd(), 'package.json');
-const pjson = utils.fileExists(pjsonPath) ? require(pjsonPath) : {};
-const linksPath = path.join(utils.sharedDirectoryPath, 'links.json');
+const packageJson = require('../lib/package-json');
 
 module.exports.run = (args) => {
+  const linksPath = path.join(utils.sharedDirectoryPath(), 'links.json');
   const links = utils.fileExists(linksPath) ? require(linksPath) : {};
+
+  const pjsonName = packageJson().get('name');
 
   // Don't want service to be linked anymore
   if (args.length === 1) {
-    delete links.linkedServices[pjson.name];
+    delete links.linkedServices[pjsonName];
     for (const p in links.localLinks) {
-      links.localLinks[p] = links.localLinks[p].filter(s => s !== pjson.name);
+      links.localLinks[p] = links.localLinks[p].filter(s => s !== pjsonName);
     }
-    console.log(`Removed ${pjson.name.green} from links`);
+    console.log(`Removed ${pjsonName.green} from links`);
   } else { // unlink service from consumer
     for (const p in links.localLinks) {
       links.localLinks[p] = links.localLinks[p].filter(s => s !== args[1]);
