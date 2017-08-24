@@ -11,8 +11,6 @@ const buildDocs = require('build-docs');
 const console = require('./console');
 const exit = require('./exit');
 
-exports.credPath = path.join(__dirname, '..', 'data/creds.json');
-
 const host = process.env.BUILD_HOST || 'api.readme.build';
 const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
 const www = process.env.WWW_HOST || 'readme.build';
@@ -21,6 +19,17 @@ const version = process.env.BUILD_HOST ? '' : 'v1';
 exports.WWW_URL = url.format({ host: www, protocol });
 exports.BUILD_URL = url.format({ host, protocol, pathname: version });
 exports.WS_URL = url.format({ host, protocol: 'ws', slashes: true });
+
+// Sets up ~/.readme-build/ if it doesn't exist
+exports.setupSharedDirectory = () => {
+  const homePath = exports.sharedDirectoryPath;
+  if (!fs.existsSync(homePath)) {
+    fs.mkdirSync(homePath);
+  }
+};
+
+exports.sharedDirectoryPath = path.join(os.homedir(), '.readme-build');
+exports.credPath = path.join(exports.sharedDirectoryPath, 'creds.json');
 
 exports.fileExists = (file) => {
   try {
@@ -122,13 +131,3 @@ exports.buildErrors = (baseDir = process.cwd()) => {
   }
   return errors;
 };
-
-// Sets up ~/.readme-build/ if it doesn't exist
-exports.setupSharedDirectory = () => {
-  const homePath = exports.sharedDirectoryPath;
-  if (!fs.existsSync(homePath)) {
-    fs.mkdirSync(homePath);
-  }
-};
-
-exports.sharedDirectoryPath = path.join(os.homedir(), '.readme-build');
