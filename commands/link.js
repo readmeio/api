@@ -1,3 +1,12 @@
+module.exports.usage = `Run services in code from local computer
+
+Usage:
+  api link # Allows service to be run locally from code
+  api link math # Allows service math to be run from current directory
+`;
+
+module.exports.category = 'utility';
+
 const utils = require('../utils/utils');
 const path = require('path');
 const fs = require('fs');

@@ -34,7 +34,8 @@ module.exports.run = (action, d, cb) => {
   }
 
   // Don't call api if there is a local link
-  const localLinks = utils.fileExists(linksPath) ? require(linksPath) : {};
+  const baseLinks = { linkedServices: {}, localLinks: {} };
+  const localLinks = utils.fileExists(linksPath) ? require(linksPath) : baseLinks;
   if (localLinks.linkedServices[this.service]) {
     const handler = require(path.join(process.cwd(), 'node_modules/api/utils/handler.js'));
     const errors = utils.buildErrors(localLinks.linkedServices[this.service]);

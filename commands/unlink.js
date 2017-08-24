@@ -1,3 +1,12 @@
+module.exports.usage = `Remove linked services
+
+Usage:
+  api unlink # Removes all local links from service in current directory
+  api link math # Removes local link to math service in current directory
+`;
+
+module.exports.category = 'utility';
+
 const utils = require('../utils/utils');
 const path = require('path');
 const fs = require('fs');
