@@ -3,7 +3,8 @@ const fs = require('fs');
 const utils = require('./handler-utils');
 
 exports.go = (event, context, callback) => {
-  const endpointPath = path.join(process.cwd(), 'endpoints', `${event.name}.js`);
+  const basePath = event.pathOverride || process.cwd();
+  const endpointPath = path.join(basePath, 'endpoints', `${event.name}.js`);
   try {
     fs.statSync(endpointPath).isFile();
   } catch (e) {

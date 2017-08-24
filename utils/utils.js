@@ -1,3 +1,4 @@
+const os = require('os');
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
@@ -113,11 +114,21 @@ exports.makeUsername = () => {
   return split.join('').replace(/[^\w]/g, '').toLowerCase();
 };
 
-exports.buildErrors = () => {
-  const docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
+exports.buildErrors = (baseDir = process.cwd()) => {
+  const docs = buildDocs.parseDirectory(path.join(baseDir, 'endpoints'));
   const errors = {};
   for (const doc of docs) {
     errors[doc.name] = doc.errors.toString();
   }
   return errors;
 };
+
+// Sets up ~/.readme-build/ if it doesn't exist
+exports.setupSharedDirectory = () => {
+  const homePath = exports.sharedDirectoryPath;
+  if (!fs.existsSync(homePath)) {
+    fs.mkdirSync(homePath);
+  }
+};
+
+exports.sharedDirectoryPath = path.join(os.homedir(), '.readme-build');
