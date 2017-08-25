@@ -1,17 +1,3 @@
-/* Link file format:
-
-  ~/.readme-build/links.json
-
-  {
-    linkedServices: { // Services linked globally that are available
-      math: '~/Desktop/math/',
-    },
-    localLinks: { // Services that the consumer have linked
-      '~/Desktop/consumer/': ['math'],
-    },
-  }
-*/
-
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
@@ -21,6 +7,7 @@ const { join } = require('path');
 let cwd;
 let tmpDir;
 let tmpPath;
+let linksPath;
 
 describe('unlink command', () => {
   const answers = {
@@ -34,6 +21,7 @@ describe('unlink command', () => {
 
     tmpPath = `${os.tmpdir()}/`;
     tmpDir = fs.mkdtempSync(tmpPath);
+    linksPath = join(tmpPath, '.readme-build', 'links.json');
     process.env.HOME_DIR = tmpPath;
 
     process.chdir(tmpDir);
@@ -46,18 +34,18 @@ describe('unlink command', () => {
   });
 
   afterEach(() => {
-    fs.unlinkSync(join(tmpPath, '.readme-build', 'links.json'));
-    delete require.cache[require.resolve(join(tmpPath, '.readme-build', 'links.json'))];
+    fs.unlinkSync(linksPath);
+    delete require.cache[require.resolve(linksPath)];
     process.chdir(cwd);
   });
 
   it('should remove all links if removing link from service', () => {
     const unlink = require('../../commands/unlink');
     unlink.run(['unlink']);
-    const links = require(join(tmpPath, '.readme-build', 'links.json'));
+    const links = require(linksPath);
     assert.deepEqual(links, {
-      linkedServices: {},
-      localLinks: {
+      services: {},
+      directories: {
         [process.cwd()]: [],
       },
     });
@@ -66,12 +54,12 @@ describe('unlink command', () => {
   it('should unlink a specific service', () => {
     const unlink = require('../../commands/unlink');
     unlink.run(['unlink', answers.name]);
-    const links = require(join(tmpPath, '.readme-build', 'links.json'));
+    const links = require(linksPath);
     assert.deepEqual(links, {
-      linkedServices: {
+      services: {
         [answers.name]: process.cwd(),
       },
-      localLinks: {
+      directories: {
         [process.cwd()]: [],
       },
     });

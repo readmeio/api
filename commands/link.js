@@ -1,3 +1,18 @@
+/* Link file format:
+
+  ~/.readme-build/links.json
+
+  {
+    services: { // Services linked globally that are available
+      math: '~/Desktop/math/',
+    },
+    directories: { // Services that the consumer have linked
+      '~/Desktop/consumer/': ['math'],
+    },
+  }
+*/
+
+
 module.exports.usage = `Run services in code from local computer
 
 Usage:
@@ -13,7 +28,7 @@ const fs = require('fs');
 
 const packageJson = require('../lib/package-json');
 
-const baseLinks = { linkedServices: {}, localLinks: {} };
+module.exports.baseLinks = { services: {}, directories: {} };
 
 module.exports.run = (args) => {
   // Creates .readme-build in the home directory if it doesn't exist
@@ -23,11 +38,11 @@ module.exports.run = (args) => {
 
   const pjsonName = packageJson().get('name');
 
-  const links = utils.fileExists(linksPath) ? require(linksPath) : baseLinks;
+  const links = utils.fileExists(linksPath) ? require(linksPath) : module.exports.baseLinks;
 
   // Setting up linked service `api link`
   if (args.length === 1) {
-    links.linkedServices[pjsonName] = process.cwd();
+    links.services[pjsonName] = process.cwd();
     try {
       fs.writeFileSync(linksPath, JSON.stringify(links));
       console.log('Local link added!');
@@ -36,11 +51,11 @@ module.exports.run = (args) => {
     } catch (err) {
       console.error(err);
     }
-  } else if (links.linkedServices[args[1]]) { // check we know about service trying to be linked
-    if (!links.localLinks[process.cwd()]) {
-      links.localLinks[process.cwd()] = [];
+  } else if (links.services[args[1]]) { // check we know about service trying to be linked
+    if (!links.directories[process.cwd()]) {
+      links.directories[process.cwd()] = [];
     }
-    links.localLinks[process.cwd()].push(args[1]);
+    links.directories[process.cwd()].push(args[1]);
     try {
       fs.writeFileSync(linksPath, JSON.stringify(links));
       console.log(`Link added! Calls to ${args[1]} will be made locally.`);

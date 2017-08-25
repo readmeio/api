@@ -21,14 +21,14 @@ module.exports.run = (args) => {
 
   // Don't want service to be linked anymore
   if (args.length === 1) {
-    delete links.linkedServices[pjsonName];
-    for (const p in links.localLinks) {
-      links.localLinks[p] = links.localLinks[p].filter(s => s !== pjsonName);
+    delete links.services[pjsonName];
+    for (const p in links.directories) {
+      links.directories[p] = links.directories[p].filter(s => s !== pjsonName);
     }
     console.log(`Removed ${pjsonName.green} from links`);
   } else { // unlink service from consumer
-    for (const p in links.localLinks) {
-      links.localLinks[p] = links.localLinks[p].filter(s => s !== args[1]);
+    for (const p in links.directories) {
+      links.directories[p] = links.directories[p].filter(s => s !== args[1]);
     }
     console.log(`Removed ${args[1]} from links`);
   }
