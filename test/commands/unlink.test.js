@@ -3,6 +3,8 @@ const fs = require('fs');
 const os = require('os');
 const { init } = require('../../commands/init');
 const { join } = require('path');
+const link = require('../../commands/link');
+const unlink = require('../../commands/unlink');
 
 let cwd;
 let tmpDir;
@@ -28,7 +30,6 @@ describe('unlink command', () => {
 
     init(answers);
 
-    const link = require('../../commands/link');
     link.run(['link']);
     link.run(['link', answers.name]);
   });
@@ -40,7 +41,6 @@ describe('unlink command', () => {
   });
 
   it('should remove all links if removing link from service', () => {
-    const unlink = require('../../commands/unlink');
     unlink.run(['unlink']);
     const links = require(linksPath);
     assert.deepEqual(links, {
@@ -52,7 +52,6 @@ describe('unlink command', () => {
   });
 
   it('should unlink a specific service', () => {
-    const unlink = require('../../commands/unlink');
     unlink.run(['unlink', answers.name]);
     const links = require(linksPath);
     assert.deepEqual(links, {

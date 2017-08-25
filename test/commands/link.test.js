@@ -1,8 +1,9 @@
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const { init } = require('../../commands/init');
 const { join } = require('path');
+const { init } = require('../../commands/init');
+const link = require('../../commands/link');
 
 let cwd;
 let tmpDir;
@@ -36,7 +37,6 @@ describe('link command', () => {
   });
 
   it('should create a global link when ran in a producer directory', () => {
-    const link = require('../../commands/link');
     link.run(['link']);
     const links = require(linksPath);
     assert.deepEqual(links, {
@@ -48,7 +48,6 @@ describe('link command', () => {
   });
 
   it('should create a local link when passed a service', () => {
-    const link = require('../../commands/link');
     link.run(['link']);
     link.run(['link', answers.name]);
     const links = require(linksPath);
