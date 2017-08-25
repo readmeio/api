@@ -1,3 +1,4 @@
+const os = require('os');
 const fs = require('fs');
 const url = require('url');
 const path = require('path');
@@ -10,8 +11,6 @@ const buildDocs = require('build-docs');
 const console = require('./console');
 const exit = require('./exit');
 
-exports.credPath = path.join(__dirname, '..', 'data/creds.json');
-
 const host = process.env.BUILD_HOST || 'api.readme.build';
 const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
 const www = process.env.WWW_HOST || 'readme.build';
@@ -20,6 +19,17 @@ const version = process.env.BUILD_HOST ? '' : 'v1';
 exports.WWW_URL = url.format({ host: www, protocol });
 exports.BUILD_URL = url.format({ host, protocol, pathname: version });
 exports.WS_URL = url.format({ host, protocol: 'ws', slashes: true });
+
+// Sets up ~/.readme-build/ if it doesn't exist
+exports.setupSharedDirectory = () => {
+  const homePath = exports.sharedDirectoryPath();
+  if (!fs.existsSync(homePath)) {
+    fs.mkdirSync(homePath);
+  }
+};
+
+exports.sharedDirectoryPath = () => path.join(process.env.HOME_DIR || os.homedir(), '.readme-build');
+exports.credPath = path.join(exports.sharedDirectoryPath(), 'creds.json');
 
 exports.fileExists = (file) => {
   try {
@@ -113,8 +123,8 @@ exports.makeUsername = () => {
   return split.join('').replace(/[^\w]/g, '').toLowerCase();
 };
 
-exports.buildErrors = () => {
-  const docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
+exports.buildErrors = (baseDir = process.cwd()) => {
+  const docs = buildDocs.parseDirectory(path.join(baseDir, 'endpoints'));
   const errors = {};
   for (const doc of docs) {
     errors[doc.name] = doc.errors.toString();

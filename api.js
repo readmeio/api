@@ -2,11 +2,12 @@ const path = require('path');
 const maybe = require('call-me-maybe');
 require('colors');
 
+const { baseLinks } = require('./commands/link');
 const utils = require('./utils/utils');
 const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
-const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
+const linksPath = path.join(utils.sharedDirectoryPath(), 'links.json');
 
 module.exports.run = (action, d, cb) => {
   if (this.key && this.key.startsWith('demo')) {
@@ -34,13 +35,19 @@ module.exports.run = (action, d, cb) => {
   }
 
   // Don't call api if there is a local link
-  const localLinks = utils.fileExists(localLinksPath) ? require(localLinksPath) : {};
-  if (localLinks[this.service]) {
-    const handler = require(path.join(localLinks[this.service], '/handler.js'));
+  const localLinks = utils.fileExists(linksPath) ? require(linksPath) : baseLinks;
+  if (localLinks.services[this.service] && localLinks.directories[process.cwd()].length) {
+    const handler = require(path.join(process.cwd(), 'node_modules/api/utils/handler.js'));
+    const errors = utils.buildErrors(localLinks.services[this.service]);
+
     const event = {
       name: action,
       data,
+      pathOverride: localLinks.services[this.service],
+      errors,
     };
+
+    console.log(`Running ${this.service} from ${localLinks.services[this.service]}`.yellow);
 
     return maybe(callback, new Promise((resolve, reject) => {
       handler.go(event, undefined, (err, response) => {

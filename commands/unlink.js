@@ -1,14 +1,38 @@
-const exists = require('../utils/utils').fileExists;
+module.exports.usage = `Remove linked services
+
+Usage:
+  api unlink # Removes all local links from service in current directory
+  api unlink math # Removes local link to math service in current directory
+`;
+
+module.exports.category = 'utility';
+
+const utils = require('../utils/utils');
 const path = require('path');
 const fs = require('fs');
 
-const localLinksPath = path.join(process.cwd(), '/node_modules/api/data/links.json');
+const packageJson = require('../lib/package-json');
 
 module.exports.run = (args) => {
-  const localLinks = exists(localLinksPath) ? require(localLinksPath) : {};
-  delete localLinks[args[1]];
-  fs.writeFile(localLinksPath, JSON.stringify(localLinks), (err) => {
+  const linksPath = path.join(utils.sharedDirectoryPath(), 'links.json');
+  const links = utils.fileExists(linksPath) ? require(linksPath) : {};
+
+  const pjsonName = packageJson().get('name');
+
+  // Don't want service to be linked anymore
+  if (args.length === 1) {
+    delete links.services[pjsonName];
+    for (const p in links.directories) {
+      links.directories[p] = links.directories[p].filter(s => s !== pjsonName);
+    }
+    console.log(`Removed ${pjsonName.green} from links`);
+  } else { // unlink service from consumer
+    for (const p in links.directories) {
+      links.directories[p] = links.directories[p].filter(s => s !== args[1]);
+    }
+    console.log(`Removed ${args[1]} from links`);
+  }
+  fs.writeFile(linksPath, JSON.stringify(links), (err) => {
     if (err) console.error(err);
-    console.log(`${args[1]} unlinked`);
   });
 };

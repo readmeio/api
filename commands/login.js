@@ -90,6 +90,7 @@ const signup = (email, username, password, inviteCode) => {
 
 const j = request.jar();
 function saveCookie() {
+  utils.setupSharedDirectory();
   fs.writeFile(utils.credPath, JSON.stringify(j._jar), (err) => {
     if (err) console.log(err);
     if (action === 'signup') {
