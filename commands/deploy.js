@@ -215,7 +215,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
       type: 'list',
       name: 'private',
       message: 'Is your service public or private?',
-      choices: ['public', 'private'],
+      choices: ['public (free)', 'private (requires paid plan)'],
     });
 
     questions.push({
