@@ -18,7 +18,7 @@ const ProgressBar = require('progress');
 const utils = require('../utils/utils');
 
 const readmePath = path.join(process.cwd(), 'readme.md');
-const zipDir = path.join(__dirname, '../data/output.zip');
+const zipDir = path.join(utils.cacheDir(), 'output.zip');
 const enquirer = createEnquirer();
 
 function fetchDeployedVersion(packageJson) {
@@ -117,6 +117,18 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
       docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
     } catch (e) {
       console.error(`\nError generating documentation: ${e.message.red}\n`);
+      process.exit(1);
+    }
+
+    // Check if user edited the documentation
+    // We want to force people to at least delete the stub
+    const unchangedDocs = utils.getUnchangedDocs(docs);
+    if (unchangedDocs) {
+      console.error('\nThe comments in your endpoints are important!'.red);
+      console.error('\nThey are used to generate documentation and inform Build about your code.\n\nEdit the comments in the following files to deploy:\n');
+      for (const doc of unchangedDocs) {
+        console.error(`endpoints/${doc}.js\n`.green);
+      }
       process.exit(1);
     }
 

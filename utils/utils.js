@@ -31,6 +31,17 @@ exports.setupSharedDirectory = () => {
 exports.sharedDirectoryPath = () => path.join(process.env.HOME_DIR || os.homedir(), '.readme-build');
 exports.credPath = path.join(exports.sharedDirectoryPath(), 'creds.json');
 
+// Sets up ~/.readme-build/.cache
+// Currently we just use this for the deploy zip (and delete the zip after deploy)
+// But in the future we could do more stuff here
+exports.cacheDir = () => {
+  const cachePath = path.join(exports.sharedDirectoryPath(), '.cache');
+  if (!fs.existsSync(cachePath)) {
+    fs.mkdirSync(cachePath);
+  }
+  return cachePath;
+};
+
 exports.fileExists = (file) => {
   try {
     return fs.statSync(file).isFile();
@@ -100,13 +111,15 @@ exports.getGitConfig = (config) => {
   return val;
 };
 
-exports.getPackageJson = () => {
-  try {
-    return require(path.join(process.cwd(), 'package.json'));
-  } catch (e) {
-    // Couldn't get it
+// Gets the current version of the sdk
+// api-cli@version if `api run`
+// api@version if in code
+exports.getSDKVersion = (isCLI = false) => {
+  const sdkVersion = require(path.join(__dirname, '../package.json')).version;
+  if (isCLI) {
+    return `api-cli@${sdkVersion}`;
   }
-  return {};
+  return `api@${sdkVersion}`;
 };
 
 exports.makeUsername = () => {
@@ -130,4 +143,15 @@ exports.buildErrors = (baseDir = process.cwd()) => {
     errors[doc.name] = doc.errors.toString();
   }
   return errors;
+};
+
+// Get names of files still containing stub documentation
+exports.getUnchangedDocs = (docs) => {
+  const unchanged = [];
+  for (const doc of docs) {
+    if (doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0) {
+      unchanged.push(doc.name);
+    }
+  }
+  return unchanged;
 };
