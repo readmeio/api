@@ -152,11 +152,6 @@ exports.buildErrors = (baseDir = process.cwd()) => {
 
 // Get names of files still containing stub documentation
 exports.getUnchangedDocs = (docs) => {
-  const unchanged = [];
-  for (const doc of docs) {
-    if (doc.fullDescription && doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0) {
-      unchanged.push(doc.name);
-    }
-  }
-  return unchanged;
+  return docs.filter(doc => doc.fullDescription && doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0)
+  .map(doc => doc.name);
 };

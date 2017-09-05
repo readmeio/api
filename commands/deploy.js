@@ -16,6 +16,7 @@ const path = require('path');
 const createEnquirer = require('../lib/enquirer');
 const ProgressBar = require('progress');
 const utils = require('../utils/utils');
+const exit = require('../utils/exit');
 
 const readmePath = path.join(process.cwd(), 'readme.md');
 const zipDir = path.join(utils.cacheDir(), 'output.zip');
@@ -117,7 +118,7 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
       docs = buildDocs.parseDirectory(path.join(process.cwd(), 'endpoints'));
     } catch (e) {
       console.error(`\nError generating documentation: ${e.message.red}\n`);
-      process.exit(1);
+      exit(1);
     }
 
     // Check if user edited the documentation
@@ -129,7 +130,7 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
       for (const doc of unchangedDocs) {
         console.error(`endpoints/${doc}.js\n`.green);
       }
-      process.exit(1);
+      exit(1);
     }
 
     form.append('version', packageJson.get('version'));

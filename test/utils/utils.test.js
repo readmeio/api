@@ -7,7 +7,7 @@ describe('utils', () => {
     it('Return with an empty array if docs changed', () => {
       const docs = [{ name: 'helloWorld' }];
       const unchanged = utils.getUnchangedDocs(docs);
-      assert(unchanged, []);
+      assert.deepEqual(unchanged, []);
     });
 
     it('Should return with action name if unchanged', () => {
@@ -18,7 +18,7 @@ describe('utils', () => {
         returns: { description: 'A very friendly greeting', type: 'string' },
       }];
       const unchanged = utils.getUnchangedDocs(defaultDocs);
-      assert(unchanged, ['helloWorld']);
+      assert.deepEqual(unchanged, ['helloWorld']);
     });
   });
 });
