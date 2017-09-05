@@ -143,7 +143,9 @@ exports.buildErrors = (baseDir = process.cwd()) => {
   const docs = buildDocs.parseDirectory(path.join(baseDir, 'endpoints'));
   const errors = {};
   for (const doc of docs) {
-    errors[doc.name] = doc.errors.toString();
+    if (doc.errors) {
+      errors[doc.name] = doc.errors.toString();
+    }
   }
   return errors;
 };
@@ -152,7 +154,7 @@ exports.buildErrors = (baseDir = process.cwd()) => {
 exports.getUnchangedDocs = (docs) => {
   const unchanged = [];
   for (const doc of docs) {
-    if (doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0) {
+    if (doc.fullDescription && doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0) {
       unchanged.push(doc.name);
     }
   }

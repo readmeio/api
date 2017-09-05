@@ -123,7 +123,7 @@ module.exports.deploy = (packageJson, defaultTeam, answers) => {
     // Check if user edited the documentation
     // We want to force people to at least delete the stub
     const unchangedDocs = utils.getUnchangedDocs(docs);
-    if (unchangedDocs) {
+    if (unchangedDocs.length) {
       console.error('\nThe comments in your endpoints are important!'.red);
       console.error('\nThey are used to generate documentation and inform Build about your code.\n\nEdit the comments in the following files to deploy:\n');
       for (const doc of unchangedDocs) {
