@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0-3",
-  "description": "",
+  "description": "API CLI and NPM module for Readme Build",
   "main": "api.js",
   "bin": {
     "api": "cli.js"
@@ -10,6 +10,13 @@
     "pretest": "eslint . -f unix",
     "test": "nyc --reporter=none mocha",
     "posttest": "./bin/posttest.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readmeio/api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/readmeio/api/issues"
   },
   "author": "ReadMe.io",
   "license": "ISC",
