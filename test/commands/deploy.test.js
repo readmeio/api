@@ -205,7 +205,7 @@ describe('deploy command', () => {
       it('should ask question', () => {
         const privateQuestion = questions(['1.0.0'], true, []).find(question => question.name === 'private');
 
-        assert.deepEqual(privateQuestion.choices, ['public', 'private']);
+        assert.deepEqual(privateQuestion.choices, ['public (free)', 'private (requires paid plan)']);
       });
 
       it('should not ask if `build.team` is set', () => {
