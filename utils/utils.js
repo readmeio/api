@@ -35,6 +35,9 @@ exports.credPath = path.join(exports.sharedDirectoryPath(), 'creds.json');
 // Currently we just use this for the deploy zip (and delete the zip after deploy)
 // But in the future we could do more stuff here
 exports.cacheDir = () => {
+  // Make sure shared directory is set up
+  exports.setupSharedDirectory();
+
   const cachePath = path.join(exports.sharedDirectoryPath(), '.cache');
   if (!fs.existsSync(cachePath)) {
     fs.mkdirSync(cachePath);
