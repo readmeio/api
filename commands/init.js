@@ -15,6 +15,7 @@ const utils = require('../utils/utils');
 const validName = require('validate-npm-package-name');
 const createEnquirer = require('../lib/enquirer');
 const packageJson = require('../lib/package-json');
+const exit = require('../utils/exit');
 
 module.exports.run = () => {
   const enquirer = createEnquirer();
@@ -72,12 +73,31 @@ module.exports.questions = (existingPackageJson) => {
       message: 'What is the name of your first endpoint?',
       default: 'helloWorld',
     },
+    {
+      type: 'list',
+      name: 'continue',
+      message: 'It seems like there are already files here. Do you want to create a new directory?',
+      choices: ['yes', 'no', 'abort'],
+      when: () => fs.readdirSync(process.cwd()).length,
+    },
   ];
 };
 
 module.exports.init = (answers) => {
+  if (answers.continue === 'abort') {
+    exit(0);
+  }
+
   const data = fs.readFileSync(path.join(__dirname, '../utils/stub.js'), 'utf8');
   const stub = data.replace(/<<action>>/g, answers.action);
+
+  let chdirMessage = '';
+  if (answers.continue === 'yes') {
+    const newPath = `./${answers.name}`;
+    fs.mkdirSync(newPath);
+    process.chdir(newPath);
+    chdirMessage = `${'$'.grey} ${'cd'.yellow} ${answers.name.yellow}`;
+  }
 
   fs.mkdirSync('./endpoints');
   fs.writeFileSync(`./endpoints/${answers.action}.js`, stub);
@@ -107,6 +127,8 @@ module.exports.init = (answers) => {
 ${'Great! We\'ve set up your api!'.green}
 
 1. Try running it locally first:
+
+  ${chdirMessage}
 
   ${'$'.grey} ${(`api local ${answers.action} name=${name}`).yellow}
 
