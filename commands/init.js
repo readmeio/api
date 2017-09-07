@@ -96,7 +96,7 @@ module.exports.init = (answers) => {
     const newPath = `./${answers.name}`;
     fs.mkdirSync(newPath);
     process.chdir(newPath);
-    chdirMessage = `${'$'.grey} ${'cd'.yellow} ${answers.name.yellow}`;
+    chdirMessage = `\n  ${'$'.grey} ${'cd'.yellow} ${answers.name.yellow}\n`;
   }
 
   fs.mkdirSync('./endpoints');
@@ -127,9 +127,7 @@ module.exports.init = (answers) => {
 ${'Great! We\'ve set up your api!'.green}
 
 1. Try running it locally first:
-
   ${chdirMessage}
-
   ${'$'.grey} ${(`api local ${answers.action} name=${name}`).yellow}
 
 2. Edit ${filename.cyan} and build your API!
