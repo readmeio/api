@@ -3,7 +3,7 @@ const fs = require('fs');
 const os = require('os');
 const nock = require('nock');
 const BUILD_URL = require('../../utils/utils').BUILD_URL.replace('/v1', '');
-const { questions, prepareDeploy, fetchDeployedVersion } = require('../../commands/deploy');
+const { questions, prepareDeploy, fetchDeployedVersion, privateChoices } = require('../../commands/deploy');
 const packageJson = require('../../lib/package-json');
 
 let cwd;
@@ -96,7 +96,7 @@ describe('deploy command', () => {
       it('should prefix with @team if it is a private package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, { name: 'team' }, { team: 'team', private: 'private' });
+        prepareDeploy(pjson, { name: 'team' }, { team: 'team', private: privateChoices[1] });
 
         assert.equal(pjson.get('name'), '@team/service');
         assert.equal(pjson.get('team', { build: true }), 'team');
@@ -105,7 +105,7 @@ describe('deploy command', () => {
       it('should not prefix with @team if it is a public package', () => {
         const pjson = packageJson();
         pjson.set('name', 'service');
-        prepareDeploy(pjson, { name: 'team' }, { team: 'test', private: 'public' });
+        prepareDeploy(pjson, { name: 'team' }, { team: 'test', private: privateChoices[0] });
 
         assert.equal(pjson.get('name'), 'service');
         assert.equal(pjson.get('team', { build: true }), 'test');
