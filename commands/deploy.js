@@ -72,7 +72,7 @@ module.exports.run = () => {
 };
 
 function prepareDeploy(packageJson, defaultTeam, answers) {
-  if (answers.private === 'private') {
+  if (answers.private && answers.private.includes('private')) {
     packageJson.set('name', `@${answers.team || defaultTeam.name}/${packageJson.get('name')}`);
   }
 
@@ -228,7 +228,7 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
       type: 'list',
       name: 'private',
       message: 'Is your service public or private?',
-      choices: ['public (free)', 'private (requires paid plan)'],
+      choices: module.exports.privateChoices,
     });
 
     questions.push({
@@ -242,3 +242,5 @@ module.exports.questions = (versions, hasDeployedVersion, teams) => {
 
   return questions;
 };
+
+module.exports.privateChoices = ['public (free)', 'private (requires paid plan)'];
