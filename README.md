@@ -1,4 +1,5 @@
 # api
+[![CircleCI](https://circleci.com/gh/readmeio/api.svg?style=svg&circle-token=98043ed3103dabae88fdfed5275742eff4d2df9c)](https://circleci.com/gh/readmeio/api)
 
 The easiest way ever to create an awesome API... no, really. It's as simple as:
 
