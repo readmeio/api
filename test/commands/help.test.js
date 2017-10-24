@@ -1,6 +1,6 @@
 const assert = require('assert');
-const help = require('../../commands/help');
-const logger = require('../../utils/console');
+const help = require('../../src/commands/help');
+const logger = require('../../src/utils/console');
 
 describe('help command', () => {
   it('should output help information', () => {

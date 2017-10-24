@@ -1,2 +1,3 @@
-utils/stub.js
+src/utils/stub.js
 coverage/*
+dist/

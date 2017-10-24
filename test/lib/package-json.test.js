@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const packageJson = require('../../lib/package-json');
+const packageJson = require('../../src/lib/package-json');
 
 describe('package-json', () => {
   describe('constructor', () => {

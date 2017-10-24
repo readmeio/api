@@ -1,6 +1,6 @@
 const assert = require('assert');
-const docs = require('../../commands/docs');
-const logger = require('../../utils/console');
+const docs = require('../../src/commands/docs');
+const logger = require('../../src/utils/console');
 
 describe.skip('docs command', () => {
   it('should output built docs', () => {

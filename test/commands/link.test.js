@@ -2,8 +2,8 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const { join } = require('path');
-const { init } = require('../../commands/init');
-const link = require('../../commands/link');
+const { init } = require('../../src/commands/init');
+const link = require('../../src/commands/link');
 
 let cwd;
 let tmpDir;
