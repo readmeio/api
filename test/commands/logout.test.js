@@ -1,9 +1,9 @@
 const assert = require('assert');
 const nock = require('nock');
 
-const logout = require('../../src/commands/logout');
-const { BUILD_URL } = require('../../src/utils/utils');
-const logger = require('../../src/utils/console');
+const logout = require('../../dist/commands/logout');
+const { BUILD_URL } = require('../../dist/utils/utils');
+const logger = require('../../dist/utils/console');
 
 describe('`logout` command', () => {
   before(() => nock.disableNetConnect());

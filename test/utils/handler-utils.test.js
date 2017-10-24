@@ -3,7 +3,7 @@ const assert = require('assert');
 const fs = require('fs');
 const buildDocs = require('build-docs');
 
-const utils = require('../../src/utils/handler-utils');
+const utils = require('../../dist/utils/handler-utils');
 
 describe('handler-utils', () => {
   describe('.error', () => {
