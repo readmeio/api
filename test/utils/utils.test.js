@@ -57,7 +57,7 @@ describe('utils', () => {
     });
   });
 
-  describe.only('#parseData', () => {
+  describe('#parseData', () => {
     it('should parse data with primitives', () => {
       const data = { x: 1, y: 2, test: 'test' };
       assert.deepEqual({ data: JSON.stringify(data) }, utils.parseData(data));
