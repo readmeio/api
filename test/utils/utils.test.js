@@ -21,4 +21,39 @@ describe('utils', () => {
       assert.deepEqual(unchanged, ['helloWorld']);
     });
   });
+
+  describe('#parseResponse', () => {
+    it('should parse a string response', () => {
+      const response = { body: 'test' };
+      assert.equal(response.body, utils.parseResponse(response));
+    });
+
+    it('should parse number response', () => {
+      const response = { body: 1 };
+      assert.equal(response.body, utils.parseResponse(response));
+    });
+
+    it('should parse object response', () => {
+      const body = { test: 1 };
+      const response = { body: JSON.stringify(body) };
+      assert.deepEqual(body, utils.parseResponse(response));
+    });
+
+    it('should parse buffer response', () => {
+      const body = new Buffer('test');
+      const response = { body: JSON.stringify(body) };
+      assert.deepEqual(body, utils.parseResponse(response));
+    });
+
+    it('should parse nested response', () => {
+      const body = {
+        test: 1,
+        file: {
+          image: new Buffer('test'),
+        },
+      };
+      const response = { body: JSON.stringify(body) };
+      assert.deepEqual(body, utils.parseResponse(response));
+    });
+  });
 });

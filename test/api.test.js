@@ -6,17 +6,28 @@ const api = require('../api');
 const logger = require('../utils/console');
 
 describe('api', () => {
+  describe('#config()', () => {
+    it('should take an api key and allow to run a service', () => {
+      const newApi = api.config('1234');
+      assert.equal(typeof newApi, 'function');
+      assert.equal(typeof newApi.run, 'function');
+      assert.equal(typeof newApi.file, 'function');
+    });
+  });
+
   describe('#run()', () => {
     const key = '123456';
     const action = 'action';
-    const body = { name: 'test' };
+    const body = { name: 'test', number: 1 };
     const responseBody = 'hello world';
 
     it('should call invoke', () => {
       const service = 'service';
 
       const invokeMock = nock(BUILD_URL)
-        .post(`/run/${service}/${action}`, body)
+        .post(`/run/${service}/${action}`, (passedBody) => {
+          return passedBody.includes(`form-data; name="data"\r\n\r\n${JSON.stringify(body)}`);
+        })
         .basicAuth({ user: key })
         .reply(() => {
           return [200, responseBody, {}];
@@ -32,7 +43,9 @@ describe('api', () => {
       const service = 'team/service';
 
       const invokeMock = nock(BUILD_URL)
-        .post(`/run/@${service}/${action}`, body)
+        .post(`/run/@${service}/${action}`, (passedBody) => {
+          return passedBody.includes(`form-data; name="data"\r\n\r\n${JSON.stringify(body)}`);
+        })
         .basicAuth({ user: key })
         .reply(() => {
           return [200, {}, {}];

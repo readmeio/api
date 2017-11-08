@@ -56,7 +56,7 @@ module.exports.run = (args, opts) => {
     }
 
     return invoke(team.key, service, action, data, true).then((response) => {
-      console.log(response.body);
+      console.log(response);
     }).catch((err) => {
       try {
         if (opts.json) {

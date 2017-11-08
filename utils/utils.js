@@ -155,3 +155,14 @@ exports.getUnchangedDocs = (docs) => {
   return docs.filter(doc => doc.fullDescription && doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0)
   .map(doc => doc.name);
 };
+
+// Parses response to make sure its the correct type
+exports.parseResponse = (response) => {
+  let parsedResponse = response.body;
+  try {
+    parsedResponse = JSON.parse(response.body, (k, v) => {
+      return v && v.type === 'Buffer' ? Buffer.from(v.data) : v;
+    });
+  } catch (e) { /* response is a string */ }
+  return parsedResponse;
+};
