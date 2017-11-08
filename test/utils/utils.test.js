@@ -56,4 +56,24 @@ describe('utils', () => {
       assert.deepEqual(body, utils.parseResponse(response));
     });
   });
+
+  describe.only('#parseData', () => {
+    it('should parse data with primitives', () => {
+      const data = { x: 1, y: 2, test: 'test' };
+      assert.deepEqual({ data: JSON.stringify(data) }, utils.parseData(data));
+    });
+
+    it('should parse data with just a buffer', () => {
+      const data = { file: new Buffer('test') };
+      assert.deepEqual(Object.assign({ data: '{}' }, data), utils.parseData(data));
+    });
+
+
+    it('should parse data with a buffer and other data', () => {
+      const data = { file: new Buffer('test'), width: 100, height: 200 };
+      const dataString = JSON.stringify({ width: 100, height: 200 });
+      const expected = Object.assign({ data: dataString }, { file: data.file });
+      assert.deepEqual(expected, utils.parseData(data));
+    });
+  });
 });

@@ -3,6 +3,7 @@ const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const glob = require('glob');
+const stream = require('stream');
 const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
 const execSync = require('child_process').execSync;
@@ -166,3 +167,21 @@ exports.parseResponse = (response) => {
   } catch (e) { /* response is a string */ }
   return parsedResponse;
 };
+
+// Parses data to be sent for invoke
+// body.data is stringified json
+// Other is files
+exports.parseData = (data) => {
+  const files = {};
+  const filelessData = {};
+  for (const param in data) {
+    if (data[param] instanceof stream.Readable || Buffer.isBuffer(data[param])) {
+      files[param] = data[param];
+    } else {
+      filelessData[param] = data[param];
+    }
+  }
+
+  return Object.assign({}, files, { data: JSON.stringify(filelessData) });
+};
+
