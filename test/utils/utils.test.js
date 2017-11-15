@@ -76,4 +76,14 @@ describe('utils', () => {
       assert.deepEqual(expected, utils.parseData(data));
     });
   });
+
+  describe('#isUrl', () => {
+    it('should return true if valid url', () => {
+      assert(utils.isUrl('https://google.com'));
+    });
+
+    it('should return false if not valid url', () => {
+      assert.equal(false, utils.isUrl('/path/to/image'));
+    });
+  });
 });

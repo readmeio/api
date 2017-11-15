@@ -175,7 +175,7 @@ exports.parseData = (data) => {
   const files = {};
   const filelessData = {};
   for (const param in data) {
-    if (data[param] instanceof stream.Readable || Buffer.isBuffer(data[param])) {
+    if (data[param] instanceof stream || Buffer.isBuffer(data[param])) {
       files[param] = data[param];
     } else {
       filelessData[param] = data[param];
@@ -185,3 +185,14 @@ exports.parseData = (data) => {
   return Object.assign({}, files, { data: JSON.stringify(filelessData) });
 };
 
+exports.file = (p) => {
+  if (exports.isUrl(p)) {
+    return request.get(p);
+  }
+  return fs.createReadStream(p);
+};
+
+exports.isUrl = (s) => {
+  const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+  return regexp.test(s);
+};

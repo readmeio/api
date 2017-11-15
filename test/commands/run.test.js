@@ -1,5 +1,6 @@
 const assert = require('assert');
 const nock = require('nock');
+const path = require('path');
 
 const { BUILD_URL } = require('../../utils/utils');
 const { run } = require('../../commands/run');
@@ -70,6 +71,27 @@ describe('run command', () => {
       });
 
     return run(['run', service, action], {}).then(() => {
+      return invokeMock.done();
+    });
+  });
+
+  it('should pass file if @path is used', () => {
+    const service = 'service-1';
+    nock(BUILD_URL).get('/users/me').reply(200, JSON.stringify({
+      teams: [{ key, personal: true }],
+    }));
+    const invokeMock = nock(BUILD_URL)
+      .post(`/run/${service}/${action}`, (passedBody) => {
+        const test1 = passedBody.includes('form-data; name="file"; filename="test.jpg"');
+        const test2 = passedBody.includes('Content-Type: image/jpeg');
+        return test1 && test2;
+      })
+      .basicAuth({ user: key })
+      .reply(() => {
+        return [200, {}, {}];
+      });
+
+    return run(['run', service, action, `file=@${path.join(__dirname, '../fixtures/test.jpg')}`], {}).then(() => {
       return invokeMock.done();
     });
   });

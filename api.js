@@ -1,7 +1,6 @@
 const path = require('path');
 const maybe = require('call-me-maybe');
 require('colors');
-const fs = require('fs');
 
 const { baseLinks } = require('./commands/link');
 const utils = require('./utils/utils');
@@ -80,11 +79,10 @@ const api = {
       });
     }));
   },
-  file: fs.createReadStream,
+  file: utils.file,
 };
 
-
-module.exports.file = fs.createReadStream;
+module.exports.file = utils.file;
 
 /*
  * docsTest: This is an example for docs.test.js
