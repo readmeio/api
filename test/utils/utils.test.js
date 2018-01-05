@@ -1,14 +1,12 @@
 const assert = require('assert');
 const Stream = require('stream');
-const fs = require('fs');
-const path = require('path');
 
 const utils = require('../../utils/utils');
 
 describe('utils', () => {
   describe('#parseArgs', () => {
     it('should parse file types', () => {
-      const args = ['file=@../fixtures/test.jpg'];
+      const args = ['file=@../fixtures/image.JPG'];
       const parsed = utils.parseArgs(args);
       assert.equal(parsed.file instanceof Stream, true);
     });
@@ -94,26 +92,6 @@ describe('utils', () => {
       const dataString = JSON.stringify({ width: 100, height: 200 });
       const expected = Object.assign({ data: dataString }, { file: data.file });
       assert.deepEqual(expected, utils.parseData(data));
-    });
-  });
-
-  describe('#isUrl', () => {
-    it('should return true if valid url', () => {
-      assert(utils.isUrl('https://google.com'));
-    });
-
-    it('should return false if not valid url', () => {
-      assert.equal(false, utils.isUrl('/path/to/image'));
-    });
-  });
-
-  describe('#streamToBuffer', () => {
-    it('should convert stream to buffer', async () => {
-      const filePath = path.join(__dirname, './utils.test.js');
-      const stream = fs.createReadStream(filePath);
-      const file = fs.readFileSync(filePath);
-      const buffer = await utils.streamToBuffer(stream);
-      assert.equal(buffer.toString(), file.toString());
     });
   });
 });

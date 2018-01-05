@@ -7,27 +7,16 @@ Runs your api locally. Useful for testing changes before deploying`;
 module.exports.category = 'using';
 module.exports.weight = 2;
 
-const Stream = require('stream');
-const fileType = require('file-type');
-
 const utils = require('../utils/utils');
+const { convertToFileType } = require('../utils/file-utils');
 const handler = require('../utils/handler');
 
 module.exports.aliases = ['invoke-local', 'dev'];
 
 module.exports.run = async (args) => {
-  const data = utils.parseArgs(args.splice(2));
+  let data = utils.parseArgs(args.splice(2));
 
-  for (const d in data) {
-    if (data[d] instanceof Stream) {
-      const file = await utils.streamToBuffer(data[d]); // eslint-disable-line no-await-in-loop
-
-      data[d] = {
-        file: JSON.parse(JSON.stringify(file)),
-        type: fileType(file).ext,
-      };
-    }
-  }
+  data = await convertToFileType(data);
 
   const errors = utils.buildErrors();
 

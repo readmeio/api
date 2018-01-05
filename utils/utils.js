@@ -12,6 +12,8 @@ const buildDocs = require('build-docs');
 const console = require('./console');
 const exit = require('./exit');
 
+const fileUtils = require('./file-utils');
+
 const host = process.env.BUILD_HOST || 'api.readme.build';
 const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
 const www = process.env.WWW_HOST || 'readme.build';
@@ -102,7 +104,7 @@ exports.parseArgs = (args) => {
     let value = parsedArg[1];
     // It's a file
     if (parsedArg[1].indexOf('@') === 0) {
-      data[parsedArg[0]] = exports.file(parsedArg[1].split('@')[1]);
+      data[parsedArg[0]] = fileUtils.file(parsedArg[1].split('@')[1]);
     } else {
       try {
         value = JSON.parse(parsedArg[1]);
@@ -209,31 +211,4 @@ exports.parseData = (data) => {
   }
 
   return Object.assign({}, files, { data: JSON.stringify(filelessData) });
-};
-
-exports.file = (p) => {
-  if (exports.isUrl(p)) {
-    return request.get({ url: p, encoding: null });
-  }
-  return fs.createReadStream(p);
-};
-
-exports.isUrl = (s) => {
-  const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
-  return regexp.test(s);
-};
-
-// Converts a stream to a buffer
-// Useful for locally calling a service
-// with a file
-exports.streamToBuffer = (s) => {
-  return new Promise((resolve) => {
-    const out = [];
-    s.on('data', (data) => {
-      out.push(data);
-    });
-    s.on('end', () => {
-      resolve(Buffer.concat(out));
-    });
-  });
 };

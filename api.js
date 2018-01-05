@@ -4,6 +4,7 @@ require('colors');
 
 const { baseLinks } = require('./commands/link');
 const utils = require('./utils/utils');
+const { parseFileResponse, convertToFileType, file } = require('./utils/file-utils');
 const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
@@ -62,11 +63,13 @@ const api = {
 
       console.log(`Running ${scope.service} from ${localLinks.services[scope.service]}`.yellow);
 
-      return maybe(callback, new Promise((resolve, reject) => {
+      return maybe(callback, new Promise(async (resolve, reject) => {
+        event.data = await convertToFileType(event.data);
+
         handler.go(event, undefined, (err, response) => {
           if (err) return reject(err);
 
-          return resolve(response);
+          return resolve(parseFileResponse(JSON.stringify(response)));
         });
       }));
     }
@@ -79,10 +82,10 @@ const api = {
       });
     }));
   },
-  file: utils.file,
+  file,
 };
 
-module.exports.file = utils.file;
+module.exports.file = file;
 
 /*
  * docsTest: This is an example for docs.test.js
