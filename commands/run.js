@@ -23,27 +23,10 @@ module.exports.run = (args, opts) => {
   if (!args[1]) throw new Error('Missing service');
   if (!args[2]) throw new Error('Missing endpoint');
 
-  const data = {};
   let service = args[1];
   const action = args[2];
-  const passedData = utils.parseArgs(args.splice(3));
-  for (const arg of passedData) {
-    const i = arg.indexOf('=');
-    const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
-    let value = parsedArg[1];
-    // It's a file
-    if (parsedArg[1].indexOf('@') === 0) {
-      data[parsedArg[0]] = utils.file(parsedArg[1].split('@')[1]);
-    } else {
-      try {
-        value = JSON.parse(parsedArg[1]);
-      } catch (e) {
-        // Already in proper format
-        // console.log(e);
-      }
-      data[parsedArg[0]] = value;
-    }
-  }
+
+  const data = utils.parseArgs(args.splice(3));
 
   return request.get('/users/me').then(response => JSON.parse(response)).then((user) => {
     let team = user.teams.find(t => t.personal);

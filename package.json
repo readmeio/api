@@ -26,6 +26,7 @@
     "call-me-maybe": "^1.0.1",
     "colors": "^1.1.2",
     "enquirer": "^0.4.1",
+    "file-type": "^7.4.0",
     "glob": "^7.1.1",
     "minimist": "^1.2.0",
     "primus": "6.1.0",

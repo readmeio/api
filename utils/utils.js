@@ -90,9 +90,35 @@ Don't have an account? Signup is free and takes 5 seconds!
   }
 };
 
+// Converts command line arguments to a javascript object
+// test=1 test2='hello' test3=@/path/to/file
+// { test: 1, test2: 'hello', test3: BUFFER }
+exports.parseArgs = (args) => {
+  const data = {};
+  const passedData = exports.fixMinimistSpaces(args);
+  for (const arg of passedData) {
+    const i = arg.indexOf('=');
+    const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
+    let value = parsedArg[1];
+    // It's a file
+    if (parsedArg[1].indexOf('@') === 0) {
+      data[parsedArg[0]] = exports.file(parsedArg[1].split('@')[1]);
+    } else {
+      try {
+        value = JSON.parse(parsedArg[1]);
+      } catch (e) {
+        // Already in proper format
+        // console.log(e);
+      }
+      data[parsedArg[0]] = value;
+    }
+  }
+  return data;
+};
+
 // fixes args like numbers=[1, 3, 2]
 // Spaces confuse minimist
-exports.parseArgs = (args) => {
+exports.fixMinimistSpaces = (args) => {
   const parsed = [];
   for (const arg of args) {
     const stringArg = arg.toString();
@@ -187,7 +213,7 @@ exports.parseData = (data) => {
 
 exports.file = (p) => {
   if (exports.isUrl(p)) {
-    return request.get(p);
+    return request.get({ url: p, encoding: null });
   }
   return fs.createReadStream(p);
 };
@@ -195,4 +221,19 @@ exports.file = (p) => {
 exports.isUrl = (s) => {
   const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
   return regexp.test(s);
+};
+
+// Converts a stream to a buffer
+// Useful for locally calling a service
+// with a file
+exports.streamToBuffer = (s) => {
+  return new Promise((resolve) => {
+    const out = [];
+    s.on('data', (data) => {
+      out.push(data);
+    });
+    s.on('end', () => {
+      resolve(Buffer.concat(out));
+    });
+  });
 };

@@ -1,8 +1,28 @@
 const assert = require('assert');
+const Stream = require('stream');
+const fs = require('fs');
+const path = require('path');
 
 const utils = require('../../utils/utils');
 
 describe('utils', () => {
+  describe('#parseArgs', () => {
+    it('should parse file types', () => {
+      const args = ['file=@../fixtures/test.jpg'];
+      const parsed = utils.parseArgs(args);
+      assert.equal(parsed.file instanceof Stream, true);
+    });
+
+    it('should convert to json', () => {
+      const args = ['x=1', 'y=2'];
+      const parsed = utils.parseArgs(args);
+      assert.deepEqual(parsed, {
+        x: 1,
+        y: 2,
+      });
+    });
+  });
+
   describe('#getUnchangedDocs', () => {
     it('Return with an empty array if docs changed', () => {
       const docs = [{ name: 'helloWorld' }];
@@ -84,6 +104,16 @@ describe('utils', () => {
 
     it('should return false if not valid url', () => {
       assert.equal(false, utils.isUrl('/path/to/image'));
+    });
+  });
+
+  describe('#streamToBuffer', () => {
+    it('should convert stream to buffer', async () => {
+      const filePath = path.join(__dirname, './utils.test.js');
+      const stream = fs.createReadStream(filePath);
+      const file = fs.readFileSync(filePath);
+      const buffer = await utils.streamToBuffer(stream);
+      assert.equal(buffer.toString(), file.toString());
     });
   });
 });

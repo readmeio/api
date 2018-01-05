@@ -81,7 +81,6 @@ module.exports.fixBuffers = (d) => {
   const data = Object.assign({}, d);
   for (const arg in data) {
     if (typeof data[arg] === 'object') {
-      console.log(typeof data[arg], typeof data[arg].file);
       data[arg].file = Buffer.from(data[arg].file.data);
     } else if (typeof data[arg] !== 'string') {
       data[arg] = JSON.parse(data[arg]);
