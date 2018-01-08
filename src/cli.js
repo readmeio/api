@@ -4,7 +4,7 @@ const parseArgs = require('minimist')(process.argv.slice(2));
 const path = require('path');
 require('colors');
 const updateNotifier = require('update-notifier');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 
 const utils = require('./utils/utils');
 

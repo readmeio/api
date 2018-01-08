@@ -1,9 +1,9 @@
 const assert = require('assert');
 const nock = require('nock');
 
-const { BUILD_URL } = require('../utils/utils');
-const api = require('../api');
-const logger = require('../utils/console');
+const { BUILD_URL } = require('../dist/utils/utils');
+const api = require('../');
+const logger = require('../dist/utils/console');
 
 describe('api', () => {
   describe('#run()', () => {

@@ -2,9 +2,9 @@ const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
 const nock = require('nock');
-const BUILD_URL = require('../../utils/utils').BUILD_URL.replace('/v1', '');
-const { questions, prepareDeploy, fetchDeployedVersion, privateChoices } = require('../../commands/deploy');
-const packageJson = require('../../lib/package-json');
+const BUILD_URL = require('../../dist/utils/utils').BUILD_URL.replace('/v1', '');
+const { questions, prepareDeploy, fetchDeployedVersion, privateChoices } = require('../../dist/commands/deploy');
+const packageJson = require('../../dist/lib/package-json');
 
 let cwd;
 let tmpDir;

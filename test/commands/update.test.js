@@ -1,8 +1,8 @@
 const assert = require('assert');
 const nock = require('nock');
 
-const { BUILD_URL } = require('../../utils/utils');
-const { run } = require('../../commands/update');
+const { BUILD_URL } = require('../../dist/utils/utils');
+const { run } = require('../../dist/commands/update');
 
 describe('update command', () => {
   it('should throw if no service provided', () => {
