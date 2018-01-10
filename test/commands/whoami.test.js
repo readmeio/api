@@ -1,9 +1,9 @@
 const assert = require('assert');
 const nock = require('nock');
 
-const whoami = require('../../commands/whoami');
-const { BUILD_URL } = require('../../utils/utils');
-const logger = require('../../utils/console');
+const whoami = require('../../dist/commands/whoami');
+const { BUILD_URL } = require('../../dist/utils/utils');
+const logger = require('../../dist/utils/console');
 
 describe('`whoami` command', () => {
   before(() => nock.disableNetConnect());

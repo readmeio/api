@@ -118,7 +118,7 @@ exports.getGitConfig = (config) => {
 // api-cli@version if `api run`
 // api@version if in code
 exports.getSDKVersion = (isCLI = false) => {
-  const sdkVersion = require(path.join(__dirname, '../package.json')).version;
+  const sdkVersion = require(path.join(__dirname, '../../package.json')).version;
   if (isCLI) {
     return `api-cli@${sdkVersion}`;
   }

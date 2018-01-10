@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const utils = require('../../utils/utils');
+const utils = require('../../dist/utils/utils');
 
 describe('utils', () => {
   describe('#getUnchangedDocs', () => {
