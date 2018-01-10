@@ -9,7 +9,7 @@ const invoke = require('./lib/invoke');
 
 const linksPath = path.join(utils.sharedDirectoryPath(), 'links.json');
 
-module.exports.run = (action, d, cb) => {
+module.exports.run = (action, d, outputs, cb) => {
   if (this.key && this.key.startsWith('demo')) {
     return maybe(cb, new Promise((resolve) => {
       console.log('This is a demo API key!'.red);
@@ -57,6 +57,8 @@ module.exports.run = (action, d, cb) => {
       });
     }));
   }
+
+  data['x-build-outputs'] = outputs;
 
   return maybe(callback, new Promise((resolve, reject) => {
     return invoke(this.key, this.service, action, data).then((response) => {
