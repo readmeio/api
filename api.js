@@ -4,7 +4,7 @@ require('colors');
 
 const { baseLinks } = require('./commands/link');
 const utils = require('./utils/utils');
-const { parseFileResponse, convertToFileType, file } = require('./utils/file-utils');
+const { parseLocalFileResponse, convertToFileType, file } = require('./utils/file-utils');
 const console = require('./utils/console');
 const invoke = require('./lib/invoke');
 
@@ -69,7 +69,7 @@ const api = {
         handler.go(event, undefined, (err, response) => {
           if (err) return reject(err);
 
-          return resolve(parseFileResponse(JSON.stringify(response)));
+          return resolve(parseLocalFileResponse(JSON.stringify(response)));
         });
       }));
     }
