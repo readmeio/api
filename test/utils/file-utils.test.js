@@ -11,7 +11,7 @@ describe('file-utils', () => {
     });
 
     it('should return false if not valid url', () => {
-      assert.equal(false, fileUtils.isUrl('/path/to/image'));
+      assert.equal(fileUtils.isUrl('/path/to/image'), false);
     });
   });
 

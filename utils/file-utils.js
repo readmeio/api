@@ -2,6 +2,7 @@ const fileType = require('file-type');
 const Stream = require('stream');
 const request = require('request-promise');
 const fs = require('fs');
+const { URL } = require('url');
 
 exports.file = (p) => {
   if (exports.isUrl(p)) {
@@ -11,15 +12,19 @@ exports.file = (p) => {
 };
 
 exports.isUrl = (s) => {
-  const regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
-  return regexp.test(s);
+  try {
+    new URL(s); // eslint-disable-line no-new
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 // Converts a stream to a buffer
 // Useful for locally calling a service
 // with a file
 exports.streamToBuffer = (s) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const out = [];
     s.on('data', (data) => {
       out.push(data);
@@ -41,6 +46,7 @@ exports.parseFileResponse = (response) => {
       };
     }
     return v;
+    s.on('error', reject);
   });
 };
 
