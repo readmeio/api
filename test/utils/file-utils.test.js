@@ -25,11 +25,11 @@ describe('file-utils', () => {
     });
   });
 
-  describe('#parseFileResponse', () => {
+  describe('#parseLocalFileResponse', () => {
     it('should convert a buffer response to our file type', () => {
       const file = fs.readFileSync(path.join(__dirname, '../fixtures/image.JPG'));
       const response = JSON.stringify(file);
-      const parsedResponse = fileUtils.parseFileResponse(response);
+      const parsedResponse = fileUtils.parseLocalFileResponse(response);
 
       assert.equal(parsedResponse.type, 'jpg');
       assert.equal(Buffer.isBuffer(parsedResponse.file), true);
@@ -44,7 +44,7 @@ describe('file-utils', () => {
         },
         width: 100,
       });
-      const parsedResponse = fileUtils.parseFileResponse(response);
+      const parsedResponse = fileUtils.parseLocalFileResponse(response);
 
       assert.equal(parsedResponse.file.file.type, 'jpg');
       assert.equal(Buffer.isBuffer(parsedResponse.file.file.file), true);
@@ -54,7 +54,7 @@ describe('file-utils', () => {
 
     it('Should work if response is single value', () => {
       const response = 1;
-      const parsedResponse = fileUtils.parseFileResponse(response);
+      const parsedResponse = fileUtils.parseLocalFileResponse(response);
       assert.equal(response, parsedResponse);
     });
   });

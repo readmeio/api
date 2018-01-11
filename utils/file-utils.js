@@ -32,11 +32,13 @@ exports.streamToBuffer = (s) => {
     s.on('end', () => {
       resolve(Buffer.concat(out));
     });
+    s.on('error', reject);
   });
 };
 
 // Converts buffers in response to file type
-exports.parseFileResponse = (response) => {
+// Only used for api.local
+exports.parseLocalFileResponse = (response) => {
   return JSON.parse(response, (k, v) => {
     if (v && v.type === 'Buffer') {
       const type = fileType(Buffer.from(v.data));
@@ -46,7 +48,6 @@ exports.parseFileResponse = (response) => {
       };
     }
     return v;
-    s.on('error', reject);
   });
 };
 
