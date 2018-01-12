@@ -8,25 +8,15 @@ module.exports.category = 'using';
 module.exports.weight = 2;
 
 const utils = require('../utils/utils');
+const { convertToFileType } = require('../utils/file-utils');
 const handler = require('../utils/handler');
 
 module.exports.aliases = ['invoke-local', 'dev'];
 
-module.exports.run = (args) => {
-  const data = {};
-  const passedData = utils.parseArgs(args.splice(2));
-  for (const arg of passedData) {
-    const i = arg.indexOf('=');
-    const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
-    let value = parsedArg[1];
-    try {
-      value = JSON.parse(parsedArg[1]);
-    } catch (e) {
-      // Already in proper format
-      // console.log(e);
-    }
-    data[parsedArg[0]] = value;
-  }
+module.exports.run = async (args) => {
+  let data = utils.parseArgs(args.splice(2));
+
+  data = await convertToFileType(data);
 
   const errors = utils.buildErrors();
 
@@ -40,6 +30,8 @@ module.exports.run = (args) => {
     if (err) {
       const parsedError = JSON.parse(err);
       console.log(parsedError);
+    } else if (Buffer.isBuffer(response)) {
+      process.stdout.write(response);
     } else {
       console.log(response);
     }

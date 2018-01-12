@@ -3,6 +3,7 @@ const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const glob = require('glob');
+const stream = require('stream');
 const request = require('request-promise');
 const CookieJar = require('tough-cookie').CookieJar;
 const execSync = require('child_process').execSync;
@@ -10,6 +11,8 @@ const buildDocs = require('build-docs');
 
 const console = require('./console');
 const exit = require('./exit');
+
+const fileUtils = require('./file-utils');
 
 const host = process.env.BUILD_HOST || 'api.readme.build';
 const protocol = process.env.BUILD_HOST ? 'http' : 'https'; // if overriding
@@ -89,9 +92,39 @@ Don't have an account? Signup is free and takes 5 seconds!
   }
 };
 
+// Converts command line arguments to a javascript object
+// test=1 test2='hello' test3=@/path/to/file
+// { test: 1, test2: 'hello', test3: BUFFER }
+exports.parseArgs = (args) => {
+  const data = {};
+  const passedData = exports.fixMinimistSpaces(args);
+  for (const arg of passedData) {
+    const i = arg.indexOf('=');
+    const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
+    data[parsedArg[0]] = exports.convertArgToProperType(parsedArg[1]);
+  }
+  return data;
+};
+
+exports.convertArgToProperType = (arg) => {
+  // It's a file
+  if (arg.indexOf('@') === 0) {
+    return fileUtils.file(arg.split('@')[1]);
+  }
+
+  let value = arg;
+  try {
+    value = JSON.parse(arg);
+  } catch (e) {
+    // Already in proper format
+    // console.log(e);
+  }
+  return value;
+};
+
 // fixes args like numbers=[1, 3, 2]
 // Spaces confuse minimist
-exports.parseArgs = (args) => {
+exports.fixMinimistSpaces = (args) => {
   const parsed = [];
   for (const arg of args) {
     const stringArg = arg.toString();
@@ -154,4 +187,32 @@ exports.buildErrors = (baseDir = process.cwd()) => {
 exports.getUnchangedDocs = (docs) => {
   return docs.filter(doc => doc.fullDescription && doc.fullDescription.indexOf('https://docs.readme.build/docs/writing-documentation') >= 0)
   .map(doc => doc.name);
+};
+
+// Parses response to make sure its the correct type
+exports.parseResponse = (response) => {
+  let parsedResponse = response.body;
+  try {
+    parsedResponse = JSON.parse(response.body, (k, v) => {
+      return v && v.type === 'Buffer' ? Buffer.from(v.data) : v;
+    });
+  } catch (e) { /* response is a string */ }
+  return parsedResponse;
+};
+
+// Parses data to be sent for invoke
+// body.data is stringified json
+// Other is files
+exports.parseData = (data) => {
+  const files = {};
+  const filelessData = {};
+  for (const param in data) {
+    if (data[param] instanceof stream || Buffer.isBuffer(data[param])) {
+      files[param] = data[param];
+    } else {
+      filelessData[param] = data[param];
+    }
+  }
+
+  return Object.assign({}, files, { data: JSON.stringify(filelessData) });
 };
