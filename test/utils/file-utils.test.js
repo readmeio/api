@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
-const fileUtils = require('../../src/utils/file-utils');
+const fileUtils = require('../../dist/utils/file-utils');
 
 describe('file-utils', () => {
   describe('#isUrl', () => {
