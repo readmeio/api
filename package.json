@@ -2,14 +2,17 @@
   "name": "api",
   "version": "1.0.0-8",
   "description": "API CLI and NPM module for Readme Build",
-  "main": "api.js",
+  "main": "dist/api.js",
   "bin": {
-    "api": "cli.js"
+    "api": "dist/cli.js"
   },
   "scripts": {
     "pretest": "eslint . -f unix",
     "test": "nyc --reporter=none mocha",
-    "posttest": "./bin/posttest.sh"
+    "posttest": "./bin/posttest.sh",
+    "build": "babel src --out-dir dist",
+    "watch": "babel src --out-dir dist -w",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -42,6 +45,8 @@
     "ws": "1.1.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "3.15.0",
     "eslint-config-airbnb-base": "11.1.0",
     "eslint-plugin-import": "2.2.0",

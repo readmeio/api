@@ -1,7 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const { init, questions } = require('../../commands/init');
+const { init, questions } = require('../../dist/commands/init');
 const { join, basename } = require('path');
 
 let cwd;

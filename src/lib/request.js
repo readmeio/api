@@ -49,7 +49,7 @@ module.exports.errorHandler = errorHandler;
     const opts = Object.assign({}, options, {
       uri,
       headers: {
-        'user-agent': `api/${require('../package.json').version} ${process.platform}/${process.version}`,
+        'user-agent': `api/${require('../../package.json').version} ${process.platform}/${process.version}`,
       },
     });
     if (options.sendRequest === false) {

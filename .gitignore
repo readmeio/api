@@ -6,3 +6,4 @@ data/output.zip
 .nyc_output
 coverage/
 npm-debug.log
+dist/

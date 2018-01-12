@@ -1,9 +1,9 @@
 const assert = require('assert');
 const nock = require('nock');
 
-const secret = require('../../commands/secret');
-const { BUILD_URL } = require('../../utils/utils');
-const logger = require('../../utils/console');
+const secret = require('../../dist/commands/secret');
+const { BUILD_URL } = require('../../dist/utils/utils');
+const logger = require('../../dist/utils/console');
 
 describe('`secret` command', () => {
   before(() => nock.disableNetConnect());

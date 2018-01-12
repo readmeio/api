@@ -2,8 +2,8 @@ const assert = require('assert');
 const nock = require('nock');
 const path = require('path');
 
-const { BUILD_URL } = require('../../utils/utils');
-const { run } = require('../../commands/run');
+const { BUILD_URL } = require('../../dist/utils/utils');
+const { run } = require('../../dist/commands/run');
 
 describe('run command', () => {
   it('should throw if no service provided', () => {

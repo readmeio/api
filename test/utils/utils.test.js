@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Stream = require('stream');
 
-const utils = require('../../utils/utils');
+const utils = require('../../dist/utils/utils');
 
 describe('utils', () => {
   describe('#parseArgs', () => {

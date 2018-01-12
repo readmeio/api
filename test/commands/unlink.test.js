@@ -1,10 +1,10 @@
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const { init } = require('../../commands/init');
+const { init } = require('../../dist/commands/init');
 const { join } = require('path');
-const link = require('../../commands/link');
-const unlink = require('../../commands/unlink');
+const link = require('../../dist/commands/link');
+const unlink = require('../../dist/commands/unlink');
 
 let cwd;
 let tmpDir;
