@@ -101,21 +101,25 @@ exports.parseArgs = (args) => {
   for (const arg of passedData) {
     const i = arg.indexOf('=');
     const parsedArg = [arg.slice(0, i), arg.slice(i + 1)];
-    let value = parsedArg[1];
-    // It's a file
-    if (parsedArg[1].indexOf('@') === 0) {
-      data[parsedArg[0]] = fileUtils.file(parsedArg[1].split('@')[1]);
-    } else {
-      try {
-        value = JSON.parse(parsedArg[1]);
-      } catch (e) {
-        // Already in proper format
-        // console.log(e);
-      }
-      data[parsedArg[0]] = value;
-    }
+    data[parsedArg[0]] = exports.convertArgToProperType(parsedArg[1]);
   }
   return data;
+};
+
+exports.convertArgToProperType = (arg) => {
+  // It's a file
+  if (arg.indexOf('@') === 0) {
+    return fileUtils.file(arg.split('@')[1]);
+  }
+
+  let value = arg;
+  try {
+    value = JSON.parse(arg);
+  } catch (e) {
+    // Already in proper format
+    // console.log(e);
+  }
+  return value;
 };
 
 // fixes args like numbers=[1, 3, 2]

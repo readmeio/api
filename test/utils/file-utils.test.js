@@ -59,6 +59,18 @@ describe('file-utils', () => {
     });
   });
 
+  describe('#getBufferType', () => {
+    it('should correctly get type of image', () => {
+      const file = fs.readFileSync(path.join(__dirname, '../fixtures/image.JPG'));
+      assert.equal(fileUtils.getBufferType(file), 'jpg');
+    });
+
+    it('should return string otherwise', () => {
+      const buffer = new Buffer('string');
+      assert.equal(fileUtils.getBufferType(buffer), 'string');
+    });
+  });
+
   describe('#convertToFileType', () => {
     it('should convert streams to file type', async () => {
       const data = {

@@ -41,14 +41,19 @@ exports.streamToBuffer = (s) => {
 exports.parseLocalFileResponse = (response) => {
   return JSON.parse(response, (k, v) => {
     if (v && v.type === 'Buffer') {
-      const type = fileType(Buffer.from(v.data));
+      const file = Buffer.from(v.data);
       return {
-        type: type ? type.ext : 'string',
-        file: Buffer.from(v.data),
+        type: exports.getBufferType(file),
+        file,
       };
     }
     return v;
   });
+};
+
+exports.getBufferType = (buffer) => {
+  const type = fileType(buffer);
+  return type ? type.ext : 'string';
 };
 
 // Converts data into the file type if stream or buffer
