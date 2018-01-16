@@ -26,6 +26,11 @@ module.exports.run = (action, d, outputs, cb) => {
   let data = d;
   let callback = cb;
 
+  // Make it so that outputs is an optional parameter
+  if (typeof outputs === 'function') {
+    callback = outputs;
+  }
+
   // If no data is passed in, default to {}
   if (typeof data === 'function') {
     callback = data;
