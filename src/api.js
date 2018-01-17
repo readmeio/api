@@ -63,10 +63,8 @@ module.exports.run = (action, d, outputs, cb) => {
     }));
   }
 
-  data['x-build-outputs'] = outputs;
-
   return maybe(callback, new Promise((resolve, reject) => {
-    return invoke(this.key, this.service, action, data).then((response) => {
+    return invoke(this.key, this.service, action, data, { outputs }).then((response) => {
       return resolve(response.body);
     }).catch((err) => {
       return reject(err.response.body);

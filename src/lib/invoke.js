@@ -4,16 +4,17 @@ const querystring = require('querystring');
 
 const { BUILD_URL, getSDKVersion } = require('../utils/utils');
 
-module.exports = (key, service, action, data, isCLI) => {
+module.exports = (key, service, action, data, opts = {}) => {
+  const outputs = opts.outputs;
+
   const headers = {
     'X-Build-Meta-Language': `node@${process.version.replace(/^v/, '')}`,
-    'X-Build-Meta-SDK': getSDKVersion(isCLI),
+    'X-Build-Meta-SDK': getSDKVersion(opts.isCLI),
     'X-Build-Meta-OS': `${os.type().toLowerCase()}@${os.release()}`,
   };
 
-  if (data['x-build-outputs'] !== undefined) {
-    const parsedOutput = querystring.stringify(data['x-build-outputs']);
-    delete data['x-build-outputs'];
+  if (outputs !== undefined) {
+    const parsedOutput = querystring.stringify(outputs);
     headers['X-Build-Output'] = parsedOutput;
   }
 
