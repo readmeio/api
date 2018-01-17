@@ -6,7 +6,7 @@ const buildDocs = require('build-docs');
 const utils = require('../../dist/utils/handler-utils');
 
 describe('handler-utils', () => {
-  describe('.error', () => {
+  describe('#error', () => {
     it('should throw error when called', () => {
       try {
         utils.error('Name', { x: 1 });
@@ -29,7 +29,7 @@ describe('handler-utils', () => {
     });
   });
 
-  describe('parseErrors', () => {
+  describe('#parseErrors', () => {
     const docFile = path.join(__dirname, 'doc-fixture.js');
     const event = {
       name: 'createUser',
@@ -84,6 +84,22 @@ describe('handler-utils', () => {
       assert.equal(e.message, message);
       assert.deepEqual(e.data, event.data);
       assert.equal(e.handled, false);
+    });
+  });
+
+  describe('#fixBuffers', () => {
+    it('should convert stringified buffers back to buffers', () => {
+      const string = 'a';
+      const params = {
+        test: 1,
+        image: {
+          type: 'png',
+          file: JSON.parse(JSON.stringify(new Buffer(string))),
+        },
+      };
+
+      const parsed = utils.fixBuffers(params);
+      assert.equal(parsed.image.file.toString(), string);
     });
   });
 });

@@ -2,7 +2,7 @@ const request = require('request-promise');
 const os = require('os');
 const querystring = require('querystring');
 
-const { BUILD_URL, getSDKVersion } = require('../utils/utils');
+const { BUILD_URL, getSDKVersion, parseResponse, parseData } = require('../utils/utils');
 
 module.exports = (key, service, action, data, opts = {}) => {
   const outputs = opts.outputs;
@@ -19,16 +19,16 @@ module.exports = (key, service, action, data, opts = {}) => {
   }
 
   return request.post(`${BUILD_URL}/run/${prefixName(service)}/${action}`, {
-    json: data,
+    formData: parseData(data),
     resolveWithFullResponse: true,
     headers,
     auth: { user: key },
   }).then((response) => {
     if (response.headers) checkDeprecated(response);
-    return response;
+    return parseResponse(response);
   }).catch((err) => {
-    if (err.response.headers) checkDeprecated(err.response);
-    return Promise.reject(err);
+    if (err.response && err.response.headers) checkDeprecated(err.response);
+    return Promise.reject(err.error);
   });
 };
 

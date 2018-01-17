@@ -11,8 +11,9 @@ exports.go = (event, context, callback) => {
     throw new Error('Endpoint does not exist');
   }
   const endpoint = require(endpointPath);
+  const parsedData = utils.fixBuffers(event.data);
   try {
-    endpoint(event.data, {
+    endpoint(parsedData, {
       success: utils.success(callback),
       error: utils.error(event, callback),
       log: utils.log,
