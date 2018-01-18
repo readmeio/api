@@ -1,13 +1,22 @@
 const request = require('request-promise');
 const os = require('os');
+const querystring = require('querystring');
+
 const { BUILD_URL, getSDKVersion, parseResponse, parseData } = require('../utils/utils');
 
-module.exports = (key, service, action, data, isCLI) => {
+module.exports = (key, service, action, data, opts = {}) => {
+  const outputs = opts.outputs;
+
   const headers = {
     'X-Build-Meta-Language': `node@${process.version.replace(/^v/, '')}`,
-    'X-Build-Meta-SDK': getSDKVersion(isCLI),
+    'X-Build-Meta-SDK': getSDKVersion(opts.isCLI),
     'X-Build-Meta-OS': `${os.type().toLowerCase()}@${os.release()}`,
   };
+
+  if (outputs !== undefined) {
+    const parsedOutput = querystring.stringify(outputs);
+    headers['X-Build-Output'] = parsedOutput;
+  }
 
   return request.post(`${BUILD_URL}/run/${prefixName(service)}/${action}`, {
     formData: parseData(data),
