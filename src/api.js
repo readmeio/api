@@ -23,7 +23,7 @@ module.exports.config = (apiKey) => {
 };
 
 const api = {
-  run(action, d, outputs, cb) {
+  run(action, d, opts, cb) {
     if (scope.key && scope.key.startsWith('demo')) {
       return maybe(cb, new Promise((resolve) => {
         console.log('This is a demo API key!'.red);
@@ -41,8 +41,8 @@ const api = {
     let callback = cb;
 
     // Make outputs an optional parameter
-    if (typeof outputs === 'function') {
-      callback = outputs;
+    if (typeof opts === 'function') {
+      callback = opts;
     }
 
     // If no data is passed in, default to {}
@@ -80,7 +80,7 @@ const api = {
     }
 
     return maybe(callback, new Promise((resolve, reject) => {
-      return invoke(scope.key, scope.service, action, data, { outputs }).then((response) => {
+      return invoke(scope.key, scope.service, action, data, opts).then((response) => {
         return resolve(response);
       }).catch((err) => {
         return reject(err);
