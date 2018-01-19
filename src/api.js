@@ -56,7 +56,7 @@ const api = {
     // Don't call api if there is a local link
     const localLinks = utils.fileExists(linksPath) ? require(linksPath) : baseLinks;
     if (localLinks.services[scope.service] && localLinks.directories[process.cwd()].length) {
-      const handler = require(path.join(process.cwd(), 'node_modules/api/utils/handler.js'));
+      const handler = require(path.join(process.cwd(), 'node_modules/api/src/utils/handler.js'));
       const errors = utils.buildErrors(localLinks.services[scope.service]);
 
       const event = {
