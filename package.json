@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "1.0.0-8",
+  "version": "1.0.0",
   "description": "API CLI and NPM module for Readme Build",
   "main": "dist/api.js",
   "bin": {
