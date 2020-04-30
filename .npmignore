@@ -1,2 +1,5 @@
-src/
-test/
+__test__/
+.eslintignore
+.eslintrc
+.gitignore
+.prettierignore

@@ -1,3 +1,0 @@
---require ./test/set-node-env.js
---require ./test/babel.js
---recursive
