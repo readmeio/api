@@ -1,3 +1,6 @@
 {
-  "extends": "@readme/eslint-config"
+  "extends": "@readme/eslint-config",
+  "rules": {
+    "no-console": "off"
+  }
 }

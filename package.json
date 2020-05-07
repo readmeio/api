@@ -21,7 +21,6 @@
     "@readme/oas-to-har": "^6.6.2",
     "@readme/oas-tooling": "^3.3.5",
     "fetch-har": "^2.3.1",
-    "find-cache-dir": "^3.3.1",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

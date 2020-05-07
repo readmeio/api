@@ -1,3 +1,6 @@
+/* eslint-disable jest-formatting/padding-around-before-each-blocks */
+/* eslint-disable jest/no-commented-out-tests */
+/* eslint-disable prettier/prettier */
 /* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const { join } = require('path');
@@ -7,7 +10,7 @@ const petstore = api(join(__dirname, './__fixtures__/petstore.json'));
 
 const oasUrl = 'https://api.example.com';
 
-console.logFull = obj => {
+console.logx = obj => {
   // eslint-disable-next-line global-require
   console.log(require('util').inspect(obj, false, null, true));
 };
@@ -38,18 +41,15 @@ beforeAll(() => {
 describe('#preloading', () => {
   it.todo('should error if passing in swagger 2');
   it.todo('should error if oas file is not valid');
+  it.todo('should default to swagger.json/openapi.json');
+  it.todo('should fetch files over http');
+  it.todo('should fetch files from disk');
+  it.todo('should work for yaml');
+  it.todo('should work for json');
 
-  describe('file', () => {
-    it.todo('should default to swagger.json/openapi.json');
-    it.todo('should fetch files over http');
-    it.todo('should fetch files from disk');
-    it.todo('should work for yaml');
-    it.todo('should work for json');
-
-    it('should work for object', () => {
-      const sdk = api(createOas());
-      expect(typeof sdk.get).toBe('function');
-    });
+  it('should work for object', () => {
+    const sdk = api(createOas());
+    expect(typeof sdk.get).toBe('function');
   });
 });
 
@@ -60,7 +60,7 @@ describe('#accessors', () => {
     });
   });
 
-  describe('#operationId', () => {
+  describe('#operationId()', () => {
     it('should work for operationId', () => {
       const mock = nock('http://petstore.swagger.io/v1').get('/pets').reply(200);
       expect(() => petstore.listPets()).not.toThrow();
@@ -273,62 +273,199 @@ describe('#fetch', () => {
   });
 });
 
-describe('#auth', () => {
-  describe('OAuth 2', () => {
-    const securityOas = Object.assign(
-      createOas('get', '/', {
-        operationId: 'getSomething',
-        security: [
-          {
-            auth: [],
-          },
-        ],
-      }),
-      {
+describe('#auth()', () => {
+  const baseSecurityOas = createOas('get', '/', {
+      operationId: 'getSomething',
+      security: [
+        {
+          auth: [],
+        },
+      ],
+    });
+
+  describe('API Keys', () => {
+    const apiKey = '123457890';
+
+    describe('in: query', () => {
+      const securityOas = {
+        ...baseSecurityOas,
         components: {
           securitySchemes: {
             auth: {
-              type: 'oauth2',
+              type: 'apiKey',
+              name: 'apiKeyParam',
+              in: 'query',
             },
           },
         },
       }
-    );
 
-    it.skip('should allow you to pass in a single auth', () => {
-      const apiKey = '123';
-      const sdk = api(securityOas);
+      it('should allow you to supply auth', () => {
+        const sdk = api(securityOas);
+        const mock = nock(oasUrl)
+          .get('/')
+          .query({apiKeyParam: apiKey})
+          .reply(200, {});
 
-      const mock = nock(oasUrl, {
-        reqheaders: {
-          authorization: `bearer ${apiKey}`,
-        },
-      })
-        .get('/')
-        .reply(200, {});
+        return sdk.auth(apiKey).getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
+      });
 
-      sdk.auth(apiKey);
-      sdk.getSomething();
+      it('should throw if you supply multiple auth keys', () => {
+        const sdk = api(securityOas);
 
-      mock.done();
+        expect(() => {
+          sdk.auth(apiKey, apiKey).getSomething();
+        }).toThrow(/only a single key is needed/i);
+      });
     });
 
-    it('should allow you to pass in multiple auths', () => {
-      const apiKey = '123';
-      const sdk = api(securityOas);
-
-      const mock = nock(oasUrl, {
-        reqheaders: {
-          authorization: `Bearer ${apiKey}`,
+    describe('in: header', () => {
+      const securityOas = {
+        ...baseSecurityOas,
+        components: {
+          securitySchemes: {
+            auth: {
+              type: 'apiKey',
+              name: 'apiKeyHeader',
+              in: 'header',
+            },
+          },
         },
-      })
+      }
+
+      it('should allow you to supply auth', () => {
+        const sdk = api(securityOas);
+        const mock = nock(oasUrl, { reqheaders: { apiKeyHeader: apiKey} })
+          .get('/')
+          .reply(200, {});
+
+        return sdk.auth(apiKey).getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
+      });
+
+      it('should throw if you supply multiple auth keys', () => {
+        const sdk = api(securityOas);
+
+        expect(() => {
+          sdk.auth(apiKey, apiKey).getSomething();
+        }).toThrow(/only a single key is needed/i);
+      });
+    });
+  });
+
+  describe('HTTP', () => {
+    describe('scheme: basic', () => {
+      const user = 'username'
+      const pass = 'changeme';
+      const securityOas = {
+        ...baseSecurityOas,
+        components: {
+          securitySchemes: {
+            auth: {
+              type: 'http',
+              scheme: 'basic',
+            },
+          },
+        },
+      }
+
+      it('should allow you to supply auth', () => {
+        const sdk = api(securityOas);
+        const mock = nock(oasUrl, { reqheaders: { authorization: `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}` } })
+          .get('/')
+          .reply(200, {});
+
+        return sdk.auth(user, pass).getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
+      });
+
+      it('should allow you to not pass in a password', () => {
+        const sdk = api(securityOas);
+        const mock = nock(oasUrl, { reqheaders: { authorization: `Basic ${Buffer.from(`${user}:`).toString('base64')}` } })
+          .get('/')
+          .reply(200, {});
+
+        return sdk.auth(user).getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
+      });
+    });
+
+    describe('scheme: bearer', () => {
+      const apiKey = '123457890';
+      const securityOas = {
+        ...baseSecurityOas,
+        components: {
+          securitySchemes: {
+            auth: {
+              type: 'http',
+              scheme: 'bearer',
+            },
+          },
+        },
+      }
+
+      it('should allow you to supply auth', () => {
+        const sdk = api(securityOas);
+        const mock = nock(oasUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
+          .get('/')
+          .reply(200, {});
+
+        return sdk.auth(apiKey).getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
+      });
+
+      it('should throw if you pass in multiple bearer tokens', () => {
+        const sdk = api(securityOas);
+
+        expect(() => {
+          sdk.auth(apiKey, apiKey).getSomething();
+        }).toThrow(/only a single token is needed/i);
+      });
+    });
+  });
+
+  describe('OAuth 2', () => {
+    const apiKey = '123457890';
+    const securityOas = {
+      ...baseSecurityOas,
+      components: {
+        securitySchemes: {
+          auth: {
+            type: 'oauth2',
+          },
+        },
+      },
+    }
+
+    it('should allow you to supply auth', () => {
+      const sdk = api(securityOas);
+      const mock = nock(oasUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
         .get('/')
         .reply(200, {});
 
-      sdk.auth({ auth: apiKey });
-      sdk.getSomething();
+      return sdk.auth(apiKey).getSomething().then(res => {
+        expect(res.status).toBe(200);
+        mock.done();
+      });
+    });
 
-      mock.done();
+    it('should throw if you pass in multiple bearer tokens', () => {
+      const sdk = api(securityOas);
+
+      expect(() => {
+        sdk.auth(apiKey, apiKey).getSomething();
+      }).toThrow(/only a single token is needed/i);
     });
   });
 });
