@@ -1,18 +1,11 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "API CLI and NPM module for Readme Build",
-  "main": "dist/api.js",
-  "bin": {
-    "api": "dist/cli.js"
-  },
+  "description": "Generate an SDK from an OpenAPI document",
   "scripts": {
-    "pretest": "eslint . -f unix",
-    "test": "nyc --reporter=none mocha",
-    "posttest": "./bin/posttest.sh",
-    "build": "babel src --out-dir dist",
-    "watch": "babel src --out-dir dist -w",
-    "prepublish": "npm run build"
+    "lint": "eslint .",
+    "pretest": "npm run lint && npm run prettier",
+    "prettier": "prettier --list-different --write \"./**/**.js\""
   },
   "repository": {
     "type": "git",
@@ -21,8 +14,13 @@
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"
   },
-  "author": "ReadMe.io",
+  "author": "Jon Ursenbach <jon@readme.io>",
   "license": "ISC",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@readme/eslint-config": "^2.1.0",
+    "eslint": "^6.8.0",
+    "prettier": "^2.0.5"
+  },
+  "prettier": "@readme/eslint-config/prettier"
 }

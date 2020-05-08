@@ -1,2 +1,4 @@
-src/
-test/
+__tests__/
+.eslint*
+.gitignore
+.prettier*
