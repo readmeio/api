@@ -1,0 +1,187 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable jest/no-commented-out-tests */
+/* eslint-disable jest/expect-expect */
+/* eslint-disable jest-formatting/padding-around-test-blocks */
+/* eslint-disable prettier/prettier */
+const Oas = require('@readme/oas-tooling');
+const $RefParser = require("@apidevtools/json-schema-ref-parser");
+const oasToHar = require('@readme/oas-to-har');
+const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
+const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');
+
+const serverUrl = 'https://api.example.com';
+const createOas = require('../__fixtures__/createOas')(serverUrl);
+const prepareParams = require('../../src/lib/prepareParams');
+
+console.logx = obj => {
+  // eslint-disable-next-line global-require
+  console.log(require('util').inspect(obj, false, null, true));
+};
+
+const arraySchema = createOas('put', '/', {
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+})
+
+describe('#prepareParams', () => {
+  let readmeSpec;
+  let usptoSpec;
+
+  beforeAll(async () => {
+    let schema = await $RefParser.dereference(readmeExample);
+    readmeSpec = new Oas(schema);
+
+    schema = await $RefParser.dereference(usptoExample);
+    usptoSpec = new Oas(schema);
+  });
+
+  it('should prepare nothing if nothing was supplied', () => {
+    const operation = readmeSpec.operation('/api-specification', 'post')
+
+    expect(prepareParams(operation)).toStrictEqual({});
+    expect(prepareParams(operation, null, null)).toStrictEqual({});
+    expect(prepareParams(operation, [], [])).toStrictEqual({});
+    expect(prepareParams(operation, {}, {})).toStrictEqual({});
+  });
+
+  it('should prepare body and metadata when both are supplied', async () => {
+    const operation = readmeSpec.operation('/api-specification', 'post')
+    const body = {
+      spec: 'this is the contents of an api specification'
+    };
+
+    const metadata = {
+      'x-readme-version': '1.0'
+    };
+
+    expect(prepareParams(operation, body, metadata)).toStrictEqual({
+      body: {
+        spec: 'this is the contents of an api specification'
+      },
+      header: {
+        'x-readme-version': '1.0'
+      },
+    })
+  });
+
+  it('should prepare body if body is a primitive', () => {
+    const schema = createOas('put', '/', {
+      requestBody: {
+        content: {
+          'text/plain': {
+            schema: {
+              type: 'string'
+            }
+          }
+        }
+      }
+    });
+
+    const operation = (new Oas(schema)).operation('/', 'put');
+    const body = 'Brie cheeseburger ricotta.';
+
+    expect(prepareParams(operation, body, {})).toStrictEqual({
+      body
+    });
+  });
+
+  it('should prepare body if body is an array', () => {
+    const operation = (new Oas(arraySchema)).operation('/', 'put');
+    const body = [
+      {
+        name: 'Buster'
+      }
+    ]
+
+    expect(prepareParams(operation, body, {})).toStrictEqual({
+      body
+    });
+  });
+
+  it('should handle bodies when the content type is application/x-www-form-urlencoded', async () => {
+    const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+    const body = {
+      criteria: '*:*'
+    };
+
+    const metadata = {
+      dataset: 'v1',
+      version: 'oa_citations'
+    };
+
+    expect(prepareParams(operation, body, metadata)).toStrictEqual({
+      path: {
+        dataset: 'v1',
+        version: 'oa_citations'
+      },
+      formData: {
+        criteria: '*:*'
+      }
+    });
+  });
+
+  describe('supplying just a body or metadata', () => {
+    it('should handle if supplied is a body', () => {
+      const operation = readmeSpec.operation('/api-specification', 'post')
+      const body = {
+        spec: 'this is the contents of an api specification',
+      };
+
+      expect(prepareParams(operation, body)).toStrictEqual({
+        body
+      })
+    });
+
+    it('should prepare a body if supplied is primitive', () => {
+      const operation = readmeSpec.operation('/api-specification', 'post')
+      const body = 'this is a primitive value';
+
+      expect(prepareParams(operation, body)).toStrictEqual({
+        body
+      })
+    });
+
+    it('should prepare just a body if supplied argument is an array', () => {
+      const operation = (new Oas(arraySchema)).operation('/', 'put');
+      const body = [
+        {
+          name: 'Buster'
+        }
+      ]
+
+      expect(prepareParams(operation, body)).toStrictEqual({
+        body
+      })
+    });
+
+    it('should prepare just metadata if supplied is metadata', () => {
+      const operation = readmeSpec.operation('/api-specification', 'post')
+      const metadata = {
+        'x-readme-version': '1.0'
+      };
+
+      expect(prepareParams(operation, metadata)).toStrictEqual({
+        header: {
+          'x-readme-version': '1.0'
+        }
+      })
+    });
+  });
+
+  it.todo(`should be able to handle parameters when they're defined as common parameters`);
+});

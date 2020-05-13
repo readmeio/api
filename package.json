@@ -17,18 +17,31 @@
   },
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "ISC",
+  "engines": {
+    "node": ">=10"
+  },
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.1",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.0",
+    "@readme/oas-examples": "^3.4.0",
+    "@readme/oas-extensions": "^6.9.4",
     "@readme/oas-to-har": "^6.6.2",
-    "@readme/oas-tooling": "^3.3.5",
+    "@readme/oas-tooling": "^3.4.0",
     "fetch-har": "^2.3.1",
+    "jsonschema": "^1.2.6",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^2.1.0",
-    "eslint": "^6.8.0",
+    "@readme/eslint-config": "^3.0.0",
+    "eslint": "^7.0.0",
     "jest": "^25.5.2",
     "nock": "^12.0.3",
     "prettier": "^2.0.5"
   },
-  "prettier": "@readme/eslint-config/prettier"
+  "prettier": "@readme/eslint-config/prettier",
+  "jest": {
+    "testPathIgnorePatterns": [
+      "__tests__/__fixtures__/"
+    ]
+  }
 }

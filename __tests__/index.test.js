@@ -1,6 +1,3 @@
-/* eslint-disable jest-formatting/padding-around-before-each-blocks */
-/* eslint-disable jest/no-commented-out-tests */
-/* eslint-disable prettier/prettier */
 /* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const { join } = require('path');
@@ -24,6 +21,8 @@ describe('#preloading', () => {
   it.todo('should fetch files from disk');
   it.todo('should work for yaml');
   it.todo('should work for json');
+
+  it.todo('should deref before caching');
 
   it('should work for object', () => {
     const sdk = api(createOas());
@@ -81,7 +80,7 @@ describe('#fetch', () => {
     it.todo('should pass through header params');
     it.todo('should pass through auth params');
 
-    it('should pass through path params for operationId', () => {
+    it.only('should pass through path params for operationId', () => {
       const response = {
         id: petId,
         name: 'Buster',

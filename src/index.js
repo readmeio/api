@@ -1,15 +1,12 @@
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
-// const { URL } = require('url');
-// const pkg = require('../package.json');
-
 const Oas = require('@readme/oas-tooling');
 const oasToHar = require('@readme/oas-to-har');
+
+const { prepareAuth, prepareParams } = require('./lib/index');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -31,6 +28,10 @@ function getOperations(spec) {
     .reduce((prev, next) => prev.concat(next), []);
 }
 
+function isPrimitive(val) {
+  return typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean';
+}
+
 module.exports = uri => {
   const spec = new Oas(typeof uri === 'string' ? require(uri) : uri);
 
@@ -41,78 +42,23 @@ module.exports = uri => {
     return this;
   }
 
-  // Needs work for supporting multiple different kinds of auth at the same time. for example if an operation uses
-  // OAuth and HTTP bearer, how can we guarantee that the OAuth bearer is used with oauth?
-  // @todo
-  function prepareAuth(operation) {
-    if (authKeys.length === 0) {
-      return {};
-    }
+  function fetchOperation(operation, body, metadata /* path, body /* , other */) {
+    // console.logx(operation.parameters)
 
-    const prepared = {};
-    const security = operation.prepareSecurity();
-    const securitySchemes = Object.keys(security);
-
-    authKeys.forEach((authKey, idx) => {
-      const schemes = security[securitySchemes[idx]];
-      if (schemes.length > 1) {
-        throw new Error(`Sorry, this API currently requires multiple forms of authentication which we don't yet support.`);
-      }
-
-      const scheme = schemes[0];
-      if (scheme.type === 'http') {
-        if (scheme.scheme === 'basic') {
-          prepared[scheme._key] = {
-            user: authKey[0],
-            pass: (authKey.length === 2) ? authKey[1] : ''
-          };
-        } else if (scheme.scheme === 'bearer') {
-          if (authKey.length > 1) {
-            throw new Error('Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.');
-          }
-
-          prepared[scheme._key] = authKey[0];
-        }
-      } else if (scheme.type === 'oauth2') {
-        if (authKey.length > 1) {
-          throw new Error('Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.');
-        }
-
-        prepared[scheme._key] = authKey[0];
-      } else if (scheme.type === 'apiKey') {
-        if (authKey.length > 1) {
-          throw new Error('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
-        }
-
-        if (scheme.in === 'query' || scheme.in === 'header') {
-          prepared[scheme._key] = authKey[0];
-        }
-      } else {
-        throw new Error(`Sorry, this API currently supports a scheme, ${scheme.type}, that we don't yet support.`);
-      }
-    });
-
-    return prepared
-  }
-
-  function fetchOperation(operation, path, body /* , other */) {
-    // console.logFull(spec.operation('/', 'get'))
-    // console.logFull(operation)
-
-    const params = {};
-    if (arguments.length === 2) {
+    // const params = {};
+    /* if (arguments.length === 2) {
       params.path = path;
       params.body = path;
     } else if (arguments.length === 3) {
       params.path = path;
       params.body = body;
-    }
+    } */
 
-    const har = oasToHar(spec, operation, params, prepareAuth(operation));
+    const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
     // console.logx(spec);
     // console.logx(authValues);
-    // console.logx(har);
+    console.logx(har);
 
     return fetchHar(har);
   }
