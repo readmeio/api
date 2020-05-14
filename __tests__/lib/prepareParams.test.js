@@ -163,6 +163,48 @@ describe('#prepareParams', () => {
       });
     });
 
+    it('should prepare metadata if more than 25% of the supplied argument lines up with known parameters', () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+      const body = {
+        version: 'v1',
+        dataset: 'oa_citations',
+        randomUnknownParameter: true,
+      };
+
+      expect(prepareParams(operation, body)).toStrictEqual({
+        path: {
+          version: 'v1',
+          dataset: 'oa_citations',
+        },
+        formData: {
+          version: 'v1',
+          dataset: 'oa_citations',
+          randomUnknownParameter: true,
+        },
+      });
+    });
+
+    it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+      const body = {
+        version: 'v1', // This a known parameter, but the others aren't and should be treated as body payload data.
+        randomUnknownParameter: true,
+        randomUnknownParameter2: true,
+        randomUnknownParameter3: true,
+        randomUnknownParameter4: true,
+      };
+
+      expect(prepareParams(operation, body)).toStrictEqual({
+        formData: {
+          version: 'v1',
+          randomUnknownParameter: true,
+          randomUnknownParameter2: true,
+          randomUnknownParameter3: true,
+          randomUnknownParameter4: true,
+        },
+      });
+    });
+
     it('should prepare just metadata if supplied is metadata', () => {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const metadata = {
