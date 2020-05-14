@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 console.logx = obj => {
   // eslint-disable-next-line global-require
   console.log(require('util').inspect(obj, false, null, true));
@@ -9,7 +8,9 @@ function digestParameters(parameters) {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {
       throw new Error(`The OpenAPI document for this operation wasn't dereferenced before processing.`);
     } else if (param.name in prev) {
-      throw new Error(`The operation you are using has the same parameter, ${param.name}, spread across multiple entry points. We unfortunately can't handle this right now.`);
+      throw new Error(
+        `The operation you are using has the same parameter, ${param.name}, spread across multiple entry points. We unfortunately can't handle this right now.`
+      );
     }
 
     return Object.assign(prev, { [param.name]: param });
@@ -18,7 +19,7 @@ function digestParameters(parameters) {
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
 function isEmpty(obj) {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
+  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
 module.exports = function (operation, body, metadata) {
@@ -69,7 +70,7 @@ module.exports = function (operation, body, metadata) {
       params.body = body;
     } else {
       const intersection = Object.keys(body).filter(value => Object.keys(digested).includes(value)).length;
-      if (intersection && (intersection / Object.keys(body).length) > 0.25) {
+      if (intersection && intersection / Object.keys(body).length > 0.25) {
         // If more than 25% of the body intersects with the parameters that we've got on hand, then we should treat it
         // as a metadata object and organize into parameters.
         // eslint-disable-next-line no-param-reassign
@@ -87,9 +88,9 @@ module.exports = function (operation, body, metadata) {
   // operation schema. If we couldn't digest anything, but metadata was supplied then we wouldn't know where to place
   // the metadata!
   if (hasDigestedParams) {
-    params.header = {}
-    params.path = {}
-    params.query = {}
+    params.header = {};
+    params.path = {};
+    params.query = {};
 
     if (typeof metadata === 'object' && !isEmpty(metadata)) {
       const metadataKeys = Object.keys(metadata);

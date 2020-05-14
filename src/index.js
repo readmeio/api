@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 const fetch = require('node-fetch');
@@ -28,10 +27,6 @@ function getOperations(spec) {
     .reduce((prev, next) => prev.concat(next), []);
 }
 
-function isPrimitive(val) {
-  return typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean';
-}
-
 module.exports = uri => {
   const spec = new Oas(typeof uri === 'string' ? require(uri) : uri);
 
@@ -42,23 +37,12 @@ module.exports = uri => {
     return this;
   }
 
-  function fetchOperation(operation, body, metadata /* path, body /* , other */) {
-    // console.logx(operation.parameters)
-
-    // const params = {};
-    /* if (arguments.length === 2) {
-      params.path = path;
-      params.body = path;
-    } else if (arguments.length === 3) {
-      params.path = path;
-      params.body = body;
-    } */
-
+  function fetchOperation(operation, body, metadata) {
     const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
     // console.logx(spec);
     // console.logx(authValues);
-    console.logx(har);
+    // console.logx(har);
 
     return fetchHar(har);
   }
