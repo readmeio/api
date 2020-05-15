@@ -22,10 +22,15 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
+    "@apidevtools/swagger-parser": "^9.0.1",
     "@readme/oas-to-har": "^6.6.2",
     "@readme/oas-tooling": "^3.4.0",
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
     "fetch-har": "^2.3.1",
-    "node-fetch": "^2.6.0"
+    "find-cache-dir": "^3.3.1",
+    "node-fetch": "^2.6.0",
+    "yaml": "^1.9.2"
   },
   "devDependencies": {
     "@readme/eslint-config": "^3.0.0",
