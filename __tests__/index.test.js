@@ -80,7 +80,7 @@ describe('#fetch', () => {
     it.todo('should pass through header params');
     it.todo('should pass through auth params');
 
-    it.only('should pass through path params for operationId', () => {
+    it('should pass through path params for operationId', () => {
       const response = {
         id: petId,
         name: 'Buster',
