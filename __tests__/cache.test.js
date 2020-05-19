@@ -1,7 +1,7 @@
 const nock = require('nock');
 const fsMock = require('mock-fs');
 const findCacheDir = require('find-cache-dir');
-const path = require('path');
+const { join } = require('path');
 const fs = require('fs').promises;
 
 const Cache = require('../src/cache');
@@ -10,16 +10,16 @@ const pkg = require('../package.json');
 let readmeExampleJson;
 let readmeExampleYaml;
 const originalLog = console.log;
-const examplesDir = path.join(__dirname, 'examples');
+const examplesDir = join(__dirname, 'examples');
 
 beforeEach(async () => {
   readmeExampleJson = await fs.readFile(
-    path.join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
+    join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
     'utf8'
   );
 
   readmeExampleYaml = await fs.readFile(
-    path.join(__dirname, '../node_modules/@readme/oas-examples/3.0/yaml/readme.yaml'),
+    join(__dirname, '../node_modules/@readme/oas-examples/3.0/yaml/readme.yaml'),
     'utf8'
   );
 
@@ -31,7 +31,7 @@ beforeEach(async () => {
       'readme.json': readmeExampleJson,
       'readme.yaml': readmeExampleYaml,
       'swagger.json': await fs.readFile(
-        path.join(__dirname, '../node_modules/@readme/oas-examples/2.0/json/petstore.json'),
+        join(__dirname, '../node_modules/@readme/oas-examples/2.0/json/petstore.json'),
         'utf8'
       ),
     },
@@ -87,14 +87,14 @@ describe('#saveUrl()', () => {
 
 describe('#saveFile()', () => {
   it('should be able to save a definition', () => {
-    return new Cache(path.join(examplesDir, 'readme.json')).saveFile().then(() => {
+    return new Cache(join(examplesDir, 'readme.json')).saveFile().then(() => {
       expect(console.log).toHaveBeenNthCalledWith(1, expect.stringMatching(/dereferencing so it can/i));
       expect(console.log).toHaveBeenNthCalledWith(2, expect.stringMatching(/installation complete/i));
     });
   });
 
   it('should convert yaml to json', async () => {
-    const file = path.join(examplesDir, 'readme.yaml');
+    const file = join(examplesDir, 'readme.yaml');
     const cacheStore = new Cache(file);
     const hash = Cache.getCacheHash(file);
 
@@ -112,19 +112,19 @@ describe('#saveFile()', () => {
 
 describe('#save()', () => {
   it('should error if definition is a swagger file', async () => {
-    await expect(() => new Cache(path.join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
+    await expect(() => new Cache(join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
       'Sorry, this module only supports OpenAPI documents.'
     );
   });
 
   it('should error if definition is not a valid openapi file', async () => {
-    await expect(() => new Cache(path.join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
+    await expect(() => new Cache(join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
       "Sorry, it doesn't look like that is a valid OpenAPI document"
     );
   });
 
   it('should cache a new file', async () => {
-    const file = path.join(examplesDir, 'readme.json');
+    const file = join(examplesDir, 'readme.json');
     const cacheStore = new Cache(file);
     const hash = Cache.getCacheHash(file);
 
@@ -134,15 +134,24 @@ describe('#save()', () => {
 
     expect(cacheStore.getCache()).toHaveProperty(hash);
   });
-
-  it.todo('should not re-cache a file if it already exists');
 });
 
 describe('#load', () => {
-  it('should load a file out of cache', async () => {
-    const file = path.join(examplesDir, 'readme.json');
-    const cacheStore = new Cache(file);
+  let cacheStore;
 
+  beforeEach(() => {
+    const file = join(examplesDir, 'readme.json');
+    cacheStore = new Cache(file);
+  });
+
+  it('should return an object if the current uri is an object (used for unit testing)', async () => {
+    const obj = JSON.parse(readmeExampleJson);
+    const loaded = new Cache(obj).load();
+
+    expect(loaded).toStrictEqual(obj);
+  });
+
+  it('should load a file out of cache', async () => {
     await cacheStore.saveFile();
 
     const loaded = cacheStore.load();
@@ -153,9 +162,6 @@ describe('#load', () => {
   });
 
   it('should error if the file is not cached', () => {
-    const file = path.join(examplesDir, 'readme.json');
-    const cacheStore = new Cache(file);
-
     expect(() => {
       return cacheStore.load();
     }).toThrow(/to install this SDK's OpenAPI document/);

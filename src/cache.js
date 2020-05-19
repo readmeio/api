@@ -25,7 +25,14 @@ class SdkCache {
   }
 
   static getCacheHash(file) {
-    return crypto.createHash('md5').update(file).digest('hex');
+    let data = file;
+    if (typeof file === 'object') {
+      // Under certain unit testing circumstances, we might be supplying the class with a raw JSON object so we'll need
+      // to convert it to a string in order to hand it off to the crypto module.
+      data = JSON.stringify(file);
+    }
+
+    return crypto.createHash('md5').update(data).digest('hex');
   }
 
   getCache() {
@@ -38,6 +45,11 @@ class SdkCache {
   }
 
   load() {
+    // If the class was supplied a raw object, just go ahead and bypass the caching system and return that.
+    if (typeof this.uri === 'object') {
+      return this.uri;
+    }
+
     const cache = this.getCache();
 
     if (!(this.uriHash in cache)) {

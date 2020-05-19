@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
 const Oas = require('@readme/oas-tooling');
@@ -20,9 +19,7 @@ class Sdk {
   constructor(uri) {
     this.uri = uri;
     this.supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-
-    // @todo SdkCache should still be able to handle passing in a raw object for testing purposes
-    this.spec = new Oas(new SdkCache(this.uri).load())
+    this.spec = new Oas(new SdkCache(uri).load());
   }
 
   static getOperations(spec) {

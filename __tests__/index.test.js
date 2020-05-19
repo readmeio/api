@@ -1,17 +1,61 @@
 /* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const { join } = require('path');
+const findCacheDir = require('find-cache-dir');
+const fsMock = require('mock-fs');
+const fs = require('fs').promises;
 const api = require('../src');
-
-const petstore = api(join(__dirname, './__fixtures__/petstore.json'));
+const Cache = require('../src/cache');
+const pkg = require('../package.json');
 
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
 
 console.logx = obj => {
   // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
+  process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
+  // console.log(require('util').inspect(obj, false, null, true));
 };
+
+const originalLog = console.log;
+const examplesDir = join(__dirname, 'examples');
+
+let petstoreSdk;
+let readmeSdk;
+const petstoreServerUrl = 'http://petstore.swagger.io/api';
+
+beforeEach(async () => {
+  // mock-fs has issues when you try to console.log when a mock filesystem is present.
+  // https://github.com/tschaub/mock-fs/issues/234
+  console.log = jest.fn().mockImplementation(() => {});
+
+  fsMock({
+    [examplesDir]: {
+      'petstore.json': await fs.readFile(
+        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/petstore-expanded.json'),
+        'utf8'
+      ),
+      'readme.json': await fs.readFile(
+        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
+        'utf8'
+      ),
+    },
+    [findCacheDir({ name: pkg.name })]: {},
+  });
+
+  const petstore = join(examplesDir, 'petstore.json');
+  await new Cache(petstore).saveFile();
+  petstoreSdk = api(petstore);
+
+  const readme = join(examplesDir, 'readme.json');
+  await new Cache(readme).saveFile();
+  readmeSdk = api(readme);
+});
+
+afterEach(() => {
+  console.log = originalLog;
+  fsMock.restore();
+});
 
 describe('#preloading', () => {
   it.todo('should error if passing in swagger 2');
@@ -33,20 +77,24 @@ describe('#preloading', () => {
 describe('#accessors', () => {
   it('should have a function for each http method', () => {
     ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'].forEach(method => {
-      expect(typeof petstore[method]).toBe('function');
+      expect(typeof petstoreSdk[method]).toBe('function');
     });
   });
 
   describe('#operationId()', () => {
     it('should work for operationId', () => {
-      const mock = nock('http://petstore.swagger.io/v1').get('/pets').reply(200);
-      expect(() => petstore.listPets()).not.toThrow();
+      const mock = nock(petstoreServerUrl).get('/pets').reply(200);
+      expect(() => petstoreSdk.findPets()).not.toThrow();
       mock.done();
     });
 
+    it('should work with operationIds that have contain spaces', () => {
+      expect(typeof petstoreSdk['find pet by id']).toBe('function');
+    });
+
     it('should work for other methods', () => {
-      const mock = nock('http://petstore.swagger.io/v1').post('/pets').reply(200, {});
-      expect(() => petstore.createPets()).not.toThrow();
+      const mock = nock(petstoreServerUrl).post('/pets').reply(200, {});
+      expect(() => petstoreSdk.addPet()).not.toThrow();
       mock.done();
     });
 
@@ -55,14 +103,14 @@ describe('#accessors', () => {
     it.todo('should suggest a similar sounding operation name');
 
     it('should error if an operationId does not exist', () => {
-      expect(() => petstore.listPetz()).toThrow(/not a function/);
+      expect(() => petstoreSdk.findPetz()).toThrow(/not a function/);
     });
   });
 
   describe('#method(path)', () => {
     it('should work for method and path', () => {
-      const mock = nock('http://petstore.swagger.io/v1').get('/pets').reply(200);
-      expect(() => petstore.get('/pets')).not.toThrow();
+      const mock = nock(petstoreServerUrl).get('/pets').reply(200);
+      expect(() => petstoreSdk.get('/pets')).not.toThrow();
       mock.done();
     });
 
@@ -72,7 +120,6 @@ describe('#accessors', () => {
 
 describe('#fetch', () => {
   const petId = 123;
-  const body = { a: 1 };
 
   describe('operationId', () => {
     it.todo('should pass through path/body/other params');
@@ -86,10 +133,10 @@ describe('#fetch', () => {
         name: 'Buster',
       };
 
-      const mock = nock('http://petstore.swagger.io/v1').get(`/pets/${petId}`).reply(200, response);
+      const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(200, response);
 
-      return petstore
-        .showPetById({ petId })
+      return petstoreSdk
+        .deletePet({ id: petId })
         .then(res => {
           expect(res.status).toBe(200);
           return res.json();
@@ -101,45 +148,28 @@ describe('#fetch', () => {
     });
 
     it('should pass through body for operationId', () => {
-      const mock = nock('http://petstore.swagger.io/v1')
-        .post('/pets', body)
-        .reply(200, (uri, requestBody) => {
-          return {
-            a: requestBody.a + 100,
-          };
-        });
+      const body = { name: 'Buster' };
+      const mock = nock(petstoreServerUrl).post('/pets', body).reply(200);
 
-      return petstore
-        .createPets(body)
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ a: 101 });
-          mock.done();
-        });
+      return petstoreSdk.addPet(body).then(res => {
+        expect(res.status).toBe(200);
+        mock.done();
+      });
     });
 
     it('should pass through path params and body for operationId', () => {
-      const mock = nock('http://petstore.swagger.io/v1')
-        .put(`/pets/${petId}`, body)
-        .reply(200, (uri, requestBody) => {
-          return {
-            a: requestBody.a + 100,
-          };
-        });
+      const slug = 'new-release';
+      const body = {
+        title: 'revised title',
+        body: 'updated body',
+      };
 
-      return petstore
-        .updatePetById({ petId }, body)
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ a: 101 });
-          mock.done();
-        });
+      const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`, body).reply(200);
+
+      return readmeSdk.updateChangelog(body, { slug }).then(res => {
+        expect(res.status).toBe(200);
+        mock.done();
+      });
     });
   });
 
@@ -150,92 +180,64 @@ describe('#fetch', () => {
     it.todo('should pass through auth params');
 
     it('should pass through body for method + path', () => {
-      const mock = nock('http://petstore.swagger.io/v1')
+      const body = { name: 'Buster' };
+
+      const mock = nock(petstoreServerUrl)
         .post('/pets', body)
         .reply(200, (uri, requestBody) => {
           return {
-            a: requestBody.a + 100,
+            id: 100,
+            name: requestBody.name,
           };
         });
 
-      return petstore
+      return petstoreSdk
         .post('/pets', body)
         .then(res => {
           expect(res.status).toBe(200);
           return res.json();
         })
         .then(res => {
-          expect(res).toStrictEqual({ a: 101 });
+          expect(res).toStrictEqual({ id: 100, name: body.name });
           mock.done();
         });
     });
 
     it('should pass through path params for method + path', () => {
-      const sdk = api(
-        createOas('put', '/{id}', {
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              schema: {
-                type: 'string',
-              },
-            },
-          ],
-        })
-      );
-
-      const mock = nock(serverUrl).put('/123').reply(200);
-      return sdk.put('/{id}', { id: 123 }).then(res => {
+      const slug = 'new-release';
+      const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`).reply(200);
+      return readmeSdk.put('/changelogs/{slug}', { slug }).then(res => {
         expect(res.status).toBe(200);
-        expect(res.url).toBe(`${serverUrl}/123`);
+        expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
         mock.done();
       });
     });
 
     it('should pass through path params and body params for method + path', () => {
-      const sdk = api(
-        createOas('put', '/{id}', {
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              schema: {
-                type: 'string',
-              },
-            },
-          ],
-          requestBody: {
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    a: {
-                      type: 'string',
-                    },
-                  },
-                },
-              },
-            },
-          },
-        })
-      );
+      const slug = 'new-release';
+      const body = {
+        title: 'revised title',
+        body: 'updated body',
+      };
 
-      const mock = nock(serverUrl)
-        .put('/123', { a: 1 })
+      const mock = nock('https://dash.readme.io/api/v1')
+        .put(`/changelogs/${slug}`, body)
         .reply(200, (uri, requestBody) => {
-          return { a: requestBody.a + 100 };
+          return {
+            ...requestBody,
+            slug,
+          };
         });
 
-      return sdk
-        .put('/{id}', { id: 123 }, { a: 1 })
+      return readmeSdk
+        .put('/changelogs/{slug}', body, { slug })
         .then(res => {
           expect(res.status).toBe(200);
+          expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
           return res.json();
         })
         .then(res => {
-          expect(res).toStrictEqual({ a: 101 });
+          expect(res).toStrictEqual({ ...body, slug });
           mock.done();
         });
     });
