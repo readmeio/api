@@ -33,7 +33,7 @@
     "glob": "^7.1.1",
     "minimist": "^1.2.0",
     "primus": "6.1.0",
-    "progress": "1.1.8",
+    "progress": "2.0.3",
     "prompt-list": "^0.2.0",
     "prompt-password": "^0.1.1",
     "request": "2.81.0",
