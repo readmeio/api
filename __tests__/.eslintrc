@@ -1,0 +1,14 @@
+{
+  "extends": "@readme/eslint-config/testing",
+  "rules": {
+    "jest/expect-expect": [
+      "warn",
+      {
+        "assertFunctionNames": [
+          "expect",
+          "nock"
+        ]
+      }
+    ]
+  }
+}
