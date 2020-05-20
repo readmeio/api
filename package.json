@@ -32,7 +32,7 @@
     "file-type": "^7.4.0",
     "glob": "^7.1.1",
     "minimist": "^1.2.0",
-    "primus": "6.1.0",
+    "primus": "7.3.4",
     "progress": "1.1.8",
     "prompt-list": "^0.2.0",
     "prompt-password": "^0.1.1",
