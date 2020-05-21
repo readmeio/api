@@ -21,17 +21,11 @@ beforeEach(async () => {
   fsMock({
     [examplesDir]: {
       'petstore.json': await fs.readFile(
-        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/petstore-expanded.json'),
+        require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json'),
         'utf8'
       ),
-      'readme.json': await fs.readFile(
-        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
-        'utf8'
-      ),
-      'uspto.json': await fs.readFile(
-        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/uspto.json'),
-        'utf8'
-      ),
+      'readme.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8'),
+      'uspto.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/uspto.json'), 'utf8'),
     },
     [findCacheDir({ name: pkg.name })]: {},
   });

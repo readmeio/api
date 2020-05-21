@@ -31,25 +31,15 @@ expect.extend({
 });
 
 beforeEach(async () => {
-  readmeExampleJson = await fs.readFile(
-    join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
-    'utf8'
-  );
-
-  readmeExampleYaml = await fs.readFile(
-    join(__dirname, '../node_modules/@readme/oas-examples/3.0/yaml/readme.yaml'),
-    'utf8'
-  );
+  readmeExampleJson = await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8');
+  readmeExampleYaml = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
 
   fsMock({
     [examplesDir]: {
       'invalid-openapi.json': JSON.stringify(pkg),
       'readme.json': readmeExampleJson,
       'readme.yaml': readmeExampleYaml,
-      'swagger.json': await fs.readFile(
-        join(__dirname, '../node_modules/@readme/oas-examples/2.0/json/petstore.json'),
-        'utf8'
-      ),
+      'swagger.json': await fs.readFile(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'utf8'),
     },
     [findCacheDir({ name: pkg.name })]: {},
   });
