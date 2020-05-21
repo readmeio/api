@@ -1,4 +1,7 @@
 __tests__/
+.github/
+coverage/
 .eslint*
 .gitignore
 .prettier*
+example.js

@@ -1,3 +1,4 @@
 .github/
 coverage/
 node_modules/
+example.js

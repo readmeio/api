@@ -1,7 +1,4 @@
 {
   "extends": "@readme/eslint-config",
-  "root": true,
-  "rules": {
-    "no-console": "off"
-  }
+  "root": true
 }
