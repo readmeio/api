@@ -1,4 +1,3 @@
-/* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const fsMock = require('mock-fs');
 const findCacheDir = require('find-cache-dir');
@@ -50,9 +49,25 @@ afterEach(() => {
 });
 
 describe('#load', () => {
-  it.todo('should be able to load a url');
-  it.todo('should be able to load a file');
-  it.todo('should throw an error if neither a url or file are detected');
+  it('should return a raw object if a JSON object was initially supplied', async () => {
+    const obj = JSON.parse(readmeExampleJson);
+
+    await new Cache(obj).load().then(res => {
+      expect(res).toStrictEqual(obj);
+    });
+  });
+
+  it('should throw an error when a non-HTTP(S) url is supplied', () => {
+    return expect(new Cache('htt://example.com/openapi.json').load()).rejects.toThrow(
+      'Only HTTP(S) protocols are supported'
+    );
+  });
+
+  it('should throw an error if neither a url or file are detected', async () => {
+    return expect(new Cache('/this/is/not/a/real/path.json').load()).rejects.toThrow(
+      /supply a URL or a path on your filesystem/
+    );
+  });
 });
 
 describe('#saveUrl()', () => {
@@ -133,13 +148,13 @@ describe('#saveFile()', () => {
 describe('#save()', () => {
   it('should error if definition is a swagger file', () => {
     return expect(new Cache(join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
-      'Sorry, this module only supports OpenAPI documents.'
+      'Sorry, this module only supports OpenAPI definitions.'
     );
   });
 
   it('should error if definition is not a valid openapi file', () => {
     return expect(new Cache(join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
-      "Sorry, it doesn't look like that is a valid OpenAPI document"
+      "Sorry, that doesn't look like a valid OpenAPI definition."
     );
   });
 

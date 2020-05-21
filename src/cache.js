@@ -79,7 +79,7 @@ class SdkCache {
     } catch (err) {
       if (!fs.existsSync(this.uri)) {
         throw new Error(
-          `Sorry, we were unable to load that OpenAPI document. Please either supply a URL or a path on your filesystem.`
+          `Sorry, we were unable to load that OpenAPI definition. Please either supply a URL or a path on your filesystem.`
         );
       }
 
@@ -91,7 +91,7 @@ class SdkCache {
     const self = this;
 
     if (json.swagger) {
-      throw new Error('Sorry, this module only supports OpenAPI documents.');
+      throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
 
     return new Promise(resolve => {
@@ -100,7 +100,7 @@ class SdkCache {
       .then(res => {
         return SwaggerParser.validate(res).catch(err => {
           if (/is not a valid openapi api definition/i.test(err.message)) {
-            throw new Error("Sorry, it doesn't look like that is a valid OpenAPI document.");
+            throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
           }
 
           throw err;

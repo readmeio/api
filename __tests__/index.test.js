@@ -1,4 +1,3 @@
-/* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const { join } = require('path');
 const findCacheDir = require('find-cache-dir');
@@ -48,6 +47,7 @@ describe('#preloading', () => {
 
   it('should proxy an sdk for the first time', async () => {
     const mock = nock('https://developer.uspto.gov/ds-api').get('/').reply(200);
+    const mock2 = nock('https://developer.uspto.gov/ds-api').get('/two').reply(200);
 
     // Asserting that we have not previously loaded this API.
     expect(new Cache(uspto).isCached()).toBe(false);
@@ -78,19 +78,14 @@ describe('#preloading', () => {
       'list-searchable-fields',
       'perform-search',
     ]);
+
+    // Calling the same method again should also work as expected.
+    await sdk.get('/two').then(() => {
+      mock2.done();
+    });
   });
 
-  it.todo('should error if passing in swagger 2');
-  it.todo('should error if oas file is not valid');
-  it.todo('should default to swagger.json/openapi.json');
-  it.todo('should fetch files over http');
-  it.todo('should fetch files from disk');
-  it.todo('should work for yaml');
-  it.todo('should work for json');
-
-  it.todo('should deref before caching');
-
-  it('should work when supplied a JSON OAS object', () => {
+  it('should support supplying a raw JSON OAS object', () => {
     const sdk = api(createOas());
     expect(typeof sdk.get).toBe('function');
   });
@@ -127,8 +122,6 @@ describe('#accessors', () => {
     });
 
     it.todo('should allow operationId to be the same as a http method');
-    it.todo('should allow namespaced operationIds'); // sdk.name.space()
-    it.todo('should suggest a similar sounding operation name');
 
     it('should error if an operationId does not exist', () => {
       return expect(petstoreSdk.findPetz()).rejects.toThrow(/does not appear to be a valid operation/);
@@ -145,7 +138,9 @@ describe('#accessors', () => {
       }).not.toThrow();
     });
 
-    it.todo('should error if method and path does not exist');
+    it('should error if method does not exist', () => {
+      return expect(petstoreSdk.fetch('/pets')).rejects.toThrow(/does not appear to be a valid operation/);
+    });
   });
 });
 
@@ -153,12 +148,7 @@ describe('#fetch', () => {
   const petId = 123;
 
   describe('operationId', () => {
-    it.todo('should pass through path/body/other params');
-    it.todo('should pass through query params');
-    it.todo('should pass through header params');
-    it.todo('should pass through auth params');
-
-    it('should pass through path params for operationId', () => {
+    it('should pass through parameters for operationId', () => {
       const response = {
         id: petId,
         name: 'Buster',
@@ -188,7 +178,7 @@ describe('#fetch', () => {
       });
     });
 
-    it('should pass through path params and body for operationId', () => {
+    it('should pass through parameters and body for operationId', () => {
       const slug = 'new-release';
       const body = {
         title: 'revised title',
@@ -205,11 +195,6 @@ describe('#fetch', () => {
   });
 
   describe('method + path', () => {
-    it.todo('should pass through path/body/other params');
-    it.todo('should pass through query params');
-    it.todo('should pass through header params');
-    it.todo('should pass through auth params');
-
     it('should pass through body for method + path', () => {
       const body = { name: 'Buster' };
 
@@ -234,7 +219,7 @@ describe('#fetch', () => {
         });
     });
 
-    it('should pass through path params for method + path', () => {
+    it('should pass through parameters for method + path', () => {
       const slug = 'new-release';
       const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`).reply(200);
       return readmeSdk.put('/changelogs/{slug}', { slug }).then(res => {
@@ -244,7 +229,7 @@ describe('#fetch', () => {
       });
     });
 
-    it('should pass through path params and body params for method + path', () => {
+    it('should pass through parameters and body for method + path', () => {
       const slug = 'new-release';
       const body = {
         title: 'revised title',
@@ -272,13 +257,5 @@ describe('#fetch', () => {
           mock.done();
         });
     });
-  });
-
-  describe('validation', () => {
-    it.todo('should validate body based on JSON Schema');
-    it.todo('should validate path params');
-    it.todo('should validate query params');
-    it.todo('should validate header params');
-    it.todo('should validate auth params');
   });
 });
