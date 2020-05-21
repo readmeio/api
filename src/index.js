@@ -106,7 +106,7 @@ class Sdk {
 
             await loadFromCache();
 
-            // If after loading the SDK this method still doesn't exist, then it's not real!
+            // If after loading the SDK and this method still doesn't exist, then it's not real!
             if (!(method in sdk)) {
               throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
             }
