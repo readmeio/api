@@ -1,11 +1,12 @@
 {
   "name": "api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Generate an SDK from an OpenAPI definition",
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint && npm run prettier",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
+    "release": "conventional-changelog -i CHANGELOG.md -s",
     "test": "jest --coverage"
   },
   "repository": {
@@ -31,9 +32,13 @@
     "yaml": "^1.9.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@readme/eslint-config": "^3.1.0",
     "@readme/oas-examples": "^3.4.0",
+    "conventional-changelog-cli": "^2.0.34",
     "eslint": "^7.0.0",
+    "husky": "^4.2.5",
     "jest": "^25.5.2",
     "mock-fs": "^4.12.0",
     "nock": "^12.0.3",
@@ -43,6 +48,16 @@
   "jest": {
     "testPathIgnorePatterns": [
       "__tests__/__fixtures__/"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   }
 }
