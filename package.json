@@ -15,7 +15,7 @@
     "url": "https://github.com/readmeio/api/issues"
   },
   "author": "Jon Ursenbach <jon@readme.io>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "@readme/eslint-config": "^2.1.0",
