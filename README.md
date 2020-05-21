@@ -47,9 +47,9 @@ For example:
 * API Keys: `sdk.auth('myApiKey')`
 
 ### Parameters and Payloads
-When supplying parameters and/or request body payloads to an API request, you don't to explicitly define what goes where since the API definition contains all that information. All you need to do is supply either one or two objects:
+When supplying parameters and/or request body payloads to an API request, you don't need to explicitly define what goes where since the API definition contains all that information. All you need to do is supply either one or two objects:
 
-* `body`: This will contain all data required for a request body payload for a POST, PUT, etc. request. It can either be an array or an object, whichever you need to use the API operation you're using.
+* `body`: This will contain all data required for a request body payload for a POST, PUT, etc. request. It can either be an array or an object — whichever you need to use the API operation you're using.
 * `metadata`: This is an object where all parameters (path, query, header, cookie) go. Again, don't worry about telling the SDK that a path parameter is for the path, that's all handled for you.
 
 For example, if you wanted to make a simple GET request:
@@ -66,7 +66,7 @@ What about a POST request?
 sdk.createPets({ name: 'Buster' }).then(...)
 ```
 
-Since `name` here would coorespond on `createPets` to request body payload, this will issue a POST request against `/pets` to make a new pet named "Buster".
+Since `name` here would correspond on `createPets` to request body payload, this will issue a POST request against `/pets` to make a new pet named "Buster".
 
 What about operations that require both? Well you can mix them too!
 
