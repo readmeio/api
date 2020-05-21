@@ -16,7 +16,7 @@
     "url": "https://github.com/readmeio/api/issues"
   },
   "author": "Jon Ursenbach <jon@readme.io>",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": ">=10"
   },
