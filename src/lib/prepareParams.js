@@ -1,8 +1,3 @@
-console.logx = obj => {
-  // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
-};
-
 function digestParameters(parameters) {
   return parameters.reduce((prev, param) => {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {

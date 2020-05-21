@@ -11,13 +11,6 @@ const pkg = require('../package.json');
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
 
-console.logx = obj => {
-  // eslint-disable-next-line global-require
-  process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
-  // console.log(require('util').inspect(obj, false, null, true));
-};
-
-const originalLog = console.log;
 const examplesDir = join(__dirname, 'examples');
 
 let petstoreSdk;
@@ -25,10 +18,6 @@ let readmeSdk;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 beforeEach(async () => {
-  // mock-fs has issues when you try to console.log when a mock filesystem is present.
-  // https://github.com/tschaub/mock-fs/issues/234
-  console.log = jest.fn().mockImplementation(() => {});
-
   fsMock({
     [examplesDir]: {
       'petstore.json': await fs.readFile(
@@ -57,7 +46,6 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  console.log = originalLog;
   fsMock.restore();
 });
 

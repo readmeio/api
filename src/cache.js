@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const chalk = require('chalk');
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const yaml = require('yaml');
@@ -9,12 +8,6 @@ const pkg = require('../package.json');
 const fs = require('fs');
 
 const cacheDir = findCacheDir({ name: pkg.name, thunk: true });
-
-console.logx = obj => {
-  // eslint-disable-next-line global-require
-  process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
-  // console.log(require('util').inspect(obj, false, null, true));
-};
 
 class SdkCache {
   constructor(uri) {
@@ -114,7 +107,6 @@ class SdkCache {
         });
       })
       .then(res => {
-        console.log(chalk.green('Dereferencing so it can easily handled...'));
         return $RefParser.dereference(res);
       })
       .then(async spec => {
@@ -127,9 +119,7 @@ class SdkCache {
         }
 
         const cache = self.getCache();
-        if (this.uriHash in cache) {
-          console.log(chalk.green('The specification is already installed.'));
-        } else {
+        if (!(this.uriHash in cache)) {
           const saved = JSON.stringify(spec, null, 2);
           const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
 
@@ -144,8 +134,6 @@ class SdkCache {
           fs.writeFileSync(self.cacheStore, JSON.stringify(cache, null, 2));
 
           self.cache = cache;
-
-          console.log(chalk.green('Installation complete!'));
         }
 
         return spec;
@@ -160,7 +148,6 @@ class SdkCache {
         }
 
         if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(this.uri)) {
-          console.log(chalk.green('Converting YAML to JSON...'));
           return res.text().then(text => {
             return yaml.parse(text);
           });
@@ -177,7 +164,6 @@ class SdkCache {
     })
       .then(res => {
         if (/\.(yaml|yml)/.test(this.uri)) {
-          console.log(chalk.green('Converting YAML to JSON...'));
           return yaml.parse(res);
         }
 

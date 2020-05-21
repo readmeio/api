@@ -1,14 +1,8 @@
 const nock = require('nock');
 const api = require('../src');
-const util = require('util');
 
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
-
-console.logx = obj => {
-  // process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
-  console.log(util.inspect(obj, false, null, true));
-};
 
 describe('#auth()', () => {
   const baseSecurityOas = createOas('get', '/', {

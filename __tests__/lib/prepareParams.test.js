@@ -7,11 +7,6 @@ const serverUrl = 'https://api.example.com';
 const createOas = require('../__fixtures__/createOas')(serverUrl);
 const prepareParams = require('../../src/lib/prepareParams');
 
-console.logx = obj => {
-  // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
-};
-
 const arraySchema = createOas('put', '/', {
   requestBody: {
     content: {

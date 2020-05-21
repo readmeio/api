@@ -10,11 +10,6 @@ global.fetch = fetch;
 global.Request = fetch.Request;
 global.Headers = fetch.Headers;
 
-console.logx = obj => {
-  // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
-};
-
 class Sdk {
   constructor(uri) {
     this.uri = uri;
@@ -74,10 +69,8 @@ class Sdk {
     async function loadFromCache() {
       let cachedSpec;
       if (isCached) {
-        // console.logx('🌀 retrieving from cache')
         cachedSpec = await cache.get();
       } else {
-        // console.logx('💾 loading and caching')
         cachedSpec = await cache.load();
         isCached = true;
       }
@@ -94,8 +87,6 @@ class Sdk {
 
     const sdkProxy = {
       get(target, method) {
-        // console.logx(`📲 calling .${method}`);
-
         // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
         // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
         // chaining `sdk.auth().operationId()` will fail.
@@ -106,8 +97,6 @@ class Sdk {
         }
 
         return async function (...args) {
-          // console.logx(`🚨 ${method} was called. is it in the target? ${method in target}`);
-
           if (!(method in target)) {
             // If this method doesn't exist on the proxy (SDK), have we loaded the SDK? If we have, then this method
             // isn't valid.

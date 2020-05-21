@@ -10,8 +10,25 @@ const pkg = require('../package.json');
 
 let readmeExampleJson;
 let readmeExampleYaml;
-const originalLog = console.log;
 const examplesDir = join(__dirname, 'examples');
+
+expect.extend({
+  // Custom matcher so we can easily test that dereferencing of OpenAPI files is working as expected.
+  toBeDereferenced(received) {
+    const pass = !received.filter(obj => '$ref' in obj).length;
+    if (pass) {
+      return {
+        message: () => `expected supplied array not to be dereferenced`,
+        pass: true,
+      };
+    }
+
+    return {
+      message: () => `expected supplied array to be dereferenced`,
+      pass: false,
+    };
+  },
+});
 
 beforeEach(async () => {
   readmeExampleJson = await fs.readFile(
@@ -23,8 +40,6 @@ beforeEach(async () => {
     join(__dirname, '../node_modules/@readme/oas-examples/3.0/yaml/readme.yaml'),
     'utf8'
   );
-
-  console.log = jest.fn().mockImplementation(() => {});
 
   fsMock({
     [examplesDir]: {
@@ -41,7 +56,6 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  console.log = originalLog;
   fsMock.restore();
 });
 
@@ -54,10 +68,13 @@ describe('#load', () => {
 describe('#saveUrl()', () => {
   it('should be able to save a definition', () => {
     const mock = nock('http://example.com').get('/readme.json').reply(200, readmeExampleJson);
+    const cacheStore = new Cache('http://example.com/readme.json');
 
-    return new Cache('http://example.com/readme.json').saveUrl().then(() => {
-      expect(console.log).toHaveBeenNthCalledWith(1, expect.stringMatching(/dereferencing so it can/i));
-      expect(console.log).toHaveBeenNthCalledWith(2, expect.stringMatching(/installation complete/i));
+    expect(cacheStore.isCached()).toBe(false);
+
+    return cacheStore.saveUrl().then(() => {
+      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+      expect(cacheStore.isCached()).toBe(true);
       mock.done();
     });
   });
@@ -79,10 +96,11 @@ describe('#saveUrl()', () => {
     const cacheStore = new Cache(definition);
     const hash = Cache.getCacheHash(definition);
 
+    expect(cacheStore.isCached()).toBe(false);
+
     await cacheStore.saveUrl().then(() => {
-      expect(console.log).toHaveBeenNthCalledWith(1, expect.stringMatching(/converting yaml to json/i));
-      expect(console.log).toHaveBeenNthCalledWith(2, expect.stringMatching(/dereferencing so it can/i));
-      expect(console.log).toHaveBeenNthCalledWith(3, expect.stringMatching(/installation complete/i));
+      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+      expect(cacheStore.isCached()).toBe(true);
       mock.done();
     });
 
@@ -94,9 +112,13 @@ describe('#saveUrl()', () => {
 
 describe('#saveFile()', () => {
   it('should be able to save a definition', () => {
-    return new Cache(join(examplesDir, 'readme.json')).saveFile().then(() => {
-      expect(console.log).toHaveBeenNthCalledWith(1, expect.stringMatching(/dereferencing so it can/i));
-      expect(console.log).toHaveBeenNthCalledWith(2, expect.stringMatching(/installation complete/i));
+    const cacheStore = new Cache(join(examplesDir, 'readme.json'));
+
+    expect(cacheStore.isCached()).toBe(false);
+
+    return cacheStore.saveFile().then(() => {
+      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+      expect(cacheStore.isCached()).toBe(true);
     });
   });
 
@@ -105,10 +127,11 @@ describe('#saveFile()', () => {
     const cacheStore = new Cache(file);
     const hash = Cache.getCacheHash(file);
 
+    expect(cacheStore.isCached()).toBe(false);
+
     await cacheStore.saveFile().then(() => {
-      expect(console.log).toHaveBeenNthCalledWith(1, expect.stringMatching(/converting yaml to json/i));
-      expect(console.log).toHaveBeenNthCalledWith(2, expect.stringMatching(/dereferencing so it can/i));
-      expect(console.log).toHaveBeenNthCalledWith(3, expect.stringMatching(/installation complete/i));
+      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+      expect(cacheStore.isCached()).toBe(true);
     });
 
     const cached = cacheStore.getCache();
@@ -118,14 +141,14 @@ describe('#saveFile()', () => {
 });
 
 describe('#save()', () => {
-  it('should error if definition is a swagger file', async () => {
-    await expect(() => new Cache(join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
+  it('should error if definition is a swagger file', () => {
+    return expect(new Cache(join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
       'Sorry, this module only supports OpenAPI documents.'
     );
   });
 
-  it('should error if definition is not a valid openapi file', async () => {
-    await expect(() => new Cache(join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
+  it('should error if definition is not a valid openapi file', () => {
+    return expect(new Cache(join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
       "Sorry, it doesn't look like that is a valid OpenAPI document"
     );
   });
