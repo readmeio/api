@@ -38,23 +38,11 @@ class Sdk {
     let isCached = cache.isCached();
     let sdk = {};
 
-    /* function auth(...values) {
-      authKeys.push(values);
-      return sdk;
-    } */
-
     function fetchOperation(spec, operation, body, metadata) {
       const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
       return fetchHar(har);
     }
-
-    sdk = {
-      auth: (...values) => {
-        authKeys.push(values);
-        return sdk;
-      },
-    };
 
     function loadMethods(spec) {
       const supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
@@ -86,10 +74,10 @@ class Sdk {
     async function loadFromCache() {
       let cachedSpec;
       if (isCached) {
-        console.logx('🌀 retrieving from cache')
+        // console.logx('🌀 retrieving from cache')
         cachedSpec = await cache.get();
       } else {
-        console.logx('💾 loading and caching')
+        // console.logx('💾 loading and caching')
         cachedSpec = await cache.load();
         isCached = true;
       }
@@ -104,16 +92,21 @@ class Sdk {
       isLoaded = true;
     }
 
-    return new Proxy(sdk, {
+    const sdkProxy = {
       get(target, method) {
-        return async function (...args) {
-          /* if (method === 'auth') {
-            authKeys.push(args);
-            console.logx(Object.keys(sdk));
-            return target;
-          } */
+        // console.logx(`📲 calling .${method}`);
 
-          console.logx(`${method} was called. is it in the target? ${method in target}`);
+        // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
+        // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
+        // chaining `sdk.auth().operationId()` will fail.
+        if (method === 'auth') {
+          return function (...args) {
+            return target[method].apply(this, args);
+          };
+        }
+
+        return async function (...args) {
+          // console.logx(`🚨 ${method} was called. is it in the target? ${method in target}`);
 
           if (!(method in target)) {
             // If this method doesn't exist on the proxy (SDK), have we loaded the SDK? If we have, then this method
@@ -135,7 +128,16 @@ class Sdk {
           return target[method].apply(this, args);
         };
       },
-    });
+    };
+
+    sdk = {
+      auth: (...values) => {
+        authKeys.push(values);
+        return new Proxy(sdk, sdkProxy);
+      },
+    };
+
+    return new Proxy(sdk, sdkProxy);
   }
 }
 

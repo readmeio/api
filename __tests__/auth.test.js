@@ -1,13 +1,13 @@
 const nock = require('nock');
 const api = require('../src');
+const util = require('util');
 
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
 
 console.logx = obj => {
   // process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
-  // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
+  console.log(util.inspect(obj, false, null, true));
 };
 
 describe('#auth()', () => {
@@ -37,11 +37,9 @@ describe('#auth()', () => {
         },
       };
 
-      it.only('should allow you to supply auth', async () => {
+      it('should allow you to supply auth', () => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl).get('/').query({ apiKeyParam: apiKey }).reply(200, {});
-
-        // console.logx(sdk.auth(apiKey));
 
         return sdk
           .auth(apiKey)
@@ -55,9 +53,7 @@ describe('#auth()', () => {
       it('should throw if you supply multiple auth keys', () => {
         const sdk = api(securityOas);
 
-        expect(() => {
-          sdk.auth(apiKey, apiKey).getSomething();
-        }).toThrow(/only a single key is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single key is needed/i);
       });
     });
 
@@ -93,9 +89,7 @@ describe('#auth()', () => {
       it('should throw if you supply multiple auth keys', () => {
         const sdk = api(securityOas);
 
-        expect(() => {
-          sdk.auth(apiKey, apiKey).getSomething();
-        }).toThrow(/only a single key is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single key is needed/i);
       });
     });
   });
@@ -183,9 +177,7 @@ describe('#auth()', () => {
       it('should throw if you pass in multiple bearer tokens', () => {
         const sdk = api(securityOas);
 
-        expect(() => {
-          sdk.auth(apiKey, apiKey).getSomething();
-        }).toThrow(/only a single token is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single token is needed/i);
       });
     });
   });
@@ -221,9 +213,7 @@ describe('#auth()', () => {
     it('should throw if you pass in multiple bearer tokens', () => {
       const sdk = api(securityOas);
 
-      expect(() => {
-        sdk.auth(apiKey, apiKey).getSomething();
-      }).toThrow(/only a single token is needed/i);
+      return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single token is needed/i);
     });
   });
 });
