@@ -39,6 +39,10 @@ beforeEach(async () => {
         join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/readme.json'),
         'utf8'
       ),
+      'uspto.json': await fs.readFile(
+        join(__dirname, '../node_modules/@readme/oas-examples/3.0/json/uspto.json'),
+        'utf8'
+      ),
     },
     [findCacheDir({ name: pkg.name })]: {},
   });
@@ -58,6 +62,42 @@ afterEach(() => {
 });
 
 describe('#preloading', () => {
+  const uspto = join(examplesDir, 'uspto.json');
+
+  it('should proxy an sdk for the first time', async () => {
+    const mock = nock('https://developer.uspto.gov/ds-api').get('/').reply(200);
+
+    // Asserting that we have not previously loaded this API.
+    expect(new Cache(uspto).isCached()).toBe(false);
+
+    const sdk = api(uspto);
+
+    // SDK should still not be loaded since we haven't officially called it yet.
+    expect(new Cache(uspto).isCached()).toBe(false);
+    expect(Object.keys(sdk)).toStrictEqual(['auth']);
+
+    await sdk.get('/').then(() => {
+      mock.done();
+    });
+
+    // Now that we've called something on the SDK, it should now be fully loaded.
+    expect(new Cache(uspto).isCached()).toBe(true);
+    expect(Object.keys(sdk)).toStrictEqual([
+      'auth',
+      'get',
+      'put',
+      'post',
+      'delete',
+      'options',
+      'head',
+      'patch',
+      'trace',
+      'list-data-sets',
+      'list-searchable-fields',
+      'perform-search',
+    ]);
+  });
+
   it.todo('should error if passing in swagger 2');
   it.todo('should error if oas file is not valid');
   it.todo('should default to swagger.json/openapi.json');
@@ -68,7 +108,7 @@ describe('#preloading', () => {
 
   it.todo('should deref before caching');
 
-  it('should work for object', () => {
+  it('should work when supplied a JSON OAS object', () => {
     const sdk = api(createOas());
     expect(typeof sdk.get).toBe('function');
   });
@@ -82,10 +122,13 @@ describe('#accessors', () => {
   });
 
   describe('#operationId()', () => {
-    it('should work for operationId', () => {
+    it('should work for operationId', async () => {
       const mock = nock(petstoreServerUrl).get('/pets').reply(200);
-      expect(() => petstoreSdk.findPets()).not.toThrow();
-      mock.done();
+
+      expect(async () => {
+        await petstoreSdk.findPets();
+        mock.done();
+      }).not.toThrow();
     });
 
     it('should work with operationIds that have contain spaces', () => {
@@ -94,8 +137,11 @@ describe('#accessors', () => {
 
     it('should work for other methods', () => {
       const mock = nock(petstoreServerUrl).post('/pets').reply(200, {});
-      expect(() => petstoreSdk.addPet()).not.toThrow();
-      mock.done();
+
+      expect(async () => {
+        await petstoreSdk.addPet();
+        mock.done();
+      }).not.toThrow();
     });
 
     it.todo('should allow operationId to be the same as a http method');
@@ -103,15 +149,18 @@ describe('#accessors', () => {
     it.todo('should suggest a similar sounding operation name');
 
     it('should error if an operationId does not exist', () => {
-      expect(() => petstoreSdk.findPetz()).toThrow(/not a function/);
+      return expect(petstoreSdk.findPetz()).rejects.toThrow(/does not appear to be a valid operation/);
     });
   });
 
   describe('#method(path)', () => {
     it('should work for method and path', () => {
       const mock = nock(petstoreServerUrl).get('/pets').reply(200);
-      expect(() => petstoreSdk.get('/pets')).not.toThrow();
-      mock.done();
+
+      expect(async () => {
+        await petstoreSdk.get('/pets');
+        mock.done();
+      }).not.toThrow();
     });
 
     it.todo('should error if method and path does not exist');

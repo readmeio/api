@@ -1,3 +1,4 @@
+/* eslint-disable jest-formatting/padding-around-test-blocks */
 const nock = require('nock');
 const fsMock = require('mock-fs');
 const findCacheDir = require('find-cache-dir');
@@ -42,6 +43,12 @@ beforeEach(async () => {
 afterEach(() => {
   console.log = originalLog;
   fsMock.restore();
+});
+
+describe('#load', () => {
+  it.todo('should be able to load a url');
+  it.todo('should be able to load a file');
+  it.todo('should throw an error if neither a url or file are detected');
 });
 
 describe('#saveUrl()', () => {
@@ -126,17 +133,16 @@ describe('#save()', () => {
   it('should cache a new file', async () => {
     const file = join(examplesDir, 'readme.json');
     const cacheStore = new Cache(file);
-    const hash = Cache.getCacheHash(file);
 
-    expect(cacheStore.getCache()).not.toHaveProperty(hash);
+    expect(cacheStore.isCached()).toBe(false);
 
     await cacheStore.saveFile();
 
-    expect(cacheStore.getCache()).toHaveProperty(hash);
+    expect(cacheStore.isCached()).toBe(true);
   });
 });
 
-describe('#load', () => {
+describe('#get', () => {
   let cacheStore;
 
   beforeEach(() => {
@@ -146,7 +152,7 @@ describe('#load', () => {
 
   it('should return an object if the current uri is an object (used for unit testing)', async () => {
     const obj = JSON.parse(readmeExampleJson);
-    const loaded = new Cache(obj).load();
+    const loaded = new Cache(obj).get();
 
     expect(loaded).toStrictEqual(obj);
   });
@@ -154,7 +160,7 @@ describe('#load', () => {
   it('should load a file out of cache', async () => {
     await cacheStore.saveFile();
 
-    const loaded = cacheStore.load();
+    const loaded = cacheStore.get();
     expect(loaded).toHaveProperty('components');
     expect(loaded).toHaveProperty('info');
     expect(loaded).toHaveProperty('paths');
@@ -163,7 +169,7 @@ describe('#load', () => {
 
   it('should error if the file is not cached', () => {
     expect(() => {
-      return cacheStore.load();
-    }).toThrow(/to install this SDK's OpenAPI document/);
+      return cacheStore.get();
+    }).toThrow(/has not been cached yet/);
   });
 });

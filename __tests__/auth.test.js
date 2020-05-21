@@ -4,6 +4,12 @@ const api = require('../src');
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
 
+console.logx = obj => {
+  // process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
+  // eslint-disable-next-line global-require
+  console.log(require('util').inspect(obj, false, null, true));
+};
+
 describe('#auth()', () => {
   const baseSecurityOas = createOas('get', '/', {
     operationId: 'getSomething',
@@ -31,9 +37,11 @@ describe('#auth()', () => {
         },
       };
 
-      it('should allow you to supply auth', () => {
+      it.only('should allow you to supply auth', async () => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl).get('/').query({ apiKeyParam: apiKey }).reply(200, {});
+
+        // console.logx(sdk.auth(apiKey));
 
         return sdk
           .auth(apiKey)

@@ -3,7 +3,7 @@ const fetchHar = require('fetch-har');
 const Oas = require('@readme/oas-tooling');
 const oasToHar = require('@readme/oas-to-har');
 
-const SdkCache = require('./cache');
+const Cache = require('./cache');
 const { prepareAuth, prepareParams } = require('./lib/index');
 
 global.fetch = fetch;
@@ -18,8 +18,6 @@ console.logx = obj => {
 class Sdk {
   constructor(uri) {
     this.uri = uri;
-    this.supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-    this.spec = new Oas(new SdkCache(uri).load());
   }
 
   static getOperations(spec) {
@@ -33,44 +31,111 @@ class Sdk {
   }
 
   load() {
-    const { spec } = this;
     const authKeys = [];
+    const cache = new Cache(this.uri);
 
-    function auth(...values) {
+    let isLoaded = false;
+    let isCached = cache.isCached();
+    let sdk = {};
+
+    /* function auth(...values) {
       authKeys.push(values);
-      return this;
-    }
+      return sdk;
+    } */
 
-    function fetchOperation(operation, body, metadata) {
+    function fetchOperation(spec, operation, body, metadata) {
       const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
       return fetchHar(har);
     }
 
-    const methods = this.supportedVerbs
-      .map(name => {
-        return {
-          [name]: ((method, path, ...args) => {
-            const operation = spec.operation(path, method);
-            return fetchOperation(operation, ...args);
-          }).bind(null, name),
-        };
-      })
-      .reduce((prev, next) => Object.assign(prev, next));
+    sdk = {
+      auth: (...values) => {
+        authKeys.push(values);
+        return sdk;
+      },
+    };
 
-    return {
-      auth,
-      ...methods,
-      ...Sdk.getOperations(spec)
+    function loadMethods(spec) {
+      const supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
+
+      return supportedVerbs
+        .map(name => {
+          return {
+            [name]: ((method, path, ...args) => {
+              const operation = spec.operation(path, method);
+              return fetchOperation(spec, operation, ...args);
+            }).bind(null, name),
+          };
+        })
+        .reduce((prev, next) => Object.assign(prev, next));
+    }
+
+    function loadOperations(spec) {
+      return Sdk.getOperations(spec)
         .filter(operation => operation.operationId)
         .reduce((prev, next) => {
           return Object.assign(prev, {
             [next.operationId]: ((operation, ...args) => {
-              return fetchOperation(operation, ...args);
+              return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
           });
-        }, {}),
-    };
+        }, {});
+    }
+
+    async function loadFromCache() {
+      let cachedSpec;
+      if (isCached) {
+        console.logx('🌀 retrieving from cache')
+        cachedSpec = await cache.get();
+      } else {
+        console.logx('💾 loading and caching')
+        cachedSpec = await cache.load();
+        isCached = true;
+      }
+
+      const spec = new Oas(cachedSpec);
+
+      sdk = Object.assign(sdk, {
+        ...loadMethods(spec),
+        ...loadOperations(spec),
+      });
+
+      isLoaded = true;
+    }
+
+    return new Proxy(sdk, {
+      get(target, method) {
+        return async function (...args) {
+          /* if (method === 'auth') {
+            authKeys.push(args);
+            console.logx(Object.keys(sdk));
+            return target;
+          } */
+
+          console.logx(`${method} was called. is it in the target? ${method in target}`);
+
+          if (!(method in target)) {
+            // If this method doesn't exist on the proxy (SDK), have we loaded the SDK? If we have, then this method
+            // isn't valid.
+            if (isLoaded) {
+              throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
+            }
+
+            await loadFromCache();
+
+            // If after loading the SDK this method still doesn't exist, then it's not real!
+            if (!(method in sdk)) {
+              throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
+            }
+
+            return sdk[method].apply(this, args);
+          }
+
+          return target[method].apply(this, args);
+        };
+      },
+    });
   }
 }
 

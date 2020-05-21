@@ -12,7 +12,8 @@ const cacheDir = findCacheDir({ name: pkg.name, thunk: true });
 
 console.logx = obj => {
   // eslint-disable-next-line global-require
-  console.log(require('util').inspect(obj, false, null, true));
+  process.stdout.write(`${require('util').inspect(obj, false, null, true)}\n`);
+  // console.log(require('util').inspect(obj, false, null, true));
 };
 
 class SdkCache {
@@ -22,6 +23,9 @@ class SdkCache {
     this.dir = cacheDir();
     this.cacheStore = cacheDir('cache.json');
     this.specsCache = cacheDir('specs');
+
+    // This should default to false so we have awareness if we've looked at the cache yet.
+    this.cached = false;
   }
 
   static getCacheHash(file) {
@@ -35,30 +39,59 @@ class SdkCache {
     return crypto.createHash('md5').update(data).digest('hex');
   }
 
-  getCache() {
-    let cache = {};
-    if (fs.existsSync(this.cacheStore)) {
-      cache = JSON.parse(fs.readFileSync(this.cacheStore, 'utf8'));
-    }
-
-    return cache;
+  isCached() {
+    const cache = this.getCache();
+    return cache && this.uriHash in cache;
   }
 
-  load() {
+  getCache() {
+    if (typeof this.cached === 'object') {
+      return this.cached;
+    }
+
+    this.cached = {};
+
+    if (fs.existsSync(this.cacheStore)) {
+      this.cached = JSON.parse(fs.readFileSync(this.cacheStore, 'utf8'));
+    }
+
+    return this.cached;
+  }
+
+  get() {
     // If the class was supplied a raw object, just go ahead and bypass the caching system and return that.
     if (typeof this.uri === 'object') {
       return this.uri;
     }
 
-    const cache = this.getCache();
-
-    if (!(this.uriHash in cache)) {
-      throw new Error(
-        `Please run \`npx api install ${this.uri}\` to install this SDK's OpenAPI document before using it.`
-      );
+    if (!this.isCached()) {
+      throw new Error(`${this.uri} has not been cached yet and must do so before being retrieved.`);
     }
 
+    const cache = this.getCache();
     return JSON.parse(fs.readFileSync(cache[this.uriHash].path, 'utf8'));
+  }
+
+  async load() {
+    // If the class was supplied a raw object, just go ahead and bypass the caching system and return that.
+    if (typeof this.uri === 'object') {
+      return this.uri;
+    }
+
+    try {
+      const url = new URL(this.uri);
+      this.uri = url.href;
+
+      return this.saveUrl();
+    } catch (err) {
+      if (!fs.existsSync(this.uri)) {
+        throw new Error(
+          `Sorry, we were unable to load that OpenAPI document. Please either supply a URL or a path on your filesystem.`
+        );
+      }
+
+      return this.saveFile();
+    }
   }
 
   save(json) {
@@ -84,7 +117,7 @@ class SdkCache {
         console.log(chalk.green('Dereferencing so it can easily handled...'));
         return $RefParser.dereference(res);
       })
-      .then(async res => {
+      .then(async spec => {
         if (!fs.existsSync(self.dir)) {
           fs.mkdirSync(self.dir, { recursive: true });
         }
@@ -97,21 +130,25 @@ class SdkCache {
         if (this.uriHash in cache) {
           console.log(chalk.green('The specification is already installed.'));
         } else {
-          const spec = JSON.stringify(res, null, 2);
-          const jsonHash = crypto.createHash('md5').update(spec).digest('hex');
+          const saved = JSON.stringify(spec, null, 2);
+          const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
 
           cache[this.uriHash] = {
             path: cacheDir('specs', `${jsonHash}.json`),
             original: this.uri,
-            title: 'title' in res.info ? res.info.title : undefined,
-            version: 'version' in res.info ? res.info.version : undefined,
+            title: 'title' in spec.info ? spec.info.title : undefined,
+            version: 'version' in spec.info ? spec.info.version : undefined,
           };
 
-          fs.writeFileSync(cache[this.uriHash].path, spec);
+          fs.writeFileSync(cache[this.uriHash].path, saved);
           fs.writeFileSync(self.cacheStore, JSON.stringify(cache, null, 2));
+
+          self.cache = cache;
 
           console.log(chalk.green('Installation complete!'));
         }
+
+        return spec;
       });
   }
 
