@@ -1,3 +1,9 @@
+## <small>2.0.1 (2020-05-26)</small>
+
+* fix(package.main): specify the entry point file (#50) ([05727c4](https://github.com/readmeio/api/commit/05727c4)), closes [#50](https://github.com/readmeio/api/issues/50)
+
+
+
 ## 2.0.0 (2020-05-21)
 
 **BREAKING:** With the v2 release of `api`, the focus of this module has shifted to automatic generation of API SDKs off of an OpenAPI definition. Check out the project [readme](https://github.com/readmeio/api/blob/master/README.md) for more details.
