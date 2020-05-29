@@ -47,6 +47,8 @@ describe('snippets', () => {
 
     const snippet = new HTTPSnippet(JSON.parse(har));
 
-    expect(`${snippet.convert('node', 'api')}\n`).toBe(expected);
+    expect(`${snippet.convert('node', 'api', { apiDefinitionPath: 'https://example.com/openapi.json' })}\n`).toBe(
+      expected
+    );
   });
 });

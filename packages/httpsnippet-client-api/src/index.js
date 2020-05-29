@@ -8,7 +8,7 @@ module.exports = function (source, options) {
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
-  code.push("const sdk = require('api')('https://example.com/openapi.json');").blank();
+  code.push(`const sdk = require('api')('${opts.apiDefinitionPath}');`).blank();
 
   let metadata = {};
   if (Object.keys(source.queryObj).length) {
