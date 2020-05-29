@@ -3,4 +3,3 @@ coverage/
 .eslint*
 .gitignore
 .prettier*
-example.js
