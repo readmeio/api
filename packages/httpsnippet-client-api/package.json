@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "content-type": "^1.0.4",
-    "httpsnippet": "git@github.com:readmeio/httpsnippet.git#feat/plugin-architecture",
+    "httpsnippet": "https://github.com/readmeio/httpsnippet.git#feat/plugin-architecture",
     "stringify-object": "^3.3.0"
   },
   "devDependencies": {
