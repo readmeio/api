@@ -13,8 +13,6 @@ An HTTP Snippet client for generating snippets for the [api](https://npm.im/api)
 npm install --save httpsnippet-client-api
 ```
 
-> ⚠️ Please note that this package is currently only compatile with the [ReadMe fork of httpsnippet](https://github.com/readmeio/httpsnippet/). Once PR [#165](https://github.com/Kong/httpsnippet/pull/165) is accepted into `httpsnippet` to pull in the new plugin architecture we've proposed, this package will function with the mainline package.
-
 ## Usage
 
 ```js
