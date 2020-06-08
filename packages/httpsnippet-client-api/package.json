@@ -24,8 +24,11 @@
   },
   "dependencies": {
     "content-type": "^1.0.4",
-    "httpsnippet": "https://github.com/readmeio/httpsnippet.git#feat/plugin-architecture",
+    "httpsnippet": "^1.20.0",
     "stringify-object": "^3.3.0"
+  },
+  "peerDependencies": {
+    "httpsnippet": "^1.20.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^3.1.0",
