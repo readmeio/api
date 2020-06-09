@@ -29,8 +29,8 @@
     "@readme/oas-tooling": "^3.4.1",
     "fetch-har": "^2.3.1",
     "find-cache-dir": "^3.3.1",
-    "node-fetch": "^2.6.0",
-    "yaml": "^1.9.2"
+    "js-yaml": "^3.14.0",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^3.1.0",

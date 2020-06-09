@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const SwaggerParser = require('@apidevtools/swagger-parser');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
-const yaml = require('yaml');
+const yaml = require('js-yaml');
 const crypto = require('crypto');
 const findCacheDir = require('find-cache-dir');
 const pkg = require('../package.json');
@@ -153,7 +153,7 @@ class SdkCache {
 
         if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(this.uri)) {
           return res.text().then(text => {
-            return yaml.parse(text);
+            return yaml.safeLoad(text);
           });
         }
 
@@ -168,7 +168,7 @@ class SdkCache {
     })
       .then(res => {
         if (/\.(yaml|yml)/.test(this.uri)) {
-          return yaml.parse(res);
+          return yaml.safeLoad(res);
         }
 
         return JSON.parse(res);
