@@ -31,17 +31,28 @@ describe('#auth()', () => {
         },
       };
 
-      it('should allow you to supply auth', () => {
+      it.each([
+        ['should allow you to supply auth', false],
+        ['should allow you to supply auth when unchained from an operation', true],
+      ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl).get('/').query({ apiKeyParam: apiKey }).reply(200, {});
 
-        return sdk
-          .auth(apiKey)
-          .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+        if (chained) {
+          return sdk
+            .auth(apiKey)
+            .getSomething()
+            .then(res => {
+              expect(res.status).toBe(200);
+              mock.done();
+            });
+        }
+
+        sdk.auth(apiKey);
+        return sdk.getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -65,19 +76,30 @@ describe('#auth()', () => {
         },
       };
 
-      it('should allow you to supply auth', () => {
+      it.each([
+        ['should allow you to supply auth', false],
+        ['should allow you to supply auth when unchained from an operation', true],
+      ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl, { reqheaders: { apiKeyHeader: apiKey } })
           .get('/')
           .reply(200, {});
 
-        return sdk
-          .auth(apiKey)
-          .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+        if (chained) {
+          return sdk
+            .auth(apiKey)
+            .getSomething()
+            .then(res => {
+              expect(res.status).toBe(200);
+              mock.done();
+            });
+        }
+
+        sdk.auth(apiKey);
+        return sdk.getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -104,7 +126,10 @@ describe('#auth()', () => {
         },
       };
 
-      it('should allow you to supply auth', () => {
+      it.each([
+        ['should allow you to supply auth', false],
+        ['should allow you to supply auth when unchained from an operation', true],
+      ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl, {
           reqheaders: { authorization: `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}` },
@@ -112,13 +137,21 @@ describe('#auth()', () => {
           .get('/')
           .reply(200, {});
 
-        return sdk
-          .auth(user, pass)
-          .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+        if (chained) {
+          return sdk
+            .auth(user, pass)
+            .getSomething()
+            .then(res => {
+              expect(res.status).toBe(200);
+              mock.done();
+            });
+        }
+
+        sdk.auth(user, pass);
+        return sdk.getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
       });
 
       it('should allow you to not pass in a password', () => {
@@ -153,19 +186,30 @@ describe('#auth()', () => {
         },
       };
 
-      it('should allow you to supply auth', () => {
+      it.each([
+        ['should allow you to supply auth', false],
+        ['should allow you to supply auth when unchained from an operation', true],
+      ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
         const mock = nock(serverUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
           .get('/')
           .reply(200, {});
 
-        return sdk
-          .auth(apiKey)
-          .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+        if (chained) {
+          return sdk
+            .auth(apiKey)
+            .getSomething()
+            .then(res => {
+              expect(res.status).toBe(200);
+              mock.done();
+            });
+        }
+
+        sdk.auth(apiKey);
+        return sdk.getSomething().then(res => {
+          expect(res.status).toBe(200);
+          mock.done();
+        });
       });
 
       it('should throw if you pass in multiple bearer tokens', () => {
@@ -189,19 +233,30 @@ describe('#auth()', () => {
       },
     };
 
-    it('should allow you to supply auth', () => {
+    it.each([
+      ['should allow you to supply auth', false],
+      ['should allow you to supply auth when unchained from an operation', true],
+    ])('%s', (testCase, chained) => {
       const sdk = api(securityOas);
       const mock = nock(serverUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
         .get('/')
         .reply(200, {});
 
-      return sdk
-        .auth(apiKey)
-        .getSomething()
-        .then(res => {
-          expect(res.status).toBe(200);
-          mock.done();
-        });
+      if (chained) {
+        return sdk
+          .auth(apiKey)
+          .getSomething()
+          .then(res => {
+            expect(res.status).toBe(200);
+            mock.done();
+          });
+      }
+
+      sdk.auth(apiKey)
+      return sdk.getSomething().then(res => {
+        expect(res.status).toBe(200);
+        mock.done();
+      });
     });
 
     it('should throw if you pass in multiple bearer tokens', () => {
