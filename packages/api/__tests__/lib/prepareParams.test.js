@@ -48,7 +48,7 @@ describe('#prepareParams', () => {
     expect(prepareParams(operation, {}, {})).toStrictEqual({});
   });
 
-  it('should prepare body and metadata when both are supplied', async () => {
+  it('should prepare body and metadata when both are supplied', () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
     const body = {
       spec: 'this is the contents of an api specification',
@@ -102,7 +102,7 @@ describe('#prepareParams', () => {
     });
   });
 
-  it('should handle bodies when the content type is application/x-www-form-urlencoded', async () => {
+  it('should handle bodies when the content type is application/x-www-form-urlencoded', () => {
     const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
     const body = {
       criteria: '*:*',

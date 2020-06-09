@@ -64,7 +64,7 @@ describe('#load', () => {
     );
   });
 
-  it('should throw an error if neither a url or file are detected', async () => {
+  it('should throw an error if neither a url or file are detected', () => {
     return expect(new Cache('/this/is/not/a/real/path.json').load()).rejects.toThrow(
       /supply a URL or a path on your filesystem/
     );
@@ -190,7 +190,7 @@ describe('#get', () => {
     cacheStore = new Cache(file);
   });
 
-  it('should return an object if the current uri is an object (used for unit testing)', async () => {
+  it('should return an object if the current uri is an object (used for unit testing)', () => {
     const obj = JSON.parse(readmeExampleJson);
     const loaded = new Cache(obj).get();
 
