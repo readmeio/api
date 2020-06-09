@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const findCacheDir = require('find-cache-dir');
 const pkg = require('../package.json');
 const fs = require('fs');
+const path = require('path');
 
 const cacheDir = findCacheDir({ name: pkg.name, thunk: true });
 
@@ -77,6 +78,9 @@ class SdkCache {
 
       return this.saveUrl();
     } catch (err) {
+      // Support relative paths by resolving them against the cwd.
+      this.uri = path.resolve(process.cwd(), this.uri);
+
       if (!fs.existsSync(this.uri)) {
         throw new Error(
           `Sorry, we were unable to load that OpenAPI definition. Please either supply a URL or a path on your filesystem.`

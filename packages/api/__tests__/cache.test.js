@@ -40,6 +40,7 @@ beforeEach(async () => {
       'readme.yaml': readmeExampleYaml,
       'swagger.json': await fs.readFile(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'utf8'),
     },
+    '../examples/readme.json': readmeExampleJson,
     [findCacheDir({ name: pkg.name })]: {},
   });
 });
@@ -118,6 +119,17 @@ describe('#saveUrl()', () => {
 describe('#saveFile()', () => {
   it('should be able to save a definition', () => {
     const cacheStore = new Cache(join(examplesDir, 'readme.json'));
+
+    expect(cacheStore.isCached()).toBe(false);
+
+    return cacheStore.saveFile().then(() => {
+      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+      expect(cacheStore.isCached()).toBe(true);
+    });
+  });
+
+  it('should be able handle a relative path', () => {
+    const cacheStore = new Cache('../examples/readme.json');
 
     expect(cacheStore.isCached()).toBe(false);
 
