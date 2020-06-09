@@ -252,7 +252,7 @@ describe('#auth()', () => {
           });
       }
 
-      sdk.auth(apiKey)
+      sdk.auth(apiKey);
       return sdk.getSomething().then(res => {
         expect(res.status).toBe(200);
         mock.done();
