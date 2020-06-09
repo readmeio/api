@@ -99,7 +99,7 @@ describe('#accessors', () => {
   });
 
   describe('#operationId()', () => {
-    it('should work for operationId', async () => {
+    it('should work for operationId', () => {
       const mock = nock(petstoreServerUrl).get('/pets').reply(200);
 
       expect(async () => {
