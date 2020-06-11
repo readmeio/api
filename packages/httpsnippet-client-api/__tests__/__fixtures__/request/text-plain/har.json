@@ -8,17 +8,12 @@
           "headers": [
             {
               "name": "content-type",
-              "value": "multipart/form-data"
+              "value": "text/plain"
             }
           ],
           "postData": {
-            "mimeType": "multipart/form-data",
-            "params": [
-              {
-                "name": "foo",
-                "value": "bar"
-              }
-            ]
+            "mimeType": "text/plain",
+            "text": "Hello World"
           }
         }
       }

@@ -1,9 +1,12 @@
+/* eslint-disable import/no-dynamic-require, global-require */
+
 // Most of this has been copied over from the httpsnippet target unit test file. It'd be ideal if this were in a
 // helper library we could use instead.
 const fs = require('fs').promises;
 const HTTPSnippet = require('httpsnippet');
 const path = require('path');
 const client = require('../src');
+const readmeApi = require('@readme/oas-examples/3.0/json/readme.json');
 
 test('it should have info', () => {
   expect(client).toHaveProperty('info');
@@ -19,7 +22,20 @@ test('it should have info', () => {
   );
 });
 
-describe('snippets', () => {
+test('it should error if no apiDefinitionUri was supplied', async () => {
+  HTTPSnippet.addTargetClient('node', client);
+
+  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore.json`), 'utf8');
+  const snippet = new HTTPSnippet(JSON.parse(har));
+
+  expect(() => {
+    snippet.convert('node', 'api');
+  }).toThrow(/must have an `apiDefinitionUri` option supplied/);
+});
+
+test.todo('it should error if no apiDefinition was supplied');
+
+describe.only('snippets', () => {
   beforeAll(() => {
     HTTPSnippet.addTargetClient('node', client);
   });
@@ -27,6 +43,7 @@ describe('snippets', () => {
   it.each([
     ['application-form-encoded'],
     ['application-json'],
+    ['cookies'],
     ['full'],
     ['headers'],
     ['https'],
@@ -38,17 +55,20 @@ describe('snippets', () => {
     // ['multipart-file'],
     // ['multipart-form-data'],
 
+    ['petstore'],
     ['query'],
     ['short'],
     ['text-plain'],
-  ])('should generate %s snippet', async testCase => {
-    const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/${testCase}.json`), 'utf8');
+  ])('should generate `%s` snippet', async testCase => {
+    const har = require(`./__fixtures__/request/${testCase}/har.json`);
+    const definition = require(`./__fixtures__/request/${testCase}/definition.json`);
     const expected = await fs.readFile(path.join(__dirname, `./__fixtures__/output/${testCase}.js`), 'utf8');
 
-    const snippet = new HTTPSnippet(JSON.parse(har));
+    const code = new HTTPSnippet(har).convert('node', 'api', {
+      apiDefinitionUri: 'https://example.com/openapi.json',
+      apiDefinition: definition,
+    });
 
-    expect(`${snippet.convert('node', 'api', { apiDefinitionPath: 'https://example.com/openapi.json' })}\n`).toBe(
-      expected
-    );
+    expect(`${code}\n`).toBe(expected);
   });
 });

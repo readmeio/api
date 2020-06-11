@@ -1,0 +1,28 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+     "version": "1.0",
+     "title": "text-plain"
+  },
+  "servers": [
+     {
+        "url": "http://mockbin.com"
+     }
+  ],
+  "paths": {
+     "/har": {
+        "post": {
+           "requestBody": {
+              "required": true,
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+           }
+        }
+     }
+  }
+}
