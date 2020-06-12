@@ -24,7 +24,10 @@ HTTPSnippet.addTargetClient('node', client);
 const snippet = new HTTPSnippet(harObject);
 console.log(
   snippet.convert('node', 'api', {
-    apiDefinitionPath: 'https://example.com/openapi.json'
+    apiDefinitionUri: 'https://example.com/openapi.json'
+    apiDefinition: {
+      /* an OpenAPI definition object */
+    }
   })
 );
 ```
