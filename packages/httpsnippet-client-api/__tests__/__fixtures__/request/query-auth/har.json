@@ -21,7 +21,7 @@
           },
           "queryString": [
             {"name": "status", "value": "available"},
-            {"name": "api_key", "value": "a5a220e544b16e733f59e5fe681366dd"}
+            {"name": "api_key", "value": "a5a220e"}
           ],
           "url": "http://petstore.swagger.io/v2/pet/findByStatus"
         }
