@@ -67,6 +67,7 @@ describe('snippets', () => {
 
     ['petstore'],
     ['query'],
+    ['query-auth'],
     ['short'],
     ['text-plain'],
   ])('should generate `%s` snippet', async testCase => {

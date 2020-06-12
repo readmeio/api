@@ -7,7 +7,7 @@ function buildAuthSnippet(authKey) {
   return `.auth('${authKey.replace("'", "\\'")}')`;
 }
 
-function buildAuthMatchers(source, operation) {
+function getAuthSources(operation) {
   const matchers = {
     header: [],
     query: [],
@@ -59,7 +59,7 @@ module.exports = function (source, options) {
   const operation = oas.getOperation(url, method);
 
   const authData = [];
-  const authMatchers = buildAuthMatchers(source, operation);
+  const authSources = getAuthSources(operation);
 
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
@@ -68,22 +68,31 @@ module.exports = function (source, options) {
 
   let metadata = {};
   if (Object.keys(source.queryObj).length) {
-    // @todo query-based auth
-    metadata = Object.assign(metadata, source.queryObj);
+    const queryParams = source.queryObj;
+
+    Object.keys(queryParams).forEach(param => {
+      if (authSources.query.includes(param)) {
+        authData.push(buildAuthSnippet(queryParams[param]));
+
+        delete queryParams[param];
+      }
+    });
+
+    metadata = Object.assign(metadata, queryParams);
   }
 
   if (Object.keys(source.headersObj).length) {
     const headers = source.headersObj;
 
     Object.keys(headers).forEach(header => {
-      if (header in authMatchers.header) {
+      if (header in authSources.header) {
         // If this header has been set up as an authentication header, let's remove it and add it into our auth data
         // so we can build up an `.auth()` snippet for the SDK.
-        const headerPrefix = authMatchers.header[header];
+        const headerPrefix = authSources.header[header];
         if (headerPrefix === '*') {
           authData.push(buildAuthSnippet(headers[header]));
         } else {
-          authData.push(buildAuthSnippet(headers[header].replace(`${authMatchers.header[header]} `, '')));
+          authData.push(buildAuthSnippet(headers[header].replace(`${authSources.header[header]} `, '')));
         }
 
         delete headers[header];
