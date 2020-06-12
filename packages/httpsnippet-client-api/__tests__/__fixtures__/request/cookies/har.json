@@ -1,0 +1,22 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "http://mockbin.com/har",
+          "cookies":  [
+            {
+              "name": "foo",
+              "value": "bar"
+            },
+            {
+              "name": "bar",
+              "value": "baz"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

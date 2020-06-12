@@ -8,15 +8,19 @@
           "headers": [
             {
               "name": "content-type",
-              "value": "multipart/form-data"
+              "value": "application/x-www-form-urlencoded"
             }
           ],
           "postData": {
-            "mimeType": "multipart/form-data",
+            "mimeType": "application/x-www-form-urlencoded",
             "params": [
               {
                 "name": "foo",
                 "value": "bar"
+              },
+              {
+                "name": "hello",
+                "value": "world"
               }
             ]
           }

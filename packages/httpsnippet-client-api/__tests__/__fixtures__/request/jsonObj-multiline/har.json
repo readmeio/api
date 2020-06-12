@@ -3,22 +3,17 @@
     "entries": [
       {
         "request": {
-          "method": "POST",
           "url": "http://mockbin.com/har",
+          "method": "POST",
           "headers": [
             {
               "name": "content-type",
-              "value": "multipart/form-data"
+              "value": "application/json"
             }
           ],
           "postData": {
-            "mimeType": "multipart/form-data",
-            "params": [
-              {
-                "name": "foo",
-                "value": "bar"
-              }
-            ]
+            "text": "{\n  \"foo\": \"bar\"\n}",
+            "mimeType": "application/json"
           }
         }
       }
