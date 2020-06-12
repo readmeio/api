@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
@@ -12,7 +11,7 @@ function buildAuthMatchers(source, operation) {
   const matchers = {
     header: [],
     query: [],
-    cookie: []
+    cookie: [],
   };
 
   if (operation.getSecurity().length === 0) {
@@ -39,7 +38,7 @@ function buildAuthMatchers(source, operation) {
           matchers.cookie.push(scheme.name);
         }
       }
-    })
+    });
   });
 
   return matchers;
@@ -58,8 +57,6 @@ module.exports = function (source, options) {
   const method = source.method.toLowerCase();
   const oas = new OAS(opts.apiDefinition);
   const operation = oas.getOperation(url, method);
-
-  // console.log(operation)
 
   const authData = [];
   const authMatchers = buildAuthMatchers(source, operation);
@@ -82,7 +79,7 @@ module.exports = function (source, options) {
       if (header in authMatchers.header) {
         // If this header has been set up as an authentication header, let's remove it and add it into our auth data
         // so we can build up an `.auth()` snippet for the SDK.
-        const headerPrefix = authMatchers.header[header]
+        const headerPrefix = authMatchers.header[header];
         if (headerPrefix === '*') {
           authData.push(buildAuthSnippet(headers[header]));
         } else {
@@ -163,20 +160,28 @@ module.exports = function (source, options) {
     authCode = authData;
   }
 
-  const accessors = [`'${source.uriObj.pathname}'`];
+  const args = [];
+
+  let accessor = method;
+  if ('operationId' in operation && operation.operationId.length > 0) {
+    accessor = operation.operationId;
+  } else {
+    args.push(`'${source.uriObj.pathname}'`);
+  }
+
   if (typeof body !== 'undefined') {
-    accessors.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit: 80 }));
+    args.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit: 80 }));
   }
 
   if (Object.keys(metadata).length > 0) {
-    accessors.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit: 80 }));
+    args.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit: 80 }));
   }
 
   if (includeFS) {
     code.unshift('const fs = require("fs");');
   }
 
-  code.push(`sdk${authCode.join()}.${method}(${accessors.join(', ')})`);
+  code.push(`sdk${authCode.join()}.${accessor}(${args.join(', ')})`);
   code.push(1, '.then(res => res.json())');
   code.push(1, '.then(res => {');
   code.push(2, 'console.log(res);');

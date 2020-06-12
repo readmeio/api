@@ -6,7 +6,6 @@ const fs = require('fs').promises;
 const HTTPSnippet = require('httpsnippet');
 const path = require('path');
 const client = require('../src');
-const readmeApi = require('@readme/oas-examples/3.0/json/readme.json');
 
 test('it should have info', () => {
   expect(client).toHaveProperty('info');
@@ -25,7 +24,7 @@ test('it should have info', () => {
 test('it should error if no apiDefinitionUri was supplied', async () => {
   HTTPSnippet.addTargetClient('node', client);
 
-  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore.json`), 'utf8');
+  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
   const snippet = new HTTPSnippet(JSON.parse(har));
 
   expect(() => {
@@ -33,9 +32,20 @@ test('it should error if no apiDefinitionUri was supplied', async () => {
   }).toThrow(/must have an `apiDefinitionUri` option supplied/);
 });
 
-test.todo('it should error if no apiDefinition was supplied');
+test('it should error if no apiDefinition was supplied', async () => {
+  HTTPSnippet.addTargetClient('node', client);
 
-describe.only('snippets', () => {
+  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
+  const snippet = new HTTPSnippet(JSON.parse(har));
+
+  expect(() => {
+    snippet.convert('node', 'api', {
+      apiDefinitionUri: 'https://example.com/openapi.json',
+    });
+  }).toThrow(/must have an `apiDefinition` option supplied/);
+});
+
+describe('snippets', () => {
   beforeAll(() => {
     HTTPSnippet.addTargetClient('node', client);
   });
