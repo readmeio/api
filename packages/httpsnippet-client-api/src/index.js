@@ -175,7 +175,7 @@ module.exports = function (source, options) {
   if ('operationId' in operation && operation.operationId.length > 0) {
     accessor = operation.operationId;
   } else {
-    args.push(`'${source.uriObj.pathname}'`);
+    args.push(`'${operation.path}'`);
   }
 
   if (typeof body !== 'undefined') {

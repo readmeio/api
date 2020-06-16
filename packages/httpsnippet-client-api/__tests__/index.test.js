@@ -57,6 +57,7 @@ describe('snippets', () => {
     ['full'],
     ['headers'],
     ['https'],
+    ['issue-76'],
     ['jsonObj-multiline'],
     ['jsonObj-null-value'],
 
