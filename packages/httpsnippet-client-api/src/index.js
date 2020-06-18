@@ -53,10 +53,9 @@ module.exports = function (source, options) {
     throw new Error('This HTTP Snippet client must have an `apiDefinition` option supplied to it.');
   }
 
-  const url = source.url;
   const method = source.method.toLowerCase();
   const oas = new OAS(opts.apiDefinition);
-  const operation = oas.getOperation(url, method);
+  const operation = oas.getOperation(source.url, method);
 
   const authData = [];
   const authSources = getAuthSources(operation);
@@ -175,7 +174,10 @@ module.exports = function (source, options) {
   if ('operationId' in operation && operation.operationId.length > 0) {
     accessor = operation.operationId;
   } else {
-    args.push(`'${operation.path}'`);
+    // For cases where a server URL in the OAS has a path attached to it, we don't want to include that path with the
+    // operation path.
+    const path = source.url.replace(oas.url(), '');
+    args.push(`'${path}'`);
   }
 
   if (typeof body !== 'undefined') {

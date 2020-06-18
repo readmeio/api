@@ -1,0 +1,25 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "headers": [
+            {
+              "name": "Accept",
+              "value": "application/xml"
+            }
+          ],
+          "httpVersion": "HTTP/1.1",
+          "method": "GET",
+          "postData": {
+            "jsonObj": false,
+            "mimeType": "application/octet-stream",
+            "paramsObj": false,
+            "size": 0
+          },
+          "url": "http://petstore.swagger.io/v2/store/order/1234"
+        }
+      }
+    ]
+  }
+}
