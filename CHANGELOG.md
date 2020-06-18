@@ -1,3 +1,9 @@
+## <small>2.1.2 (2020-06-18)</small>
+
+* fix: bug where path params wouldn't be included in snippets (#79) ([719e2e0](https://github.com/readmeio/api/commit/719e2e0)), closes [#79](https://github.com/readmeio/api/issues/79)
+
+
+
 ## <small>2.1.1 (2020-06-17)</small>
 
 * fix: snippet paths should not include the server url (#77) ([a812f0b](https://github.com/readmeio/api/commit/a812f0b)), closes [#77](https://github.com/readmeio/api/issues/77)
