@@ -23,7 +23,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@readme/oas-tooling": "^3.4.6",
+    "@readme/oas-tooling": "^3.4.7",
     "content-type": "^1.0.4",
     "httpsnippet": "^1.20.0",
     "path-to-regexp": "^6.1.0",
