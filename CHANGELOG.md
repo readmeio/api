@@ -1,3 +1,11 @@
+## 0.0.0 (2020-06-19)
+
+* build: setting an empty version in the root package file for changelogs ([f7e5db6](https://github.com/readmeio/api/commit/f7e5db6))
+* fix: minor cleanup and clarification on the fix in 996da5b ([8fbe624](https://github.com/readmeio/api/commit/8fbe624))
+* docs: fixing a typo in the changelog ([996da5b](https://github.com/readmeio/api/commit/996da5b))
+
+
+
 ## <small>2.1.3 (2020-06-19)</small>
 
 * build: working to get changelogs automatically updated ([074cbb8](https://github.com/readmeio/api/commit/074cbb8))
