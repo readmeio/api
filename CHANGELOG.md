@@ -1,3 +1,11 @@
+##  (2020-06-19)
+
+* build: working to get changelogs automatically updated ([074cbb8](https://github.com/readmeio/api/commit/074cbb8))
+* fix: issues where path params wouldn't always get added as metadata (#80) ([5215366](https://github.com/readmeio/api/commit/5215366)), closes [#80](https://github.com/readmeio/api/issues/80)
+* docs: updating the changelog ([27e23c4](https://github.com/readmeio/api/commit/27e23c4))
+
+
+
 ## <small>2.1.2 (2020-06-18)</small>
 
 * fix: bug where path params wouldn't be included in snippets (#79) ([719e2e0](https://github.com/readmeio/api/commit/719e2e0)), closes [#79](https://github.com/readmeio/api/issues/79)
