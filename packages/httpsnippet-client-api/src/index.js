@@ -53,12 +53,7 @@ function getParamsInPath(operation, path) {
 
   if (matchResult && Object.keys(matchResult.params).length) {
     Object.keys(matchResult.params).forEach(param => {
-      // Only qualify a parameter as being valid if it's actually been filled out, and isn't just the same thing.
-      // For example in the case of an operation being `/store/order/{orderId}/tracking/{trackingId}`, and the incoming
-      // path as `/store/order/1234/tracking/{trackingId}`, we only want to promote `orderId`.
-      if (`{${param}}` !== matchResult.params[param]) {
-        slugs[`${param}`] = matchResult.params[param];
-      }
+      slugs[`${param}`] = matchResult.params[param];
     });
   }
 
@@ -107,11 +102,13 @@ module.exports = function (source, options) {
 
   // If we have path parameters present, we should only add them in if we have an operationId as we don't want metadata
   // to duplicate what we'll be setting the path in the snippet to.
-  const pathParams = getParamsInPath(operation, path);
-  if (Object.keys(pathParams).length && typeof operation.operationId !== 'undefined') {
-    Object.keys(pathParams).forEach(param => {
-      metadata[param] = pathParams[param];
-    });
+  if (typeof operation.operationId !== 'undefined') {
+    const pathParams = getParamsInPath(operation, path);
+    if (Object.keys(pathParams).length) {
+      Object.keys(pathParams).forEach(param => {
+        metadata[param] = pathParams[param];
+      });
+    }
   }
 
   if (Object.keys(source.headersObj).length) {
