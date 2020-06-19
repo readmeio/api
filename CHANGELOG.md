@@ -1,4 +1,4 @@
-## 0.0.0 (2020-06-19)
+## <small>2.1.4 (2020-06-19)</small>
 
 * build: setting an empty version in the root package file for changelogs ([f7e5db6](https://github.com/readmeio/api/commit/f7e5db6))
 * fix: minor cleanup and clarification on the fix in 996da5b ([8fbe624](https://github.com/readmeio/api/commit/8fbe624))
