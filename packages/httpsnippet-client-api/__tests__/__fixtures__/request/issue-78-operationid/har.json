@@ -17,7 +17,7 @@
             "paramsObj": false,
             "size": 0
           },
-          "url": "http://petstore.swagger.io/v2/store/order/1234/tracking/{trackingId}"
+          "url": "http://petstore.swagger.io/v2/store/order/1234"
         }
       }
     ]

@@ -26,6 +26,7 @@
     "@readme/oas-tooling": "^3.4.6",
     "content-type": "^1.0.4",
     "httpsnippet": "^1.20.0",
+    "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {

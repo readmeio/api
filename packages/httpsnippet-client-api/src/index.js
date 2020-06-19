@@ -1,3 +1,4 @@
+const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
@@ -44,6 +45,26 @@ function getAuthSources(operation) {
   return matchers;
 }
 
+function getParamsInPath(operation, path) {
+  const cleanedPath = operation.path.replace(/{(.*?)}/g, ':$1');
+  const matchStatement = match(cleanedPath, { decode: decodeURIComponent });
+  const matchResult = matchStatement(path);
+  const slugs = {};
+
+  if (matchResult && Object.keys(matchResult.params).length) {
+    Object.keys(matchResult.params).forEach(param => {
+      // Only qualify a parameter as being valid if it's actually been filled out, and isn't just the same thing.
+      // For example in the case of an operation being `/store/order/{orderId}/tracking/{trackingId}`, and the incoming
+      // path as `/store/order/1234/tracking/{trackingId}`, we only want to promote `orderId`.
+      if (`{${param}}` !== matchResult.params[param]) {
+        slugs[`${param}`] = matchResult.params[param];
+      }
+    });
+  }
+
+  return slugs;
+}
+
 module.exports = function (source, options) {
   const opts = { indent: '  ', ...options };
 
@@ -56,6 +77,10 @@ module.exports = function (source, options) {
   const method = source.method.toLowerCase();
   const oas = new OAS(opts.apiDefinition);
   const operation = oas.getOperation(source.url, method);
+
+  // For cases where a server URL in the OAS has a path attached to it, we don't want to include that path with the
+  // operation path.
+  const path = source.url.replace(oas.url(), '');
 
   const authData = [];
   const authSources = getAuthSources(operation);
@@ -78,6 +103,15 @@ module.exports = function (source, options) {
     });
 
     metadata = Object.assign(metadata, queryParams);
+  }
+
+  // If we have path parameters present, we should only add them in if we have an operationId as we don't want metadata
+  // to duplicate what we'll be setting the path in the snippet to.
+  const pathParams = getParamsInPath(operation, path);
+  if (Object.keys(pathParams).length && typeof operation.operationId !== 'undefined') {
+    Object.keys(pathParams).forEach(param => {
+      metadata[param] = pathParams[param];
+    });
   }
 
   if (Object.keys(source.headersObj).length) {
@@ -174,10 +208,7 @@ module.exports = function (source, options) {
   if ('operationId' in operation && operation.operationId.length > 0) {
     accessor = operation.operationId;
   } else {
-    // For cases where a server URL in the OAS has a path attached to it, we don't want to include that path with the
-    // operation path.
-    const path = source.url.replace(oas.url(), '');
-    args.push(`'${path}'`);
+    args.push(`'${decodeURIComponent(path)}'`);
   }
 
   if (typeof body !== 'undefined') {
