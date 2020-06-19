@@ -6,8 +6,8 @@
     "clean": "lerna clean",
     "lint": "lerna run lint --stream",
     "publish": "lerna publish",
-    "release": "conventional-changelog -i CHANGELOG.md -s",
-    "test": "lerna run test --stream"
+    "test": "lerna run test --stream",
+    "version": "conventional-changelog -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
