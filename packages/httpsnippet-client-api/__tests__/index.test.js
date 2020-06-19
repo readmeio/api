@@ -59,6 +59,7 @@ describe('snippets', () => {
     ['https'],
     ['issue-76'],
     ['issue-78'],
+    ['issue-78-operationid'],
     ['jsonObj-multiline'],
     ['jsonObj-null-value'],
 
