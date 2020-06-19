@@ -1,3 +1,11 @@
+## <small>2.1.5 (2020-06-19)</small>
+
+* build: some more attempts at changelog improvements ([ddcb46d](https://github.com/readmeio/api/commit/ddcb46d))
+* chore(deps): upgrading @readme/oas-tooling to 3.4.7 (#82) ([1e19988](https://github.com/readmeio/api/commit/1e19988)), closes [#82](https://github.com/readmeio/api/issues/82)
+* docs: changelog typo resolutions ([cbd7862](https://github.com/readmeio/api/commit/cbd7862))
+
+
+
 ## <small>2.1.4 (2020-06-19)</small>
 
 * build: setting an empty version in the root package file for changelogs ([f7e5db6](https://github.com/readmeio/api/commit/f7e5db6))
