@@ -5,7 +5,7 @@ const contentType = require('content-type');
 const OAS = require('@readme/oas-tooling');
 
 function buildAuthSnippet(authKey) {
-  return `.auth('${authKey.replace("'", "\\'")}')`;
+  return `sdk.auth('${authKey.replace("'", "\\'")}');`;
 }
 
 function getAuthSources(operation) {
@@ -83,7 +83,7 @@ module.exports = function (source, options) {
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
-  code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`).blank();
+  code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
 
   let metadata = {};
   if (Object.keys(source.queryObj).length) {
@@ -194,11 +194,6 @@ module.exports = function (source, options) {
       }
   }
 
-  let authCode = [];
-  if (authData.length) {
-    authCode = authData;
-  }
-
   const args = [];
 
   let accessor = method;
@@ -220,7 +215,13 @@ module.exports = function (source, options) {
     code.unshift('const fs = require("fs");');
   }
 
-  code.push(`sdk${authCode.join()}.${accessor}(${args.join(', ')})`);
+  if (authData.length) {
+    code.push(authData.join('\n'));
+  }
+
+  code.blank();
+
+  code.push(`sdk.${accessor}(${args.join(', ')})`);
   code.push(1, '.then(res => res.json())');
   code.push(1, '.then(res => {');
   code.push(2, 'console.log(res);');
