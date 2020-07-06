@@ -27,7 +27,7 @@
     "@apidevtools/swagger-parser": "^9.0.1",
     "@readme/oas-to-har": "^6.9.6",
     "@readme/oas-tooling": "^3.4.1",
-    "fetch-har": "^2.3.1",
+    "fetch-har": "^3.0.0",
     "find-cache-dir": "^3.3.1",
     "js-yaml": "^3.14.0",
     "node-fetch": "^2.6.0"
