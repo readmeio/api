@@ -1,3 +1,27 @@
+## <small>2.1.6 (2020-07-06)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 8.3.5 to 9.0.1 (#87) ([5e99252](https://github.com/readmeio/api/commit/5e99252)), closes [#87](https://github.com/readmeio/api/issues/87)
+* chore(deps-dev): bump @commitlint/config-conventional (#88) ([a08be1f](https://github.com/readmeio/api/commit/a08be1f)), closes [#88](https://github.com/readmeio/api/issues/88)
+* chore(deps-dev): bump @readme/eslint-config from 3.2.0 to 3.3.0 (#90) ([7c286ac](https://github.com/readmeio/api/commit/7c286ac)), closes [#90](https://github.com/readmeio/api/issues/90)
+* chore(deps-dev): bump @readme/eslint-config from 3.3.0 to 3.3.2 (#99) ([038e6e2](https://github.com/readmeio/api/commit/038e6e2)), closes [#99](https://github.com/readmeio/api/issues/99)
+* chore(deps-dev): bump eslint from 7.2.0 to 7.3.1 (#93) ([d96b2c9](https://github.com/readmeio/api/commit/d96b2c9)), closes [#93](https://github.com/readmeio/api/issues/93)
+* chore(deps-dev): bump eslint from 7.3.1 to 7.4.0 (#95) ([a1d7eed](https://github.com/readmeio/api/commit/a1d7eed)), closes [#95](https://github.com/readmeio/api/issues/95)
+* chore(deps-dev): bump jest from 26.0.1 to 26.1.0 (#92) ([c388924](https://github.com/readmeio/api/commit/c388924)), closes [#92](https://github.com/readmeio/api/issues/92)
+* chore(deps-dev): bump nock from 12.0.3 to 13.0.0 (#91) ([52c9202](https://github.com/readmeio/api/commit/52c9202)), closes [#91](https://github.com/readmeio/api/issues/91)
+* chore(deps-dev): bump nock from 13.0.0 to 13.0.2 (#97) ([cafd323](https://github.com/readmeio/api/commit/cafd323)), closes [#97](https://github.com/readmeio/api/issues/97)
+* chore(deps): bump @readme/oas-to-har from 6.10.2 to 6.11.1 (#85) ([0d0c59e](https://github.com/readmeio/api/commit/0d0c59e)), closes [#85](https://github.com/readmeio/api/issues/85)
+* chore(deps): bump @readme/oas-to-har from 6.11.1 to 6.14.0 (#98) ([a3b7b7d](https://github.com/readmeio/api/commit/a3b7b7d)), closes [#98](https://github.com/readmeio/api/issues/98)
+* chore(deps): bump @readme/oas-tooling from 3.4.5 to 3.4.7 (#83) ([c341070](https://github.com/readmeio/api/commit/c341070)), closes [#83](https://github.com/readmeio/api/issues/83)
+* chore(deps): bump @readme/oas-tooling from 3.4.7 to 3.5.0 (#96) ([32aa6d5](https://github.com/readmeio/api/commit/32aa6d5)), closes [#96](https://github.com/readmeio/api/issues/96)
+* chore(deps): bump actions/checkout from v2.2.0 to v2.3.1 (#89) ([51d9be7](https://github.com/readmeio/api/commit/51d9be7)), closes [#89](https://github.com/readmeio/api/issues/89)
+* chore(deps): bump actions/setup-node from v2.0.0 to v2.1.0 (#94) ([d5a18ce](https://github.com/readmeio/api/commit/d5a18ce)), closes [#94](https://github.com/readmeio/api/issues/94)
+* chore(deps): bump fetch-har from 2.3.2 to 3.0.0 (#100) ([6fbe358](https://github.com/readmeio/api/commit/6fbe358)), closes [#100](https://github.com/readmeio/api/issues/100)
+* feat: cleaning up api snippets by breaking off the auth call (#101) ([d76ba9e](https://github.com/readmeio/api/commit/d76ba9e)), closes [#101](https://github.com/readmeio/api/issues/101)
+* docs: cleaning up the pr template ([6539d14](https://github.com/readmeio/api/commit/6539d14))
+* ci: changing the label that dependabot uses ([57917ce](https://github.com/readmeio/api/commit/57917ce))
+
+
+
 ## <small>2.1.5 (2020-06-19)</small>
 
 * build: some more attempts at changelog improvements ([ddcb46d](https://github.com/readmeio/api/commit/ddcb46d))
