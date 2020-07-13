@@ -37,7 +37,13 @@ class Sdk {
     function fetchOperation(spec, operation, body, metadata) {
       const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
-      return fetchHar(har, `${pkg.name} (node)/${pkg.version}`);
+      return fetchHar(har, `${pkg.name} (node)/${pkg.version}`).then(res => {
+        if (res.status >= 400 && res.status <= 599) {
+          throw res;
+        }
+
+        return res;
+      });
     }
 
     function loadMethods(spec) {
