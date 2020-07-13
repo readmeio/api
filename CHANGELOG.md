@@ -1,3 +1,10 @@
+## 2.2.0 (2020-07-13)
+
+* feat: automatically reject the sdk promise for error statuses (#105) ([827f32a](https://github.com/readmeio/api/commit/827f32a)), closes [#105](https://github.com/readmeio/api/issues/105)
+* feat: setting a custom user agent for all requests (#106) ([25cefef](https://github.com/readmeio/api/commit/25cefef)), closes [#106](https://github.com/readmeio/api/issues/106)
+
+
+
 ## <small>2.1.6 (2020-07-06)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 8.3.5 to 9.0.1 (#87) ([5e99252](https://github.com/readmeio/api/commit/5e99252)), closes [#87](https://github.com/readmeio/api/issues/87)
