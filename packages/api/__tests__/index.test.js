@@ -150,7 +150,7 @@ describe('#fetch', () => {
   it('should contain a custom user agent for the library in requests', () => {
     expect.assertions(2);
 
-    const userAgent = `${pkg.name}/${pkg.version}`;
+    const userAgent = `${pkg.name} (node)/${pkg.version}`;
     const mock = nock(petstoreServerUrl, {
       reqheaders: {
         'User-Agent': userAgent,

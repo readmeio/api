@@ -37,7 +37,7 @@ class Sdk {
     function fetchOperation(spec, operation, body, metadata) {
       const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
-      return fetchHar(har, `${pkg.name}/${pkg.version}`);
+      return fetchHar(har, `${pkg.name} (node)/${pkg.version}`);
     }
 
     function loadMethods(spec) {
