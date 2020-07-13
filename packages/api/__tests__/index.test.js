@@ -147,6 +147,26 @@ describe('#accessors', () => {
 describe('#fetch', () => {
   const petId = 123;
 
+  it('should reject for error-level status codes', () => {
+    expect.assertions(2);
+
+    const response = {
+      error: 'ENDPOINT_NOTFOUND',
+      message: `The endpoint you called (GET /pets/${petId}) doesn't exist`,
+    };
+
+    const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(404, response);
+
+    return petstoreSdk.deletePet({ id: petId }).catch(async err => {
+      expect(err.status).toBe(404);
+
+      const json = await err.json();
+      expect(json).toStrictEqual(response);
+
+      mock.done();
+    });
+  });
+
   describe('operationId', () => {
     it('should pass through parameters for operationId', () => {
       const response = {
