@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
 const Oas = require('@readme/oas-tooling');
 const oasToHar = require('@readme/oas-to-har');
+const pkg = require('../package.json');
 
 const Cache = require('./cache');
 const { prepareAuth, prepareParams } = require('./lib/index');
@@ -36,7 +37,7 @@ class Sdk {
     function fetchOperation(spec, operation, body, metadata) {
       const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
 
-      return fetchHar(har);
+      return fetchHar(har, `${pkg.name} (node)/${pkg.version}`);
     }
 
     function loadMethods(spec) {

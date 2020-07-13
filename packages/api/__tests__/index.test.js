@@ -147,6 +147,26 @@ describe('#accessors', () => {
 describe('#fetch', () => {
   const petId = 123;
 
+  it('should contain a custom user agent for the library in requests', () => {
+    expect.assertions(2);
+
+    const userAgent = `${pkg.name} (node)/${pkg.version}`;
+    const mock = nock(petstoreServerUrl, {
+      reqheaders: {
+        'User-Agent': userAgent,
+      },
+    })
+      .delete(`/pets/${petId}`)
+      .reply(200, function () {
+        expect(this.req.headers['user-agent']).toStrictEqual([userAgent]);
+      });
+
+    return petstoreSdk.deletePet({ id: petId }).then(res => {
+      expect(res.status).toBe(200);
+      mock.done();
+    });
+  });
+
   describe('operationId', () => {
     it('should pass through parameters for operationId', () => {
       const response = {
