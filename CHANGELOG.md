@@ -1,3 +1,20 @@
+## <small>2.2.1 (2020-07-27)</small>
+
+* chore: cleaning up the package-lock ([7d4ec59](https://github.com/readmeio/api/commit/7d4ec59))
+* chore(deps-dev): bump @commitlint/cli from 9.0.1 to 9.1.1 (#109) ([7f0eaec](https://github.com/readmeio/api/commit/7f0eaec)), closes [#109](https://github.com/readmeio/api/issues/109)
+* chore(deps-dev): bump @commitlint/config-conventional (#116) ([ee0f79c](https://github.com/readmeio/api/commit/ee0f79c)), closes [#116](https://github.com/readmeio/api/issues/116)
+* chore(deps-dev): bump @readme/eslint-config from 3.3.2 to 3.3.3 (#118) ([963a235](https://github.com/readmeio/api/commit/963a235)), closes [#118](https://github.com/readmeio/api/issues/118)
+* chore(deps-dev): bump @readme/oas-examples from 3.4.0 to 3.5.5 (#113) ([a7b4561](https://github.com/readmeio/api/commit/a7b4561)), closes [#113](https://github.com/readmeio/api/issues/113)
+* chore(deps-dev): bump eslint from 7.4.0 to 7.5.0 (#110) ([cd29a03](https://github.com/readmeio/api/commit/cd29a03)), closes [#110](https://github.com/readmeio/api/issues/110)
+* chore(deps): bump @apidevtools/json-schema-ref-parser (#115) ([a129798](https://github.com/readmeio/api/commit/a129798)), closes [#115](https://github.com/readmeio/api/issues/115)
+* chore(deps): bump @apidevtools/swagger-parser from 9.0.1 to 10.0.1 (#112) ([a3aed98](https://github.com/readmeio/api/commit/a3aed98)), closes [#112](https://github.com/readmeio/api/issues/112)
+* chore(deps): bump @readme/oas-tooling from 3.5.0 to 3.5.5 (#111) ([5621fad](https://github.com/readmeio/api/commit/5621fad)), closes [#111](https://github.com/readmeio/api/issues/111)
+* chore(deps): bump fetch-har from 3.0.0 to 3.0.2 (#114) ([41efd8b](https://github.com/readmeio/api/commit/41efd8b)), closes [#114](https://github.com/readmeio/api/issues/114)
+* chore(deps): bump httpsnippet from 1.20.0 to 1.21.0 (#117) ([e5d5082](https://github.com/readmeio/api/commit/e5d5082)), closes [#117](https://github.com/readmeio/api/issues/117)
+* chore(deps): bump lodash from 4.17.15 to 4.17.19 (#108) ([9d4c12a](https://github.com/readmeio/api/commit/9d4c12a)), closes [#108](https://github.com/readmeio/api/issues/108)
+
+
+
 ## 2.2.0 (2020-07-13)
 
 * feat: automatically reject the sdk promise for error statuses (#105) ([827f32a](https://github.com/readmeio/api/commit/827f32a)), closes [#105](https://github.com/readmeio/api/issues/105)
