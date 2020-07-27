@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
-    "@apidevtools/swagger-parser": "^9.0.1",
+    "@apidevtools/swagger-parser": "^10.0.1",
     "@readme/oas-to-har": "^6.9.6",
     "@readme/oas-tooling": "^3.4.1",
     "fetch-har": "^3.0.0",
