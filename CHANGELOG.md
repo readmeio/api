@@ -1,3 +1,16 @@
+## <small>2.2.2 (2020-08-03)</small>
+
+* ci: setting up codeql workflows (#127) ([62707be](https://github.com/readmeio/api/commit/62707be)), closes [#127](https://github.com/readmeio/api/issues/127)
+* chore(deps-dev): bump @readme/eslint-config from 3.3.3 to 3.4.0 (#121) ([f393edc](https://github.com/readmeio/api/commit/f393edc)), closes [#121](https://github.com/readmeio/api/issues/121)
+* chore(deps-dev): bump eslint from 7.5.0 to 7.6.0 (#122) ([0eb173b](https://github.com/readmeio/api/commit/0eb173b)), closes [#122](https://github.com/readmeio/api/issues/122)
+* chore(deps-dev): bump jest from 26.1.0 to 26.2.2 (#126) ([4229c34](https://github.com/readmeio/api/commit/4229c34)), closes [#126](https://github.com/readmeio/api/issues/126)
+* chore(deps-dev): bump nock from 13.0.2 to 13.0.3 (#125) ([fcc2d45](https://github.com/readmeio/api/commit/fcc2d45)), closes [#125](https://github.com/readmeio/api/issues/125)
+* chore(deps): bump @readme/oas-to-har from 6.14.0 to 6.15.2 (#123) ([c6203a6](https://github.com/readmeio/api/commit/c6203a6)), closes [#123](https://github.com/readmeio/api/issues/123)
+* chore(deps): bump @readme/oas-tooling from 3.5.5 to 3.5.6 (#124) ([1c179d8](https://github.com/readmeio/api/commit/1c179d8)), closes [#124](https://github.com/readmeio/api/issues/124)
+* chore(deps): bump actions/setup-node from v2.1.0 to v2.1.1 (#120) ([6b915cf](https://github.com/readmeio/api/commit/6b915cf)), closes [#120](https://github.com/readmeio/api/issues/120)
+
+
+
 ## <small>2.2.1 (2020-07-27)</small>
 
 * chore: cleaning up the package-lock ([7d4ec59](https://github.com/readmeio/api/commit/7d4ec59))
