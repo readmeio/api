@@ -53,13 +53,14 @@ describe('snippets', () => {
   it.each([
     ['application-form-encoded'],
     ['application-json'],
-    // ['cookies'], // @todo
+    // ['cookies'], // Cookies test needs to get built out.
     ['full'],
     ['headers'],
     ['https'],
     ['issue-76'],
     ['issue-78'],
     ['issue-78-operationid'],
+    ['issue-128'],
     ['jsonObj-multiline'],
     ['jsonObj-null-value'],
 
