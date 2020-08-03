@@ -1,3 +1,9 @@
+## <small>2.2.3 (2020-08-03)</small>
+
+* fix: auth keys not being properly escaped (#129) ([b0923eb](https://github.com/readmeio/api/commit/b0923eb)), closes [#129](https://github.com/readmeio/api/issues/129)
+
+
+
 ## <small>2.2.2 (2020-08-03)</small>
 
 * ci: setting up codeql workflows (#127) ([62707be](https://github.com/readmeio/api/commit/62707be)), closes [#127](https://github.com/readmeio/api/issues/127)
