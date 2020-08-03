@@ -5,7 +5,7 @@ const contentType = require('content-type');
 const OAS = require('@readme/oas-tooling');
 
 function buildAuthSnippet(authKey) {
-  return `sdk.auth('${authKey.replace("'", "\\'")}');`;
+  return `sdk.auth('${authKey.replace(/'/g, "\\'")}');`;
 }
 
 function getAuthSources(operation) {

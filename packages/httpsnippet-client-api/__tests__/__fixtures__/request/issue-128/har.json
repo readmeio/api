@@ -1,0 +1,29 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "allHeaders": {
+            "accept": "application/xml"
+          },
+          "cookies": [],
+          "headers": [
+            {"name": "Accept", "value": "application/xml"}
+          ],
+          "httpVersion": "HTTP/1.1",
+          "method": "GET",
+          "postData": {
+            "jsonObj": false,
+            "mimeType": "application/octet-stream",
+            "paramsObj": false,
+            "size": 0
+          },
+          "queryString": [
+            {"name": "api_key", "value": "authKey'With'Apostrophes"}
+          ],
+          "url": "http://example.com"
+        }
+      }
+    ]
+  }
+}
