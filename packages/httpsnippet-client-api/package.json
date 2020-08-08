@@ -23,14 +23,14 @@
     "node": ">=10"
   },
   "dependencies": {
+    "@readme/httpsnippet": "^2.0.1",
     "@readme/oas-tooling": "^3.4.7",
     "content-type": "^1.0.4",
-    "httpsnippet": "^1.20.0",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "httpsnippet": "^1.20.0"
+    "@readme/httpsnippet": "^2.0.1"
   },
   "devDependencies": {
     "@readme/eslint-config": "^3.2.0",

@@ -3,7 +3,7 @@
 // Most of this has been copied over from the httpsnippet target unit test file. It'd be ideal if this were in a
 // helper library we could use instead.
 const fs = require('fs').promises;
-const HTTPSnippet = require('httpsnippet');
+const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const client = require('../src');
 
@@ -63,12 +63,9 @@ describe('snippets', () => {
     ['issue-128'],
     ['jsonObj-multiline'],
     ['jsonObj-null-value'],
-
-    // These tests need to be improved because the attachment handling isn't right.
-    // ['multipart-data'],
-    // ['multipart-file'],
-    // ['multipart-form-data'],
-
+    ['multipart-data'],
+    ['multipart-file'],
+    ['multipart-form-data'],
     ['petstore'],
     ['query'],
     ['query-auth'],
