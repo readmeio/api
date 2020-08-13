@@ -33,9 +33,9 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^3.2.0",
+    "@readme/eslint-config": "^3.4.1",
     "@readme/oas-examples": "^3.4.0",
-    "eslint": "^7.0.0",
+    "eslint": "^7.6.0",
     "jest": "^26.0.1",
     "mock-fs": "^4.12.0",
     "nock": "^13.0.0",
