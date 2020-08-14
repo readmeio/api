@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@readme/httpsnippet": "^2.0.1",
-    "@readme/oas-tooling": "^3.4.7",
+    "@readme/oas-tooling": "^3.5.8",
     "content-type": "^1.0.4",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"

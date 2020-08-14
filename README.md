@@ -76,6 +76,18 @@ sdk.updatePet({ name: 'Buster 2' }, { petId: 1234 }).then(...)
 
 Since we've supplied two objects here, the SDK automatically knows that you're supplying both a `body` and `metadata`, and can make a PUT request against `/pets/1234` for you.
 
+What about a `multipart/form-data` request? That works too, and you don't even have to worry about the fun of multipart boundaries!
+
+```js
+sdk.uploadFile({ file: '/path/to/a/file.txt' }).then(...)
+```
+
+You can also give it a stream and it'll handle all of the hard work for you.
+
+```js
+sdk.uploadFile({ file: fs.createReadStream('/path/to/a/file.txt') }).then(...)
+```
+
 ### HTTP requests
 If the API you're using doesn't have any documented operation IDs, you can make requests with HTTP verbs instead:
 
@@ -112,7 +124,7 @@ Not yet, unfortunately. For APIs that use OAuth 2, you'll need a fully-qualified
 Not yet! This is something we're thinking about how to handle, but it's difficult with the simple nature of the `.auth()` method as it currently does not require the user to inform the SDK of what kind of authentication scheme the token they're supplying it should match up against.
 
 #### Will this work in browsers?
-Not sure! If you'd like to help us out in making this compatible with browsers we'd love to help you out on a pull request.
+Not at the moment as the library requires some filesystem handling in order to manage its cache state, but it's something we're actively thinking about. If you'd like to help us out in making this compatible with browsers we'd love to help you out on a pull request.
 
 #### Will this validate my data before it reaches the API?
 Not yet! This is something we've got planned down the road.

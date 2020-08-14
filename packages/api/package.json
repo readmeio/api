@@ -26,10 +26,13 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
     "@readme/oas-to-har": "^6.9.6",
-    "@readme/oas-tooling": "^3.4.1",
+    "@readme/oas-tooling": "^3.5.8",
+    "datauri": "^3.0.0",
     "fetch-har": "^4.0.0",
     "find-cache-dir": "^3.3.1",
+    "get-stream": "^6.0.0",
     "js-yaml": "^3.14.0",
+    "mimer": "^1.1.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
