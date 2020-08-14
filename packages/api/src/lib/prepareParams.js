@@ -1,8 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 const stream = require('stream');
 const mimer = require('mimer');
 const getStream = require('get-stream');
-const path = require('path');
 const datauri = require('datauri');
 const { getSchema } = require('@readme/oas-tooling/utils');
 
@@ -99,8 +99,9 @@ module.exports = async (operation, body, metadata) => {
       .filter(key => schema.schema.properties[key].format === 'binary')
       .filter(x => bodyKeys.includes(x))
       .forEach(async prop => {
-        const file = params.body[prop];
+        let file = params.body[prop];
         if (typeof file === 'string') {
+          file = path.resolve(file);
           if (fs.existsSync(file)) {
             conversions.push(
               new Promise(resolve => resolve(datauri(file))).then(dataurl => {

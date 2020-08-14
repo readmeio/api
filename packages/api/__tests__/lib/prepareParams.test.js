@@ -137,6 +137,16 @@ describe('#prepareParams', () => {
         expect(params.body.spec).toContain('data:application/json;name=readme.json;base64,');
       });
 
+      it('should handle when the file path is relative', async () => {
+        const operation = readmeSpec.operation('/api-specification', 'post');
+        const body = {
+          spec: './__tests__/__fixtures__/owlbert.png',
+        };
+
+        const params = await prepareParams(operation, body);
+        expect(params.body.spec).toContain('data:image/png;name=owlbert.png;base64,');
+      });
+
       it('should handle a multipart body when a property is a file stream', async () => {
         const operation = readmeSpec.operation('/api-specification', 'post');
         const body = {
