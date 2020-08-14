@@ -93,7 +93,7 @@ module.exports = async (operation, body, metadata) => {
     const schema = getSchema(operation, operation.oas) || { schema: {} };
     const bodyKeys = Object.keys(params.body);
 
-    // Loop thorugh the schema to look for `binary` properties so we know what we need to convert.
+    // Loop through the schema to look for `binary` properties so we know what we need to convert.
     const conversions = [];
     Object.keys(schema.schema.properties)
       .filter(key => schema.schema.properties[key].format === 'binary')
@@ -101,6 +101,8 @@ module.exports = async (operation, body, metadata) => {
       .forEach(async prop => {
         let file = params.body[prop];
         if (typeof file === 'string') {
+          // In order to support relative pathed files, we need to attempt to resolve them. Thankfully `path.resolve()`
+          // doesn't munge absolute paths.
           file = path.resolve(file);
           if (fs.existsSync(file)) {
             conversions.push(
