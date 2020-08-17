@@ -10,6 +10,7 @@ const { prepareAuth, prepareParams } = require('./lib/index');
 global.fetch = fetch;
 global.Request = fetch.Request;
 global.Headers = fetch.Headers;
+global.FormData = require('form-data');
 
 class Sdk {
   constructor(uri) {
