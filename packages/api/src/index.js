@@ -10,10 +10,12 @@ const { prepareAuth, prepareParams } = require('./lib/index');
 global.fetch = fetch;
 global.Request = fetch.Request;
 global.Headers = fetch.Headers;
+global.FormData = require('form-data');
 
 class Sdk {
   constructor(uri) {
     this.uri = uri;
+    this.userAgent = `${pkg.name} (node)/${pkg.version}`;
   }
 
   static getOperations(spec) {
@@ -29,20 +31,25 @@ class Sdk {
   load() {
     const authKeys = [];
     const cache = new Cache(this.uri);
+    const self = this;
 
     let isLoaded = false;
     let isCached = cache.isCached();
     let sdk = {};
 
     function fetchOperation(spec, operation, body, metadata) {
-      const har = oasToHar(spec, operation, prepareParams(operation, body, metadata), prepareAuth(authKeys, operation));
+      return new Promise(resolve => {
+        resolve(prepareParams(operation, body, metadata));
+      }).then(params => {
+        const har = oasToHar(spec, operation, params, prepareAuth(authKeys, operation));
 
-      return fetchHar(har, `${pkg.name} (node)/${pkg.version}`).then(res => {
-        if (res.status >= 400 && res.status <= 599) {
-          throw res;
-        }
+        return fetchHar(har, self.userAgent).then(res => {
+          if (res.status >= 400 && res.status <= 599) {
+            throw res;
+          }
 
-        return res;
+          return res;
+        });
       });
     }
 

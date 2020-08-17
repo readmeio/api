@@ -25,11 +25,15 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^6.9.6",
-    "@readme/oas-tooling": "^3.4.1",
-    "fetch-har": "^3.0.0",
+    "@readme/oas-to-har": "^7.0.0",
+    "@readme/oas-tooling": "^3.5.8",
+    "datauri": "^3.0.0",
+    "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
+    "form-data": "^3.0.0",
+    "get-stream": "^6.0.0",
     "js-yaml": "^3.14.0",
+    "mimer": "^1.1.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {

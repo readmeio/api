@@ -1,3 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+const stream = require('stream');
+const mimer = require('mimer');
+const getStream = require('get-stream');
+const datauri = require('datauri');
+const { getSchema } = require('@readme/oas-tooling/utils');
+
 function digestParameters(parameters) {
   return parameters.reduce((prev, param) => {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {
@@ -17,7 +25,7 @@ function isEmpty(obj) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
-module.exports = function (operation, body, metadata) {
+module.exports = async (operation, body, metadata) => {
   // If no data was supplied, just return immediately.
   if (isEmpty(body) && isEmpty(metadata)) {
     return {};
@@ -25,7 +33,6 @@ module.exports = function (operation, body, metadata) {
 
   const params = {};
   let shouldDigestParams = false;
-  const contentType = operation.getContentType();
 
   if (Array.isArray(body)) {
     // If the body param is an array, then it's absolutely a body and not something we need to do analysis against.
@@ -77,6 +84,60 @@ module.exports = function (operation, body, metadata) {
     }
   }
 
+  // @todo support content types like `image/png` where the request body is the binary
+
+  // If the operation is `multipart/form-data`, or one of our recognized variants, we need to look at the incoming
+  // body payload to see if anything in there is either a file path or a file stream so we can translate those into a
+  // data URL for `@readme/oas-to-har` to make a request.
+  if ('body' in params && operation.isMultipart()) {
+    const schema = getSchema(operation, operation.oas) || { schema: {} };
+    const bodyKeys = Object.keys(params.body);
+
+    // Loop through the schema to look for `binary` properties so we know what we need to convert.
+    const conversions = [];
+    Object.keys(schema.schema.properties)
+      .filter(key => schema.schema.properties[key].format === 'binary')
+      .filter(x => bodyKeys.includes(x))
+      .forEach(async prop => {
+        let file = params.body[prop];
+        if (typeof file === 'string') {
+          // In order to support relative pathed files, we need to attempt to resolve them. Thankfully `path.resolve()`
+          // doesn't munge absolute paths.
+          file = path.resolve(file);
+          if (fs.existsSync(file)) {
+            conversions.push(
+              new Promise(resolve => resolve(datauri(file))).then(dataurl => {
+                // Doing this manually for now until when/if https://github.com/data-uri/datauri/pull/29 is accepted.
+                params.body[prop] = dataurl.replace(
+                  ';base64',
+                  `;name=${encodeURIComponent(path.basename(file))};base64`
+                );
+
+                return Promise.resolve(true);
+              })
+            );
+          }
+        } else if (file instanceof stream.Readable) {
+          conversions.push(
+            new Promise(resolve => resolve(getStream.buffer(file))).then(buffer => {
+              // This logic was taken from the `datauri` package, and ideally it should be able to accept the content
+              // of a file, or a file stream, but I'll PR that later to that package.
+              // @todo
+              const base64 = buffer.toString('base64');
+              const mimeType = mimer(file.path);
+              const filepath = path.basename(file.path);
+
+              params.body[prop] = `data:${mimeType};name=${encodeURIComponent(filepath)};base64,${base64 || ''}`;
+
+              return Promise.resolve(true);
+            })
+          );
+        }
+      });
+
+    await Promise.all(conversions);
+  }
+
   // @todo add in a debug mode that would run jsonschema validation against request bodies and parameters and throw back errors if what's supplied isn't up to spec.
 
   // Only spend time trying to organize metadata into parameters if we were able to digest parameters out of the
@@ -111,7 +172,7 @@ module.exports = function (operation, body, metadata) {
   }
 
   // Form data should be placed inside `formData` instead of `body` for it to properly get picked up.
-  if (contentType === 'application/x-www-form-urlencoded') {
+  if (operation.isFormUrlEncoded()) {
     params.formData = body;
     delete params.body;
   }

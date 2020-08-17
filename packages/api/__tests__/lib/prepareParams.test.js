@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Oas = require('@readme/oas-tooling');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
@@ -39,16 +40,16 @@ describe('#prepareParams', () => {
     usptoSpec = new Oas(schema);
   });
 
-  it('should prepare nothing if nothing was supplied', () => {
+  it('should prepare nothing if nothing was supplied', async () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
 
-    expect(prepareParams(operation)).toStrictEqual({});
-    expect(prepareParams(operation, null, null)).toStrictEqual({});
-    expect(prepareParams(operation, [], [])).toStrictEqual({});
-    expect(prepareParams(operation, {}, {})).toStrictEqual({});
+    expect(await prepareParams(operation)).toStrictEqual({});
+    expect(await prepareParams(operation, null, null)).toStrictEqual({});
+    expect(await prepareParams(operation, [], [])).toStrictEqual({});
+    expect(await prepareParams(operation, {}, {})).toStrictEqual({});
   });
 
-  it('should prepare body and metadata when both are supplied', () => {
+  it('should prepare body and metadata when both are supplied', async () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
     const body = {
       spec: 'this is the contents of an api specification',
@@ -58,7 +59,7 @@ describe('#prepareParams', () => {
       'x-readme-version': '1.0',
     };
 
-    expect(prepareParams(operation, body, metadata)).toStrictEqual({
+    expect(await prepareParams(operation, body, metadata)).toStrictEqual({
       body: {
         spec: 'this is the contents of an api specification',
       },
@@ -68,7 +69,7 @@ describe('#prepareParams', () => {
     });
   });
 
-  it('should prepare body if body is a primitive', () => {
+  it('should prepare body if body is a primitive', async () => {
     const schema = createOas('put', '/', {
       requestBody: {
         content: {
@@ -84,12 +85,12 @@ describe('#prepareParams', () => {
     const operation = new Oas(schema).operation('/', 'put');
     const body = 'Brie cheeseburger ricotta.';
 
-    expect(prepareParams(operation, body, {})).toStrictEqual({
+    expect(await prepareParams(operation, body, {})).toStrictEqual({
       body,
     });
   });
 
-  it('should prepare body if body is an array', () => {
+  it('should prepare body if body is an array', async () => {
     const operation = new Oas(arraySchema).operation('/', 'put');
     const body = [
       {
@@ -97,55 +98,89 @@ describe('#prepareParams', () => {
       },
     ];
 
-    expect(prepareParams(operation, body, {})).toStrictEqual({
+    expect(await prepareParams(operation, body, {})).toStrictEqual({
       body,
     });
   });
 
-  it('should handle bodies when the content type is application/x-www-form-urlencoded', () => {
-    const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
-    const body = {
-      criteria: '*:*',
-    };
+  describe('content types', () => {
+    it('should handle bodies when the content type is `application/x-www-form-urlencoded`', async () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+      const body = {
+        criteria: '*:*',
+      };
 
-    const metadata = {
-      dataset: 'v1',
-      version: 'oa_citations',
-    };
-
-    expect(prepareParams(operation, body, metadata)).toStrictEqual({
-      path: {
+      const metadata = {
         dataset: 'v1',
         version: 'oa_citations',
-      },
-      formData: {
-        criteria: '*:*',
-      },
+      };
+
+      expect(await prepareParams(operation, body, metadata)).toStrictEqual({
+        path: {
+          dataset: 'v1',
+          version: 'oa_citations',
+        },
+        formData: {
+          criteria: '*:*',
+        },
+      });
+    });
+
+    describe('multipart/form-data', () => {
+      it('should handle a multipart body when a property is a file path', async () => {
+        const operation = readmeSpec.operation('/api-specification', 'post');
+        const body = {
+          spec: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+        };
+
+        const params = await prepareParams(operation, body);
+        expect(params.body.spec).toContain('data:application/json;name=readme.json;base64,');
+      });
+
+      it('should handle when the file path is relative', async () => {
+        const operation = readmeSpec.operation('/api-specification', 'post');
+        const body = {
+          spec: './__tests__/__fixtures__/owlbert.png',
+        };
+
+        const params = await prepareParams(operation, body);
+        expect(params.body.spec).toContain('data:image/png;name=owlbert.png;base64,');
+      });
+
+      it('should handle a multipart body when a property is a file stream', async () => {
+        const operation = readmeSpec.operation('/api-specification', 'post');
+        const body = {
+          spec: fs.createReadStream(require.resolve('@readme/oas-examples/3.0/json/readme.json')),
+        };
+
+        const params = await prepareParams(operation, body);
+        expect(params.body.spec).toContain('data:application/json;name=readme.json;base64,');
+      });
     });
   });
 
   describe('supplying just a body or metadata', () => {
-    it('should handle if supplied is a body', () => {
+    it('should handle if supplied is a body', async () => {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const body = {
         spec: 'this is the contents of an api specification',
       };
 
-      expect(prepareParams(operation, body)).toStrictEqual({
+      expect(await prepareParams(operation, body)).toStrictEqual({
         body,
       });
     });
 
-    it('should prepare a body if supplied is primitive', () => {
+    it('should prepare a body if supplied is primitive', async () => {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const body = 'this is a primitive value';
 
-      expect(prepareParams(operation, body)).toStrictEqual({
+      expect(await prepareParams(operation, body)).toStrictEqual({
         body,
       });
     });
 
-    it('should prepare just a body if supplied argument is an array', () => {
+    it('should prepare just a body if supplied argument is an array', async () => {
       const operation = new Oas(arraySchema).operation('/', 'put');
       const body = [
         {
@@ -153,12 +188,12 @@ describe('#prepareParams', () => {
         },
       ];
 
-      expect(prepareParams(operation, body)).toStrictEqual({
+      expect(await prepareParams(operation, body)).toStrictEqual({
         body,
       });
     });
 
-    it('should prepare metadata if more than 25% of the supplied argument lines up with known parameters', () => {
+    it('should prepare metadata if more than 25% of the supplied argument lines up with known parameters', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = {
         version: 'v1',
@@ -166,7 +201,7 @@ describe('#prepareParams', () => {
         randomUnknownParameter: true,
       };
 
-      expect(prepareParams(operation, body)).toStrictEqual({
+      expect(await prepareParams(operation, body)).toStrictEqual({
         path: {
           version: 'v1',
           dataset: 'oa_citations',
@@ -179,7 +214,7 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', () => {
+    it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = {
         version: 'v1', // This a known parameter, but the others aren't and should be treated as body payload data.
@@ -189,7 +224,7 @@ describe('#prepareParams', () => {
         randomUnknownParameter4: true,
       };
 
-      expect(prepareParams(operation, body)).toStrictEqual({
+      expect(await prepareParams(operation, body)).toStrictEqual({
         formData: {
           version: 'v1',
           randomUnknownParameter: true,
@@ -200,13 +235,13 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prepare just metadata if supplied is metadata', () => {
+    it('should prepare just metadata if supplied is metadata', async () => {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const metadata = {
         'x-readme-version': '1.0',
       };
 
-      expect(prepareParams(operation, metadata)).toStrictEqual({
+      expect(await prepareParams(operation, metadata)).toStrictEqual({
         header: {
           'x-readme-version': '1.0',
         },

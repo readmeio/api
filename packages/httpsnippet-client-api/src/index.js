@@ -1,6 +1,6 @@
 const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
-const CodeBuilder = require('httpsnippet/src/helpers/code-builder');
+const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
 const OAS = require('@readme/oas-tooling');
 
@@ -80,7 +80,6 @@ module.exports = function (source, options) {
   const authData = [];
   const authSources = getAuthSources(operation);
 
-  let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
   code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
@@ -162,29 +161,19 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       body = {};
 
+      // If there's a `Content-Type` header present in the metadata, but it's for the form-data
+      // request then dump it off the snippet. We shouldn't offload that unnecessary bloat to the
+      // user, instead letting the SDK handle it automatically.
+      if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
+        delete metadata['content-type'];
+      }
+
       source.postData.params.forEach(function (param) {
-        const attachment = {};
-
-        if (!param.fileName && !param.contentType) {
-          body[param.name] = param.value;
-          return;
-        }
-
-        if (param.fileName && !param.value) {
-          includeFS = true;
-          attachment.value = `fs.createReadStream("${param.fileName}")`;
-        } else if (param.value) {
-          attachment.value = param.value;
-        }
-
         if (param.fileName) {
-          attachment.options = {
-            filename: param.fileName,
-            contentType: param.contentType ? param.contentType : null,
-          };
+          body[param.name] = param.fileName;
+        } else {
+          body[param.name] = param.value;
         }
-
-        body[param.name] = attachment;
       });
       break;
 
@@ -209,10 +198,6 @@ module.exports = function (source, options) {
 
   if (Object.keys(metadata).length > 0) {
     args.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit: 80 }));
-  }
-
-  if (includeFS) {
-    code.unshift('const fs = require("fs");');
   }
 
   if (authData.length) {
