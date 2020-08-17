@@ -1,3 +1,19 @@
+## 2.3.0 (2020-08-17)
+
+* feat: support multipart/form-data (#132) ([8f28341](https://github.com/readmeio/api/commit/8f28341)), closes [#132](https://github.com/readmeio/api/issues/132)
+* chore(deps-dev): bump @commitlint/cli from 9.1.1 to 9.1.2 (#142) ([a4f70bf](https://github.com/readmeio/api/commit/a4f70bf)), closes [#142](https://github.com/readmeio/api/issues/142)
+* chore(deps-dev): bump @commitlint/config-conventional (#138) ([125a08a](https://github.com/readmeio/api/commit/125a08a)), closes [#138](https://github.com/readmeio/api/issues/138)
+* chore(deps-dev): bump @readme/eslint-config from 3.4.0 to 3.4.1 (#133) ([d65621b](https://github.com/readmeio/api/commit/d65621b)), closes [#133](https://github.com/readmeio/api/issues/133)
+* chore(deps-dev): bump conventional-changelog-cli from 2.0.34 to 2.1.0 (#134) ([432dba7](https://github.com/readmeio/api/commit/432dba7)), closes [#134](https://github.com/readmeio/api/issues/134)
+* chore(deps-dev): bump eslint from 7.6.0 to 7.7.0 (#137) ([baf6fe0](https://github.com/readmeio/api/commit/baf6fe0)), closes [#137](https://github.com/readmeio/api/issues/137)
+* chore(deps-dev): bump jest from 26.2.2 to 26.4.0 (#141) ([16bc760](https://github.com/readmeio/api/commit/16bc760)), closes [#141](https://github.com/readmeio/api/issues/141)
+* chore(deps-dev): bump nock from 13.0.3 to 13.0.4 (#135) ([34f7cf7](https://github.com/readmeio/api/commit/34f7cf7)), closes [#135](https://github.com/readmeio/api/issues/135)
+* chore(deps-dev): upgrading @readme/eslint-config and eslint ([992651c](https://github.com/readmeio/api/commit/992651c))
+* chore(deps): bump @readme/oas-to-har from 6.15.2 to 6.16.1 (#139) ([47db45a](https://github.com/readmeio/api/commit/47db45a)), closes [#139](https://github.com/readmeio/api/issues/139)
+* chore(deps): bump @readme/oas-tooling from 3.5.6 to 3.5.8 (#136) ([4416c87](https://github.com/readmeio/api/commit/4416c87)), closes [#136](https://github.com/readmeio/api/issues/136)
+
+
+
 ## <small>2.2.3 (2020-08-03)</small>
 
 * fix: auth keys not being properly escaped (#129) ([b0923eb](https://github.com/readmeio/api/commit/b0923eb)), closes [#129](https://github.com/readmeio/api/issues/129)
