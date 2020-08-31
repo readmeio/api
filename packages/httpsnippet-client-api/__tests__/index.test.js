@@ -7,6 +7,8 @@ const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const client = require('../src');
 
+HTTPSnippet.addTargetClient('node', client);
+
 test('it should have info', () => {
   expect(client).toHaveProperty('info');
   expect(typeof client.info).toBe('object');
@@ -22,8 +24,6 @@ test('it should have info', () => {
 });
 
 test('it should error if no apiDefinitionUri was supplied', async () => {
-  HTTPSnippet.addTargetClient('node', client);
-
   const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
   const snippet = new HTTPSnippet(JSON.parse(har));
 
@@ -33,8 +33,6 @@ test('it should error if no apiDefinitionUri was supplied', async () => {
 });
 
 test('it should error if no apiDefinition was supplied', async () => {
-  HTTPSnippet.addTargetClient('node', client);
-
   const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
   const snippet = new HTTPSnippet(JSON.parse(har));
 
@@ -46,10 +44,6 @@ test('it should error if no apiDefinition was supplied', async () => {
 });
 
 describe('snippets', () => {
-  beforeAll(() => {
-    HTTPSnippet.addTargetClient('node', client);
-  });
-
   it.each([
     ['application-form-encoded'],
     ['application-json'],
