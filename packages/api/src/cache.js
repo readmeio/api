@@ -6,17 +6,27 @@ const crypto = require('crypto');
 const findCacheDir = require('find-cache-dir');
 const pkg = require('../package.json');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
+const makeDir = require('make-dir');
 
-const cacheDir = findCacheDir({ name: pkg.name, thunk: true });
+let cacheDir = findCacheDir({ name: pkg.name });
+if (typeof cacheDir === 'undefined') {
+  // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't writable, or there's no
+  // `package.json`  in the root-most directory. If this happens, we can instead adhoc create a cache directory in the
+  // users OS temp directory and store our data there.
+  //
+  // @link https://github.com/avajs/find-cache-dir/issues/29
+  cacheDir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
+}
 
 class SdkCache {
   constructor(uri) {
     this.uri = uri;
     this.uriHash = SdkCache.getCacheHash(this.uri);
-    this.dir = cacheDir();
-    this.cacheStore = cacheDir('cache.json');
-    this.specsCache = cacheDir('specs');
+    this.dir = cacheDir;
+    this.cacheStore = path.join(this.dir, 'cache.json');
+    this.specsCache = path.join(this.dir, 'specs');
 
     // This should default to false so we have awareness if we've looked at the cache yet.
     this.cached = false;
@@ -123,18 +133,18 @@ class SdkCache {
         }
 
         const cache = self.getCache();
-        if (!(this.uriHash in cache)) {
+        if (!(self.uriHash in cache)) {
           const saved = JSON.stringify(spec, null, 2);
           const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
 
-          cache[this.uriHash] = {
-            path: cacheDir('specs', `${jsonHash}.json`),
-            original: this.uri,
+          cache[self.uriHash] = {
+            path: path.join(self.specsCache, `${jsonHash}.json`),
+            original: self.uri,
             title: 'title' in spec.info ? spec.info.title : undefined,
             version: 'version' in spec.info ? spec.info.version : undefined,
           };
 
-          fs.writeFileSync(cache[this.uriHash].path, saved);
+          fs.writeFileSync(cache[self.uriHash].path, saved);
           fs.writeFileSync(self.cacheStore, JSON.stringify(cache, null, 2));
 
           self.cache = cache;
