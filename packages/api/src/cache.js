@@ -13,7 +13,7 @@ const makeDir = require('make-dir');
 let cacheDir = findCacheDir({ name: pkg.name });
 if (typeof cacheDir === 'undefined') {
   // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't writable, or there's no
-  // `package.json`  in the root-most directory. If this happens, we can instead adhoc create a cache directory in the
+  // `package.json` in the root-most directory. If this happens, we can instead adhoc create a cache directory in the
   // users OS temp directory and store our data there.
   //
   // @link https://github.com/avajs/find-cache-dir/issues/29
