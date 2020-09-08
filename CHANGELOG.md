@@ -1,3 +1,20 @@
+## <small>2.3.1 (2020-09-08)</small>
+
+* fix: if no cache dir is determined, fallback to the os temp dir (#154) ([e0525f0](https://github.com/readmeio/api/commit/e0525f0)), closes [#154](https://github.com/readmeio/api/issues/154) [#107](https://github.com/readmeio/api/issues/107)
+* chore(deps-dev): bump @readme/eslint-config from 3.4.1 to 3.4.2 (#144) ([5e7bc96](https://github.com/readmeio/api/commit/5e7bc96)), closes [#144](https://github.com/readmeio/api/issues/144)
+* chore(deps-dev): bump eslint from 7.7.0 to 7.8.1 (#152) ([be44467](https://github.com/readmeio/api/commit/be44467)), closes [#152](https://github.com/readmeio/api/issues/152)
+* chore(deps-dev): bump jest from 26.4.0 to 26.4.2 (#143) ([831d12c](https://github.com/readmeio/api/commit/831d12c)), closes [#143](https://github.com/readmeio/api/issues/143)
+* chore(deps-dev): bump mock-fs from 4.12.0 to 4.13.0 (#145) ([69a87fa](https://github.com/readmeio/api/commit/69a87fa)), closes [#145](https://github.com/readmeio/api/issues/145)
+* chore(deps-dev): bump prettier from 2.0.5 to 2.1.1 (#147) ([565939e](https://github.com/readmeio/api/commit/565939e)), closes [#147](https://github.com/readmeio/api/issues/147)
+* chore(deps): bump @readme/httpsnippet from 2.0.1 to 2.1.1 (#148) ([4046808](https://github.com/readmeio/api/commit/4046808)), closes [#148](https://github.com/readmeio/api/issues/148)
+* chore(deps): bump @readme/oas-to-har from 7.0.0 to 7.2.0 (#146) ([53a08a5](https://github.com/readmeio/api/commit/53a08a5)), closes [#146](https://github.com/readmeio/api/issues/146)
+* chore(deps): bump @readme/oas-to-har from 7.2.0 to 7.2.1 (#153) ([7368d93](https://github.com/readmeio/api/commit/7368d93)), closes [#153](https://github.com/readmeio/api/issues/153)
+* chore(deps): bump @readme/oas-tooling from 3.5.8 to 3.5.11 (#149) ([845e147](https://github.com/readmeio/api/commit/845e147)), closes [#149](https://github.com/readmeio/api/issues/149)
+* chore(deps): bump node-fetch from 2.6.0 to 2.6.1 (#151) ([d740da5](https://github.com/readmeio/api/commit/d740da5)), closes [#151](https://github.com/readmeio/api/issues/151)
+* chore(deps): update actions/checkout requirement to v2.3.2 (#150) ([aacc532](https://github.com/readmeio/api/commit/aacc532)), closes [#150](https://github.com/readmeio/api/issues/150)
+
+
+
 ## 2.3.0 (2020-08-17)
 
 * feat: support multipart/form-data (#132) ([8f28341](https://github.com/readmeio/api/commit/8f28341)), closes [#132](https://github.com/readmeio/api/issues/132)
