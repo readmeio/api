@@ -1,3 +1,22 @@
+## <small>2.3.2 (2020-10-05)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 9.1.2 to 11.0.0 (#158) ([a068e8f](https://github.com/readmeio/api/commit/a068e8f)), closes [#158](https://github.com/readmeio/api/issues/158)
+* chore(deps-dev): bump @commitlint/config-conventional (#159) ([c084c27](https://github.com/readmeio/api/commit/c084c27)), closes [#159](https://github.com/readmeio/api/issues/159)
+* chore(deps-dev): bump @readme/eslint-config from 3.4.2 to 3.4.3 (#155) ([efb446e](https://github.com/readmeio/api/commit/efb446e)), closes [#155](https://github.com/readmeio/api/issues/155)
+* chore(deps-dev): bump @readme/eslint-config from 3.4.3 to 3.5.0 (#161) ([68d69ee](https://github.com/readmeio/api/commit/68d69ee)), closes [#161](https://github.com/readmeio/api/issues/161)
+* chore(deps-dev): bump @readme/oas-examples from 3.5.5 to 3.5.13 (#164) ([1f5d2f1](https://github.com/readmeio/api/commit/1f5d2f1)), closes [#164](https://github.com/readmeio/api/issues/164)
+* chore(deps-dev): bump eslint from 7.8.1 to 7.9.0 (#157) ([3f04da5](https://github.com/readmeio/api/commit/3f04da5)), closes [#157](https://github.com/readmeio/api/issues/157)
+* chore(deps-dev): bump eslint from 7.9.0 to 7.10.0 (#166) ([d021965](https://github.com/readmeio/api/commit/d021965)), closes [#166](https://github.com/readmeio/api/issues/166)
+* chore(deps-dev): bump husky from 4.2.5 to 4.3.0 (#160) ([54c9c0c](https://github.com/readmeio/api/commit/54c9c0c)), closes [#160](https://github.com/readmeio/api/issues/160)
+* chore(deps-dev): bump prettier from 2.1.1 to 2.1.2 (#162) ([6d31ded](https://github.com/readmeio/api/commit/6d31ded)), closes [#162](https://github.com/readmeio/api/issues/162)
+* chore(deps): bump @readme/oas-to-har from 7.2.1 to 7.3.0 (#163) ([5a915ca](https://github.com/readmeio/api/commit/5a915ca)), closes [#163](https://github.com/readmeio/api/issues/163)
+* chore(deps): bump @readme/oas-tooling from 3.5.11 to 3.5.13 (#165) ([5b8cd08](https://github.com/readmeio/api/commit/5b8cd08)), closes [#165](https://github.com/readmeio/api/issues/165)
+* chore(deps): bump actions/checkout from v2.3.2 to v2.3.3 (#167) ([3f12362](https://github.com/readmeio/api/commit/3f12362)), closes [#167](https://github.com/readmeio/api/issues/167)
+* chore(deps): bump fetch-har from 4.0.1 to 4.0.2 (#156) ([2c3314e](https://github.com/readmeio/api/commit/2c3314e)), closes [#156](https://github.com/readmeio/api/issues/156)
+* chore(deps): bump path-to-regexp from 6.1.0 to 6.2.0 (#168) ([7ccf66c](https://github.com/readmeio/api/commit/7ccf66c)), closes [#168](https://github.com/readmeio/api/issues/168)
+
+
+
 ## <small>2.3.1 (2020-09-08)</small>
 
 * fix: if no cache dir is determined, fallback to the os temp dir (#154) ([e0525f0](https://github.com/readmeio/api/commit/e0525f0)), closes [#154](https://github.com/readmeio/api/issues/154) [#107](https://github.com/readmeio/api/issues/107)
