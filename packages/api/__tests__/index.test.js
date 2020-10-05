@@ -1,5 +1,5 @@
 const nock = require('nock');
-const { join } = require('path');
+const path = require('path');
 const findCacheDir = require('find-cache-dir');
 const fsMock = require('mock-fs');
 const fs = require('fs').promises;
@@ -10,7 +10,7 @@ const pkg = require('../package.json');
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
 
-const examplesDir = join(__dirname, 'examples');
+const examplesDir = path.join(__dirname, 'examples');
 
 let petstoreSdk;
 let readmeSdk;
@@ -29,11 +29,11 @@ beforeEach(async () => {
     [findCacheDir({ name: pkg.name })]: {},
   });
 
-  const petstore = join(examplesDir, 'petstore.json');
+  const petstore = path.join(examplesDir, 'petstore.json');
   await new Cache(petstore).saveFile();
   petstoreSdk = api(petstore);
 
-  const readme = join(examplesDir, 'readme.json');
+  const readme = path.join(examplesDir, 'readme.json');
   await new Cache(readme).saveFile();
   readmeSdk = api(readme);
 });
@@ -43,7 +43,7 @@ afterEach(() => {
 });
 
 describe('#preloading', () => {
-  const uspto = join(examplesDir, 'uspto.json');
+  const uspto = path.join(examplesDir, 'uspto.json');
 
   it('should proxy an sdk for the first time', async () => {
     const mock = nock('https://developer.uspto.gov/ds-api').get('/').reply(200);
