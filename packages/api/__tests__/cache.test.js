@@ -1,7 +1,7 @@
 const nock = require('nock');
 const fsMock = require('mock-fs');
 const findCacheDir = require('find-cache-dir');
-const { join } = require('path');
+const path = require('path');
 const fs = require('fs').promises;
 
 const Cache = require('../src/cache');
@@ -9,7 +9,7 @@ const pkg = require('../package.json');
 
 let readmeExampleJson;
 let readmeExampleYaml;
-const examplesDir = join(__dirname, 'examples');
+const examplesDir = path.join(__dirname, 'examples');
 
 expect.extend({
   // Custom matcher so we can easily test that dereferencing of OpenAPI files is working as expected.
@@ -118,7 +118,7 @@ describe('#saveUrl()', () => {
 
 describe('#saveFile()', () => {
   it('should be able to save a definition', () => {
-    const cacheStore = new Cache(join(examplesDir, 'readme.json'));
+    const cacheStore = new Cache(path.join(examplesDir, 'readme.json'));
 
     expect(cacheStore.isCached()).toBe(false);
 
@@ -140,7 +140,7 @@ describe('#saveFile()', () => {
   });
 
   it('should convert yaml to json', async () => {
-    const file = join(examplesDir, 'readme.yaml');
+    const file = path.join(examplesDir, 'readme.yaml');
     const cacheStore = new Cache(file);
     const hash = Cache.getCacheHash(file);
 
@@ -159,19 +159,19 @@ describe('#saveFile()', () => {
 
 describe('#save()', () => {
   it('should error if definition is a swagger file', () => {
-    return expect(new Cache(join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
+    return expect(new Cache(path.join(examplesDir, 'swagger.json')).saveFile()).rejects.toThrow(
       'Sorry, this module only supports OpenAPI definitions.'
     );
   });
 
   it('should error if definition is not a valid openapi file', () => {
-    return expect(new Cache(join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
+    return expect(new Cache(path.join(examplesDir, 'invalid-openapi.json')).saveFile()).rejects.toThrow(
       "Sorry, that doesn't look like a valid OpenAPI definition."
     );
   });
 
   it('should cache a new file', async () => {
-    const file = join(examplesDir, 'readme.json');
+    const file = path.join(examplesDir, 'readme.json');
     const cacheStore = new Cache(file);
 
     expect(cacheStore.isCached()).toBe(false);
@@ -186,7 +186,7 @@ describe('#get', () => {
   let cacheStore;
 
   beforeEach(() => {
-    const file = join(examplesDir, 'readme.json');
+    const file = path.join(examplesDir, 'readme.json');
     cacheStore = new Cache(file);
   });
 
