@@ -22,7 +22,11 @@ if (typeof cacheDir === 'undefined') {
 
 class SdkCache {
   constructor(uri) {
-    this.uri = uri;
+    // Shorthand for OAS on Readme (@subdomain/spec -> https://subdomain.readme.io/openapi/spec)
+    const resolveReadMeOASFile = u =>
+      typeof u === 'string' ? u.replace(/^@([a-zA-Z0-9]+)/, 'https://$1.readme.io/openapi') : u;
+
+    this.uri = resolveReadMeOASFile(uri);
     this.uriHash = SdkCache.getCacheHash(this.uri);
     this.dir = cacheDir;
     this.cacheStore = path.join(this.dir, 'cache.json');

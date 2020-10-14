@@ -58,6 +58,10 @@ describe('#load', () => {
     });
   });
 
+  it('should resolve the @subdomain syntax to ReadMe', () => {
+    return expect(new Cache('@test/123456').uri).toBe('https://test.readme.io/openapi/123456');
+  });
+
   it('should throw an error when a non-HTTP(S) url is supplied', () => {
     return expect(new Cache('htt://example.com/openapi.json').load()).rejects.toThrow(
       'Only HTTP(S) protocols are supported'
