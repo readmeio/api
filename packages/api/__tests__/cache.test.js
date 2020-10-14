@@ -59,7 +59,7 @@ describe('#load', () => {
   });
 
   it('should resolve the @subdomain syntax to ReadMe', () => {
-    return expect(new Cache('@test/123456').uri).toBe('https://test.readme.io/openapi/123456');
+    return expect(new Cache('@lyft/ABC123456').uri).toBe('https://dash.readme.io/api/v1/api-specification/ABC123456');
   });
 
   it('should throw an error when a non-HTTP(S) url is supplied', () => {
