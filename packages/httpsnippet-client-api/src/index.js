@@ -206,11 +206,11 @@ module.exports = function (source, options) {
 
   code.blank();
 
-  code.push(`sdk.${accessor}(${args.join(', ')})`);
-  code.push(1, '.then(res => res.json())');
-  code.push(1, '.then(res => {');
-  code.push(2, 'console.log(res);');
-  code.push(1, '});');
+  code
+    .push(`sdk.${accessor}(${args.join(', ')})`)
+    .push(1, '.then(res => res.json())')
+    .push(1, '.then(json => console.log(json))')
+    .push(1, '.catch(err => console.error(err));');
 
   return code.join();
 };
