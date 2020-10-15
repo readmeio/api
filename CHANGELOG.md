@@ -1,3 +1,16 @@
+## <small>2.3.3 (2020-10-15)</small>
+
+* fix: adding a `.catch()` statement to code snippets (#177) ([d7c8613](https://github.com/readmeio/api/commit/d7c8613)), closes [#177](https://github.com/readmeio/api/issues/177)
+* chore(deps-dev): bump @readme/eslint-config from 3.5.0 to 3.6.0 (#173) ([9f8d0f2](https://github.com/readmeio/api/commit/9f8d0f2)), closes [#173](https://github.com/readmeio/api/issues/173)
+* chore(deps-dev): bump @readme/oas-examples from 3.5.13 to 3.6.0 (#174) ([9c4b118](https://github.com/readmeio/api/commit/9c4b118)), closes [#174](https://github.com/readmeio/api/issues/174)
+* chore(deps-dev): bump eslint from 7.10.0 to 7.11.0 (#175) ([be9393f](https://github.com/readmeio/api/commit/be9393f)), closes [#175](https://github.com/readmeio/api/issues/175)
+* chore(deps-dev): bump jest from 26.4.2 to 26.5.3 (#171) ([b4cbc9f](https://github.com/readmeio/api/commit/b4cbc9f)), closes [#171](https://github.com/readmeio/api/issues/171)
+* chore(deps): bump @readme/oas-to-har from 7.3.0 to 7.5.0 (#170) ([f26bb01](https://github.com/readmeio/api/commit/f26bb01)), closes [#170](https://github.com/readmeio/api/issues/170)
+* chore(deps): bump @readme/oas-tooling from 3.5.11 to 3.5.14 (#169) ([524915a](https://github.com/readmeio/api/commit/524915a)), closes [#169](https://github.com/readmeio/api/issues/169)
+* chore(deps): bump @readme/oas-tooling from 3.5.14 to 3.6.0 (#172) ([6bd2fb3](https://github.com/readmeio/api/commit/6bd2fb3)), closes [#172](https://github.com/readmeio/api/issues/172)
+
+
+
 ## <small>2.3.2 (2020-10-05)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 9.1.2 to 11.0.0 (#158) ([a068e8f](https://github.com/readmeio/api/commit/a068e8f)), closes [#158](https://github.com/readmeio/api/issues/158)
