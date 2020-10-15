@@ -24,7 +24,9 @@ class SdkCache {
   constructor(uri) {
     // Shorthand for OAS on Readme (@subdomain/spec -> https://subdomain.readme.io/openapi/spec)
     const resolveReadMeOASFile = u =>
-      typeof u === 'string' ? u.replace(/^@[a-zA-Z0-9-_]+\/([a-zA-Z0-9]+)$/, 'https://dash.readme.io/api/v1/api-specification/$1') : u;
+      typeof u === 'string'
+        ? u.replace(/^@[a-zA-Z0-9-_]+\/([a-zA-Z0-9]+)$/, 'https://dash.readme.io/api/v1/api-specification/$1')
+        : u;
 
     this.uri = resolveReadMeOASFile(uri);
     this.uriHash = SdkCache.getCacheHash(this.uri);
