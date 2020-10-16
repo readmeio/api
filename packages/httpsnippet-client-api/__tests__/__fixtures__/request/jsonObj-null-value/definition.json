@@ -1,33 +1,33 @@
 {
-  "openapi": "3.0.0",
-  "info": {
+   "openapi": "3.0.0",
+   "info": {
      "version": "1.0",
      "title": "jsonObj-null-value"
-  },
-  "servers": [
+   },
+   "servers": [
      {
-        "url": "http://mockbin.com"
+       "url": "http://mockbin.com"
      }
-  ],
-  "paths": {
+   ],
+   "paths": {
      "/har": {
-        "post": {
-           "requestBody": {
-              "required": true,
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "type": "object",
-                       "properties": {
-                          "foo": {
-                             "type": "null"
-                          }
-                       }
-                    }
+       "post": {
+         "requestBody": {
+           "required": true,
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "properties": {
+                   "foo": {
+                     "type": "null"
+                   }
                  }
-              }
+               }
+             }
            }
-        }
+         }
+       }
      }
-  }
-}
+   }
+ }

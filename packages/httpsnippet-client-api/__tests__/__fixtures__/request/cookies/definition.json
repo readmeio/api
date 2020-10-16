@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-     "version": "1.0",
-     "title": "cookies"
+    "version": "1.0",
+    "title": "cookies"
   },
   "servers": [
-     {
-        "url": "http://mockbin.com"
-     }
+    {
+      "url": "http://mockbin.com"
+    }
   ],
   "paths": {
     "/har": {

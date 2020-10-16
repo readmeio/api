@@ -9,7 +9,10 @@
           },
           "cookies": [],
           "headers": [
-            {"name": "Accept", "value": "application/xml"}
+            {
+              "name": "Accept",
+              "value": "application/xml"
+            }
           ],
           "httpVersion": "HTTP/1.1",
           "method": "GET",
@@ -20,8 +23,14 @@
             "size": 0
           },
           "queryString": [
-            {"name": "status", "value": "available"},
-            {"name": "api_key", "value": "a5a220e"}
+            {
+              "name": "status",
+              "value": "available"
+            },
+            {
+              "name": "api_key",
+              "value": "a5a220e"
+            }
           ],
           "url": "http://petstore.swagger.io/v2/pet/findByStatus"
         }
