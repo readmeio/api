@@ -91,6 +91,7 @@ describe('snippets', () => {
     ['issue-76'],
     ['issue-78'],
     ['issue-78-operationid'],
+    ['issue-119'],
     ['issue-128'],
     ['jsonObj-multiline'],
     ['jsonObj-null-value'],

@@ -217,6 +217,14 @@ module.exports = function (source, options) {
     args.push(`'${decodeURIComponent(path)}'`);
   }
 
+  // If the operation or method accessor is non-alphanumeric, we need to add it to the SDK object as an array key.
+  // https://github.com/readmeio/api/issues/119
+  if (accessor.match(/[^a-zA-Z\d\s:]/)) {
+    accessor = `['${accessor}']`;
+  } else {
+    accessor = `.${accessor}`;
+  }
+
   if (typeof body !== 'undefined') {
     args.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit: 80 }));
   }
@@ -232,7 +240,7 @@ module.exports = function (source, options) {
   code.blank();
 
   code
-    .push(`sdk.${accessor}(${args.join(', ')})`)
+    .push(`sdk${accessor}(${args.join(', ')})`)
     .push(1, '.then(res => res.json())')
     .push(1, '.then(json => console.log(json))')
     .push(1, '.catch(err => console.error(err));');
