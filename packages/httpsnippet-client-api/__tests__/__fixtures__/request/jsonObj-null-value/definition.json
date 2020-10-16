@@ -20,11 +20,16 @@
                  "type": "object",
                  "properties": {
                    "foo": {
-                     "type": "null"
+                     "type": "string"
                    }
                  }
                }
              }
+           }
+         },
+         "responses": {
+           "default": {
+             "description": "OK"
            }
          }
        }

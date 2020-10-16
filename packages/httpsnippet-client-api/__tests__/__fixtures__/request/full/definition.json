@@ -31,14 +31,6 @@
            },
            {
              "in": "query",
-             "name": "foo",
-             "schema": {
-               "type": "string"
-             },
-             "required": true
-           },
-           {
-             "in": "query",
              "name": "baz",
              "schema": {
                "type": "string"
@@ -62,6 +54,11 @@
                  ]
                }
              }
+           }
+         },
+         "responses": {
+           "default": {
+             "description": "OK"
            }
          }
        }

@@ -21,6 +21,11 @@
               }
             }
           }
+        },
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
         }
       }
     }

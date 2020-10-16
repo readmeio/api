@@ -27,7 +27,12 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
+        }
       }
     }
   }

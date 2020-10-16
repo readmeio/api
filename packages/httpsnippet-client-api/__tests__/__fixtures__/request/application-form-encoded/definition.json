@@ -28,11 +28,11 @@
                 }
               }
             }
-          },
-          "responses": {
-            "200": {
-              "description": "OK"
-            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "OK"
           }
         }
       }

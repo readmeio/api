@@ -71,6 +71,11 @@
                }
              }
            }
+         },
+         "responses": {
+           "default": {
+             "description": "OK"
+           }
          }
        }
      }

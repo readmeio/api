@@ -11,7 +11,13 @@
   ],
   "paths": {
     "/har": {
-      "get": {}
+      "get": {
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
+        }
+      }
     }
   }
 }
