@@ -43,6 +43,43 @@ test('it should error if no apiDefinition was supplied', async () => {
   }).toThrow(/must have an `apiDefinition` option supplied/);
 });
 
+describe('auth handling', () => {
+  describe('basic', () => {
+    it.each([
+      ['should not encode basic auth in the `.auth()` call', 'buster:pug'],
+      ["should be able to handle basic auth that's just a username", 'buster:'],
+      ["should be able to handle basic auth that's just a password", ':pug'],
+    ])('%s', (testCase, authKey) => {
+      const definition = require('@readme/oas-examples/3.0/json/readme.json');
+      const har = {
+        bodySize: 0,
+        cookies: [],
+        headers: [
+          {
+            name: 'Authorization',
+            value: `Basic ${Buffer.from(authKey).toString('base64')}`,
+          },
+        ],
+        headersSize: 0,
+        httpVersion: 'HTTP/1.1',
+        method: 'GET',
+        queryString: [
+          { name: 'perPage', value: '10' },
+          { name: 'page', value: '1' },
+        ],
+        url: 'https://dash.readme.io/api/v1/api-specification',
+      };
+
+      const code = new HTTPSnippet(har).convert('node', 'api', {
+        apiDefinitionUri: 'https://example.com/openapi.json',
+        apiDefinition: definition,
+      });
+
+      expect(code).toMatchSnapshot();
+    });
+  });
+});
+
 describe('snippets', () => {
   it.each([
     ['application-form-encoded'],

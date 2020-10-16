@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`auth handling basic should be able to handle basic auth that's just a password 1`] = `
+"const sdk = require('api')('https://example.com/openapi.json');
+sdk.auth('', 'pug')
+
+sdk.getAPISpecification({perPage: '10', page: '1'})
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));"
+`;
+
+exports[`auth handling basic should be able to handle basic auth that's just a username 1`] = `
+"const sdk = require('api')('https://example.com/openapi.json');
+sdk.auth('buster')
+
+sdk.getAPISpecification({perPage: '10', page: '1'})
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));"
+`;
+
+exports[`auth handling basic should not encode basic auth in the \`.auth()\` call 1`] = `
+"const sdk = require('api')('https://example.com/openapi.json');
+sdk.auth('buster', 'pug')
+
+sdk.getAPISpecification({perPage: '10', page: '1'})
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));"
+`;

@@ -5,6 +5,21 @@ const contentType = require('content-type');
 const OAS = require('@readme/oas-tooling');
 
 function buildAuthSnippet(authKey) {
+  // Auth key will be an array for Basic auth cases.
+  if (Array.isArray(authKey)) {
+    const auth = [];
+    authKey.forEach((token, i) => {
+      // If the token part is the last part of the key and it's empty, don't add it to the snippet.
+      if (token.length === 0 && authKey.length > 1 && i === authKey.length - 1) {
+        return;
+      }
+
+      auth.push(`'${token.replace(/'/g, "\\'")}'`);
+    });
+
+    return `sdk.auth(${auth.join(', ')})`;
+  }
+
   return `sdk.auth('${authKey.replace(/'/g, "\\'")}');`;
 }
 
@@ -114,25 +129,35 @@ module.exports = function (source, options) {
     const headers = source.headersObj;
 
     Object.keys(headers).forEach(header => {
-      if (header in authSources.header) {
+      // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to make sure we're able
+      // to match them properly.
+      const headerLc = header.toLowerCase();
+
+      if (headerLc in authSources.header) {
         // If this header has been set up as an authentication header, let's remove it and add it into our auth data
         // so we can build up an `.auth()` snippet for the SDK.
-        const headerPrefix = authSources.header[header];
-        if (headerPrefix === '*') {
+        const authScheme = authSources.header[headerLc];
+        if (authScheme === '*') {
           authData.push(buildAuthSnippet(headers[header]));
         } else {
-          authData.push(buildAuthSnippet(headers[header].replace(`${authSources.header[header]} `, '')));
+          let authKey = headers[header].replace(`${authSources.header[headerLc]} `, '');
+          if (authScheme.toLowerCase() === 'basic') {
+            authKey = Buffer.from(authKey, 'base64').toString('ascii');
+            authKey = authKey.split(':');
+          }
+
+          authData.push(buildAuthSnippet(authKey));
         }
 
         delete headers[header];
-      } else if (header === 'content-type') {
+      } else if (headerLc === 'content-type') {
         // Content-Type headers are automatically added within the SDK so we can filter them out if they don't have
         // parameters attached to them.
         const parsedContentType = contentType.parse(headers[header]);
         if (!Object.keys(parsedContentType.parameters).length) {
           delete headers[header];
         }
-      } else if (header === 'accept') {
+      } else if (headerLc === 'accept') {
         // If the accept header here is not the default/first accept header for the operations request body, then we
         // should add it, otherwise just let the SDK handle it itself.
         if (headers[header] === operation.getContentType()) {
