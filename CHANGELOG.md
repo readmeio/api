@@ -1,3 +1,11 @@
+## 2.4.0 (2020-10-16)
+
+* chore: test cleanup (#181) ([1fe0e95](https://github.com/readmeio/api/commit/1fe0e95)), closes [#181](https://github.com/readmeio/api/issues/181)
+* fix: adding support for non-alphanumerical operation ids (#180) ([fd075a0](https://github.com/readmeio/api/commit/fd075a0)), closes [#180](https://github.com/readmeio/api/issues/180)
+* fix: basic auth headers now decoded and exploded into `.auth()` calls (#179) ([2351b95](https://github.com/readmeio/api/commit/2351b95)), closes [#179](https://github.com/readmeio/api/issues/179)
+
+
+
 ## <small>2.3.3 (2020-10-15)</small>
 
 * fix: adding a `.catch()` statement to code snippets (#177) ([d7c8613](https://github.com/readmeio/api/commit/d7c8613)), closes [#177](https://github.com/readmeio/api/issues/177)
