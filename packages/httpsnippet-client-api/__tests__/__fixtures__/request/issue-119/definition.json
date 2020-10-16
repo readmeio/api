@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Swagger Petstore"
+    "title": "issue-119"
   },
   "servers": [
     {
@@ -78,11 +78,6 @@
             }
           }
         }
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
       }
     },
     "schemas": {

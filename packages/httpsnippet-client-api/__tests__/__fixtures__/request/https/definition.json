@@ -1,18 +1,23 @@
 {
   "openapi": "3.0.0",
   "info": {
-     "version": "1.0",
-     "title": "https"
+    "version": "1.0",
+    "title": "https"
   },
   "servers": [
-     {
-        "url": "https://mockbin.com"
-     }
+    {
+      "url": "https://mockbin.com"
+    }
   ],
   "paths": {
-     "/har": {
-        "get": {
+    "/har": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
         }
-     }
+      }
+    }
   }
 }

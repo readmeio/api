@@ -1,38 +1,38 @@
 {
-  "openapi": "3.0.0",
-  "info": {
+   "openapi": "3.0.0",
+   "info": {
      "version": "1.0.0",
      "title": "issue-128"
-  },
-  "servers": [
+   },
+   "servers": [
      {
-        "url": "http://example.com"
+       "url": "http://example.com"
      }
-  ],
-  "paths": {
+   ],
+   "paths": {
      "/": {
-        "get": {
-           "operationId": "getItem",
-           "responses": {
-              "200": {
-                 "description": "OK"
-              }
-           },
-           "security": [
-              {
-                 "api_key": []
-              }
-           ]
-        }
+       "get": {
+         "operationId": "getItem",
+         "responses": {
+           "200": {
+             "description": "OK"
+           }
+         },
+         "security": [
+           {
+             "api_key": []
+           }
+         ]
+       }
      }
-  },
-  "components": {
+   },
+   "components": {
      "securitySchemes": {
-        "api_key": {
-           "type": "apiKey",
-           "name": "api_key",
-           "in": "query"
-        }
+       "api_key": {
+         "type": "apiKey",
+         "name": "api_key",
+         "in": "query"
+       }
      }
-  }
-}
+   }
+ }

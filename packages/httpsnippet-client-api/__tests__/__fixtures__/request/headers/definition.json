@@ -1,27 +1,32 @@
 {
   "openapi": "3.0.0",
   "info": {
-     "version": "1.0",
-     "title": "headers"
+    "version": "1.0",
+    "title": "headers"
   },
   "servers": [
-     {
-        "url": "http://mockbin.com"
-     }
+    {
+      "url": "http://mockbin.com"
+    }
   ],
   "paths": {
-     "/har": {
-        "get": {
-           "parameters": [
-             {
-               "in": "header",
-               "name": "x-foo",
-               "schema": {
-                 "type": "string"
-               }
-             }
-           ]
+    "/har": {
+      "get": {
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-foo",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
         }
-     }
+      }
+    }
   }
 }
