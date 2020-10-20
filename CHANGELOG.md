@@ -1,3 +1,12 @@
+## <small>2.4.1 (2020-10-20)</small>
+
+* chore(deps-dev): bump @readme/eslint-config from 3.6.0 to 3.6.1 (#183) ([33996b0](https://github.com/readmeio/api/commit/33996b0)), closes [#183](https://github.com/readmeio/api/issues/183)
+* chore(deps): bump @readme/oas-to-har from 7.5.0 to 8.0.1 (#182) ([a2052bb](https://github.com/readmeio/api/commit/a2052bb)), closes [#182](https://github.com/readmeio/api/issues/182)
+* chore(deps): bump @readme/oas-tooling from 3.6.0 to 3.6.1 (#184) ([3d86be9](https://github.com/readmeio/api/commit/3d86be9)), closes [#184](https://github.com/readmeio/api/issues/184)
+* chore(deps): swapping `@readme/oas-tooling` for `oas` (#185) ([d9ced1c](https://github.com/readmeio/api/commit/d9ced1c)), closes [#185](https://github.com/readmeio/api/issues/185)
+
+
+
 ## 2.4.0 (2020-10-16)
 
 * chore: test cleanup (#181) ([1fe0e95](https://github.com/readmeio/api/commit/1fe0e95)), closes [#181](https://github.com/readmeio/api/issues/181)
