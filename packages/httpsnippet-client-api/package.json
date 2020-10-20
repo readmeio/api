@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@readme/httpsnippet": "^2.2.2",
-    "@readme/oas-tooling": "^3.6.1",
     "content-type": "^1.0.4",
+    "oas": "^4.0.0",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@readme/eslint-config": "^3.4.1",
-    "@readme/oas-examples": "^3.6.0",
+    "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",
     "prettier": "^2.0.5"
