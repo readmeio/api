@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Oas = require('@readme/oas-tooling');
+const Oas = require('oas/tooling');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
 const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');

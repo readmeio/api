@@ -2,7 +2,7 @@ const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
-const OAS = require('@readme/oas-tooling');
+const OAS = require('oas/tooling');
 
 function buildAuthSnippet(authKey) {
   // Auth key will be an array for Basic auth cases.

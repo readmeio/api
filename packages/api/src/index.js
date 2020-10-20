@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
-const Oas = require('@readme/oas-tooling');
+const Oas = require('oas/tooling');
 const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
