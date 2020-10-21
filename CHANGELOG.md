@@ -1,3 +1,9 @@
+## <small>2.4.2 (2020-10-21)</small>
+
+* fix: pinning httpsnippet-client-api to oas@4.0.0 ([29af3be](https://github.com/readmeio/api/commit/29af3be))
+
+
+
 ## <small>2.4.1 (2020-10-20)</small>
 
 * chore(deps-dev): bump @readme/eslint-config from 3.6.0 to 3.6.1 (#183) ([33996b0](https://github.com/readmeio/api/commit/33996b0)), closes [#183](https://github.com/readmeio/api/issues/183)
