@@ -1,3 +1,10 @@
+## <small>2.4.3 (2020-10-21)</small>
+
+* chore(deps): upgrading @readme/oas-to-har to 8.1.0 ([f2d3af7](https://github.com/readmeio/api/commit/f2d3af7))
+* chore(deps): upgrading oas to 5.0 ([0351595](https://github.com/readmeio/api/commit/0351595))
+
+
+
 ## <small>2.4.2 (2020-10-21)</small>
 
 * fix: pinning httpsnippet-client-api to oas@4.0.0 ([29af3be](https://github.com/readmeio/api/commit/29af3be))

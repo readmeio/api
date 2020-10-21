@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "Generate an SDK from an OpenAPI definition",
   "main": "src/index.js",
   "scripts": {
