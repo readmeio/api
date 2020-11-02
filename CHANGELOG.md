@@ -1,3 +1,16 @@
+## <small>2.4.4 (2020-11-02)</small>
+
+* fix: adding better messaging when operations can't be found (#193) ([22b6dfd](https://github.com/readmeio/api/commit/22b6dfd)), closes [#193](https://github.com/readmeio/api/issues/193)
+* chore(deps-dev): bump @readme/eslint-config from 3.6.1 to 3.6.2 (#189) ([eae818f](https://github.com/readmeio/api/commit/eae818f)), closes [#189](https://github.com/readmeio/api/issues/189)
+* chore(deps-dev): bump eslint from 7.11.0 to 7.12.0 (#186) ([1661310](https://github.com/readmeio/api/commit/1661310)), closes [#186](https://github.com/readmeio/api/issues/186)
+* chore(deps-dev): bump eslint from 7.12.0 to 7.12.1 (#192) ([d0d838d](https://github.com/readmeio/api/commit/d0d838d)), closes [#192](https://github.com/readmeio/api/issues/192)
+* chore(deps-dev): bump jest from 26.5.3 to 26.6.1 (#188) ([e25388e](https://github.com/readmeio/api/commit/e25388e)), closes [#188](https://github.com/readmeio/api/issues/188)
+* chore(deps): bump @readme/httpsnippet from 2.2.2 to 2.2.3 (#187) ([530fa45](https://github.com/readmeio/api/commit/530fa45)), closes [#187](https://github.com/readmeio/api/issues/187)
+* chore(deps): bump @readme/oas-to-har from 8.1.0 to 9.0.0 (#191) ([f50bbb0](https://github.com/readmeio/api/commit/f50bbb0)), closes [#191](https://github.com/readmeio/api/issues/191)
+* chore(deps): bump actions/setup-node from v2.1.1 to v2.1.2 (#190) ([f4745f9](https://github.com/readmeio/api/commit/f4745f9)), closes [#190](https://github.com/readmeio/api/issues/190)
+
+
+
 ## <small>2.4.3 (2020-10-21)</small>
 
 * chore(deps): upgrading @readme/oas-to-har to 8.1.0 ([f2d3af7](https://github.com/readmeio/api/commit/f2d3af7))
