@@ -43,6 +43,33 @@ test('it should error if no apiDefinition was supplied', async () => {
   }).toThrow(/must have an `apiDefinition` option supplied/);
 });
 
+// This test should fail because the url in the HAR is missing `/v1` in the path.
+test('it should error if no matching operation was found in the apiDefinition', () => {
+  const definition = require('@readme/oas-examples/3.0/json/readme.json');
+  const har = {
+    bodySize: 0,
+    cookies: [],
+    headers: [],
+    headersSize: 0,
+    httpVersion: 'HTTP/1.1',
+    method: 'GET',
+    queryString: [
+      { name: 'perPage', value: '10' },
+      { name: 'page', value: '1' },
+    ],
+    url: 'https://dash.readme.io/api/api-specification',
+  };
+
+  const snippet = new HTTPSnippet(har);
+
+  expect(() => {
+    snippet.convert('node', 'api', {
+      apiDefinitionUri: 'https://example.com/openapi.json',
+      apiDefinition: definition,
+    });
+  }).toThrow(/unable to locate a matching operation/i);
+});
+
 describe('auth handling', () => {
   describe('basic', () => {
     it.each([
