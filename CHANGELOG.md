@@ -1,3 +1,21 @@
+## 2.5.0 (2020-11-27)
+
+* chore(deps-dev): bump @readme/eslint-config from 3.6.2 to 3.6.3 (#194) ([c53f2a0](https://github.com/readmeio/api/commit/c53f2a0)), closes [#194](https://github.com/readmeio/api/issues/194)
+* chore(deps-dev): bump @readme/eslint-config from 3.6.3 to 3.6.5 (#204) ([accc1b3](https://github.com/readmeio/api/commit/accc1b3)), closes [#204](https://github.com/readmeio/api/issues/204)
+* chore(deps-dev): bump conventional-changelog-cli from 2.1.0 to 2.1.1 (#195) ([82ec912](https://github.com/readmeio/api/commit/82ec912)), closes [#195](https://github.com/readmeio/api/issues/195)
+* chore(deps-dev): bump eslint from 7.12.1 to 7.13.0 (#197) ([e4cae18](https://github.com/readmeio/api/commit/e4cae18)), closes [#197](https://github.com/readmeio/api/issues/197)
+* chore(deps-dev): bump eslint from 7.13.0 to 7.14.0 (#206) ([a963391](https://github.com/readmeio/api/commit/a963391)), closes [#206](https://github.com/readmeio/api/issues/206)
+* chore(deps-dev): bump jest from 26.6.1 to 26.6.3 (#199) ([64ca33f](https://github.com/readmeio/api/commit/64ca33f)), closes [#199](https://github.com/readmeio/api/issues/199)
+* chore(deps-dev): bump nock from 13.0.4 to 13.0.5 (#201) ([b3d5198](https://github.com/readmeio/api/commit/b3d5198)), closes [#201](https://github.com/readmeio/api/issues/201)
+* chore(deps-dev): bump prettier from 2.1.2 to 2.2.0 (#205) ([f26cf5f](https://github.com/readmeio/api/commit/f26cf5f)), closes [#205](https://github.com/readmeio/api/issues/205)
+* chore(deps): bump @readme/httpsnippet from 2.2.3 to 2.3.1 (#207) ([ca2eeb0](https://github.com/readmeio/api/commit/ca2eeb0)), closes [#207](https://github.com/readmeio/api/issues/207)
+* chore(deps): bump @readme/oas-to-har from 9.0.0 to 9.2.0 (#196) ([0b0f5ac](https://github.com/readmeio/api/commit/0b0f5ac)), closes [#196](https://github.com/readmeio/api/issues/196)
+* chore(deps): bump @readme/oas-to-har from 9.2.0 to 9.2.2 (#202) ([a492210](https://github.com/readmeio/api/commit/a492210)), closes [#202](https://github.com/readmeio/api/issues/202)
+* chore(deps): bump oas from 5.0.0 to 5.2.0 (#198) ([cb0b851](https://github.com/readmeio/api/commit/cb0b851)), closes [#198](https://github.com/readmeio/api/issues/198)
+* chore(deps): upgrade oas and oas-to-har (#208) ([3daec70](https://github.com/readmeio/api/commit/3daec70)), closes [#208](https://github.com/readmeio/api/issues/208)
+
+
+
 ## <small>2.4.4 (2020-11-02)</small>
 
 * fix: adding better messaging when operations can't be found (#193) ([22b6dfd](https://github.com/readmeio/api/commit/22b6dfd)), closes [#193](https://github.com/readmeio/api/issues/193)
