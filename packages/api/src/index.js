@@ -70,10 +70,10 @@ class Sdk {
 
     function loadOperations(spec) {
       return Sdk.getOperations(spec)
-        .filter(operation => operation.operationId)
+        .filter(operation => operation.schema.operationId)
         .reduce((prev, next) => {
           return Object.assign(prev, {
-            [next.operationId]: ((operation, ...args) => {
+            [next.schema.operationId]: ((operation, ...args) => {
               return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
           });

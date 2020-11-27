@@ -2,7 +2,7 @@ const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
-const OAS = require('oas/tooling');
+const Oas = require('oas/tooling');
 
 function buildAuthSnippet(authKey) {
   // Auth key will be an array for Basic auth cases.
@@ -85,7 +85,7 @@ module.exports = function (source, options) {
   }
 
   const method = source.method.toLowerCase();
-  const oas = new OAS(opts.apiDefinition);
+  const oas = new Oas(opts.apiDefinition);
   const operation = oas.getOperation(source.url, method);
 
   if (!operation) {
@@ -120,7 +120,7 @@ module.exports = function (source, options) {
 
   // If we have path parameters present, we should only add them in if we have an operationId as we don't want metadata
   // to duplicate what we'll be setting the path in the snippet to.
-  if (typeof operation.operationId !== 'undefined') {
+  if ('operationId' in operation.schema) {
     const pathParams = getParamsInPath(operation, path);
     if (Object.keys(pathParams).length) {
       Object.keys(pathParams).forEach(param => {
@@ -215,8 +215,8 @@ module.exports = function (source, options) {
   const args = [];
 
   let accessor = method;
-  if ('operationId' in operation && operation.operationId.length > 0) {
-    accessor = operation.operationId;
+  if ('operationId' in operation.schema && operation.schema.operationId.length > 0) {
+    accessor = operation.schema.operationId;
   } else {
     args.push(`'${decodeURIComponent(path)}'`);
   }
