@@ -54,11 +54,8 @@ module.exports = async (operation, body, metadata) => {
   let digested = {};
   let hasDigestedParams = false;
   if (shouldDigestParams) {
-    // @todo `operation.parameters` should also pull in common params (this does not happen automatically when dereffing!)
-    if ('parameters' in operation) {
-      digested = digestParameters(operation.parameters);
-      hasDigestedParams = Object.keys(digested).length;
-    }
+    digested = digestParameters(operation.getParameters());
+    hasDigestedParams = Object.keys(digested).length;
   }
 
   // No metadata was explicitly defined so we need to analyze the supplied, and we haven't already set a body then we
@@ -90,7 +87,7 @@ module.exports = async (operation, body, metadata) => {
   // body payload to see if anything in there is either a file path or a file stream so we can translate those into a
   // data URL for `@readme/oas-to-har` to make a request.
   if ('body' in params && operation.isMultipart()) {
-    const schema = getSchema(operation, operation.oas) || { schema: {} };
+    const schema = getSchema(operation.schema, operation.oas) || { schema: {} };
     const bodyKeys = Object.keys(params.body);
 
     // Loop through the schema to look for `binary` properties so we know what we need to convert.
