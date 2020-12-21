@@ -33,7 +33,7 @@
     "@readme/httpsnippet": "^2.0.1"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^3.4.1",
+    "@readme/eslint-config": "^4.0.0",
     "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",
