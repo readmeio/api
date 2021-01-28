@@ -87,13 +87,19 @@ module.exports = async (operation, body, metadata) => {
   // body payload to see if anything in there is either a file path or a file stream so we can translate those into a
   // data URL for `@readme/oas-to-har` to make a request.
   if ('body' in params && operation.isMultipart()) {
-    const schema = getSchema(operation.schema, operation.oas) || { schema: {} };
+    let requestBody = getSchema(operation.schema, operation.oas);
+    if (requestBody) {
+      requestBody = requestBody.schema;
+    } else {
+      requestBody = { schema: {} };
+    }
+
     const bodyKeys = Object.keys(params.body);
 
     // Loop through the schema to look for `binary` properties so we know what we need to convert.
     const conversions = [];
-    Object.keys(schema.schema.properties)
-      .filter(key => schema.schema.properties[key].format === 'binary')
+    Object.keys(requestBody.schema.properties)
+      .filter(key => requestBody.schema.properties[key].format === 'binary')
       .filter(x => bodyKeys.includes(x))
       .forEach(async prop => {
         let file = params.body[prop];

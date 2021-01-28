@@ -2,7 +2,7 @@
   "name": "api-monorepo",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
     "lint": "lerna run lint --stream",
     "postinstall": "npm run bootstrap",
