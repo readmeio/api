@@ -1,3 +1,9 @@
+## 2.7.0 (2021-02-02)
+
+* chore(deps): upgrading `@readme/httpsnippet` ([d184a14](https://github.com/readmeio/api/commit/d184a14))
+
+
+
 ## 2.6.0 (2021-02-02)
 
 * chore: rebuilding the root package-lock ([d0f8091](https://github.com/readmeio/api/commit/d0f8091))
