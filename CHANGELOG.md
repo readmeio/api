@@ -1,3 +1,9 @@
+## <small>2.7.1 (2021-02-02)</small>
+
+* chore(deps): upgrading `@readme/httpsnippet` to the latest release ([9164024](https://github.com/readmeio/api/commit/9164024))
+
+
+
 ## 2.7.0 (2021-02-02)
 
 * chore(deps): upgrading `@readme/httpsnippet` ([d184a14](https://github.com/readmeio/api/commit/d184a14))
