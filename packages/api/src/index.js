@@ -5,7 +5,7 @@ const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
 const Cache = require('./cache');
-const { prepareAuth, prepareParams } = require('./lib/index');
+const { prepareAuth, prepareParams, parseResponse } = require('./lib/index');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -48,7 +48,7 @@ class Sdk {
             throw res;
           }
 
-          return res;
+          return parseResponse(res);
         });
       });
     }

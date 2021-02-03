@@ -173,7 +173,7 @@ describe('#fetch', () => {
   });
 
   it('should contain a custom user agent for the library in requests', () => {
-    expect.assertions(2);
+    expect.assertions(1);
 
     const userAgent = `${pkg.name} (node)/${pkg.version}`;
     const mock = nock(petstoreServerUrl, {
@@ -186,10 +186,7 @@ describe('#fetch', () => {
         expect(this.req.headers['user-agent']).toStrictEqual([userAgent]);
       });
 
-    return petstoreSdk.deletePet({ id: petId }).then(res => {
-      expect(res.status).toBe(200);
-      mock.done();
-    });
+    return petstoreSdk.deletePet({ id: petId }).then(() => mock.done());
   });
 
   describe('operationId', () => {
@@ -201,26 +198,17 @@ describe('#fetch', () => {
 
       const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(200, response);
 
-      return petstoreSdk
-        .deletePet({ id: petId })
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual(response);
-          mock.done();
-        });
+      return petstoreSdk.deletePet({ id: petId }).then(res => {
+        expect(res).toStrictEqual(response);
+        mock.done();
+      });
     });
 
     it('should pass through body for operationId', () => {
       const body = { name: 'Buster' };
       const mock = nock(petstoreServerUrl).post('/pets', body).reply(200);
 
-      return petstoreSdk.addPet(body).then(res => {
-        expect(res.status).toBe(200);
-        mock.done();
-      });
+      return petstoreSdk.addPet(body).then(() => mock.done());
     });
 
     it('should pass through parameters and body for operationId', () => {
@@ -232,10 +220,7 @@ describe('#fetch', () => {
 
       const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`, body).reply(200);
 
-      return readmeSdk.updateChangelog(body, { slug }).then(res => {
-        expect(res.status).toBe(200);
-        mock.done();
-      });
+      return readmeSdk.updateChangelog(body, { slug }).then(() => mock.done());
     });
   });
 
@@ -252,26 +237,16 @@ describe('#fetch', () => {
           };
         });
 
-      return petstoreSdk
-        .post('/pets', body)
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ id: 100, name: body.name });
-          mock.done();
-        });
+      return petstoreSdk.post('/pets', body).then(res => {
+        expect(res).toStrictEqual({ id: 100, name: body.name });
+        mock.done();
+      });
     });
 
     it('should pass through parameters for method + path', () => {
       const slug = 'new-release';
       const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`).reply(200);
-      return readmeSdk.put('/changelogs/{slug}', { slug }).then(res => {
-        expect(res.status).toBe(200);
-        expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
-        mock.done();
-      });
+      return readmeSdk.put('/changelogs/{slug}', { slug }).then(() => mock.done());
     });
 
     it('should pass through parameters and body for method + path', () => {
@@ -290,17 +265,10 @@ describe('#fetch', () => {
           };
         });
 
-      return readmeSdk
-        .put('/changelogs/{slug}', body, { slug })
-        .then(res => {
-          expect(res.status).toBe(200);
-          expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ ...body, slug });
-          mock.done();
-        });
+      return readmeSdk.put('/changelogs/{slug}', body, { slug }).then(res => {
+        expect(res).toStrictEqual({ ...body, slug });
+        mock.done();
+      });
     });
   });
 });
