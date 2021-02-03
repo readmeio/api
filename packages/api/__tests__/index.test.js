@@ -1,11 +1,14 @@
 const nock = require('nock');
 const path = require('path');
-const findCacheDir = require('find-cache-dir');
-const fsMock = require('mock-fs');
-const fs = require('fs').promises;
 const api = require('../src');
 const Cache = require('../src/cache');
 const pkg = require('../package.json');
+const { vol } = require('memfs');
+
+const realFs = jest.requireActual('fs').promises;
+
+// eslint-disable-next-line global-require
+jest.mock('fs', () => require('memfs').fs);
 
 const serverUrl = 'https://api.example.com';
 const createOas = require('./__fixtures__/createOas')(serverUrl);
@@ -17,16 +20,19 @@ let readmeSdk;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 beforeEach(async () => {
-  fsMock({
-    [examplesDir]: {
-      'petstore.json': await fs.readFile(
-        require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json'),
-        'utf8'
-      ),
-      'readme.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8'),
-      'uspto.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/uspto.json'), 'utf8'),
-    },
-    [findCacheDir({ name: pkg.name })]: {},
+  vol.fromJSON({
+    [`${[examplesDir]}/petstore.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json'),
+      'utf8'
+    ),
+    [`${[examplesDir]}/readme.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+      'utf8'
+    ),
+    [`${[examplesDir]}/uspto.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/uspto.json'),
+      'utf8'
+    ),
   });
 
   const petstore = path.join(examplesDir, 'petstore.json');
@@ -39,7 +45,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  fsMock.restore();
+  vol.reset();
 });
 
 describe('#preloading', () => {
