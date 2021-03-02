@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint && npm run prettier",
+    "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
@@ -23,20 +23,21 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@readme/httpsnippet": "^2.4.1",
     "content-type": "^1.0.4",
-    "oas": "^10.0.0",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^2.4.1"
+    "@readme/httpsnippet": "^2.4.4",
+    "oas": "^10.2.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",
+    "@readme/httpsnippet": "^2.4.4",
     "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",
+    "oas": "^10.2.0",
     "prettier": "^2.0.5"
   },
   "prettier": "@readme/eslint-config/prettier",
