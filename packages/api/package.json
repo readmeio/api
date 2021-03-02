@@ -29,7 +29,7 @@
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
-    "form-data": "^3.0.0",
+    "form-data": "^4.0.0",
     "get-stream": "^6.0.0",
     "js-yaml": "^3.14.0",
     "make-dir": "^3.1.0",
