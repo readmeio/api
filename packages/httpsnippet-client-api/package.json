@@ -20,20 +20,20 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": ">=10",
+    "npm": ">=7"
   },
   "dependencies": {
     "content-type": "^1.0.4",
-    "oas": "^10.3.0",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^2.4.4"
+    "@readme/httpsnippet": "^2.4.4",
+    "oas": "^10.3.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",
-    "@readme/httpsnippet": "^2.4.4",
     "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",

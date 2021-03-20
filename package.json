@@ -2,10 +2,8 @@
   "name": "api-monorepo",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
     "clean": "lerna clean",
     "lint": "lerna run lint --stream",
-    "postinstall": "npm run bootstrap",
     "publish": "lerna publish",
     "test": "lerna run test --stream",
     "version": "conventional-changelog --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
@@ -15,8 +13,12 @@
     "url": "https://github.com/readmeio/api.git"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=10",
+    "npm": ">=7"
   },
+  "workspaces": [
+    "./packages/*"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",

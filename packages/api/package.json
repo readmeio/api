@@ -20,7 +20,8 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": ">=10",
+    "npm": ">=7"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
