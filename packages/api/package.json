@@ -20,7 +20,7 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10",
+    "node": ">=12",
     "npm": ">=7"
   },
   "dependencies": {
