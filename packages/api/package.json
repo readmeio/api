@@ -35,7 +35,7 @@
     "make-dir": "^3.1.0",
     "mimer": "^1.1.0",
     "node-fetch": "^2.6.0",
-    "oas": "^10.2.0"
+    "oas": "^10.3.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",
