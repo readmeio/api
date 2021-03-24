@@ -25,11 +25,11 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^11.1.0",
+    "@readme/oas-to-har": "^12.2.1",
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
-    "form-data": "^3.0.0",
+    "form-data": "^4.0.0",
     "get-stream": "^6.0.0",
     "js-yaml": "^3.14.0",
     "make-dir": "^3.1.0",
@@ -38,7 +38,7 @@
     "oas": "^10.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^4.0.0",
+    "@readme/eslint-config": "^5.0.0",
     "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",
