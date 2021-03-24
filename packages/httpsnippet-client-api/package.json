@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint && npm run prettier",
+    "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
@@ -20,17 +20,16 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": "^12 || ^14"
   },
   "dependencies": {
-    "@readme/httpsnippet": "^2.4.1",
     "content-type": "^1.0.4",
-    "oas": "^10.0.0",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^2.4.1"
+    "@readme/httpsnippet": "^2.4.4",
+    "oas": "^10.3.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",

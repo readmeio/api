@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint && npm run prettier",
+    "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
@@ -20,12 +20,12 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": "^12 || ^14"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^12.2.1",
+    "@readme/oas-to-har": "^13.0.0",
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
@@ -35,7 +35,7 @@
     "make-dir": "^3.1.0",
     "mimer": "^1.1.0",
     "node-fetch": "^2.6.0",
-    "oas": "^10.0.0"
+    "oas": "^10.3.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",
