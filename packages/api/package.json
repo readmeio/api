@@ -20,13 +20,12 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": "^12 || ^14",
-    "npm": "^7"
+    "node": "^12 || ^14"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^12.2.2",
+    "@readme/oas-to-har": "^13.0.0",
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
