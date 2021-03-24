@@ -1,3 +1,49 @@
+## 3.0.0 (2021-03-24)
+
+* chore: update deps and require npm@7 (#253) ([efa2705](https://github.com/readmeio/api/commit/efa2705)), closes [#253](https://github.com/readmeio/api/issues/253)
+* chore(deps-dev): bump @commitlint/cli from 11.0.0 to 12.0.1 (#250) ([8b9b6a4](https://github.com/readmeio/api/commit/8b9b6a4)), closes [#250](https://github.com/readmeio/api/issues/250)
+* chore(deps-dev): bump @commitlint/config-conventional (#248) ([12d734e](https://github.com/readmeio/api/commit/12d734e)), closes [#248](https://github.com/readmeio/api/issues/248)
+* chore(deps-dev): bump @readme/eslint-config from 4.1.0 to 5.0.0 (#247) ([ef2023f](https://github.com/readmeio/api/commit/ef2023f)), closes [#247](https://github.com/readmeio/api/issues/247)
+* chore(deps-dev): bump @readme/eslint-config from 5.0.0 to 5.0.3 (#258) ([440801e](https://github.com/readmeio/api/commit/440801e)), closes [#258](https://github.com/readmeio/api/issues/258)
+* chore(deps-dev): bump eslint from 7.19.0 to 7.21.0 (#242) ([6875828](https://github.com/readmeio/api/commit/6875828)), closes [#242](https://github.com/readmeio/api/issues/242)
+* chore(deps-dev): bump eslint from 7.21.0 to 7.22.0 (#255) ([1e48edc](https://github.com/readmeio/api/commit/1e48edc)), closes [#255](https://github.com/readmeio/api/issues/255)
+* chore(deps-dev): bump nock from 13.0.7 to 13.0.9 (#251) ([f0bbc06](https://github.com/readmeio/api/commit/f0bbc06)), closes [#251](https://github.com/readmeio/api/issues/251)
+* chore(deps-dev): bump nock from 13.0.9 to 13.0.11 (#260) ([fc8427f](https://github.com/readmeio/api/commit/fc8427f)), closes [#260](https://github.com/readmeio/api/issues/260)
+* chore(deps): bump @apidevtools/swagger-parser from 10.0.1 to 10.0.2 (#245) ([84b95a2](https://github.com/readmeio/api/commit/84b95a2)), closes [#245](https://github.com/readmeio/api/issues/245)
+* chore(deps): bump @readme/httpsnippet from 2.4.1 to 2.4.3 (#249) ([494bbcd](https://github.com/readmeio/api/commit/494bbcd)), closes [#249](https://github.com/readmeio/api/issues/249)
+* chore(deps): bump @readme/oas-to-har from 11.1.2 to 12.2.1 (#246) ([57625d0](https://github.com/readmeio/api/commit/57625d0)), closes [#246](https://github.com/readmeio/api/issues/246)
+* chore(deps): bump actions/setup-node from v2.1.4 to v2.1.5 (#241) ([0498476](https://github.com/readmeio/api/commit/0498476)), closes [#241](https://github.com/readmeio/api/issues/241)
+* chore(deps): bump form-data from 2.3.3 to 4.0.0 (#259) ([f9910da](https://github.com/readmeio/api/commit/f9910da)), closes [#259](https://github.com/readmeio/api/issues/259)
+* chore(deps): bump form-data from 3.0.0 to 4.0.0 (#244) ([47792bc](https://github.com/readmeio/api/commit/47792bc)), closes [#244](https://github.com/readmeio/api/issues/244)
+* chore(deps): bump get-stream from 4.1.0 to 6.0.0 (#261) ([588fff7](https://github.com/readmeio/api/commit/588fff7)), closes [#261](https://github.com/readmeio/api/issues/261)
+* chore(deps): bump make-dir from 1.3.0 to 3.1.0 (#256) ([ceec5c1](https://github.com/readmeio/api/commit/ceec5c1)), closes [#256](https://github.com/readmeio/api/issues/256)
+* chore(deps): bump node-fetch from 2.6.0 to 2.6.1 (#254) ([aed83e4](https://github.com/readmeio/api/commit/aed83e4)), closes [#254](https://github.com/readmeio/api/issues/254)
+* chore(deps): bump oas from 10.0.1 to 10.2.0 (#243) ([e5934cc](https://github.com/readmeio/api/commit/e5934cc)), closes [#243](https://github.com/readmeio/api/issues/243)
+* chore(deps): bump oas from 10.3.0 to 10.4.0 (#262) ([c7280d3](https://github.com/readmeio/api/commit/c7280d3)), closes [#262](https://github.com/readmeio/api/issues/262)
+* ci: trying to fix codeql failures (#263) ([e3dd56b](https://github.com/readmeio/api/commit/e3dd56b)), closes [#263](https://github.com/readmeio/api/issues/263)
+* feat: automatically parse the api response based on content-type  (#240) ([ae50813](https://github.com/readmeio/api/commit/ae50813)), closes [#240](https://github.com/readmeio/api/issues/240) [/github.com/tschaub/mock-fs/issues/234#issuecomment-653529125](https://github.com//github.com/tschaub/mock-fs/issues/234/issues/issuecomment-653529125) [/github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/src/lib/parse-response.js#L13-L30](https://github.com//github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/src/lib/parse-response.js/issues/L13-L30) [/github.com/readmeio/api/pull/240#discussion_r569829932](https://github.com//github.com/readmeio/api/pull/240/issues/discussion_r569829932)
+* refactor: switch to using memfs instead of mock-fs (#239) ([6cb517f](https://github.com/readmeio/api/commit/6cb517f)), closes [#239](https://github.com/readmeio/api/issues/239) [/github.com/tschaub/mock-fs/issues/234#issuecomment-653529125](https://github.com//github.com/tschaub/mock-fs/issues/234/issues/issuecomment-653529125)
+
+
+### BREAKING CHANGE
+
+* this is a breaking change.
+
+* chore: relax commitlint rules on body and footer length
+
+Taken from main codebase
+
+* feat: remove res.json() line from the httpsnippet client
+
+* fix: always output `.then(res => console.log(res))` in code sample
+
+Since we dont know if the response is json or not, we can't make
+assumptions. In an ideal world we'd conditionally do this based
+on the accept header in the response, but Operation.getHeaders() only
+returns with an array of headers and not their actual values. I think
+this is good enough for now!
+
+
 ## <small>2.7.1 (2021-02-02)</small>
 
 * chore(deps): upgrading `@readme/httpsnippet` to the latest release ([9164024](https://github.com/readmeio/api/commit/9164024))
