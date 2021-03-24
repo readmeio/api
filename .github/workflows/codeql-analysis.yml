@@ -2,7 +2,7 @@ name: CodeQL
 
 on:
   push:
-  pull_request:
+  pull_request_target:
   schedule:
     - cron: '0 12 * * 1'
 
