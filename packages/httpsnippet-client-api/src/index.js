@@ -245,8 +245,7 @@ module.exports = function (source, options) {
 
   code
     .push(`sdk${accessor}(${args.join(', ')})`)
-    .push(1, '.then(res => res.json())')
-    .push(1, '.then(json => console.log(json))')
+    .push(1, '.then(res => console.log(res))')
     .push(1, '.catch(err => console.error(err));');
 
   return code.join();

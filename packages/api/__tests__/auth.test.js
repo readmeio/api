@@ -42,17 +42,11 @@ describe('#auth()', () => {
           return sdk
             .auth(apiKey)
             .getSomething()
-            .then(res => {
-              expect(res.status).toBe(200);
-              mock.done();
-            });
+            .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(res => {
-          expect(res.status).toBe(200);
-          mock.done();
-        });
+        return sdk.getSomething().then(() => mock.done());
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -89,17 +83,11 @@ describe('#auth()', () => {
           return sdk
             .auth(apiKey)
             .getSomething()
-            .then(res => {
-              expect(res.status).toBe(200);
-              mock.done();
-            });
+            .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(res => {
-          expect(res.status).toBe(200);
-          mock.done();
-        });
+        return sdk.getSomething().then(() => mock.done());
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -135,21 +123,21 @@ describe('#auth()', () => {
           reqheaders: { authorization: `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}` },
         })
           .get('/')
-          .reply(200, {});
+          .reply(200, { id: 1 });
 
         if (chained) {
           return sdk
             .auth(user, pass)
             .getSomething()
             .then(res => {
-              expect(res.status).toBe(200);
+              expect(res.id).toBe(1);
               mock.done();
             });
         }
 
         sdk.auth(user, pass);
         return sdk.getSomething().then(res => {
-          expect(res.status).toBe(200);
+          expect(res.id).toBe(1);
           mock.done();
         });
       });
@@ -165,10 +153,7 @@ describe('#auth()', () => {
         return sdk
           .auth(user)
           .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+          .then(() => mock.done());
       });
     });
 
@@ -199,17 +184,11 @@ describe('#auth()', () => {
           return sdk
             .auth(apiKey)
             .getSomething()
-            .then(res => {
-              expect(res.status).toBe(200);
-              mock.done();
-            });
+            .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(res => {
-          expect(res.status).toBe(200);
-          mock.done();
-        });
+        return sdk.getSomething().then(() => mock.done());
       });
 
       it('should throw if you pass in multiple bearer tokens', () => {
@@ -246,17 +225,11 @@ describe('#auth()', () => {
         return sdk
           .auth(apiKey)
           .getSomething()
-          .then(res => {
-            expect(res.status).toBe(200);
-            mock.done();
-          });
+          .then(() => mock.done());
       }
 
       sdk.auth(apiKey);
-      return sdk.getSomething().then(res => {
-        expect(res.status).toBe(200);
-        mock.done();
-      });
+      return sdk.getSomething().then(() => mock.done());
     });
 
     it('should throw if you pass in multiple bearer tokens', () => {

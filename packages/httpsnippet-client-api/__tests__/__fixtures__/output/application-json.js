@@ -8,6 +8,5 @@ sdk.post('/har', {
   arr_mix: [1, 'a', {arr_mix_nested: {}}],
   boolean: false
 })
-  .then(res => res.json())
-  .then(json => console.log(json))
+  .then(res => console.log(res))
   .catch(err => console.error(err));

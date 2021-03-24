@@ -5,8 +5,7 @@ exports[`auth handling basic should be able to handle basic auth that's just a p
 sdk.auth('', 'pug')
 
 sdk.getAPISpecification({perPage: '10', page: '1'})
-  .then(res => res.json())
-  .then(json => console.log(json))
+  .then(res => console.log(res))
   .catch(err => console.error(err));"
 `;
 
@@ -15,8 +14,7 @@ exports[`auth handling basic should be able to handle basic auth that's just a u
 sdk.auth('buster')
 
 sdk.getAPISpecification({perPage: '10', page: '1'})
-  .then(res => res.json())
-  .then(json => console.log(json))
+  .then(res => console.log(res))
   .catch(err => console.error(err));"
 `;
 
@@ -25,7 +23,6 @@ exports[`auth handling basic should not encode basic auth in the \`.auth()\` cal
 sdk.auth('buster', 'pug')
 
 sdk.getAPISpecification({perPage: '10', page: '1'})
-  .then(res => res.json())
-  .then(json => console.log(json))
+  .then(res => console.log(res))
   .catch(err => console.error(err));"
 `;
