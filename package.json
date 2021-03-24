@@ -23,7 +23,7 @@
     "@commitlint/config-conventional": "^12.0.1",
     "conventional-changelog-cli": "^2.0.34",
     "husky": "^4.2.5",
-    "lerna": "^3.22.0"
+    "lerna": "^4.0.0"
   },
   "husky": {
     "hooks": {
