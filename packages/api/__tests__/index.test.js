@@ -62,7 +62,7 @@ describe('#preloading', () => {
 
     // SDK should still not be loaded since we haven't officially called it yet.
     expect(new Cache(uspto).isCached()).toBe(false);
-    expect(Object.keys(sdk)).toStrictEqual(['auth']);
+    expect(Object.keys(sdk)).toStrictEqual(['auth', 'config']);
 
     await sdk.get('/').then(() => {
       mock.done();
@@ -72,6 +72,7 @@ describe('#preloading', () => {
     expect(new Cache(uspto).isCached()).toBe(true);
     expect(Object.keys(sdk)).toStrictEqual([
       'auth',
+      'config',
       'get',
       'put',
       'post',
