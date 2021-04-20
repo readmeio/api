@@ -229,12 +229,15 @@ module.exports = function (source, options) {
     accessor = `.${accessor}`;
   }
 
+  // If we're going to be rendering out body params and metadata we should cut their character limit in half because
+  // we'll be rendering them in their own lines.
+  const inlineCharacterLimit = typeof body !== 'undefined' && Object.keys(metadata).length > 0 ? 40 : 80;
   if (typeof body !== 'undefined') {
-    args.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit: 80 }));
+    args.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit }));
   }
 
   if (Object.keys(metadata).length > 0) {
-    args.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit: 80 }));
+    args.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit }));
   }
 
   if (authData.length) {
