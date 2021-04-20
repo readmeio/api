@@ -13,7 +13,7 @@
     "url": "https://github.com/readmeio/api.git"
   },
   "engines": {
-    "node": "^12 || ^14"
+    "node": "^12 || ^14 || ^16"
   },
   "workspaces": [
     "./packages/*"
