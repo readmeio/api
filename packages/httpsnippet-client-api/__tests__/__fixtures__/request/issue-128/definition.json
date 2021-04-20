@@ -1,38 +1,38 @@
 {
-   "openapi": "3.0.0",
-   "info": {
-     "version": "1.0.0",
-     "title": "issue-128"
-   },
-   "servers": [
-     {
-       "url": "http://example.com"
-     }
-   ],
-   "paths": {
-     "/": {
-       "get": {
-         "operationId": "getItem",
-         "responses": {
-           "200": {
-             "description": "OK"
-           }
-         },
-         "security": [
-           {
-             "api_key": []
-           }
-         ]
-       }
-     }
-   },
-   "components": {
-     "securitySchemes": {
-       "api_key": {
-         "type": "apiKey",
-         "name": "api_key",
-         "in": "query"
-       }
-     }
-   }
- }
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "issue-128"
+  },
+  "servers": [
+    {
+      "url": "http://example.com"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "getItem",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "query"
+      }
+    }
+  }
+}

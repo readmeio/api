@@ -1,45 +1,45 @@
 {
-   "openapi": "3.0.0",
-   "info": {
-     "version": "1.0.0",
-     "title": "issue-78"
-   },
-   "servers": [
-     {
-       "url": "http://petstore.swagger.io/v2"
-     }
-   ],
-   "paths": {
-     "/store/order/{orderId}/tracking/{trackingId}": {
-       "get": {
-         "parameters": [
-           {
-             "name": "orderId",
-             "in": "path",
-             "required": true,
-             "schema": {
-               "type": "integer",
-               "format": "int64",
-               "minimum": 1,
-               "maximum": 10
-             }
-           },
-           {
-             "name": "trackingId",
-             "in": "path",
-             "required": true,
-             "schema": {
-               "type": "integer",
-               "format": "int64"
-             }
-           }
-         ],
-         "responses": {
-           "200": {
-             "description": "OK"
-           }
-         }
-       }
-     }
-   }
- }
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "issue-78"
+  },
+  "servers": [
+    {
+      "url": "http://petstore.swagger.io/v2"
+    }
+  ],
+  "paths": {
+    "/store/order/{orderId}/tracking/{trackingId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "minimum": 1,
+              "maximum": 10
+            }
+          },
+          {
+            "name": "trackingId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

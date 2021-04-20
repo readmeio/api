@@ -47,10 +47,22 @@
                 "properties": {
                   "foo": {
                     "type": "string"
+                  },
+                  "foo2": {
+                    "type": "string"
+                  },
+                  "foo3": {
+                    "type": "string"
+                  },
+                  "foo4": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "foo"
+                  "foo",
+                  "foo2",
+                  "foo3",
+                  "foo4"
                 ]
               }
             }

@@ -113,6 +113,7 @@ describe('snippets', () => {
     ['application-json'],
     // ['cookies'], // Cookies test needs to get built out.
     ['full'],
+    ['full-many-query-params'],
     ['headers'],
     ['https'],
     ['issue-76'],
