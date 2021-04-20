@@ -1,3 +1,14 @@
+## <small>3.0.1 (2021-04-20)</small>
+
+* ci: allowing node 16 installs and builds (#271) ([e36fab1](https://github.com/readmeio/api/commit/e36fab1)), closes [#271](https://github.com/readmeio/api/issues/271)
+* chore(deps-dev): bump eslint from 7.22.0 to 7.23.0 (#266) ([54c2fc2](https://github.com/readmeio/api/commit/54c2fc2)), closes [#266](https://github.com/readmeio/api/issues/266)
+* chore(deps-dev): bump memfs from 3.2.0 to 3.2.1 (#268) ([d6905cd](https://github.com/readmeio/api/commit/d6905cd)), closes [#268](https://github.com/readmeio/api/issues/268)
+* chore(deps): bump @readme/oas-to-har from 13.0.0 to 13.2.0 (#265) ([21bc2f7](https://github.com/readmeio/api/commit/21bc2f7)), closes [#265](https://github.com/readmeio/api/issues/265)
+* chore(deps): bump oas from 10.4.0 to 10.4.1 (#267) ([855d931](https://github.com/readmeio/api/commit/855d931)), closes [#267](https://github.com/readmeio/api/issues/267)
+* feat: cleaner snippets when body and metadata are present (#269) ([4869caf](https://github.com/readmeio/api/commit/4869caf)), closes [#269](https://github.com/readmeio/api/issues/269)
+
+
+
 ## 3.0.0 (2021-03-24)
 
 * chore: update deps and require npm@7 (#253) ([efa2705](https://github.com/readmeio/api/commit/efa2705)), closes [#253](https://github.com/readmeio/api/issues/253)
