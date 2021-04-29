@@ -89,7 +89,9 @@ module.exports = function (source, options) {
   const operation = oas.getOperation(source.url, method);
 
   if (!operation) {
-    throw new Error(`Unable to locate a matching operation in the supplied apiDefinition for ${method} {${source.url}`);
+    throw new Error(
+      `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${source.url}`
+    );
   }
 
   // For cases where a server URL in the OAS has a path attached to it, we don't want to include that path with the
