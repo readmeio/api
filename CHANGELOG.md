@@ -1,3 +1,10 @@
+## <small>3.0.2 (2021-05-04)</small>
+
+* chore(deps): upgrading oas (#283) ([34655cb](https://github.com/readmeio/api/commit/34655cb)), closes [#283](https://github.com/readmeio/api/issues/283)
+* fix: cleaning up a typo in an error message in httpsnippet-client-api ([341494f](https://github.com/readmeio/api/commit/341494f))
+
+
+
 ## <small>3.0.1 (2021-04-20)</small>
 
 * ci: allowing node 16 installs and builds (#271) ([e36fab1](https://github.com/readmeio/api/commit/e36fab1)), closes [#271](https://github.com/readmeio/api/issues/271)
