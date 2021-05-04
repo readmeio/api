@@ -164,10 +164,10 @@ describe('#fetch', () => {
     const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(404, response);
 
     return petstoreSdk.deletePet({ id: petId }).catch(async err => {
-      expect(err.status).toBe(404);
+      expect(err.status).toBe(404); // eslint-disable-line jest/no-conditional-expect
 
       const json = await err.json();
-      expect(json).toStrictEqual(response);
+      expect(json).toStrictEqual(response); // eslint-disable-line jest/no-conditional-expect
       mock.done();
     });
   });
