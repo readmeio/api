@@ -1,3 +1,16 @@
+## <small>3.0.3 (2021-05-07)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 12.0.1 to 12.1.1 (#276) ([d675432](https://github.com/readmeio/api/commit/d675432)), closes [#276](https://github.com/readmeio/api/issues/276)
+* chore(deps-dev): bump @commitlint/config-conventional (#275) ([42a507b](https://github.com/readmeio/api/commit/42a507b)), closes [#275](https://github.com/readmeio/api/issues/275)
+* chore(deps-dev): bump @readme/eslint-config from 5.0.3 to 5.0.5 (#282) ([b2d159c](https://github.com/readmeio/api/commit/b2d159c)), closes [#282](https://github.com/readmeio/api/issues/282)
+* chore(deps-dev): bump eslint from 7.23.0 to 7.25.0 (#280) ([94ca270](https://github.com/readmeio/api/commit/94ca270)), closes [#280](https://github.com/readmeio/api/issues/280)
+* chore(deps-dev): bump memfs from 3.2.1 to 3.2.2 (#273) ([8d50610](https://github.com/readmeio/api/commit/8d50610)), closes [#273](https://github.com/readmeio/api/issues/273)
+* chore(deps): bump @readme/oas-to-har from 13.2.0 to 13.2.4 (#278) ([cc097e0](https://github.com/readmeio/api/commit/cc097e0)), closes [#278](https://github.com/readmeio/api/issues/278)
+* chore(deps): bump get-stream from 6.0.0 to 6.0.1 (#279) ([1dea6cc](https://github.com/readmeio/api/commit/1dea6cc)), closes [#279](https://github.com/readmeio/api/issues/279)
+* chore(deps): upgrading oas ([f6369c6](https://github.com/readmeio/api/commit/f6369c6))
+
+
+
 ## <small>3.0.2 (2021-05-04)</small>
 
 * chore(deps): upgrading oas (#283) ([34655cb](https://github.com/readmeio/api/commit/34655cb)), closes [#283](https://github.com/readmeio/api/issues/283)
