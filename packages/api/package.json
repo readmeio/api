@@ -25,7 +25,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^13.0.0",
+    "@readme/oas-to-har": "^13.4.5",
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
@@ -35,7 +35,7 @@
     "make-dir": "^3.1.0",
     "mimer": "^1.1.0",
     "node-fetch": "^2.6.0",
-    "oas": "^10.7.4"
+    "oas": "^11.0.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.0",

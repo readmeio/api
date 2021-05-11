@@ -130,7 +130,6 @@ describe('#auth()', () => {
             .auth(user, pass)
             .getSomething()
             .then(res => {
-              // eslint-disable-next-line jest/no-conditional-expect
               expect(res.id).toBe(1);
               mock.done();
             });
