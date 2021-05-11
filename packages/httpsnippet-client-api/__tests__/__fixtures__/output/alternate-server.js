@@ -1,6 +1,7 @@
 const sdk = require('api')('https://example.com/openapi.json');
 
-sdk.auth('a5a220e');
-sdk.get('/pet/findByStatus', {status: 'available', Accept: 'application/xml'})
+sdk.auth('123');
+sdk.config({server: 'http://dev.local/v2'});
+sdk.create({foo: 'bar', hello: 'world'}, {id: '1234'})
   .then(res => console.log(res))
   .catch(err => console.error(err));

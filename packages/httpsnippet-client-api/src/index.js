@@ -4,6 +4,10 @@ const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
 const Oas = require('oas/tooling');
 
+function stringify(obj, opts = {}) {
+  return stringifyObject(obj, { indent: '  ', ...opts });
+}
+
 function buildAuthSnippet(authKey) {
   // Auth key will be an array for Basic auth cases.
   if (Array.isArray(authKey)) {
@@ -86,24 +90,43 @@ module.exports = function (source, options) {
 
   const method = source.method.toLowerCase();
   const oas = new Oas(opts.apiDefinition);
-  const operation = oas.getOperation(source.url, method);
-
-  if (!operation) {
+  const foundOperation = oas.findOperation(source.url, method);
+  if (!foundOperation) {
     throw new Error(
       `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${source.url}`
     );
   }
 
-  // For cases where a server URL in the OAS has a path attached to it, we don't want to include that path with the
-  // operation path.
-  const path = source.url.replace(oas.url(), '');
-
+  const operationSlugs = foundOperation.url.slugs;
+  const operation = oas.operation(foundOperation.url.nonNormalizedPath, method);
+  const path = operation.path;
   const authData = [];
   const authSources = getAuthSources(operation);
 
   const code = new CodeBuilder(opts.indent);
 
   code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
+  code.blank();
+
+  // If we have multiple servers configured and our source URL differs from the stock URL that we receive from our
+  // `oas` library then the URL either has server variables contained in it (that don't match the defaults), or the
+  // OAS offers alternate server URLs and we should expose that in the generated snippet.
+  const configData = [];
+  if ((oas.servers || []).length > 1) {
+    const stockUrl = oas.url();
+    const baseUrl = source.url.replace(path, '');
+    if (baseUrl !== stockUrl) {
+      const config = {};
+      const serverVars = oas.splitVariables(baseUrl);
+      if (serverVars) {
+        config.server = oas.url(serverVars.selected, serverVars.variables);
+      } else {
+        config.server = baseUrl;
+      }
+
+      configData.push(`sdk.config(${stringify(config, { inlineCharacterLimit: 40 })});`);
+    }
+  }
 
   let metadata = {};
   if (Object.keys(source.queryObj).length) {
@@ -123,10 +146,14 @@ module.exports = function (source, options) {
   // If we have path parameters present, we should only add them in if we have an operationId as we don't want metadata
   // to duplicate what we'll be setting the path in the snippet to.
   if ('operationId' in operation.schema) {
-    const pathParams = getParamsInPath(operation, path);
+    const pathParams = getParamsInPath(operation, operation.path);
     if (Object.keys(pathParams).length) {
       Object.keys(pathParams).forEach(param => {
-        metadata[param] = pathParams[param];
+        if (`:${param}` in operationSlugs) {
+          metadata[param] = operationSlugs[`:${param}`];
+        } else {
+          metadata[param] = pathParams[param];
+        }
       });
     }
   }
@@ -220,7 +247,13 @@ module.exports = function (source, options) {
   if ('operationId' in operation.schema && operation.schema.operationId.length > 0) {
     accessor = operation.schema.operationId;
   } else {
-    args.push(`'${decodeURIComponent(path)}'`);
+    // Since we're not using an operationId as our primary accessor we need to take the current operation that we're
+    // working with and transpile back our path parameters on top of it.
+    const slugs = Object.fromEntries(
+      Object.keys(operationSlugs).map(slug => [slug.replace(/:(.*)/, '$1'), operationSlugs[slug]])
+    );
+
+    args.push(`'${decodeURIComponent(oas.replaceUrl(path, slugs))}'`);
   }
 
   // If the operation or method accessor is non-alphanumeric, we need to add it to the SDK object as an array key.
@@ -235,18 +268,20 @@ module.exports = function (source, options) {
   // we'll be rendering them in their own lines.
   const inlineCharacterLimit = typeof body !== 'undefined' && Object.keys(metadata).length > 0 ? 40 : 80;
   if (typeof body !== 'undefined') {
-    args.push(stringifyObject(body, { indent: '  ', inlineCharacterLimit }));
+    args.push(stringify(body, { inlineCharacterLimit }));
   }
 
   if (Object.keys(metadata).length > 0) {
-    args.push(stringifyObject(metadata, { indent: '  ', inlineCharacterLimit }));
+    args.push(stringify(metadata, { inlineCharacterLimit }));
   }
 
   if (authData.length) {
     code.push(authData.join('\n'));
   }
 
-  code.blank();
+  if (configData.length) {
+    code.push(configData.join('\n'));
+  }
 
   code
     .push(`sdk${accessor}(${args.join(', ')})`)
