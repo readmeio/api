@@ -32,6 +32,7 @@ class Sdk {
     const authKeys = [];
     const cache = new Cache(this.uri);
     const self = this;
+    let config = { parseResponse: true };
 
     let isLoaded = false;
     let isCached = cache.isCached();
@@ -47,6 +48,8 @@ class Sdk {
           if (res.status >= 400 && res.status <= 599) {
             throw res;
           }
+
+          if (config.parseResponse === false) return res;
 
           return parseResponse(res);
         });
@@ -104,7 +107,7 @@ class Sdk {
         // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
         // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
         // chaining `sdk.auth().operationId()` will fail.
-        if (method === 'auth') {
+        if (['auth', 'config'].includes(method)) {
           return function (...args) {
             return target[method].apply(this, args);
           };
@@ -136,6 +139,10 @@ class Sdk {
     sdk = {
       auth: (...values) => {
         authKeys.push(values);
+        return new Proxy(sdk, sdkProxy);
+      },
+      config: opts => {
+        config = opts;
         return new Proxy(sdk, sdkProxy);
       },
     };

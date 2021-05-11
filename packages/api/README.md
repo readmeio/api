@@ -24,7 +24,7 @@ Using `api` is as simple as supplying it an OpenAPI and using the SDK as you wou
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/json/petstore.json');
 
-sdk.listPets().then(res => res.json()).then(res => {
+sdk.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
@@ -88,6 +88,21 @@ You can also give it a stream and it'll handle all of the hard work for you.
 sdk.uploadFile({ file: fs.createReadStream('/path/to/a/file.txt') }).then(...)
 ```
 
+### Responses
+Since we know the `Content-Type` of the returned response, we automatically parse it for you before returning it. So no more superfluous `.then(res => res.json())` calls. If your API returned with JSON, we'll give you the parsed JSON.
+
+If you need access to the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object you can disable our automatic parsing using `.config()` like so:
+
+```js
+sdk.config({ parseResponse: false });
+
+sdk.createPets({ name: 'Buster' })
+  .then(res => {
+    // `res` will be a Response object
+    // so you can access status and headers
+  })
+```
+
 ### HTTP requests
 If the API you're using doesn't have any documented operation IDs, you can make requests with HTTP verbs instead:
 
@@ -134,4 +149,11 @@ Not yet! The URL that you give the module must be publicy accessible. If it isn'
 
 ```js
 const sdk = require('api')('/path/to/downloaded.json');
+```
+
+#### How do I access the Response object (for status and headers)?
+By default we parse the response based on the `content-type` header for you. You can disable this by doing the following:
+
+```js
+sdk.config({ parseResponse: false });
 ```
