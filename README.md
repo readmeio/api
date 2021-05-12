@@ -9,6 +9,7 @@ Automatic SDK generation from an OpenAPI definition.
     * [Authentication](#authentication)
     * [Parameters and Payloads](#parameters-and-payloads)
     * [HTTP requests](#http-requests)
+    * [Server configurations](#server-configurations)
 * [How does it work?](#how-does-it-work)
 * [Interested in contributing?](#interested-in-contributing)
 * [FAQ](#faq)
