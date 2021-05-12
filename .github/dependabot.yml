@@ -24,7 +24,3 @@ updates:
     commit-message:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
-    ignore:
-      - dependency-name: husky
-        versions:
-          - ">= 5"
