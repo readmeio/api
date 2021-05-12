@@ -5,7 +5,7 @@ const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
 const Cache = require('./cache');
-const { prepareAuth, prepareParams, parseResponse } = require('./lib/index');
+const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib/index');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -42,7 +42,18 @@ class Sdk {
       return new Promise(resolve => {
         resolve(prepareParams(operation, body, metadata));
       }).then(params => {
-        const har = oasToHar(spec, operation, params, prepareAuth(authKeys, operation));
+        const data = { ...params };
+
+        // If `server` has been passed into the `config` method then we need to do some extra work to figure out how to
+        // use that supplied server, and also handle any server variables that were supplied alongside it.
+        if (config.server) {
+          const server = prepareServer(config, spec);
+          if (server) {
+            data.server = server;
+          }
+        }
+
+        const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
         return fetchHar(har, self.userAgent).then(res => {
           if (res.status >= 400 && res.status <= 599) {
