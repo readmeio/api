@@ -1,7 +1,7 @@
 const nock = require('nock');
 const api = require('../src');
 
-const securityOas = require('./__fixtures__/security.oas.json');
+const securityOas = require('@readme/oas-examples/3.0/json/security.json');
 
 describe('#auth()', () => {
   describe('API Keys', () => {
