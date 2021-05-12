@@ -10,9 +10,6 @@ const realFs = jest.requireActual('fs').promises;
 // eslint-disable-next-line global-require
 jest.mock('fs', () => require('memfs').fs);
 
-const serverUrl = 'https://api.example.com';
-const createOas = require('./__fixtures__/createOas')(serverUrl);
-
 const examplesDir = path.join(__dirname, 'examples');
 
 let petstoreSdk;
@@ -93,7 +90,7 @@ describe('#preloading', () => {
   });
 
   it('should support supplying a raw JSON OAS object', () => {
-    const sdk = api(createOas());
+    const sdk = api(uspto);
     expect(typeof sdk.get).toBe('function');
   });
 });

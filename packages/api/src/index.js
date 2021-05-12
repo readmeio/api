@@ -142,6 +142,8 @@ class Sdk {
         return new Proxy(sdk, sdkProxy);
       },
       config: opts => {
+        // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
+        // current config to the default, so having `opts` assigned directly to the existing config should be okay.
         config = opts;
         return new Proxy(sdk, sdkProxy);
       },

@@ -1,99 +1,63 @@
 const nock = require('nock');
 const api = require('../src');
 
-const serverUrl = 'https://api.example.com';
-const createOas = require('./__fixtures__/createOas')(serverUrl);
+const securityOas = require('./__fixtures__/security.oas.json');
 
 describe('#auth()', () => {
-  const baseSecurityOas = createOas('get', '/', {
-    operationId: 'getSomething',
-    security: [
-      {
-        auth: [],
-      },
-    ],
-  });
-
   describe('API Keys', () => {
     const apiKey = '123457890';
 
     describe('in: query', () => {
-      const securityOas = {
-        ...baseSecurityOas,
-        components: {
-          securitySchemes: {
-            auth: {
-              type: 'apiKey',
-              name: 'apiKeyParam',
-              in: 'query',
-            },
-          },
-        },
-      };
-
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
-        const mock = nock(serverUrl).get('/').query({ apiKeyParam: apiKey }).reply(200, {});
+        const mock = nock('https://httpbin.org').get('/apiKey').query({ apiKey }).reply(200, {});
 
         if (chained) {
           return sdk
             .auth(apiKey)
-            .getSomething()
+            .get('/apiKey')
             .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(() => mock.done());
+        return sdk.get('/apiKey').then(() => mock.done());
       });
 
       it('should throw if you supply multiple auth keys', () => {
         const sdk = api(securityOas);
 
-        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single key is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).get('/apiKey')).rejects.toThrow(/only a single key is needed/i);
       });
     });
 
     describe('in: header', () => {
-      const securityOas = {
-        ...baseSecurityOas,
-        components: {
-          securitySchemes: {
-            auth: {
-              type: 'apiKey',
-              name: 'apiKeyHeader',
-              in: 'header',
-            },
-          },
-        },
-      };
-
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
-        const mock = nock(serverUrl, { reqheaders: { apiKeyHeader: apiKey } })
-          .get('/')
+        const mock = nock('https://httpbin.org', { reqheaders: { 'X-API-KEY': apiKey } })
+          .put('/apiKey')
           .reply(200, {});
 
         if (chained) {
           return sdk
             .auth(apiKey)
-            .getSomething()
+            .put('/apiKey')
             .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(() => mock.done());
+        return sdk.put('/apiKey').then(() => mock.done());
       });
 
       it('should throw if you supply multiple auth keys', () => {
         const sdk = api(securityOas);
 
-        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single key is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).put('/apiKey')).rejects.toThrow(/only a single key is needed/i);
       });
     });
   });
@@ -102,33 +66,22 @@ describe('#auth()', () => {
     describe('scheme: basic', () => {
       const user = 'username';
       const pass = 'changeme';
-      const securityOas = {
-        ...baseSecurityOas,
-        components: {
-          securitySchemes: {
-            auth: {
-              type: 'http',
-              scheme: 'basic',
-            },
-          },
-        },
-      };
 
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
-        const mock = nock(serverUrl, {
+        const mock = nock('https://httpbin.org', {
           reqheaders: { authorization: `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}` },
         })
-          .get('/')
+          .post('/basic')
           .reply(200, { id: 1 });
 
         if (chained) {
           return sdk
             .auth(user, pass)
-            .getSomething()
+            .post('/basic')
             .then(res => {
               // eslint-disable-next-line jest/no-conditional-expect
               expect(res.id).toBe(1);
@@ -137,7 +90,7 @@ describe('#auth()', () => {
         }
 
         sdk.auth(user, pass);
-        return sdk.getSomething().then(res => {
+        return sdk.post('/basic').then(res => {
           expect(res.id).toBe(1);
           mock.done();
         });
@@ -145,98 +98,77 @@ describe('#auth()', () => {
 
       it('should allow you to not pass in a password', () => {
         const sdk = api(securityOas);
-        const mock = nock(serverUrl, {
+        const mock = nock('https://httpbin.org', {
           reqheaders: { authorization: `Basic ${Buffer.from(`${user}:`).toString('base64')}` },
         })
-          .get('/')
+          .post('/basic')
           .reply(200, {});
 
         return sdk
           .auth(user)
-          .getSomething()
+          .post('/basic')
           .then(() => mock.done());
       });
     });
 
     describe('scheme: bearer', () => {
       const apiKey = '123457890';
-      const securityOas = {
-        ...baseSecurityOas,
-        components: {
-          securitySchemes: {
-            auth: {
-              type: 'http',
-              scheme: 'bearer',
-            },
-          },
-        },
-      };
 
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', (testCase, chained) => {
         const sdk = api(securityOas);
-        const mock = nock(serverUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
-          .get('/')
+        const mock = nock('https://httpbin.org', { reqheaders: { authorization: `Bearer ${apiKey}` } })
+          .post('/bearer')
           .reply(200, {});
 
         if (chained) {
           return sdk
             .auth(apiKey)
-            .getSomething()
+            .post('/bearer')
             .then(() => mock.done());
         }
 
         sdk.auth(apiKey);
-        return sdk.getSomething().then(() => mock.done());
+        return sdk.post('/bearer').then(() => mock.done());
       });
 
       it('should throw if you pass in multiple bearer tokens', () => {
         const sdk = api(securityOas);
 
-        return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single token is needed/i);
+        return expect(sdk.auth(apiKey, apiKey).post('/bearer')).rejects.toThrow(/only a single token is needed/i);
       });
     });
   });
 
   describe('OAuth 2', () => {
     const apiKey = '123457890';
-    const securityOas = {
-      ...baseSecurityOas,
-      components: {
-        securitySchemes: {
-          auth: {
-            type: 'oauth2',
-          },
-        },
-      },
-    };
 
     it.each([
       ['should allow you to supply auth', false],
       ['should allow you to supply auth when unchained from an operation', true],
     ])('%s', (testCase, chained) => {
       const sdk = api(securityOas);
-      const mock = nock(serverUrl, { reqheaders: { authorization: `Bearer ${apiKey}` } })
-        .get('/')
+      const mock = nock('https://httpbin.org', { reqheaders: { authorization: `Bearer ${apiKey}` } })
+        .post('/oauth2')
         .reply(200, {});
 
       if (chained) {
         return sdk
           .auth(apiKey)
-          .getSomething()
+          .post('/oauth2')
           .then(() => mock.done());
       }
 
       sdk.auth(apiKey);
-      return sdk.getSomething().then(() => mock.done());
+      return sdk.post('/oauth2').then(() => mock.done());
     });
 
     it('should throw if you pass in multiple bearer tokens', () => {
       const sdk = api(securityOas);
 
-      return expect(sdk.auth(apiKey, apiKey).getSomething()).rejects.toThrow(/only a single token is needed/i);
+      return expect(sdk.auth(apiKey, apiKey).post('/oauth2')).rejects.toThrow(/only a single token is needed/i);
     });
   });
 });

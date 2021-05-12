@@ -3,30 +3,9 @@ const Oas = require('oas/tooling');
 const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
 const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');
+const payloadExamples = require('../__fixtures__/payloads.oas.json');
 
-const serverUrl = 'https://api.example.com';
-const createOas = require('../__fixtures__/createOas')(serverUrl);
 const prepareParams = require('../../src/lib/prepareParams');
-
-const arraySchema = createOas('put', '/', {
-  requestBody: {
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              name: {
-                type: 'string',
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-});
 
 describe('#prepareParams', () => {
   let readmeSpec;
@@ -70,19 +49,7 @@ describe('#prepareParams', () => {
   });
 
   it('should prepare body if body is a primitive', async () => {
-    const schema = createOas('put', '/', {
-      requestBody: {
-        content: {
-          'text/plain': {
-            schema: {
-              type: 'string',
-            },
-          },
-        },
-      },
-    });
-
-    const operation = new Oas(schema).operation('/', 'put');
+    const operation = new Oas(payloadExamples).operation('/primitiveBody', 'put');
     const body = 'Brie cheeseburger ricotta.';
 
     expect(await prepareParams(operation, body, {})).toStrictEqual({
@@ -91,7 +58,7 @@ describe('#prepareParams', () => {
   });
 
   it('should prepare body if body is an array', async () => {
-    const operation = new Oas(arraySchema).operation('/', 'put');
+    const operation = new Oas(payloadExamples).operation('/arraySchema', 'put');
     const body = [
       {
         name: 'Buster',
@@ -181,7 +148,7 @@ describe('#prepareParams', () => {
     });
 
     it('should prepare just a body if supplied argument is an array', async () => {
-      const operation = new Oas(arraySchema).operation('/', 'put');
+      const operation = new Oas(payloadExamples).operation('/arraySchema', 'put');
       const body = [
         {
           name: 'Buster',

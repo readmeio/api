@@ -1,0 +1,240 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Support for different security types",
+    "description": "https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#securitySchemeObject"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/apiKey": {
+      "get": {
+        "summary": "`apiKey` auth supplied as query param",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_query": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "`apiKey` auth supplied in cookie",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_cookie": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "`apiKey` auth supplied in header",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKey_header": []
+          }
+        ]
+      }
+    },
+    "/basic": {
+      "post": {
+        "summary": "`basic` auth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "basic": []
+          }
+        ]
+      }
+    },
+    "/bearer": {
+      "post": {
+        "summary": "`bearer` auth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "`bearer` auth with a `jwt` format",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "bearer_jwt": []
+          }
+        ]
+      }
+    },
+    "/mutualTLS": {
+      "post": {
+        "summary": "`mutualTLS` auth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "mutualTLS": []
+          }
+        ]
+      }
+    },
+    "/oauth2": {
+      "post": {
+        "summary": "`oauth2` auth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "oauth2": ["write:things"]
+          }
+        ]
+      }
+    },
+    "/openIdConnect": {
+      "post": {
+        "summary": "`openIdConnect` auth",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "openIdConnect": []
+          }
+        ]
+      }
+    },
+    "/no-auth": {
+      "post": {
+        "summary": "No auth requirements",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/status/401": {
+      "post": {
+        "summary": "Auth required but all auth tokens will fail",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey_header": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey_cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "api_key",
+        "description": "An API key that will be supplied in a named cookie. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#security-scheme-object"
+      },
+      "apiKey_header": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY",
+        "description": "An API key that will be supplied in a named header. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#security-scheme-object"
+      },
+      "apiKey_query": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "An API key that will be supplied in a named query parameter. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#security-scheme-object"
+      },
+      "basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Basic auth that takes a base64'd combination of `user:password`. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#basic-authentication-sample"
+      },
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A bearer token that will be supplied within an `Authentication` header as `bearer <token>`. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#basic-authentication-sample"
+      },
+      "bearer_jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "A bearer token that will be supplied within an `Authentication` header as `bearer <token>`. In this case, the format of the token is specified as JWT. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#jwt-bearer-sample"
+      },
+      "mutualTLS": {
+        "type": "mutualTLS",
+        "description": "Requires a specific mutual TLS certificate to use when making a HTTP request. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#fixed-fields-23"
+      },
+      "oauth2": {
+        "type": "oauth2",
+        "description": "An OAuth 2 security flow. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#fixed-fields-23",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://example.com/oauth/dialog",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "oauth2_alternate": {
+        "type": "oauth2",
+        "description": "An alternate OAuth 2 security flow. Functions identially to the other `oauth2` scheme, just with alternate URLs to authenticate against. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#fixed-fields-23",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://alt.example.com/oauth/dialog",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      },
+      "openIdConnect": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "https://example.com/.well-known/openid-configuration",
+        "description": "OpenAPI authentication. https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.1.0.md#fixed-fields-23"
+      }
+    }
+  }
+}
