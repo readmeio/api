@@ -10,9 +10,6 @@ const realFs = jest.requireActual('fs').promises;
 // eslint-disable-next-line global-require
 jest.mock('fs', () => require('memfs').fs);
 
-const serverUrl = 'https://api.example.com';
-const createOas = require('./__fixtures__/createOas')(serverUrl);
-
 const examplesDir = path.join(__dirname, 'examples');
 
 let petstoreSdk;
@@ -62,7 +59,7 @@ describe('#preloading', () => {
 
     // SDK should still not be loaded since we haven't officially called it yet.
     expect(new Cache(uspto).isCached()).toBe(false);
-    expect(Object.keys(sdk)).toStrictEqual(['auth', 'config']);
+    expect(Object.keys(sdk)).toStrictEqual(['auth', 'config', 'server']);
 
     await sdk.get('/').then(() => {
       mock.done();
@@ -73,6 +70,7 @@ describe('#preloading', () => {
     expect(Object.keys(sdk)).toStrictEqual([
       'auth',
       'config',
+      'server',
       'get',
       'put',
       'post',
@@ -93,7 +91,7 @@ describe('#preloading', () => {
   });
 
   it('should support supplying a raw JSON OAS object', () => {
-    const sdk = api(createOas());
+    const sdk = api(uspto);
     expect(typeof sdk.get).toBe('function');
   });
 });

@@ -1,11 +1,8 @@
-/* eslint-disable import/no-dynamic-require, global-require */
-
-// Most of this has been copied over from the httpsnippet target unit test file. It'd be ideal if this were in a
-// helper library we could use instead.
 const fs = require('fs').promises;
 const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const client = require('../src');
+const readme = require('@readme/oas-examples/3.0/json/readme.json');
 
 HTTPSnippet.addTargetClient('node', client);
 
@@ -24,7 +21,7 @@ test('it should have info', () => {
 });
 
 test('it should error if no apiDefinitionUri was supplied', async () => {
-  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
+  const har = await fs.readFile(path.join(__dirname, './__fixtures__/request/petstore/har.json'), 'utf8');
   const snippet = new HTTPSnippet(JSON.parse(har));
 
   expect(() => {
@@ -33,7 +30,7 @@ test('it should error if no apiDefinitionUri was supplied', async () => {
 });
 
 test('it should error if no apiDefinition was supplied', async () => {
-  const har = await fs.readFile(path.join(__dirname, `./__fixtures__/request/petstore/har.json`), 'utf8');
+  const har = await fs.readFile(path.join(__dirname, './__fixtures__/request/petstore/har.json'), 'utf8');
   const snippet = new HTTPSnippet(JSON.parse(har));
 
   expect(() => {
@@ -45,7 +42,6 @@ test('it should error if no apiDefinition was supplied', async () => {
 
 // This test should fail because the url in the HAR is missing `/v1` in the path.
 test('it should error if no matching operation was found in the apiDefinition', () => {
-  const definition = require('@readme/oas-examples/3.0/json/readme.json');
   const har = {
     bodySize: 0,
     cookies: [],
@@ -65,7 +61,7 @@ test('it should error if no matching operation was found in the apiDefinition', 
   expect(() => {
     snippet.convert('node', 'api', {
       apiDefinitionUri: 'https://example.com/openapi.json',
-      apiDefinition: definition,
+      apiDefinition: readme,
     });
   }).toThrow(/unable to locate a matching operation/i);
 });
@@ -77,7 +73,6 @@ describe('auth handling', () => {
       ["should be able to handle basic auth that's just a username", 'buster:'],
       ["should be able to handle basic auth that's just a password", ':pug'],
     ])('%s', (testCase, authKey) => {
-      const definition = require('@readme/oas-examples/3.0/json/readme.json');
       const har = {
         bodySize: 0,
         cookies: [],
@@ -99,7 +94,7 @@ describe('auth handling', () => {
 
       const code = new HTTPSnippet(har).convert('node', 'api', {
         apiDefinitionUri: 'https://example.com/openapi.json',
-        apiDefinition: definition,
+        apiDefinition: readme,
       });
 
       expect(code).toMatchSnapshot();
@@ -109,6 +104,7 @@ describe('auth handling', () => {
 
 describe('snippets', () => {
   it.each([
+    ['alternate-server'],
     ['application-form-encoded'],
     ['application-json'],
     // ['cookies'], // Cookies test needs to get built out.
@@ -132,8 +128,14 @@ describe('snippets', () => {
     ['short'],
     ['text-plain'],
   ])('should generate `%s` snippet', async testCase => {
-    const har = require(`./__fixtures__/request/${testCase}/har.json`);
-    const definition = require(`./__fixtures__/request/${testCase}/definition.json`);
+    const har = JSON.parse(
+      await fs.readFile(path.join(__dirname, `./__fixtures__/request/${testCase}/har.json`), 'utf8')
+    );
+
+    const definition = JSON.parse(
+      await fs.readFile(path.join(__dirname, `./__fixtures__/request/${testCase}/definition.json`), 'utf8')
+    );
+
     const expected = await fs.readFile(path.join(__dirname, `./__fixtures__/output/${testCase}.js`), 'utf8');
 
     const code = new HTTPSnippet(har).convert('node', 'api', {

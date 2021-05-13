@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@readme/eslint-config": "^5.0.5",
-    "@readme/oas-examples": "^4.0.0",
+    "@readme/oas-examples": "^4.2.0",
     "eslint": "^7.6.0",
     "jest": "^26.0.1",
     "memfs": "^3.2.0",

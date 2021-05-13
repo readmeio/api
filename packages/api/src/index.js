@@ -5,7 +5,7 @@ const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
 const Cache = require('./cache');
-const { prepareAuth, prepareParams, parseResponse } = require('./lib/index');
+const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib/index');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -33,6 +33,7 @@ class Sdk {
     const cache = new Cache(this.uri);
     const self = this;
     let config = { parseResponse: true };
+    let server = false;
 
     let isLoaded = false;
     let isCached = cache.isCached();
@@ -42,7 +43,18 @@ class Sdk {
       return new Promise(resolve => {
         resolve(prepareParams(operation, body, metadata));
       }).then(params => {
-        const har = oasToHar(spec, operation, params, prepareAuth(authKeys, operation));
+        const data = { ...params };
+
+        // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that
+        // supplied server, and also handle any server variables that were sent alongside it.
+        if (server) {
+          const preparedServer = prepareServer(spec, server.url, server.variables);
+          if (preparedServer) {
+            data.server = preparedServer;
+          }
+        }
+
+        const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
         return fetchHar(har, self.userAgent).then(res => {
           if (res.status >= 400 && res.status <= 599) {
@@ -142,8 +154,16 @@ class Sdk {
         return new Proxy(sdk, sdkProxy);
       },
       config: opts => {
+        // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
+        // current config to the default, so having `opts` assigned directly to the existing config should be okay.
         config = opts;
         return new Proxy(sdk, sdkProxy);
+      },
+      server: (url, variables = {}) => {
+        server = {
+          url,
+          variables,
+        };
       },
     };
 

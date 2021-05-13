@@ -9,6 +9,7 @@ Automatic SDK generation from an OpenAPI definition.
     * [Authentication](#authentication)
     * [Parameters and Payloads](#parameters-and-payloads)
     * [HTTP requests](#http-requests)
+    * [Server configurations](#server-configurations)
 * [How does it work?](#how-does-it-work)
 * [Interested in contributing?](#interested-in-contributing)
 * [FAQ](#faq)
@@ -24,7 +25,7 @@ Using `api` is as simple as supplying it an OpenAPI and using the SDK as you wou
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/json/petstore.json');
 
-sdk.listPets().then(res => {
+sdk.listPets().then(res => res.json()).then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
@@ -88,21 +89,6 @@ You can also give it a stream and it'll handle all of the hard work for you.
 sdk.uploadFile({ file: fs.createReadStream('/path/to/a/file.txt') }).then(...)
 ```
 
-### Responses
-Since we know the `Content-Type` of the returned response, we automatically parse it for you before returning it. So no more superfluous `.then(res => res.json())` calls. If your API returned with JSON, we'll give you the parsed JSON.
-
-If you need access to the [`Response`](https://developer.mozilla.org/en-US/docs/Web/API/Response) object you can disable our automatic parsing using `.config()` like so:
-
-```js
-sdk.config({ parseResponse: false });
-
-sdk.createPets({ name: 'Buster' })
-  .then(res => {
-    // `res` will be a Response object
-    // so you can access status and headers
-  })
-```
-
 ### HTTP requests
 If the API you're using doesn't have any documented operation IDs, you can make requests with HTTP verbs instead:
 
@@ -111,6 +97,24 @@ sdk.get('/pets/{petId}', { petId: 1234 }).then(...)
 ```
 
 The SDK supports GET, PUT, POST, DELETE, OPTIONS, HEAD, and TRACE requests.
+
+### Server configurations
+If the API you're using offers alternate server URLs and server variables in its [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#serverObject) definition you can supply this to the SDK with `.server()`:
+
+```js
+sdk.server('https://{region}.api.example.com/{basePath}', {
+  name: 'eu',
+  basePath: 'v14',
+});
+
+sdk.get('/pets').then(...)
+```
+
+When your request is executed it will be made to `https://eu.api.example.com/v14/pets`. Alternatively if you don't want to deal with URL templates you can opt to pass the full URL in instead:
+
+```js
+sdk.server('https://eu.api.example.com/v14');
+```
 
 ## How does it work?
 Behind the scenes, `api` will:
