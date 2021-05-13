@@ -116,15 +116,10 @@ module.exports = function (source, options) {
     const stockUrl = oas.url();
     const baseUrl = source.url.replace(path, '');
     if (baseUrl !== stockUrl) {
-      const config = {};
       const serverVars = oas.splitVariables(baseUrl);
-      if (serverVars) {
-        config.server = oas.url(serverVars.selected, serverVars.variables);
-      } else {
-        config.server = baseUrl;
-      }
+      const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
 
-      configData.push(`sdk.config(${stringify(config, { inlineCharacterLimit: 40 })});`);
+      configData.push(`sdk.server('${serverUrl}');`);
     }
   }
 
