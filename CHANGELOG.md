@@ -1,3 +1,21 @@
+## 3.1.0 (2021-05-13)
+
+* chore(deps-dev): bump @commitlint/cli from 12.1.1 to 12.1.3 (#288) ([23cdaf5](https://github.com/readmeio/api/commit/23cdaf5)), closes [#288](https://github.com/readmeio/api/issues/288)
+* chore(deps-dev): bump @commitlint/config-conventional (#290) ([5d325b0](https://github.com/readmeio/api/commit/5d325b0)), closes [#290](https://github.com/readmeio/api/issues/290)
+* chore(deps-dev): bump eslint from 7.25.0 to 7.26.0 (#291) ([f519b33](https://github.com/readmeio/api/commit/f519b33)), closes [#291](https://github.com/readmeio/api/issues/291)
+* chore(deps-dev): bump prettier from 2.2.1 to 2.3.0 (#289) ([b423897](https://github.com/readmeio/api/commit/b423897)), closes [#289](https://github.com/readmeio/api/issues/289)
+* chore(deps-dev): upgrading husky (#286) ([a6c12a8](https://github.com/readmeio/api/commit/a6c12a8)), closes [#286](https://github.com/readmeio/api/issues/286)
+* chore(deps): bump fetch-har from 4.0.2 to 4.0.3 (#292) ([a8660df](https://github.com/readmeio/api/commit/a8660df)), closes [#292](https://github.com/readmeio/api/issues/292)
+* chore(deps): bump form-data from 2.3.3 to 4.0.0 (#294) ([47ecf81](https://github.com/readmeio/api/commit/47ecf81)), closes [#294](https://github.com/readmeio/api/issues/294)
+* chore(deps): bump get-stream from 4.1.0 to 6.0.1 (#293) ([344c209](https://github.com/readmeio/api/commit/344c209)), closes [#293](https://github.com/readmeio/api/issues/293)
+* chore(deps): bump js-yaml from 3.14.0 to 4.1.0 (#274) ([b8b4216](https://github.com/readmeio/api/commit/b8b4216)), closes [#274](https://github.com/readmeio/api/issues/274)
+* chore(deps): bump make-dir from 1.3.0 to 3.1.0 (#287) ([347354d](https://github.com/readmeio/api/commit/347354d)), closes [#287](https://github.com/readmeio/api/issues/287)
+* chore(deps): upgrading oas to 11.0.0 (#285) ([00c0288](https://github.com/readmeio/api/commit/00c0288)), closes [#285](https://github.com/readmeio/api/issues/285)
+* feat: add a config() function that allows disabling of response parsing (#264) ([570049a](https://github.com/readmeio/api/commit/570049a)), closes [#264](https://github.com/readmeio/api/issues/264)
+* feat: adding support for server variables (#284) ([1dd8a2e](https://github.com/readmeio/api/commit/1dd8a2e)), closes [#284](https://github.com/readmeio/api/issues/284)
+
+
+
 ## <small>3.0.3 (2021-05-07)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 12.0.1 to 12.1.1 (#276) ([d675432](https://github.com/readmeio/api/commit/d675432)), closes [#276](https://github.com/readmeio/api/issues/276)
