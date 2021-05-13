@@ -33,6 +33,7 @@ class Sdk {
     const cache = new Cache(this.uri);
     const self = this;
     let config = { parseResponse: true };
+    let server = false;
 
     let isLoaded = false;
     let isCached = cache.isCached();
@@ -44,12 +45,12 @@ class Sdk {
       }).then(params => {
         const data = { ...params };
 
-        // If `server` has been passed into the `config` method then we need to do some extra work to figure out how to
-        // use that supplied server, and also handle any server variables that were supplied alongside it.
-        if (config.server) {
-          const server = prepareServer(config, spec);
-          if (server) {
-            data.server = server;
+        // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that
+        // supplied server, and also handle any server variables that were sent alongside it.
+        if (server) {
+          const preparedServer = prepareServer(spec, server.url, server.variables);
+          if (preparedServer) {
+            data.server = preparedServer;
           }
         }
 
@@ -157,6 +158,12 @@ class Sdk {
         // current config to the default, so having `opts` assigned directly to the existing config should be okay.
         config = opts;
         return new Proxy(sdk, sdkProxy);
+      },
+      server: (url, variables = {}) => {
+        server = {
+          url,
+          variables,
+        };
       },
     };
 

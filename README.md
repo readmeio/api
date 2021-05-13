@@ -99,16 +99,12 @@ sdk.get('/pets/{petId}', { petId: 1234 }).then(...)
 The SDK supports GET, PUT, POST, DELETE, OPTIONS, HEAD, and TRACE requests.
 
 ### Server configurations
-
-If the API you're using offers alternate server URLs and server variables in its [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#serverObject) definition you can supply this to the SDK with `.config()`:
+If the API you're using offers alternate server URLs and server variables in its [`servers`](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#serverObject) definition you can supply this to the SDK with `.server()`:
 
 ```js
-sdk.config({
-  server: {
-    url: 'https://{region}.api.example.com/{basePath}',
-    name: 'eu',
-    basePath: 'v14',
-  },
+sdk.server('https://{region}.api.example.com/{basePath}', {
+  name: 'eu',
+  basePath: 'v14',
 });
 
 sdk.get('/pets').then(...)
@@ -117,9 +113,7 @@ sdk.get('/pets').then(...)
 When your request is executed it will be made to `https://eu.api.example.com/v14/pets`. Alternatively if you don't want to deal with URL templates you can opt to pass the full URL in instead:
 
 ```js
-sdk.config({
-  server: 'https://eu.api.example.com/v14'
-});
+sdk.server('https://eu.api.example.com/v14');
 ```
 
 ## How does it work?
@@ -159,4 +153,11 @@ Not yet! The URL that you give the module must be publicy accessible. If it isn'
 
 ```js
 const sdk = require('api')('/path/to/downloaded.json');
+```
+
+#### How do I access the Response object (for status and headers)?
+By default we parse the response based on the `content-type` header for you. You can disable this by doing the following:
+
+```js
+sdk.config({ parseResponse: false });
 ```
