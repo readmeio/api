@@ -61,8 +61,22 @@ describe('#load', () => {
     });
   });
 
-  it('should resolve the @subdomain syntax to ReadMe', () => {
-    return expect(new Cache('@lyft/ABC123456').uri).toBe('https://dash.readme.io/api/v1/api-specification/ABC123456');
+  describe('shorthand accessors', () => {
+    it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', () => {
+      return expect(new Cache('@petstore/v1.0#n6kvf10vakpemvplx').uri).toBe(
+        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+      );
+    });
+
+    it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', () => {
+      return expect(new Cache('@petstore#n6kvf10vakpemvplx').uri).toBe(
+        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+      );
+    });
+
+    it("shouldn't try to resolve improperly formatted shorthand accessors to the ReadMe API", () => {
+      return expect(new Cache('n6kvf10vakpemvplx').uri).toBe('n6kvf10vakpemvplx');
+    });
   });
 
   it('should throw an error when a non-HTTP(S) url is supplied', () => {
