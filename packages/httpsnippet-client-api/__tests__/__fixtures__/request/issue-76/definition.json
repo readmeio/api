@@ -1,57 +1,57 @@
 {
   "openapi": "3.0.0",
   "info": {
-     "version": "1.0.0",
-     "title": "issue-76"
+    "version": "1.0.0",
+    "title": "issue-76"
   },
   "servers": [
-     {
-        "url": "http://petstore.swagger.io/v2"
-     }
+    {
+      "url": "http://petstore.swagger.io/v2"
+    }
   ],
   "paths": {
-     "/pet/findByStatus": {
-        "get": {
-           "parameters": [
-              {
-                 "name": "status",
-                 "in": "query",
-                 "required": true,
-                 "explode": true,
-                 "schema": {
-                    "type": "array",
-                    "items": {
-                       "type": "string",
-                       "enum": [
-                          "available",
-                          "pending",
-                          "sold"
-                       ],
-                       "default": "available"
-                    }
-                 }
+    "/pet/findByStatus": {
+      "get": {
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "pending",
+                  "sold"
+                ],
+                "default": "available"
               }
-           ],
-           "responses": {
-              "200": {
-                 "description": "OK"
-              }
-           },
-           "security": [
-              {
-                 "api_key": []
-              }
-           ]
-        }
-     }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
   },
   "components": {
-     "securitySchemes": {
-        "api_key": {
-           "type": "apiKey",
-           "name": "api_key",
-           "in": "query"
-        }
-     }
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "query"
+      }
+    }
   }
 }

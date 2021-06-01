@@ -1,11 +1,11 @@
 {
   "name": "api",
-  "version": "2.3.2",
+  "version": "3.1.0",
   "description": "Generate an SDK from an OpenAPI definition",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint && npm run prettier",
+    "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
@@ -20,29 +20,29 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": "^12 || ^14 || ^16"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@apidevtools/swagger-parser": "^10.0.1",
-    "@readme/oas-to-har": "^7.0.0",
-    "@readme/oas-tooling": "^3.5.8",
+    "@readme/oas-to-har": "^13.4.5",
     "datauri": "^3.0.0",
     "fetch-har": "^4.0.1",
     "find-cache-dir": "^3.3.1",
-    "form-data": "^3.0.0",
+    "form-data": "^4.0.0",
     "get-stream": "^6.0.0",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^4.1.0",
     "make-dir": "^3.1.0",
     "mimer": "^1.1.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "oas": "^11.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^3.4.1",
-    "@readme/oas-examples": "^3.4.0",
+    "@readme/eslint-config": "^5.0.5",
+    "@readme/oas-examples": "^4.2.0",
     "eslint": "^7.6.0",
-    "jest": "^26.0.1",
-    "mock-fs": "^4.12.0",
+    "jest": "^27.0.3",
+    "memfs": "^3.2.0",
     "nock": "^13.0.0",
     "prettier": "^2.0.5"
   },

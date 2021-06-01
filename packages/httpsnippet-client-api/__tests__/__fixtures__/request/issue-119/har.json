@@ -1,0 +1,32 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "cookies": [],
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 123"
+            }
+          ],
+          "httpVersion": "HTTP/1.1",
+          "method": "GET",
+          "postData": {
+            "jsonObj": false,
+            "mimeType": "application/octet-stream",
+            "paramsObj": false,
+            "size": 0
+          },
+          "queryString": [
+            {
+              "name": "status",
+              "value": "available"
+            }
+          ],
+          "url": "http://petstore.swagger.io/v2/pet/findByStatus"
+        }
+      }
+    ]
+  }
+}

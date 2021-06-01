@@ -1,3 +1,215 @@
+## 3.1.0 (2021-05-13)
+
+* chore(deps-dev): bump @commitlint/cli from 12.1.1 to 12.1.3 (#288) ([23cdaf5](https://github.com/readmeio/api/commit/23cdaf5)), closes [#288](https://github.com/readmeio/api/issues/288)
+* chore(deps-dev): bump @commitlint/config-conventional (#290) ([5d325b0](https://github.com/readmeio/api/commit/5d325b0)), closes [#290](https://github.com/readmeio/api/issues/290)
+* chore(deps-dev): bump eslint from 7.25.0 to 7.26.0 (#291) ([f519b33](https://github.com/readmeio/api/commit/f519b33)), closes [#291](https://github.com/readmeio/api/issues/291)
+* chore(deps-dev): bump prettier from 2.2.1 to 2.3.0 (#289) ([b423897](https://github.com/readmeio/api/commit/b423897)), closes [#289](https://github.com/readmeio/api/issues/289)
+* chore(deps-dev): upgrading husky (#286) ([a6c12a8](https://github.com/readmeio/api/commit/a6c12a8)), closes [#286](https://github.com/readmeio/api/issues/286)
+* chore(deps): bump fetch-har from 4.0.2 to 4.0.3 (#292) ([a8660df](https://github.com/readmeio/api/commit/a8660df)), closes [#292](https://github.com/readmeio/api/issues/292)
+* chore(deps): bump form-data from 2.3.3 to 4.0.0 (#294) ([47ecf81](https://github.com/readmeio/api/commit/47ecf81)), closes [#294](https://github.com/readmeio/api/issues/294)
+* chore(deps): bump get-stream from 4.1.0 to 6.0.1 (#293) ([344c209](https://github.com/readmeio/api/commit/344c209)), closes [#293](https://github.com/readmeio/api/issues/293)
+* chore(deps): bump js-yaml from 3.14.0 to 4.1.0 (#274) ([b8b4216](https://github.com/readmeio/api/commit/b8b4216)), closes [#274](https://github.com/readmeio/api/issues/274)
+* chore(deps): bump make-dir from 1.3.0 to 3.1.0 (#287) ([347354d](https://github.com/readmeio/api/commit/347354d)), closes [#287](https://github.com/readmeio/api/issues/287)
+* chore(deps): upgrading oas to 11.0.0 (#285) ([00c0288](https://github.com/readmeio/api/commit/00c0288)), closes [#285](https://github.com/readmeio/api/issues/285)
+* feat: add a config() function that allows disabling of response parsing (#264) ([570049a](https://github.com/readmeio/api/commit/570049a)), closes [#264](https://github.com/readmeio/api/issues/264)
+* feat: adding support for server variables (#284) ([1dd8a2e](https://github.com/readmeio/api/commit/1dd8a2e)), closes [#284](https://github.com/readmeio/api/issues/284)
+
+
+
+## <small>3.0.3 (2021-05-07)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 12.0.1 to 12.1.1 (#276) ([d675432](https://github.com/readmeio/api/commit/d675432)), closes [#276](https://github.com/readmeio/api/issues/276)
+* chore(deps-dev): bump @commitlint/config-conventional (#275) ([42a507b](https://github.com/readmeio/api/commit/42a507b)), closes [#275](https://github.com/readmeio/api/issues/275)
+* chore(deps-dev): bump @readme/eslint-config from 5.0.3 to 5.0.5 (#282) ([b2d159c](https://github.com/readmeio/api/commit/b2d159c)), closes [#282](https://github.com/readmeio/api/issues/282)
+* chore(deps-dev): bump eslint from 7.23.0 to 7.25.0 (#280) ([94ca270](https://github.com/readmeio/api/commit/94ca270)), closes [#280](https://github.com/readmeio/api/issues/280)
+* chore(deps-dev): bump memfs from 3.2.1 to 3.2.2 (#273) ([8d50610](https://github.com/readmeio/api/commit/8d50610)), closes [#273](https://github.com/readmeio/api/issues/273)
+* chore(deps): bump @readme/oas-to-har from 13.2.0 to 13.2.4 (#278) ([cc097e0](https://github.com/readmeio/api/commit/cc097e0)), closes [#278](https://github.com/readmeio/api/issues/278)
+* chore(deps): bump get-stream from 6.0.0 to 6.0.1 (#279) ([1dea6cc](https://github.com/readmeio/api/commit/1dea6cc)), closes [#279](https://github.com/readmeio/api/issues/279)
+* chore(deps): upgrading oas ([f6369c6](https://github.com/readmeio/api/commit/f6369c6))
+
+
+
+## <small>3.0.2 (2021-05-04)</small>
+
+* chore(deps): upgrading oas (#283) ([34655cb](https://github.com/readmeio/api/commit/34655cb)), closes [#283](https://github.com/readmeio/api/issues/283)
+* fix: cleaning up a typo in an error message in httpsnippet-client-api ([341494f](https://github.com/readmeio/api/commit/341494f))
+
+
+
+## <small>3.0.1 (2021-04-20)</small>
+
+* ci: allowing node 16 installs and builds (#271) ([e36fab1](https://github.com/readmeio/api/commit/e36fab1)), closes [#271](https://github.com/readmeio/api/issues/271)
+* chore(deps-dev): bump eslint from 7.22.0 to 7.23.0 (#266) ([54c2fc2](https://github.com/readmeio/api/commit/54c2fc2)), closes [#266](https://github.com/readmeio/api/issues/266)
+* chore(deps-dev): bump memfs from 3.2.0 to 3.2.1 (#268) ([d6905cd](https://github.com/readmeio/api/commit/d6905cd)), closes [#268](https://github.com/readmeio/api/issues/268)
+* chore(deps): bump @readme/oas-to-har from 13.0.0 to 13.2.0 (#265) ([21bc2f7](https://github.com/readmeio/api/commit/21bc2f7)), closes [#265](https://github.com/readmeio/api/issues/265)
+* chore(deps): bump oas from 10.4.0 to 10.4.1 (#267) ([855d931](https://github.com/readmeio/api/commit/855d931)), closes [#267](https://github.com/readmeio/api/issues/267)
+* feat: cleaner snippets when body and metadata are present (#269) ([4869caf](https://github.com/readmeio/api/commit/4869caf)), closes [#269](https://github.com/readmeio/api/issues/269)
+
+
+
+## 3.0.0 (2021-03-24)
+
+* chore: update deps and require npm@7 (#253) ([efa2705](https://github.com/readmeio/api/commit/efa2705)), closes [#253](https://github.com/readmeio/api/issues/253)
+* chore(deps-dev): bump @commitlint/cli from 11.0.0 to 12.0.1 (#250) ([8b9b6a4](https://github.com/readmeio/api/commit/8b9b6a4)), closes [#250](https://github.com/readmeio/api/issues/250)
+* chore(deps-dev): bump @commitlint/config-conventional (#248) ([12d734e](https://github.com/readmeio/api/commit/12d734e)), closes [#248](https://github.com/readmeio/api/issues/248)
+* chore(deps-dev): bump @readme/eslint-config from 4.1.0 to 5.0.0 (#247) ([ef2023f](https://github.com/readmeio/api/commit/ef2023f)), closes [#247](https://github.com/readmeio/api/issues/247)
+* chore(deps-dev): bump @readme/eslint-config from 5.0.0 to 5.0.3 (#258) ([440801e](https://github.com/readmeio/api/commit/440801e)), closes [#258](https://github.com/readmeio/api/issues/258)
+* chore(deps-dev): bump eslint from 7.19.0 to 7.21.0 (#242) ([6875828](https://github.com/readmeio/api/commit/6875828)), closes [#242](https://github.com/readmeio/api/issues/242)
+* chore(deps-dev): bump eslint from 7.21.0 to 7.22.0 (#255) ([1e48edc](https://github.com/readmeio/api/commit/1e48edc)), closes [#255](https://github.com/readmeio/api/issues/255)
+* chore(deps-dev): bump nock from 13.0.7 to 13.0.9 (#251) ([f0bbc06](https://github.com/readmeio/api/commit/f0bbc06)), closes [#251](https://github.com/readmeio/api/issues/251)
+* chore(deps-dev): bump nock from 13.0.9 to 13.0.11 (#260) ([fc8427f](https://github.com/readmeio/api/commit/fc8427f)), closes [#260](https://github.com/readmeio/api/issues/260)
+* chore(deps): bump @apidevtools/swagger-parser from 10.0.1 to 10.0.2 (#245) ([84b95a2](https://github.com/readmeio/api/commit/84b95a2)), closes [#245](https://github.com/readmeio/api/issues/245)
+* chore(deps): bump @readme/httpsnippet from 2.4.1 to 2.4.3 (#249) ([494bbcd](https://github.com/readmeio/api/commit/494bbcd)), closes [#249](https://github.com/readmeio/api/issues/249)
+* chore(deps): bump @readme/oas-to-har from 11.1.2 to 12.2.1 (#246) ([57625d0](https://github.com/readmeio/api/commit/57625d0)), closes [#246](https://github.com/readmeio/api/issues/246)
+* chore(deps): bump actions/setup-node from v2.1.4 to v2.1.5 (#241) ([0498476](https://github.com/readmeio/api/commit/0498476)), closes [#241](https://github.com/readmeio/api/issues/241)
+* chore(deps): bump form-data from 2.3.3 to 4.0.0 (#259) ([f9910da](https://github.com/readmeio/api/commit/f9910da)), closes [#259](https://github.com/readmeio/api/issues/259)
+* chore(deps): bump form-data from 3.0.0 to 4.0.0 (#244) ([47792bc](https://github.com/readmeio/api/commit/47792bc)), closes [#244](https://github.com/readmeio/api/issues/244)
+* chore(deps): bump get-stream from 4.1.0 to 6.0.0 (#261) ([588fff7](https://github.com/readmeio/api/commit/588fff7)), closes [#261](https://github.com/readmeio/api/issues/261)
+* chore(deps): bump make-dir from 1.3.0 to 3.1.0 (#256) ([ceec5c1](https://github.com/readmeio/api/commit/ceec5c1)), closes [#256](https://github.com/readmeio/api/issues/256)
+* chore(deps): bump node-fetch from 2.6.0 to 2.6.1 (#254) ([aed83e4](https://github.com/readmeio/api/commit/aed83e4)), closes [#254](https://github.com/readmeio/api/issues/254)
+* chore(deps): bump oas from 10.0.1 to 10.2.0 (#243) ([e5934cc](https://github.com/readmeio/api/commit/e5934cc)), closes [#243](https://github.com/readmeio/api/issues/243)
+* chore(deps): bump oas from 10.3.0 to 10.4.0 (#262) ([c7280d3](https://github.com/readmeio/api/commit/c7280d3)), closes [#262](https://github.com/readmeio/api/issues/262)
+* ci: trying to fix codeql failures (#263) ([e3dd56b](https://github.com/readmeio/api/commit/e3dd56b)), closes [#263](https://github.com/readmeio/api/issues/263)
+* feat: automatically parse the api response based on content-type  (#240) ([ae50813](https://github.com/readmeio/api/commit/ae50813)), closes [#240](https://github.com/readmeio/api/issues/240) [/github.com/tschaub/mock-fs/issues/234#issuecomment-653529125](https://github.com//github.com/tschaub/mock-fs/issues/234/issues/issuecomment-653529125) [/github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/src/lib/parse-response.js#L13-L30](https://github.com//github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/src/lib/parse-response.js/issues/L13-L30) [/github.com/readmeio/api/pull/240#discussion_r569829932](https://github.com//github.com/readmeio/api/pull/240/issues/discussion_r569829932)
+* refactor: switch to using memfs instead of mock-fs (#239) ([6cb517f](https://github.com/readmeio/api/commit/6cb517f)), closes [#239](https://github.com/readmeio/api/issues/239) [/github.com/tschaub/mock-fs/issues/234#issuecomment-653529125](https://github.com//github.com/tschaub/mock-fs/issues/234/issues/issuecomment-653529125)
+
+
+### BREAKING CHANGE
+
+* this is a breaking change.
+
+* chore: relax commitlint rules on body and footer length
+
+Taken from main codebase
+
+* feat: remove res.json() line from the httpsnippet client
+
+* fix: always output `.then(res => console.log(res))` in code sample
+
+Since we dont know if the response is json or not, we can't make
+assumptions. In an ideal world we'd conditionally do this based
+on the accept header in the response, but Operation.getHeaders() only
+returns with an array of headers and not their actual values. I think
+this is good enough for now!
+
+
+## <small>2.7.1 (2021-02-02)</small>
+
+* chore(deps): upgrading `@readme/httpsnippet` to the latest release ([9164024](https://github.com/readmeio/api/commit/9164024))
+
+
+
+## 2.7.0 (2021-02-02)
+
+* chore(deps): upgrading `@readme/httpsnippet` ([d184a14](https://github.com/readmeio/api/commit/d184a14))
+
+
+
+## 2.6.0 (2021-02-02)
+
+* chore: rebuilding the root package-lock ([d0f8091](https://github.com/readmeio/api/commit/d0f8091))
+* chore(deps-dev): bump @readme/eslint-config from 3.6.5 to 3.7.1 (#210) ([ddae88a](https://github.com/readmeio/api/commit/ddae88a)), closes [#210](https://github.com/readmeio/api/issues/210)
+* chore(deps-dev): bump @readme/eslint-config from 3.7.1 to 3.8.0 (#214) ([1346192](https://github.com/readmeio/api/commit/1346192)), closes [#214](https://github.com/readmeio/api/issues/214)
+* chore(deps-dev): bump @readme/eslint-config from 3.8.0 to 4.0.0 (#219) ([0741212](https://github.com/readmeio/api/commit/0741212)), closes [#219](https://github.com/readmeio/api/issues/219)
+* chore(deps-dev): bump @readme/eslint-config from 4.0.0 to 4.1.0 (#229) ([608e855](https://github.com/readmeio/api/commit/608e855)), closes [#229](https://github.com/readmeio/api/issues/229)
+* chore(deps-dev): bump eslint from 7.14.0 to 7.15.0 (#212) ([b340515](https://github.com/readmeio/api/commit/b340515)), closes [#212](https://github.com/readmeio/api/issues/212)
+* chore(deps-dev): bump eslint from 7.15.0 to 7.16.0 (#220) ([69a0e0a](https://github.com/readmeio/api/commit/69a0e0a)), closes [#220](https://github.com/readmeio/api/issues/220)
+* chore(deps-dev): bump eslint from 7.16.0 to 7.17.0 (#226) ([0bbdc05](https://github.com/readmeio/api/commit/0bbdc05)), closes [#226](https://github.com/readmeio/api/issues/226)
+* chore(deps-dev): bump eslint from 7.17.0 to 7.19.0 (#234) ([0acb815](https://github.com/readmeio/api/commit/0acb815)), closes [#234](https://github.com/readmeio/api/issues/234)
+* chore(deps-dev): bump husky from 4.3.0 to 4.3.6 (#217) ([571fa3f](https://github.com/readmeio/api/commit/571fa3f)), closes [#217](https://github.com/readmeio/api/issues/217)
+* chore(deps-dev): bump husky from 4.3.6 to 4.3.7 (#228) ([6988708](https://github.com/readmeio/api/commit/6988708)), closes [#228](https://github.com/readmeio/api/issues/228)
+* chore(deps-dev): bump husky from 4.3.7 to 4.3.8 (#238) ([82efe01](https://github.com/readmeio/api/commit/82efe01)), closes [#238](https://github.com/readmeio/api/issues/238)
+* chore(deps-dev): bump nock from 13.0.5 to 13.0.7 (#235) ([9beb2ae](https://github.com/readmeio/api/commit/9beb2ae)), closes [#235](https://github.com/readmeio/api/issues/235)
+* chore(deps-dev): bump prettier from 2.2.0 to 2.2.1 (#209) ([38fe2ff](https://github.com/readmeio/api/commit/38fe2ff)), closes [#209](https://github.com/readmeio/api/issues/209)
+* chore(deps): bump @apidevtools/json-schema-ref-parser (#237) ([db65c3b](https://github.com/readmeio/api/commit/db65c3b)), closes [#237](https://github.com/readmeio/api/issues/237)
+* chore(deps): bump @readme/oas-to-har from 10.0.0 to 10.0.5 (#215) ([0462373](https://github.com/readmeio/api/commit/0462373)), closes [#215](https://github.com/readmeio/api/issues/215)
+* chore(deps): bump @readme/oas-to-har from 11.1.0 to 11.1.2 (#236) ([611148f](https://github.com/readmeio/api/commit/611148f)), closes [#236](https://github.com/readmeio/api/issues/236)
+* chore(deps): bump actions/checkout from v2.3.3 to v2.3.4 (#211) ([a88ec6c](https://github.com/readmeio/api/commit/a88ec6c)), closes [#211](https://github.com/readmeio/api/issues/211)
+* chore(deps): bump actions/setup-node from v2.1.2 to v2.1.4 (#225) ([6697623](https://github.com/readmeio/api/commit/6697623)), closes [#225](https://github.com/readmeio/api/issues/225)
+* chore(deps): bump ini from 1.3.5 to 1.3.8 (#232) ([17f4246](https://github.com/readmeio/api/commit/17f4246)), closes [#232](https://github.com/readmeio/api/issues/232)
+* chore(deps): bump js-yaml from 3.14.0 to 3.14.1 (#218) ([a4cb9e7](https://github.com/readmeio/api/commit/a4cb9e7)), closes [#218](https://github.com/readmeio/api/issues/218)
+* chore(deps): bump node-notifier from 8.0.0 to 8.0.1 in /packages/api (#224) ([c846af0](https://github.com/readmeio/api/commit/c846af0)), closes [#224](https://github.com/readmeio/api/issues/224)
+* chore(deps): bump node-notifier in /packages/httpsnippet-client-api (#223) ([63fa1f9](https://github.com/readmeio/api/commit/63fa1f9)), closes [#223](https://github.com/readmeio/api/issues/223)
+* chore(deps): bump oas from 10.0.0 to 10.0.1 (#233) ([af2d9fb](https://github.com/readmeio/api/commit/af2d9fb)), closes [#233](https://github.com/readmeio/api/issues/233)
+* chore(deps): bump oas from 6.1.0 to 10.0.0 (#231) ([166000a](https://github.com/readmeio/api/commit/166000a)), closes [#231](https://github.com/readmeio/api/issues/231)
+* ci: updating dependabot to run on a monthly schedule ([a081851](https://github.com/readmeio/api/commit/a081851))
+
+
+
+## 2.5.0 (2020-11-27)
+
+* chore(deps-dev): bump @readme/eslint-config from 3.6.2 to 3.6.3 (#194) ([c53f2a0](https://github.com/readmeio/api/commit/c53f2a0)), closes [#194](https://github.com/readmeio/api/issues/194)
+* chore(deps-dev): bump @readme/eslint-config from 3.6.3 to 3.6.5 (#204) ([accc1b3](https://github.com/readmeio/api/commit/accc1b3)), closes [#204](https://github.com/readmeio/api/issues/204)
+* chore(deps-dev): bump conventional-changelog-cli from 2.1.0 to 2.1.1 (#195) ([82ec912](https://github.com/readmeio/api/commit/82ec912)), closes [#195](https://github.com/readmeio/api/issues/195)
+* chore(deps-dev): bump eslint from 7.12.1 to 7.13.0 (#197) ([e4cae18](https://github.com/readmeio/api/commit/e4cae18)), closes [#197](https://github.com/readmeio/api/issues/197)
+* chore(deps-dev): bump eslint from 7.13.0 to 7.14.0 (#206) ([a963391](https://github.com/readmeio/api/commit/a963391)), closes [#206](https://github.com/readmeio/api/issues/206)
+* chore(deps-dev): bump jest from 26.6.1 to 26.6.3 (#199) ([64ca33f](https://github.com/readmeio/api/commit/64ca33f)), closes [#199](https://github.com/readmeio/api/issues/199)
+* chore(deps-dev): bump nock from 13.0.4 to 13.0.5 (#201) ([b3d5198](https://github.com/readmeio/api/commit/b3d5198)), closes [#201](https://github.com/readmeio/api/issues/201)
+* chore(deps-dev): bump prettier from 2.1.2 to 2.2.0 (#205) ([f26cf5f](https://github.com/readmeio/api/commit/f26cf5f)), closes [#205](https://github.com/readmeio/api/issues/205)
+* chore(deps): bump @readme/httpsnippet from 2.2.3 to 2.3.1 (#207) ([ca2eeb0](https://github.com/readmeio/api/commit/ca2eeb0)), closes [#207](https://github.com/readmeio/api/issues/207)
+* chore(deps): bump @readme/oas-to-har from 9.0.0 to 9.2.0 (#196) ([0b0f5ac](https://github.com/readmeio/api/commit/0b0f5ac)), closes [#196](https://github.com/readmeio/api/issues/196)
+* chore(deps): bump @readme/oas-to-har from 9.2.0 to 9.2.2 (#202) ([a492210](https://github.com/readmeio/api/commit/a492210)), closes [#202](https://github.com/readmeio/api/issues/202)
+* chore(deps): bump oas from 5.0.0 to 5.2.0 (#198) ([cb0b851](https://github.com/readmeio/api/commit/cb0b851)), closes [#198](https://github.com/readmeio/api/issues/198)
+* chore(deps): upgrade oas and oas-to-har (#208) ([3daec70](https://github.com/readmeio/api/commit/3daec70)), closes [#208](https://github.com/readmeio/api/issues/208)
+
+
+
+## <small>2.4.4 (2020-11-02)</small>
+
+* fix: adding better messaging when operations can't be found (#193) ([22b6dfd](https://github.com/readmeio/api/commit/22b6dfd)), closes [#193](https://github.com/readmeio/api/issues/193)
+* chore(deps-dev): bump @readme/eslint-config from 3.6.1 to 3.6.2 (#189) ([eae818f](https://github.com/readmeio/api/commit/eae818f)), closes [#189](https://github.com/readmeio/api/issues/189)
+* chore(deps-dev): bump eslint from 7.11.0 to 7.12.0 (#186) ([1661310](https://github.com/readmeio/api/commit/1661310)), closes [#186](https://github.com/readmeio/api/issues/186)
+* chore(deps-dev): bump eslint from 7.12.0 to 7.12.1 (#192) ([d0d838d](https://github.com/readmeio/api/commit/d0d838d)), closes [#192](https://github.com/readmeio/api/issues/192)
+* chore(deps-dev): bump jest from 26.5.3 to 26.6.1 (#188) ([e25388e](https://github.com/readmeio/api/commit/e25388e)), closes [#188](https://github.com/readmeio/api/issues/188)
+* chore(deps): bump @readme/httpsnippet from 2.2.2 to 2.2.3 (#187) ([530fa45](https://github.com/readmeio/api/commit/530fa45)), closes [#187](https://github.com/readmeio/api/issues/187)
+* chore(deps): bump @readme/oas-to-har from 8.1.0 to 9.0.0 (#191) ([f50bbb0](https://github.com/readmeio/api/commit/f50bbb0)), closes [#191](https://github.com/readmeio/api/issues/191)
+* chore(deps): bump actions/setup-node from v2.1.1 to v2.1.2 (#190) ([f4745f9](https://github.com/readmeio/api/commit/f4745f9)), closes [#190](https://github.com/readmeio/api/issues/190)
+
+
+
+## <small>2.4.3 (2020-10-21)</small>
+
+* chore(deps): upgrading @readme/oas-to-har to 8.1.0 ([f2d3af7](https://github.com/readmeio/api/commit/f2d3af7))
+* chore(deps): upgrading oas to 5.0 ([0351595](https://github.com/readmeio/api/commit/0351595))
+
+
+
+## <small>2.4.2 (2020-10-21)</small>
+
+* fix: pinning httpsnippet-client-api to oas@4.0.0 ([29af3be](https://github.com/readmeio/api/commit/29af3be))
+
+
+
+## <small>2.4.1 (2020-10-20)</small>
+
+* chore(deps-dev): bump @readme/eslint-config from 3.6.0 to 3.6.1 (#183) ([33996b0](https://github.com/readmeio/api/commit/33996b0)), closes [#183](https://github.com/readmeio/api/issues/183)
+* chore(deps): bump @readme/oas-to-har from 7.5.0 to 8.0.1 (#182) ([a2052bb](https://github.com/readmeio/api/commit/a2052bb)), closes [#182](https://github.com/readmeio/api/issues/182)
+* chore(deps): bump @readme/oas-tooling from 3.6.0 to 3.6.1 (#184) ([3d86be9](https://github.com/readmeio/api/commit/3d86be9)), closes [#184](https://github.com/readmeio/api/issues/184)
+* chore(deps): swapping `@readme/oas-tooling` for `oas` (#185) ([d9ced1c](https://github.com/readmeio/api/commit/d9ced1c)), closes [#185](https://github.com/readmeio/api/issues/185)
+
+
+
+## 2.4.0 (2020-10-16)
+
+* chore: test cleanup (#181) ([1fe0e95](https://github.com/readmeio/api/commit/1fe0e95)), closes [#181](https://github.com/readmeio/api/issues/181)
+* fix: adding support for non-alphanumerical operation ids (#180) ([fd075a0](https://github.com/readmeio/api/commit/fd075a0)), closes [#180](https://github.com/readmeio/api/issues/180)
+* fix: basic auth headers now decoded and exploded into `.auth()` calls (#179) ([2351b95](https://github.com/readmeio/api/commit/2351b95)), closes [#179](https://github.com/readmeio/api/issues/179)
+
+
+
+## <small>2.3.3 (2020-10-15)</small>
+
+* fix: adding a `.catch()` statement to code snippets (#177) ([d7c8613](https://github.com/readmeio/api/commit/d7c8613)), closes [#177](https://github.com/readmeio/api/issues/177)
+* chore(deps-dev): bump @readme/eslint-config from 3.5.0 to 3.6.0 (#173) ([9f8d0f2](https://github.com/readmeio/api/commit/9f8d0f2)), closes [#173](https://github.com/readmeio/api/issues/173)
+* chore(deps-dev): bump @readme/oas-examples from 3.5.13 to 3.6.0 (#174) ([9c4b118](https://github.com/readmeio/api/commit/9c4b118)), closes [#174](https://github.com/readmeio/api/issues/174)
+* chore(deps-dev): bump eslint from 7.10.0 to 7.11.0 (#175) ([be9393f](https://github.com/readmeio/api/commit/be9393f)), closes [#175](https://github.com/readmeio/api/issues/175)
+* chore(deps-dev): bump jest from 26.4.2 to 26.5.3 (#171) ([b4cbc9f](https://github.com/readmeio/api/commit/b4cbc9f)), closes [#171](https://github.com/readmeio/api/issues/171)
+* chore(deps): bump @readme/oas-to-har from 7.3.0 to 7.5.0 (#170) ([f26bb01](https://github.com/readmeio/api/commit/f26bb01)), closes [#170](https://github.com/readmeio/api/issues/170)
+* chore(deps): bump @readme/oas-tooling from 3.5.11 to 3.5.14 (#169) ([524915a](https://github.com/readmeio/api/commit/524915a)), closes [#169](https://github.com/readmeio/api/issues/169)
+* chore(deps): bump @readme/oas-tooling from 3.5.14 to 3.6.0 (#172) ([6bd2fb3](https://github.com/readmeio/api/commit/6bd2fb3)), closes [#172](https://github.com/readmeio/api/issues/172)
+
+
+
 ## <small>2.3.2 (2020-10-05)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 9.1.2 to 11.0.0 (#158) ([a068e8f](https://github.com/readmeio/api/commit/a068e8f)), closes [#158](https://github.com/readmeio/api/issues/158)

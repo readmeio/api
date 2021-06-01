@@ -1,11 +1,11 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "2.3.2",
+  "version": "3.1.0",
   "description": "An HTTP Snippet client for generating snippets for the api module.",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint && npm run prettier",
+    "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
@@ -20,22 +20,22 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=10"
+    "node": "^12 || ^14 || ^16"
   },
   "dependencies": {
-    "@readme/httpsnippet": "^2.0.1",
-    "@readme/oas-tooling": "^3.5.8",
     "content-type": "^1.0.4",
     "path-to-regexp": "^6.1.0",
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^2.0.1"
+    "@readme/httpsnippet": "^2.4.4",
+    "oas": "^11.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^3.4.1",
+    "@readme/eslint-config": "^5.0.5",
+    "@readme/oas-examples": "^4.0.0",
     "eslint": "^7.6.0",
-    "jest": "^26.0.1",
+    "jest": "^27.0.3",
     "prettier": "^2.0.5"
   },
   "prettier": "@readme/eslint-config/prettier",

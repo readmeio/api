@@ -1,11 +1,11 @@
 const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
-const Oas = require('@readme/oas-tooling');
+const Oas = require('oas/tooling');
 const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
 const Cache = require('./cache');
-const { prepareAuth, prepareParams } = require('./lib/index');
+const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib/index');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -32,6 +32,8 @@ class Sdk {
     const authKeys = [];
     const cache = new Cache(this.uri);
     const self = this;
+    let config = { parseResponse: true };
+    let server = false;
 
     let isLoaded = false;
     let isCached = cache.isCached();
@@ -41,14 +43,27 @@ class Sdk {
       return new Promise(resolve => {
         resolve(prepareParams(operation, body, metadata));
       }).then(params => {
-        const har = oasToHar(spec, operation, params, prepareAuth(authKeys, operation));
+        const data = { ...params };
+
+        // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that
+        // supplied server, and also handle any server variables that were sent alongside it.
+        if (server) {
+          const preparedServer = prepareServer(spec, server.url, server.variables);
+          if (preparedServer) {
+            data.server = preparedServer;
+          }
+        }
+
+        const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
         return fetchHar(har, self.userAgent).then(res => {
           if (res.status >= 400 && res.status <= 599) {
             throw res;
           }
 
-          return res;
+          if (config.parseResponse === false) return res;
+
+          return parseResponse(res);
         });
       });
     }
@@ -70,10 +85,10 @@ class Sdk {
 
     function loadOperations(spec) {
       return Sdk.getOperations(spec)
-        .filter(operation => operation.operationId)
+        .filter(operation => operation.schema.operationId)
         .reduce((prev, next) => {
           return Object.assign(prev, {
-            [next.operationId]: ((operation, ...args) => {
+            [next.schema.operationId]: ((operation, ...args) => {
               return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
           });
@@ -104,7 +119,7 @@ class Sdk {
         // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
         // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
         // chaining `sdk.auth().operationId()` will fail.
-        if (method === 'auth') {
+        if (['auth', 'config'].includes(method)) {
           return function (...args) {
             return target[method].apply(this, args);
           };
@@ -137,6 +152,18 @@ class Sdk {
       auth: (...values) => {
         authKeys.push(values);
         return new Proxy(sdk, sdkProxy);
+      },
+      config: opts => {
+        // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
+        // current config to the default, so having `opts` assigned directly to the existing config should be okay.
+        config = opts;
+        return new Proxy(sdk, sdkProxy);
+      },
+      server: (url, variables = {}) => {
+        server = {
+          url,
+          variables,
+        };
       },
     };
 

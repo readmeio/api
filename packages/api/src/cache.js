@@ -169,7 +169,7 @@ class SdkCache {
 
         if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(this.uri)) {
           return res.text().then(text => {
-            return yaml.safeLoad(text);
+            return yaml.load(text);
           });
         }
 
@@ -184,7 +184,7 @@ class SdkCache {
     })
       .then(res => {
         if (/\.(yaml|yml)/.test(this.uri)) {
-          return yaml.safeLoad(res);
+          return yaml.load(res);
         }
 
         return JSON.parse(res);

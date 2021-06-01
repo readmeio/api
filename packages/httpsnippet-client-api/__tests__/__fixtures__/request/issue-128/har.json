@@ -8,7 +8,10 @@
           },
           "cookies": [],
           "headers": [
-            {"name": "Accept", "value": "application/xml"}
+            {
+              "name": "Accept",
+              "value": "application/xml"
+            }
           ],
           "httpVersion": "HTTP/1.1",
           "method": "GET",
@@ -19,7 +22,10 @@
             "size": 0
           },
           "queryString": [
-            {"name": "api_key", "value": "authKey'With'Apostrophes"}
+            {
+              "name": "api_key",
+              "value": "authKey'With'Apostrophes"
+            }
           ],
           "url": "http://example.com"
         }

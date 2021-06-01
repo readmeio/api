@@ -1,78 +1,83 @@
 {
   "openapi": "3.0.0",
   "info": {
-     "version": "1.0",
-     "title": "application-json"
+    "version": "1.0",
+    "title": "application-json"
   },
   "servers": [
-     {
-        "url": "http://mockbin.com"
-     }
+    {
+      "url": "http://mockbin.com"
+    }
   ],
   "paths": {
-     "/har": {
-        "post": {
-           "requestBody": {
-              "required": true,
-              "content": {
-                 "application/json": {
-                    "schema": {
-                       "type": "object",
-                       "properties": {
-                          "number": {
-                             "type": "number"
-                          },
-                          "string": {
-                             "type": "string"
-                          },
-                          "arr": {
-                             "type": "array",
-                             "items": {
-                                "type": "number"
-                             }
-                          },
-                          "nested": {
-                             "type": "object",
-                             "properties": {
-                                "a": {
-                                   "type": "string"
-                                }
-                             }
-                          },
-                          "arr_mix": {
-                             "type": "array",
-                             "items": {
-                                "oneOf": [
-                                   {
-                                      "type": "number"
-                                   },
-                                   {
-                                      "type": "number"
-                                   },
-                                   {
-                                      "type": "string"
-                                   },
-                                   {
-                                      "properties": {
-                                         "arr_mix_nested": {
-                                            "type": "object",
-                                            "properties": {}
-                                         }
-                                      },
-                                      "type": "object"
-                                   }
-                                ]
-                             }
-                          },
-                          "boolean": {
-                             "type": "boolean"
-                          }
-                       }
+    "/har": {
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "number"
+                  },
+                  "string": {
+                    "type": "string"
+                  },
+                  "arr": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
                     }
-                 }
+                  },
+                  "nested": {
+                    "type": "object",
+                    "properties": {
+                      "a": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "arr_mix": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "properties": {
+                            "arr_mix_nested": {
+                              "type": "object",
+                              "properties": {}
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
+                    }
+                  },
+                  "boolean": {
+                    "type": "boolean"
+                  }
+                }
               }
-           }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
         }
-     }
+      }
+    }
   }
 }

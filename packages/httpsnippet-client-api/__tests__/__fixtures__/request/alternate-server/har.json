@@ -1,0 +1,31 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "http://dev.local/v2/create/1234",
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 123"
+            }
+          ],
+          "postData": {
+            "mimeType": "application/x-www-form-urlencoded",
+            "params": [
+              {
+                "name": "foo",
+                "value": "bar"
+              },
+              {
+                "name": "hello",
+                "value": "world"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,14 +1,14 @@
 const nock = require('nock');
 const path = require('path');
-const findCacheDir = require('find-cache-dir');
-const fsMock = require('mock-fs');
-const fs = require('fs').promises;
 const api = require('../src');
 const Cache = require('../src/cache');
 const pkg = require('../package.json');
+const { vol } = require('memfs');
 
-const serverUrl = 'https://api.example.com';
-const createOas = require('./__fixtures__/createOas')(serverUrl);
+const realFs = jest.requireActual('fs').promises;
+
+// eslint-disable-next-line global-require
+jest.mock('fs', () => require('memfs').fs);
 
 const examplesDir = path.join(__dirname, 'examples');
 
@@ -17,16 +17,19 @@ let readmeSdk;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 beforeEach(async () => {
-  fsMock({
-    [examplesDir]: {
-      'petstore.json': await fs.readFile(
-        require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json'),
-        'utf8'
-      ),
-      'readme.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8'),
-      'uspto.json': await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/uspto.json'), 'utf8'),
-    },
-    [findCacheDir({ name: pkg.name })]: {},
+  vol.fromJSON({
+    [`${[examplesDir]}/petstore.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json'),
+      'utf8'
+    ),
+    [`${[examplesDir]}/readme.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+      'utf8'
+    ),
+    [`${[examplesDir]}/uspto.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.0/json/uspto.json'),
+      'utf8'
+    ),
   });
 
   const petstore = path.join(examplesDir, 'petstore.json');
@@ -39,7 +42,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  fsMock.restore();
+  vol.reset();
 });
 
 describe('#preloading', () => {
@@ -56,7 +59,7 @@ describe('#preloading', () => {
 
     // SDK should still not be loaded since we haven't officially called it yet.
     expect(new Cache(uspto).isCached()).toBe(false);
-    expect(Object.keys(sdk)).toStrictEqual(['auth']);
+    expect(Object.keys(sdk)).toStrictEqual(['auth', 'config', 'server']);
 
     await sdk.get('/').then(() => {
       mock.done();
@@ -66,6 +69,8 @@ describe('#preloading', () => {
     expect(new Cache(uspto).isCached()).toBe(true);
     expect(Object.keys(sdk)).toStrictEqual([
       'auth',
+      'config',
+      'server',
       'get',
       'put',
       'post',
@@ -86,7 +91,7 @@ describe('#preloading', () => {
   });
 
   it('should support supplying a raw JSON OAS object', () => {
-    const sdk = api(createOas());
+    const sdk = api(uspto);
     expect(typeof sdk.get).toBe('function');
   });
 });
@@ -158,16 +163,16 @@ describe('#fetch', () => {
     const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(404, response);
 
     return petstoreSdk.deletePet({ id: petId }).catch(async err => {
-      expect(err.status).toBe(404);
+      expect(err.status).toBe(404); // eslint-disable-line jest/no-conditional-expect
 
       const json = await err.json();
-      expect(json).toStrictEqual(response);
+      expect(json).toStrictEqual(response); // eslint-disable-line jest/no-conditional-expect
       mock.done();
     });
   });
 
   it('should contain a custom user agent for the library in requests', () => {
-    expect.assertions(2);
+    expect.assertions(1);
 
     const userAgent = `${pkg.name} (node)/${pkg.version}`;
     const mock = nock(petstoreServerUrl, {
@@ -180,10 +185,7 @@ describe('#fetch', () => {
         expect(this.req.headers['user-agent']).toStrictEqual([userAgent]);
       });
 
-    return petstoreSdk.deletePet({ id: petId }).then(res => {
-      expect(res.status).toBe(200);
-      mock.done();
-    });
+    return petstoreSdk.deletePet({ id: petId }).then(() => mock.done());
   });
 
   describe('operationId', () => {
@@ -195,26 +197,17 @@ describe('#fetch', () => {
 
       const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(200, response);
 
-      return petstoreSdk
-        .deletePet({ id: petId })
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual(response);
-          mock.done();
-        });
+      return petstoreSdk.deletePet({ id: petId }).then(res => {
+        expect(res).toStrictEqual(response);
+        mock.done();
+      });
     });
 
     it('should pass through body for operationId', () => {
       const body = { name: 'Buster' };
       const mock = nock(petstoreServerUrl).post('/pets', body).reply(200);
 
-      return petstoreSdk.addPet(body).then(res => {
-        expect(res.status).toBe(200);
-        mock.done();
-      });
+      return petstoreSdk.addPet(body).then(() => mock.done());
     });
 
     it('should pass through parameters and body for operationId', () => {
@@ -226,10 +219,7 @@ describe('#fetch', () => {
 
       const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`, body).reply(200);
 
-      return readmeSdk.updateChangelog(body, { slug }).then(res => {
-        expect(res.status).toBe(200);
-        mock.done();
-      });
+      return readmeSdk.updateChangelog(body, { slug }).then(() => mock.done());
     });
   });
 
@@ -246,26 +236,16 @@ describe('#fetch', () => {
           };
         });
 
-      return petstoreSdk
-        .post('/pets', body)
-        .then(res => {
-          expect(res.status).toBe(200);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ id: 100, name: body.name });
-          mock.done();
-        });
+      return petstoreSdk.post('/pets', body).then(res => {
+        expect(res).toStrictEqual({ id: 100, name: body.name });
+        mock.done();
+      });
     });
 
     it('should pass through parameters for method + path', () => {
       const slug = 'new-release';
       const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`).reply(200);
-      return readmeSdk.put('/changelogs/{slug}', { slug }).then(res => {
-        expect(res.status).toBe(200);
-        expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
-        mock.done();
-      });
+      return readmeSdk.put('/changelogs/{slug}', { slug }).then(() => mock.done());
     });
 
     it('should pass through parameters and body for method + path', () => {
@@ -284,17 +264,10 @@ describe('#fetch', () => {
           };
         });
 
-      return readmeSdk
-        .put('/changelogs/{slug}', body, { slug })
-        .then(res => {
-          expect(res.status).toBe(200);
-          expect(res.url).toBe(`https://dash.readme.io/api/v1/changelogs/${slug}`);
-          return res.json();
-        })
-        .then(res => {
-          expect(res).toStrictEqual({ ...body, slug });
-          mock.done();
-        });
+      return readmeSdk.put('/changelogs/{slug}', body, { slug }).then(res => {
+        expect(res).toStrictEqual({ ...body, slug });
+        mock.done();
+      });
     });
   });
 });

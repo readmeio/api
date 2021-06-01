@@ -1,8 +1,11 @@
 const nock = require('nock');
-const fsMock = require('mock-fs');
-const findCacheDir = require('find-cache-dir');
 const path = require('path');
-const fs = require('fs').promises;
+const { vol } = require('memfs');
+
+const realFs = jest.requireActual('fs').promises;
+
+// eslint-disable-next-line global-require
+jest.mock('fs', () => require('memfs').fs);
 
 const Cache = require('../src/cache');
 const pkg = require('../package.json');
@@ -30,23 +33,23 @@ expect.extend({
 });
 
 beforeEach(async () => {
-  readmeExampleJson = await fs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8');
-  readmeExampleYaml = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
+  readmeExampleJson = await realFs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8');
+  readmeExampleYaml = await realFs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
 
-  fsMock({
-    [examplesDir]: {
-      'invalid-openapi.json': JSON.stringify(pkg),
-      'readme.json': readmeExampleJson,
-      'readme.yaml': readmeExampleYaml,
-      'swagger.json': await fs.readFile(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'utf8'),
-    },
+  vol.fromJSON({
+    [`${[examplesDir]}/invalid-openapi.json`]: JSON.stringify(pkg),
+    [`${[examplesDir]}/readme.json`]: readmeExampleJson,
+    [`${[examplesDir]}/readme.yaml`]: readmeExampleYaml,
+    [`${[examplesDir]}/swagger.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/2.0/json/petstore.json'),
+      'utf8'
+    ),
     '../examples/readme.json': readmeExampleJson,
-    [findCacheDir({ name: pkg.name })]: {},
   });
 });
 
 afterEach(() => {
-  fsMock.restore();
+  vol.reset();
 });
 
 describe('#load', () => {

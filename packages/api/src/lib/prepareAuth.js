@@ -1,7 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-// Needs work for supporting multiple different kinds of auth at the same time. for example if an operation uses
-// OAuth and HTTP bearer, how can we guarantee that the OAuth bearer is used with oauth?
-// @todo
+/**
+ * @todo Needs work for supporting multiple different kinds of auth at the same time. for example if
+ *  an operation uses OAuth and HTTP bearer, how can we guarantee that the OAuth bearer is used with
+ *  OAuth?
+ *
+ * @param {Array} authKeys
+ * @param {Operation} operation
+ */
 module.exports = (authKeys, operation) => {
   if (authKeys.length === 0) {
     return {};
