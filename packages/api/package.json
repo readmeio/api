@@ -41,7 +41,7 @@
     "@readme/eslint-config": "^5.0.5",
     "@readme/oas-examples": "^4.2.0",
     "eslint": "^7.6.0",
-    "jest": "^26.0.1",
+    "jest": "^27.0.3",
     "memfs": "^3.2.0",
     "nock": "^13.0.0",
     "prettier": "^2.0.5"
