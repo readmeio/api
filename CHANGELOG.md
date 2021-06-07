@@ -1,3 +1,18 @@
+## 3.2.0 (2021-06-07)
+
+* chore: upgrading the `oas` dependency in httpsnippet-client-api ([98981b0](https://github.com/readmeio/api/commit/98981b0))
+* chore(deps-dev): bump @commitlint/cli from 12.1.3 to 12.1.4 (#296) ([3d1a6df](https://github.com/readmeio/api/commit/3d1a6df)), closes [#296](https://github.com/readmeio/api/issues/296)
+* chore(deps-dev): bump @commitlint/config-conventional (#297) ([87f2825](https://github.com/readmeio/api/commit/87f2825)), closes [#297](https://github.com/readmeio/api/issues/297)
+* chore(deps-dev): bump eslint from 7.26.0 to 7.27.0 (#300) ([1ef52d8](https://github.com/readmeio/api/commit/1ef52d8)), closes [#300](https://github.com/readmeio/api/issues/300)
+* chore(deps-dev): bump jest from 26.6.3 to 27.0.3 (#299) ([2b73cef](https://github.com/readmeio/api/commit/2b73cef)), closes [#299](https://github.com/readmeio/api/issues/299)
+* chore(deps-dev): bump nock from 13.0.11 to 13.1.0 (#295) ([f118bb2](https://github.com/readmeio/api/commit/f118bb2)), closes [#295](https://github.com/readmeio/api/issues/295)
+* chore(deps): bump @readme/oas-to-har from 13.4.5 to 13.4.6 (#301) ([0a15279](https://github.com/readmeio/api/commit/0a15279)), closes [#301](https://github.com/readmeio/api/issues/301)
+* chore(deps): bump oas from 11.0.0 to 11.0.1 (#298) ([a35e430](https://github.com/readmeio/api/commit/a35e430)), closes [#298](https://github.com/readmeio/api/issues/298)
+* feat: shorthand for readme-hosted APIs (@subdomain#uuid) (#176) ([bca6c23](https://github.com/readmeio/api/commit/bca6c23)), closes [#176](https://github.com/readmeio/api/issues/176)
+* ci: adjusting the codeql workflow ([0bbf4d8](https://github.com/readmeio/api/commit/0bbf4d8))
+
+
+
 ## 3.1.0 (2021-05-13)
 
 * chore(deps-dev): bump @commitlint/cli from 12.1.1 to 12.1.3 (#288) ([23cdaf5](https://github.com/readmeio/api/commit/23cdaf5)), closes [#288](https://github.com/readmeio/api/issues/288)
