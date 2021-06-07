@@ -22,7 +22,22 @@ if (typeof cacheDir === 'undefined') {
 
 class SdkCache {
   constructor(uri) {
-    this.uri = uri;
+    /**
+     * Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
+     *
+     * Examples:
+     *    - @petstore/v1.0#n6kvf10vakpemvplx
+     *    - @petstore#n6kvf10vakpemvplx
+     *
+     * @param {String} u
+     * @returns {String}
+     */
+    const resolveReadMeRegistryAccessor = u =>
+      typeof u === 'string'
+        ? u.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.io/api/v1/api-registry/$2')
+        : u;
+
+    this.uri = resolveReadMeRegistryAccessor(uri);
     this.uriHash = SdkCache.getCacheHash(this.uri);
     this.dir = cacheDir;
     this.cacheStore = path.join(this.dir, 'cache.json');

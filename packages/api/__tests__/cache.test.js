@@ -61,6 +61,24 @@ describe('#load', () => {
     });
   });
 
+  describe('shorthand accessors', () => {
+    it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', () => {
+      return expect(new Cache('@petstore/v1.0#n6kvf10vakpemvplx').uri).toBe(
+        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+      );
+    });
+
+    it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', () => {
+      return expect(new Cache('@petstore#n6kvf10vakpemvplx').uri).toBe(
+        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+      );
+    });
+
+    it("shouldn't try to resolve improperly formatted shorthand accessors to the ReadMe API", () => {
+      return expect(new Cache('n6kvf10vakpemvplx').uri).toBe('n6kvf10vakpemvplx');
+    });
+  });
+
   it('should throw an error when a non-HTTP(S) url is supplied', () => {
     return expect(new Cache('htt://example.com/openapi.json').load()).rejects.toThrow(
       'Only HTTP(S) protocols are supported'
