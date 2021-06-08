@@ -1,6 +1,6 @@
 // Nabbed from here:
 // https://github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/src/lib/parse-response.js#L13-L30
-const { matchesMimeType } = require('oas/tooling/utils');
+const { matchesMimeType } = require('oas/src/utils');
 
 module.exports = async function getResponseBody(response) {
   const contentType = response.headers.get('Content-Type');
