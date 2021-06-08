@@ -1,3 +1,9 @@
+## <small>3.2.1 (2021-06-08)</small>
+
+* chore(deps): upgrading oas-to-har and oas (#302) ([eef8895](https://github.com/readmeio/api/commit/eef8895)), closes [#302](https://github.com/readmeio/api/issues/302)
+
+
+
 ## 3.2.0 (2021-06-07)
 
 * chore: upgrading the `oas` dependency in httpsnippet-client-api ([98981b0](https://github.com/readmeio/api/commit/98981b0))
