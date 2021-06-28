@@ -1,3 +1,9 @@
+## <small>3.2.3 (2021-06-28)</small>
+
+* chore(deps): upgrading oas to 13.0.2 ([ca3ef7a](https://github.com/readmeio/api/commit/ca3ef7a))
+
+
+
 ## <small>3.2.2 (2021-06-11)</small>
 
 * chore(deps): upgrading `oas` to v13 (#303) ([e77cb20](https://github.com/readmeio/api/commit/e77cb20)), closes [#303](https://github.com/readmeio/api/issues/303)
