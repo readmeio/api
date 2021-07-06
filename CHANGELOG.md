@@ -1,3 +1,16 @@
+## <small>3.2.6 (2021-07-06)</small>
+
+* chore(deps-dev): bump @readme/eslint-config from 5.0.5 to 5.1.0 (#306) ([ea4e2f0](https://github.com/readmeio/api/commit/ea4e2f0)), closes [#306](https://github.com/readmeio/api/issues/306)
+* chore(deps-dev): bump eslint from 7.27.0 to 7.29.0 (#305) ([cc41ca7](https://github.com/readmeio/api/commit/cc41ca7)), closes [#305](https://github.com/readmeio/api/issues/305)
+* chore(deps-dev): bump husky from 6.0.0 to 7.0.0 (#307) ([7a5e17a](https://github.com/readmeio/api/commit/7a5e17a)), closes [#307](https://github.com/readmeio/api/issues/307)
+* chore(deps-dev): bump jest from 27.0.3 to 27.0.6 (#308) ([ec8261f](https://github.com/readmeio/api/commit/ec8261f)), closes [#308](https://github.com/readmeio/api/issues/308)
+* chore(deps-dev): bump prettier from 2.3.0 to 2.3.2 (#311) ([9fbc5d6](https://github.com/readmeio/api/commit/9fbc5d6)), closes [#311](https://github.com/readmeio/api/issues/311)
+* chore(deps): bump @apidevtools/json-schema-ref-parser (#310) ([7874ea4](https://github.com/readmeio/api/commit/7874ea4)), closes [#310](https://github.com/readmeio/api/issues/310)
+* chore(deps): bump @readme/oas-to-har from 13.4.10 to 13.4.17 (#309) ([3e36558](https://github.com/readmeio/api/commit/3e36558)), closes [#309](https://github.com/readmeio/api/issues/309)
+* chore(deps): bump actions/setup-node from 2.1.5 to 2.2.0 (#304) ([6cb7a85](https://github.com/readmeio/api/commit/6cb7a85)), closes [#304](https://github.com/readmeio/api/issues/304)
+
+
+
 ## <small>3.2.5 (2021-06-30)</small>
 
 * chore(deps): upgrading oas to fix a server path matching quirk ([bb4a3bd](https://github.com/readmeio/api/commit/bb4a3bd))
