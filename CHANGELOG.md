@@ -1,3 +1,12 @@
+## 3.3.0 (2021-07-31)
+
+* chore(deps-dev): bumping dev deps ([d34cb39](https://github.com/readmeio/api/commit/d34cb39))
+* chore(deps-dev): bumping root pkg deps ([b585684](https://github.com/readmeio/api/commit/b585684))
+* chore(deps): upgrading our oas and fetch-har deps ([6efcd05](https://github.com/readmeio/api/commit/6efcd05))
+* docs: revisions to the pr template ([2ccb888](https://github.com/readmeio/api/commit/2ccb888))
+
+
+
 ## <small>3.2.6 (2021-07-06)</small>
 
 * chore(deps-dev): bump @readme/eslint-config from 5.0.5 to 5.1.0 (#306) ([ea4e2f0](https://github.com/readmeio/api/commit/ea4e2f0)), closes [#306](https://github.com/readmeio/api/issues/306)
