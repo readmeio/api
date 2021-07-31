@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-nested-template-literals */
 const nock = require('nock');
 const api = require('../src');
 
