@@ -25,7 +25,7 @@
   "dependencies": {
     "content-type": "^1.0.4",
     "path-to-regexp": "^6.1.0",
-    "stringify-object": "^3.3.0"
+    "stringify-object": "^4.0.0"
   },
   "peerDependencies": {
     "@readme/httpsnippet": "^2.4.4",
