@@ -1,3 +1,21 @@
+## <small>3.3.1 (2021-08-26)</small>
+
+* chore: running npm audit ([50428b2](https://github.com/readmeio/api/commit/50428b2))
+* chore(deps-dev): bump husky from 7.0.1 to 7.0.2 (#319) ([876bf46](https://github.com/readmeio/api/commit/876bf46)), closes [#319](https://github.com/readmeio/api/issues/319)
+* chore(deps-dev): bump nock from 13.1.1 to 13.1.3 (#316) ([2cef19f](https://github.com/readmeio/api/commit/2cef19f)), closes [#316](https://github.com/readmeio/api/issues/316)
+* chore(deps): bump @apidevtools/swagger-parser from 10.0.2 to 10.0.3 (#320) ([380f369](https://github.com/readmeio/api/commit/380f369)), closes [#320](https://github.com/readmeio/api/issues/320)
+* chore(deps): bump @readme/oas-to-har from 13.6.0 to 13.6.1 (#322) ([2c49d5f](https://github.com/readmeio/api/commit/2c49d5f)), closes [#322](https://github.com/readmeio/api/issues/322)
+* chore(deps): bump actions/setup-node from 2.2.0 to 2.3.0 (#312) ([e4a907d](https://github.com/readmeio/api/commit/e4a907d)), closes [#312](https://github.com/readmeio/api/issues/312)
+* chore(deps): bump actions/setup-node from 2.3.0 to 2.4.0 (#314) ([c53578d](https://github.com/readmeio/api/commit/c53578d)), closes [#314](https://github.com/readmeio/api/issues/314)
+* chore(deps): bump datauri from 3.0.0 to 4.1.0 (#318) ([445c4ad](https://github.com/readmeio/api/commit/445c4ad)), closes [#318](https://github.com/readmeio/api/issues/318)
+* chore(deps): bump fetch-har from 5.0.0 to 5.0.1 (#323) ([c3feab1](https://github.com/readmeio/api/commit/c3feab1)), closes [#323](https://github.com/readmeio/api/issues/323)
+* chore(deps): bump mimer from 1.1.0 to 2.0.2 (#317) ([d3da902](https://github.com/readmeio/api/commit/d3da902)), closes [#317](https://github.com/readmeio/api/issues/317)
+* chore(deps): bump oas from 14.0.0 to 14.3.1 (#315) ([400e680](https://github.com/readmeio/api/commit/400e680)), closes [#315](https://github.com/readmeio/api/issues/315)
+* ci: ignoring stringify-object because its an ESM pkg now ([bbaac03](https://github.com/readmeio/api/commit/bbaac03))
+* ci: updating the dependabot label ([d07b3c0](https://github.com/readmeio/api/commit/d07b3c0))
+
+
+
 ## 3.3.0 (2021-07-31)
 
 * chore(deps-dev): bumping dev deps ([d34cb39](https://github.com/readmeio/api/commit/d34cb39))
