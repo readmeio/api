@@ -24,3 +24,8 @@ updates:
     commit-message:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
+    ignore:
+      # stringify-object is now an ESM package and can't be used here without a rewrite.
+      - dependency-name: stringify-object
+        versions:
+          - ">= 4"
