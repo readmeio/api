@@ -270,4 +270,44 @@ describe('#fetch', () => {
       });
     });
   });
+
+  describe('query parameter URL encoding', () => {
+    it('should encode url parameters if they are not already encoded', () => {
+      const params = {
+        tags: 'somethign&nothing=true',
+        limit: 'hash#data',
+      };
+
+      const mock = nock(petstoreServerUrl)
+        .get('/pets')
+        .query(true)
+        .reply(200, function () {
+          return { path: this.req.path };
+        });
+
+      return petstoreSdk.findPets(params).then(res => {
+        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
+        mock.done();
+      });
+    });
+
+    it("should not double encode query params if they're supplied as encoded", () => {
+      const params = {
+        tags: encodeURIComponent('somethign&nothing=true'),
+        limit: encodeURIComponent('hash#data'),
+      };
+
+      const mock = nock(petstoreServerUrl)
+        .get('/pets')
+        .query(true)
+        .reply(200, function () {
+          return { path: this.req.path };
+        });
+
+      return petstoreSdk.findPets(params).then(res => {
+        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
+        mock.done();
+      });
+    });
+  });
 });
