@@ -34,7 +34,7 @@
     "js-yaml": "^4.1.0",
     "make-dir": "^3.1.0",
     "mimer": "^2.0.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.0.0",
     "oas": "^14.0.0"
   },
   "devDependencies": {
