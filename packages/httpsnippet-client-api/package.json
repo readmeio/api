@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "3.3.0",
+  "version": "3.3.2",
   "description": "An HTTP Snippet client for generating snippets for the api module.",
   "main": "src/index.js",
   "scripts": {

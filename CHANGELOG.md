@@ -1,3 +1,18 @@
+## <small>3.3.2 (2021-09-01)</small>
+
+* chore(deps-dev): bump @readme/eslint-config from 6.0.0 to 6.1.0 (#329) ([716b0af](https://github.com/readmeio/api/commit/716b0af)), closes [#329](https://github.com/readmeio/api/issues/329)
+* chore(deps-dev): bump jest from 27.0.6 to 27.1.0 (#326) ([1c7188a](https://github.com/readmeio/api/commit/1c7188a)), closes [#326](https://github.com/readmeio/api/issues/326)
+* chore(deps-dev): bump memfs from 3.2.2 to 3.2.3 (#324) ([a1c689e](https://github.com/readmeio/api/commit/a1c689e)), closes [#324](https://github.com/readmeio/api/issues/324)
+* chore(deps-dev): removing conventional-changelog-cli in favor of npx ([9a7a05e](https://github.com/readmeio/api/commit/9a7a05e))
+* chore(deps-dev): removing lerna in favor of npx ([1e237ac](https://github.com/readmeio/api/commit/1e237ac))
+* chore(deps): bump fetch-har from 5.0.1 to 5.0.2 (#330) ([ca00fec](https://github.com/readmeio/api/commit/ca00fec)), closes [#330](https://github.com/readmeio/api/issues/330)
+* chore(deps): bump find-cache-dir from 3.3.1 to 3.3.2 (#325) ([1255449](https://github.com/readmeio/api/commit/1255449)), closes [#325](https://github.com/readmeio/api/issues/325)
+* chore(deps): bump oas from 14.3.1 to 14.4.0 (#328) ([7fc0996](https://github.com/readmeio/api/commit/7fc0996)), closes [#328](https://github.com/readmeio/api/issues/328)
+* chore(deps): running npm audit ([6f07b41](https://github.com/readmeio/api/commit/6f07b41))
+* ci: ignoring node-fetch updates as its now an esm package ([b3222a4](https://github.com/readmeio/api/commit/b3222a4))
+
+
+
 ## <small>3.3.1 (2021-08-26)</small>
 
 * chore: running npm audit ([50428b2](https://github.com/readmeio/api/commit/50428b2))
