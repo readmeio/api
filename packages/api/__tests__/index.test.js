@@ -274,7 +274,7 @@ describe('#fetch', () => {
   describe('query parameter URL encoding', () => {
     it('should encode url parameters if they are not already encoded', () => {
       const params = {
-        tags: 'somethign&nothing=true',
+        tags: 'somethign&nothing=true&20%',
         limit: 'hash#data',
       };
 
@@ -286,7 +286,7 @@ describe('#fetch', () => {
         });
 
       return petstoreSdk.findPets(params).then(res => {
-        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
+        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue%2620%25&limit=hash%23data');
         mock.done();
       });
     });
