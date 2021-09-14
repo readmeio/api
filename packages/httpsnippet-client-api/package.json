@@ -32,11 +32,11 @@
     "oas": "^14.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^6.0.0",
+    "@readme/eslint-config": "^7.1.0",
     "@readme/oas-examples": "^4.2.0",
     "eslint": "^7.32.0",
-    "jest": "^27.0.6",
-    "prettier": "^2.3.2"
+    "jest": "^27.2.0",
+    "prettier": "^2.4.0"
   },
   "prettier": "@readme/eslint-config/prettier",
   "jest": {
