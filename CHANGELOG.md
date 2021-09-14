@@ -1,3 +1,12 @@
+## 3.4.0 (2021-09-14)
+
+* chore(deps-dev): bumping dev deps ([69dcca3](https://github.com/readmeio/api/commit/69dcca3))
+* chore(deps): bumping oas-to-har and oas deps ([a958511](https://github.com/readmeio/api/commit/a958511))
+* chore(deps): upgrading the @readme/httpsnippet peerDep requirements ([3814721](https://github.com/readmeio/api/commit/3814721))
+* fix: quirks in oas-to-har where query params are not being URI encoded (#331) ([fe43a41](https://github.com/readmeio/api/commit/fe43a41)), closes [#331](https://github.com/readmeio/api/issues/331)
+
+
+
 ## <small>3.3.2 (2021-09-01)</small>
 
 * chore(deps-dev): bump @readme/eslint-config from 6.0.0 to 6.1.0 (#329) ([716b0af](https://github.com/readmeio/api/commit/716b0af)), closes [#329](https://github.com/readmeio/api/issues/329)
