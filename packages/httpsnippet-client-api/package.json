@@ -28,7 +28,7 @@
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^2.4.4",
+    "@readme/httpsnippet": "^3.0.0",
     "oas": "^14.0.0"
   },
   "devDependencies": {
