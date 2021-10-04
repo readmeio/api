@@ -24,8 +24,8 @@ describe('#config()', () => {
 
       return sdk.deletePet({ petId }).then(async res => {
         expect(res instanceof Response).toBe(true);
-        expect(res.status).toStrictEqual(200);
-        expect(await res.json()).toStrictEqual(response);
+        expect(res.status).toBe(200);
+        await expect(res.json()).resolves.toStrictEqual(response);
         mock.done();
       });
     });

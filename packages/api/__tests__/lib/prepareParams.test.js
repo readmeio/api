@@ -22,10 +22,10 @@ describe('#prepareParams', () => {
   it('should prepare nothing if nothing was supplied', async () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
 
-    expect(await prepareParams(operation)).toStrictEqual({});
-    expect(await prepareParams(operation, null, null)).toStrictEqual({});
-    expect(await prepareParams(operation, [], [])).toStrictEqual({});
-    expect(await prepareParams(operation, {}, {})).toStrictEqual({});
+    await expect(prepareParams(operation)).resolves.toStrictEqual({});
+    await expect(prepareParams(operation, null, null)).resolves.toStrictEqual({});
+    await expect(prepareParams(operation, [], [])).resolves.toStrictEqual({});
+    await expect(prepareParams(operation, {}, {})).resolves.toStrictEqual({});
   });
 
   it('should prepare body and metadata when both are supplied', async () => {
@@ -38,7 +38,7 @@ describe('#prepareParams', () => {
       'x-readme-version': '1.0',
     };
 
-    expect(await prepareParams(operation, body, metadata)).toStrictEqual({
+    await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
       body: {
         spec: 'this is the contents of an api specification',
       },
@@ -52,7 +52,7 @@ describe('#prepareParams', () => {
     const operation = new Oas(payloadExamples).operation('/primitiveBody', 'put');
     const body = 'Brie cheeseburger ricotta.';
 
-    expect(await prepareParams(operation, body, {})).toStrictEqual({
+    await expect(prepareParams(operation, body, {})).resolves.toStrictEqual({
       body,
     });
   });
@@ -65,7 +65,7 @@ describe('#prepareParams', () => {
       },
     ];
 
-    expect(await prepareParams(operation, body, {})).toStrictEqual({
+    await expect(prepareParams(operation, body, {})).resolves.toStrictEqual({
       body,
     });
   });
@@ -82,7 +82,7 @@ describe('#prepareParams', () => {
         version: 'oa_citations',
       };
 
-      expect(await prepareParams(operation, body, metadata)).toStrictEqual({
+      await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
         path: {
           dataset: 'v1',
           version: 'oa_citations',
@@ -133,7 +133,7 @@ describe('#prepareParams', () => {
         spec: 'this is the contents of an api specification',
       };
 
-      expect(await prepareParams(operation, body)).toStrictEqual({
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         body,
       });
     });
@@ -142,7 +142,7 @@ describe('#prepareParams', () => {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const body = 'this is a primitive value';
 
-      expect(await prepareParams(operation, body)).toStrictEqual({
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         body,
       });
     });
@@ -155,7 +155,7 @@ describe('#prepareParams', () => {
         },
       ];
 
-      expect(await prepareParams(operation, body)).toStrictEqual({
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         body,
       });
     });
@@ -168,7 +168,7 @@ describe('#prepareParams', () => {
         randomUnknownParameter: true,
       };
 
-      expect(await prepareParams(operation, body)).toStrictEqual({
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         path: {
           version: 'v1',
           dataset: 'oa_citations',
@@ -191,7 +191,7 @@ describe('#prepareParams', () => {
         randomUnknownParameter4: true,
       };
 
-      expect(await prepareParams(operation, body)).toStrictEqual({
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         formData: {
           version: 'v1',
           randomUnknownParameter: true,
@@ -208,7 +208,7 @@ describe('#prepareParams', () => {
         'x-readme-version': '1.0',
       };
 
-      expect(await prepareParams(operation, metadata)).toStrictEqual({
+      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
         header: {
           'x-readme-version': '1.0',
         },

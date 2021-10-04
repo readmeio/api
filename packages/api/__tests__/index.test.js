@@ -286,7 +286,7 @@ describe('#fetch', () => {
         });
 
       return petstoreSdk.findPets(params).then(res => {
-        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue%2620%25&limit=hash%23data');
+        expect(res.path).toBe('/api/pets?tags=somethign%26nothing%3Dtrue%2620%25&limit=hash%23data');
         mock.done();
       });
     });
@@ -305,7 +305,7 @@ describe('#fetch', () => {
         });
 
       return petstoreSdk.findPets(params).then(res => {
-        expect(res.path).toStrictEqual('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
+        expect(res.path).toBe('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
         mock.done();
       });
     });
