@@ -24,12 +24,12 @@ beforeEach(() => {
 
 describe('#parseResponse', () => {
   it('should parse application/json response as json', async () => {
-    expect(await parseResponse(response)).toStrictEqual(JSON.parse(responseBody));
+    await expect(parseResponse(response)).resolves.toStrictEqual(JSON.parse(responseBody));
   });
 
   it('should parse application/vnd.api+json as json', async () => {
     response.headers['Content-Type'] = 'application/vnd.api+json';
-    expect(await parseResponse(response)).toStrictEqual(JSON.parse(responseBody));
+    await expect(parseResponse(response)).resolves.toStrictEqual(JSON.parse(responseBody));
   });
 
   it('should parse non-json response as text', async () => {
@@ -40,7 +40,7 @@ describe('#parseResponse', () => {
       },
     });
 
-    expect(await parseResponse(nonJsonResponse)).toStrictEqual(nonJsonResponseBody);
+    await expect(parseResponse(nonJsonResponse)).resolves.toStrictEqual(nonJsonResponseBody);
   });
 
   it('should not error if invalid json is returned', async () => {
@@ -50,7 +50,7 @@ describe('#parseResponse', () => {
       },
     });
 
-    expect(await parseResponse(invalidJsonResponse)).toBe('plain text');
+    await expect(parseResponse(invalidJsonResponse)).resolves.toBe('plain text');
   });
 
   it('should default to JSON with wildcard content-type', async () => {
@@ -60,7 +60,7 @@ describe('#parseResponse', () => {
       },
     });
 
-    expect(await parseResponse(wildcardResponse)).toStrictEqual(JSON.parse(responseBody));
+    await expect(parseResponse(wildcardResponse)).resolves.toStrictEqual(JSON.parse(responseBody));
   });
 
   it('should return with empty string if there is no response', async () => {
@@ -70,6 +70,6 @@ describe('#parseResponse', () => {
       },
     });
 
-    expect(await parseResponse(emptyResponse)).toStrictEqual('');
+    await expect(parseResponse(emptyResponse)).resolves.toBe('');
   });
 });
