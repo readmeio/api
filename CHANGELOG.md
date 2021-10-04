@@ -1,3 +1,20 @@
+## <small>3.4.1 (2021-10-04)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 13.1.0 to 13.2.0 (#337) ([33c95e6](https://github.com/readmeio/api/commit/33c95e6)), closes [#337](https://github.com/readmeio/api/issues/337)
+* chore(deps-dev): bump @commitlint/config-conventional (#333) ([3136aff](https://github.com/readmeio/api/commit/3136aff)), closes [#333](https://github.com/readmeio/api/issues/333)
+* chore(deps-dev): bump @readme/eslint-config from 7.1.0 to 7.2.0 (#334) ([8fd366d](https://github.com/readmeio/api/commit/8fd366d)), closes [#334](https://github.com/readmeio/api/issues/334)
+* chore(deps-dev): bump jest from 27.2.0 to 27.2.4 (#341) ([17cba71](https://github.com/readmeio/api/commit/17cba71)), closes [#341](https://github.com/readmeio/api/issues/341)
+* chore(deps-dev): bump memfs from 3.2.4 to 3.3.0 (#342) ([2f7e89f](https://github.com/readmeio/api/commit/2f7e89f)), closes [#342](https://github.com/readmeio/api/issues/342)
+* chore(deps-dev): bump prettier from 2.4.0 to 2.4.1 (#340) ([d2c634a](https://github.com/readmeio/api/commit/d2c634a)), closes [#340](https://github.com/readmeio/api/issues/340)
+* chore(deps): bump @readme/oas-to-har from 13.7.2 to 13.7.3 (#338) ([7cd53c3](https://github.com/readmeio/api/commit/7cd53c3)), closes [#338](https://github.com/readmeio/api/issues/338)
+* chore(deps): bump actions/setup-node from 2.4.0 to 2.4.1 (#332) ([1ac85c7](https://github.com/readmeio/api/commit/1ac85c7)), closes [#332](https://github.com/readmeio/api/issues/332)
+* chore(deps): bump fetch-har from 5.0.2 to 5.0.3 (#339) ([cabdd8f](https://github.com/readmeio/api/commit/cabdd8f)), closes [#339](https://github.com/readmeio/api/issues/339)
+* chore(deps): bump node-fetch from 2.6.1 to 2.6.5 (#336) ([dab087b](https://github.com/readmeio/api/commit/dab087b)), closes [#336](https://github.com/readmeio/api/issues/336)
+* chore(deps): bump oas from 14.5.1 to 14.6.1 (#335) ([b40d217](https://github.com/readmeio/api/commit/b40d217)), closes [#335](https://github.com/readmeio/api/issues/335)
+* docs: adding a security policy ([420584f](https://github.com/readmeio/api/commit/420584f))
+
+
+
 ## 3.4.0 (2021-09-14)
 
 * chore(deps-dev): bumping dev deps ([69dcca3](https://github.com/readmeio/api/commit/69dcca3))
