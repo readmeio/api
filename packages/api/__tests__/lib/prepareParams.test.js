@@ -1,6 +1,5 @@
 const fs = require('fs');
 const Oas = require('oas');
-const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
 const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');
 const payloadExamples = require('../__fixtures__/payloads.oas.json');
@@ -12,11 +11,11 @@ describe('#prepareParams', () => {
   let usptoSpec;
 
   beforeAll(async () => {
-    let schema = await $RefParser.dereference(readmeExample);
-    readmeSpec = new Oas(schema);
+    readmeSpec = new Oas(readmeExample);
+    await readmeSpec.dereference();
 
-    schema = await $RefParser.dereference(usptoExample);
-    usptoSpec = new Oas(schema);
+    usptoSpec = new Oas(usptoExample);
+    await usptoSpec.dereference();
   });
 
   it('should prepare nothing if nothing was supplied', async () => {
