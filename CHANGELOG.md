@@ -1,3 +1,9 @@
+## <small>3.4.2 (2021-10-08)</small>
+
+* fix: issues with circular references being dereferenced and unable to be stringified (#343) ([5c68896](https://github.com/readmeio/api/commit/5c68896)), closes [#343](https://github.com/readmeio/api/issues/343)
+
+
+
 ## <small>3.4.1 (2021-10-04)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 13.1.0 to 13.2.0 (#337) ([33c95e6](https://github.com/readmeio/api/commit/33c95e6)), closes [#337](https://github.com/readmeio/api/issues/337)
