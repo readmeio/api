@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 const SwaggerParser = require('@apidevtools/swagger-parser');
-const $RefParser = require('@apidevtools/json-schema-ref-parser');
 const yaml = require('js-yaml');
 const crypto = require('crypto');
 const findCacheDir = require('find-cache-dir');
@@ -127,16 +126,21 @@ class SdkCache {
       return resolve(json);
     })
       .then(res => {
-        return SwaggerParser.validate(res).catch(err => {
+        // The `validate` method handles dereferencing for us.
+        return SwaggerParser.validate(res, {
+          dereference: {
+            // If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`. This allows us to
+            // not only do easy circular reference detection but also stringify and  save dereferenced API definitions
+            // back into the cache directory.
+            circular: 'ignore',
+          },
+        }).catch(err => {
           if (/is not a valid openapi api definition/i.test(err.message)) {
             throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
           }
 
           throw err;
         });
-      })
-      .then(res => {
-        return $RefParser.dereference(res);
       })
       .then(async spec => {
         if (!fs.existsSync(self.dir)) {

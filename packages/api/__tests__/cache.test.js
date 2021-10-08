@@ -37,6 +37,10 @@ beforeEach(async () => {
   readmeExampleYaml = await realFs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
 
   vol.fromJSON({
+    [`${[examplesDir]}/circular.json`]: await realFs.readFile(
+      require.resolve('./__fixtures__/circular.oas.json'),
+      'utf8'
+    ),
     [`${[examplesDir]}/invalid-openapi.json`]: JSON.stringify(pkg),
     [`${[examplesDir]}/readme.json`]: readmeExampleJson,
     [`${[examplesDir]}/readme.yaml`]: readmeExampleYaml,
@@ -193,6 +197,17 @@ describe('#save()', () => {
 
   it('should cache a new file', async () => {
     const file = path.join(examplesDir, 'readme.json');
+    const cacheStore = new Cache(file);
+
+    expect(cacheStore.isCached()).toBe(false);
+
+    await cacheStore.saveFile();
+
+    expect(cacheStore.isCached()).toBe(true);
+  });
+
+  it('should be able to cache a definition that contains a circular reference', async () => {
+    const file = path.join(examplesDir, 'circular.json');
     const cacheStore = new Cache(file);
 
     expect(cacheStore.isCached()).toBe(false);
