@@ -42,6 +42,10 @@ beforeEach(async () => {
       'utf8'
     ),
     [`${[examplesDir]}/invalid-openapi.json`]: JSON.stringify(pkg),
+    [`${[examplesDir]}/openapi_3.1.json`]: await realFs.readFile(
+      require.resolve('@readme/oas-examples/3.1/json/petstore.json'),
+      'utf8'
+    ),
     [`${[examplesDir]}/readme.json`]: readmeExampleJson,
     [`${[examplesDir]}/readme.yaml`]: readmeExampleYaml,
     [`${[examplesDir]}/swagger.json`]: await realFs.readFile(
@@ -208,6 +212,17 @@ describe('#save()', () => {
 
   it('should be able to cache a definition that contains a circular reference', async () => {
     const file = path.join(examplesDir, 'circular.json');
+    const cacheStore = new Cache(file);
+
+    expect(cacheStore.isCached()).toBe(false);
+
+    await cacheStore.saveFile();
+
+    expect(cacheStore.isCached()).toBe(true);
+  });
+
+  it('should be able to load and cache an OpenAPI 3.1 definition', async () => {
+    const file = path.join(examplesDir, 'openapi_3.1.json');
     const cacheStore = new Cache(file);
 
     expect(cacheStore.isCached()).toBe(false);
