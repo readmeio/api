@@ -1,3 +1,9 @@
+## 4.0.0 (2021-10-29)
+
+* feat: support for OpenAPI 3.1 (#344) ([4e5b9ba](https://github.com/readmeio/api/commit/4e5b9ba)), closes [#344](https://github.com/readmeio/api/issues/344)
+
+
+
 ## <small>3.4.2 (2021-10-08)</small>
 
 * fix: issues with circular references being dereferenced and unable to be stringified (#343) ([5c68896](https://github.com/readmeio/api/commit/5c68896)), closes [#343](https://github.com/readmeio/api/issues/343)
