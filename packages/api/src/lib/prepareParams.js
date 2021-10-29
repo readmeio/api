@@ -4,7 +4,9 @@ const stream = require('stream');
 const mimer = require('mimer');
 const getStream = require('get-stream');
 const datauri = require('datauri');
-const { getSchema } = require('oas/src/utils');
+const {
+  utils: { getSchema },
+} = require('oas');
 
 function digestParameters(parameters) {
   return parameters.reduce((prev, param) => {
