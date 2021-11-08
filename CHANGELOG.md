@@ -1,3 +1,14 @@
+## 4.1.0 (2021-11-08)
+
+* chore(deps-dev): bump nock from 13.1.3 to 13.1.4 (#346) ([de4ba12](https://github.com/readmeio/api/commit/de4ba12)), closes [#346](https://github.com/readmeio/api/issues/346)
+* chore(deps): bump actions/checkout from 2.3.4 to 2.3.5 (#345) ([30b7101](https://github.com/readmeio/api/commit/30b7101)), closes [#345](https://github.com/readmeio/api/issues/345)
+* chore(deps): bump node-fetch from 2.6.5 to 2.6.6 (#348) ([fba1514](https://github.com/readmeio/api/commit/fba1514)), closes [#348](https://github.com/readmeio/api/issues/348)
+* chore(deps): bump oas from 16.0.3 to 16.0.4 (#347) ([b66675f](https://github.com/readmeio/api/commit/b66675f)), closes [#347](https://github.com/readmeio/api/issues/347)
+* chore(deps): running npm audit ([04f5d5b](https://github.com/readmeio/api/commit/04f5d5b))
+* feat: upgrading oas to v17 (#349) ([a88fb8b](https://github.com/readmeio/api/commit/a88fb8b)), closes [#349](https://github.com/readmeio/api/issues/349)
+
+
+
 ## 4.0.0 (2021-10-29)
 
 * feat: support for OpenAPI 3.1 (#344) ([4e5b9ba](https://github.com/readmeio/api/commit/4e5b9ba)), closes [#344](https://github.com/readmeio/api/issues/344)
