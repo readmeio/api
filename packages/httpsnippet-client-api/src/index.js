@@ -2,7 +2,7 @@ const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
-const Oas = require('oas');
+const Oas = require('oas').default;
 
 function stringify(obj, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
@@ -90,6 +90,7 @@ module.exports = function (source, options) {
 
   const method = source.method.toLowerCase();
   const oas = new Oas(opts.apiDefinition);
+  const apiDefinition = oas.getDefinition();
   const foundOperation = oas.findOperation(source.url, method);
   if (!foundOperation) {
     throw new Error(
@@ -112,7 +113,7 @@ module.exports = function (source, options) {
   // `oas` library then the URL either has server variables contained in it (that don't match the defaults), or the
   // OAS offers alternate server URLs and we should expose that in the generated snippet.
   const configData = [];
-  if ((oas.servers || []).length > 1) {
+  if ((apiDefinition.servers || []).length > 1) {
     const stockUrl = oas.url();
     const baseUrl = source.url.replace(path, '');
     if (baseUrl !== stockUrl) {

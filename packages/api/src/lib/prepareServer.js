@@ -18,7 +18,7 @@ function stripTrailingSlash(url) {
 module.exports = (spec, url, variables = {}) => {
   let serverIdx;
   const sanitizedUrl = stripTrailingSlash(url);
-  (spec.servers || []).forEach((server, i) => {
+  (spec.api.servers || []).forEach((server, i) => {
     if (server.url === sanitizedUrl) {
       serverIdx = i;
     }
