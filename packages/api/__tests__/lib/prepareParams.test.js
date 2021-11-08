@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Oas = require('oas');
+const Oas = require('oas').default;
 const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
 const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');
 const payloadExamples = require('../__fixtures__/payloads.oas.json');

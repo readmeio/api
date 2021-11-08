@@ -89,7 +89,7 @@ module.exports = async (operation, body, metadata) => {
   // body payload to see if anything in there is either a file path or a file stream so we can translate those into a
   // data URL for `@readme/oas-to-har` to make a request.
   if ('body' in params && operation.isMultipart()) {
-    let requestBody = getSchema(operation.schema, operation.oas);
+    let requestBody = getSchema(operation.schema, operation.api);
     if (requestBody) {
       requestBody = requestBody.schema;
     } else {

@@ -1,11 +1,11 @@
 const fetch = require('node-fetch');
 const fetchHar = require('fetch-har');
-const Oas = require('oas');
+const Oas = require('oas').default;
 const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
 
 const Cache = require('./cache');
-const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib/index');
+const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib');
 
 global.fetch = fetch;
 global.Request = fetch.Request;
@@ -19,9 +19,9 @@ class Sdk {
   }
 
   static getOperations(spec) {
-    return Object.keys(spec.paths)
+    return Object.keys(spec.api.paths)
       .map(path => {
-        return Object.keys(spec.paths[path]).map(method => {
+        return Object.keys(spec.api.paths[path]).map(method => {
           return spec.operation(path, method);
         });
       })
