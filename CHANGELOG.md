@@ -1,3 +1,19 @@
+## <small>4.1.1 (2021-12-01)</small>
+
+* chore(deps-dev): bump @commitlint/cli from 13.2.1 to 15.0.0 (#353) ([240ee49](https://github.com/readmeio/api/commit/240ee49)), closes [#353](https://github.com/readmeio/api/issues/353)
+* chore(deps-dev): bump @commitlint/config-conventional (#354) ([49fe5c0](https://github.com/readmeio/api/commit/49fe5c0)), closes [#354](https://github.com/readmeio/api/issues/354)
+* chore(deps-dev): bump jest from 27.3.1 to 27.4.2 (#358) ([c9b7bc7](https://github.com/readmeio/api/commit/c9b7bc7)), closes [#358](https://github.com/readmeio/api/issues/358)
+* chore(deps-dev): bump memfs from 3.3.0 to 3.4.0 (#357) ([c73cc93](https://github.com/readmeio/api/commit/c73cc93)), closes [#357](https://github.com/readmeio/api/issues/357)
+* chore(deps-dev): bump nock from 13.1.4 to 13.2.1 (#352) ([0ad6778](https://github.com/readmeio/api/commit/0ad6778)), closes [#352](https://github.com/readmeio/api/issues/352)
+* chore(deps-dev): bump prettier from 2.4.1 to 2.5.0 (#356) ([0fb9cdd](https://github.com/readmeio/api/commit/0fb9cdd)), closes [#356](https://github.com/readmeio/api/issues/356)
+* chore(deps-dev): upgrading eslint and @readme/eslint-config ([693f52d](https://github.com/readmeio/api/commit/693f52d))
+* chore(deps): bump @readme/oas-to-har from 14.0.0 to 14.0.1 (#359) ([3048ec9](https://github.com/readmeio/api/commit/3048ec9)), closes [#359](https://github.com/readmeio/api/issues/359)
+* chore(deps): bump actions/checkout from 2.3.5 to 2.4.0 (#351) ([61af132](https://github.com/readmeio/api/commit/61af132)), closes [#351](https://github.com/readmeio/api/issues/351)
+* chore(deps): bump actions/setup-node from 2.4.1 to 2.5.0 (#350) ([9b53392](https://github.com/readmeio/api/commit/9b53392)), closes [#350](https://github.com/readmeio/api/issues/350)
+* chore(deps): bump oas from 17.1.0 to 17.1.6 (#355) ([916bab1](https://github.com/readmeio/api/commit/916bab1)), closes [#355](https://github.com/readmeio/api/issues/355)
+
+
+
 ## 4.1.0 (2021-11-08)
 
 * chore(deps-dev): bump nock from 13.1.3 to 13.1.4 (#346) ([de4ba12](https://github.com/readmeio/api/commit/de4ba12)), closes [#346](https://github.com/readmeio/api/issues/346)
