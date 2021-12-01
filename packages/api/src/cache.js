@@ -123,7 +123,7 @@ class SdkCache {
     }
 
     return new Promise(resolve => {
-      return resolve(json);
+      resolve(json);
     })
       .then(res => {
         // The `validate` method handles dereferencing for us.
@@ -193,7 +193,7 @@ class SdkCache {
 
   saveFile() {
     return new Promise(resolve => {
-      return resolve(fs.readFileSync(this.uri, 'utf8'));
+      resolve(fs.readFileSync(this.uri, 'utf8'));
     })
       .then(res => {
         if (/\.(yaml|yml)/.test(this.uri)) {

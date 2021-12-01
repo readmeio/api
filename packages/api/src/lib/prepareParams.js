@@ -111,7 +111,9 @@ module.exports = async (operation, body, metadata) => {
           file = path.resolve(file);
           if (fs.existsSync(file)) {
             conversions.push(
-              new Promise(resolve => resolve(datauri(file))).then(dataurl => {
+              new Promise(resolve => {
+                resolve(datauri(file));
+              }).then(dataurl => {
                 // Doing this manually for now until when/if https://github.com/data-uri/datauri/pull/29 is accepted.
                 params.body[prop] = dataurl.replace(
                   ';base64',
@@ -124,7 +126,9 @@ module.exports = async (operation, body, metadata) => {
           }
         } else if (file instanceof stream.Readable) {
           conversions.push(
-            new Promise(resolve => resolve(getStream.buffer(file))).then(buffer => {
+            new Promise(resolve => {
+              resolve(getStream.buffer(file));
+            }).then(buffer => {
               // This logic was taken from the `datauri` package, and ideally it should be able to accept the content
               // of a file, or a file stream, but I'll PR that later to that package.
               // @todo
