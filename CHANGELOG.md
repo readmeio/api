@@ -1,3 +1,9 @@
+## <small>4.1.2 (2021-12-10)</small>
+
+* fix: crash where multipart/form-data requests dont have params (#360) ([5762c22](https://github.com/readmeio/api/commit/5762c22)), closes [#360](https://github.com/readmeio/api/issues/360)
+
+
+
 ## <small>4.1.1 (2021-12-01)</small>
 
 * chore(deps-dev): bump @commitlint/cli from 13.2.1 to 15.0.0 (#353) ([240ee49](https://github.com/readmeio/api/commit/240ee49)), closes [#353](https://github.com/readmeio/api/issues/353)
