@@ -122,6 +122,7 @@ describe('snippets', () => {
     ['multipart-data'],
     ['multipart-file'],
     ['multipart-form-data'],
+    ['multipart-form-data-no-params'],
     ['petstore'],
     ['query'],
     ['query-auth'],

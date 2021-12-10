@@ -213,22 +213,24 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      body = {};
+      if (source.postData.params) {
+        body = {};
 
-      // If there's a `Content-Type` header present in the metadata, but it's for the form-data
-      // request then dump it off the snippet. We shouldn't offload that unnecessary bloat to the
-      // user, instead letting the SDK handle it automatically.
-      if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
-        delete metadata['content-type'];
-      }
-
-      source.postData.params.forEach(function (param) {
-        if (param.fileName) {
-          body[param.name] = param.fileName;
-        } else {
-          body[param.name] = param.value;
+        // If there's a `Content-Type` header present in the metadata, but it's for the form-data
+        // request then dump it off the snippet. We shouldn't offload that unnecessary bloat to the
+        // user, instead letting the SDK handle it automatically.
+        if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
+          delete metadata['content-type'];
         }
-      });
+
+        source.postData.params.forEach(function (param) {
+          if (param.fileName) {
+            body[param.name] = param.fileName;
+          } else {
+            body[param.name] = param.value;
+          }
+        });
+      }
       break;
 
     default:
