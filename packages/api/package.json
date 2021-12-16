@@ -23,8 +23,8 @@
     "node": "^12 || ^14 || ^16"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^14.0.0",
-    "@readme/openapi-parser": "^1.1.0",
+    "@readme/oas-to-har": "^14.0.4",
+    "@readme/openapi-parser": "^1.2.1",
     "datauri": "^4.1.0",
     "fetch-har": "^5.0.0",
     "find-cache-dir": "^3.3.1",
