@@ -1,3 +1,9 @@
+## <small>4.1.3 (2021-12-16)</small>
+
+* chore(deps): upgrading oas-to-har and oas (#361) ([b6ee52c](https://github.com/readmeio/api/commit/b6ee52c)), closes [#361](https://github.com/readmeio/api/issues/361)
+
+
+
 ## <small>4.1.2 (2021-12-10)</small>
 
 * fix: crash where multipart/form-data requests dont have params (#360) ([5762c22](https://github.com/readmeio/api/commit/5762c22)), closes [#360](https://github.com/readmeio/api/issues/360)
