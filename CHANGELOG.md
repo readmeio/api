@@ -1,3 +1,19 @@
+## 4.2.0 (2022-01-03)
+
+* chore(deps-dev): bump @commitlint/cli from 15.0.0 to 16.0.1 (#372) ([2279bcf](https://github.com/readmeio/api/commit/2279bcf)), closes [#372](https://github.com/readmeio/api/issues/372)
+* chore(deps-dev): bump @commitlint/config-conventional (#365) ([eddaec1](https://github.com/readmeio/api/commit/eddaec1)), closes [#365](https://github.com/readmeio/api/issues/365)
+* chore(deps-dev): bump @readme/eslint-config from 8.0.2 to 8.1.1 (#373) ([c781941](https://github.com/readmeio/api/commit/c781941)), closes [#373](https://github.com/readmeio/api/issues/373)
+* chore(deps-dev): bump eslint from 8.3.0 to 8.6.0 (#369) ([1c5f2b1](https://github.com/readmeio/api/commit/1c5f2b1)), closes [#369](https://github.com/readmeio/api/issues/369)
+* chore(deps-dev): bump jest from 27.4.2 to 27.4.5 (#370) ([81c8874](https://github.com/readmeio/api/commit/81c8874)), closes [#370](https://github.com/readmeio/api/issues/370)
+* chore(deps-dev): bump memfs from 3.4.0 to 3.4.1 (#367) ([2f5f2f1](https://github.com/readmeio/api/commit/2f5f2f1)), closes [#367](https://github.com/readmeio/api/issues/367)
+* chore(deps-dev): bump prettier from 2.5.0 to 2.5.1 (#371) ([55ce743](https://github.com/readmeio/api/commit/55ce743)), closes [#371](https://github.com/readmeio/api/issues/371)
+* chore(deps): bump actions/setup-node from 2.5.0 to 2.5.1 (#364) ([343c5b7](https://github.com/readmeio/api/commit/343c5b7)), closes [#364](https://github.com/readmeio/api/issues/364)
+* chore(deps): bump fetch-har from 5.0.3 to 5.0.4 (#366) ([53f0b61](https://github.com/readmeio/api/commit/53f0b61)), closes [#366](https://github.com/readmeio/api/issues/366)
+* chore(deps): bump oas from 17.3.2 to 17.4.0 (#368) ([410f6ca](https://github.com/readmeio/api/commit/410f6ca)), closes [#368](https://github.com/readmeio/api/issues/368)
+* chore(deps): upgrading various oas-related deps (#374) ([8a31118](https://github.com/readmeio/api/commit/8a31118)), closes [#374](https://github.com/readmeio/api/issues/374)
+
+
+
 ## <small>4.1.3 (2021-12-16)</small>
 
 * chore(deps): upgrading oas-to-har and oas (#361) ([b6ee52c](https://github.com/readmeio/api/commit/b6ee52c)), closes [#361](https://github.com/readmeio/api/issues/361)
