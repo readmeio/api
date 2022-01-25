@@ -19,11 +19,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Node 16 ships with npm@8 so for compatibility reasons we're upping this for everything else.
-      - name: Install npm@8
-        if: matrix.node-version != '16.x'
-        run: npm install -g npm@8
-
       - name: Install dependencies
         run: npm ci
 
