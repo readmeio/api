@@ -34,7 +34,7 @@
     "js-yaml": "^4.1.0",
     "make-dir": "^3.1.0",
     "mimer": "^2.0.2",
-    "oas": "^17.4.1"
+    "oas": "^17.6.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.1.2",
