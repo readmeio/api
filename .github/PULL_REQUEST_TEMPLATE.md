@@ -1,7 +1,7 @@
-## 🧰 What's being changed?
+## 🧰 Changes
 
 Describe in detail what this PR is for.
 
-## 🧬 Testing
+## 🧬 QA & Testing
 
 Provide as much information as you can on how to test what you've done.
