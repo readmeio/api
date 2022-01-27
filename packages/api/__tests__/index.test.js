@@ -271,43 +271,78 @@ describe('#fetch', () => {
     });
   });
 
-  describe('query parameter URL encoding', () => {
-    it('should encode url parameters if they are not already encoded', () => {
-      const params = {
-        tags: 'somethign&nothing=true&20%',
-        limit: 'hash#data',
-      };
-
-      const mock = nock(petstoreServerUrl)
-        .get('/pets')
-        .query(true)
-        .reply(200, function () {
-          return { path: this.req.path };
-        });
-
-      return petstoreSdk.findPets(params).then(res => {
-        expect(res.path).toBe('/api/pets?tags=somethign%26nothing%3Dtrue%2620%25&limit=hash%23data');
-        mock.done();
-      });
+  describe('query parameter encoding', () => {
+    const queryEncoding = api({
+      servers: [{ url: 'https://httpbin.org/' }],
+      paths: {
+        '/anything': {
+          get: {
+            operationId: 'getAnything',
+            parameters: [
+              { name: 'stringPound', in: 'query', schema: { type: 'string' } },
+              { name: 'stringPound2', in: 'query', schema: { type: 'string' } },
+              { name: 'stringHash', in: 'query', schema: { type: 'string' } },
+              { name: 'stringArray', in: 'query', schema: { type: 'string' } },
+              { name: 'stringWeird', in: 'query', schema: { type: 'string' } },
+              { name: 'array', in: 'query', schema: { type: 'array', items: { type: 'string' } } },
+            ],
+          },
+        },
+      },
     });
 
-    it("should not double encode query params if they're supplied as encoded", () => {
+    it('should encode query parameters', async () => {
       const params = {
-        tags: encodeURIComponent('somethign&nothing=true'),
-        limit: encodeURIComponent('hash#data'),
+        stringPound: 'something&nothing=true',
+        stringHash: 'hash#data',
+        stringArray: 'where[4]=10',
+        stringWeird: 'properties["$email"] == "testing"',
+        array: [
+          encodeURIComponent('something&nothing=true'), // This is already encoded so it shouldn't be double encoded.
+          'nothing&something=false',
+          'another item',
+        ],
       };
 
-      const mock = nock(petstoreServerUrl)
-        .get('/pets')
+      const mock = nock('https://httpbin.org/')
+        .get('/anything')
         .query(true)
         .reply(200, function () {
           return { path: this.req.path };
         });
 
-      return petstoreSdk.findPets(params).then(res => {
-        expect(res.path).toBe('/api/pets?tags=somethign%26nothing%3Dtrue&limit=hash%23data');
-        mock.done();
+      await expect(queryEncoding.getAnything(params)).resolves.toStrictEqual({
+        path: '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item',
       });
+
+      mock.done();
+    });
+
+    it("should not double encode query params if they're already encoded", async () => {
+      const params = {
+        stringPound: encodeURIComponent('something&nothing=true'),
+        stringHash: encodeURIComponent('hash#data'),
+        stringArray: encodeURIComponent('where[4]=10'),
+        stringWeird: encodeURIComponent('properties["$email"] == "testing"'),
+        array: [
+          'something&nothing=true', // Should still encode this one eventhrough the others are already encoded.
+          encodeURIComponent('nothing&something=false'),
+          encodeURIComponent('another item'),
+        ],
+      };
+
+      const mock = nock('https://httpbin.org/')
+        .get('/anything')
+        .query(true)
+        .reply(200, function () {
+          return { path: this.req.path };
+        });
+
+      await expect(queryEncoding.getAnything(params)).resolves.toStrictEqual({
+        path: '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item',
+      });
+
+      mock.done();
     });
   });
 });
