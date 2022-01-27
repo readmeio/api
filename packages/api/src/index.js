@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+require('isomorphic-fetch');
 const fetchHar = require('fetch-har');
 const Oas = require('oas').default;
 const oasToHar = require('@readme/oas-to-har');
@@ -7,9 +7,6 @@ const pkg = require('../package.json');
 const Cache = require('./cache');
 const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib');
 
-global.fetch = fetch;
-global.Request = fetch.Request;
-global.Headers = fetch.Headers;
 global.FormData = require('form-data');
 
 class Sdk {

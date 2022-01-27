@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+require('isomorphic-fetch');
 const OpenAPIParser = require('@readme/openapi-parser');
 const yaml = require('js-yaml');
 const crypto = require('crypto');

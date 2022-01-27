@@ -1,4 +1,8 @@
 {
   "extends": "@readme/eslint-config",
-  "root": true
+  "root": true,
+  "globals": {
+    "fetch": true,
+    "Response": true
+  }
 }

@@ -1,6 +1,6 @@
+require('isomorphic-fetch');
 const nock = require('nock');
 const api = require('../src');
-const { Response } = require('node-fetch');
 
 const petstore = require('@readme/oas-examples/3.0/json/petstore.json');
 
