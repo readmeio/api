@@ -1,6 +1,9 @@
 {
   "extends": "@readme/eslint-config",
   "root": true,
+  "env": {
+    "es2020": true
+  },
   "globals": {
     "fetch": true,
     "Response": true
