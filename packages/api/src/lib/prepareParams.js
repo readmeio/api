@@ -3,10 +3,15 @@ const path = require('path');
 const stream = require('stream');
 const mimer = require('mimer');
 const getStream = require('get-stream');
-const datauri = require('datauri');
+const datauri = require('datauri/sync');
+const DatauriParser = require('datauri/parser');
 const {
   utils: { getSchema },
 } = require('oas');
+
+console.logx = obj => {
+  console.log(require('util').inspect(obj, false, null, true));
+};
 
 function digestParameters(parameters) {
   return parameters.reduce((prev, param) => {
@@ -104,6 +109,10 @@ module.exports = async (operation, body, metadata) => {
       .filter(key => requestBody.schema.properties[key].format === 'binary')
       .filter(x => bodyKeys.includes(x))
       .forEach(async prop => {
+        if (!params.files) {
+          params.files = {};
+        }
+
         let file = params.body[prop];
         if (typeof file === 'string') {
           // In order to support relative pathed files, we need to attempt to resolve them. Thankfully `path.resolve()`
@@ -113,12 +122,12 @@ module.exports = async (operation, body, metadata) => {
             conversions.push(
               new Promise(resolve => {
                 resolve(datauri(file));
-              }).then(dataurl => {
-                // Doing this manually for now until when/if https://github.com/data-uri/datauri/pull/29 is accepted.
-                params.body[prop] = dataurl.replace(
-                  ';base64',
-                  `;name=${encodeURIComponent(path.basename(file))};base64`
-                );
+              }).then(fileMetadata => {
+                const payloadFilename = encodeURIComponent(path.basename(file));
+
+                // The `datauri` package doesn't add name metadata into the base64 so we need to do that ourselves.
+                params.body[prop] = fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`);
+                params.files[payloadFilename] = fileMetadata.buffer;
 
                 return Promise.resolve(true);
               })
@@ -129,14 +138,14 @@ module.exports = async (operation, body, metadata) => {
             new Promise(resolve => {
               resolve(getStream.buffer(file));
             }).then(buffer => {
-              // This logic was taken from the `datauri` package, and ideally it should be able to accept the content
-              // of a file, or a file stream, but I'll PR that later to that package.
-              // @todo
-              const base64 = buffer.toString('base64');
-              const mimeType = mimer(file.path);
-              const filepath = path.basename(file.path);
+              const parser = new DatauriParser();
+              const base64 = parser.format(file.path, buffer).content;
 
-              params.body[prop] = `data:${mimeType};name=${encodeURIComponent(filepath)};base64,${base64 || ''}`;
+              const payloadFilename = encodeURIComponent(path.basename(file.path));
+
+              // The `datauri` package doesn't add name metadata into the base64 so we need to do that ourselves.
+              params.body[prop] = base64.replace(';base64', `;name=${payloadFilename};base64`);
+              params.files[payloadFilename] = buffer;
 
               return Promise.resolve(true);
             })
@@ -190,7 +199,7 @@ module.exports = async (operation, body, metadata) => {
   // @todo in debug mode, if a path param is missing (and required -- they always are), and no defaults are present, we should throw an error
 
   // Clean up any empty items.
-  ['body', 'formData', 'header', 'path', 'query'].forEach(type => {
+  ['body', 'files', 'formData', 'header', 'path', 'query'].forEach(type => {
     if (type in params && Object.keys(params[type]).length === 0) {
       delete params[type];
     }
