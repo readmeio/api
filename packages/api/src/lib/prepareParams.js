@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 const path = require('path');
 const stream = require('stream');
 const getStream = require('get-stream');
@@ -28,33 +28,36 @@ function processFile(paramName, file) {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
-    if (!fs.existsSync(resolvedFile)) {
-      // It's less than ideal for us to handle files that don't exist like this but because `file`
-      // is a string, it might actually be the full text contents of the file and not actually a
-      // path. Maybe we should regex here and make an attempt to determine if this is a file path
-      // and return an error if it is?
-      // @todo
-      return new Promise(resolve => {
-        resolve(undefined);
+
+    return fs
+      .stat(resolvedFile)
+      .then(() => datauri(resolvedFile))
+      .then(fileMetadata => {
+        const payloadFilename = encodeURIComponent(path.basename(resolvedFile));
+
+        return {
+          paramName,
+          base64: fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`),
+          filename: payloadFilename,
+          buffer: fileMetadata.buffer,
+        };
+      })
+      .catch(err => {
+        if (err.code === 'ENOENT') {
+          // It's less than ideal for us to handle files that don't exist like this but because
+          // `file` is a string it might actually be the full text contents of the file and not
+          // actually a path.
+          //
+          // We also can't really regex to see if `file` *looks*` like a path because one should be
+          // able to pass in a relative `owlbert.png` (instead of `./owlbert.png`) and though that
+          // doesn't *look* like a path, it is one that should still work.
+          return undefined;
+        }
+
+        throw err;
       });
-    }
-
-    return new Promise(resolve => {
-      resolve(datauri(resolvedFile));
-    }).then(fileMetadata => {
-      const payloadFilename = encodeURIComponent(path.basename(resolvedFile));
-
-      return {
-        paramName,
-        base64: fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`),
-        filename: payloadFilename,
-        buffer: fileMetadata.buffer,
-      };
-    });
   } else if (file instanceof stream.Readable) {
-    return new Promise(resolve => {
-      resolve(getStream.buffer(file));
-    }).then(buffer => {
+    return getStream.buffer(file).then(buffer => {
       const parser = new DatauriParser();
       const base64 = parser.format(file.path, buffer).content;
       const payloadFilename = encodeURIComponent(path.basename(file.path));
