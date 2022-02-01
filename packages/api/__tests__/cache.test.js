@@ -71,13 +71,13 @@ describe('#load', () => {
   describe('shorthand accessors', () => {
     it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', () => {
       return expect(new Cache('@petstore/v1.0#n6kvf10vakpemvplx').uri).toBe(
-        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+        'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
       );
     });
 
     it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', () => {
       return expect(new Cache('@petstore#n6kvf10vakpemvplx').uri).toBe(
-        'https://dash.readme.io/api/v1/api-registry/n6kvf10vakpemvplx'
+        'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
       );
     });
 
