@@ -20,7 +20,7 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": "^12 || ^14 || ^16"
+    "node": "^14 || ^16"
   },
   "dependencies": {
     "@readme/oas-to-har": "^14.1.0",
@@ -37,9 +37,9 @@
     "oas": "^17.6.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.1.2",
+    "@readme/eslint-config": "^8.2.0",
     "@readme/oas-examples": "^4.4.0",
-    "eslint": "^8.7.0",
+    "eslint": "^8.8.0",
     "jest": "^27.4.7",
     "memfs": "^3.4.1",
     "nock": "^13.2.2",
