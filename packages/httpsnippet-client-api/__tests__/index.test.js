@@ -53,7 +53,7 @@ test('it should error if no matching operation was found in the apiDefinition', 
       { name: 'perPage', value: '10' },
       { name: 'page', value: '1' },
     ],
-    url: 'https://dash.readme.io/api/api-specification',
+    url: 'https://dash.readme.com/api/api-specification',
   };
 
   const snippet = new HTTPSnippet(har);
@@ -89,7 +89,7 @@ describe('auth handling', () => {
           { name: 'perPage', value: '10' },
           { name: 'page', value: '1' },
         ],
-        url: 'https://dash.readme.io/api/v1/api-specification',
+        url: 'https://dash.readme.com/api/v1/api-specification',
       };
 
       const code = new HTTPSnippet(har).convert('node', 'api', {

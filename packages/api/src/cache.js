@@ -33,7 +33,7 @@ class SdkCache {
      */
     const resolveReadMeRegistryAccessor = u =>
       typeof u === 'string'
-        ? u.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.io/api/v1/api-registry/$2')
+        ? u.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.com/api/v1/api-registry/$2')
         : u;
 
     this.uri = resolveReadMeRegistryAccessor(uri);
