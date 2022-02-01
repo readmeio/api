@@ -14,7 +14,7 @@
     "url": "https://github.com/readmeio/api.git"
   },
   "engines": {
-    "node": "^12 || ^14 || ^16"
+    "node": "^14 || ^16"
   },
   "workspaces": [
     "./packages/*"
