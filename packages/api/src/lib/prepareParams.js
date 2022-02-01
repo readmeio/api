@@ -235,7 +235,6 @@ module.exports = async (operation, body, metadata) => {
 
   // Clean up any empty items.
   ['body', 'files', 'formData', 'header', 'path', 'query'].forEach(type => {
-    // @todo should we dump `body` if the operation has no request body?
     if (type in params && Object.keys(params[type]).length === 0) {
       delete params[type];
     }
