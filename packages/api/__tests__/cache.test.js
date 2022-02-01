@@ -2,7 +2,7 @@ const nock = require('nock');
 const path = require('path');
 const { vol } = require('memfs');
 
-const realFs = jest.requireActual('fs').promises;
+const realFs = jest.requireActual('fs/promises');
 
 jest.mock('fs', () => require('memfs').fs);
 
