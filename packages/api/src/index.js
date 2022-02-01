@@ -8,9 +8,6 @@ const { FormDataEncoder } = require('form-data-encoder');
 const Cache = require('./cache');
 const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib');
 
-// @todo remove this when https://github.com/readmeio/fetch-har/pull/241 is merged
-globalThis.FormData = require('formdata-node').FormData;
-
 class Sdk {
   constructor(uri) {
     this.uri = uri;
@@ -55,7 +52,11 @@ class Sdk {
 
         const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
-        return fetchHar(har, { userAgent: self.userAgent, multipartEncoder: FormDataEncoder }).then(res => {
+        return fetchHar(har, {
+          userAgent: self.userAgent,
+          files: data.files || {},
+          multipartEncoder: FormDataEncoder,
+        }).then(res => {
           if (res.status >= 400 && res.status <= 599) {
             throw res;
           }

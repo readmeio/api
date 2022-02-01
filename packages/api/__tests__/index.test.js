@@ -7,7 +7,6 @@ const { vol } = require('memfs');
 
 const realFs = jest.requireActual('fs').promises;
 
-// eslint-disable-next-line global-require
 jest.mock('fs', () => require('memfs').fs);
 
 const examplesDir = path.join(__dirname, 'examples');
@@ -217,7 +216,7 @@ describe('#fetch', () => {
         body: 'updated body',
       };
 
-      const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`, body).reply(200);
+      const mock = nock('https://dash.readme.com/api/v1').put(`/changelogs/${slug}`, body).reply(200);
 
       return readmeSdk.updateChangelog(body, { slug }).then(() => mock.done());
     });
@@ -244,7 +243,7 @@ describe('#fetch', () => {
 
     it('should pass through parameters for method + path', () => {
       const slug = 'new-release';
-      const mock = nock('https://dash.readme.io/api/v1').put(`/changelogs/${slug}`).reply(200);
+      const mock = nock('https://dash.readme.com/api/v1').put(`/changelogs/${slug}`).reply(200);
       return readmeSdk.put('/changelogs/{slug}', { slug }).then(() => mock.done());
     });
 
@@ -255,7 +254,7 @@ describe('#fetch', () => {
         body: 'updated body',
       };
 
-      const mock = nock('https://dash.readme.io/api/v1')
+      const mock = nock('https://dash.readme.com/api/v1')
         .put(`/changelogs/${slug}`, body)
         .reply(200, (uri, requestBody) => {
           return {

@@ -4,7 +4,6 @@ const { vol } = require('memfs');
 
 const realFs = jest.requireActual('fs').promises;
 
-// eslint-disable-next-line global-require
 jest.mock('fs', () => require('memfs').fs);
 
 const Cache = require('../src/cache');

@@ -4,10 +4,6 @@ const prepareParams = require('../../src/lib/prepareParams');
 
 const payloadExamples = require('../__fixtures__/payloads.oas.json');
 
-console.logx = obj => {
-  console.log(require('util').inspect(obj, false, null, true));
-};
-
 describe('#prepareParams', () => {
   let fileUploads;
   let readmeSpec;
@@ -75,6 +71,22 @@ describe('#prepareParams', () => {
     });
   });
 
+  it('should ignore supplied body data if the request has no request body', async () => {
+    const spec = new Oas(require('@readme/oas-examples/3.0/json/petstore.json'));
+    await spec.dereference();
+
+    const operation = spec.operation('/pet/{petId}', 'get');
+
+    const body = [{ name: 'Buster' }];
+    const metadata = {
+      petId: 1234,
+    };
+
+    await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+      path: { petId: 1234 },
+    });
+  });
+
   describe('content types', () => {
     it('should handle bodies when the content type is `application/x-www-form-urlencoded`', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
@@ -98,19 +110,34 @@ describe('#prepareParams', () => {
       });
     });
 
-    describe('application/octet-stream', () => {
-      it.skip('should handle when a property is a file path', async () => {
+    describe('image/png', () => {
+      it('should support a relative file path payload', async () => {
         const operation = fileUploads.operation('/anything/image-png', 'post');
         const body = `${__dirname}/../__fixtures__/owlbert.png`;
 
-        const res = await prepareParams(operation, body);
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
 
-        console.logx({ body, res });
+      it('should support a file stream payload', async () => {
+        const operation = fileUploads.operation('/anything/image-png', 'post');
+        const body = fs.createReadStream('./__tests__/__fixtures__/owlbert.png');
+
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
       });
     });
 
     describe('multipart/form-data', () => {
-      it.only('should handle a multipart body when a property is a file path', async () => {
+      it('should handle a multipart body when a property is a file path', async () => {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
           documentFile: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
@@ -156,6 +183,35 @@ describe('#prepareParams', () => {
             'owlbert.png': expect.any(Buffer),
           },
         });
+      });
+    });
+  });
+
+  describe('file handling', () => {
+    it('should reject unknown file handlers', async () => {
+      const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
+      const body = {
+        documentFile: ['this is not a file handler'],
+      };
+
+      await expect(prepareParams(operation, body)).rejects.toThrow(
+        'The data supplied for the `documentFile` request body parameter is not a file handler that we support.'
+      );
+    });
+
+    // This test sounds weird but we don't have a great way to know if a string we have is a path
+    // to a file that doesn't exist or the string contents of a file, so we're just passing along
+    // file paths that don't exist right now.
+    it("should not reject files that don't exist", async () => {
+      const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
+      const body = {
+        documentFile: './__tests__/__fixtures__/owlbert.jpg',
+      };
+
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+        body: {
+          documentFile: './__tests__/__fixtures__/owlbert.jpg',
+        },
       });
     });
   });
