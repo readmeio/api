@@ -31,6 +31,14 @@ expect.extend({
   },
 });
 
+beforeAll(() => {
+  nock.disableNetConnect();
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
 beforeEach(async () => {
   readmeExampleJson = await realFs.readFile(require.resolve('@readme/oas-examples/3.0/json/readme.json'), 'utf8');
   readmeExampleYaml = await realFs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
@@ -63,9 +71,8 @@ describe('#load', () => {
   it('should return a raw object if a JSON object was initially supplied', async () => {
     const obj = JSON.parse(readmeExampleJson);
 
-    await new Cache(obj).load().then(res => {
-      expect(res).toStrictEqual(obj);
-    });
+    const res = await new Cache(obj).load();
+    expect(res).toStrictEqual(obj);
   });
 
   describe('shorthand accessors', () => {
@@ -100,17 +107,26 @@ describe('#load', () => {
 });
 
 describe('#saveUrl()', () => {
-  it('should be able to save a definition', () => {
+  it('should be able to save a definition', async () => {
     const mock = nock('http://example.com').get('/readme.json').reply(200, readmeExampleJson);
     const cacheStore = new Cache('http://example.com/readme.json');
 
     expect(cacheStore.isCached()).toBe(false);
 
-    return cacheStore.saveUrl().then(() => {
-      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
-      expect(cacheStore.isCached()).toBe(true);
-      mock.done();
-    });
+    await expect(cacheStore.saveUrl()).resolves.toStrictEqual(
+      expect.objectContaining({
+        openapi: '3.0.2',
+        info: {
+          description: 'Create beautiful product and API documentation with our developer friendly platform.',
+          version: '2.0.0',
+          title: 'API Endpoints',
+        },
+      })
+    );
+
+    expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+    expect(cacheStore.isCached()).toBe(true);
+    mock.done();
   });
 
   it('should error if the url cannot be reached', async () => {
@@ -132,11 +148,10 @@ describe('#saveUrl()', () => {
 
     expect(cacheStore.isCached()).toBe(false);
 
-    await cacheStore.saveUrl().then(() => {
-      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
-      expect(cacheStore.isCached()).toBe(true);
-      mock.done();
-    });
+    await cacheStore.saveUrl();
+    expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+    expect(cacheStore.isCached()).toBe(true);
+    mock.done();
 
     const cached = cacheStore.getCache();
     expect(cached).toHaveProperty(hash);
@@ -145,26 +160,24 @@ describe('#saveUrl()', () => {
 });
 
 describe('#saveFile()', () => {
-  it('should be able to save a definition', () => {
+  it('should be able to save a definition', async () => {
     const cacheStore = new Cache(path.join(examplesDir, 'readme.json'));
 
     expect(cacheStore.isCached()).toBe(false);
 
-    return cacheStore.saveFile().then(() => {
-      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
-      expect(cacheStore.isCached()).toBe(true);
-    });
+    await cacheStore.saveFile();
+    expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+    expect(cacheStore.isCached()).toBe(true);
   });
 
-  it('should be able handle a relative path', () => {
+  it('should be able handle a relative path', async () => {
     const cacheStore = new Cache('../examples/readme.json');
 
     expect(cacheStore.isCached()).toBe(false);
 
-    return cacheStore.saveFile().then(() => {
-      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
-      expect(cacheStore.isCached()).toBe(true);
-    });
+    await cacheStore.saveFile();
+    expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+    expect(cacheStore.isCached()).toBe(true);
   });
 
   it('should convert yaml to json', async () => {
@@ -174,10 +187,9 @@ describe('#saveFile()', () => {
 
     expect(cacheStore.isCached()).toBe(false);
 
-    await cacheStore.saveFile().then(() => {
-      expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
-      expect(cacheStore.isCached()).toBe(true);
-    });
+    await cacheStore.saveFile();
+    expect(cacheStore.get().paths['/api-specification'].get.parameters).toBeDereferenced();
+    expect(cacheStore.isCached()).toBe(true);
 
     const cached = cacheStore.getCache();
     expect(cached).toHaveProperty(hash);
