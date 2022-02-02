@@ -1,4 +1,4 @@
-const nock = require('nock');
+// const nock = require('nock');
 const api = require('../src');
 
 const fileUploads = require('@readme/oas-examples/3.0/json/file-uploads.json');
@@ -9,7 +9,7 @@ beforeEach(() => {
   // any request that happens will fail because nock reports them as being unmocked.
   // nock.restore();
   // nock.disableNetConnect();
-  nock.enableNetConnect();
+  // nock.enableNetConnect();
 });
 
 describe('`application/x-www-form-urlencoded`', () => {
