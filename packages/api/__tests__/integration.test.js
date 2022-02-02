@@ -1,4 +1,4 @@
-// const nock = require('nock');
+const nock = require('nock');
 const api = require('../src');
 
 const fileUploads = require('@readme/oas-examples/3.0/json/file-uploads.json');
@@ -7,12 +7,10 @@ beforeEach(() => {
   // Though this test doesn't mock anything out because nock is used within every other test in
   // this suite there's an issue where if you run them all together nock will be enabled here and
   // any request that happens will fail because nock reports them as being unmocked.
-  // nock.restore();
-  // nock.disableNetConnect();
-  // nock.enableNetConnect();
+  nock.restore();
 });
 
-describe('`application/x-www-form-urlencoded`', () => {
+describe.skip('`application/x-www-form-urlencoded`', () => {
   const usptoSpec = JSON.parse(JSON.stringify(require('@readme/oas-examples/3.0/json/uspto.json')));
   usptoSpec.servers[0].url = '{scheme}://httpbin.org/anything';
 
@@ -88,7 +86,7 @@ test('should support `image/png` requests', async () => {
   });
 });
 
-describe('multipart/form-data', () => {
+describe.skip('multipart/form-data', () => {
   it('should support `multipart/form-data` requests', async () => {
     const parametersStyle = require('@readme/oas-examples/3.1/json/parameters-style.json');
 
