@@ -36,9 +36,7 @@ class Sdk {
     let sdk = {};
 
     function fetchOperation(spec, operation, body, metadata) {
-      return new Promise(resolve => {
-        resolve(prepareParams(operation, body, metadata));
-      }).then(params => {
+      return prepareParams(operation, body, metadata).then(params => {
         const data = { ...params };
 
         // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that

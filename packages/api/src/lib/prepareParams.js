@@ -233,7 +233,6 @@ module.exports = async (operation, body, metadata) => {
     delete params.body;
   }
 
-  // @todo add required params with defaults if they aren't supplied
   // @todo in debug mode, if a path param is missing (and required -- they always are), and no defaults are present, we should throw an error
 
   // Clean up any empty items.
