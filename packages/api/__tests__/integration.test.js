@@ -67,7 +67,7 @@ describe.skip('`application/x-www-form-urlencoded`', () => {
   // });
 });
 
-test('should support `image/png` requests', async () => {
+test.skip('should support `image/png` requests', async () => {
   const body = `${__dirname}/__fixtures__/owlbert.png`;
 
   await expect(api(fileUploads).post('/anything/image-png', body)).resolves.toStrictEqual({
