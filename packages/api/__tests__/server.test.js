@@ -15,7 +15,6 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  nock.enableNetConnect();
   nock.restore();
 });
 
