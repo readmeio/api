@@ -88,25 +88,45 @@ describe('#prepareParams', () => {
   });
 
   describe('content types', () => {
-    it('should handle bodies when the content type is `application/x-www-form-urlencoded`', async () => {
-      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
-      const body = {
-        criteria: '*:*',
-      };
+    describe('application/x-www-form-urlencoded', () => {
+      it('should support preparing formData payloads', async () => {
+        const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+        const body = {
+          criteria: '*:*',
+        };
 
-      const metadata = {
-        dataset: 'v1',
-        version: 'oa_citations',
-      };
-
-      await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
-        path: {
+        const metadata = {
           dataset: 'v1',
           version: 'oa_citations',
-        },
-        formData: {
-          criteria: '*:*',
-        },
+        };
+
+        await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+          path: {
+            dataset: 'v1',
+            version: 'oa_citations',
+          },
+          formData: {
+            criteria: '*:*',
+          },
+        });
+      });
+
+      // Since we're only sending `metadata` here we want to make sure that the path parameters in
+      // it don't also get sent as `formData`.
+      it('should should filter out metadata parameters from being sent twice', async () => {
+        const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+
+        const metadata = {
+          dataset: 'v1',
+          version: 'oa_citations',
+        };
+
+        await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+          path: {
+            dataset: 'v1',
+            version: 'oa_citations',
+          },
+        });
       });
     });
 
@@ -264,8 +284,6 @@ describe('#prepareParams', () => {
           dataset: 'oa_citations',
         },
         formData: {
-          version: 'v1',
-          dataset: 'oa_citations',
           randomUnknownParameter: true,
         },
       });
