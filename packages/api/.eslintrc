@@ -1,4 +1,14 @@
 {
   "extends": "@readme/eslint-config",
-  "root": true
+  "root": true,
+  "env": {
+    "es2020": true
+  },
+  "globals": {
+    "fetch": true,
+    "Response": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
 }

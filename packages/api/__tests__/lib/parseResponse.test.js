@@ -1,6 +1,4 @@
-// Nabbed these test cases from here:
-// https://github.com/readmeio/api-explorer/blob/77b90ebed4673f168354cdcd730e34b7ee016360/packages/api-explorer/__tests__/lib/parse-response.test.js#L182-L210
-const { Response } = require('node-fetch');
+require('isomorphic-fetch');
 const parseResponse = require('../../src/lib/parseResponse');
 
 const responseBody = JSON.stringify({

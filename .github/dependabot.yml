@@ -25,10 +25,6 @@ updates:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
     ignore:
-      # node-fetch is now an ESM package and can't be used here without a rewrite.
-      - dependency-name: node-fetch
-        versions:
-          - ">= 3"
       # stringify-object is now an ESM package and can't be used here without a rewrite.
       - dependency-name: stringify-object
         versions:

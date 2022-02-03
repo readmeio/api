@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('fs/promises');
 const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const client = require('../src');

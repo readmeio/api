@@ -1,16 +1,12 @@
-const fetch = require('node-fetch');
+require('isomorphic-fetch');
 const fetchHar = require('fetch-har');
 const Oas = require('oas').default;
 const oasToHar = require('@readme/oas-to-har');
 const pkg = require('../package.json');
+const { FormDataEncoder } = require('form-data-encoder');
 
 const Cache = require('./cache');
 const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib');
-
-global.fetch = fetch;
-global.Request = fetch.Request;
-global.Headers = fetch.Headers;
-global.FormData = require('form-data');
 
 class Sdk {
   constructor(uri) {
@@ -40,9 +36,7 @@ class Sdk {
     let sdk = {};
 
     function fetchOperation(spec, operation, body, metadata) {
-      return new Promise(resolve => {
-        resolve(prepareParams(operation, body, metadata));
-      }).then(params => {
+      return prepareParams(operation, body, metadata).then(params => {
         const data = { ...params };
 
         // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that
@@ -56,7 +50,11 @@ class Sdk {
 
         const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
-        return fetchHar(har, self.userAgent).then(res => {
+        return fetchHar(har, {
+          userAgent: self.userAgent,
+          files: data.files || {},
+          multipartEncoder: FormDataEncoder,
+        }).then(res => {
           if (res.status >= 400 && res.status <= 599) {
             throw res;
           }
@@ -69,15 +67,16 @@ class Sdk {
     }
 
     function loadMethods(spec) {
-      const supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-
-      return supportedVerbs
-        .map(name => {
+      // Supported HTTP verbs extracted from the OpenAPI specification.
+      // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7
+      // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7
+      return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
+        .map(httpVerb => {
           return {
-            [name]: ((method, path, ...args) => {
+            [httpVerb]: ((method, path, ...args) => {
               const operation = spec.operation(path, method);
               return fetchOperation(spec, operation, ...args);
-            }).bind(null, name),
+            }).bind(null, httpVerb),
           };
         })
         .reduce((prev, next) => Object.assign(prev, next));
@@ -127,8 +126,8 @@ class Sdk {
 
         return async function (...args) {
           if (!(method in target)) {
-            // If this method doesn't exist on the proxy (SDK), have we loaded the SDK? If we have, then this method
-            // isn't valid.
+            // If this method doesn't exist on the proxy, have we loaded the SDK? If we have, then this method isn't
+            // valid.
             if (isLoaded) {
               throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
             }

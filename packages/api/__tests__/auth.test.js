@@ -3,6 +3,14 @@ const api = require('../src');
 
 const securityOas = require('@readme/oas-examples/3.0/json/security.json');
 
+beforeAll(() => {
+  nock.disableNetConnect();
+});
+
+afterAll(() => {
+  nock.restore();
+});
+
 describe('#auth()', () => {
   describe('API Keys', () => {
     const apiKey = '123457890';
@@ -11,19 +19,24 @@ describe('#auth()', () => {
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
-      ])('%s', (testCase, chained) => {
+      ])('%s', async (_, chained) => {
         const sdk = api(securityOas);
-        const mock = nock('https://httpbin.org').get('/apiKey').query({ apiKey }).reply(200, {});
+        const mock = nock('https://httpbin.org')
+          .get(/\/apiKey/)
+          .reply(200, function () {
+            return this.req.options.href;
+          });
 
         if (chained) {
-          return sdk
-            .auth(apiKey)
-            .get('/apiKey')
-            .then(() => mock.done());
+          // eslint-disable-next-line jest/no-conditional-expect
+          await expect(sdk.auth(apiKey).get('/apiKey')).resolves.toBe('https://httpbin.org/apiKey?apiKey=123457890');
+          mock.done();
+          return;
         }
 
         sdk.auth(apiKey);
-        return sdk.get('/apiKey').then(() => mock.done());
+        await expect(sdk.get('/apiKey')).resolves.toBe('https://httpbin.org/apiKey?apiKey=123457890');
+        mock.done();
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -37,21 +50,31 @@ describe('#auth()', () => {
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
-      ])('%s', (testCase, chained) => {
+      ])('%s', async (_, chained) => {
         const sdk = api(securityOas);
-        const mock = nock('https://httpbin.org', { reqheaders: { 'X-API-KEY': apiKey } })
+        const mock = nock('https://httpbin.org')
           .put('/apiKey')
-          .reply(200, {});
+          .reply(200, function () {
+            return this.req.headers;
+          });
 
         if (chained) {
-          return sdk
-            .auth(apiKey)
-            .put('/apiKey')
-            .then(() => mock.done());
+          // eslint-disable-next-line jest/no-conditional-expect
+          await expect(sdk.auth(apiKey).put('/apiKey')).resolves.toStrictEqual(
+            expect.objectContaining({
+              'x-api-key': ['123457890'],
+            })
+          );
+          mock.done();
+          return;
         }
 
         sdk.auth(apiKey);
-        return sdk.put('/apiKey').then(() => mock.done());
+        await expect(sdk.put('/apiKey')).resolves.toStrictEqual(
+          expect.objectContaining({
+            'x-api-key': ['123457890'],
+          })
+        );
       });
 
       it('should throw if you supply multiple auth keys', () => {
@@ -70,44 +93,49 @@ describe('#auth()', () => {
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
-      ])('%s', (testCase, chained) => {
+      ])('%s', async (_, chained) => {
+        const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
         const sdk = api(securityOas);
-        const mock = nock('https://httpbin.org', {
-          reqheaders: { authorization: `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}` },
-        })
+        const mock = nock('https://httpbin.org')
           .post('/basic')
-          .reply(200, { id: 1 });
+          .reply(200, function () {
+            return this.req.headers;
+          });
 
         if (chained) {
-          return sdk
-            .auth(user, pass)
-            .post('/basic')
-            .then(res => {
-              // eslint-disable-next-line jest/no-conditional-expect
-              expect(res.id).toBe(1);
-              mock.done();
-            });
+          // eslint-disable-next-line jest/no-conditional-expect
+          await expect(sdk.auth(user, pass).post('/basic')).resolves.toStrictEqual(
+            expect.objectContaining({
+              authorization: [authHeader],
+            })
+          );
+          mock.done();
+          return;
         }
 
         sdk.auth(user, pass);
-        return sdk.post('/basic').then(res => {
-          expect(res.id).toBe(1);
-          mock.done();
-        });
+        await expect(sdk.post('/basic')).resolves.toStrictEqual(
+          expect.objectContaining({
+            authorization: [authHeader],
+          })
+        );
+        mock.done();
       });
 
-      it('should allow you to not pass in a password', () => {
+      it('should allow you to not pass in a password', async () => {
         const sdk = api(securityOas);
-        const mock = nock('https://httpbin.org', {
-          reqheaders: { authorization: `Basic ${Buffer.from(`${user}:`).toString('base64')}` },
-        })
+        const mock = nock('https://httpbin.org')
           .post('/basic')
-          .reply(200, {});
+          .reply(200, function () {
+            return this.req.headers;
+          });
 
-        return sdk
-          .auth(user)
-          .post('/basic')
-          .then(() => mock.done());
+        await expect(sdk.auth(user).post('/basic')).resolves.toStrictEqual(
+          expect.objectContaining({
+            authorization: [`Basic ${Buffer.from(`${user}:`).toString('base64')}`],
+          })
+        );
+        mock.done();
       });
     });
 
@@ -117,21 +145,32 @@ describe('#auth()', () => {
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
-      ])('%s', (testCase, chained) => {
+      ])('%s', async (_, chained) => {
         const sdk = api(securityOas);
-        const mock = nock('https://httpbin.org', { reqheaders: { authorization: `Bearer ${apiKey}` } })
+        const mock = nock('https://httpbin.org')
           .post('/bearer')
-          .reply(200, {});
+          .reply(200, function () {
+            return this.req.headers;
+          });
 
         if (chained) {
-          return sdk
-            .auth(apiKey)
-            .post('/bearer')
-            .then(() => mock.done());
+          // eslint-disable-next-line jest/no-conditional-expect
+          await expect(sdk.auth(apiKey).post('/bearer')).resolves.toStrictEqual(
+            expect.objectContaining({
+              authorization: [`Bearer ${apiKey}`],
+            })
+          );
+          mock.done();
+          return;
         }
 
         sdk.auth(apiKey);
-        return sdk.post('/bearer').then(() => mock.done());
+        await expect(sdk.post('/bearer')).resolves.toStrictEqual(
+          expect.objectContaining({
+            authorization: [`Bearer ${apiKey}`],
+          })
+        );
+        mock.done();
       });
 
       it('should throw if you pass in multiple bearer tokens', () => {
@@ -148,21 +187,32 @@ describe('#auth()', () => {
     it.each([
       ['should allow you to supply auth', false],
       ['should allow you to supply auth when unchained from an operation', true],
-    ])('%s', (testCase, chained) => {
+    ])('%s', async (_, chained) => {
       const sdk = api(securityOas);
-      const mock = nock('https://httpbin.org', { reqheaders: { authorization: `Bearer ${apiKey}` } })
+      const mock = nock('https://httpbin.org')
         .post('/oauth2')
-        .reply(200, {});
+        .reply(200, function () {
+          return this.req.headers;
+        });
 
       if (chained) {
-        return sdk
-          .auth(apiKey)
-          .post('/oauth2')
-          .then(() => mock.done());
+        // eslint-disable-next-line jest/no-conditional-expect
+        await expect(sdk.auth(apiKey).post('/oauth2')).resolves.toStrictEqual(
+          expect.objectContaining({
+            authorization: [`Bearer ${apiKey}`],
+          })
+        );
+        mock.done();
+        return;
       }
 
       sdk.auth(apiKey);
-      return sdk.post('/oauth2').then(() => mock.done());
+      await expect(sdk.post('/oauth2')).resolves.toStrictEqual(
+        expect.objectContaining({
+          authorization: [`Bearer ${apiKey}`],
+        })
+      );
+      mock.done();
     });
 
     it('should throw if you pass in multiple bearer tokens', () => {

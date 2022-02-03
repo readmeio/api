@@ -1,12 +1,9 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 const path = require('path');
 const stream = require('stream');
-const mimer = require('mimer');
 const getStream = require('get-stream');
-const datauri = require('datauri');
-const {
-  utils: { getSchema },
-} = require('oas');
+const datauri = require('datauri/sync');
+const DatauriParser = require('datauri/parser');
 
 function digestParameters(parameters) {
   return parameters.reduce((prev, param) => {
@@ -25,6 +22,64 @@ function digestParameters(parameters) {
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
 function isEmpty(obj) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+}
+
+function processFile(paramName, file) {
+  if (typeof file === 'string') {
+    // In order to support relative pathed files, we need to attempt to resolve them.
+    const resolvedFile = path.resolve(file);
+
+    return fs
+      .stat(resolvedFile)
+      .then(() => datauri(resolvedFile))
+      .then(fileMetadata => {
+        const payloadFilename = encodeURIComponent(path.basename(resolvedFile));
+
+        return {
+          paramName,
+          base64: fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`),
+          filename: payloadFilename,
+          buffer: fileMetadata.buffer,
+        };
+      })
+      .catch(err => {
+        if (err.code === 'ENOENT') {
+          // It's less than ideal for us to handle files that don't exist like this but because
+          // `file` is a string it might actually be the full text contents of the file and not
+          // actually a path.
+          //
+          // We also can't really regex to see if `file` *looks*` like a path because one should be
+          // able to pass in a relative `owlbert.png` (instead of `./owlbert.png`) and though that
+          // doesn't *look* like a path, it is one that should still work.
+          return undefined;
+        }
+
+        throw err;
+      });
+  } else if (file instanceof stream.Readable) {
+    return getStream.buffer(file).then(buffer => {
+      const parser = new DatauriParser();
+      const base64 = parser.format(file.path, buffer).content;
+      const payloadFilename = encodeURIComponent(path.basename(file.path));
+
+      return {
+        paramName,
+        base64: base64.replace(';base64', `;name=${payloadFilename};base64`),
+        filename: payloadFilename,
+        buffer,
+      };
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    reject(
+      new TypeError(
+        paramName
+          ? `The data supplied for the \`${paramName}\` request body parameter is not a file handler that we support.`
+          : `The data supplied for the request body payload is not a file handler that we support.`
+      )
+    );
+  });
 }
 
 module.exports = async (operation, body, metadata) => {
@@ -83,68 +138,60 @@ module.exports = async (operation, body, metadata) => {
     }
   }
 
-  // @todo support content types like `image/png` where the request body is the binary
-
-  // If the operation is `multipart/form-data`, or one of our recognized variants, we need to look at the incoming
-  // body payload to see if anything in there is either a file path or a file stream so we can translate those into a
-  // data URL for `@readme/oas-to-har` to make a request.
-  if ('body' in params && operation.isMultipart()) {
-    let requestBody = getSchema(operation.schema, operation.api);
-    if (requestBody) {
-      requestBody = requestBody.schema;
+  if ('body' in params) {
+    if (!operation.hasRequestBody()) {
+      // If this operation doesn't have any documented request body then we shouldn't be sending
+      // anything.
+      delete params.body;
     } else {
-      requestBody = { schema: {} };
-    }
-
-    const bodyKeys = Object.keys(params.body);
-
-    // Loop through the schema to look for `binary` properties so we know what we need to convert.
-    const conversions = [];
-    Object.keys(requestBody.schema.properties)
-      .filter(key => requestBody.schema.properties[key].format === 'binary')
-      .filter(x => bodyKeys.includes(x))
-      .forEach(async prop => {
-        let file = params.body[prop];
-        if (typeof file === 'string') {
-          // In order to support relative pathed files, we need to attempt to resolve them. Thankfully `path.resolve()`
-          // doesn't munge absolute paths.
-          file = path.resolve(file);
-          if (fs.existsSync(file)) {
-            conversions.push(
-              new Promise(resolve => {
-                resolve(datauri(file));
-              }).then(dataurl => {
-                // Doing this manually for now until when/if https://github.com/data-uri/datauri/pull/29 is accepted.
-                params.body[prop] = dataurl.replace(
-                  ';base64',
-                  `;name=${encodeURIComponent(path.basename(file))};base64`
-                );
-
-                return Promise.resolve(true);
-              })
-            );
-          }
-        } else if (file instanceof stream.Readable) {
-          conversions.push(
-            new Promise(resolve => {
-              resolve(getStream.buffer(file));
-            }).then(buffer => {
-              // This logic was taken from the `datauri` package, and ideally it should be able to accept the content
-              // of a file, or a file stream, but I'll PR that later to that package.
-              // @todo
-              const base64 = buffer.toString('base64');
-              const mimeType = mimer(file.path);
-              const filepath = path.basename(file.path);
-
-              params.body[prop] = `data:${mimeType};name=${encodeURIComponent(filepath)};base64,${base64 || ''}`;
-
-              return Promise.resolve(true);
-            })
-          );
+      // We need to retrieve the request body for this operation to search for any `binary` format
+      // data that the user wants to send so we know what we need to prepare for the final API
+      // request.
+      const payloadJsonSchema = operation.getParametersAsJsonSchema().find(js => js.type === 'body');
+      if (payloadJsonSchema) {
+        if (!params.files) {
+          params.files = {};
         }
-      });
 
-    await Promise.all(conversions);
+        const conversions = [];
+
+        // @todo add support for `type: array`, `oneOf` and `anyOf`
+        if (payloadJsonSchema.schema?.properties) {
+          Object.entries(payloadJsonSchema.schema?.properties)
+            .filter(([, schema]) => schema?.format === 'binary')
+            .filter(([prop]) => Object.keys(params.body).includes(prop))
+            .forEach(([prop]) => {
+              conversions.push(processFile(prop, params.body[prop]));
+            });
+        } else if (payloadJsonSchema.schema?.type === 'string') {
+          if (payloadJsonSchema.schema?.format === 'binary') {
+            conversions.push(processFile(undefined, params.body));
+          }
+        }
+
+        await Promise.all(conversions)
+          .then(fileMetadata => fileMetadata.filter(Boolean))
+          .then(fm => {
+            fm.forEach(fileMetadata => {
+              if (!fileMetadata) {
+                // If we don't have any metadata here it's because the file we have is likely
+                // the full string content of the file so since we don't have any filenames to
+                // work with we shouldn't do any additional handling to the `body` or `files`
+                // parameters.
+                return;
+              }
+
+              if (fileMetadata.paramName) {
+                params.body[fileMetadata.paramName] = fileMetadata.base64;
+              } else {
+                params.body = fileMetadata.base64;
+              }
+
+              params.files[fileMetadata.filename] = fileMetadata.buffer;
+            });
+          });
+      }
+    }
   }
 
   // @todo add in a debug mode that would run jsonschema validation against request bodies and parameters and throw back errors if what's supplied isn't up to spec.
@@ -186,11 +233,10 @@ module.exports = async (operation, body, metadata) => {
     delete params.body;
   }
 
-  // @todo add required params with defaults if they aren't supplied
   // @todo in debug mode, if a path param is missing (and required -- they always are), and no defaults are present, we should throw an error
 
   // Clean up any empty items.
-  ['body', 'formData', 'header', 'path', 'query'].forEach(type => {
+  ['body', 'files', 'formData', 'header', 'path', 'query'].forEach(type => {
     if (type in params && Object.keys(params[type]).length === 0) {
       delete params[type];
     }

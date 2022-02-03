@@ -1,20 +1,22 @@
 const fs = require('fs');
 const Oas = require('oas').default;
-const readmeExample = require('@readme/oas-examples/3.0/json/readme.json');
-const usptoExample = require('@readme/oas-examples/3.0/json/uspto.json');
-const payloadExamples = require('../__fixtures__/payloads.oas.json');
-
 const prepareParams = require('../../src/lib/prepareParams');
 
+const payloadExamples = require('../__fixtures__/payloads.oas.json');
+
 describe('#prepareParams', () => {
+  let fileUploads;
   let readmeSpec;
   let usptoSpec;
 
   beforeAll(async () => {
-    readmeSpec = new Oas(readmeExample);
+    fileUploads = new Oas(require('@readme/oas-examples/3.0/json/file-uploads.json'));
+    await fileUploads.dereference();
+
+    readmeSpec = new Oas(require('@readme/oas-examples/3.0/json/readme.json'));
     await readmeSpec.dereference();
 
-    usptoSpec = new Oas(usptoExample);
+    usptoSpec = new Oas(require('@readme/oas-examples/3.0/json/uspto.json'));
     await usptoSpec.dereference();
   });
 
@@ -69,6 +71,22 @@ describe('#prepareParams', () => {
     });
   });
 
+  it('should ignore supplied body data if the request has no request body', async () => {
+    const spec = new Oas(require('@readme/oas-examples/3.0/json/petstore.json'));
+    await spec.dereference();
+
+    const operation = spec.operation('/pet/{petId}', 'get');
+
+    const body = [{ name: 'Buster' }];
+    const metadata = {
+      petId: 1234,
+    };
+
+    await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+      path: { petId: 1234 },
+    });
+  });
+
   describe('content types', () => {
     it('should handle bodies when the content type is `application/x-www-form-urlencoded`', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
@@ -92,44 +110,117 @@ describe('#prepareParams', () => {
       });
     });
 
+    describe('image/png', () => {
+      it('should support a relative file path payload', async () => {
+        const operation = fileUploads.operation('/anything/image-png', 'post');
+        const body = `${__dirname}/../__fixtures__/owlbert.png`;
+
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
+
+      it('should support a file stream payload', async () => {
+        const operation = fileUploads.operation('/anything/image-png', 'post');
+        const body = fs.createReadStream('./__tests__/__fixtures__/owlbert.png');
+
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
+    });
+
     describe('multipart/form-data', () => {
       it('should handle a multipart body when a property is a file path', async () => {
-        const operation = readmeSpec.operation('/api-specification', 'post');
+        const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          spec: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+          documentFile: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
         };
 
-        const params = await prepareParams(operation, body);
-        expect(params.body.spec).toContain('data:application/json;name=readme.json;base64,');
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: {
+            documentFile: expect.stringContaining('data:application/json;name=readme.json;base64,'),
+          },
+          files: {
+            'readme.json': expect.any(Buffer),
+          },
+        });
       });
 
       it('should handle when the file path is relative', async () => {
-        const operation = readmeSpec.operation('/api-specification', 'post');
+        const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          spec: './__tests__/__fixtures__/owlbert.png',
+          documentFile: './__tests__/__fixtures__/owlbert.png',
         };
 
-        const params = await prepareParams(operation, body);
-        expect(params.body.spec).toContain('data:image/png;name=owlbert.png;base64,');
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: {
+            documentFile: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          },
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
       });
 
       it('should handle a multipart body when a property is a file stream', async () => {
-        const operation = readmeSpec.operation('/api-specification', 'post');
+        const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          spec: fs.createReadStream(require.resolve('@readme/oas-examples/3.0/json/readme.json')),
+          documentFile: fs.createReadStream('./__tests__/__fixtures__/owlbert.png'),
         };
 
-        const params = await prepareParams(operation, body);
-        expect(params.body.spec).toContain('data:application/json;name=readme.json;base64,');
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: {
+            documentFile: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          },
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
+    });
+  });
+
+  describe('file handling', () => {
+    it('should reject unknown file handlers', async () => {
+      const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
+      const body = {
+        documentFile: ['this is not a file handler'],
+      };
+
+      await expect(prepareParams(operation, body)).rejects.toThrow(
+        'The data supplied for the `documentFile` request body parameter is not a file handler that we support.'
+      );
+    });
+
+    // This test sounds weird but we don't have a great way to know if a string we have is a path
+    // to a file that doesn't exist or the string contents of a file, so we're just passing along
+    // file paths that don't exist right now.
+    it("should not reject files that don't exist", async () => {
+      const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
+      const body = {
+        documentFile: './__tests__/__fixtures__/owlbert.jpg',
+      };
+
+      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+        body: {
+          documentFile: './__tests__/__fixtures__/owlbert.jpg',
+        },
       });
     });
   });
 
   describe('supplying just a body or metadata', () => {
     it('should handle if supplied is a body', async () => {
-      const operation = readmeSpec.operation('/api-specification', 'post');
+      const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
       const body = {
-        spec: 'this is the contents of an api specification',
+        documentFile: 'this is the contents of a document',
       };
 
       await expect(prepareParams(operation, body)).resolves.toStrictEqual({
@@ -138,7 +229,7 @@ describe('#prepareParams', () => {
     });
 
     it('should prepare a body if supplied is primitive', async () => {
-      const operation = readmeSpec.operation('/api-specification', 'post');
+      const operation = fileUploads.operation('/anything/image-png', 'post');
       const body = 'this is a primitive value';
 
       await expect(prepareParams(operation, body)).resolves.toStrictEqual({
