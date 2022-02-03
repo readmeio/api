@@ -7,10 +7,10 @@ beforeEach(() => {
   // Though this test doesn't mock anything out because nock is used within every other test in
   // this suite there's an issue where if you run them all together nock will be enabled here and
   // any request that happens will fail because nock reports them as being unmocked.
-  nock.restore();
+  nock.enableNetConnect('httpbin.org');
 });
 
-describe.skip('`application/x-www-form-urlencoded`', () => {
+describe('`application/x-www-form-urlencoded`', () => {
   const usptoSpec = JSON.parse(JSON.stringify(require('@readme/oas-examples/3.0/json/uspto.json')));
   usptoSpec.servers[0].url = '{scheme}://httpbin.org/anything';
 
@@ -67,7 +67,7 @@ describe.skip('`application/x-www-form-urlencoded`', () => {
   // });
 });
 
-test.skip('should support `image/png` requests', async () => {
+test('should support `image/png` requests', async () => {
   const body = `${__dirname}/__fixtures__/owlbert.png`;
 
   await expect(api(fileUploads).post('/anything/image-png', body)).resolves.toStrictEqual({
@@ -86,7 +86,7 @@ test.skip('should support `image/png` requests', async () => {
   });
 });
 
-describe.skip('multipart/form-data', () => {
+describe('multipart/form-data', () => {
   it('should support `multipart/form-data` requests', async () => {
     const parametersStyle = require('@readme/oas-examples/3.1/json/parameters-style.json');
 
