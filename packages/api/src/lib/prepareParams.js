@@ -109,6 +109,7 @@ module.exports = async (operation, body, metadata) => {
   }
 
   let digested = {};
+  let metadataIntersected = false;
   let hasDigestedParams = false;
   if (shouldDigestParams) {
     digested = digestParameters(operation.getParameters());
@@ -131,6 +132,7 @@ module.exports = async (operation, body, metadata) => {
         // as a metadata object and organize into parameters.
         // eslint-disable-next-line no-param-reassign
         metadata = body;
+        metadataIntersected = true;
       } else {
         // For all other cases, we should just treat the supplied body as a body.
         params.body = body;
@@ -194,7 +196,11 @@ module.exports = async (operation, body, metadata) => {
     }
   }
 
-  // @todo add in a debug mode that would run jsonschema validation against request bodies and parameters and throw back errors if what's supplied isn't up to spec.
+  // Form data should be placed inside `formData` instead of `body` for it to properly get picked up.
+  if (operation.isFormUrlEncoded()) {
+    params.formData = body;
+    delete params.body;
+  }
 
   // Only spend time trying to organize metadata into parameters if we were able to digest parameters out of the
   // operation schema. If we couldn't digest anything, but metadata was supplied then we wouldn't know where to place
@@ -222,18 +228,19 @@ module.exports = async (operation, body, metadata) => {
           } else if (digested[param].in === 'cookie') {
             // @todo add support cookie params here and also in @readme/oas-to-har
           }
+
+          // Because a user might have sent just a metadata object, we want to make sure that we
+          // filter out anything that they sent that is a parameter from also being sent as part
+          // of a form data payload for `x-www-form-urlencoded` requests.
+          if (metadataIntersected && operation.isFormUrlEncoded()) {
+            if (param in params.formData) {
+              delete params.formData[param];
+            }
+          }
         });
       }
     }
   }
-
-  // Form data should be placed inside `formData` instead of `body` for it to properly get picked up.
-  if (operation.isFormUrlEncoded()) {
-    params.formData = body;
-    delete params.body;
-  }
-
-  // @todo in debug mode, if a path param is missing (and required -- they always are), and no defaults are present, we should throw an error
 
   // Clean up any empty items.
   ['body', 'files', 'formData', 'header', 'path', 'query'].forEach(type => {
