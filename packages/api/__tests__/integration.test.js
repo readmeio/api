@@ -1,14 +1,14 @@
-const nock = require('nock');
+// const nock = require('nock');
 const api = require('../src');
 
 const fileUploads = require('@readme/oas-examples/3.0/json/file-uploads.json');
 
-beforeEach(() => {
-  // Though this test doesn't mock anything out because nock is used within every other test in
-  // this suite there's an issue where if you run them all together nock will be enabled here and
-  // any request that happens will fail because nock reports them as being unmocked.
-  nock.enableNetConnect('httpbin.org');
-});
+// beforeEach(() => {
+//   // Though this test doesn't mock anything out because nock is used within every other test in
+//   // this suite there's an issue where if you run them all together nock will be enabled here and
+//   // any request that happens will fail because nock reports them as being unmocked.
+//   nock.enableNetConnect('httpbin.org');
+// });
 
 describe('`application/x-www-form-urlencoded`', () => {
   const usptoSpec = JSON.parse(JSON.stringify(require('@readme/oas-examples/3.0/json/uspto.json')));
