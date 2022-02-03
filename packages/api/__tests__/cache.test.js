@@ -37,6 +37,7 @@ beforeAll(() => {
 
 afterAll(() => {
   nock.enableNetConnect();
+  nock.restore();
 });
 
 beforeEach(async () => {

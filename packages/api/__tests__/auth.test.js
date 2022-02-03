@@ -9,6 +9,7 @@ beforeAll(() => {
 
 afterAll(() => {
   nock.enableNetConnect();
+  nock.restore();
 });
 
 describe('#auth()', () => {
