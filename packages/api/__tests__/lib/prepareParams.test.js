@@ -156,6 +156,32 @@ describe('#prepareParams', () => {
       });
     });
 
+    describe('image/png', () => {
+      it('should support a relative file path payload', async () => {
+        const operation = fileUploads.operation('/anything/image-png', 'post');
+        const body = `${__dirname}/../__fixtures__/owlbert.png`;
+
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
+
+      it('should support a file stream payload', async () => {
+        const operation = fileUploads.operation('/anything/image-png', 'post');
+        const body = fs.createReadStream('./__tests__/__fixtures__/owlbert.png');
+
+        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
+          files: {
+            'owlbert.png': expect.any(Buffer),
+          },
+        });
+      });
+    });
+
     describe('multipart/form-data', () => {
       it('should handle a multipart body when a property is a file path', async () => {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
