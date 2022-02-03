@@ -111,29 +111,46 @@ describe('multipart/form-data', () => {
     });
   });
 
-  it('should support `multipart/form-data` requests with files', async () => {
-    const body = {
-      orderId: 1234,
-      userId: 5678,
-      documentFile: `${__dirname}/__fixtures__/hello.txt`,
-    };
+  describe('files', () => {
+    it('should support plaintext files', async () => {
+      const body = {
+        orderId: 1234,
+        userId: 5678,
+        documentFile: `${__dirname}/__fixtures__/hello.txt`,
+      };
 
-    await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
-      args: {},
-      data: '',
-      files: {
-        documentFile: `Hello world!
+      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
+        args: {},
+        data: '',
+        files: {
+          documentFile: `Hello world!
 `,
-      },
-      form: { orderId: '1234', userId: '5678' },
-      headers: expect.objectContaining({
-        'Content-Type': expect.stringMatching(/^multipart\/form-data; boundary=form-data-boundary-(.*)$/),
-        'User-Agent': expect.stringMatching(/api \(node\)\/\d+.\d+.\d+/),
-      }),
-      json: null,
-      method: 'POST',
-      origin: expect.any(String),
-      url: 'https://httpbin.org/anything/multipart-formdata',
+        },
+        form: { orderId: '1234', userId: '5678' },
+        headers: expect.objectContaining({
+          'Content-Type': expect.stringMatching(/^multipart\/form-data; boundary=form-data-boundary-(.*)$/),
+          'User-Agent': expect.stringMatching(/api \(node\)\/\d+.\d+.\d+/),
+        }),
+        json: null,
+        method: 'POST',
+        origin: expect.any(String),
+        url: 'https://httpbin.org/anything/multipart-formdata',
+      });
+    });
+
+    it('should support plaintext files containing unicode characters', async () => {
+      const body = {
+        documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
+      };
+
+      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual(
+        expect.objectContaining({
+          files: {
+            documentFile: `速い茶色のキツネは怠惰な犬を飛び越えます
+`,
+          },
+        })
+      );
     });
   });
 
