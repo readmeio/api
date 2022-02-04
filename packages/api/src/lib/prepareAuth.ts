@@ -3,16 +3,21 @@ import type { Operation } from 'oas';
 
 type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';
 
-/**
- * @param {Array} authKeys
- * @param {Operation} operation
- */
-export default function prepareAuth(authKeys: Array<string[]>, operation: Operation) {
+export default function prepareAuth(authKeys: (number | string)[][], operation: Operation) {
   if (authKeys.length === 0) {
     return {};
   }
 
-  const prepared: Record<string, string | { user: string; pass: string }> = {};
+  const preparedAuth: Record<
+    string,
+    | string
+    | number
+    | {
+        user: string | number;
+        pass: string | number;
+      }
+  > = {};
+
   const security = operation.prepareSecurity();
 
   const securitySchemes = Object.keys(security);
@@ -35,7 +40,7 @@ export default function prepareAuth(authKeys: Array<string[]>, operation: Operat
     switch (scheme.type) {
       case 'http':
         if (scheme.scheme === 'basic') {
-          prepared[scheme._key] = {
+          preparedAuth[scheme._key] = {
             user: authKey[0],
             pass: authKey.length === 2 ? authKey[1] : '',
           };
@@ -46,7 +51,7 @@ export default function prepareAuth(authKeys: Array<string[]>, operation: Operat
             );
           }
 
-          prepared[scheme._key] = authKey[0];
+          preparedAuth[scheme._key] = authKey[0];
         }
         break;
 
@@ -57,7 +62,7 @@ export default function prepareAuth(authKeys: Array<string[]>, operation: Operat
           );
         }
 
-        prepared[scheme._key] = authKey[0];
+        preparedAuth[scheme._key] = authKey[0];
         break;
 
       case 'apiKey':
@@ -68,7 +73,7 @@ export default function prepareAuth(authKeys: Array<string[]>, operation: Operat
         }
 
         if (scheme.in === 'query' || scheme.in === 'header') {
-          prepared[scheme._key] = authKey[0];
+          preparedAuth[scheme._key] = authKey[0];
         }
         break;
 
@@ -77,5 +82,5 @@ export default function prepareAuth(authKeys: Array<string[]>, operation: Operat
     }
   });
 
-  return prepared;
+  return preparedAuth;
 }

@@ -1,41 +1,60 @@
-require('isomorphic-fetch');
-const fetchHar = require('fetch-har');
-const Oas = require('oas').default;
-const oasToHar = require('@readme/oas-to-har');
-const pkg = require('../package.json');
-const { FormDataEncoder } = require('form-data-encoder');
+import type { Operation } from 'oas';
+import type { OASDocument } from 'oas/@types/rmoas.types';
 
-const Cache = require('./cache');
-const { parseResponse, prepareAuth, prepareParams, prepareServer } = require('./lib');
+import 'isomorphic-fetch';
+import fetchHar from 'fetch-har';
+import Oas from 'oas';
+import oasToHar from '@readme/oas-to-har';
+import { FormDataEncoder } from 'form-data-encoder';
+
+import Cache from './cache';
+import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib';
+
+import pkg from '../package.json';
+
+interface ConfigOptions {
+  parseResponse: boolean;
+}
 
 class Sdk {
-  constructor(uri) {
+  uri: string | OASDocument;
+
+  userAgent: string;
+
+  constructor(uri: string | OASDocument) {
     this.uri = uri;
     this.userAgent = `${pkg.name} (node)/${pkg.version}`;
   }
 
-  static getOperations(spec) {
+  static getOperations(spec: Oas) {
+    // @todo change this to use `spec.getPaths()`
     return Object.keys(spec.api.paths)
       .map(path => {
         return Object.keys(spec.api.paths[path]).map(method => {
-          return spec.operation(path, method);
+          return spec.operation(path, method as any); // @todo get rid of this any
         });
       })
       .reduce((prev, next) => prev.concat(next), []);
   }
 
   load() {
-    const authKeys = [];
+    const authKeys: (number | string)[][] = [];
     const cache = new Cache(this.uri);
-    const self = this;
-    let config = { parseResponse: true };
-    let server = false;
+    const userAgent = this.userAgent;
+
+    let config: ConfigOptions = { parseResponse: true };
+    let server:
+      | false
+      | {
+          url: string;
+          variables: Record<string, string | number>;
+        } = false;
 
     let isLoaded = false;
     let isCached = cache.isCached();
     let sdk = {};
 
-    function fetchOperation(spec, operation, body, metadata) {
+    function fetchOperation(spec: Oas, operation: Operation, body?: unknown, metadata?: unknown) {
       return prepareParams(operation, body, metadata).then(params => {
         const data = { ...params };
 
@@ -51,10 +70,10 @@ class Sdk {
         const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
 
         return fetchHar(har, {
-          userAgent: self.userAgent,
+          userAgent,
           files: data.files || {},
           multipartEncoder: FormDataEncoder,
-        }).then(res => {
+        }).then((res: Response) => {
           if (res.status >= 400 && res.status <= 599) {
             throw res;
           }
@@ -66,15 +85,17 @@ class Sdk {
       });
     }
 
-    function loadMethods(spec) {
+    function loadMethods(spec: Oas) {
+      const httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
       // Supported HTTP verbs extracted from the OpenAPI specification.
       // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7
       // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7
-      return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
+      return httpMethods
         .map(httpVerb => {
           return {
-            [httpVerb]: ((method, path, ...args) => {
-              const operation = spec.operation(path, method);
+            [httpVerb]: ((method: string, path: string, ...args: unknown[]) => {
+              // @todo the HTTPMethods enum in `oas` makes working with string methods difficult.
+              const operation = spec.operation(path, method as any);
               return fetchOperation(spec, operation, ...args);
             }).bind(null, httpVerb),
           };
@@ -82,12 +103,12 @@ class Sdk {
         .reduce((prev, next) => Object.assign(prev, next));
     }
 
-    function loadOperations(spec) {
+    function loadOperations(spec: Oas) {
       return Sdk.getOperations(spec)
         .filter(operation => operation.schema.operationId)
         .reduce((prev, next) => {
           return Object.assign(prev, {
-            [next.schema.operationId]: ((operation, ...args) => {
+            [next.schema.operationId]: ((operation: Operation, ...args: unknown[]) => {
               return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
           });
@@ -114,17 +135,19 @@ class Sdk {
     }
 
     const sdkProxy = {
-      get(target, method) {
+      // @give this a better type than any
+      get(target: any, method: string) {
         // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
         // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
         // chaining `sdk.auth().operationId()` will fail.
         if (['auth', 'config'].includes(method)) {
-          return function (...args) {
+          // @todo split this up so we have better types for `auth` and `config`
+          return function (...args: any) {
             return target[method].apply(this, args);
           };
         }
 
-        return async function (...args) {
+        return async function (...args: unknown[]) {
           if (!(method in target)) {
             // If this method doesn't exist on the proxy, have we loaded the SDK? If we have, then this method isn't
             // valid.
@@ -139,7 +162,8 @@ class Sdk {
               throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
             }
 
-            return sdk[method].apply(this, args);
+            // @todo give sdk a better type
+            return (sdk as any)[method].apply(this, args);
           }
 
           return target[method].apply(this, args);
@@ -148,17 +172,17 @@ class Sdk {
     };
 
     sdk = {
-      auth: (...values) => {
+      auth: (...values: string[] | number[]) => {
         authKeys.push(values);
         return new Proxy(sdk, sdkProxy);
       },
-      config: opts => {
+      config: (opts: ConfigOptions) => {
         // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
         // current config to the default, so having `opts` assigned directly to the existing config should be okay.
         config = opts;
         return new Proxy(sdk, sdkProxy);
       },
-      server: (url, variables = {}) => {
+      server: (url: string, variables = {}) => {
         server = {
           url,
           variables,
@@ -170,6 +194,6 @@ class Sdk {
   }
 }
 
-module.exports = uri => {
+export default function api(uri: string | OASDocument) {
   return new Sdk(uri).load();
-};
+}

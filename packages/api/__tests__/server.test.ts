@@ -1,7 +1,7 @@
-const nock = require('nock');
-const api = require('../src');
+import nock from 'nock';
+import api from '../src';
 
-const serverVariables = require('@readme/oas-examples/3.0/json/server-variables.json');
+import serverVariables from '@readme/oas-examples/3.0/json/server-variables.json';
 
 let sdk;
 const petId = 123;

@@ -87,7 +87,7 @@ function processFile(paramName: string, file: string | ReadStream) {
   });
 }
 
-export default async function prepareParams(operation: Operation, body?: any, metadata?: any) {
+export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
   // If no data was supplied, just return immediately.
   if (isEmpty(body) && isEmpty(metadata)) {
     return {};
@@ -100,6 +100,10 @@ export default async function prepareParams(operation: Operation, body?: any, me
     header?: Record<string, string | number | boolean>;
     path?: Record<string, string | number | boolean>;
     query?: Record<string, string | number | boolean>;
+    server?: {
+      selected: number;
+      variables: Record<string, string | number>;
+    };
   } = {};
 
   let shouldDigestParams = false;
@@ -144,7 +148,7 @@ export default async function prepareParams(operation: Operation, body?: any, me
         // If more than 25% of the body intersects with the parameters that we've got on hand, then we should treat it
         // as a metadata object and organize into parameters.
         // eslint-disable-next-line no-param-reassign
-        metadata = body;
+        metadata = body as Record<string, unknown>; // @todo we should just do a "if body isnt an object don't digest it"
         metadataIntersected = true;
       } else {
         // For all other cases, we should just treat the supplied body as a body.
@@ -233,11 +237,11 @@ export default async function prepareParams(operation: Operation, body?: any, me
           }
 
           if (digested[param].in === 'path') {
-            params.path[param] = metadata[param];
+            params.path[param] = metadata[param] as string;
           } else if (digested[param].in === 'query') {
-            params.query[param] = metadata[param];
+            params.query[param] = metadata[param] as string;
           } else if (digested[param].in === 'header') {
-            params.header[param] = metadata[param];
+            params.header[param] = metadata[param] as string;
           } else if (digested[param].in === 'cookie') {
             // @todo add support cookie params here and also in @readme/oas-to-har
           }

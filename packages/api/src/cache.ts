@@ -22,10 +22,18 @@ if (typeof cacheDir === 'undefined') {
   cacheDir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
 }
 
-type Cache = Record<string, { path: string; original: string; title?: string; version?: string }>;
+type Cache = Record<
+  string,
+  {
+    path: string;
+    original: string | OASDocument;
+    title?: string;
+    version?: string;
+  }
+>;
 
 class SdkCache {
-  uri: string;
+  uri: string | OASDocument;
 
   uriHash: string;
 
@@ -37,7 +45,7 @@ class SdkCache {
 
   cached: false | Cache;
 
-  constructor(uri: string) {
+  constructor(uri: string | OASDocument) {
     /**
      * Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
      *
@@ -62,7 +70,7 @@ class SdkCache {
     this.cached = false;
   }
 
-  static getCacheHash(file: string | Record<string, unknown>) {
+  static getCacheHash(file: string | OASDocument) {
     let data: string;
     if (typeof file === 'object') {
       // Under certain unit testing circumstances, we might be supplying the class with a raw JSON object so we'll need
@@ -133,7 +141,7 @@ class SdkCache {
     }
   }
 
-  save(json: Record<string, unknown>) {
+  save(json: OASDocument) {
     if (json.swagger) {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
@@ -190,13 +198,14 @@ class SdkCache {
   }
 
   saveUrl() {
-    return fetch(this.uri)
+    const url = this.uri as string;
+    return fetch(url)
       .then(res => {
         if (!res.ok) {
           throw new Error(`Unable to retrieve URL. Reason: ${res.statusText}`);
         }
 
-        if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(this.uri)) {
+        if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(url)) {
           return res.text().then(text => {
             return yaml.load(text);
           });
@@ -208,11 +217,13 @@ class SdkCache {
   }
 
   saveFile() {
+    const filePath = this.uri as string;
+
     return new Promise(resolve => {
-      resolve(fs.readFileSync(this.uri, 'utf8'));
+      resolve(fs.readFileSync(filePath, 'utf8'));
     })
       .then((res: string) => {
-        if (/\.(yaml|yml)/.test(this.uri)) {
+        if (/\.(yaml|yml)/.test(filePath)) {
           return yaml.load(res);
         }
 

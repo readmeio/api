@@ -1,9 +1,10 @@
+/* eslint-disable import/first */
 jest.mock('find-cache-dir', () => {
   return () => undefined;
 });
 
-const os = require('os');
-const Cache = require('../src/cache');
+import os from 'os';
+import Cache from '../src/cache';
 
 // Since this test is mocking out the `find-cache-dir` module for a single test, it needs to be run separately from the
 // rest of the cache tests, otherwise all of those tests would use this mocked out version.
