@@ -6,7 +6,7 @@ const realFs = jest.requireActual('fs/promises');
 
 jest.mock('fs', () => require('memfs').fs);
 
-const Cache = require('../src/cache');
+const Cache = require('../src/cache').default;
 const pkg = require('../package.json');
 
 let readmeExampleJson;

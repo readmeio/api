@@ -1,5 +1,9 @@
 {
-  "extends": "@readme/eslint-config",
+  "extends": [
+    "@readme/eslint-config",
+    "@readme/eslint-config/docs",
+    "@readme/eslint-config/typescript"
+  ],
   "root": true,
   "env": {
     "es2020": true
@@ -10,5 +14,15 @@
   },
   "parserOptions": {
     "ecmaVersion": 2020
+  },
+  "rules": {
+    // Though we aren't requiring JSDoc blocks to be present, if they are they should be properly
+    // formatted.
+    "jsdoc/require-jsdoc": "off",
+
+    // TypeScript types are better suited for these cases instead.
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns": "off",
+    "jsdoc/require-returns-type": "off"
   }
 }

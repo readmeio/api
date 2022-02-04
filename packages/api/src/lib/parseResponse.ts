@@ -1,14 +1,13 @@
-const {
-  utils: { matchesMimeType },
-} = require('oas');
+import { utils } from 'oas';
 
-module.exports = async function getResponseBody(response) {
+const { matchesMimeType } = utils;
+
+export default async function getResponseBody(response: Response) {
   const contentType = response.headers.get('Content-Type');
   const isJson = contentType && (matchesMimeType.json(contentType) || matchesMimeType.wildcard(contentType));
 
-  // We have to clone it before reading, just incase
-  // we cannot parse it as JSON later, then we can
-  // re-read again as plain text
+  // We have to clone it before reading, just incase we cannot parse it as JSON later, then we can
+  // re-read again as plain text.
   const clonedResponse = response.clone();
   let responseBody;
 
@@ -19,4 +18,4 @@ module.exports = async function getResponseBody(response) {
   }
 
   return responseBody;
-};
+}

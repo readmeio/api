@@ -1,5 +1,5 @@
-require('isomorphic-fetch');
-const parseResponse = require('../../src/lib/parseResponse');
+import 'isomorphic-fetch';
+import parseResponse from '../../src/lib/parseResponse';
 
 const responseBody = JSON.stringify({
   id: 9205436248879918000,

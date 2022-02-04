@@ -16,7 +16,7 @@ describe('#auth()', () => {
     const apiKey = '123457890';
 
     describe('in: query', () => {
-      it.each([
+      it.only.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', async (_, chained) => {

@@ -1,8 +1,8 @@
-const fs = require('fs');
-const Oas = require('oas').default;
-const prepareParams = require('../../src/lib/prepareParams');
+import fs from 'fs';
+import Oas from 'oas';
+import prepareParams from '../../src/lib/prepareParams';
 
-const payloadExamples = require('../__fixtures__/payloads.oas.json');
+import payloadExamples from '../__fixtures__/payloads.oas.json';
 
 describe('#prepareParams', () => {
   let fileUploads;
@@ -10,13 +10,13 @@ describe('#prepareParams', () => {
   let usptoSpec;
 
   beforeAll(async () => {
-    fileUploads = new Oas(require('@readme/oas-examples/3.0/json/file-uploads.json'));
+    fileUploads = await import('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
     await fileUploads.dereference();
 
-    readmeSpec = new Oas(require('@readme/oas-examples/3.0/json/readme.json'));
+    readmeSpec = await import('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
     await readmeSpec.dereference();
 
-    usptoSpec = new Oas(require('@readme/oas-examples/3.0/json/uspto.json'));
+    usptoSpec = await import('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
     await usptoSpec.dereference();
   });
 
@@ -50,7 +50,7 @@ describe('#prepareParams', () => {
   });
 
   it('should prepare body if body is a primitive', async () => {
-    const operation = new Oas(payloadExamples).operation('/primitiveBody', 'put');
+    const operation = Oas.init(payloadExamples).operation('/primitiveBody', 'put');
     const body = 'Brie cheeseburger ricotta.';
 
     await expect(prepareParams(operation, body, {})).resolves.toStrictEqual({
@@ -59,7 +59,7 @@ describe('#prepareParams', () => {
   });
 
   it('should prepare body if body is an array', async () => {
-    const operation = new Oas(payloadExamples).operation('/arraySchema', 'put');
+    const operation = Oas.init(payloadExamples).operation('/arraySchema', 'put');
     const body = [
       {
         name: 'Buster',
@@ -72,7 +72,7 @@ describe('#prepareParams', () => {
   });
 
   it('should ignore supplied body data if the request has no request body', async () => {
-    const spec = new Oas(require('@readme/oas-examples/3.0/json/petstore.json'));
+    const spec = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
     await spec.dereference();
 
     const operation = spec.operation('/pet/{petId}', 'get');
@@ -258,7 +258,7 @@ describe('#prepareParams', () => {
     });
 
     it('should prepare just a body if supplied argument is an array', async () => {
-      const operation = new Oas(payloadExamples).operation('/arraySchema', 'put');
+      const operation = Oas.init(payloadExamples).operation('/arraySchema', 'put');
       const body = [
         {
           name: 'Buster',

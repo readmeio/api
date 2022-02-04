@@ -2,12 +2,18 @@
   "name": "api",
   "version": "4.2.0",
   "description": "Generate an SDK from an OpenAPI definition",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "@types/index.d.ts",
   "scripts": {
-    "lint": "eslint .",
+    "build": "tsc",
+    "lint": "eslint . --ext .js,.ts",
+    "prebuild": "rm -rf dist/ @types/",
+    "prepack": "npm run build",
     "pretest": "npm run lint",
-    "prettier": "prettier --list-different --write \"./**/**.js\"",
-    "test": "jest --coverage"
+    "prettier": "prettier --list-different --write \"./**/**.{js,ts}\"",
+    "test": "tsc; jest --coverage",
+    "test-watch": "tsc; jest --watch",
+    "watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -37,18 +43,18 @@
     "oas": "^17.6.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.2.0",
+    "@readme/eslint-config": "^8.3.0",
     "@readme/oas-examples": "^4.4.0",
+    "@types/find-cache-dir": "^3.2.1",
+    "@types/jest": "^27.4.0",
+    "@types/js-yaml": "^4.0.5",
     "eslint": "^8.8.0",
     "jest": "^27.4.7",
     "memfs": "^3.4.1",
     "nock": "^13.2.2",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.5.5"
   },
-  "prettier": "@readme/eslint-config/prettier",
-  "jest": {
-    "testPathIgnorePatterns": [
-      "__tests__/__fixtures__/"
-    ]
-  }
+  "prettier": "@readme/eslint-config/prettier"
 }
