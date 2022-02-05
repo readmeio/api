@@ -139,7 +139,7 @@ class SdkCache {
     }
   }
 
-  save(json: OASDocument) {
+  save(json: Record<string, unknown>) {
     if (json.swagger) {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
