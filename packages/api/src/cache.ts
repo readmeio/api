@@ -211,7 +211,7 @@ class SdkCache {
 
         return res.json();
       })
-      .then(json => this.save(json));
+      .then((json: Record<string, unknown>) => this.save(json));
   }
 
   saveFile() {
