@@ -1,4 +1,5 @@
 import type { Operation } from 'oas';
+import type { OASDocument } from './types';
 
 import 'isomorphic-fetch';
 import fetchHar from 'fetch-har';

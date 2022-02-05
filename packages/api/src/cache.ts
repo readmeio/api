@@ -1,3 +1,4 @@
+import type { OASDocument } from './types';
 import 'isomorphic-fetch';
 import OpenAPIParser from '@readme/openapi-parser';
 import yaml from 'js-yaml';

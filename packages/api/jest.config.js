@@ -2,7 +2,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['/dist', '/node_modules', '/__tests__/__fixtures__/'],
   globals: {
     'ts-jest': {
-      tsconfig: 'tsconfig.test.json',
+      tsconfig: '__tests__/tsconfig.json',
     },
   },
   modulePathIgnorePatterns: ['<rootDir>/dist'],
