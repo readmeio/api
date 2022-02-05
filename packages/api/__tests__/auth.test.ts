@@ -18,8 +18,7 @@ afterAll(() => {
 });
 
 beforeEach(() => {
-  // `openapi-types` is throwing nonsensical errors on the `apiKey_cookie` security scheme.
-  sdk = api(securityOas as any);
+  sdk = api(securityOas);
 });
 
 describe('#auth()', () => {

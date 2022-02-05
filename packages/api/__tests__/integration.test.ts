@@ -73,8 +73,7 @@ describe('`application/x-www-form-urlencoded`', () => {
 test('should support `image/png` requests', async () => {
   const body = `${__dirname}/__fixtures__/owlbert.png`;
 
-  // `openapi-types` is throwing nonsensical errors on `components` being required (it's not).
-  await expect(api(fileUploads as any).post('/anything/image-png', body)).resolves.toStrictEqual({
+  await expect(api(fileUploads).post('/anything/image-png', body)).resolves.toStrictEqual({
     args: {},
     data: expect.stringMatching(/data:application\/octet-stream;base64/),
     files: {},
@@ -101,7 +100,7 @@ describe('multipart/form-data', () => {
       },
     };
 
-    await expect(api(parametersStyle as any).post('/anything/form-data/form', body)).resolves.toStrictEqual({
+    await expect(api(parametersStyle).post('/anything/form-data/form', body)).resolves.toStrictEqual({
       args: {},
       data: '',
       files: {},
@@ -129,7 +128,7 @@ describe('multipart/form-data', () => {
         documentFile: `${__dirname}/__fixtures__/hello.txt`,
       };
 
-      await expect(api(fileUploads as any).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
+      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
         args: {},
         data: '',
         files: {
@@ -153,7 +152,7 @@ describe('multipart/form-data', () => {
         documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
       };
 
-      await expect(api(fileUploads as any).post('/anything/multipart-formdata', body)).resolves.toStrictEqual(
+      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual(
         expect.objectContaining({
           files: {
             documentFile: `速い茶色のキツネは怠惰な犬を飛び越えます

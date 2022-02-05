@@ -1,5 +1,3 @@
-import type { OASDocument } from 'oas/@types/rmoas.types';
-
 import 'isomorphic-fetch';
 import OpenAPIParser from '@readme/openapi-parser';
 import yaml from 'js-yaml';
@@ -149,7 +147,7 @@ class SdkCache {
     return new Promise(resolve => {
       resolve(json);
     })
-      .then((res: OASDocument) => {
+      .then((res: any) => {
         // The `validate` method handles dereferencing for us.
         return OpenAPIParser.validate(res, {
           dereference: {

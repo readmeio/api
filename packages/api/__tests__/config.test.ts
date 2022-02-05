@@ -22,8 +22,7 @@ afterAll(() => {
 describe('#config()', () => {
   describe('parseResponse', () => {
     beforeEach(() => {
-      // `openapi-types` is throwing nonsensical errors on the `Order` component.
-      sdk = api(petstore as unknown as string);
+      sdk = api(petstore);
     });
 
     it('should give access to the Response object if `parseResponse` is `false`', async () => {

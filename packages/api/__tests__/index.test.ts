@@ -299,7 +299,7 @@ describe('#fetch', () => {
           },
         },
       },
-    } as any);
+    });
 
     it('should encode query parameters', async () => {
       const params = {
