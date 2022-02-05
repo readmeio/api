@@ -16,6 +16,9 @@
     "ecmaVersion": 2020
   },
   "rules": {
+    // @todo fix these eventually
+    "@typescript-eslint/no-explicit-any": "off",
+
     // Though we aren't requiring JSDoc blocks to be present, if they are they should be properly
     // formatted.
     "jsdoc/require-jsdoc": "off",

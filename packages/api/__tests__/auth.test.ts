@@ -1,7 +1,13 @@
-const nock = require('nock');
-const api = require('../src');
+import nock from 'nock';
+import api from '../src';
 
-const securityOas = require('@readme/oas-examples/3.0/json/security.json');
+import securityOas from '@readme/oas-examples/3.0/json/security.json';
+
+let sdk;
+
+const apiKey = '123457890';
+const user = 'username';
+const pass = 'changeme';
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -11,37 +17,35 @@ afterAll(() => {
   nock.restore();
 });
 
+beforeEach(() => {
+  // `openapi-types` is throwing nonsensical errors on the `apiKey_cookie` security scheme.
+  sdk = api(securityOas as any);
+});
+
 describe('#auth()', () => {
   describe('API Keys', () => {
-    const apiKey = '123457890';
-
     describe('in: query', () => {
-      it.only.each([
+      it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', async (_, chained) => {
-        const sdk = api(securityOas);
         const mock = nock('https://httpbin.org')
           .get(/\/apiKey/)
-          .reply(200, function () {
-            return this.req.options.href;
-          });
+          .reply(200, uri => uri);
 
         if (chained) {
           // eslint-disable-next-line jest/no-conditional-expect
-          await expect(sdk.auth(apiKey).get('/apiKey')).resolves.toBe('https://httpbin.org/apiKey?apiKey=123457890');
+          await expect(sdk.auth(apiKey).get('/apiKey')).resolves.toBe('/apiKey?apiKey=123457890');
           mock.done();
           return;
         }
 
         sdk.auth(apiKey);
-        await expect(sdk.get('/apiKey')).resolves.toBe('https://httpbin.org/apiKey?apiKey=123457890');
+        await expect(sdk.get('/apiKey')).resolves.toBe('/apiKey?apiKey=123457890');
         mock.done();
       });
 
       it('should throw if you supply multiple auth keys', () => {
-        const sdk = api(securityOas);
-
         return expect(sdk.auth(apiKey, apiKey).get('/apiKey')).rejects.toThrow(/only a single key is needed/i);
       });
     });
@@ -51,7 +55,6 @@ describe('#auth()', () => {
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', async (_, chained) => {
-        const sdk = api(securityOas);
         const mock = nock('https://httpbin.org')
           .put('/apiKey')
           .reply(200, function () {
@@ -78,8 +81,6 @@ describe('#auth()', () => {
       });
 
       it('should throw if you supply multiple auth keys', () => {
-        const sdk = api(securityOas);
-
         return expect(sdk.auth(apiKey, apiKey).put('/apiKey')).rejects.toThrow(/only a single key is needed/i);
       });
     });
@@ -87,15 +88,11 @@ describe('#auth()', () => {
 
   describe('HTTP', () => {
     describe('scheme: basic', () => {
-      const user = 'username';
-      const pass = 'changeme';
-
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', async (_, chained) => {
         const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
-        const sdk = api(securityOas);
         const mock = nock('https://httpbin.org')
           .post('/basic')
           .reply(200, function () {
@@ -123,7 +120,6 @@ describe('#auth()', () => {
       });
 
       it('should allow you to not pass in a password', async () => {
-        const sdk = api(securityOas);
         const mock = nock('https://httpbin.org')
           .post('/basic')
           .reply(200, function () {
@@ -140,13 +136,10 @@ describe('#auth()', () => {
     });
 
     describe('scheme: bearer', () => {
-      const apiKey = '123457890';
-
       it.each([
         ['should allow you to supply auth', false],
         ['should allow you to supply auth when unchained from an operation', true],
       ])('%s', async (_, chained) => {
-        const sdk = api(securityOas);
         const mock = nock('https://httpbin.org')
           .post('/bearer')
           .reply(200, function () {
@@ -174,21 +167,16 @@ describe('#auth()', () => {
       });
 
       it('should throw if you pass in multiple bearer tokens', () => {
-        const sdk = api(securityOas);
-
         return expect(sdk.auth(apiKey, apiKey).post('/bearer')).rejects.toThrow(/only a single token is needed/i);
       });
     });
   });
 
   describe('OAuth 2', () => {
-    const apiKey = '123457890';
-
     it.each([
       ['should allow you to supply auth', false],
       ['should allow you to supply auth when unchained from an operation', true],
     ])('%s', async (_, chained) => {
-      const sdk = api(securityOas);
       const mock = nock('https://httpbin.org')
         .post('/oauth2')
         .reply(200, function () {
@@ -216,8 +204,6 @@ describe('#auth()', () => {
     });
 
     it('should throw if you pass in multiple bearer tokens', () => {
-      const sdk = api(securityOas);
-
       return expect(sdk.auth(apiKey, apiKey).post('/oauth2')).rejects.toThrow(/only a single token is needed/i);
     });
   });

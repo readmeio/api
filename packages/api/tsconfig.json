@@ -6,9 +6,11 @@
     "declarationDir": "./@types",
     "esModuleInterop": true,
     "lib": ["dom", "es2020"],
+    "moduleResolution": "node",
     "noImplicitAny": true,
     "outDir": "./dist",
     "resolveJsonModule": true,
+    "target": "es2020"
   },
   "include": ["./src/**/*"],
 }

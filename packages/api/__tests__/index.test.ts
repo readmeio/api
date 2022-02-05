@@ -1,12 +1,14 @@
-const nock = require('nock');
-const path = require('path');
-const api = require('../src');
-const Cache = require('../src/cache');
-const pkg = require('../package.json');
-const { vol } = require('memfs');
+import nock from 'nock';
+import path from 'path';
+import api from '../src';
+import Cache from '../src/cache';
+import { vol } from 'memfs';
+
+import pkg = require('../package.json');
 
 const realFs = jest.requireActual('fs/promises');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 jest.mock('fs', () => require('memfs').fs);
 
 const examplesDir = path.join(__dirname, 'examples');
@@ -58,13 +60,9 @@ describe('#preloading', () => {
   it('should proxy an sdk for the first time', async () => {
     const mock = nock('https://developer.uspto.gov/ds-api')
       .get('/')
-      .reply(200, function () {
-        return { href: this.req.options.href };
-      })
+      .reply(200, uri => uri)
       .get('/two')
-      .reply(200, function () {
-        return { href: this.req.options.href };
-      });
+      .reply(200, uri => uri);
 
     // Asserting that we have not previously loaded this API.
     expect(new Cache(uspto).isCached()).toBe(false);
@@ -75,9 +73,7 @@ describe('#preloading', () => {
     expect(new Cache(uspto).isCached()).toBe(false);
     expect(Object.keys(sdk)).toStrictEqual(['auth', 'config', 'server']);
 
-    await expect(sdk.get('/')).resolves.toStrictEqual({
-      href: 'https://developer.uspto.gov/ds-api/',
-    });
+    await expect(sdk.get('/')).resolves.toBe('/ds-api/');
 
     // Now that we've called something on the SDK, it should now be fully loaded.
     expect(new Cache(uspto).isCached()).toBe(true);
@@ -99,9 +95,7 @@ describe('#preloading', () => {
     ]);
 
     // Calling the same method again should also work as expected.
-    await expect(sdk.get('/two')).resolves.toStrictEqual({
-      href: 'https://developer.uspto.gov/ds-api/two',
-    });
+    await expect(sdk.get('/two')).resolves.toBe('/ds-api/two');
 
     mock.done();
   });
@@ -192,10 +186,10 @@ describe('#fetch', () => {
     })
       .delete(`/pets/${petId}`)
       .reply(200, function () {
-        return this.req.headers['user-agent'].shift();
+        return this.req.headers['user-agent'];
       });
 
-    await expect(petstoreSdk.deletePet({ id: petId })).resolves.toBe(userAgent);
+    await expect(petstoreSdk.deletePet({ id: petId })).resolves.toStrictEqual([userAgent]);
     mock.done();
   });
 
@@ -216,9 +210,7 @@ describe('#fetch', () => {
       const body = { name: 'Buster' };
       const mock = nock(petstoreServerUrl)
         .post('/pets', body)
-        .reply(200, function (uri, requestBody) {
-          return requestBody;
-        });
+        .reply(200, (uri, requestBody) => requestBody);
 
       await expect(petstoreSdk.addPet(body)).resolves.toStrictEqual(body);
       mock.done();
@@ -233,16 +225,11 @@ describe('#fetch', () => {
 
       const mock = nock('https://dash.readme.com/api/v1')
         .put(`/changelogs/${slug}`, body)
-        .reply(200, function (uri, requestBody) {
-          return {
-            url: this.req.options.href,
-            body: requestBody,
-          };
-        });
+        .reply(200, (uri, requestBody) => ({ uri, requestBody }));
 
       await expect(readmeSdk.updateChangelog(body, { slug })).resolves.toStrictEqual({
-        url: 'https://dash.readme.com/api/v1/changelogs/new-release',
-        body,
+        requestBody: body,
+        uri: '/api/v1/changelogs/new-release',
       });
       mock.done();
     });
@@ -254,9 +241,7 @@ describe('#fetch', () => {
 
       const mock = nock(petstoreServerUrl)
         .post('/pets', body)
-        .reply(200, (uri, requestBody) => {
-          return requestBody;
-        });
+        .reply(200, (uri, requestBody) => requestBody);
 
       await expect(petstoreSdk.post('/pets', body)).resolves.toStrictEqual(body);
       mock.done();
@@ -266,13 +251,9 @@ describe('#fetch', () => {
       const slug = 'new-release';
       const mock = nock('https://dash.readme.com/api/v1')
         .put(`/changelogs/${slug}`)
-        .reply(200, function () {
-          return this.req.options.href;
-        });
+        .reply(200, uri => uri);
 
-      await expect(readmeSdk.put('/changelogs/{slug}', { slug })).resolves.toBe(
-        'https://dash.readme.com/api/v1/changelogs/new-release'
-      );
+      await expect(readmeSdk.put('/changelogs/{slug}', { slug })).resolves.toBe('/api/v1/changelogs/new-release');
       mock.done();
     });
 
@@ -287,14 +268,14 @@ describe('#fetch', () => {
         .put(`/changelogs/${slug}`, body)
         .reply(200, function (uri, requestBody) {
           return {
-            url: this.req.options.href,
-            body: requestBody,
+            uri,
+            requestBody,
           };
         });
 
       await expect(readmeSdk.put('/changelogs/{slug}', body, { slug })).resolves.toStrictEqual({
-        url: 'https://dash.readme.com/api/v1/changelogs/new-release',
-        body,
+        uri: '/api/v1/changelogs/new-release',
+        requestBody: body,
       });
       mock.done();
     });
@@ -318,7 +299,7 @@ describe('#fetch', () => {
           },
         },
       },
-    });
+    } as any);
 
     it('should encode query parameters', async () => {
       const params = {

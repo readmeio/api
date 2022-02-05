@@ -25,7 +25,6 @@ describe('#prepareParams', () => {
 
     await expect(prepareParams(operation)).resolves.toStrictEqual({});
     await expect(prepareParams(operation, null, null)).resolves.toStrictEqual({});
-    await expect(prepareParams(operation, [], [])).resolves.toStrictEqual({});
     await expect(prepareParams(operation, {}, {})).resolves.toStrictEqual({});
   });
 

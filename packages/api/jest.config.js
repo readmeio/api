@@ -5,6 +5,7 @@ module.exports = {
       tsconfig: 'tsconfig.test.json',
     },
   },
+  modulePathIgnorePatterns: ['<rootDir>/dist'],
   modulePaths: ['<rootDir>'],
   preset: 'ts-jest/presets/js-with-ts',
   roots: ['<rootDir>'],

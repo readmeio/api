@@ -1,8 +1,8 @@
-require('isomorphic-fetch');
-const nock = require('nock');
-const api = require('../src');
+import 'isomorphic-fetch';
+import nock from 'nock';
+import api from '../src';
 
-const petstore = require('@readme/oas-examples/3.0/json/petstore.json');
+import petstore from '@readme/oas-examples/3.0/json/petstore.json';
 
 let sdk;
 const petId = 123;
@@ -22,7 +22,8 @@ afterAll(() => {
 describe('#config()', () => {
   describe('parseResponse', () => {
     beforeEach(() => {
-      sdk = api(petstore);
+      // `openapi-types` is throwing nonsensical errors on the `Order` component.
+      sdk = api(petstore as unknown as string);
     });
 
     it('should give access to the Response object if `parseResponse` is `false`', async () => {

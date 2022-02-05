@@ -1,10 +1,21 @@
-const api = require('../src');
+import api from '../src';
 
-const fileUploads = require('@readme/oas-examples/3.0/json/file-uploads.json');
+import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
+import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 
 describe('`application/x-www-form-urlencoded`', () => {
-  const usptoSpec = JSON.parse(JSON.stringify(require('@readme/oas-examples/3.0/json/uspto.json')));
-  usptoSpec.servers[0].url = '{scheme}://httpbin.org/anything';
+  let usptoSpec;
+
+  beforeEach(async () => {
+    usptoSpec = await import('@readme/oas-examples/3.0/json/uspto.json')
+      .then(({ default: spec }) => JSON.stringify(spec))
+      .then(JSON.parse)
+      .then(spec => {
+        // eslint-disable-next-line no-param-reassign
+        spec.servers[0].url = '{scheme}://httpbin.org/anything';
+        return spec;
+      });
+  });
 
   it('should support `application/x-www-form-urlencoded` requests', async () => {
     const body = {
@@ -62,7 +73,8 @@ describe('`application/x-www-form-urlencoded`', () => {
 test('should support `image/png` requests', async () => {
   const body = `${__dirname}/__fixtures__/owlbert.png`;
 
-  await expect(api(fileUploads).post('/anything/image-png', body)).resolves.toStrictEqual({
+  // `openapi-types` is throwing nonsensical errors on `components` being required (it's not).
+  await expect(api(fileUploads as any).post('/anything/image-png', body)).resolves.toStrictEqual({
     args: {},
     data: expect.stringMatching(/data:application\/octet-stream;base64/),
     files: {},
@@ -80,8 +92,6 @@ test('should support `image/png` requests', async () => {
 
 describe('multipart/form-data', () => {
   it('should support `multipart/form-data` requests', async () => {
-    const parametersStyle = require('@readme/oas-examples/3.1/json/parameters-style.json');
-
     const body = {
       primitive: 'string',
       array: ['string'],
@@ -91,7 +101,7 @@ describe('multipart/form-data', () => {
       },
     };
 
-    await expect(api(parametersStyle).post('/anything/form-data/form', body)).resolves.toStrictEqual({
+    await expect(api(parametersStyle as any).post('/anything/form-data/form', body)).resolves.toStrictEqual({
       args: {},
       data: '',
       files: {},
@@ -119,7 +129,7 @@ describe('multipart/form-data', () => {
         documentFile: `${__dirname}/__fixtures__/hello.txt`,
       };
 
-      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
+      await expect(api(fileUploads as any).post('/anything/multipart-formdata', body)).resolves.toStrictEqual({
         args: {},
         data: '',
         files: {
@@ -143,7 +153,7 @@ describe('multipart/form-data', () => {
         documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
       };
 
-      await expect(api(fileUploads).post('/anything/multipart-formdata', body)).resolves.toStrictEqual(
+      await expect(api(fileUploads as any).post('/anything/multipart-formdata', body)).resolves.toStrictEqual(
         expect.objectContaining({
           files: {
             documentFile: `速い茶色のキツネは怠惰な犬を飛び越えます

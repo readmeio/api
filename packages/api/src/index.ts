@@ -54,7 +54,7 @@ class Sdk {
     let isCached = cache.isCached();
     let sdk = {};
 
-    function fetchOperation(spec: Oas, operation: Operation, body?: unknown, metadata?: unknown) {
+    function fetchOperation(spec: Oas, operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
       return prepareParams(operation, body, metadata).then(params => {
         const data = { ...params };
 
