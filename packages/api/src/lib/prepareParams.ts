@@ -95,6 +95,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
 
   const params: {
     body?: any;
+    cookie?: Record<string, string | number | boolean>;
     files?: Record<string, Buffer>;
     formData?: any;
     header?: Record<string, string | number | boolean>;
@@ -223,6 +224,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   // operation schema. If we couldn't digest anything, but metadata was supplied then we wouldn't know where to place
   // the metadata!
   if (hasDigestedParams) {
+    params.cookie = {};
     params.header = {};
     params.path = {};
     params.query = {};
@@ -243,7 +245,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
           } else if (digested[param].in === 'header') {
             params.header[param] = metadata[param] as string;
           } else if (digested[param].in === 'cookie') {
-            // @todo add support cookie params here and also in @readme/oas-to-har
+            params.cookie[param] = metadata[param] as string;
           }
 
           // Because a user might have sent just a metadata object, we want to make sure that we
@@ -260,7 +262,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   }
 
   // Clean up any empty items.
-  ['body', 'files', 'formData', 'header', 'path', 'query'].forEach((type: keyof typeof params) => {
+  ['body', 'cookie', 'files', 'formData', 'header', 'path', 'query'].forEach((type: keyof typeof params) => {
     if (type in params && isEmpty(params[type])) {
       delete params[type];
     }

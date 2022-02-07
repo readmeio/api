@@ -4,7 +4,7 @@ import api from '../src';
 import Cache from '../src/cache';
 import { vol } from 'memfs';
 
-import pkg = require('../package.json');
+import pkg from '../package.json';
 
 const realFs = jest.requireActual('fs/promises');
 
