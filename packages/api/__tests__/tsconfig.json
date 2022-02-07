@@ -3,5 +3,5 @@
   "compilerOptions": {
     "noImplicitAny": false,
   },
-  "include": ["src/**/*", "__tests__/**/*"]
+  "include": ["../src/**/*", "**/*"]
 }
