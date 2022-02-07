@@ -47,8 +47,9 @@ class Sdk {
       return prepareParams(operation, body, metadata).then(params => {
         const data = { ...params };
 
-        // If `sdk.server()` has been issued data then we need to do some extra work to figure out how to use that
-        // supplied server, and also handle any server variables that were sent alongside it.
+        // If `sdk.server()` has been issued data then we need to do some extra work to figure out
+        // how to use that supplied server, and also handle any server variables that were sent
+        // alongside it.
         if (server) {
           const preparedServer = prepareServer(spec, server.url, server.variables);
           if (preparedServer) {
@@ -142,9 +143,9 @@ class Sdk {
     const sdkProxy = {
       // @give this a better type than any
       get(target: any, method: string) {
-        // Since auth returns a self-proxy, we **do not** want it to fall through into the async function below as when
-        // that'll happen, instead of returning a self-proxy, it'll end up returning a Promise. When that happens,
-        // chaining `sdk.auth().operationId()` will fail.
+        // Since auth returns a self-proxy, we **do not** want it to fall through into the async
+        // function below as when that'll happen, instead of returning a self-proxy, it'll end up
+        // returning a Promise. When that happens, chaining `sdk.auth().operationId()` will fail.
         if (['auth', 'config'].includes(method)) {
           // @todo split this up so we have better types for `auth` and `config`
           return function (...args: any) {
@@ -154,8 +155,8 @@ class Sdk {
 
         return async function (...args: unknown[]) {
           if (!(method in target)) {
-            // If this method doesn't exist on the proxy, have we loaded the SDK? If we have, then this method isn't
-            // valid.
+            // If this method doesn't exist on the proxy, have we loaded the SDK? If we have, then
+            // this method isn't valid.
             if (isLoaded) {
               throw new Error(`Sorry, \`${method}\` does not appear to be a valid operation on this API.`);
             }
@@ -182,8 +183,9 @@ class Sdk {
         return new Proxy(sdk, sdkProxy);
       },
       config: (opts: ConfigOptions) => {
-        // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
-        // current config to the default, so having `opts` assigned directly to the existing config should be okay.
+        // Downside to having `opts` be merged into the existing `config` is that there isn't a
+        // clean way to reset your current config to the default, so having `opts` assigned directly
+        // to the existing config should be okay.
         config = opts;
         return new Proxy(sdk, sdkProxy);
       },
