@@ -323,5 +323,49 @@ describe('#prepareParams', () => {
     });
   });
 
-  it.todo(`should be able to handle parameters when they're defined as common parameters`);
+  describe('parameter types', () => {
+    let parameterStyle;
+
+    beforeEach(async () => {
+      parameterStyle = await import('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
+      await parameterStyle.dereference();
+    });
+
+    it.each([
+      ['cookies', '/cookies', 'get', 'cookie'],
+      ['headers', '/anything/headers', 'get', 'header'],
+      ['query', '/anything/query', 'get', 'query'],
+    ])('should support %s', async (_, path, method, paramName) => {
+      const operation = parameterStyle.operation(path, method);
+      const metadata = {
+        primitive: 'buster',
+      };
+
+      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+        [paramName]: {
+          primitive: 'buster',
+        },
+      });
+    });
+
+    it('should support path parameters', async () => {
+      const operation = parameterStyle.operation('/anything/path/{primitive}/{array}/{object}', 'get');
+      const metadata = {
+        primitive: 'buster',
+        array: ['buster'],
+        object: {
+          name: 'buster',
+          description: 'the dog',
+        },
+      };
+
+      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+        path: {
+          primitive: 'buster',
+          array: ['buster'],
+          object: { name: 'buster', description: 'the dog' },
+        },
+      });
+    });
+  });
 });
