@@ -1,3 +1,4 @@
+@types/
 coverage/
-node_modules/
+dist/
 example.js

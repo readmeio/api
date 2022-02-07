@@ -1,11 +1,15 @@
-const fs = require('fs/promises');
-const path = require('path');
-const stream = require('stream');
-const getStream = require('get-stream');
-const datauri = require('datauri/sync');
-const DatauriParser = require('datauri/parser');
+import type { Operation } from 'oas';
+import type { ParameterObject } from 'oas/@types/rmoas.types';
+import type { ReadStream } from 'fs';
 
-function digestParameters(parameters) {
+import fs from 'fs/promises';
+import path from 'path';
+import stream from 'stream';
+import getStream from 'get-stream';
+import datauri from 'datauri/sync';
+import DatauriParser from 'datauri/parser';
+
+function digestParameters(parameters: ParameterObject[]) {
   return parameters.reduce((prev, param) => {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {
       throw new Error(`The OpenAPI document for this operation wasn't dereferenced before processing.`);
@@ -20,11 +24,11 @@ function digestParameters(parameters) {
 }
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
-function isEmpty(obj) {
+function isEmpty(obj: any) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
-function processFile(paramName, file) {
+function processFile(paramName: string, file: string | ReadStream) {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
@@ -58,9 +62,10 @@ function processFile(paramName, file) {
       });
   } else if (file instanceof stream.Readable) {
     return getStream.buffer(file).then(buffer => {
+      const filePath = file.path as string;
       const parser = new DatauriParser();
-      const base64 = parser.format(file.path, buffer).content;
-      const payloadFilename = encodeURIComponent(path.basename(file.path));
+      const base64 = parser.format(filePath, buffer).content;
+      const payloadFilename = encodeURIComponent(path.basename(filePath));
 
       return {
         paramName,
@@ -82,13 +87,25 @@ function processFile(paramName, file) {
   });
 }
 
-module.exports = async (operation, body, metadata) => {
+export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
   // If no data was supplied, just return immediately.
   if (isEmpty(body) && isEmpty(metadata)) {
     return {};
   }
 
-  const params = {};
+  const params: {
+    body?: any;
+    files?: Record<string, Buffer>;
+    formData?: any;
+    header?: Record<string, string | number | boolean>;
+    path?: Record<string, string | number | boolean>;
+    query?: Record<string, string | number | boolean>;
+    server?: {
+      selected: number;
+      variables: Record<string, string | number>;
+    };
+  } = {};
+
   let shouldDigestParams = false;
 
   if (Array.isArray(body)) {
@@ -108,12 +125,12 @@ module.exports = async (operation, body, metadata) => {
     shouldDigestParams = true;
   }
 
-  let digested = {};
+  let digested: Record<string, ParameterObject> = {};
   let metadataIntersected = false;
   let hasDigestedParams = false;
   if (shouldDigestParams) {
     digested = digestParameters(operation.getParameters());
-    hasDigestedParams = Object.keys(digested).length;
+    hasDigestedParams = !!Object.keys(digested).length;
   }
 
   // No metadata was explicitly defined so we need to analyze the supplied, and we haven't already set a body then we
@@ -131,7 +148,7 @@ module.exports = async (operation, body, metadata) => {
         // If more than 25% of the body intersects with the parameters that we've got on hand, then we should treat it
         // as a metadata object and organize into parameters.
         // eslint-disable-next-line no-param-reassign
-        metadata = body;
+        metadata = body as Record<string, unknown>; // @todo we should just do a "if body isnt an object don't digest it"
         metadataIntersected = true;
       } else {
         // For all other cases, we should just treat the supplied body as a body.
@@ -220,11 +237,11 @@ module.exports = async (operation, body, metadata) => {
           }
 
           if (digested[param].in === 'path') {
-            params.path[param] = metadata[param];
+            params.path[param] = metadata[param] as string;
           } else if (digested[param].in === 'query') {
-            params.query[param] = metadata[param];
+            params.query[param] = metadata[param] as string;
           } else if (digested[param].in === 'header') {
-            params.header[param] = metadata[param];
+            params.header[param] = metadata[param] as string;
           } else if (digested[param].in === 'cookie') {
             // @todo add support cookie params here and also in @readme/oas-to-har
           }
@@ -243,11 +260,11 @@ module.exports = async (operation, body, metadata) => {
   }
 
   // Clean up any empty items.
-  ['body', 'files', 'formData', 'header', 'path', 'query'].forEach(type => {
-    if (type in params && Object.keys(params[type]).length === 0) {
+  ['body', 'files', 'formData', 'header', 'path', 'query'].forEach((type: keyof typeof params) => {
+    if (type in params && isEmpty(params[type])) {
       delete params[type];
     }
   });
 
   return params;
-};
+}

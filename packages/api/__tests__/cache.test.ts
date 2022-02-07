@@ -1,17 +1,27 @@
-const nock = require('nock');
-const path = require('path');
-const { vol } = require('memfs');
+import nock from 'nock';
+import path from 'path';
+import { vol } from 'memfs';
+
+import Cache from '../src/cache';
+import pkg from '../package.json';
 
 const realFs = jest.requireActual('fs/promises');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 jest.mock('fs', () => require('memfs').fs);
-
-const Cache = require('../src/cache');
-const pkg = require('../package.json');
 
 let readmeExampleJson;
 let readmeExampleYaml;
 const examplesDir = path.join(__dirname, 'examples');
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    interface Matchers<R> {
+      toBeDereferenced(): R;
+    }
+  }
+}
 
 expect.extend({
   // Custom matcher so we can easily test that dereferencing of OpenAPI files is working as expected.

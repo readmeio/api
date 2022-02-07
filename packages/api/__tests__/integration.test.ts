@@ -1,10 +1,21 @@
-const api = require('../src');
+import api from '../src';
 
-const fileUploads = require('@readme/oas-examples/3.0/json/file-uploads.json');
+import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
+import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 
 describe('`application/x-www-form-urlencoded`', () => {
-  const usptoSpec = JSON.parse(JSON.stringify(require('@readme/oas-examples/3.0/json/uspto.json')));
-  usptoSpec.servers[0].url = '{scheme}://httpbin.org/anything';
+  let usptoSpec;
+
+  beforeEach(async () => {
+    usptoSpec = await import('@readme/oas-examples/3.0/json/uspto.json')
+      .then(({ default: spec }) => JSON.stringify(spec))
+      .then(JSON.parse)
+      .then(spec => {
+        // eslint-disable-next-line no-param-reassign
+        spec.servers[0].url = '{scheme}://httpbin.org/anything';
+        return spec;
+      });
+  });
 
   it('should support `application/x-www-form-urlencoded` requests', async () => {
     const body = {
@@ -80,8 +91,6 @@ test('should support `image/png` requests', async () => {
 
 describe('multipart/form-data', () => {
   it('should support `multipart/form-data` requests', async () => {
-    const parametersStyle = require('@readme/oas-examples/3.1/json/parameters-style.json');
-
     const body = {
       primitive: 'string',
       array: ['string'],
