@@ -26,17 +26,6 @@ class Sdk {
     this.userAgent = `${pkg.name} (node)/${pkg.version}`;
   }
 
-  static getOperations(spec: Oas) {
-    // @todo change this to use `spec.getPaths()`
-    return Object.keys(spec.api.paths)
-      .map(path => {
-        return Object.keys(spec.api.paths[path]).map(method => {
-          return spec.operation(path, method as any); // @todo get rid of this any
-        });
-      })
-      .reduce((prev, next) => prev.concat(next), []);
-  }
-
   load() {
     const authKeys: (number | string)[][] = [];
     const cache = new Cache(this.uri);
@@ -85,16 +74,20 @@ class Sdk {
       });
     }
 
+    /**
+     * Create dynamic accessors for every HTTP method that the OpenAPI specification supports.
+     *
+     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7}
+     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7}
+     * @param spec
+     */
     function loadMethods(spec: Oas) {
-      const httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
-      // Supported HTTP verbs extracted from the OpenAPI specification.
-      // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7
-      // https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7
-      return httpMethods
+      return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
         .map(httpVerb => {
           return {
             [httpVerb]: ((method: string, path: string, ...args: unknown[]) => {
-              // @todo the HTTPMethods enum in `oas` makes working with string methods difficult.
+              // The HTTPMethods enum in `oas` makes working with string methods difficult so we
+              // need to cast it as `any` here.
               const operation = spec.operation(path, method as any);
               return fetchOperation(spec, operation, ...args);
             }).bind(null, httpVerb),
@@ -103,12 +96,24 @@ class Sdk {
         .reduce((prev, next) => Object.assign(prev, next));
     }
 
+    /**
+     * Create dynamic accessors for every operation with a defined operation ID. If an operation
+     * does not have an operation ID it can be accessed by its `.method('/path')` accessor instead.
+     *
+     * @param spec
+     */
     function loadOperations(spec: Oas) {
-      return Sdk.getOperations(spec)
-        .filter(operation => operation.schema.operationId)
+      return Object.entries(spec.getPaths())
+        .map(([, operations]) => Object.values(operations))
+        .reduce((prev, next) => prev.concat(next), [])
+        .filter(operation => {
+          // `getOperationId()` creates dynamic operation IDs when one isn't available but we need
+          // to know here if we actually have one present or not.
+          return operation.hasOperationId() ? operation.getOperationId() : false;
+        })
         .reduce((prev, next) => {
           return Object.assign(prev, {
-            [next.schema.operationId]: ((operation: Operation, ...args: unknown[]) => {
+            [next.getOperationId()]: ((operation: Operation, ...args: unknown[]) => {
               return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
           });

@@ -150,6 +150,8 @@ describe('#accessors', () => {
     it('should error if method does not exist', () => {
       return expect(petstoreSdk.fetch('/pets')).rejects.toThrow(/does not appear to be a valid operation/);
     });
+
+    it.todo('should error if a path does not exist on a method');
   });
 });
 
