@@ -110,15 +110,16 @@ export default async function prepareParams(operation: Operation, body?: unknown
   let shouldDigestParams = false;
 
   if (Array.isArray(body)) {
-    // If the body param is an array, then it's absolutely a body and not something we need to do analysis against.
+    // If the body param is an array, then it's absolutely a body and not something we need to do
+    // analysis against.
     params.body = body;
 
     if (typeof metadata !== 'undefined') {
       shouldDigestParams = true;
     }
   } else if (typeof metadata === 'undefined') {
-    // No metadata was explicitly defined so we need to analyze the body to determine if it should actually be treated
-    // as metadata.
+    // No metadata was explicitly defined so we need to analyze the body to determine if it should
+    // actually be treated as metadata.
     shouldDigestParams = true;
   } else {
     // Body and metadata were both supplied.
@@ -134,20 +135,20 @@ export default async function prepareParams(operation: Operation, body?: unknown
     hasDigestedParams = !!Object.keys(digested).length;
   }
 
-  // No metadata was explicitly defined so we need to analyze the supplied, and we haven't already set a body then we
-  // need to analyze the supplied body to see if it should actually be metadata. If not, then we can just treat it as a
-  // body and pass it along.
+  // No metadata was explicitly defined so we need to analyze the supplied, and we haven't already
+  // set a body then we need to analyze the supplied body to see if it should actually be metadata.
+  // If not, then we can just treat it as a body and pass it along.
   if (!('body' in params) && typeof metadata === 'undefined') {
     if (!hasDigestedParams) {
-      // No parameters were able to be digested, so we just have to assume that what the user supplied was for a body.
-      // This might lead to unwanted false positives if an OAS isn't accurate, but short of throwing an error there
-      // isn't anything we can really do about it.
+      // No parameters were able to be digested, so we just have to assume that what the user
+      // supplied was for a body. This might lead to unwanted false positives if an OAS isn't
+      // accurate, but short of throwing an error there isn't anything we can really do about it.
       params.body = body;
     } else {
       const intersection = Object.keys(body).filter(value => Object.keys(digested).includes(value)).length;
       if (intersection && intersection / Object.keys(body).length > 0.25) {
-        // If more than 25% of the body intersects with the parameters that we've got on hand, then we should treat it
-        // as a metadata object and organize into parameters.
+        // If more than 25% of the body intersects with the parameters that we've got on hand, then
+        // we should treat it as a metadata object and organize into parameters.
         // eslint-disable-next-line no-param-reassign
         metadata = body as Record<string, unknown>; // @todo we should just do a "if body isnt an object don't digest it"
         metadataIntersected = true;
@@ -214,15 +215,16 @@ export default async function prepareParams(operation: Operation, body?: unknown
     }
   }
 
-  // Form data should be placed inside `formData` instead of `body` for it to properly get picked up.
+  // Form data should be placed within `formData` instead of `body` for it to properly get picked
+  // up by `fetch-har`.
   if (operation.isFormUrlEncoded()) {
     params.formData = body;
     delete params.body;
   }
 
-  // Only spend time trying to organize metadata into parameters if we were able to digest parameters out of the
-  // operation schema. If we couldn't digest anything, but metadata was supplied then we wouldn't know where to place
-  // the metadata!
+  // Only spend time trying to organize metadata into parameters if we were able to digest
+  // parameters out of the operation schema. If we couldn't digest anything, but metadata was
+  // supplied then we wouldn't know where to place the metadata!
   if (hasDigestedParams) {
     params.cookie = {};
     params.header = {};

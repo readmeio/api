@@ -13,9 +13,9 @@ import pkg from '../package.json';
 
 let cacheDir = findCacheDir({ name: pkg.name });
 if (typeof cacheDir === 'undefined') {
-  // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't writable, or there's no
-  // `package.json` in the root-most directory. If this happens, we can instead adhoc create a cache directory in the
-  // users OS temp directory and store our data there.
+  // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't
+  // writable, or there's no `package.json` in the root-most directory. If this happens, we can
+  // instead adhoc create a cache directory in the users OS temp directory and store our data there.
   //
   // @link https://github.com/avajs/find-cache-dir/issues/29
   cacheDir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
@@ -72,8 +72,9 @@ class SdkCache {
   static getCacheHash(file: string | OASDocument) {
     let data: string;
     if (typeof file === 'object') {
-      // Under certain unit testing circumstances, we might be supplying the class with a raw JSON object so we'll need
-      // to convert it to a string in order to hand it off to the crypto module.
+      // Under certain unit testing circumstances, we might be supplying the class with a raw JSON
+      // object so we'll need to convert it to a string in order to hand it off to the crypto
+      // module.
       data = JSON.stringify(file);
     } else {
       data = file;
@@ -102,7 +103,8 @@ class SdkCache {
   }
 
   get() {
-    // If the class was supplied a raw object, just go ahead and bypass the caching system and return that.
+    // If the class was supplied a raw object, just go ahead and bypass the caching system and
+    // return that.
     if (typeof this.uri === 'object') {
       return this.uri;
     }
@@ -116,7 +118,8 @@ class SdkCache {
   }
 
   async load() {
-    // If the class was supplied a raw object, just go ahead and bypass the caching system and return that.
+    // If the class was supplied a raw object, just go ahead and bypass the caching system and
+    // return that.
     if (typeof this.uri === 'object') {
       return this.uri;
     }
@@ -152,9 +155,9 @@ class SdkCache {
         // The `validate` method handles dereferencing for us.
         return OpenAPIParser.validate(res, {
           dereference: {
-            // If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`. This allows us to
-            // not only do easy circular reference detection but also stringify and  save dereferenced API definitions
-            // back into the cache directory.
+            // If circular `$refs` are ignored they'll remain in the API definition as
+            // `$ref: String`. This allows us to not only do easy circular reference detection but
+            // also stringify and  save dereferenced API definitions back into the cache directory.
             circular: 'ignore',
           },
         }).catch(err => {
