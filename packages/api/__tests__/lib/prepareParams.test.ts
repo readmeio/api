@@ -4,6 +4,18 @@ import prepareParams from '../../src/lib/prepareParams';
 
 import payloadExamples from '../__fixtures__/payloads.oas.json';
 
+import { inspect } from 'util';
+
+declare global {
+  interface Console {
+    logx: any;
+  }
+}
+
+console.logx = (obj: any) => {
+  console.log(inspect(obj, false, null, true));
+};
+
 describe('#prepareParams', () => {
   let fileUploads;
   let readmeSpec;
@@ -20,11 +32,10 @@ describe('#prepareParams', () => {
     await usptoSpec.dereference();
   });
 
-  it('should prepare nothing if nothing was supplied', async () => {
+  test('should prepare nothing if nothing was supplied (and the operation has no required defaults)', async () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
 
     await expect(prepareParams(operation)).resolves.toStrictEqual({});
-    await expect(prepareParams(operation, null, null)).resolves.toStrictEqual({});
     await expect(prepareParams(operation, {}, {})).resolves.toStrictEqual({});
   });
 
@@ -306,6 +317,10 @@ describe('#prepareParams', () => {
           randomUnknownParameter3: true,
           randomUnknownParameter4: true,
         },
+        path: {
+          dataset: 'oa_citations',
+          version: 'v1',
+        },
       });
     });
 
@@ -364,6 +379,21 @@ describe('#prepareParams', () => {
           primitive: 'buster',
           array: ['buster'],
           object: { name: 'buster', description: 'the dog' },
+        },
+      });
+    });
+  });
+
+  describe('defaults', () => {
+    it.todo('should prefill defaults for required body parameters if not supplied');
+
+    it('should prefill defaults for required metadata parameters if not supplied', async () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+
+      await expect(prepareParams(operation)).resolves.toStrictEqual({
+        path: {
+          version: 'v1',
+          dataset: 'oa_citations',
         },
       });
     });

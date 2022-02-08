@@ -1,5 +1,5 @@
 import type { Operation } from 'oas';
-import type { ParameterObject } from 'oas/@types/rmoas.types';
+import type { ParameterObject, SchemaObject } from 'oas/@types/rmoas.types';
 import type { ReadStream } from 'fs';
 
 import fs from 'fs/promises';
@@ -9,7 +9,15 @@ import getStream from 'get-stream';
 import datauri from 'datauri/sync';
 import DatauriParser from 'datauri/parser';
 
-function digestParameters(parameters: ParameterObject[]) {
+/**
+ * Extract all available parameters from an operations Parameter Object into a digestable array
+ * that we can use to apply to the request.
+ *
+ * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#parameterObject}
+ * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameterObject}
+ * @param parameters
+ */
+function digestParameters(parameters: ParameterObject[]): Record<string, ParameterObject> {
   return parameters.reduce((prev, param) => {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {
       throw new Error(`The OpenAPI document for this operation wasn't dereferenced before processing.`);
@@ -28,7 +36,21 @@ function isEmpty(obj: any) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
-function processFile(paramName: string, file: string | ReadStream) {
+function isPrimitive(obj: any) {
+  return typeof obj === null || typeof obj === 'number' || typeof obj === 'string';
+}
+
+/**
+ * Ingest a file path or readable stream into a common object that we can later use to process it
+ * into a parameters object for making an API request.
+ *
+ * @param paramName
+ * @param file
+ */
+function processFile(
+  paramName: string,
+  file: string | ReadStream
+): Promise<{ paramName: string; base64: string; filename: string; buffer: Buffer }> {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
@@ -87,12 +109,16 @@ function processFile(paramName: string, file: string | ReadStream) {
   });
 }
 
+/**
+ * With potentially supplied body and/or metadata we need to run through them against a given API
+ * operation to see what's what and prepare any available parameters to be used in an API request
+ * with `@readme/oas-to-har`.
+ *
+ * @param operation
+ * @param body
+ * @param metadata
+ */
 export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
-  // If no data was supplied, just return immediately.
-  if (isEmpty(body) && isEmpty(metadata)) {
-    return {};
-  }
-
   const params: {
     body?: any;
     cookie?: Record<string, string | number | boolean>;
@@ -107,55 +133,44 @@ export default async function prepareParams(operation: Operation, body?: unknown
     };
   } = {};
 
-  let shouldDigestParams = false;
-
-  if (Array.isArray(body)) {
-    // If the body param is an array, then it's absolutely a body and not something we need to do
-    // analysis against.
-    params.body = body;
-
-    if (typeof metadata !== 'undefined') {
-      shouldDigestParams = true;
-    }
-  } else if (typeof metadata === 'undefined') {
-    // No metadata was explicitly defined so we need to analyze the body to determine if it should
-    // actually be treated as metadata.
-    shouldDigestParams = true;
-  } else {
-    // Body and metadata were both supplied.
-    params.body = body;
-    shouldDigestParams = true;
-  }
-
-  let digested: Record<string, ParameterObject> = {};
   let metadataIntersected = false;
-  let hasDigestedParams = false;
-  if (shouldDigestParams) {
-    digested = digestParameters(operation.getParameters());
-    hasDigestedParams = !!Object.keys(digested).length;
-  }
+  const digestedParameters = digestParameters(operation.getParameters());
+  const hasDigestedParams = !!Object.keys(digestedParameters).length;
 
-  // No metadata was explicitly defined so we need to analyze the supplied, and we haven't already
-  // set a body then we need to analyze the supplied body to see if it should actually be metadata.
-  // If not, then we can just treat it as a body and pass it along.
-  if (!('body' in params) && typeof metadata === 'undefined') {
-    if (!hasDigestedParams) {
-      // No parameters were able to be digested, so we just have to assume that what the user
-      // supplied was for a body. This might lead to unwanted false positives if an OAS isn't
-      // accurate, but short of throwing an error there isn't anything we can really do about it.
+  // If a body argument was supplied we need to do a bit of work to see if it's actually a body
+  // argument or metadata because the library lets you supply either a body, metadata, or body with
+  // metadata.
+  if (typeof body !== 'undefined') {
+    if (Array.isArray(body) || isPrimitive(body)) {
+      // If the body param is an array or a primitive then we know it's absolutely a body because
+      // metadata can only ever be undefined or an object.
       params.body = body;
-    } else {
-      const intersection = Object.keys(body).filter(value => Object.keys(digested).includes(value)).length;
-      if (intersection && intersection / Object.keys(body).length > 0.25) {
-        // If more than 25% of the body intersects with the parameters that we've got on hand, then
-        // we should treat it as a metadata object and organize into parameters.
-        // eslint-disable-next-line no-param-reassign
-        metadata = body as Record<string, unknown>; // @todo we should just do a "if body isnt an object don't digest it"
-        metadataIntersected = true;
-      } else {
-        // For all other cases, we should just treat the supplied body as a body.
+    } else if (typeof metadata === 'undefined') {
+      // No metadata was explicitly provided so we need to analyze the body to determine if it's a
+      // body or should be actually be treated as metadata.
+      if (!hasDigestedParams) {
+        // If no parameters were able to be digested it's because this operation has none so then
+        // we just have to assume that what the user supplied was for a body and not metadata. This
+        // might lead to unwanted false positives if the API definition isn't accurate but short of
+        // throwing an error (one that the user would have no control over resolving anyways) there
+        // isn't anything we can do about it.
         params.body = body;
+      } else {
+        const intersection = Object.keys(body).filter(value => Object.keys(digestedParameters).includes(value)).length;
+        if (intersection && intersection / Object.keys(body).length > 0.25) {
+          // If more than 25% of the body intersects with the parameters that we've got on hand, then
+          // we should treat it as a metadata object and organize into parameters.
+          // eslint-disable-next-line no-param-reassign
+          metadata = body as Record<string, unknown>;
+          metadataIntersected = true;
+        } else {
+          // For all other cases, we should just treat the supplied body as a body.
+          params.body = body;
+        }
       }
+    } else {
+      // Body and metadata were both supplied.
+      params.body = body;
     }
   }
 
@@ -224,43 +239,56 @@ export default async function prepareParams(operation: Operation, body?: unknown
 
   // Only spend time trying to organize metadata into parameters if we were able to digest
   // parameters out of the operation schema. If we couldn't digest anything, but metadata was
-  // supplied then we wouldn't know where to place the metadata!
+  // supplied then we wouldn't know how to send it in the request!
   if (hasDigestedParams) {
     params.cookie = {};
     params.header = {};
     params.path = {};
     params.query = {};
 
-    if (typeof metadata === 'object' && !isEmpty(metadata)) {
-      const metadataKeys = Object.keys(metadata);
-      if (metadataKeys.length) {
-        metadataKeys.forEach(param => {
-          if (!(param in digested)) {
-            // This param isn't documented in the OAS, so we can't know where to put it!
-            return;
-          }
-
-          if (digested[param].in === 'path') {
-            params.path[param] = metadata[param] as string;
-          } else if (digested[param].in === 'query') {
-            params.query[param] = metadata[param] as string;
-          } else if (digested[param].in === 'header') {
-            params.header[param] = metadata[param] as string;
-          } else if (digested[param].in === 'cookie') {
-            params.cookie[param] = metadata[param] as string;
-          }
-
-          // Because a user might have sent just a metadata object, we want to make sure that we
-          // filter out anything that they sent that is a parameter from also being sent as part
-          // of a form data payload for `x-www-form-urlencoded` requests.
-          if (metadataIntersected && operation.isFormUrlEncoded()) {
-            if (param in params.formData) {
-              delete params.formData[param];
-            }
-          }
-        });
+    Object.entries(digestedParameters).forEach(([paramName, param]) => {
+      let value;
+      if (typeof metadata === 'object' && !isEmpty(metadata) && paramName in metadata) {
+        value = metadata[paramName];
+      } else if (param?.required && param?.schema) {
+        // If this parameter is required and has an available default we should pass it along too.
+        // We don't do this for optional parameters because they're optional and we should only
+        // send them if the user gives us data for it.
+        const schema = param?.schema as SchemaObject;
+        if (schema?.default) {
+          value = schema.default;
+        }
       }
-    }
+
+      if (value === undefined) {
+        return;
+      }
+
+      switch (param.in) {
+        case 'path':
+          params.path[paramName] = value;
+          break;
+        case 'query':
+          params.query[paramName] = value;
+          break;
+        case 'header':
+          params.header[paramName] = value;
+          break;
+        case 'cookie':
+          params.cookie[paramName] = value;
+          break;
+        default: // no-op
+      }
+
+      // Because a user might have sent just a metadata object, we want to make sure that we filter
+      // out anything that they sent that is a parameter from also being sent as part of a form
+      // data payload for `x-www-form-urlencoded` requests.
+      if (metadataIntersected && operation.isFormUrlEncoded()) {
+        if (paramName in params.formData) {
+          delete params.formData[paramName];
+        }
+      }
+    });
   }
 
   // Clean up any empty items.
