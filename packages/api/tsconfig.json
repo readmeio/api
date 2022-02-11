@@ -9,7 +9,8 @@
     "module": "node12",
     "moduleResolution": "node12",
     "noImplicitAny": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "skipLibCheck": true, // skipping this because @types/jest and @types/mocha clash
   },
   "include": ["./src/**/*"]
 }
