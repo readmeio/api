@@ -4,22 +4,10 @@ import prepareParams from '../../src/lib/prepareParams';
 
 import payloadExamples from '../__fixtures__/payloads.oas.json';
 
-import { inspect } from 'util';
-
-declare global {
-  interface Console {
-    logx: any;
-  }
-}
-
-console.logx = (obj: any) => {
-  console.log(inspect(obj, false, null, true));
-};
-
 describe('#prepareParams', () => {
-  let fileUploads;
-  let readmeSpec;
-  let usptoSpec;
+  let fileUploads: Oas;
+  let readmeSpec: Oas;
+  let usptoSpec: Oas;
 
   beforeAll(async () => {
     fileUploads = await import('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
@@ -32,7 +20,18 @@ describe('#prepareParams', () => {
     await usptoSpec.dereference();
   });
 
-  test('should prepare nothing if nothing was supplied (and the operation has no required defaults)', async () => {
+  it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async () => {
+    const spec = await import('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
+    await spec.dereference();
+
+    const operation = spec.operation('/apiKey', 'get');
+
+    await expect(prepareParams(operation, {}, {})).rejects.toThrow(
+      "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
+    );
+  });
+
+  it('should prepare nothing if nothing was supplied (and the operation has no required defaults)', async () => {
     const operation = readmeSpec.operation('/api-specification', 'post');
 
     await expect(prepareParams(operation)).resolves.toStrictEqual({});
@@ -132,6 +131,9 @@ describe('#prepareParams', () => {
         };
 
         await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+          formData: {
+            criteria: '*:*',
+          },
           path: {
             dataset: 'v1',
             version: 'oa_citations',
@@ -294,6 +296,7 @@ describe('#prepareParams', () => {
           dataset: 'oa_citations',
         },
         formData: {
+          criteria: '*:*',
           randomUnknownParameter: true,
         },
       });
@@ -302,20 +305,21 @@ describe('#prepareParams', () => {
     it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = {
-        version: 'v1', // This a known parameter, but the others aren't and should be treated as body payload data.
         randomUnknownParameter: true,
         randomUnknownParameter2: true,
         randomUnknownParameter3: true,
         randomUnknownParameter4: true,
+        version: 'v1', // This a known parameter, but the others aren't and should be treated as body payload data.
       };
 
       await expect(prepareParams(operation, body)).resolves.toStrictEqual({
         formData: {
-          version: 'v1',
+          criteria: '*:*',
           randomUnknownParameter: true,
           randomUnknownParameter2: true,
           randomUnknownParameter3: true,
           randomUnknownParameter4: true,
+          version: 'v1',
         },
         path: {
           dataset: 'oa_citations',
@@ -385,15 +389,77 @@ describe('#prepareParams', () => {
   });
 
   describe('defaults', () => {
-    it.todo('should prefill defaults for required body parameters if not supplied');
+    it('should prefill defaults for required body parameters if not supplied', async () => {
+      const oas = await import('@readme/oas-examples/3.0/json/petstore.json')
+        .then((spec: any) => {
+          /* eslint-disable no-param-reassign */
+          spec.components.schemas.Pet.required.push('category');
+          spec.components.schemas.Pet.properties.name.default = 'buster';
+
+          spec.components.schemas.Category.required = ['name'];
+          spec.components.schemas.Category.properties.name.default = 'dog';
+          /* eslint-enable no-param-reassign */
+
+          return spec;
+        })
+        .then(Oas.init);
+
+      await oas.dereference();
+
+      const operation = oas.operation('/pet', 'post');
+      await expect(prepareParams(operation, { id: 404 })).resolves.toStrictEqual({
+        body: {
+          id: 404,
+          category: { name: 'dog' },
+          name: 'buster',
+        },
+      });
+    });
+
+    it('should prefill defaults for required body parameters (on formData-used operations) if not supplied', async () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+      const metadata = {
+        version: 'v2',
+        dataset: 'dog_treats',
+      };
+
+      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+        formData: {
+          criteria: '*:*',
+        },
+        path: {
+          version: 'v2',
+          dataset: 'dog_treats',
+        },
+      });
+    });
 
     it('should prefill defaults for required metadata parameters if not supplied', async () => {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
 
       await expect(prepareParams(operation)).resolves.toStrictEqual({
+        formData: {
+          criteria: '*:*',
+        },
         path: {
           version: 'v1',
           dataset: 'oa_citations',
+        },
+      });
+    });
+
+    it('should not override any user-provided data with defaults', async () => {
+      const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
+      const body = { criteria: 'query:dogs' };
+      const metadata = { version: 'v2', dataset: 'dog_treats' };
+
+      await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+        formData: {
+          criteria: 'query:dogs',
+        },
+        path: {
+          version: 'v2',
+          dataset: 'dog_treats',
         },
       });
     });
