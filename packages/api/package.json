@@ -12,9 +12,7 @@
     "prepack": "npm run build",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.{js,ts}\"",
-    "test": "tsc; jest --coverage",
-    "test-watch": "tsc; jest --watch",
-    "watch": "tsc --watch"
+    "test": "tsc; jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -24,6 +22,7 @@
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"
   },
+  "homepage": "https://github.com/readmeio/api",
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
@@ -58,7 +57,7 @@
     "nock": "^13.2.2",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
-    "typescript": "^4.6.0-beta"
+    "typescript": "4.6.0-beta"
   },
   "prettier": "@readme/eslint-config/prettier"
 }

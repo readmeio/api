@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@readme/eslint-config",
+    "@readme/eslint-config/typescript"
+  ],
+  "root": true,
+  "env": {
+    "es2020": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}
