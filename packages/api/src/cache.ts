@@ -9,16 +9,16 @@ import os from 'os';
 import path from 'path';
 import makeDir from 'make-dir';
 
-import pkg from '../package.json';
+import { PACKAGE_NAME } from './package';
 
-let cacheDir = findCacheDir({ name: pkg.name });
+let cacheDir = findCacheDir({ name: PACKAGE_NAME });
 if (typeof cacheDir === 'undefined') {
   // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't
   // writable, or there's no `package.json` in the root-most directory. If this happens, we can
   // instead adhoc create a cache directory in the users OS temp directory and store our data there.
   //
   // @link https://github.com/avajs/find-cache-dir/issues/29
-  cacheDir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
+  cacheDir = makeDir.sync(path.join(os.tmpdir(), PACKAGE_NAME));
 }
 
 type Cache = Record<

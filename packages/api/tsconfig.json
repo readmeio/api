@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "./src/",
+    "baseUrl": "./src",
     "declaration": true,
     "declarationDir": "./@types",
     "esModuleInterop": true,
     "lib": ["dom", "es2020"],
-    "moduleResolution": "node",
+    "module": "node12",
+    "moduleResolution": "node12",
     "noImplicitAny": true,
-    "outDir": "./dist",
-    "resolveJsonModule": true,
-    "target": "es2020"
+    "outDir": "dist"
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*"]
 }

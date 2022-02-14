@@ -10,7 +10,7 @@ import { FormDataEncoder } from 'form-data-encoder';
 import Cache from './cache';
 import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib';
 
-import pkg from '../package.json';
+import { PACKAGE_NAME, PACKAGE_VERSION } from './package';
 
 interface ConfigOptions {
   parseResponse: boolean;
@@ -23,7 +23,7 @@ class Sdk {
 
   constructor(uri: string | OASDocument) {
     this.uri = uri;
-    this.userAgent = `${pkg.name} (node)/${pkg.version}`;
+    this.userAgent = `${PACKAGE_NAME} (node)/${PACKAGE_VERSION}`;
   }
 
   load() {
@@ -201,6 +201,9 @@ class Sdk {
   }
 }
 
-export default function api(uri: string | OASDocument) {
+// Why `export` vs `export default`? If we leave this as `export` then TS will transpile it into
+// a `module.exports` export so that when folks load this they don't need to load it as
+// `require('api').default`.
+export = (uri: string | OASDocument) => {
   return new Sdk(uri).load();
-}
+};
