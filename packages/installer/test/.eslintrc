@@ -1,0 +1,7 @@
+{
+  "extends": "@readme/eslint-config/testing-mocha",
+  "rules": {
+    // This rule doesn't play well with how oclif Mocha tests are designed to be written.
+    "mocha/no-setup-in-describe": "off"
+  }
+}
