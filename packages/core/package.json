@@ -31,12 +31,15 @@
     "datauri": "^4.1.0",
     "get-stream": "^6.0.0",
     "isomorphic-fetch": "^3.0.0",
+    "json-schema-traverse": "^1.0.0",
+    "lodash.merge": "^4.6.2",
     "oas": "^17.6.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.4.1",
     "@readme/oas-examples": "^4.4.0",
     "@types/jest": "^27.4.0",
+    "@types/lodash.merge": "^4.6.6",
     "eslint": "^8.8.0",
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
