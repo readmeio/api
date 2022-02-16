@@ -1,4 +1,4 @@
-import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults';
+import getJSONSchemaDefaults from '../src/lib/getJSONSchemaDefaults';
 import Oas from 'oas';
 
 test('should get defaults off an operation', async () => {

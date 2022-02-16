@@ -3,5 +3,4 @@ coverage/
 .eslint*
 .gitignore
 .prettier*
-example.js
 jest.*.js
