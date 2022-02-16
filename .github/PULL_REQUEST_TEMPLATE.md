@@ -1,5 +1,5 @@
-| 🚥  | Fix RM-XXX |
-| :-- | :--- |
+| 🚥 Fix RM-XXX |
+| :-- |
 
 ## 🧰 Changes
 
