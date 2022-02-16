@@ -5,12 +5,12 @@ import 'isomorphic-fetch';
 import fetchHar from 'fetch-har';
 import Oas from 'oas';
 import oasToHar from '@readme/oas-to-har';
+import { parseResponse, prepareAuth, prepareParams, prepareServer } from '@readme/api-core';
 import { FormDataEncoder } from 'form-data-encoder';
 
 import Cache from './cache';
-import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib';
 
-import { PACKAGE_NAME, PACKAGE_VERSION } from './package';
+import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo';
 
 interface ConfigOptions {
   parseResponse: boolean;

@@ -5,10 +5,6 @@
     "@readme/eslint-config/typescript"
   ],
   "root": true,
-  "globals": {
-    "fetch": true,
-    "Response": true
-  },
   "parserOptions": {
     "ecmaVersion": 2020
   },
@@ -24,14 +20,5 @@
     "jsdoc/require-param-type": "off",
     "jsdoc/require-returns": "off",
     "jsdoc/require-returns-type": "off"
-  },
-  "overrides": [
-    {
-      "files": ["example.js"],
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off",
-        "no-console": "off"
-      }
-    }
-  ]
+  }
 }

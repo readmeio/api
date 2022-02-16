@@ -1,8 +1,8 @@
 import fs from 'fs';
 import Oas from 'oas';
-import prepareParams from '../../src/lib/prepareParams';
+import prepareParams from '../src/lib/prepareParams';
 
-import payloadExamples from '../__fixtures__/payloads.oas.json';
+import payloadExamples from './__fixtures__/payloads.oas.json';
 
 describe('#prepareParams', () => {
   let fileUploads: Oas;
@@ -145,7 +145,7 @@ describe('#prepareParams', () => {
     describe('image/png', () => {
       it('should support a relative file path payload', async () => {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = `${__dirname}/../__fixtures__/owlbert.png`;
+        const body = `${__dirname}/__fixtures__/owlbert.png`;
 
         await expect(prepareParams(operation, body)).resolves.toStrictEqual({
           body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
