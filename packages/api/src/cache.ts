@@ -9,7 +9,7 @@ import os from 'os';
 import path from 'path';
 import makeDir from 'make-dir';
 
-import { PACKAGE_NAME } from './package';
+import { PACKAGE_NAME } from './packageInfo';
 
 let cacheDir = findCacheDir({ name: PACKAGE_NAME });
 if (typeof cacheDir === 'undefined') {
