@@ -5,9 +5,6 @@
     "@readme/eslint-config/typescript"
   ],
   "root": true,
-  "env": {
-    "es2020": true
-  },
   "globals": {
     "fetch": true,
     "Response": true
