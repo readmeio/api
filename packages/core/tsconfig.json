@@ -6,8 +6,6 @@
     "declarationDir": "./@types",
     "esModuleInterop": true,
     "lib": ["dom", "es2020"],
-    "module": "node12",
-    "moduleResolution": "node12",
     "noImplicitAny": true,
     "outDir": "dist"
   },
