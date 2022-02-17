@@ -119,15 +119,13 @@ function processFile(
     });
   }
 
-  return new Promise((resolve, reject) => {
-    reject(
-      new TypeError(
-        paramName
-          ? `The data supplied for the \`${paramName}\` request body parameter is not a file handler that we support.`
-          : `The data supplied for the request body payload is not a file handler that we support.`
-      )
-    );
-  });
+  return Promise.reject(
+    new TypeError(
+      paramName
+        ? `The data supplied for the \`${paramName}\` request body parameter is not a file handler that we support.`
+        : `The data supplied for the request body payload is not a file handler that we support.`
+    )
+  );
 }
 
 /**

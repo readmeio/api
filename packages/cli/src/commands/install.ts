@@ -195,9 +195,7 @@ export default class Install extends Command {
       );
     }
 
-    return new Promise(resolve => {
-      resolve(fs.readFileSync(file, 'utf8'));
-    })
+    return Promise.resolve(fs.readFileSync(file, 'utf8'))
       .then(res => {
         if (/\.(yaml|yml)/.test(file)) {
           return yaml.load(res as string);

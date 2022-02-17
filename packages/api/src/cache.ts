@@ -148,9 +148,7 @@ class SdkCache {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
 
-    return new Promise(resolve => {
-      resolve(json);
-    })
+    return Promise.resolve(json)
       .then((res: any) => {
         // The `validate` method handles dereferencing for us.
         return OpenAPIParser.validate(res, {
@@ -221,9 +219,7 @@ class SdkCache {
   saveFile() {
     const filePath = this.uri as string;
 
-    return new Promise(resolve => {
-      resolve(fs.readFileSync(filePath, 'utf8'));
-    })
+    return Promise.resolve(fs.readFileSync(filePath, 'utf8'))
       .then((res: string) => {
         if (/\.(yaml|yml)/.test(filePath)) {
           return yaml.load(res);
