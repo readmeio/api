@@ -3,4 +3,5 @@ __tests__/
 coverage/
 .eslint*
 .gitignore
+.mocharc.json
 .prettier*

@@ -1,6 +1,7 @@
+.nyc_output/
 __tests__/
 coverage/
 .eslint*
 .gitignore
+.mocharc.json
 .prettier*
-jest.*.js
