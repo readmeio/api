@@ -1,4 +1,4 @@
-import 'isomorphic-fetch';
+import { expect } from 'chai';
 import nock from 'nock';
 import api from '../src';
 
@@ -11,41 +11,33 @@ const response = {
   name: 'Buster',
 };
 
-beforeAll(() => {
-  nock.disableNetConnect();
-});
-
-afterAll(() => {
-  nock.restore();
-});
-
-describe('#config()', () => {
-  describe('parseResponse', () => {
-    beforeEach(() => {
+describe('#config()', function () {
+  describe('parseResponse', function () {
+    beforeEach(function () {
       sdk = api(petstore);
     });
 
-    it('should give access to the Response object if `parseResponse` is `false`', async () => {
+    it('should give access to the Response object if `parseResponse` is `false`', async function () {
       const mock = nock('http://petstore.swagger.io/v2').delete(`/pet/${petId}`).reply(200, response);
 
       sdk.config({ parseResponse: false });
 
       const res = await sdk.deletePet({ petId });
-      expect(res instanceof Response).toBe(true);
-      expect(res.status).toBe(200);
+      expect(res).to.be.instanceOf(Response);
+      expect(res.status).to.equal(200);
 
-      await expect(res.json()).resolves.toStrictEqual(response);
+      expect(await res.json()).to.deep.equal(response);
       mock.done();
     });
 
-    it('should parse the response if `parseResponse` is `undefined`', async () => {
+    it('should parse the response if `parseResponse` is `undefined`', async function () {
       const mock = nock('http://petstore.swagger.io/v2').delete(`/pet/${petId}`).reply(200, response);
 
       sdk.config({ unrecognizedConfigParameter: false });
 
       const res = await sdk.deletePet({ petId });
-      expect(res instanceof Response).toBe(false);
-      expect(res).toStrictEqual(response);
+      expect(res).not.to.be.instanceOf(Response);
+      expect(res).to.deep.equal(response);
       mock.done();
     });
   });

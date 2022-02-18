@@ -83,6 +83,10 @@ class SdkCache {
     return crypto.createHash('md5').update(data).digest('hex');
   }
 
+  static wipe(cb: (err?: Error) => void) {
+    fs.rmdir(cacheDir, { recursive: true }, cb);
+  }
+
   isCached() {
     const cache = this.getCache();
     return cache && this.uriHash in cache;
@@ -130,15 +134,6 @@ class SdkCache {
 
       return this.saveUrl();
     } catch (err) {
-      // Support relative paths by resolving them against the cwd.
-      this.uri = path.resolve(process.cwd(), this.uri);
-
-      if (!fs.existsSync(this.uri)) {
-        throw new Error(
-          `Sorry, we were unable to load that OpenAPI definition. Please either supply a URL or a path on your filesystem.`
-        );
-      }
-
       return this.saveFile();
     }
   }
@@ -219,7 +214,16 @@ class SdkCache {
   }
 
   saveFile() {
-    const filePath = this.uri as string;
+    // Support relative paths by resolving them against the cwd.
+    this.uri = path.resolve(process.cwd(), this.uri as string);
+
+    if (!fs.existsSync(this.uri)) {
+      throw new Error(
+        `Sorry, we were unable to load that OpenAPI definition. Please either supply a URL or a path on your filesystem.`
+      );
+    }
+
+    const filePath = this.uri;
 
     return new Promise(resolve => {
       resolve(fs.readFileSync(filePath, 'utf8'));
