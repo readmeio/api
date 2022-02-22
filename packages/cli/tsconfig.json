@@ -6,9 +6,10 @@
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "dist",
+    "resolveJsonModule": true,
     "rootDir": "src",
     // "skipLibCheck": true, // skipping this because @types/jest and @types/mocha clash
-    "strict": true,
+    // "strict": true,
     "target": "es2019"
   },
   "include": [
