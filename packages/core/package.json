@@ -33,7 +33,7 @@
     "isomorphic-fetch": "^3.0.0",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^17.6.0"
+    "oas": "^17.7.3"
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.4.1",
