@@ -19,6 +19,7 @@
     "url": "https://github.com/readmeio/api.git",
     "directory": "packages/api"
   },
+  "homepage": "https://github.com/readmeio/api",
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"
   },
@@ -58,5 +59,8 @@
     "typescript": "^4.5.5",
     "unique-temp-dir": "^1.0.0"
   },
-  "prettier": "@readme/eslint-config/prettier"
+  "prettier": "@readme/eslint-config/prettier",
+  "nyc": {
+    "exclude": ["dist/", "test/"]
+  }
 }

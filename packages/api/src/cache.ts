@@ -144,9 +144,7 @@ export default class Cache {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
 
-    return new Promise(resolve => {
-      resolve(json);
-    })
+    return Promise.resolve(json)
       .then((res: any) => {
         // The `validate` method handles dereferencing for us.
         return OpenAPIParser.validate(res, {
@@ -226,9 +224,7 @@ export default class Cache {
 
     const filePath = this.uri;
 
-    return new Promise(resolve => {
-      resolve(fs.readFileSync(filePath, 'utf8'));
-    })
+    return Promise.resolve(fs.readFileSync(filePath, 'utf8'))
       .then((res: string) => {
         if (/\.(yaml|yml)/.test(filePath)) {
           return yaml.load(res);
