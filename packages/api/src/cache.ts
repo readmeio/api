@@ -11,59 +11,37 @@ import makeDir from 'make-dir';
 
 import { PACKAGE_NAME } from './packageInfo';
 
-let cacheDir = findCacheDir({ name: PACKAGE_NAME });
-if (typeof cacheDir === 'undefined') {
-  // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't
-  // writable, or there's no `package.json` in the root-most directory. If this happens, we can
-  // instead adhoc create a cache directory in the users OS temp directory and store our data there.
-  //
-  // @link https://github.com/avajs/find-cache-dir/issues/29
-  cacheDir = makeDir.sync(path.join(os.tmpdir(), PACKAGE_NAME));
-}
+type CacheStore = Record<string, { path: string; original: string | OASDocument; title?: string; version?: string }>;
 
-type Cache = Record<
-  string,
-  {
-    path: string;
-    original: string | OASDocument;
-    title?: string;
-    version?: string;
-  }
->;
+export default class Cache {
+  static dir: string;
 
-class SdkCache {
+  static cacheStore: string;
+
+  static specsCache: string;
+
   uri: string | OASDocument;
 
   uriHash: string;
 
-  dir: string;
-
-  cacheStore: string;
-
-  specsCache: string;
-
-  cached: false | Cache;
+  cached: false | CacheStore;
 
   constructor(uri: string | OASDocument) {
-    /**
-     * Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
-     *
-     * Examples:
-     *    - @petstore/v1.0#n6kvf10vakpemvplx
-     *    - @petstore#n6kvf10vakpemvplx
-     *
-     */
-    const resolveReadMeRegistryAccessor = () => {
-      return typeof uri === 'string'
+    Cache.setCacheDir();
+    Cache.cacheStore = path.join(Cache.dir, 'cache.json');
+    Cache.specsCache = path.join(Cache.dir, 'specs');
+
+    // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
+    //
+    // Examples:
+    //    - @petstore/v1.0#n6kvf10vakpemvplx
+    //    - @petstore#n6kvf10vakpemvplx
+    this.uri =
+      typeof uri === 'string'
         ? uri.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.com/api/v1/api-registry/$2')
         : uri;
-    };
 
-    this.uri = resolveReadMeRegistryAccessor();
-    this.uriHash = SdkCache.getCacheHash(this.uri);
-    this.dir = cacheDir;
-    this.cacheStore = path.join(this.dir, 'cache.json');
-    this.specsCache = path.join(this.dir, 'specs');
+    this.uriHash = Cache.getCacheHash(this.uri);
 
     // This should default to false so we have awareness if we've looked at the cache yet.
     this.cached = false;
@@ -83,20 +61,47 @@ class SdkCache {
     return crypto.createHash('md5').update(data).digest('hex');
   }
 
+  static setCacheDir(dir?: string) {
+    if (dir) {
+      Cache.dir = dir;
+      return;
+    } else if (Cache.dir) {
+      // If we already have a cache dir set and aren't explicitly it to something new then we
+      // shouldn't overwrite what we've already got.
+      return;
+    }
+
+    Cache.dir = findCacheDir({ name: PACKAGE_NAME });
+    if (typeof Cache.dir === 'undefined') {
+      // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't
+      // writable, or there's no `package.json` in the root-most directory. If this happens, we can
+      // instead adhoc create a cache directory in the users OS temp directory and store our data
+      // there.
+      //
+      // @link https://github.com/avajs/find-cache-dir/issues/29
+      Cache.dir = makeDir.sync(path.join(os.tmpdir(), PACKAGE_NAME));
+    }
+  }
+
+  static async reset() {
+    await fs.promises.rm(Cache.cacheStore);
+    await fs.promises.rmdir(Cache.specsCache, { recursive: true });
+  }
+
   isCached() {
     const cache = this.getCache();
     return cache && this.uriHash in cache;
   }
 
-  getCache(): Cache {
+  getCache() {
     if (typeof this.cached === 'object') {
       return this.cached;
     }
 
     this.cached = {};
 
-    if (fs.existsSync(this.cacheStore)) {
-      this.cached = JSON.parse(fs.readFileSync(this.cacheStore, 'utf8')) as Cache;
+    if (fs.existsSync(Cache.cacheStore)) {
+      this.cached = JSON.parse(fs.readFileSync(Cache.cacheStore, 'utf8')) as CacheStore;
     }
 
     return this.cached;
@@ -130,15 +135,6 @@ class SdkCache {
 
       return this.saveUrl();
     } catch (err) {
-      // Support relative paths by resolving them against the cwd.
-      this.uri = path.resolve(process.cwd(), this.uri);
-
-      if (!fs.existsSync(this.uri)) {
-        throw new Error(
-          `Sorry, we were unable to load that OpenAPI definition. Please either supply a URL or a path on your filesystem.`
-        );
-      }
-
       return this.saveFile();
     }
   }
@@ -169,12 +165,12 @@ class SdkCache {
         });
       })
       .then(async spec => {
-        if (!fs.existsSync(this.dir)) {
-          fs.mkdirSync(this.dir, { recursive: true });
+        if (!fs.existsSync(Cache.dir)) {
+          fs.mkdirSync(Cache.dir, { recursive: true });
         }
 
-        if (!fs.existsSync(this.specsCache)) {
-          fs.mkdirSync(this.specsCache, { recursive: true });
+        if (!fs.existsSync(Cache.specsCache)) {
+          fs.mkdirSync(Cache.specsCache, { recursive: true });
         }
 
         const cache = this.getCache();
@@ -183,14 +179,14 @@ class SdkCache {
           const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
 
           cache[this.uriHash] = {
-            path: path.join(this.specsCache, `${jsonHash}.json`),
+            path: path.join(Cache.specsCache, `${jsonHash}.json`),
             original: this.uri,
             title: 'title' in spec.info ? spec.info.title : undefined,
             version: 'version' in spec.info ? spec.info.version : undefined,
           };
 
           fs.writeFileSync(cache[this.uriHash].path, saved);
-          fs.writeFileSync(this.cacheStore, JSON.stringify(cache, null, 2));
+          fs.writeFileSync(Cache.cacheStore, JSON.stringify(cache, null, 2));
 
           this.cached = cache;
         }
@@ -219,7 +215,16 @@ class SdkCache {
   }
 
   saveFile() {
-    const filePath = this.uri as string;
+    // Support relative paths by resolving them against the cwd.
+    this.uri = path.resolve(process.cwd(), this.uri as string);
+
+    if (!fs.existsSync(this.uri)) {
+      throw new Error(
+        `Sorry, we were unable to load ${this.uri} OpenAPI definition. Please either supply a URL or a path on your filesystem.`
+      );
+    }
+
+    const filePath = this.uri;
 
     return new Promise(resolve => {
       resolve(fs.readFileSync(filePath, 'utf8'));
@@ -234,5 +239,3 @@ class SdkCache {
       .then(json => this.save(json));
   }
 }
-
-export default SdkCache;
