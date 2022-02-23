@@ -1,15 +1,16 @@
+import { assert, expect } from 'chai';
 import fs from 'fs';
 import Oas from 'oas';
 import prepareParams from '../src/lib/prepareParams';
 
 import payloadExamples from './__fixtures__/payloads.oas.json';
 
-describe('#prepareParams', () => {
+describe('#prepareParams', function () {
   let fileUploads: Oas;
   let readmeSpec: Oas;
   let usptoSpec: Oas;
 
-  beforeAll(async () => {
+  beforeEach(async function () {
     fileUploads = await import('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
     await fileUploads.dereference();
 
@@ -20,25 +21,29 @@ describe('#prepareParams', () => {
     await usptoSpec.dereference();
   });
 
-  it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async () => {
+  it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async function () {
     const spec = await import('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
     await spec.dereference();
 
     const operation = spec.operation('/apiKey', 'get');
 
-    await expect(prepareParams(operation, {}, {})).rejects.toThrow(
-      "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
-    );
+    await prepareParams(operation, {}, {})
+      .then(() => assert.fail())
+      .catch(err => {
+        expect(err.message).to.equal(
+          "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
+        );
+      });
   });
 
-  it('should prepare nothing if nothing was supplied (and the operation has no required defaults)', async () => {
+  it('should prepare nothing if nothing was supplied (and the operation has no required defaults)', async function () {
     const operation = readmeSpec.operation('/api-specification', 'post');
 
-    await expect(prepareParams(operation)).resolves.toStrictEqual({});
-    await expect(prepareParams(operation, {}, {})).resolves.toStrictEqual({});
+    expect(await prepareParams(operation)).to.deep.equal({});
+    expect(await prepareParams(operation, {}, {})).to.deep.equal({});
   });
 
-  it('should prepare body and metadata when both are supplied', async () => {
+  it('should prepare body and metadata when both are supplied', async function () {
     const operation = readmeSpec.operation('/api-specification', 'post');
     const body = {
       spec: 'this is the contents of an api specification',
@@ -48,7 +53,7 @@ describe('#prepareParams', () => {
       'x-readme-version': '1.0',
     };
 
-    await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+    expect(await prepareParams(operation, body, metadata)).to.deep.equal({
       body: {
         spec: 'this is the contents of an api specification',
       },
@@ -58,16 +63,16 @@ describe('#prepareParams', () => {
     });
   });
 
-  it('should prepare body if body is a primitive', async () => {
+  it('should prepare body if body is a primitive', async function () {
     const operation = Oas.init(payloadExamples).operation('/primitiveBody', 'put');
     const body = 'Brie cheeseburger ricotta.';
 
-    await expect(prepareParams(operation, body, {})).resolves.toStrictEqual({
+    expect(await prepareParams(operation, body, {})).to.deep.equal({
       body,
     });
   });
 
-  it('should prepare body if body is an array', async () => {
+  it('should prepare body if body is an array', async function () {
     const operation = Oas.init(payloadExamples).operation('/arraySchema', 'put');
     const body = [
       {
@@ -75,12 +80,12 @@ describe('#prepareParams', () => {
       },
     ];
 
-    await expect(prepareParams(operation, body, {})).resolves.toStrictEqual({
+    expect(await prepareParams(operation, body, {})).to.deep.equal({
       body,
     });
   });
 
-  it('should ignore supplied body data if the request has no request body', async () => {
+  it('should ignore supplied body data if the request has no request body', async function () {
     const spec = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
     await spec.dereference();
 
@@ -91,14 +96,14 @@ describe('#prepareParams', () => {
       petId: 1234,
     };
 
-    await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+    expect(await prepareParams(operation, body, metadata)).to.deep.equal({
       path: { petId: 1234 },
     });
   });
 
-  describe('content types', () => {
-    describe('application/x-www-form-urlencoded', () => {
-      it('should support preparing formData payloads', async () => {
+  describe('content types', function () {
+    describe('application/x-www-form-urlencoded', function () {
+      it('should support preparing formData payloads', async function () {
         const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
         const body = {
           criteria: '*:*',
@@ -109,7 +114,7 @@ describe('#prepareParams', () => {
           version: 'oa_citations',
         };
 
-        await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+        expect(await prepareParams(operation, body, metadata)).to.deep.equal({
           path: {
             dataset: 'v1',
             version: 'oa_citations',
@@ -122,7 +127,7 @@ describe('#prepareParams', () => {
 
       // Since we're only sending `metadata` here we want to make sure that the path parameters in
       // it don't also get sent as `formData`.
-      it('should should filter out metadata parameters from being sent twice', async () => {
+      it('should should filter out metadata parameters from being sent twice', async function () {
         const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
 
         const metadata = {
@@ -130,7 +135,7 @@ describe('#prepareParams', () => {
           version: 'oa_citations',
         };
 
-        await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+        expect(await prepareParams(operation, metadata)).to.deep.equal({
           formData: {
             criteria: '*:*',
           },
@@ -142,134 +147,117 @@ describe('#prepareParams', () => {
       });
     });
 
-    describe('image/png', () => {
-      it('should support a relative file path payload', async () => {
+    describe('image/png', function () {
+      it('should support a relative file path payload', async function () {
         const operation = fileUploads.operation('/anything/image-png', 'post');
         const body = `${__dirname}/__fixtures__/owlbert.png`;
 
-        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
-          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
-          files: {
-            'owlbert.png': expect.any(Buffer),
-          },
-        });
+        const res = await prepareParams(operation, body);
+        expect(res.body).to.contain('data:image/png;name=owlbert.png;base64,');
+        expect(res.files).to.have.property('owlbert.png').and.be.an.instanceOf(Buffer);
       });
 
-      it('should support a file stream payload', async () => {
+      it('should support a file stream payload', async function () {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = fs.createReadStream('./__tests__/__fixtures__/owlbert.png');
+        const body = fs.createReadStream('./test/__fixtures__/owlbert.png');
 
-        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
-          body: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
-          files: {
-            'owlbert.png': expect.any(Buffer),
-          },
-        });
+        const res = await prepareParams(operation, body);
+        expect(res.body).to.contain('data:image/png;name=owlbert.png;base64,');
+        expect(res.files).to.have.property('owlbert.png').and.be.an.instanceOf(Buffer);
       });
     });
 
-    describe('multipart/form-data', () => {
-      it('should handle a multipart body when a property is a file path', async () => {
+    describe('multipart/form-data', function () {
+      it('should handle a multipart body when a property is a file path', async function () {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
           documentFile: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
         };
 
-        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
-          body: {
-            documentFile: expect.stringContaining('data:application/json;name=readme.json;base64,'),
-          },
-          files: {
-            'readme.json': expect.any(Buffer),
-          },
-        });
+        const res = await prepareParams(operation, body);
+        expect(res.body).to.have.property('documentFile').and.contain('data:application/json;name=readme.json;base64,');
+        expect(res.files).to.have.property('readme.json').and.be.an.instanceOf(Buffer);
       });
 
-      it('should handle when the file path is relative', async () => {
+      it('should handle when the file path is relative', async function () {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: './__tests__/__fixtures__/owlbert.png',
+          documentFile: './test/__fixtures__/owlbert.png',
         };
 
-        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
-          body: {
-            documentFile: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
-          },
-          files: {
-            'owlbert.png': expect.any(Buffer),
-          },
-        });
+        const res = await prepareParams(operation, body);
+        expect(res.body).to.have.property('documentFile').and.contain('data:image/png;name=owlbert.png;base64,');
+        expect(res.files).to.have.property('owlbert.png').and.be.an.instanceOf(Buffer);
       });
 
-      it('should handle a multipart body when a property is a file stream', async () => {
+      it('should handle a multipart body when a property is a file stream', async function () {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: fs.createReadStream('./__tests__/__fixtures__/owlbert.png'),
+          documentFile: fs.createReadStream('./test/__fixtures__/owlbert.png'),
         };
 
-        await expect(prepareParams(operation, body)).resolves.toStrictEqual({
-          body: {
-            documentFile: expect.stringContaining('data:image/png;name=owlbert.png;base64,'),
-          },
-          files: {
-            'owlbert.png': expect.any(Buffer),
-          },
-        });
+        const res = await prepareParams(operation, body);
+        expect(res.body).to.have.property('documentFile').and.contain('data:image/png;name=owlbert.png;base64,');
+        expect(res.files).to.have.property('owlbert.png').and.be.an.instanceOf(Buffer);
       });
     });
   });
 
-  describe('file handling', () => {
-    it('should reject unknown file handlers', async () => {
+  describe('file handling', function () {
+    it('should reject unknown file handlers', async function () {
       const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
       const body = {
         documentFile: ['this is not a file handler'],
       };
 
-      await expect(prepareParams(operation, body)).rejects.toThrow(
-        'The data supplied for the `documentFile` request body parameter is not a file handler that we support.'
-      );
+      await prepareParams(operation, body)
+        .then(() => assert.fail())
+        .catch(err => {
+          expect(err.message).to.equal(
+            'The data supplied for the `documentFile` request body parameter is not a file handler that we support.'
+          );
+        });
     });
 
     // This test sounds weird but we don't have a great way to know if a string we have is a path
     // to a file that doesn't exist or the string contents of a file, so we're just passing along
     // file paths that don't exist right now.
-    it("should not reject files that don't exist", async () => {
+    it("should not reject files that don't exist", async function () {
       const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
       const body = {
-        documentFile: './__tests__/__fixtures__/owlbert.jpg',
+        documentFile: './test/__fixtures__/owlbert.jpg',
       };
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         body: {
-          documentFile: './__tests__/__fixtures__/owlbert.jpg',
+          documentFile: './test/__fixtures__/owlbert.jpg',
         },
       });
     });
   });
 
-  describe('supplying just a body or metadata', () => {
-    it('should handle if supplied is a body', async () => {
+  describe('supplying just a body or metadata', function () {
+    it('should handle if supplied is a body', async function () {
       const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
       const body = {
         documentFile: 'this is the contents of a document',
       };
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         body,
       });
     });
 
-    it('should prepare a body if supplied is primitive', async () => {
+    it('should prepare a body if supplied is primitive', async function () {
       const operation = fileUploads.operation('/anything/image-png', 'post');
       const body = 'this is a primitive value';
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         body,
       });
     });
 
-    it('should prepare just a body if supplied argument is an array', async () => {
+    it('should prepare just a body if supplied argument is an array', async function () {
       const operation = Oas.init(payloadExamples).operation('/arraySchema', 'put');
       const body = [
         {
@@ -277,12 +265,12 @@ describe('#prepareParams', () => {
         },
       ];
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         body,
       });
     });
 
-    it('should prepare metadata if more than 25% of the supplied argument lines up with known parameters', async () => {
+    it('should prepare metadata if more than 25% of the supplied argument lines up with known parameters', async function () {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = {
         version: 'v1',
@@ -290,7 +278,7 @@ describe('#prepareParams', () => {
         randomUnknownParameter: true,
       };
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         path: {
           version: 'v1',
           dataset: 'oa_citations',
@@ -302,7 +290,7 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', async () => {
+    it('should prepare metadata if less than 25% of the supplied argument lines up with known parameters', async function () {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = {
         randomUnknownParameter: true,
@@ -312,7 +300,7 @@ describe('#prepareParams', () => {
         version: 'v1', // This a known parameter, but the others aren't and should be treated as body payload data.
       };
 
-      await expect(prepareParams(operation, body)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body)).to.deep.equal({
         formData: {
           criteria: '*:*',
           randomUnknownParameter: true,
@@ -328,13 +316,13 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prepare just metadata if supplied is metadata', async () => {
+    it('should prepare just metadata if supplied is metadata', async function () {
       const operation = readmeSpec.operation('/api-specification', 'post');
       const metadata = {
         'x-readme-version': '1.0',
       };
 
-      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, metadata)).to.deep.equal({
         header: {
           'x-readme-version': '1.0',
         },
@@ -342,32 +330,35 @@ describe('#prepareParams', () => {
     });
   });
 
-  describe('parameter types', () => {
+  describe('parameter types', function () {
     let parameterStyle;
 
-    beforeEach(async () => {
+    beforeEach(async function () {
       parameterStyle = await import('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
       await parameterStyle.dereference();
     });
 
-    it.each([
+    // eslint-disable-next-line mocha/no-setup-in-describe
+    [
       ['cookies', '/cookies', 'get', 'cookie'],
       ['headers', '/anything/headers', 'get', 'header'],
       ['query', '/anything/query', 'get', 'query'],
-    ])('should support %s', async (_, path, method, paramName) => {
-      const operation = parameterStyle.operation(path, method);
-      const metadata = {
-        primitive: 'buster',
-      };
-
-      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
-        [paramName]: {
+    ].forEach(([_, path, method, paramName]) => {
+      it(`should support ${_}`, async function () {
+        const operation = parameterStyle.operation(path, method);
+        const metadata = {
           primitive: 'buster',
-        },
+        };
+
+        expect(await prepareParams(operation, metadata)).to.deep.equal({
+          [paramName]: {
+            primitive: 'buster',
+          },
+        });
       });
     });
 
-    it('should support path parameters', async () => {
+    it('should support path parameters', async function () {
       const operation = parameterStyle.operation('/anything/path/{primitive}/{array}/{object}', 'get');
       const metadata = {
         primitive: 'buster',
@@ -378,7 +369,7 @@ describe('#prepareParams', () => {
         },
       };
 
-      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, metadata)).to.deep.equal({
         path: {
           primitive: 'buster',
           array: ['buster'],
@@ -388,8 +379,8 @@ describe('#prepareParams', () => {
     });
   });
 
-  describe('defaults', () => {
-    it('should prefill defaults for required body parameters if not supplied', async () => {
+  describe('defaults', function () {
+    it('should prefill defaults for required body parameters if not supplied', async function () {
       const oas = await import('@readme/oas-examples/3.0/json/petstore.json')
         .then((spec: any) => {
           /* eslint-disable no-param-reassign */
@@ -407,7 +398,7 @@ describe('#prepareParams', () => {
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');
-      await expect(prepareParams(operation, { id: 404 })).resolves.toStrictEqual({
+      expect(await prepareParams(operation, { id: 404 })).to.deep.equal({
         body: {
           id: 404,
           category: { name: 'dog' },
@@ -416,14 +407,14 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prefill defaults for required body parameters (on formData-used operations) if not supplied', async () => {
+    it('should prefill defaults for required body parameters (on formData-used operations) if not supplied', async function () {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const metadata = {
         version: 'v2',
         dataset: 'dog_treats',
       };
 
-      await expect(prepareParams(operation, metadata)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, metadata)).to.deep.equal({
         formData: {
           criteria: '*:*',
         },
@@ -434,10 +425,10 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should prefill defaults for required metadata parameters if not supplied', async () => {
+    it('should prefill defaults for required metadata parameters if not supplied', async function () {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
 
-      await expect(prepareParams(operation)).resolves.toStrictEqual({
+      expect(await prepareParams(operation)).to.deep.equal({
         formData: {
           criteria: '*:*',
         },
@@ -448,12 +439,12 @@ describe('#prepareParams', () => {
       });
     });
 
-    it('should not override any user-provided data with defaults', async () => {
+    it('should not override any user-provided data with defaults', async function () {
       const operation = usptoSpec.operation('/{dataset}/{version}/records', 'post');
       const body = { criteria: 'query:dogs' };
       const metadata = { version: 'v2', dataset: 'dog_treats' };
 
-      await expect(prepareParams(operation, body, metadata)).resolves.toStrictEqual({
+      expect(await prepareParams(operation, body, metadata)).to.deep.equal({
         formData: {
           criteria: 'query:dogs',
         },
