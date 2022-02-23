@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "@readme/eslint-config",
+    "@readme/eslint-config/typescript",
+    "plugin:node/recommended"
+  ],
+  "root": true,
+  "env": {
+    "es2020": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    // TS supports ES syntax and we're compiling to CJS so turning this off is fine.
+    "node/no-unsupported-features/es-syntax": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}

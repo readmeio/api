@@ -1,0 +1,9 @@
+*-debug.log
+*-error.log
+*.tsbuildinfo
+.nyc_output/
+dist/
+lib/
+node_modules/
+tmp/
+oclif.manifest.json
