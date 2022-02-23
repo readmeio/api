@@ -1,3 +1,4 @@
-__tests__/__fixtures__/output/*
+.nyc_output/
 coverage/
 node_modules/
+test/__fixtures__/output/*
