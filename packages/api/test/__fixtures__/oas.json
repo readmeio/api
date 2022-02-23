@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Single Path",
+    "description": "This is a slimmed down single path version of the Petstore definition."
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/pet/:id": {
+      "put": {
+        "tags": ["pet"],
+        "summary": "Update a pet",
+        "description": "This operation will update a pet in the database.",
+        "responses": {
+          "400": {
+            "description": "Invalid id value"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "get": {
+        "tags": ["pet"],
+        "summary": "Find a pet",
+        "description": "This operation will find a pet in the database.",
+        "responses": {
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": []
+      }
+    }
+  }
+}
