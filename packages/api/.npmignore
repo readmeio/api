@@ -1,5 +1,6 @@
 .nyc_output/
-coverage/
+@types/
+dist/
 test/
 .eslint*
 .gitignore
