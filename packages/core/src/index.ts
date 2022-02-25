@@ -1,4 +1,5 @@
 import type Oas from 'oas';
+import type { Operation } from 'oas';
 import type { HttpMethods } from 'oas/@types/rmoas.types';
 
 import 'isomorphic-fetch';
@@ -12,10 +13,14 @@ import prepareAuth from './lib/prepareAuth';
 import prepareParams from './lib/prepareParams';
 import prepareServer from './lib/prepareServer';
 
+export interface ConfigOptions {
+  parseResponse: boolean;
+}
+
 export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepareServer };
 
 export default class APICore {
-  private spec: Oas;
+  spec: Oas;
 
   private auth: (number | string)[][] = [];
 
@@ -26,11 +31,22 @@ export default class APICore {
         variables?: Record<string, string | number>;
       } = false;
 
+  private config: ConfigOptions = { parseResponse: true };
+
   private userAgent: string;
 
-  constructor(spec: Oas, userAgent?: string) {
+  constructor(spec?: Oas, userAgent?: string) {
     this.spec = spec;
     this.userAgent = userAgent;
+  }
+
+  setSpec(spec: Oas) {
+    this.spec = spec;
+  }
+
+  setConfig(config: ConfigOptions) {
+    this.config = config;
+    return this;
   }
 
   setUserAgent(userAgent: string) {
@@ -43,18 +59,18 @@ export default class APICore {
     return this;
   }
 
-  setServer(url: string, variables?: Record<string, string | number>) {
-    this.server = { url };
-    if (variables) {
-      this.server.variables = variables;
-    }
-
+  setServer(url: string, variables: Record<string, string | number> = {}) {
+    this.server = { url, variables };
     return this;
   }
 
   async fetch(path: string, method: HttpMethods, body?: unknown, metadata?: Record<string, unknown>) {
     const operation = this.spec.operation(path, method);
 
+    return this.fetchOperation(operation, body, metadata);
+  }
+
+  async fetchOperation(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
     return prepareParams(operation, body, metadata).then(params => {
       const data = { ...params };
 
@@ -78,6 +94,8 @@ export default class APICore {
         if (res.status >= 400 && res.status <= 599) {
           throw res;
         }
+
+        if (this.config.parseResponse === false) return res;
 
         return parseResponse(res);
       });

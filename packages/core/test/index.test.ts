@@ -10,6 +10,10 @@ describe('APICore', function () {
   let serverVariables: APICore;
 
   const petId = 123;
+  const response = {
+    id: petId,
+    name: 'Buster',
+  };
 
   beforeEach(async function () {
     petstore = await import('@readme/oas-examples/3.0/json/petstore-expanded.json')
@@ -23,6 +27,33 @@ describe('APICore', function () {
     serverVariables = await import('@readme/oas-examples/3.0/json/server-variables.json')
       .then(Oas.init)
       .then(oas => new APICore(oas));
+  });
+
+  describe('#fetchOperation', function () {
+    it('should make a request for a given operation with body + metadata parameters', async function () {
+      const slug = 'new-release';
+      const body = {
+        title: 'revised title',
+        body: 'updated body',
+      };
+
+      const mock = nock('https://dash.readme.com/api/v1')
+        .put(`/changelogs/${slug}`, body)
+        .reply(200, function (uri, requestBody) {
+          return {
+            uri,
+            requestBody,
+          };
+        });
+
+      const operation = readme.spec.operation('/changelogs/{slug}', 'put');
+
+      expect(await readme.fetchOperation(operation, body, { slug })).to.deep.equal({
+        uri: '/api/v1/changelogs/new-release',
+        requestBody: body,
+      });
+      mock.done();
+    });
   });
 
   describe('#fetch', function () {
@@ -215,11 +246,6 @@ describe('APICore', function () {
   });
 
   describe('#setServer()', function () {
-    const response = {
-      id: petId,
-      name: 'Buster',
-    };
-
     it('should support supplying a full server url', async function () {
       const mock = nock('https://buster.example.com:3000').post('/v14/').reply(200, response);
 
@@ -244,5 +270,33 @@ describe('APICore', function () {
     it.skip('should be able to supply a url on an OAS that has no servers defined');
 
     it.skip("should be able to supply a url that doesn't match any defined server");
+  });
+
+  describe('#setConfig', function () {
+    describe('parseResponse', function () {
+      it('should parse the response by default', async function () {
+        const mock = nock('http://petstore.swagger.io/api').delete(`/pets/${petId}`).reply(200, response);
+
+        petstore.setConfig({ parseResponse: true });
+
+        const res = await petstore.fetch('/pets/{id}', 'delete', undefined, { id: petId });
+        expect(res instanceof Response).to.be.false;
+        expect(res).to.deep.equal(response);
+        mock.done();
+      });
+
+      it('should give access to the Response object if `parseResponse` is `false`', async function () {
+        const mock = nock('http://petstore.swagger.io/api').delete(`/pets/${petId}`).reply(200, response);
+
+        petstore.setConfig({ parseResponse: false });
+
+        const res = await petstore.fetch('/pets/{id}', 'delete', undefined, { id: petId });
+        expect(res instanceof Response).to.be.true;
+        expect(res.status).to.equal(200);
+
+        expect(await res.json()).to.deep.equal(response);
+        mock.done();
+      });
+    });
   });
 });
