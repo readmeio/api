@@ -7,7 +7,10 @@
     "esModuleInterop": true,
     "lib": ["dom", "es2020"],
     "noImplicitAny": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "form-data-encoder": [".sink.d.ts"]
+    }
   },
   "include": ["./src/**/*"]
 }

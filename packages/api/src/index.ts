@@ -1,20 +1,14 @@
 import type { Operation } from 'oas';
 import type { OASDocument } from './types';
+import type { HttpMethods } from 'oas/@types/rmoas.types';
+import type { ConfigOptions } from '@readme/api-core';
 
 import 'isomorphic-fetch';
-import fetchHar from 'fetch-har';
 import Oas from 'oas';
-import oasToHar from '@readme/oas-to-har';
-import { parseResponse, prepareAuth, prepareParams, prepareServer } from '@readme/api-core';
-import { FormDataEncoder } from 'form-data-encoder';
-
+import APICore from '@readme/api-core';
 import Cache from './cache';
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo';
-
-interface ConfigOptions {
-  parseResponse: boolean;
-}
 
 class Sdk {
   uri: string | OASDocument;
@@ -27,53 +21,15 @@ class Sdk {
   }
 
   load() {
-    const authKeys: (number | string)[][] = [];
     const cache = new Cache(this.uri);
     const userAgent = this.userAgent;
 
-    let config: ConfigOptions = { parseResponse: true };
-    let server:
-      | false
-      | {
-          url: string;
-          variables: Record<string, string | number>;
-        } = false;
+    const core = new APICore();
+    core.setUserAgent(userAgent);
 
     let isLoaded = false;
     let isCached = cache.isCached();
     let sdk = {};
-
-    function fetchOperation(spec: Oas, operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
-      return prepareParams(operation, body, metadata).then(params => {
-        const data = { ...params };
-
-        // If `sdk.server()` has been issued data then we need to do some extra work to figure out
-        // how to use that supplied server, and also handle any server variables that were sent
-        // alongside it.
-        if (server) {
-          const preparedServer = prepareServer(spec, server.url, server.variables);
-          if (preparedServer) {
-            data.server = preparedServer;
-          }
-        }
-
-        const har = oasToHar(spec, operation, data, prepareAuth(authKeys, operation));
-
-        return fetchHar(har, {
-          userAgent,
-          files: data.files || {},
-          multipartEncoder: FormDataEncoder,
-        }).then((res: Response) => {
-          if (res.status >= 400 && res.status <= 599) {
-            throw res;
-          }
-
-          if (config.parseResponse === false) return res;
-
-          return parseResponse(res);
-        });
-      });
-    }
 
     /**
      * Create dynamic accessors for every HTTP method that the OpenAPI specification supports.
@@ -82,15 +38,12 @@ class Sdk {
      * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7}
      * @param spec
      */
-    function loadMethods(spec: Oas) {
+    function loadMethods() {
       return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
         .map(httpVerb => {
           return {
             [httpVerb]: ((method: string, path: string, ...args: unknown[]) => {
-              // The HTTPMethods enum in `oas` makes working with string methods difficult so we
-              // need to cast it as `any` here.
-              const operation = spec.operation(path, method as any);
-              return fetchOperation(spec, operation, ...args);
+              return core.fetch(path, method as HttpMethods, ...args);
             }).bind(null, httpVerb),
           };
         })
@@ -115,7 +68,7 @@ class Sdk {
         .reduce((prev, next) => {
           return Object.assign(prev, {
             [next.getOperationId()]: ((operation: Operation, ...args: unknown[]) => {
-              return fetchOperation(spec, operation, ...args);
+              return core.fetchOperation(operation, ...args);
             }).bind(null, next),
           });
         }, {});
@@ -132,8 +85,10 @@ class Sdk {
 
       const spec = new Oas(cachedSpec);
 
+      core.setSpec(spec);
+
       sdk = Object.assign(sdk, {
-        ...loadMethods(spec),
+        ...loadMethods(),
         ...loadOperations(spec),
       });
 
@@ -179,21 +134,15 @@ class Sdk {
 
     sdk = {
       auth: (...values: string[] | number[]) => {
-        authKeys.push(values);
+        core.setAuth(...values);
         return new Proxy(sdk, sdkProxy);
       },
-      config: (opts: ConfigOptions) => {
-        // Downside to having `opts` be merged into the existing `config` is that there isn't a
-        // clean way to reset your current config to the default, so having `opts` assigned directly
-        // to the existing config should be okay.
-        config = opts;
+      config: (config: ConfigOptions) => {
+        core.setConfig(config);
         return new Proxy(sdk, sdkProxy);
       },
       server: (url: string, variables = {}) => {
-        server = {
-          url,
-          variables,
-        };
+        core.setServer(url, variables);
       },
     };
 
