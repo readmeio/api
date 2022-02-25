@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import getJSONSchemaDefaults from '../src/lib/getJSONSchemaDefaults';
+import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults';
 import Oas from 'oas';
 
 describe('#getJSONSchemaDefaults()', function () {
