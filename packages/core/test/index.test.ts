@@ -9,6 +9,8 @@ describe('APICore', function () {
   let security: APICore;
   let serverVariables: APICore;
 
+  const petId = 123;
+
   beforeEach(async function () {
     petstore = await import('@readme/oas-examples/3.0/json/petstore-expanded.json')
       .then(Oas.init)
@@ -24,8 +26,6 @@ describe('APICore', function () {
   });
 
   describe('#fetch', function () {
-    const petId = 123;
-
     describe('error handling', function () {
       it('should reject for error-level status codes', async function () {
         const mock = nock('http://petstore.swagger.io/api').delete(`/pets/${petId}`).reply(404, 'Not Found');
@@ -42,24 +42,6 @@ describe('APICore', function () {
 
         mock.done();
       });
-    });
-
-    it('should contain a custom user agent for the library in requests', async function () {
-      const userAgent = 'customUserAgent 1.0';
-      petstore.setUserAgent(userAgent);
-
-      const mock = nock('http://petstore.swagger.io/api', {
-        reqheaders: {
-          'User-Agent': userAgent,
-        },
-      })
-        .delete(`/pets/${petId}`)
-        .reply(200, function () {
-          return this.req.headers['user-agent'];
-        });
-
-      expect(await petstore.fetch('/pets/{id}', 'delete', undefined, { id: petId })).to.deep.equal([userAgent]);
-      mock.done();
     });
 
     describe('payload delivery', function () {
@@ -190,65 +172,77 @@ describe('APICore', function () {
         });
       });
     });
+  });
 
-    describe('auth', function () {
-      it('should pass along auth in the request', async function () {
-        const user = 'username';
-        const pass = 'changeme';
+  describe('#setUserAgent()', function () {
+    it('should contain a custom user agent for the library in requests', async function () {
+      const userAgent = 'customUserAgent 1.0';
 
-        const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
-        const mock = nock('https://httpbin.org')
-          .post('/basic')
-          .reply(200, function () {
-            return this.req.headers;
-          });
+      const mock = nock('http://petstore.swagger.io/api', {
+        reqheaders: {
+          'User-Agent': userAgent,
+        },
+      })
+        .delete(`/pets/${petId}`)
+        .reply(200, function () {
+          return this.req.headers['user-agent'];
+        });
 
-        expect(
-          await security.fetch('/basic', 'post', undefined, undefined, { auth: [[user, pass]] })
-        ).to.have.deep.property('authorization', [authHeader]);
-        mock.done();
-      });
+      expect(
+        await petstore.setUserAgent(userAgent).fetch('/pets/{id}', 'delete', undefined, { id: petId })
+      ).to.deep.equal([userAgent]);
+      mock.done();
+    });
+  });
+
+  describe('#setAuth()', function () {
+    it('should pass along auth in the request', async function () {
+      const user = 'username';
+      const pass = 'changeme';
+
+      const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
+      const mock = nock('https://httpbin.org')
+        .post('/basic')
+        .reply(200, function () {
+          return this.req.headers;
+        });
+
+      expect(await security.setAuth(user, pass).fetch('/basic', 'post')).to.have.deep.property('authorization', [
+        authHeader,
+      ]);
+      mock.done();
+    });
+  });
+
+  describe('#setServer()', function () {
+    const response = {
+      id: petId,
+      name: 'Buster',
+    };
+
+    it('should support supplying a full server url', async function () {
+      const mock = nock('https://buster.example.com:3000').post('/v14/').reply(200, response);
+
+      serverVariables.setServer('https://buster.example.com:3000/v14');
+
+      expect(await serverVariables.fetch('/', 'post')).to.deep.equal(response);
+      mock.done();
     });
 
-    describe('servers', function () {
-      const response = {
-        id: petId,
-        name: 'Buster',
-      };
+    it('should support supplying a server url with server variables', async function () {
+      const mock = nock('http://dev.local/v14').post('/').reply(200, response);
 
-      it('should support supplying a full server url', async function () {
-        const mock = nock('https://buster.example.com:3000').post('/v14/').reply(200, response);
-
-        expect(
-          await serverVariables.fetch('/', 'post', undefined, undefined, {
-            server: {
-              url: 'https://buster.example.com:3000/v14',
-            },
-          })
-        ).to.deep.equal(response);
-        mock.done();
+      serverVariables.setServer('http://{name}.local/{basePath}', {
+        name: 'dev',
+        basePath: 'v14',
       });
 
-      it('should support supplying a server url with server variables', async function () {
-        const mock = nock('http://dev.local/v14').post('/').reply(200, response);
-
-        expect(
-          await serverVariables.fetch('/', 'post', undefined, undefined, {
-            server: {
-              url: 'http://{name}.local/{basePath}',
-              variables: {
-                name: 'dev',
-                basePath: 'v14',
-              },
-            },
-          })
-        ).to.deep.equal(response);
-        mock.done();
-      });
-
-      it.skip('should be able to supply a url on an OAS that has no servers defined');
-
-      it.skip("should be able to supply a url that doesn't match any defined server");
+      expect(await serverVariables.fetch('/', 'post')).to.deep.equal(response);
+      mock.done();
     });
+
+    it.skip('should be able to supply a url on an OAS that has no servers defined');
+
+    it.skip("should be able to supply a url that doesn't match any defined server");
   });
 });

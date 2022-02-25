@@ -17,6 +17,15 @@ export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepa
 export default class APICore {
   private spec: Oas;
 
+  private auth: (number | string)[][] = [];
+
+  private server:
+    | false
+    | {
+        url?: string;
+        variables?: Record<string, string | number>;
+      } = false;
+
   private userAgent: string;
 
   constructor(spec: Oas, userAgent?: string) {
@@ -26,21 +35,24 @@ export default class APICore {
 
   setUserAgent(userAgent: string) {
     this.userAgent = userAgent;
+    return this;
   }
 
-  async fetch(
-    path: string,
-    method: HttpMethods,
-    body?: unknown,
-    metadata?: Record<string, unknown>,
-    config: {
-      auth?: (number | string)[][];
-      server?: {
-        url: string;
-        variables?: Record<string, string | number>;
-      };
-    } = {}
-  ) {
+  setAuth(...values: string[] | number[]) {
+    this.auth.push(values);
+    return this;
+  }
+
+  setServer(url: string, variables?: Record<string, string | number>) {
+    this.server = { url };
+    if (variables) {
+      this.server.variables = variables;
+    }
+
+    return this;
+  }
+
+  async fetch(path: string, method: HttpMethods, body?: unknown, metadata?: Record<string, unknown>) {
     const operation = this.spec.operation(path, method);
 
     return prepareParams(operation, body, metadata).then(params => {
@@ -49,14 +61,14 @@ export default class APICore {
       // If `sdk.server()` has been issued data then we need to do some extra work to figure out
       // how to use that supplied server, and also handle any server variables that were sent
       // alongside it.
-      if (config.server) {
-        const preparedServer = prepareServer(this.spec, config.server.url, config.server.variables);
+      if (this.server) {
+        const preparedServer = prepareServer(this.spec, this.server.url, this.server.variables);
         if (preparedServer) {
           data.server = preparedServer;
         }
       }
 
-      const har = oasToHar(this.spec, operation, data, prepareAuth(config.auth || [], operation));
+      const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
 
       return fetchHar(har, {
         userAgent: this.userAgent,
