@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@oclif/test": "^2.1.0",
-    "@readme/eslint-config": "^8.4.1",
+    "@readme/eslint-config": "^8.4.4",
     "@readme/oas-examples": "^4.4.0",
     "@types/chai": "^4.3.0",
     "@types/js-yaml": "^4.0.5",

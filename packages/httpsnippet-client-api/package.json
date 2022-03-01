@@ -32,7 +32,7 @@
     "oas": "^17.1.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.4.1",
+    "@readme/eslint-config": "^8.4.4",
     "@readme/oas-examples": "^4.4.0",
     "chai": "^4.3.6",
     "eslint": "^8.8.0",
