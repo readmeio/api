@@ -3,7 +3,6 @@ import type { OASDocument } from './types';
 import type { HttpMethods } from 'oas/@types/rmoas.types';
 import type { ConfigOptions } from '@readme/api-core';
 
-import 'isomorphic-fetch';
 import Oas from 'oas';
 import APICore from '@readme/api-core';
 import Cache from './cache';

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "esModuleInterop": true, // We need this to to be able to load `typescript` in the TS generator.
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "dist",
