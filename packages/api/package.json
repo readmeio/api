@@ -42,7 +42,7 @@
     "oas": "^17.7.3"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.4.2",
+    "@readme/eslint-config": "^8.4.4",
     "@readme/oas-examples": "^4.4.0",
     "@types/chai": "^4.3.0",
     "@types/find-cache-dir": "^3.2.1",
@@ -50,7 +50,7 @@
     "@types/mocha": "^9.1.0",
     "chai": "^4.3.6",
     "datauri": "^4.1.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "mocha": "^9.2.1",
     "mock-require": "^3.0.3",
     "nock": "^13.2.4",
@@ -61,6 +61,9 @@
   },
   "prettier": "@readme/eslint-config/prettier",
   "nyc": {
-    "exclude": ["dist/", "test/"]
+    "exclude": [
+      "dist/",
+      "test/"
+    ]
   }
 }
