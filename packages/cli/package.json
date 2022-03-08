@@ -42,11 +42,11 @@
     "fetch-har": "^6.1.0",
     "js-yaml": "^4.1.0",
     "json-schema-to-typescript": "^10.1.5",
-    "oas": "^17.7.3"
+    "oas": "^18.0.0"
   },
   "devDependencies": {
     "@oclif/test": "^2.1.0",
-    "@readme/eslint-config": "^8.4.1",
+    "@readme/eslint-config": "^8.5.0",
     "@readme/oas-examples": "^4.4.0",
     "@types/chai": "^4.3.0",
     "@types/js-yaml": "^4.0.5",

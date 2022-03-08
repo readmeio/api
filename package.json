@@ -5,8 +5,10 @@
     "build": "npx lerna run build --stream",
     "clean": "npx lerna clean",
     "lint": "npx lerna run lint --stream",
+    "lint:docs": "alex . .github/",
     "prepare": "husky install",
     "publish": "npx lerna publish",
+    "pretest": "npm run lint:docs",
     "test": "npx lerna run test --stream",
     "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
+    "alex": "^10.0.0",
     "husky": "^7.0.4"
   },
   "commitlint": {

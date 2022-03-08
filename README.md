@@ -20,7 +20,7 @@ npm install api --save
 ```
 
 ## Usage
-Using `api` is as simple as supplying it an OpenAPI and using the SDK as you would any other!
+All you need to use `api` is to supply it an OpenAPI definition and then use the SDK as you would any other!
 
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/json/petstore.json');
@@ -39,7 +39,7 @@ The OpenAPI definition is automatically downloaded, cached, and transformed into
 sdk.auth('myApiToken').listPets().then(...);
 ```
 
-With the exception of OpenID, it supports all forms of authentication supported by the OpenAPI specification! Just give `.auth()` your credentials and it'll figure out how to use it according to the API you're using.
+With the exception of OpenID, it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
 
 For example:
 
@@ -53,7 +53,7 @@ When supplying parameters and/or request body payloads to an API request, you do
 * `body`: This will contain all data required for a request body payload for a POST, PUT, etc. request. It can either be an array or an object — whichever you need to use the API operation you're using.
 * `metadata`: This is an object where all parameters (path, query, header, cookie) go. Again, don't worry about telling the SDK that a path parameter is for the path, that's all handled for you.
 
-For example, if you wanted to make a simple GET request:
+For example, if you wanted to make a GET request:
 
 ```js
 sdk.showPetById({ petId: 1234 }).then(...)
@@ -140,7 +140,7 @@ At the moment it does not. If you wish to use an API that has a Swagger 2.0 file
 Not yet, unfortunately. For APIs that use OAuth 2, you'll need a fully-qualified token already for `api` to make requests.
 
 #### Does this support APIs that use multiple forms of authentication on a single request?
-Not yet! This is something we're thinking about how to handle, but it's difficult with the simple nature of the `.auth()` method as it currently does not require the user to inform the SDK of what kind of authentication scheme the token they're supplying it should match up against.
+Not yet! This is something we're thinking about how to handle, but it's difficult with the simplified nature of the `.auth()` method as it currently does not require the user to inform the SDK of what kind of authentication scheme the token they're supplying it should match up against.
 
 #### Will this work in browsers?
 Not at the moment as the library requires some filesystem handling in order to manage its cache state, but it's something we're actively thinking about. If you'd like to help us out in making this compatible with browsers we'd love to help you out on a pull request.
