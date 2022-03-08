@@ -5,7 +5,7 @@ import 'isomorphic-fetch';
 import fetchHar from 'fetch-har';
 import Oas from 'oas';
 import oasToHar from '@readme/oas-to-har';
-import { parseResponse, prepareAuth, prepareParams, prepareServer } from '@readme/api-core';
+import { parseResponse, prepareAuth, prepareParams, prepareServer } from './core';
 import { FormDataEncoder } from 'form-data-encoder';
 
 import Cache from './cache';
