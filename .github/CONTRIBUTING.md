@@ -1,11 +1,11 @@
 Contributing
 ===
 
-<img align="right" width="25%" style="margin-bottom: 2em" src="https://owlbert.io/images/owlberts-png/Waiter.psd.png">
+<img align="right" width="25%" style="margin-bottom: 2em" src="https://owlbert.io/images/owlberts-png/Blocks.psd.png">
 
 ### Commit Conventions
 
-When pushing or merging PRs in to master, your commit messages should follow the [Angular commit conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). At it's simplest, this looks something like `{type}: change this, add that`, where the commit `{type}` can be one of the following:
+When pushing or merging PRs in to `main`, your commit messages should follow the [Angular commit conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines). At it's simplest, this looks something like `{type}: change this, add that`, where the commit `{type}` can be one of the following:
 
 | Commit Type | Description |
 | :--- | :--- |
