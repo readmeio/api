@@ -3,7 +3,7 @@
   "version": "4.2.0",
   "description": "Generate an SDK from an OpenAPI definition",
   "main": "dist/index.js",
-  "types": "@types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .js,.ts",

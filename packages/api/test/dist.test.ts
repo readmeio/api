@@ -6,6 +6,7 @@ import api from '../dist';
 import Cache from '../src/cache';
 
 import uspto from '@readme/oas-examples/3.0/json/uspto.json';
+import securityOas from '@readme/oas-examples/3.0/json/security.json';
 
 describe('typescript dist verification', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
@@ -24,6 +25,24 @@ describe('typescript dist verification', function () {
 
     expect(await sdk.post('/oa_citations/v1/records')).to.equal('/ds-api/oa_citations/v1/records');
 
+    mock.done();
+  });
+
+  it('should be able to set an auth token', async function () {
+    const user = 'username';
+    const pass = 'changeme';
+
+    const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
+    const mock = nock('https://httpbin.org')
+      .post('/basic')
+      .reply(200, function () {
+        return this.req.headers;
+      });
+
+    const sdk = api(securityOas);
+
+    sdk.auth(user, pass);
+    expect(await sdk.post('/basic')).to.have.deep.property('authorization', [authHeader]);
     mock.done();
   });
 });
