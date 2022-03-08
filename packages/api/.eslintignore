@@ -1,4 +1,3 @@
 .nyc_output/
 @types/
-coverage/
 dist/

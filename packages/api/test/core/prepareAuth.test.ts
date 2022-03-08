@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Oas from 'oas';
-import prepareAuth from '../src/lib/prepareAuth';
+import prepareAuth from '../../src/core/prepareAuth';
 
 import securityOas from '@readme/oas-examples/3.0/json/security.json';
 
