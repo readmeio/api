@@ -206,8 +206,8 @@ export default class TSGenerator extends CodeGenerator {
    * @param name
    */
   async convertJSONSchemaToTypescript(schema: JSONSchema, name: string) {
-    // Though our JSON Schema type exposes JSONSchema4, which `json-schema-to-typescript`, it won't
-    // accept our custom type.
+    // Though our JSON Schema type exposes JSONSchema4, which `json-schema-to-typescript` wants, it
+    // won't accept our custom union type of JSON Schema 4, JSON Schema 6, and JSON Schema 7.
     const ts = await compile(schema as any, name, {
       bannerComment: '',
     });
