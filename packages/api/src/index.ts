@@ -36,7 +36,6 @@ class Sdk {
      *
      * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7}
      * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7}
-     * @param spec
      */
     function loadMethods() {
       return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
