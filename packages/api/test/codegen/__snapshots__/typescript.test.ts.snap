@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript generator should generate typescript code 1`] = `
+Array [
+  Object {
+    "index.ts": "import Oas from 'oas';
+import APICore from 'api/core';
+import definition from '../fixtures/simple.oas.json';
+
+export default class SDK {
+  spec: Oas;
+  core: APICore;
+  authKeys: (number | string)[][] = [];
+
+  constructor() {
+    this.spec = Oas.init(definition);
+    this.core = new APICore(this.spec, 'api/1.0.0');
+  }
+
+  config(config: ConfigOptions) {
+    this.core.setConfig(config);
+  }
+
+  auth(...values: string[] | number[]) {
+    this.core.setAuth(...values);
+    return this;
+  }
+
+  server(url: string, variables = {}) {
+    this.core.setServer(url, variables);
+  }
+
+  /**
+   * Finds Pets by status
+   *
+   * Multiple status values can be provided with comma separated strings
+   */
+  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(path: string, metadata?: Record<string, unknown>): Promise<unknown> {
+    return this.core.fetch(path, 'get', metadata);
+  }
+
+  /**
+   * Finds Pets by status
+   *
+   * Multiple status values can be provided with comma separated strings
+   */
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+    return this.core.fetch('/pet/findByStatus', 'get', metadata);
+  }
+}
+
+interface ConfigOptions {
+  parseResponse: boolean;
+}
+export type FindPetsByStatusMetadataParam = {
+  /**
+   * Status values that need to be considered for filter
+   */
+  status: (\\"available\\" | \\"pending\\" | \\"sold\\")[];
+  [k: string]: unknown;
+};
+export type FindPetsByStatus_Response_200 = Pet[];
+export interface Pet {
+  id?: number;
+  category?: Category;
+  name: string;
+  photoUrls: string[];
+  tags?: Tag[];
+  /**
+   * pet status in the store
+   */
+  status?: \\"available\\" | \\"pending\\" | \\"sold\\";
+  [k: string]: unknown;
+}
+export interface Category {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}
+export interface Tag {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}
+",
+  },
+]
+`;
