@@ -118,6 +118,7 @@ export default class TSGenerator extends CodeGenerator {
       parameters.push({ name: 'metadata?', type: 'Record<string, unknown>' });
       fetchArgs.push('metadata');
 
+      // @todo add docblock tags for these params and return types
       methodGenerics[method] = sdk.addMethod({
         name: method,
         returnType: 'Promise<unknown>',
@@ -150,6 +151,7 @@ export default class TSGenerator extends CodeGenerator {
         returnType = `Promise<${Object.values(data.types.responses).join(' | ')}>`;
       }
 
+      // @todo add docblock tags for these params and return types
       const method = sdk.addMethod({
         name: operationId,
         returnType,
