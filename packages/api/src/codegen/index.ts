@@ -9,5 +9,5 @@ export default abstract class CodeGenerator {
     this.spec = spec;
   }
 
-  abstract generator(): any;
+  abstract generator(): Promise<Record<string, string>>;
 }

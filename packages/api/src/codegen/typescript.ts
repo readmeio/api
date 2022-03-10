@@ -1,13 +1,7 @@
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, JSONSchema } from 'oas/@types/rmoas.types';
-import type {
-  JSDocStructure,
-  JSDocTagStructure,
-  MethodDeclaration,
-  OptionalKind,
-  ParameterDeclarationStructure,
-} from 'ts-morph';
+import type { JSDocStructure, MethodDeclaration, OptionalKind, ParameterDeclarationStructure } from 'ts-morph';
 
 import CodeGenerator from '.';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
@@ -296,7 +290,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         returnType = `Promise<${Object.values(data.types.responses).join(' | ')}>`;
       }
 
-      const method = sdk.addMethod({
+      sdk.addMethod({
         name: operationId,
         returnType,
         parameters,
@@ -344,9 +338,12 @@ sdk.server('https://eu.api.example.com/v14');`)
     });
 
     // const result = project.emitToMemory();
-    return this.project.getSourceFiles().map(sourceFile => ({
-      [sourceFile.getBaseName()]: sourceFile.getFullText(),
-    }));
+    return this.project
+      .getSourceFiles()
+      .map(sourceFile => ({
+        [sourceFile.getBaseName()]: sourceFile.getFullText(),
+      }))
+      .reduce((prev, next) => Object.assign(prev, next));
   }
 
   /**

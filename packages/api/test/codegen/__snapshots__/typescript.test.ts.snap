@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`typescript generator should generate typescript code 1`] = `
-Array [
-  Object {
-    "index.ts": "import Oas from 'oas';
+Object {
+  "index.ts": "import Oas from 'oas';
 import APICore from './src/core';
 import definition from './test/__fixtures__/simple.oas.json';
 
@@ -136,6 +135,5 @@ export interface Tag {
   [k: string]: unknown;
 }
 ",
-  },
-]
+}
 `;
