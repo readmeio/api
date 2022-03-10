@@ -1,10 +1,10 @@
 import chai, { expect } from 'chai';
-import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot';
+import chaiPlugins from '../helpers/chai-plugins';
 
 import Oas from 'oas';
 import TSGenerator from '../../src/codegen/typescript';
 
-chai.use(jestSnapshotPlugin());
+chai.use(chaiPlugins);
 
 describe('typescript generator', function () {
   let petstore: Oas;
@@ -15,9 +15,7 @@ describe('typescript generator', function () {
   });
 
   it('should generate typescript code', async function () {
-    const ts = new TSGenerator(petstore);
-    const files = await ts.generator();
-
-    expect(files).toMatchSnapshot();
+    const ts = new TSGenerator(petstore, '../__fixtures__/simple.oas.json');
+    expect(await ts.generator()).toMatchSDKFixture('simple');
   });
 });

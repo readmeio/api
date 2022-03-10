@@ -29,8 +29,8 @@ export default class TSGenerator extends CodeGenerator {
 
   files: Record<string, string>;
 
-  constructor(spec: Oas) {
-    super(spec);
+  constructor(spec: Oas, specPath: string) {
+    super(spec, specPath);
 
     // @todo fill this user agent in with something contextual.
     this.userAgent = 'api/1.0.0';
@@ -60,14 +60,8 @@ export default class TSGenerator extends CodeGenerator {
 
     sdkSource.addImportDeclarations([
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
-      {
-        defaultImport: 'APICore',
-        moduleSpecifier: './src/core', // 'api/core'
-      },
-      {
-        defaultImport: 'definition',
-        moduleSpecifier: './test/__fixtures__/simple.oas.json', // './openapi.json',
-      },
+      { defaultImport: 'APICore', moduleSpecifier: 'api/core' },
+      { defaultImport: 'definition', moduleSpecifier: this.specPath },
     ]);
 
     const sdk = sdkSource.getClassOrThrow('SDK');

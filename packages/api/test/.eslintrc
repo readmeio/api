@@ -2,5 +2,16 @@
   "extends": "@readme/eslint-config/testing-mocha",
   "rules": {
     "global-require": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["__fixtures__/sdk/**/*.ts"],
+      "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "lines-between-class-members": "off",
+        "prettier/prettier": "off"
+      }
+    }
+  ]
 }
