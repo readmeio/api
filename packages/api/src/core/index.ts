@@ -14,6 +14,10 @@ import prepareParams from './prepareParams';
 import prepareServer from './prepareServer';
 
 export interface ConfigOptions {
+  /**
+   * By default we parse the response based on the `Content-Type` header of the request. You can
+   * disable this functionality by negating this option.
+   */
   parseResponse: boolean;
 }
 
