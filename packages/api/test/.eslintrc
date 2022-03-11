@@ -7,10 +7,10 @@
     {
       "files": ["__fixtures__/sdk/**/*.ts"],
       "rules": {
+        "@typescript-eslint/consistent-indexed-object-style": "off",
         "import/extensions": "off",
         "import/no-unresolved": "off",
-        "lines-between-class-members": "off",
-        "prettier/prettier": "off"
+        "lines-between-class-members": "off"
       }
     }
   ]

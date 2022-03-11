@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/core';
-import definition from '../__fixtures__/simple.oas.json';
+import definition from './simple.oas.json';
 
 export default class SDK {
   spec: Oas;
@@ -104,7 +104,7 @@ export type FindPetsByStatusMetadataParam = {
   /**
    * Status values that need to be considered for filter
    */
-  status: ("available" | "pending" | "sold")[];
+  status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
 export type FindPetsByStatus_Response_200 = Pet[];
@@ -117,7 +117,7 @@ export interface Pet {
   /**
    * pet status in the store
    */
-  status?: "available" | "pending" | "sold";
+  status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
 }
 export interface Category {

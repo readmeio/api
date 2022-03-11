@@ -2,10 +2,12 @@ import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, JSONSchema } from 'oas/@types/rmoas.types';
 import type { JSDocStructure, MethodDeclaration, OptionalKind, ParameterDeclarationStructure } from 'ts-morph';
+import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 
 import CodeGenerator from '.';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
+import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
 
 type OperationTypeHousing = {
   types: {
@@ -185,7 +187,7 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     // Add all common method accessors into the SDK.
     const methodGenerics: Record<string, MethodDeclaration> = {};
-    methods.forEach(method => {
+    Array.from(methods).forEach((method: string) => {
       const fetchArgs: string[] = [];
 
       // @todo add docblock tags for these params and return types
@@ -279,7 +281,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         }
       }
 
-      let returnType: string;
+      let returnType = 'Promise<unknown>';
       if (data.types.responses) {
         returnType = `Promise<${Object.values(data.types.responses).join(' | ')}>`;
       }
@@ -335,7 +337,13 @@ sdk.server('https://eu.api.example.com/v14');`)
     return this.project
       .getSourceFiles()
       .map(sourceFile => ({
-        [sourceFile.getBaseName()]: sourceFile.getFullText(),
+        [sourceFile.getBaseName()]: prettier(sourceFile.getFullText(), {
+          format: true,
+          style: {
+            printWidth: 120,
+            singleQuote: true,
+          },
+        } as JSONSchemaToTypescriptOptions),
       }))
       .reduce((prev, next) => Object.assign(prev, next));
   }
@@ -355,6 +363,9 @@ sdk.server('https://eu.api.example.com/v14');`)
     // won't accept our custom union type of JSON Schema 4, JSON Schema 6, and JSON Schema 7.
     const ts = await compile(schema as any, name, {
       bannerComment: '',
+      // Running Prettier here for every JSON Schema object we're generating is way too slow so
+      // we're instead running it at the very end after we've constructed the SDK.
+      format: false,
     });
 
     let primaryType: string;
@@ -386,15 +397,13 @@ sdk.server('https://eu.api.example.com/v14');`)
    */
   async loadOperationsAndMethods() {
     const operations: Record</* operationId */ string, OperationTypeHousing> = {};
-    const methods: string[] = [];
+    const methods = new Set();
 
     await Promise.all(
       Object.entries(this.spec.getPaths()).map(async ([, ops]) => {
         await Promise.all(
           Object.entries(ops).map(async ([method, operation]: [HttpMethods, Operation]) => {
-            if (!(method in methods)) {
-              methods.push(method);
-            }
+            methods.add(method);
 
             const operationId = operation.getOperationId();
             const params = await this.getParameterTypesForOperation(operation, operationId);
@@ -497,6 +506,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           })
         );
       })
-      .then(res => res.reduce((prev, next) => Object.assign(prev, next), {}));
+      .then(res => res.reduce((prev, next) => Object.assign(prev, next), {}))
+      .then(res => (Object.keys(res).length ? res : undefined));
   }
 }

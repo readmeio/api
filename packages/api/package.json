@@ -43,7 +43,7 @@
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
     "make-dir": "^3.1.0",
-    "oas": "^18.0.0",
+    "oas": "^18.0.1",
     "ts-morph": "^14.0.0"
   },
   "devDependencies": {
