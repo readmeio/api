@@ -22,20 +22,7 @@ describe('#getJSONSchemaDefaults()', function () {
   });
 
   it('should be able to handle nested objects', async function () {
-    const oas = await import('@readme/oas-examples/3.0/json/petstore.json')
-      .then((spec: any) => {
-        /* eslint-disable no-param-reassign */
-        spec.components.schemas.Pet.required.push('category');
-        spec.components.schemas.Pet.properties.name.default = 'buster';
-
-        spec.components.schemas.Category.required = ['name'];
-        spec.components.schemas.Category.properties.name.default = 'dog';
-        /* eslint-enable no-param-reassign */
-
-        return spec;
-      })
-      .then(Oas.init);
-
+    const oas = await import('../__fixtures__/nested-defaults.oas.json').then(Oas.init);
     await oas.dereference();
 
     const operation = oas.operation('/pet', 'post');
