@@ -5,9 +5,12 @@ import type { JSDocStructure, MethodDeclaration, OptionalKind, ParameterDeclarat
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 
 import CodeGenerator from '.';
+import memoize from 'memoizee';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
+
+const memoizedCompile = memoize(compile);
 
 type OperationTypeHousing = {
   types: {
@@ -345,13 +348,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     return this.project
       .getSourceFiles()
       .map(sourceFile => ({
-        [sourceFile.getBaseName()]: prettier(sourceFile.getFullText(), {
-          format: true,
-          style: {
-            printWidth: 120,
-            singleQuote: true,
-          },
-        } as JSONSchemaToTypescriptOptions),
+        [sourceFile.getBaseName()]: this.formatter(sourceFile.getFullText()),
       }))
       .reduce((prev, next) => Object.assign(prev, next));
   }
@@ -369,7 +366,7 @@ sdk.server('https://eu.api.example.com/v14');`)
   async convertJSONSchemaToTypescript(schema: JSONSchema, name: string) {
     // Though our JSON Schema type exposes JSONSchema4, which `json-schema-to-typescript` wants, it
     // won't accept our custom union type of JSON Schema 4, JSON Schema 6, and JSON Schema 7.
-    const ts = await compile(schema as any, name, {
+    const ts = await memoizedCompile(schema as any, name, {
       bannerComment: '',
       // Running Prettier here for every JSON Schema object we're generating is way too slow so
       // we're instead running it at the very end after we've constructed the SDK.
@@ -516,5 +513,16 @@ sdk.server('https://eu.api.example.com/v14');`)
       })
       .then(res => res.reduce((prev, next) => Object.assign(prev, next), {}))
       .then(res => (Object.keys(res).length ? res : undefined));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  formatter(content: string) {
+    return prettier(content, {
+      format: true,
+      style: {
+        printWidth: 120,
+        singleQuote: true,
+      },
+    } as JSONSchemaToTypescriptOptions);
   }
 }
