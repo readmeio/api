@@ -74,67 +74,69 @@ export default class SDK {
   /**
    * Add a new pet to the store
    *
-   * @param body Request body payload data.
    */
-  post(path: string, body: Pet): Promise<unknown>;
+  post<T = unknown>(path: string, body: Pet): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  post(path: string, body, metadata: UpdatePetWithFormMetadataParam): Promise<unknown>;
+  post<T = unknown>(path: string, body?: any, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Create user
-   * @param body Request body payload data.
    */
-  post(path: string, body: User): Promise<unknown>;
+  post<T = unknown>(path: string, body: User): Promise<T>;
   /**
    * Creates list of users with given input array
    *
-   * @param body Request body payload data.
    */
-  post(path: string, body: CreateUsersWithArrayInputBodyParam): Promise<unknown>;
+  post<T = unknown>(path: string, body: CreateUsersWithArrayInputBodyParam): Promise<T>;
   /**
    * Creates list of users with given input array
    *
-   * @param body Request body payload data.
    */
-  post(path: string, body: CreateUsersWithListInputBodyParam): Promise<unknown>;
+  post<T = unknown>(path: string, body: CreateUsersWithListInputBodyParam): Promise<T>;
   /**
    * Uploads an image
    *
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  post(path: string, body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(path: string, body?: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
   /**
    * Place an order for a pet
    *
-   * @param body Request body payload data.
    */
   post(path: string, body: Order): Promise<Order>;
-  post(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<unknown> {
+  /**
+   * Access any post endpoint on your API.
+   *
+   * @param path API path to make a request against.
+   * @param body Request body payload data.
+   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
+   */
+  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'post', body, metadata);
   }
 
   /**
    * Update an existing pet
    *
-   * @param body Request body payload data.
    */
-  put(path: string, body: Pet): Promise<unknown>;
+  put<T = unknown>(path: string, body: Pet): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Updated user
+   */
+  put<T = unknown>(path: string, body: User, metadata: UpdateUserMetadataParam): Promise<T>;
+  /**
+   * Access any put endpoint on your API.
+   *
+   * @param path API path to make a request against.
    * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  put(path: string, body: User, metadata: UpdateUserMetadataParam): Promise<unknown>;
-  put(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<unknown> {
+  put<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'put', body, metadata);
   }
 
@@ -142,7 +144,7 @@ export default class SDK {
    * Logs out current logged in user session
    *
    */
-  get(path: string): Promise<unknown>;
+  get<T = unknown>(path: string): Promise<T>;
   /**
    * Returns a map of status codes to quantities
    *
@@ -153,67 +155,71 @@ export default class SDK {
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
   /**
    * Returns a single pet
    *
    * @summary Find pet by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: GetPetByIdMetadataParam): Promise<Pet>;
   /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: GetOrderByIdMetadataParam): Promise<Order>;
   /**
    * Logs user into the system
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
   /**
    * Get user by user name
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: GetUserByNameMetadataParam): Promise<User>;
-  get(path: string, metadata?: Record<string, unknown>): Promise<unknown> {
+  /**
+   * Access any get endpoint on your API.
+   *
+   * @param path API path to make a request against.
+   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
+   */
+  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'get', metadata);
   }
 
   /**
    * Deletes a pet
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  delete(path: string, metadata: DeletePetMetadataParam): Promise<unknown>;
+  delete<T = unknown>(path: string, metadata: DeletePetMetadataParam): Promise<T>;
   /**
    * For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
    *
    * @summary Delete purchase order by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  delete(path: string, metadata: DeleteOrderMetadataParam): Promise<unknown>;
+  delete<T = unknown>(path: string, metadata: DeleteOrderMetadataParam): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Delete user
+   */
+  delete<T = unknown>(path: string, metadata: DeleteUserMetadataParam): Promise<T>;
+  /**
+   * Access any delete endpoint on your API.
+   *
+   * @param path API path to make a request against.
+   * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  delete(path: string, metadata: DeleteUserMetadataParam): Promise<unknown>;
-  delete(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<unknown> {
+  delete<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'delete', body, metadata);
   }
 
@@ -221,7 +227,7 @@ export default class SDK {
    * Logs out current logged in user session
    *
    */
-  logoutUser(): Promise<unknown> {
+  logoutUser<T = unknown>(): Promise<T> {
     return this.core.fetch('/user/logout', 'get');
   }
 
@@ -237,37 +243,32 @@ export default class SDK {
   /**
    * Add a new pet to the store
    *
-   * @param body Request body payload data.
    */
-  addPet(body: Pet): Promise<unknown> {
+  addPet<T = unknown>(body: Pet): Promise<T> {
     return this.core.fetch('/pet', 'post', body);
   }
 
   /**
    * Update an existing pet
    *
-   * @param body Request body payload data.
    */
-  updatePet(body: Pet): Promise<unknown> {
+  updatePet<T = unknown>(body: Pet): Promise<T> {
     return this.core.fetch('/pet', 'put', body);
   }
 
   /**
    * Updates a pet in the store with form data
    *
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  updatePetWithForm(body, metadata: UpdatePetWithFormMetadataParam): Promise<unknown> {
+  updatePetWithForm<T = unknown>(body?: any, metadata: UpdatePetWithFormMetadataParam): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
 
   /**
    * Deletes a pet
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  deletePet(metadata: DeletePetMetadataParam): Promise<unknown> {
+  deletePet<T = unknown>(metadata: DeletePetMetadataParam): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'delete', metadata);
   }
 
@@ -275,9 +276,8 @@ export default class SDK {
    * For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
    *
    * @summary Delete purchase order by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  deleteOrder(metadata: DeleteOrderMetadataParam): Promise<unknown> {
+  deleteOrder<T = unknown>(metadata: DeleteOrderMetadataParam): Promise<T> {
     return this.core.fetch('/store/order/{orderId}', 'delete', metadata);
   }
 
@@ -285,27 +285,24 @@ export default class SDK {
    * This can only be done by the logged in user.
    *
    * @summary Create user
-   * @param body Request body payload data.
    */
-  createUser(body: User): Promise<unknown> {
+  createUser<T = unknown>(body: User): Promise<T> {
     return this.core.fetch('/user', 'post', body);
   }
 
   /**
    * Creates list of users with given input array
    *
-   * @param body Request body payload data.
    */
-  createUsersWithArrayInput(body: CreateUsersWithArrayInputBodyParam): Promise<unknown> {
+  createUsersWithArrayInput<T = unknown>(body: CreateUsersWithArrayInputBodyParam): Promise<T> {
     return this.core.fetch('/user/createWithArray', 'post', body);
   }
 
   /**
    * Creates list of users with given input array
    *
-   * @param body Request body payload data.
    */
-  createUsersWithListInput(body: CreateUsersWithListInputBodyParam): Promise<unknown> {
+  createUsersWithListInput<T = unknown>(body: CreateUsersWithListInputBodyParam): Promise<T> {
     return this.core.fetch('/user/createWithList', 'post', body);
   }
 
@@ -313,10 +310,8 @@ export default class SDK {
    * This can only be done by the logged in user.
    *
    * @summary Updated user
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  updateUser(body: User, metadata: UpdateUserMetadataParam): Promise<unknown> {
+  updateUser<T = unknown>(body: User, metadata: UpdateUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'put', body, metadata);
   }
 
@@ -324,9 +319,8 @@ export default class SDK {
    * This can only be done by the logged in user.
    *
    * @summary Delete user
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  deleteUser(metadata: DeleteUserMetadataParam): Promise<unknown> {
+  deleteUser<T = unknown>(metadata: DeleteUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'delete', metadata);
   }
 
@@ -334,7 +328,6 @@ export default class SDK {
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
@@ -344,7 +337,6 @@ export default class SDK {
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200> {
     return this.core.fetch('/pet/findByTags', 'get', metadata);
@@ -354,7 +346,6 @@ export default class SDK {
    * Returns a single pet
    *
    * @summary Find pet by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   getPetById(metadata: GetPetByIdMetadataParam): Promise<Pet> {
     return this.core.fetch('/pet/{petId}', 'get', metadata);
@@ -363,17 +354,14 @@ export default class SDK {
   /**
    * Uploads an image
    *
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse> {
+  uploadFile(body?: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
   }
 
   /**
    * Place an order for a pet
    *
-   * @param body Request body payload data.
    */
   placeOrder(body: Order): Promise<Order> {
     return this.core.fetch('/store/order', 'post', body);
@@ -383,7 +371,6 @@ export default class SDK {
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   getOrderById(metadata: GetOrderByIdMetadataParam): Promise<Order> {
     return this.core.fetch('/store/order/{orderId}', 'get', metadata);
@@ -392,7 +379,6 @@ export default class SDK {
   /**
    * Logs user into the system
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   loginUser(metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200> {
     return this.core.fetch('/user/login', 'get', metadata);
@@ -401,7 +387,6 @@ export default class SDK {
   /**
    * Get user by user name
    *
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   getUserByName(metadata: GetUserByNameMetadataParam): Promise<User> {
     return this.core.fetch('/user/{username}', 'get', metadata);

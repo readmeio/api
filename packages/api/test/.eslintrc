@@ -10,6 +10,7 @@
         "@typescript-eslint/consistent-indexed-object-style": "off",
         "import/extensions": "off",
         "import/no-unresolved": "off",
+        "jsdoc/require-param": "off",
         "lines-between-class-members": "off"
       }
     }

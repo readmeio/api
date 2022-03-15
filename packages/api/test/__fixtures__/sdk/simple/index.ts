@@ -75,10 +75,15 @@ export default class SDK {
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
-  get(path: string, metadata?: Record<string, unknown>): Promise<unknown> {
+  /**
+   * Access any get endpoint on your API.
+   *
+   * @param path API path to make a request against.
+   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
+   */
+  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'get', metadata);
   }
 
@@ -86,7 +91,6 @@ export default class SDK {
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);

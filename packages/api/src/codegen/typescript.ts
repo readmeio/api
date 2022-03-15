@@ -188,42 +188,52 @@ sdk.server('https://eu.api.example.com/v14');`)
     // Add all common method accessors into the SDK.
     const methodGenerics: Record<string, MethodDeclaration> = {};
     Array.from(methods).forEach((method: string) => {
-      const fetchArgs: string[] = [];
-
-      // @todo add docblock tags for these params and return types
-      methodGenerics[method] = sdk.addMethod({
-        name: method,
-        returnType: 'Promise<unknown>',
-        parameters: [{ name: 'path', type: 'string' }],
-      });
+      const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
+      const docblock: OptionalKind<JSDocStructure> = {
+        description: writer => {
+          writer.writeLine(`Access any ${method} endpoint on your API.`);
+          return writer;
+        },
+        tags: [{ tagName: 'param', text: 'path API path to make a request against.' }],
+      };
 
       // Method generic body + metadata parameters are always optional.
       if (method !== 'get') {
-        methodGenerics[method].addParameter({ name: 'body', type: 'unknown', hasQuestionToken: true });
-        fetchArgs.push('body');
+        parameters.push({ name: 'body', type: 'unknown', hasQuestionToken: true });
+        docblock.tags.push({ tagName: 'param', text: 'body Request body payload data.' });
       }
 
-      methodGenerics[method].addParameter({
-        name: 'metadata',
-        type: 'Record<string, unknown>',
-        hasQuestionToken: true,
+      parameters.push({ name: 'metadata', type: 'Record<string, unknown>', hasQuestionToken: true });
+      docblock.tags.push({
+        tagName: 'param',
+        text: 'metadata Object containing all path, query, header, and cookie parameters to supply.',
       });
 
-      fetchArgs.push('metadata');
+      methodGenerics[method] = sdk.addMethod({
+        name: method,
+        returnType: 'Promise<T>',
+        parameters,
+        typeParameters: ['T = unknown'],
+        docs: [docblock],
+        statements: writer => {
+          /**
+           * @example return this.core.fetch(path, 'get', body, metadata);
+           * @example return this.core.fetch(path, 'get', metadata);
+           */
+          const fetchStmt = writer.write('return this.core.fetch(path, ').quote(method).write(', ');
 
-      methodGenerics[method].setBodyText(writer => {
-        /** @example return this.core.fetch(path, 'get', body, metadata); */
-        const fetchStmt = writer.write('return this.core.fetch(path, ').quote(method).write(', ');
-        fetchArgs.forEach((arg, i) => {
-          fetchStmt.write(arg);
-          if (fetchArgs.length > 1 && i !== fetchArgs.length) {
-            fetchStmt.write(', ');
-          }
-        });
+          const fetchArgs = parameters.slice(1).map(p => p.name);
+          fetchArgs.forEach((arg, i) => {
+            fetchStmt.write(arg);
+            if (fetchArgs.length > 1 && i !== fetchArgs.length) {
+              fetchStmt.write(', ');
+            }
+          });
 
-        fetchStmt.write(');');
+          fetchStmt.write(');');
 
-        return fetchStmt;
+          return fetchStmt;
+        },
       });
     });
 
@@ -260,10 +270,8 @@ sdk.server('https://eu.api.example.com/v14');`)
           parameters.push({
             name: 'body',
             type: data.types.params.body,
-            // hasQuestionToken: true, // @todo this should be an optional param if there's no required params.
+            hasQuestionToken: !operation.hasRequiredRequestBody(),
           });
-
-          docblock.tags.push({ tagName: 'param', text: 'body Request body payload data.' });
         }
 
         if (data.types.params.metadata) {
@@ -271,28 +279,27 @@ sdk.server('https://eu.api.example.com/v14');`)
           parameters.push({
             name: 'metadata',
             type: data.types.params.metadata,
-            // hasQuestionToken: true, // @todo this should be an optional param if there's no required params.
-          });
-
-          docblock.tags.push({
-            tagName: 'param',
-            text: 'metadata Object containing all path, query, header, and cookie parameters to supply.',
+            hasQuestionToken: !operation.hasRequiredParameters(),
           });
         }
       }
 
-      let returnType = 'Promise<unknown>';
+      let returnType = 'Promise<T>';
       if (data.types.responses) {
         returnType = `Promise<${Object.values(data.types.responses).join(' | ')}>`;
       }
 
       sdk.addMethod({
         name: operationId,
-        returnType,
+        typeParameters: data.types.responses ? null : ['T = unknown'],
         parameters,
+        returnType,
         docs: docblock ? [docblock] : null,
         statements: writer => {
-          /** @example return this.core.fetch('/pet/findByStatus', 'get', metadata); */
+          /**
+           * @example return this.core.fetch('/pet/findByStatus', 'get', body, metadata);
+           * @example return this.core.fetch('/pet/findByStatus', 'get', metadata);
+           */
           const fetchStmt = writer
             .write('return this.core.fetch(')
             .quote(operation.path)
@@ -320,6 +327,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       // Add a typed generic HTTP method overload for this operation.
       if (operation.method in methodGenerics) {
         methodGenerics[operation.method].addOverload({
+          typeParameters: data.types.responses ? null : ['T = unknown'],
           parameters: [{ name: 'path', type: 'string' }, ...parameters],
           returnType,
           docs: docblock ? [docblock] : null,
