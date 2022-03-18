@@ -1,3 +1,9 @@
+## <small>4.2.1 (2022-03-18)</small>
+
+* fix: quirk with node 16 and `response.clone()` ([de8d964](https://github.com/readmeio/api/commit/de8d964))
+
+
+
 ## 4.2.0 (2022-01-03)
 
 * chore(deps-dev): bump @commitlint/cli from 15.0.0 to 16.0.1 (#372) ([2279bcf](https://github.com/readmeio/api/commit/2279bcf)), closes [#372](https://github.com/readmeio/api/issues/372)
