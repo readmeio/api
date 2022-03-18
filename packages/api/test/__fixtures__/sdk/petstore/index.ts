@@ -16,7 +16,7 @@ export default class SDK {
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header`.
+   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions) {
     this.core.setConfig(config);

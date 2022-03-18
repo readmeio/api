@@ -128,7 +128,7 @@ export default class TSGenerator extends CodeGenerator {
               { tagName: 'param', text: 'config Object of supported SDK options and toggles.' },
               {
                 tagName: 'param',
-                text: 'config.parseResponse If responses are parsed according to its `Content-Type` header`.',
+                text: 'config.parseResponse If responses are parsed according to its `Content-Type` header.',
               },
             ],
           },
