@@ -80,7 +80,16 @@ export default class SDK {
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: string, body?: any, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(
+    path: string,
+    body: UpdatePetWithFormFormDataParam,
+    metadata: UpdatePetWithFormMetadataParam
+  ): Promise<T>;
+  /**
+   * Updates a pet in the store with form data
+   *
+   */
+  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
@@ -101,7 +110,12 @@ export default class SDK {
    * Uploads an image
    *
    */
-  post(path: string, body?: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(path: string, body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  post(path: string, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
   /**
    * Place an order for a pet
    *
@@ -260,7 +274,23 @@ export default class SDK {
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm<T = unknown>(body?: any, metadata: UpdatePetWithFormMetadataParam): Promise<T> {
+  updatePetWithForm<T = unknown>(
+    body: UpdatePetWithFormFormDataParam,
+    metadata: UpdatePetWithFormMetadataParam
+  ): Promise<T>;
+  /**
+   * Updates a pet in the store with form data
+   *
+   */
+  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  /**
+   * Updates a pet in the store with form data
+   *
+   */
+  updatePetWithForm<T = unknown>(
+    body?: UpdatePetWithFormFormDataParam,
+    metadata?: UpdatePetWithFormMetadataParam
+  ): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
 
@@ -355,7 +385,17 @@ export default class SDK {
    * Uploads an image
    *
    */
-  uploadFile(body?: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse> {
+  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  uploadFile(metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  uploadFile(body?: UploadFileBodyParam, metadata?: UploadFileMetadataParam): Promise<ApiResponse> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
   }
 

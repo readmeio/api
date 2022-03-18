@@ -15,6 +15,14 @@ describe('typescript generator', function () {
     expect(await ts.generator()).toMatchSDKFixture('simple');
   });
 
+  it('should be able to generate valid TS when a body is optional but metadata isnt', async function () {
+    const oas = await import('../__fixtures__/optional-payload.oas.json').then(Oas.init);
+    await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+    const ts = new TSGenerator(oas, './optional-payload.oas.json');
+    expect(await ts.generator()).toMatchSDKFixture('optional-payload');
+  });
+
   it('should work against the petstore', async function () {
     const oas = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
