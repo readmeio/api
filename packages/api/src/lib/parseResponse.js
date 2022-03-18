@@ -6,18 +6,16 @@ const {
 
 module.exports = async function getResponseBody(response) {
   const contentType = response.headers.get('Content-Type');
-  const isJson = contentType && (matchesMimeType.json(contentType) || matchesMimeType.wildcard(contentType));
+  const isJSON = contentType && (matchesMimeType.json(contentType) || matchesMimeType.wildcard(contentType));
 
-  // We have to clone it before reading, just incase
-  // we cannot parse it as JSON later, then we can
-  // re-read again as plain text
-  const clonedResponse = response.clone();
-  let responseBody;
+  const responseBody = await response.text();
 
-  try {
-    responseBody = await response[isJson ? 'json' : 'text']();
-  } catch (e) {
-    responseBody = await clonedResponse.text();
+  if (isJSON) {
+    try {
+      return JSON.parse(responseBody);
+    } catch (e) {
+      // If our JSON parsing failed then we can just return plaintext instead.
+    }
   }
 
   return responseBody;
