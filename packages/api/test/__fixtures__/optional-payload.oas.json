@@ -1,0 +1,57 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Example API with a requestBody payload that's optional."
+  },
+  "servers": [
+    {
+      "url": "http://petstore.swagger.io/v2"
+    }
+  ],
+  "paths": {
+    "/pet/{petId}": {
+      "post": {
+        "summary": "Updates a pet in the store with form data",
+        "description": "",
+        "operationId": "updatePetWithForm",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "description": "ID of pet that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Updated name of the pet",
+                    "type": "string"
+                  },
+                  "status": {
+                    "description": "Updated status of the pet",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  }
+}
