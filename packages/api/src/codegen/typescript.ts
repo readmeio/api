@@ -304,9 +304,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       // got both a summary and a description present on the operation, otherwise we can alternate
       // what we surface the main docblock description.
       docblock.description = writer => {
-        if ((description && summary) || (description && !summary)) {
+        if (description) {
           writer.writeLine(description);
-        } else if (summary && !description) {
+        } else if (summary) {
           writer.writeLine(summary);
         }
 
@@ -421,8 +421,8 @@ sdk.server('https://eu.api.example.com/v14');`)
         docs: docblock ? [docblock] : null,
       });
 
-      // Create an overload that has both `body` and `metadata` parameters as optional. Eventhough
-      // our `metadata` parameter is actually required for this operation this the only way we're
+      // Create an overload that has both `body` and `metadata` parameters as optional. Even though
+      // our `metadata` parameter is actually required for this operation this is the only way we're
       // able to have an optional `body` parameter be present before `metadata`.
       //
       // Thankfully our core fetch work in `api/core` is able to do the proper determination to
