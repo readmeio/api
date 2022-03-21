@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 /* eslint-disable mocha/no-setup-in-describe */
 const { expect } = require('chai');
 const fs = require('fs/promises');
@@ -5,6 +7,10 @@ const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const client = require('../src');
 const readme = require('@readme/oas-examples/3.0/json/readme.json');
+const security = require('@readme/oas-examples/3.0/json/security.json');
+
+const DATASETS_DIR = path.join(__dirname, '__datasets__');
+const snippets = require('fs').readdirSync(DATASETS_DIR);
 
 describe('httpsnippet-client-api', function () {
   beforeEach(function () {
@@ -19,7 +25,7 @@ describe('httpsnippet-client-api', function () {
     }
   });
 
-  it('it should have info', function () {
+  it('should have info', function () {
     expect(client).to.have.property('info');
     expect(client.info).to.deep.equal({
       key: 'api',
@@ -29,7 +35,7 @@ describe('httpsnippet-client-api', function () {
     });
   });
 
-  it('it should error if no apiDefinitionUri was supplied', async function () {
+  it('should error if no apiDefinitionUri was supplied', async function () {
     const har = await fs.readFile(path.join(__dirname, './__fixtures__/request/petstore/har.json'), 'utf8');
     const snippet = new HTTPSnippet(JSON.parse(har));
 
@@ -38,7 +44,7 @@ describe('httpsnippet-client-api', function () {
     }).to.throw(/must have an `apiDefinitionUri` option supplied/);
   });
 
-  it('it should error if no apiDefinition was supplied', async function () {
+  it('should error if no apiDefinition was supplied', async function () {
     const har = await fs.readFile(path.join(__dirname, './__fixtures__/request/petstore/har.json'), 'utf8');
     const snippet = new HTTPSnippet(JSON.parse(har));
 
@@ -50,7 +56,7 @@ describe('httpsnippet-client-api', function () {
   });
 
   // This test should fail because the url in the HAR is missing `/v1` in the path.
-  it('it should error if no matching operation was found in the apiDefinition', function () {
+  it('should error if no matching operation was found in the apiDefinition', function () {
     const har = {
       bodySize: 0,
       cookies: [],
@@ -111,45 +117,71 @@ describe('httpsnippet-client-api', function () {
         });
       });
     });
+
+    describe('bearer', function () {
+      it('should be able to handle bearer auth', function () {
+        const har = {
+          bodySize: 0,
+          cookies: [],
+          headers: [
+            {
+              name: 'Authorization',
+              value: `Bearer myBearerToken`,
+            },
+          ],
+          headersSize: 0,
+          httpVersion: 'HTTP/1.1',
+          method: 'POST',
+          url: 'https://httpbin.org/bearer',
+        };
+
+        const code = new HTTPSnippet(har).convert('node', 'api', {
+          apiDefinitionUri: 'https://example.com/openapi.json',
+          apiDefinition: security,
+        });
+
+        expect(code).to.contain("sdk.auth('myBearerToken')");
+      });
+    });
   });
 
-  describe('snippets', function () {
-    [
-      ['alternate-server'],
-      ['application-form-encoded'],
-      ['application-json'],
-      // ['cookies'], // Cookies test needs to get built out.
-      ['full'],
-      ['full-many-query-params'],
-      ['headers'],
-      ['https'],
-      ['issue-76'],
-      ['issue-78'],
-      ['issue-78-operationid'],
-      ['issue-119'],
-      ['issue-128'],
-      ['jsonObj-multiline'],
-      ['jsonObj-null-value'],
-      ['multipart-data'],
-      ['multipart-file'],
-      ['multipart-form-data'],
-      ['multipart-form-data-no-params'],
-      ['petstore'],
-      ['query'],
-      ['query-auth'],
-      ['short'],
-      ['text-plain'],
-    ].forEach(([request]) => {
-      it(`should generate \`${request}\` snippet`, async function () {
-        const har = JSON.parse(
-          await fs.readFile(path.join(__dirname, `./__fixtures__/request/${request}/har.json`), 'utf8')
-        );
+  describe.only('snippets', function () {
+    snippets.forEach(snippet => {
+      it(`should generate \`${snippet}\` snippet`, async function () {
+        if (snippet === 'output' || snippet === 'request') {
+          this.skip();
+        }
 
-        const definition = JSON.parse(
-          await fs.readFile(path.join(__dirname, `./__fixtures__/request/${request}/definition.json`), 'utf8')
-        );
+        // Cookies test needs to get built out.
+        if (snippet === 'cookies') {
+          this.skip();
+          return;
+        }
 
-        const expected = await fs.readFile(path.join(__dirname, `./__fixtures__/output/${request}.js`), 'utf8');
+        const expected = await fs.readFile(path.join(__dirname, `./__datasets__/${snippet}/output.js`), 'utf-8');
+        const har = await fs
+          .stat(path.join(DATASETS_DIR, snippet, 'har.json'))
+          .then(() => require(path.join(DATASETS_DIR, snippet, 'har.json')))
+          .catch(() => {
+            return fs
+              .stat(path.join(DATASETS_DIR, snippet, 'har.js'))
+              .then(() => require(path.join(DATASETS_DIR, snippet, 'har.js')))
+              .catch(() => {
+                throw new Error(`The ${snippet} dataset has neither a "har.js" or "har.json" present.`);
+              });
+          });
+
+        const definition = await fs
+          .stat(path.join(DATASETS_DIR, snippet, 'openapi.json'))
+          .then(() => require(path.join(DATASETS_DIR, snippet, 'openapi.json')))
+          .catch(() => {
+            return fs
+              .stat(path.join(DATASETS_DIR, snippet, 'openapi.js'))
+              .then(() => require(path.join(DATASETS_DIR, snippet, 'openapi.js')))
+              .catch(() => {
+                throw new Error(`The ${snippet} dataset has neither a "openapi.js" or "openapi.json" present.`);
+              });
+          });
 
         const code = new HTTPSnippet(har).convert('node', 'api', {
           apiDefinitionUri: 'https://example.com/openapi.json',

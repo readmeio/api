@@ -1,0 +1,31 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "http://httpbin.org/anything",
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ],
+          "postData": {
+            "mimeType": "application/x-www-form-urlencoded",
+            "params": [
+              {
+                "name": "foo",
+                "value": "bar"
+              },
+              {
+                "name": "hello",
+                "value": "world"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

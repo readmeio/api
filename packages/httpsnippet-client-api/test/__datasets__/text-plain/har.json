@@ -1,0 +1,22 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "https://httpbin.org/anything",
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "text/plain"
+            }
+          ],
+          "postData": {
+            "mimeType": "text/plain",
+            "text": "Hello World"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "GET",
+          "url": "https://httpbin.org/anything"
+        }
+      }
+    ]
+  }
+}

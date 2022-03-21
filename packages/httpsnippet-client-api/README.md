@@ -1,6 +1,6 @@
 # httpsnippet-client-api
 
-An HTTP Snippet client for generating snippets for the [api](https://npm.im/api) module.
+An HTTPSnippet client for generating snippets for the [api](https://npm.im/api) module.
 
 [![npm](https://img.shields.io/npm/v/httpsnippet-client-api)](https://npm.im/api) [![Build](https://github.com/readmeio/api/workflows/CI/badge.svg)](https://github.com/readmeio/api)
 
@@ -37,7 +37,7 @@ Results in the following:
 ```js
 const sdk = require('api')('https://example.com/openapi.json');
 
-sdk.get('/har')
+sdk.get('/anything')
   .then(res => console.log(res))
   .catch(err => console.error(err));
 ```

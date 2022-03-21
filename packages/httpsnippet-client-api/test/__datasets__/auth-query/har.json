@@ -1,0 +1,24 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "cookies": [],
+          "httpVersion": "HTTP/1.1",
+          "method": "GET",
+          "queryString": [
+            {
+              "name": "status",
+              "value": "available"
+            },
+            {
+              "name": "apiKey",
+              "value": "a5a220e"
+            }
+          ],
+          "url": "https://httpbin.org/apiKey"
+        }
+      }
+    ]
+  }
+}

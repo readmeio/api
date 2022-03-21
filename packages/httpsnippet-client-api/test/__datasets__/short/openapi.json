@@ -1,0 +1,23 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "short"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/anything": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

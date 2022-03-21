@@ -1,0 +1,22 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "GET",
+          "url": "https://httpbin.org/anything",
+          "headers": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "x-foo",
+              "value": "Bar"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

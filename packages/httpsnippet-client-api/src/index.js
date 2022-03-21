@@ -21,7 +21,7 @@ function buildAuthSnippet(authKey) {
       auth.push(`'${token.replace(/'/g, "\\'")}'`);
     });
 
-    return `sdk.auth(${auth.join(', ')})`;
+    return `sdk.auth(${auth.join(', ')});`;
   }
 
   return `sdk.auth('${authKey.replace(/'/g, "\\'")}');`;
@@ -242,11 +242,11 @@ module.exports = function (source, options) {
   const args = [];
 
   let accessor = method;
-  if ('operationId' in operation.schema && operation.schema.operationId.length > 0) {
-    accessor = operation.schema.operationId;
+  if (operation.hasOperationId()) {
+    accessor = operation.getOperationId({ camelCase: true });
   } else {
-    // Since we're not using an operationId as our primary accessor we need to take the current operation that we're
-    // working with and transpile back our path parameters on top of it.
+    // Since we're not using an operationId as our primary accessor we need to take the current
+    // operation that we're working with and transpile back our path parameters on top of it.
     const slugs = Object.fromEntries(
       Object.keys(operationSlugs).map(slug => [slug.replace(/:(.*)/, '$1'), operationSlugs[slug]])
     );
@@ -254,16 +254,8 @@ module.exports = function (source, options) {
     args.push(`'${decodeURIComponent(oas.replaceUrl(path, slugs))}'`);
   }
 
-  // If the operation or method accessor is non-alphanumeric, we need to add it to the SDK object as an array key.
-  // https://github.com/readmeio/api/issues/119
-  if (accessor.match(/[^a-zA-Z\d\s:]/)) {
-    accessor = `['${accessor}']`;
-  } else {
-    accessor = `.${accessor}`;
-  }
-
-  // If we're going to be rendering out body params and metadata we should cut their character limit in half because
-  // we'll be rendering them in their own lines.
+  // If we're going to be rendering out body params and metadata we should cut their character
+  // limit in half because we'll be rendering them in their own lines.
   const inlineCharacterLimit = typeof body !== 'undefined' && Object.keys(metadata).length > 0 ? 40 : 80;
   if (typeof body !== 'undefined') {
     args.push(stringify(body, { inlineCharacterLimit }));
@@ -282,7 +274,7 @@ module.exports = function (source, options) {
   }
 
   code
-    .push(`sdk${accessor}(${args.join(', ')})`)
+    .push(`sdk.${accessor}(${args.join(', ')})`)
     .push(1, '.then(res => console.log(res))')
     .push(1, '.catch(err => console.error(err));');
 

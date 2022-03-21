@@ -85,7 +85,7 @@ describe('cache', function () {
         .saveUrl()
         .then(() => assert.fail())
         .catch(err => {
-          expect(err.message).to.equal('Unable to retrieve URL. Reason: Not Found');
+          expect(err.message).to.equal('Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found');
         });
 
       mock.done();

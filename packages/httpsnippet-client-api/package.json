@@ -1,13 +1,13 @@
 {
   "name": "httpsnippet-client-api",
   "version": "4.2.0",
-  "description": "An HTTP Snippet client for generating snippets for the api module.",
+  "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
-    "test": "nyc mocha"
+    "test": "nyc mocha \"test/**/*.test.js\""
   },
   "repository": {
     "type": "git",

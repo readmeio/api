@@ -1,0 +1,28 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "https://httpbin.org/anything",
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "multipart/form-data"
+            }
+          ],
+          "postData": {
+            "mimeType": "multipart/form-data",
+            "params": [
+              {
+                "name": "foo",
+                "fileName": "test/fixtures/files/hello.txt",
+                "contentType": "text/plain"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

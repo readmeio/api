@@ -1,0 +1,22 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "https://httpbin.org/anything",
+          "cookies": [
+            {
+              "name": "foo",
+              "value": "bar"
+            },
+            {
+              "name": "bar",
+              "value": "baz"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
