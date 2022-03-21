@@ -31,7 +31,7 @@ export default class SDK {
    * supported by the OpenAPI specification.
    *
    * @example <caption>HTTP Basic auth</caption>
-   * sdk.auth('username', 'password');')
+   * sdk.auth('username', 'password');
    *
    * @example <caption>Bearer tokens (HTTP or OAuth 2)</caption>
    * sdk.auth('myBearerToken');
