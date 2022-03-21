@@ -400,7 +400,8 @@ sdk.server('https://eu.api.example.com/v14');`)
     //
     // None of these accessor overloads will receive a docblock because the original will have
     // that covered.
-    if (Object.keys(parameters).length === 2 && hasOptionalBody && !hasOptionalMetadata) {
+    const shouldAddAltTypedOverloads = Object.keys(parameters).length === 2 && hasOptionalBody && !hasOptionalMetadata;
+    if (shouldAddAltTypedOverloads) {
       // Create an overload that has both `body` and `metadata` parameters as required.
       operationIdAccessor.addOverload({
         typeParameters,
@@ -439,7 +440,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     if (this.methodGenerics.has(operation.method)) {
       // If we created alternate overloads for the operation accessor then we need to do the same
       // for its generic HTTP counterpart.
-      if (Object.keys(parameters).length === 2 && hasOptionalBody && !hasOptionalMetadata) {
+      if (shouldAddAltTypedOverloads) {
         // Create an overload that has both `body` and `metadata` parameters as required.
         this.methodGenerics.get(operation.method).addOverload({
           typeParameters,
