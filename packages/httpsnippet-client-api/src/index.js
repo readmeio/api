@@ -1,4 +1,3 @@
-const { match } = require('path-to-regexp');
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
 const contentType = require('content-type');
@@ -53,7 +52,12 @@ function getAuthSources(operation) {
         if (scheme.in === 'query') {
           matchers.query.push(scheme.name);
         } else if (scheme.in === 'header') {
-          matchers.header[scheme.name] = '*';
+          // The way that this astrisk header matcher works is that since this `apiKey` goes in a
+          // named header (`scheme.name`) because the header is the key, we're matching against the
+          // entire header -- counter to the way that the HTTP basic matcher above works where we
+          // match and extract the API key from everything after `Basic ` in the `Authorization`
+          // header.
+          matchers.header[scheme.name.toLowerCase()] = '*';
         } else if (scheme.in === 'cookie') {
           matchers.cookie.push(scheme.name);
         }
@@ -62,21 +66,6 @@ function getAuthSources(operation) {
   });
 
   return matchers;
-}
-
-function getParamsInPath(operation, path) {
-  const cleanedPath = operation.path.replace(/{(.*?)}/g, ':$1');
-  const matchStatement = match(cleanedPath, { decode: decodeURIComponent });
-  const matchResult = matchStatement(path);
-  const slugs = {};
-
-  if (matchResult && Object.keys(matchResult.params).length) {
-    Object.keys(matchResult.params).forEach(param => {
-      slugs[`${param}`] = matchResult.params[param];
-    });
-  }
-
-  return slugs;
 }
 
 module.exports = function (source, options) {
@@ -109,9 +98,10 @@ module.exports = function (source, options) {
   code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
   code.blank();
 
-  // If we have multiple servers configured and our source URL differs from the stock URL that we receive from our
-  // `oas` library then the URL either has server variables contained in it (that don't match the defaults), or the
-  // OAS offers alternate server URLs and we should expose that in the generated snippet.
+  // If we have multiple servers configured and our source URL differs from the stock URL that we
+  // receive from our `oas` library then the URL either has server variables contained in it (that
+  // don't match the defaults), or the OAS offers alternate server URLs and we should expose that
+  // in the generated snippet.
   const configData = [];
   if ((apiDefinition.servers || []).length > 1) {
     const stockUrl = oas.url();
@@ -139,32 +129,27 @@ module.exports = function (source, options) {
     metadata = Object.assign(metadata, queryParams);
   }
 
-  // If we have path parameters present, we should only add them in if we have an operationId as we don't want metadata
-  // to duplicate what we'll be setting the path in the snippet to.
-  if ('operationId' in operation.schema) {
-    const pathParams = getParamsInPath(operation, operation.path);
-    if (Object.keys(pathParams).length) {
-      Object.keys(pathParams).forEach(param => {
-        if (`:${param}` in operationSlugs) {
-          metadata[param] = operationSlugs[`:${param}`];
-        } else {
-          metadata[param] = pathParams[param];
-        }
-      });
-    }
+  // If we have path parameters present, we should only add them in if we have an `operationId` as
+  // we don't want metadata to duplicate what we'll be setting the path in the snippet to.
+  if (operation.hasOperationId()) {
+    Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
+      // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
+      // we can safely do this substring here without asserting this context.
+      metadata[param.substring(1)] = value;
+    });
   }
 
   if (Object.keys(source.headersObj).length) {
     const headers = source.headersObj;
 
     Object.keys(headers).forEach(header => {
-      // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to make sure we're able
-      // to match them properly.
+      // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to
+      // make sure we're able to match them properly.
       const headerLc = header.toLowerCase();
 
       if (headerLc in authSources.header) {
-        // If this header has been set up as an authentication header, let's remove it and add it into our auth data
-        // so we can build up an `.auth()` snippet for the SDK.
+        // If this header has been set up as an authentication header, let's remove it and add it
+        // into our auth data so we can build up an `.auth()` snippet for the SDK.
         const authScheme = authSources.header[headerLc];
         if (authScheme === '*') {
           authData.push(buildAuthSnippet(headers[header]));
@@ -180,15 +165,16 @@ module.exports = function (source, options) {
 
         delete headers[header];
       } else if (headerLc === 'content-type') {
-        // Content-Type headers are automatically added within the SDK so we can filter them out if they don't have
-        // parameters attached to them.
+        // `Content-Type` headers are automatically added within the SDK so we can filter them out
+        // if they don't have parameters attached to them.
         const parsedContentType = contentType.parse(headers[header]);
         if (!Object.keys(parsedContentType.parameters).length) {
           delete headers[header];
         }
       } else if (headerLc === 'accept') {
-        // If the accept header here is not the default/first accept header for the operations request body, then we
-        // should add it, otherwise just let the SDK handle it itself.
+        // If the `Accept` header here is not the default or first `Accept` header for the
+        // operations' request body then we should add it otherwise we can let the SDK handle it
+        // itself.
         if (headers[header] === operation.getContentType()) {
           delete headers[header];
         }
@@ -216,9 +202,10 @@ module.exports = function (source, options) {
       if (source.postData.params) {
         body = {};
 
-        // If there's a `Content-Type` header present in the metadata, but it's for the form-data
-        // request then dump it off the snippet. We shouldn't offload that unnecessary bloat to the
-        // user, instead letting the SDK handle it automatically.
+        // If there's a `Content-Type` header present in the metadata, but it's for the
+        // `multipart/form-data` request then dump it off the snippet. We shouldn't offload that
+        // unnecessary bloat of multipart boundaries to the user, instead letting the SDK handle it
+        // automatically.
         if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
           delete metadata['content-type'];
         }
