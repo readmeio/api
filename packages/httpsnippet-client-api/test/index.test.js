@@ -111,11 +111,6 @@ describe('httpsnippet-client-api', function () {
   describe('snippets', function () {
     SNIPPETS.forEach(snippet => {
       it(`should generate \`${snippet}\` snippet`, async function () {
-        // Cookies test needs to get built out.
-        if (snippet === 'cookies') {
-          this.skip();
-        }
-
         const [har, definition] = await getSnippetDataset(snippet);
         const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 

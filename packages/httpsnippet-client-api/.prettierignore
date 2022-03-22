@@ -1,2 +1,2 @@
 .nyc_output/
-test/__datasets__/
+test/__datasets__/**/output.js

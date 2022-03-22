@@ -1,5 +1,6 @@
 const sdk = require('api')('https://example.com/openapi.json');
 
-sdk.post('/anything', {bar: 'baz', foo: 'bar'})
+sdk.auth('buster');
+sdk.post('/apiKey')
   .then(res => console.log(res))
   .catch(err => console.error(err));
