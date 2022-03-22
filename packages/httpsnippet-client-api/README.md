@@ -1,6 +1,6 @@
 # httpsnippet-client-api
 
-An HTTP Snippet client for generating snippets for the [api](https://npm.im/api) module.
+An [HTTPSnippet](https://npm.im/httpsnippet) client for generating snippets for the [api](https://npm.im/api) module.
 
 [![npm](https://img.shields.io/npm/v/httpsnippet-client-api)](https://npm.im/api) [![Build](https://github.com/readmeio/api/workflows/CI/badge.svg)](https://github.com/readmeio/api)
 
@@ -21,15 +21,36 @@ const client = require('httpsnippet-client-api');
 
 HTTPSnippet.addTargetClient('node', client);
 
-const snippet = new HTTPSnippet(harObject);
-console.log(
-  snippet.convert('node', 'api', {
-    apiDefinitionUri: 'https://example.com/openapi.json'
-    apiDefinition: {
-      /* an OpenAPI definition object */
-    }
-  })
-);
+const har = {
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "cookies": [],
+          "httpVersion": "HTTP/1.1",
+          "method": "PUT",
+          "headers": [
+            {
+              "name": "X-API-KEY",
+              "value": "a5a220e"
+            }
+          ],
+          "url": "https://httpbin.org/apiKey"
+        }
+      }
+    ]
+  }
+}
+
+const snippet = new HTTPSnippet(har);
+const code = snippet.convert('node', 'api', {
+  apiDefinitionUri: 'https://example.com/openapi.json'
+  apiDefinition: {
+    /* an OpenAPI definition object */
+  }
+});
+
+console.log(code);
 ```
 
 Results in the following:
@@ -37,7 +58,8 @@ Results in the following:
 ```js
 const sdk = require('api')('https://example.com/openapi.json');
 
-sdk.get('/har')
+sdk.auth('a5a220e');
+sdk.put('/apiKey')
   .then(res => console.log(res))
   .catch(err => console.error(err));
 ```

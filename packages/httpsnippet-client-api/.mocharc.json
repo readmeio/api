@@ -1,5 +1,5 @@
 {
-  "watch-files": ["src/**/*.js", "test/**/*.js"],
+  "watch-files": ["src/*.js", "test/**/*.js"],
   "recursive": true,
   "reporter": "spec",
   "timeout": 60000

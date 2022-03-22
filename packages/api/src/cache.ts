@@ -198,7 +198,7 @@ export default class Cache {
     return fetch(url)
       .then(res => {
         if (!res.ok) {
-          throw new Error(`Unable to retrieve URL. Reason: ${res.statusText}`);
+          throw new Error(`Unable to retrieve URL (${url}). Reason: ${res.statusText}`);
         }
 
         if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(url)) {
