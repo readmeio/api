@@ -32,11 +32,11 @@
           ],
           "cookies": [
             {
-              "name": "foo",
+              "name": "foo-cookie",
               "value": "bar"
             },
             {
-              "name": "bar",
+              "name": "bar-cookie",
               "value": "baz"
             }
           ],

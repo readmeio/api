@@ -1,0 +1,16 @@
+{
+  "log": {
+    "entries": [
+      {
+        "request": {
+          "cookies": [
+            { "name": "api_key", "value": "buster" }
+          ],
+          "httpVersion": "HTTP/1.1",
+          "method": "POST",
+          "url": "https://httpbin.org/apiKey"
+        }
+      }
+    ]
+  }
+}

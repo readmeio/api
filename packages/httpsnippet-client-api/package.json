@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
-    "test": "nyc mocha \"test/**/*.test.js\""
+    "test": "nyc mocha \"test/**/*.test.js\"",
+    "test:watch": "nyc mocha \"test/**/*.test.js\" --watch"
   },
   "repository": {
     "type": "git",

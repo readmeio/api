@@ -115,19 +115,31 @@ module.exports = function (source, options) {
   }
 
   let metadata = {};
-  if (Object.keys(source.queryObj).length) {
-    const queryParams = source.queryObj;
+  Object.keys(source.queryObj).forEach(param => {
+    if (authSources.query.includes(param)) {
+      authData.push(buildAuthSnippet(source.queryObj[param]));
 
-    Object.keys(queryParams).forEach(param => {
-      if (authSources.query.includes(param)) {
-        authData.push(buildAuthSnippet(queryParams[param]));
+      // If this query param is part of an auth source then we don't want it doubled up in the
+      // snippet.
+      return;
+    }
 
-        delete queryParams[param];
-      }
-    });
+    metadata[param] = source.queryObj[param];
+  });
 
-    metadata = Object.assign(metadata, queryParams);
-  }
+  Object.keys(source.cookiesObj).forEach(cookie => {
+    if (authSources.cookie.includes(cookie)) {
+      authData.push(buildAuthSnippet(source.cookiesObj[cookie]));
+
+      // If this cookie is part of an auth source then we don't want it doubled up.
+      return;
+    }
+
+    // Note that we may have the potential to overlap any cookie that also shares the name as
+    // another metadata parameter. This problem is currently inherent to `api` and not this
+    // snippet generator.
+    metadata[cookie] = source.cookiesObj[cookie];
+  });
 
   // If we have path parameters present, we should only add them in if we have an `operationId` as
   // we don't want metadata to duplicate what we'll be setting the path in the snippet to.
