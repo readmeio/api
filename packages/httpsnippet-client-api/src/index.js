@@ -52,7 +52,7 @@ function getAuthSources(operation) {
         if (scheme.in === 'query') {
           matchers.query.push(scheme.name);
         } else if (scheme.in === 'header') {
-          // The way that this astrisk header matcher works is that since this `apiKey` goes in a
+          // The way that this asterisk header matcher works is that since this `apiKey` goes in a
           // named header (`scheme.name`) because the header is the key, we're matching against the
           // entire header -- counter to the way that the HTTP basic matcher above works where we
           // match and extract the API key from everything after `Basic ` in the `Authorization`
