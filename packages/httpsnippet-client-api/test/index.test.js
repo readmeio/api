@@ -117,7 +117,7 @@ describe('httpsnippet-client-api', function () {
         }
 
         const [har, definition] = await getSnippetDataset(snippet);
-        const expected = await fs.readFile(path.join(__dirname, `./__datasets__/${snippet}/output.js`), 'utf-8');
+        const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
         const code = new HTTPSnippet(har).convert('node', 'api', {
           apiDefinitionUri: 'https://example.com/openapi.json',
