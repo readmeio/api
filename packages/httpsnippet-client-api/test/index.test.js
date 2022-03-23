@@ -1,42 +1,64 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable mocha/no-setup-in-describe */
+const chai = require('chai');
 const { expect } = require('chai');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+const vm = require('vm');
+const rimraf = require('rimraf');
 const fs = require('fs/promises');
 const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
+const nock = require('nock');
 const client = require('../src');
 const readme = require('@readme/oas-examples/3.0/json/readme.json');
+
+chai.use(sinonChai);
 
 const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = require('fs').readdirSync(DATASETS_DIR);
 
 async function getSnippetDataset(snippet) {
+  const SNIPPET_DIR = path.join(DATASETS_DIR, snippet);
+
   const har = await fs
-    .stat(path.join(DATASETS_DIR, snippet, 'har.json'))
-    .then(() => require(path.join(DATASETS_DIR, snippet, 'har.json')))
+    .stat(path.join(SNIPPET_DIR, 'har.json'))
+    .then(() => require(path.join(SNIPPET_DIR, 'har.json')))
     .catch(() => {
       return fs
-        .stat(path.join(DATASETS_DIR, snippet, 'har.js'))
-        .then(() => require(path.join(DATASETS_DIR, snippet, 'har.js')))
+        .stat(path.join(SNIPPET_DIR, 'har.js'))
+        .then(() => require(path.join(SNIPPET_DIR, 'har.js')))
         .catch(() => {
           throw new Error(`The ${snippet} dataset has neither a "har.js" or "har.json" present.`);
         });
     });
 
   const definition = await fs
-    .stat(path.join(DATASETS_DIR, snippet, 'openapi.json'))
-    .then(() => require(path.join(DATASETS_DIR, snippet, 'openapi.json')))
+    .stat(path.join(SNIPPET_DIR, 'openapi.json'))
+    .then(() => require(path.join(SNIPPET_DIR, 'openapi.json')))
     .catch(() => {
       return fs
-        .stat(path.join(DATASETS_DIR, snippet, 'openapi.js'))
-        .then(() => require(path.join(DATASETS_DIR, snippet, 'openapi.js')))
+        .stat(path.join(SNIPPET_DIR, 'openapi.js'))
+        .then(() => require(path.join(SNIPPET_DIR, 'openapi.js')))
         .catch(() => {
           throw new Error(`The ${snippet} dataset has neither a "openapi.js" or "openapi.json" present.`);
         });
     });
 
-  return [har, definition];
+  const mock = await fs
+    .stat(path.join(SNIPPET_DIR, 'mock.json'))
+    .then(() => require(path.join(SNIPPET_DIR, 'mock.json')))
+    .catch(() => {
+      return fs
+        .stat(path.join(SNIPPET_DIR, 'mock.js'))
+        .then(() => require(path.join(SNIPPET_DIR, 'mock.js')))
+        .catch(() => {
+          throw new Error(`The ${snippet} dataset has neither a "mock.js" or "mock.json" present.`);
+        });
+    });
+
+  return [har, definition, mock];
 }
 
 describe('httpsnippet-client-api', function () {
@@ -110,16 +132,109 @@ describe('httpsnippet-client-api', function () {
 
   describe('snippets', function () {
     SNIPPETS.forEach(snippet => {
-      it(`should generate \`${snippet}\` snippet`, async function () {
-        const [har, definition] = await getSnippetDataset(snippet);
-        const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
+      if (snippet !== 'short') return;
 
-        const code = new HTTPSnippet(har).convert('node', 'api', {
-          apiDefinitionUri: 'https://example.com/openapi.json',
-          apiDefinition: definition,
+      describe(snippet, function () {
+        let consoleStub;
+
+        beforeEach(function () {
+          try {
+            // Since we're doing integration testing with these snippets against the real `api`
+            // library we should clear out the cache that it creates so our tests will run in a
+            // cleanroom environment.
+            rimraf.sync(path.join(__dirname, '../node_modules/.cache/api'));
+          } catch (err) {
+            // If we couldn't delete the `api` specs cache then it probably doesn't exist yet.
+          }
+
+          consoleStub = sinon.stub(console, 'log');
         });
 
-        expect(`${code}\n`).to.equal(expected);
+        afterEach(function () {
+          consoleStub.restore();
+        });
+
+        it('should generate the expected snippet', async function () {
+          const [har, definition] = await getSnippetDataset(snippet);
+          const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
+
+          const code = new HTTPSnippet(har).convert('node', 'api', {
+            apiDefinitionUri: 'https://example.com/openapi.json',
+            apiDefinition: definition,
+          });
+
+          expect(`${code}\n`).to.equal(expected);
+        });
+
+        it.only('should generate a functional snippet', async function () {
+          const [, definition, mock] = await getSnippetDataset(snippet);
+          const nocks = nock.define([
+            {
+              scope: 'https://example.com',
+              method: 'GET',
+              path: `/openapi-${snippet}.json`,
+              status: 200,
+              response: definition,
+            },
+            {
+              ...mock,
+              response: `The ${snippet} request works properly!`,
+            },
+          ]);
+
+          const code = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8').then(str => {
+            // So we can test these snippets within a Node VM environment we need to remove the api
+            // require statement off (as we'll be handling that ourselves), and also set up the
+            // promise within the snippet to be returned so that we can containerize it within
+            // another promise.
+            const lines = str.split('\n').slice(2);
+
+            // If the first non-require statement in our snippet is an `sdk.auth()` call then we
+            // should add our `return` statement to the following.
+            if (lines[0].includes('.auth(')) {
+              lines[1] = `return ${lines[1]}`;
+            } else {
+              lines[0] = `return ${lines[0]}`;
+            }
+
+            return lines.join('\n');
+          });
+
+          await new Promise((resolve, reject) => {
+            const sandbox = {
+              sdk: require('api')(`https://example.com/openapi-${snippet}.json`),
+
+              // So we can access logged data from our snippets within the VM we need to set the
+              // global `console` object within it to our current one so that the stub we're
+              // creating above will have visibility into what the VM is doing.
+              console,
+
+              // So we can await for responses from the async snippets we've got in the VM we need
+              // to set some global `resolve` and `reject` methods inside the VM to the current
+              // of the same in this Promise so that when they're called from within the context of
+              // the VM environment the this Promise will also be resolved/rejected.
+              // https://stackoverflow.com/a/60216761
+              resolve,
+              reject,
+            };
+
+            const vmCode = `Promise.resolve().then(() => {
+              ${code}
+            }).then(res => {
+              resolve();
+            }).catch(err => {
+              reject(err.message);
+            })`;
+
+            const script = new vm.Script(vmCode);
+            const context = vm.createContext(sandbox);
+            script.runInContext(context);
+          });
+
+          expect(consoleStub).to.be.calledWith(`The ${snippet} request works properly!`);
+
+          nocks.forEach(n => n.done());
+        });
       });
     });
   });
