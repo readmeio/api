@@ -67,9 +67,9 @@ describe('api', function () {
         'head',
         'patch',
         'trace',
-        'list-data-sets',
-        'list-searchable-fields',
-        'perform-search',
+        'listDataSets',
+        'listSearchableFields',
+        'performSearch',
       ]);
 
       // Calling the same method again should also work as expected.
@@ -101,6 +101,16 @@ describe('api', function () {
 
       it('should work with operationIds that have contain spaces', function () {
         expect(petstoreSdk['find pet by id']).to.be.a('function');
+      });
+
+      it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {
+        const petstore = await import('@readme/oas-examples/3.0/json/petstore-expanded.json');
+
+        // `GET /pets/{id}` in this petstore SDK has an operationID of `find pet by id` but the
+        // `camelCase` option on `Operation.getOperationId()` should transform it into
+        // `findPetById`.
+        expect(petstore.paths['/pets/{id}'].get.operationId).to.equal('find pet by id');
+        expect(petstoreSdk.findPetById).to.be.a('function');
       });
 
       it('should work for other methods', async function () {
