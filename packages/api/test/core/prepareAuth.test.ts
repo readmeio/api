@@ -49,6 +49,26 @@ describe('#prepareAuth()', function () {
         }).to.throw(/only a single key is needed/i);
       });
     });
+
+    describe('in: cookie', function () {
+      it('should support cookie auth', function () {
+        const operation = oas.operation('/apiKey', 'post');
+        const authKeys = [[apiKey]];
+
+        expect(prepareAuth(authKeys, operation)).to.deep.equal({
+          apiKey_cookie: '123457890',
+        });
+      });
+
+      it('should throw if you supply multiple auth keys', function () {
+        const operation = oas.operation('/apiKey', 'post');
+        const authKeys = [[apiKey, apiKey]];
+
+        expect(() => {
+          prepareAuth(authKeys, operation);
+        }).to.throw(/only a single key is needed/i);
+      });
+    });
   });
 
   describe('HTTP', function () {

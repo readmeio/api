@@ -72,7 +72,7 @@ export default function prepareAuth(authKeys: (number | string)[][], operation: 
           );
         }
 
-        if (scheme.in === 'query' || scheme.in === 'header') {
+        if (scheme.in === 'query' || scheme.in === 'header' || scheme.in === 'cookie') {
           preparedAuth[scheme._key] = authKey[0];
         }
         break;
