@@ -1,4 +1,4 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/full.json');
 
 sdk.post('/anything', {foo: 'bar'}, {
   foo: ['bar', 'baz'],

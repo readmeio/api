@@ -11,6 +11,7 @@ const fs = require('fs/promises');
 const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
 const nock = require('nock');
+const openapiParser = require('@readme/openapi-parser');
 const client = require('../src');
 const readme = require('@readme/oas-examples/3.0/json/readme.json');
 
@@ -99,7 +100,7 @@ describe('httpsnippet-client-api', function () {
 
     expect(() => {
       snippet.convert('node', 'api', {
-        apiDefinitionUri: 'https://example.com/openapi.json',
+        apiDefinitionUri: 'https://api.example.com/openapi.json',
       });
     }).to.throw(/must have an `apiDefinition` option supplied/);
   });
@@ -124,7 +125,7 @@ describe('httpsnippet-client-api', function () {
 
     expect(() => {
       snippet.convert('node', 'api', {
-        apiDefinitionUri: 'https://example.com/openapi.json',
+        apiDefinitionUri: 'https://api.example.com/openapi.json',
         apiDefinition: readme,
       });
     }).to.throw(/unable to locate a matching operation/i);
@@ -133,9 +134,12 @@ describe('httpsnippet-client-api', function () {
   describe('snippets', function () {
     SNIPPETS.forEach(snippet => {
       describe(snippet, function () {
+        let har;
+        let definition;
+        let mock;
         let consoleStub;
 
-        beforeEach(function () {
+        beforeEach(async function () {
           try {
             // Since we're doing integration testing with these snippets against the real `api`
             // library we should clear out the cache that it creates so our tests will run in a
@@ -146,6 +150,13 @@ describe('httpsnippet-client-api', function () {
           }
 
           consoleStub = sinon.stub(console, 'log');
+
+          [har, definition, mock] = await getSnippetDataset(snippet);
+
+          // `OpenAPIParser.validate()` updates the spec that's passed and we just want to validate
+          // it here so we need to clone the object.
+          const spec = JSON.parse(JSON.stringify(definition));
+          await openapiParser.validate(spec);
         });
 
         afterEach(function () {
@@ -153,11 +164,10 @@ describe('httpsnippet-client-api', function () {
         });
 
         it('should generate the expected snippet', async function () {
-          const [har, definition] = await getSnippetDataset(snippet);
           const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
           const code = new HTTPSnippet(har).convert('node', 'api', {
-            apiDefinitionUri: 'https://example.com/openapi.json',
+            apiDefinitionUri: `https://api.example.com/${snippet}.json`,
             apiDefinition: definition,
           });
 
@@ -165,12 +175,11 @@ describe('httpsnippet-client-api', function () {
         });
 
         it('should generate a functional snippet', async function () {
-          const [, definition, mock] = await getSnippetDataset(snippet);
           const nocks = nock.define([
             {
-              scope: 'https://example.com',
+              scope: 'https://api.example.com',
               method: 'GET',
-              path: `/openapi-${snippet}.json`,
+              path: `/${snippet}.json`,
               status: 200,
               response: definition,
             },
@@ -199,7 +208,7 @@ describe('httpsnippet-client-api', function () {
 
           await new Promise((resolve, reject) => {
             const sandbox = {
-              sdk: require('api')(`https://example.com/openapi-${snippet}.json`),
+              sdk: require('api')(`https://api.example.com/${snippet}.json`),
 
               // So we can access logged data from our snippets within the VM we need to set the
               // global `console` object within it to our current one so that the stub we're

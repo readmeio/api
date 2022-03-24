@@ -44,7 +44,7 @@ const har = {
 
 const snippet = new HTTPSnippet(har);
 const code = snippet.convert('node', 'api', {
-  apiDefinitionUri: 'https://example.com/openapi.json'
+  apiDefinitionUri: 'https://api.example.com/openapi.json'
   apiDefinition: {
     /* an OpenAPI definition object */
   }
@@ -56,7 +56,7 @@ console.log(code);
 Results in the following:
 
 ```js
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/openapi.json');
 
 sdk.auth('a5a220e');
 sdk.put('/apiKey')

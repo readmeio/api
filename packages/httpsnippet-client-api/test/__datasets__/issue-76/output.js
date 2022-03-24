@@ -1,4 +1,4 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/issue-76.json');
 
 sdk.auth('a5a220e');
 sdk.get('/pet/findByStatus', {status: 'available'})
