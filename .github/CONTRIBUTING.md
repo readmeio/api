@@ -179,7 +179,7 @@ When this is run `nock` will dump out a record of what happened:
 }
 ```
 
-Now all you have to do is take the data within the `<<<<<<-- cut here -->>>>>>` block and slim it down to just what you need for your API mock (you can always skip `response`):
+Now all you have to do is take the data within the `<<<<<<-- cut here -->>>>>>` block and slim it down to only what you need for your API mock (you can always skip `response`):
 
 ```json
 {
@@ -194,7 +194,7 @@ Some things you should be aware of:
 
 * You can leave `response` out of `mock.json` as our test suite automatically mocks out a `response` to use so we can assert that what we mocked as a response was what we got.
 * If your API doesn't have a request body you can leave `body` off.
-* If your API request doesn't use any special headers (`Authentication`, special `Content-Type`s), then you can generally leave `reqheaders` off.
+* If your API request doesn't use any unique headers (eg. `Authentication` or `Content-Type`), then you can generally leave `reqheaders` off.
 * `status` should always be 200.
 * If you're testing something like `multpart/form-data` requests and need to regex a boundary you can rename `mock.json` to `mock.js` and add your regex in. See the `multipart-*` test for examples of this.
 
