@@ -26,7 +26,7 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single key is needed/i);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
       });
     });
 
@@ -46,7 +46,7 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single key is needed/i);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
       });
     });
 
@@ -66,7 +66,7 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single key is needed/i);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
       });
     });
   });
@@ -119,7 +119,9 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single token is needed/i);
+        }).to.throw(
+          'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
+        );
       });
     });
   });
@@ -142,7 +144,9 @@ describe('#prepareAuth()', function () {
 
       expect(() => {
         prepareAuth(authKeys, operation);
-      }).to.throw(/only a single token is needed/i);
+      }).to.throw(
+        'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
+      );
     });
   });
 });

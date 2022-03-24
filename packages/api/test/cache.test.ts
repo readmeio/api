@@ -230,7 +230,7 @@ describe('cache', function () {
 
       expect(() => {
         return cacheStore.get();
-      }).to.throw(/has not been cached yet/);
+      }).to.throw(`${file} has not been cached yet and must do so before being retrieved.`);
     });
   });
 });
