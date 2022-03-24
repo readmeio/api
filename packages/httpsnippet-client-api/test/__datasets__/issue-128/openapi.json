@@ -6,11 +6,11 @@
   },
   "servers": [
     {
-      "url": "http://example.com"
+      "url": "https://httpbin.org"
     }
   ],
   "paths": {
-    "/": {
+    "/anything": {
       "get": {
         "operationId": "getItem",
         "responses": {

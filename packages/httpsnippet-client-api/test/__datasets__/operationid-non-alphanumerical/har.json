@@ -12,12 +12,6 @@
           ],
           "httpVersion": "HTTP/1.1",
           "method": "GET",
-          "postData": {
-            "jsonObj": false,
-            "mimeType": "application/octet-stream",
-            "paramsObj": false,
-            "size": 0
-          },
           "queryString": [
             {
               "name": "status",

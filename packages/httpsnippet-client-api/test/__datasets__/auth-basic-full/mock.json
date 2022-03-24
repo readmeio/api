@@ -1,0 +1,9 @@
+{
+  "scope": "https://dash.readme.com",
+  "method": "GET",
+  "path": "/api/v1/api-specification?perPage=10&page=1",
+  "status": 200,
+  "reqheaders": {
+    "authorization": ["Basic YnVzdGVyOnB1Zw=="]
+  }
+}

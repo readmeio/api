@@ -1,0 +1,11 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "POST",
+  "path": "/anything?key=value&foo=bar&foo=baz&baz=abc",
+  "body": "foo=bar&accept=application%2Fjson",
+  "status": 200,
+  "reqheaders": {
+    "content-type": ["application/x-www-form-urlencoded"],
+    "cookie": ["bar-cookie=baz; foo-cookie=bar"]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "GET",
+  "path": "/anything?api_key=authKey%27With%27Apostrophes",
+  "status": 200
+}

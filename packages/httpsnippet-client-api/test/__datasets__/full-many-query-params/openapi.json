@@ -36,6 +36,20 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "in": "cookie",
+            "name": "bar-cookie",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "cookie",
+            "name": "foo-cookie",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {

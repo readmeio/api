@@ -1,0 +1,9 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "POST",
+  "path": "/bearer",
+  "status": 200,
+  "reqheaders": {
+    "authorization": ["Bearer myBearerToken"]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "POST",
+  "path": "/anything",
+  "status": 200,
+  "reqheaders": {
+    "content-type": [
+      "multipart/form-data"
+    ]
+  }
+}

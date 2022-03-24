@@ -6,6 +6,10 @@
 
 For our general commit conventions please consult our organization contributing guidelines [here](https://github.com/readmeio/.github/blob/main/.github/CONTRIBUTING.md).
 
+## Help
+
+If you need help don't be afraid to open up an issue!
+
 ## Packages
 ### `httpsnippet-client-api` snippet
 

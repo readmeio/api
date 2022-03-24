@@ -1,0 +1,6 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "GET",
+  "path": "/anything?key=value&foo=bar&foo=baz&baz=abc",
+  "status": 200
+}

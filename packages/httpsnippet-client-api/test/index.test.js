@@ -132,8 +132,6 @@ describe('httpsnippet-client-api', function () {
 
   describe('snippets', function () {
     SNIPPETS.forEach(snippet => {
-      if (snippet !== 'short') return;
-
       describe(snippet, function () {
         let consoleStub;
 
@@ -166,7 +164,7 @@ describe('httpsnippet-client-api', function () {
           expect(`${code}\n`).to.equal(expected);
         });
 
-        it.only('should generate a functional snippet', async function () {
+        it('should generate a functional snippet', async function () {
           const [, definition, mock] = await getSnippetDataset(snippet);
           const nocks = nock.define([
             {
@@ -176,10 +174,7 @@ describe('httpsnippet-client-api', function () {
               status: 200,
               response: definition,
             },
-            {
-              ...mock,
-              response: `The ${snippet} request works properly!`,
-            },
+            { ...mock, response: `The ${snippet} request works properly!` },
           ]);
 
           const code = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8').then(str => {
@@ -189,9 +184,11 @@ describe('httpsnippet-client-api', function () {
             // another promise.
             const lines = str.split('\n').slice(2);
 
-            // If the first non-require statement in our snippet is an `sdk.auth()` call then we
-            // should add our `return` statement to the following.
-            if (lines[0].includes('.auth(')) {
+            // If the first non-require statement in our snippet is an `sdk.auth()` or
+            // `sdk.server()` call then we should add our `return` statement to the following. We
+            // currently don't have any tests that test both auth and alternate servers so we don't
+            // need to worry about that.
+            if (lines[0].startsWith('sdk.auth(') || lines[0].startsWith('sdk.server')) {
               lines[1] = `return ${lines[1]}`;
             } else {
               lines[0] = `return ${lines[0]}`;

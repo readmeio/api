@@ -1,0 +1,6 @@
+{
+  "scope": "https://petstore.swagger.io",
+  "method": "GET",
+  "path": "/v2/store/order/1234",
+  "status": 200
+}

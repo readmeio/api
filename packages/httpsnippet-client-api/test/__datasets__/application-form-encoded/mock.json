@@ -1,0 +1,10 @@
+{
+  "scope": "http://httpbin.org:80",
+  "method": "POST",
+  "path": "/anything",
+  "body": "foo=bar&hello=world",
+  "status": 200,
+  "reqheaders": {
+    "content-type": ["application/x-www-form-urlencoded"]
+  }
+}
