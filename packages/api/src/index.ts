@@ -59,14 +59,16 @@ class Sdk {
       return Object.entries(spec.getPaths())
         .map(([, operations]) => Object.values(operations))
         .reduce((prev, next) => prev.concat(next), [])
-        .filter(operation => {
-          // `getOperationId()` creates dynamic operation IDs when one isn't available but we need
-          // to know here if we actually have one present or not.
-          return operation.hasOperationId() ? operation.getOperationId() : false;
-        })
+        .filter(operation => operation.hasOperationId())
         .reduce((prev, next) => {
+          // `getOperationId()` creates dynamic operation IDs when one isn't available but we need
+          // to know here if we actually have one present or not. The `camelCase` option here also
+          // cleans up any `operationId` that we might have into something that can be used as a
+          // valid JS method.
+          const operationId = next.getOperationId({ camelCase: true });
+
           return Object.assign(prev, {
-            [next.getOperationId()]: ((operation: Operation, ...args: unknown[]) => {
+            [operationId]: ((operation: Operation, ...args: unknown[]) => {
               return core.fetchOperation(operation, ...args);
             }).bind(null, next),
           });

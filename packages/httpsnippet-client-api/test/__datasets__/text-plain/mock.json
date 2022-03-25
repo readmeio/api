@@ -1,0 +1,12 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "POST",
+  "path": "/anything",
+  "body": "Hello World",
+  "status": 200,
+  "reqheaders": {
+    "content-type": [
+      "text/plain"
+    ]
+  }
+}

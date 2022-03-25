@@ -1,5 +1,5 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/issue-78-operationid.json');
 
-sdk.getOrder({orderId: '1234', Accept: 'application/xml'})
+sdk.getOrder({orderId: '1234'})
   .then(res => console.log(res))
   .catch(err => console.error(err));

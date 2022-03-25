@@ -1,0 +1,9 @@
+{
+  "scope": "https://httpbin.org",
+  "method": "GET",
+  "path": "/anything",
+  "status": 200,
+  "reqheaders": {
+    "x-foo": ["Bar"]
+  }
+}

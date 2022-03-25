@@ -34,11 +34,16 @@
   "devDependencies": {
     "@readme/eslint-config": "^8.5.0",
     "@readme/oas-examples": "^4.5.0",
+    "@readme/openapi-parser": "^2.0.4",
+    "api": "file:../api",
     "chai": "^4.3.6",
     "eslint": "^8.10.0",
     "mocha": "^9.2.1",
+    "nock": "^13.2.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "sinon": "^13.0.1",
+    "sinon-chai": "^3.7.0"
   },
   "prettier": "@readme/eslint-config/prettier"
 }

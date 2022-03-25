@@ -1,6 +1,6 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/issue-76.json');
 
 sdk.auth('a5a220e');
-sdk.get('/pet/findByStatus', {status: 'available', Accept: 'application/xml'})
+sdk.get('/pet/findByStatus', {status: 'available'})
   .then(res => console.log(res))
   .catch(err => console.error(err));

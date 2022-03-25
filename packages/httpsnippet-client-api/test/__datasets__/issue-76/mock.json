@@ -1,0 +1,6 @@
+{
+  "scope": "https://petstore.swagger.io",
+  "method": "GET",
+  "path": "/v2/pet/findByStatus?status=available&api_key=a5a220e",
+  "status": 200
+}

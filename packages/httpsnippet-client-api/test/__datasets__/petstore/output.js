@@ -1,4 +1,4 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/petstore.json');
 
 sdk.auth('123');
 sdk.findPetsByStatus({status: 'available', Accept: 'application/xml'})

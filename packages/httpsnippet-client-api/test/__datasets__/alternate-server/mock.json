@@ -1,0 +1,10 @@
+{
+  "scope": "http://dev.local",
+  "method": "POST",
+  "path": "/v2/create/1234",
+  "body": "foo=bar&hello=world",
+  "status": 200,
+  "reqheaders": {
+    "content-type": ["application/x-www-form-urlencoded"]
+  }
+}

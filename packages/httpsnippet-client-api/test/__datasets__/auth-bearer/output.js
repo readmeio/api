@@ -1,4 +1,4 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/auth-bearer.json');
 
 sdk.auth('myBearerToken');
 sdk.post('/bearer')

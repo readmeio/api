@@ -8,10 +8,6 @@
           "method": "GET",
           "queryString": [
             {
-              "name": "status",
-              "value": "available"
-            },
-            {
               "name": "apiKey",
               "value": "a5a220e"
             }

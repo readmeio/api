@@ -26,7 +26,7 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single key is needed/i);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
       });
     });
 
@@ -46,7 +46,27 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single key is needed/i);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
+      });
+    });
+
+    describe('in: cookie', function () {
+      it('should support cookie auth', function () {
+        const operation = oas.operation('/apiKey', 'post');
+        const authKeys = [[apiKey]];
+
+        expect(prepareAuth(authKeys, operation)).to.deep.equal({
+          apiKey_cookie: '123457890',
+        });
+      });
+
+      it('should throw if you supply multiple auth keys', function () {
+        const operation = oas.operation('/apiKey', 'post');
+        const authKeys = [[apiKey, apiKey]];
+
+        expect(() => {
+          prepareAuth(authKeys, operation);
+        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
       });
     });
   });
@@ -99,7 +119,9 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(/only a single token is needed/i);
+        }).to.throw(
+          'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
+        );
       });
     });
   });
@@ -122,7 +144,9 @@ describe('#prepareAuth()', function () {
 
       expect(() => {
         prepareAuth(authKeys, operation);
-      }).to.throw(/only a single token is needed/i);
+      }).to.throw(
+        'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
+      );
     });
   });
 });

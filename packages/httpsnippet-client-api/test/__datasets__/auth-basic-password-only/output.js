@@ -1,4 +1,4 @@
-const sdk = require('api')('https://example.com/openapi.json');
+const sdk = require('api')('https://api.example.com/auth-basic-password-only.json');
 
 sdk.auth('', 'pug');
 sdk.getAPISpecification({perPage: '10', page: '1'})
