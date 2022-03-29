@@ -1,6 +1,6 @@
 {
   "scope": "https://httpbin.org",
   "method": "GET",
-  "path": "/apiKey?apiKey=a5a220e",
+  "path": "/anything/apiKey?apiKey=a5a220e",
   "status": 200
 }

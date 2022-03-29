@@ -33,17 +33,17 @@ describe('#auth()', function () {
       ].forEach(([_, isChained]) => {
         it(`${_}`, async function () {
           const mock = nock('https://httpbin.org')
-            .get(/\/apiKey/)
+            .get(/\/anything\/apiKey/)
             .reply(200, uri => uri);
 
           if (isChained) {
-            expect(await sdk.auth(apiKey).get('/apiKey')).to.equal('/apiKey?apiKey=123457890');
+            expect(await sdk.auth(apiKey).get('/anything/apiKey')).to.equal('/anything/apiKey?apiKey=123457890');
             mock.done();
             return;
           }
 
           sdk.auth(apiKey);
-          expect(await sdk.get('/apiKey')).to.equal('/apiKey?apiKey=123457890');
+          expect(await sdk.get('/anything/apiKey')).to.equal('/anything/apiKey?apiKey=123457890');
           mock.done();
         });
       });
@@ -51,7 +51,7 @@ describe('#auth()', function () {
       it('should throw if you supply multiple auth keys', async function () {
         await sdk
           .auth(apiKey, apiKey)
-          .get('/apiKey')
+          .get('/anything/apiKey')
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single key is needed/i);
@@ -66,26 +66,26 @@ describe('#auth()', function () {
       ].forEach(([_, isChained]) => {
         it(`${_}`, async function () {
           const mock = nock('https://httpbin.org')
-            .put('/apiKey')
+            .put('/anything/apiKey')
             .reply(200, function () {
               return this.req.headers;
             });
 
           if (isChained) {
-            expect(await sdk.auth(apiKey).put('/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
+            expect(await sdk.auth(apiKey).put('/anything/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
             mock.done();
             return;
           }
 
           sdk.auth(apiKey);
-          expect(await sdk.put('/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
+          expect(await sdk.put('/anything/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
         });
       });
 
       it('should throw if you supply multiple auth keys', async function () {
         await sdk
           .auth(apiKey, apiKey)
-          .put('/apiKey')
+          .put('/anything/apiKey')
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single key is needed/i);
@@ -103,31 +103,33 @@ describe('#auth()', function () {
         it(`${_}`, async function () {
           const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
           const mock = nock('https://httpbin.org')
-            .post('/basic')
+            .post('/anything/basic')
             .reply(200, function () {
               return this.req.headers;
             });
 
           if (isChained) {
-            expect(await sdk.auth(user, pass).post('/basic')).to.have.deep.property('authorization', [authHeader]);
+            expect(await sdk.auth(user, pass).post('/anything/basic')).to.have.deep.property('authorization', [
+              authHeader,
+            ]);
             mock.done();
             return;
           }
 
           sdk.auth(user, pass);
-          expect(await sdk.post('/basic')).to.have.deep.property('authorization', [authHeader]);
+          expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', [authHeader]);
           mock.done();
         });
       });
 
       it('should allow you to not pass in a password', async function () {
         const mock = nock('https://httpbin.org')
-          .post('/basic')
+          .post('/anything/basic')
           .reply(200, function () {
             return this.req.headers;
           });
 
-        expect(await sdk.auth(user).post('/basic')).to.have.deep.property('authorization', [
+        expect(await sdk.auth(user).post('/anything/basic')).to.have.deep.property('authorization', [
           `Basic ${Buffer.from(`${user}:`).toString('base64')}`,
         ]);
         mock.done();
@@ -141,19 +143,21 @@ describe('#auth()', function () {
       ].forEach(([_, isChained]) => {
         it(`${_}`, async function () {
           const mock = nock('https://httpbin.org')
-            .post('/bearer')
+            .post('/anything/bearer')
             .reply(200, function () {
               return this.req.headers;
             });
 
           if (isChained) {
-            expect(await sdk.auth(apiKey).post('/bearer')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
+            expect(await sdk.auth(apiKey).post('/anything/bearer')).to.have.deep.property('authorization', [
+              `Bearer ${apiKey}`,
+            ]);
             mock.done();
             return;
           }
 
           sdk.auth(apiKey);
-          expect(await sdk.post('/bearer')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
+          expect(await sdk.post('/anything/bearer')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
           mock.done();
         });
       });
@@ -161,7 +165,7 @@ describe('#auth()', function () {
       it('should throw if you pass in multiple bearer tokens', async function () {
         await sdk
           .auth(apiKey, apiKey)
-          .post('/bearer')
+          .post('/anything/bearer')
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single token is needed/i);
@@ -177,19 +181,21 @@ describe('#auth()', function () {
     ].forEach(([_, isChained]) => {
       it(`${_}`, async function () {
         const mock = nock('https://httpbin.org')
-          .post('/oauth2')
+          .post('/anything/oauth2')
           .reply(200, function () {
             return this.req.headers;
           });
 
         if (isChained) {
-          expect(await sdk.auth(apiKey).post('/oauth2')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
+          expect(await sdk.auth(apiKey).post('/anything/oauth2')).to.have.deep.property('authorization', [
+            `Bearer ${apiKey}`,
+          ]);
           mock.done();
           return;
         }
 
         sdk.auth(apiKey);
-        expect(await sdk.post('/oauth2')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
+        expect(await sdk.post('/anything/oauth2')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
         mock.done();
       });
     });
@@ -197,7 +203,7 @@ describe('#auth()', function () {
     it('should throw if you pass in multiple bearer tokens', async function () {
       await sdk
         .auth(apiKey, apiKey)
-        .post('/oauth2')
+        .post('/anything/oauth2')
         .then(() => assert.fail())
         .catch(err => {
           expect(err.message).to.match(/only a single token is needed/i);

@@ -12,7 +12,7 @@ describe('#prepareAuth()', function () {
 
     describe('in: query', function () {
       it('should support query auth', function () {
-        const operation = oas.operation('/apiKey', 'get');
+        const operation = oas.operation('/anything/apiKey', 'get');
         const authKeys = [[apiKey]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -21,7 +21,7 @@ describe('#prepareAuth()', function () {
       });
 
       it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/apiKey', 'get');
+        const operation = oas.operation('/anything/apiKey', 'get');
         const authKeys = [[apiKey, apiKey]];
 
         expect(() => {
@@ -32,7 +32,7 @@ describe('#prepareAuth()', function () {
 
     describe('in: header', function () {
       it('should support header auth', function () {
-        const operation = oas.operation('/apiKey', 'put');
+        const operation = oas.operation('/anything/apiKey', 'put');
         const authKeys = [[apiKey]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -41,7 +41,7 @@ describe('#prepareAuth()', function () {
       });
 
       it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/apiKey', 'put');
+        const operation = oas.operation('/anything/apiKey', 'put');
         const authKeys = [[apiKey, apiKey]];
 
         expect(() => {
@@ -52,7 +52,7 @@ describe('#prepareAuth()', function () {
 
     describe('in: cookie', function () {
       it('should support cookie auth', function () {
-        const operation = oas.operation('/apiKey', 'post');
+        const operation = oas.operation('/anything/apiKey', 'post');
         const authKeys = [[apiKey]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -61,7 +61,7 @@ describe('#prepareAuth()', function () {
       });
 
       it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/apiKey', 'post');
+        const operation = oas.operation('/anything/apiKey', 'post');
         const authKeys = [[apiKey, apiKey]];
 
         expect(() => {
@@ -77,7 +77,7 @@ describe('#prepareAuth()', function () {
       const pass = 'changeme';
 
       it('should supprot basic auth', function () {
-        const operation = oas.operation('/basic', 'post');
+        const operation = oas.operation('/anything/basic', 'post');
         const authKeys = [[user, pass]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -89,7 +89,7 @@ describe('#prepareAuth()', function () {
       });
 
       it('should allow you to not pass in a password', function () {
-        const operation = oas.operation('/basic', 'post');
+        const operation = oas.operation('/anything/basic', 'post');
         const authKeys = [[user]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -105,7 +105,7 @@ describe('#prepareAuth()', function () {
       const apiKey = '123457890';
 
       it('should support bearer auth', function () {
-        const operation = oas.operation('/bearer', 'post');
+        const operation = oas.operation('/anything/bearer', 'post');
         const authKeys = [[apiKey]];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -114,7 +114,7 @@ describe('#prepareAuth()', function () {
       });
 
       it('should throw if you pass in multiple bearer tokens', function () {
-        const operation = oas.operation('/bearer', 'post');
+        const operation = oas.operation('/anything/bearer', 'post');
         const authKeys = [[apiKey, apiKey]];
 
         expect(() => {
@@ -130,7 +130,7 @@ describe('#prepareAuth()', function () {
     const apiKey = '123457890';
 
     it('should support oauth2 auth', function () {
-      const operation = oas.operation('/oauth2', 'post');
+      const operation = oas.operation('/anything/oauth2', 'post');
       const authKeys = [[apiKey]];
 
       expect(prepareAuth(authKeys, operation)).to.deep.equal({
@@ -139,7 +139,7 @@ describe('#prepareAuth()', function () {
     });
 
     it('should throw if you pass in multiple bearer tokens', function () {
-      const operation = oas.operation('/oauth2', 'post');
+      const operation = oas.operation('/anything/oauth2', 'post');
       const authKeys = [[apiKey, apiKey]];
 
       expect(() => {

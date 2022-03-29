@@ -48,6 +48,7 @@ describe('APICore', function () {
 
       const operation = readme.spec.operation('/changelogs/{slug}', 'put');
 
+      readme.setServer('https://dash.readme.com/api/v1');
       expect(await readme.fetchOperation(operation, body, { slug })).to.deep.equal({
         uri: '/api/v1/changelogs/new-release',
         requestBody: body,
@@ -93,6 +94,7 @@ describe('APICore', function () {
           .put(`/changelogs/${slug}`)
           .reply(200, uri => uri);
 
+        readme.setServer('https://dash.readme.com/api/v1');
         expect(await readme.fetch('/changelogs/{slug}', 'put', undefined, { slug })).to.equal(
           '/api/v1/changelogs/new-release'
         );
@@ -115,6 +117,7 @@ describe('APICore', function () {
             };
           });
 
+        readme.setServer('https://dash.readme.com/api/v1');
         expect(await readme.fetch('/changelogs/{slug}', 'put', body, { slug })).to.deep.equal({
           uri: '/api/v1/changelogs/new-release',
           requestBody: body,
@@ -233,14 +236,15 @@ describe('APICore', function () {
 
       const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
       const mock = nock('https://httpbin.org')
-        .post('/basic')
+        .post('/anything/basic')
         .reply(200, function () {
           return this.req.headers;
         });
 
-      expect(await security.setAuth(user, pass).fetch('/basic', 'post')).to.have.deep.property('authorization', [
-        authHeader,
-      ]);
+      expect(await security.setAuth(user, pass).fetch('/anything/basic', 'post')).to.have.deep.property(
+        'authorization',
+        [authHeader]
+      );
       mock.done();
     });
   });

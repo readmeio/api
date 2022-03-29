@@ -10,5 +10,5 @@
   "headersSize": 0,
   "httpVersion": "HTTP/1.1",
   "method": "POST",
-  "url": "https://httpbin.org/bearer"
+  "url": "https://httpbin.org/anything/bearer"
 }
