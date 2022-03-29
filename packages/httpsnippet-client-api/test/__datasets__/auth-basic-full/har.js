@@ -16,5 +16,5 @@ module.exports = {
     { name: 'perPage', value: '10' },
     { name: 'page', value: '1' },
   ],
-  url: 'https://dash.readme.com/api/v1/api-specification',
+  url: 'https://dash.readme.io/api/v1/api-specification',
 };

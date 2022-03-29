@@ -34,7 +34,7 @@ describe('typescript dist verification', function () {
 
     const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
     const mock = nock('https://httpbin.org')
-      .post('/basic')
+      .post('/anything/basic')
       .reply(200, function () {
         return this.req.headers;
       });
@@ -42,7 +42,7 @@ describe('typescript dist verification', function () {
     const sdk = api(securityOas);
 
     sdk.auth(user, pass);
-    expect(await sdk.post('/basic')).to.have.deep.property('authorization', [authHeader]);
+    expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', [authHeader]);
     mock.done();
   });
 });

@@ -4,20 +4,7 @@
       {
         "request": {
           "method": "POST",
-          "url": "http://dev.local/v2/create/1234",
-          "postData": {
-            "mimeType": "application/x-www-form-urlencoded",
-            "params": [
-              {
-                "name": "foo",
-                "value": "bar"
-              },
-              {
-                "name": "hello",
-                "value": "world"
-              }
-            ]
-          }
+          "url": "http://dev.local/v2/endpoint"
         }
       }
     ]

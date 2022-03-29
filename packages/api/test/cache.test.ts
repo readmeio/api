@@ -71,6 +71,11 @@ describe('cache', function () {
         description: 'Create beautiful product and API documentation with our developer friendly platform.',
         version: '2.0.0',
         title: 'API Endpoints',
+        contact: {
+          email: 'support@readme.io',
+          name: 'API Support',
+          url: 'https://docs.readme.com/docs/contact-support',
+        },
       });
 
       expect(cacheStore.get().paths['/api-specification'].get.parameters).to.be.dereferenced;

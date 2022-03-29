@@ -227,6 +227,7 @@ describe('api', function () {
           .put(`/changelogs/${slug}`, body)
           .reply(200, (uri, requestBody) => ({ uri, requestBody }));
 
+        readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.updateChangelog(body, { slug })).to.deep.equal({
           requestBody: body,
           uri: '/api/v1/changelogs/new-release',
@@ -253,6 +254,7 @@ describe('api', function () {
           .put(`/changelogs/${slug}`)
           .reply(200, uri => uri);
 
+        readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.put('/changelogs/{slug}', { slug })).to.equal('/api/v1/changelogs/new-release');
         mock.done();
       });
@@ -273,6 +275,7 @@ describe('api', function () {
             };
           });
 
+        readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.put('/changelogs/{slug}', body, { slug })).to.deep.equal({
           uri: '/api/v1/changelogs/new-release',
           requestBody: body,

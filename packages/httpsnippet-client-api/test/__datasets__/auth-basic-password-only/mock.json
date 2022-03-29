@@ -1,5 +1,5 @@
 {
-  "scope": "https://dash.readme.com",
+  "scope": "https://dash.readme.io",
   "method": "GET",
   "path": "/api/v1/api-specification?perPage=10&page=1",
   "status": 200,
