@@ -1,3 +1,9 @@
+## 4.3.0 (2022-04-05)
+
+* feat: ugprading oas dependencies on v4.2.1 ([c328fd4](https://github.com/readmeio/api/commit/c328fd4))
+
+
+
 ## <small>4.2.1 (2022-03-18)</small>
 
 * fix: quirk with node 16 and `response.clone()` ([de8d964](https://github.com/readmeio/api/commit/de8d964))
