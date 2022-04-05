@@ -23,8 +23,8 @@
     "node": "^12 || ^14 || ^16"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^14.0.5",
-    "@readme/openapi-parser": "^2.0.0",
+    "@readme/oas-to-har": "^16.1.0",
+    "@readme/openapi-parser": "^2.1.0",
     "datauri": "^4.1.0",
     "fetch-har": "^5.0.5",
     "find-cache-dir": "^3.3.1",
@@ -34,7 +34,7 @@
     "make-dir": "^3.1.0",
     "mimer": "^2.0.2",
     "node-fetch": "^2.6.0",
-    "oas": "^17.4.1"
+    "oas": "^18.1.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.0.2",
