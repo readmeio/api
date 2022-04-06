@@ -1,4 +1,6 @@
 /* eslint-disable mocha/no-setup-in-describe */
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import { assert, expect } from 'chai';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -22,7 +24,7 @@ describe('#auth()', function () {
   });
 
   beforeEach(function () {
-    sdk = api(securityOas);
+    sdk = api(securityOas as unknown as OASDocument);
   });
 
   describe('API Keys', function () {

@@ -1,10 +1,12 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import { expect } from 'chai';
 import Oas from 'oas';
 import prepareAuth from '../../src/core/prepareAuth';
 
 import securityOas from '@readme/oas-examples/3.0/json/security.json';
 
-const oas = Oas.init(securityOas);
+const oas = Oas.init(securityOas as unknown as OASDocument);
 
 describe('#prepareAuth()', function () {
   describe('apiKey', function () {

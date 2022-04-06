@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import { expect } from 'chai';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -21,7 +23,7 @@ describe('typescript dist verification', function () {
       .post('/oa_citations/v1/records')
       .reply(200, uri => uri);
 
-    const sdk = api(uspto);
+    const sdk = api(uspto as unknown as OASDocument);
 
     expect(await sdk.post('/oa_citations/v1/records')).to.equal('/ds-api/oa_citations/v1/records');
 
@@ -39,7 +41,7 @@ describe('typescript dist verification', function () {
         return this.req.headers;
       });
 
-    const sdk = api(securityOas);
+    const sdk = api(securityOas as unknown as OASDocument);
 
     sdk.auth(user, pass);
     expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', [authHeader]);
