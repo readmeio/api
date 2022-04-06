@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import { assert, expect } from 'chai';
 import uniqueTempDir from 'unique-temp-dir';
 import nock from 'nock';
@@ -20,11 +22,11 @@ describe('api', function () {
 
   beforeEach(async function () {
     const petstore = require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json');
-    await new Cache(petstore).saveFile();
+    await new Cache(petstore).load();
     petstoreSdk = api(petstore);
 
     const readme = require.resolve('@readme/oas-examples/3.0/json/readme.json');
-    await new Cache(readme).saveFile();
+    await new Cache(readme).load();
     readmeSdk = api(readme);
   });
 
@@ -305,7 +307,7 @@ describe('api', function () {
               },
             },
           },
-        });
+        } as unknown as OASDocument);
       });
 
       it('should encode query parameters', async function () {

@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import chai, { expect } from 'chai';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -105,7 +107,7 @@ describe('integration tests', function () {
 
     const file = `${__dirname}/__fixtures__/owlbert.png`;
 
-    const res = await api(fileUploads).post('/anything/image-png', file);
+    const res = await api(fileUploads as unknown as OASDocument).post('/anything/image-png', file);
     expect(res.uri).to.equal('/anything/image-png');
     expect(res.requestBody).to.equal(await datauri(file));
     expect(res.headers).to.have.deep.property('content-type', ['image/png']);
@@ -137,7 +139,7 @@ describe('integration tests', function () {
         },
       };
 
-      const res = await api(parametersStyle).post('/anything/form-data/form', body);
+      const res = await api(parametersStyle as unknown as OASDocument).post('/anything/form-data/form', body);
       expect(res.uri).to.equal('/anything/form-data/form');
       expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
         '\r\nContent-Disposition: form-data; name="primitive"\r\n\r\nstring\r\n',
@@ -172,7 +174,7 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.txt`,
         };
 
-        const res = await api(fileUploads).post('/anything/multipart-formdata', body);
+        const res = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
         expect(res.uri).to.equal('/anything/multipart-formdata');
         expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="orderId"\r\n\r\n1234\r\n',
@@ -204,7 +206,7 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
         };
 
-        const res = await api(fileUploads).post('/anything/multipart-formdata', body);
+        const res = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
         expect(res.uri).to.equal('/anything/multipart-formdata');
         expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',

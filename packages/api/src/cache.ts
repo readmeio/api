@@ -1,7 +1,7 @@
-import type { OASDocument } from './types';
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import 'isomorphic-fetch';
 import OpenAPIParser from '@readme/openapi-parser';
-import yaml from 'js-yaml';
 import crypto from 'crypto';
 import findCacheDir from 'find-cache-dir';
 import fs from 'fs';
@@ -10,6 +10,8 @@ import path from 'path';
 import makeDir from 'make-dir';
 
 import { PACKAGE_NAME } from './packageInfo';
+
+import Fetcher from './fetcher';
 
 type CacheStore = Record<string, { path: string; original: string | OASDocument; title?: string; version?: string }>;
 
@@ -26,21 +28,16 @@ export default class Cache {
 
   cached: false | CacheStore;
 
+  fetcher: Fetcher;
+
   constructor(uri: string | OASDocument) {
     Cache.setCacheDir();
     Cache.cacheStore = path.join(Cache.dir, 'cache.json');
     Cache.specsCache = path.join(Cache.dir, 'specs');
 
-    // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
-    //
-    // Examples:
-    //    - @petstore/v1.0#n6kvf10vakpemvplx
-    //    - @petstore#n6kvf10vakpemvplx
-    this.uri =
-      typeof uri === 'string'
-        ? uri.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.com/api/v1/api-registry/$2')
-        : uri;
+    this.fetcher = new Fetcher(uri);
 
+    this.uri = this.fetcher.uri;
     this.uriHash = Cache.getCacheHash(this.uri);
 
     // This should default to false so we have awareness if we've looked at the cache yet.
@@ -88,6 +85,28 @@ export default class Cache {
     await fs.promises.rmdir(Cache.specsCache, { recursive: true });
   }
 
+  static validate(json: any) {
+    if (json.swagger) {
+      throw new Error('Sorry, this module only supports OpenAPI definitions.');
+    }
+
+    // The `validate` method handles dereferencing for us.
+    return OpenAPIParser.validate(json, {
+      dereference: {
+        // If circular `$refs` are ignored they'll remain in the API definition as
+        // `$ref: String`. This allows us to not only do easy circular reference detection but
+        // also stringify and  save dereferenced API definitions back into the cache directory.
+        circular: 'ignore',
+      },
+    }).catch(err => {
+      if (/is not a valid openapi definition/i.test(err.message)) {
+        throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
+      }
+
+      throw err;
+    });
+  }
+
   isCached() {
     const cache = this.getCache();
     return cache && this.uriHash in cache;
@@ -129,109 +148,36 @@ export default class Cache {
       return this.uri;
     }
 
-    try {
-      const url = new URL(this.uri);
-      this.uri = url.href;
-
-      return this.saveUrl();
-    } catch (err) {
-      return this.saveFile();
-    }
+    return this.fetcher.load().then(async spec => this.save(spec));
   }
 
-  save(json: Record<string, unknown>) {
-    if (json.swagger) {
-      throw new Error('Sorry, this module only supports OpenAPI definitions.');
+  save(spec: OASDocument) {
+    if (!fs.existsSync(Cache.dir)) {
+      fs.mkdirSync(Cache.dir, { recursive: true });
     }
 
-    return Promise.resolve(json)
-      .then((res: any) => {
-        // The `validate` method handles dereferencing for us.
-        return OpenAPIParser.validate(res, {
-          dereference: {
-            // If circular `$refs` are ignored they'll remain in the API definition as
-            // `$ref: String`. This allows us to not only do easy circular reference detection but
-            // also stringify and  save dereferenced API definitions back into the cache directory.
-            circular: 'ignore',
-          },
-        }).catch(err => {
-          if (/is not a valid openapi definition/i.test(err.message)) {
-            throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
-          }
-
-          throw err;
-        });
-      })
-      .then(async spec => {
-        if (!fs.existsSync(Cache.dir)) {
-          fs.mkdirSync(Cache.dir, { recursive: true });
-        }
-
-        if (!fs.existsSync(Cache.specsCache)) {
-          fs.mkdirSync(Cache.specsCache, { recursive: true });
-        }
-
-        const cache = this.getCache();
-        if (!(this.uriHash in cache)) {
-          const saved = JSON.stringify(spec, null, 2);
-          const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
-
-          cache[this.uriHash] = {
-            path: path.join(Cache.specsCache, `${jsonHash}.json`),
-            original: this.uri,
-            title: 'title' in spec.info ? spec.info.title : undefined,
-            version: 'version' in spec.info ? spec.info.version : undefined,
-          };
-
-          fs.writeFileSync(cache[this.uriHash].path, saved);
-          fs.writeFileSync(Cache.cacheStore, JSON.stringify(cache, null, 2));
-
-          this.cached = cache;
-        }
-
-        return spec;
-      });
-  }
-
-  saveUrl() {
-    const url = this.uri as string;
-    return fetch(url)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`Unable to retrieve URL (${url}). Reason: ${res.statusText}`);
-        }
-
-        if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(url)) {
-          return res.text().then(text => {
-            return yaml.load(text);
-          });
-        }
-
-        return res.json();
-      })
-      .then((json: Record<string, unknown>) => this.save(json));
-  }
-
-  saveFile() {
-    // Support relative paths by resolving them against the cwd.
-    this.uri = path.resolve(process.cwd(), this.uri as string);
-
-    if (!fs.existsSync(this.uri)) {
-      throw new Error(
-        `Sorry, we were unable to load ${this.uri} OpenAPI definition. Please either supply a URL or a path on your filesystem.`
-      );
+    if (!fs.existsSync(Cache.specsCache)) {
+      fs.mkdirSync(Cache.specsCache, { recursive: true });
     }
 
-    const filePath = this.uri;
+    const cache = this.getCache();
+    if (!(this.uriHash in cache)) {
+      const saved = JSON.stringify(spec, null, 2);
+      const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
 
-    return Promise.resolve(fs.readFileSync(filePath, 'utf8'))
-      .then((res: string) => {
-        if (/\.(yaml|yml)/.test(filePath)) {
-          return yaml.load(res);
-        }
+      cache[this.uriHash] = {
+        path: path.join(Cache.specsCache, `${jsonHash}.json`),
+        original: this.uri,
+        title: 'title' in spec.info ? spec.info.title : undefined,
+        version: 'version' in spec.info ? spec.info.version : undefined,
+      };
 
-        return JSON.parse(res);
-      })
-      .then(json => this.save(json));
+      fs.writeFileSync(cache[this.uriHash].path, saved);
+      fs.writeFileSync(Cache.cacheStore, JSON.stringify(cache, null, 2));
+
+      this.cached = cache;
+    }
+
+    return spec;
   }
 }

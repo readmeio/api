@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+
 import { expect } from 'chai';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -24,7 +26,7 @@ describe('#config()', function () {
 
   describe('parseResponse', function () {
     beforeEach(function () {
-      sdk = api(petstore);
+      sdk = api(petstore as unknown as OASDocument);
     });
 
     it('should give access to the Response object if `parseResponse` is `false`', async function () {

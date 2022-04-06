@@ -1,6 +1,5 @@
 import type { Operation } from 'oas';
-import type { OASDocument } from './types';
-import type { HttpMethods } from 'oas/@types/rmoas.types';
+import type { HttpMethods, OASDocument } from 'oas/@types/rmoas.types';
 import type { ConfigOptions } from './core';
 
 import Oas from 'oas';
