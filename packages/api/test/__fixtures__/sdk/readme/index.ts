@@ -72,36 +72,6 @@ export default class SDK {
   }
 
   /**
-   * Returns all the roles we're hiring for at ReadMe!
-   *
-   * @summary Get open roles
-   */
-  get(path: string): Promise<GetOpenRoles_Response_200>;
-  /**
-   * Returns with all of the error page types for this project
-   *
-   * @summary Get errors
-   */
-  get(path: string): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
-  /**
-   * Returns project data for API key
-   *
-   * @summary Get metadata about the current project
-   */
-  get(path: string): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
-  /**
-   * Retrieve a list of versions associated with a project API key
-   *
-   * @summary Get versions
-   */
-  get(path: string): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
-  /**
-   * Returns the changelog with this slug
-   *
-   * @summary Get changelog
-   */
-  get<T = unknown>(path: string, metadata: GetChangelogMetadataParam): Promise<T>;
-  /**
    * Get an API definition file that's been uploaded to ReadMe
    *
    * @summary Retrieve an entry from the API Registry
@@ -126,6 +96,12 @@ export default class SDK {
     | Error_VERSION_NOTFOUND
   >;
   /**
+   * Returns all the roles we're hiring for at ReadMe!
+   *
+   * @summary Get open roles
+   */
+  get(path: string): Promise<GetOpenRoles_Response_200>;
+  /**
    * Returns all the categories for a specified version
    *
    * @summary Get all categories
@@ -149,6 +125,12 @@ export default class SDK {
    * @summary Get changelogs
    */
   get(path: string, metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200>;
+  /**
+   * Returns the changelog with this slug
+   *
+   * @summary Get changelog
+   */
+  get<T = unknown>(path: string, metadata: GetChangelogMetadataParam): Promise<T>;
   /**
    * Returns a list of custom pages associated with the project API key
    *
@@ -177,6 +159,24 @@ export default class SDK {
     metadata: GetDocMetadataParam
   ): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
+   * Returns with all of the error page types for this project
+   *
+   * @summary Get errors
+   */
+  get(path: string): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
+  /**
+   * Returns project data for API key
+   *
+   * @summary Get metadata about the current project
+   */
+  get(path: string): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
+  /**
+   * Retrieve a list of versions associated with a project API key
+   *
+   * @summary Get versions
+   */
+  get(path: string): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
+  /**
    * Returns the version with this version ID
    *
    * @summary Get version
@@ -196,18 +196,6 @@ export default class SDK {
   }
 
   /**
-   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
-   *
-   * @summary Submit your application!
-   */
-  post<T = unknown>(path: string, body: Apply): Promise<T>;
-  /**
-   * Create a new changelog inside of this project
-   *
-   * @summary Create changelog
-   */
-  post<T = unknown>(path: string, body: Changelog): Promise<T>;
-  /**
    * Upload an API specification to ReadMe. Or, to use a newer solution see https://docs.readme.com/docs/automatically-sync-api-specification-with-github
    *
    * @summary Upload specification
@@ -223,11 +211,23 @@ export default class SDK {
     | Error_SPEC_TIMEOUT
   >;
   /**
+   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
+   *
+   * @summary Submit your application!
+   */
+  post<T = unknown>(path: string, body: Apply): Promise<T>;
+  /**
    * Create a new category inside of this project
    *
    * @summary Create category
    */
   post(path: string, body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID>;
+  /**
+   * Create a new changelog inside of this project
+   *
+   * @summary Create changelog
+   */
+  post<T = unknown>(path: string, body: Changelog): Promise<T>;
   /**
    * Create a new custom page inside of this project
    *
@@ -276,12 +276,6 @@ export default class SDK {
   }
 
   /**
-   * Update a changelog with this slug
-   *
-   * @summary Update changelog
-   */
-  put<T = unknown>(path: string, body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
-  /**
    * Update an API specification in ReadMe
    *
    * @summary Update specification
@@ -306,6 +300,12 @@ export default class SDK {
     body: Category,
     metadata: UpdateCategoryMetadataParam
   ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND>;
+  /**
+   * Update a changelog with this slug
+   *
+   * @summary Update changelog
+   */
+  put<T = unknown>(path: string, body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
   /**
    * Update a custom page with this slug
    *
@@ -352,12 +352,6 @@ export default class SDK {
   }
 
   /**
-   * Delete the changelog with this slug
-   *
-   * @summary Delete changelog
-   */
-  delete<T = unknown>(path: string, metadata: DeleteChangelogMetadataParam): Promise<T>;
-  /**
    * Delete an API specification in ReadMe
    *
    * @summary Delete specification
@@ -379,6 +373,12 @@ export default class SDK {
    * @summary Delete category
    */
   delete(path: string, metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  /**
+   * Delete the changelog with this slug
+   *
+   * @summary Delete changelog
+   */
+  delete<T = unknown>(path: string, metadata: DeleteChangelogMetadataParam): Promise<T>;
   /**
    * Delete the custom page with this slug
    *
@@ -417,87 +417,6 @@ export default class SDK {
    */
   delete<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
     return this.core.fetch(path, 'delete', body, metadata);
-  }
-
-  /**
-   * Returns all the roles we're hiring for at ReadMe!
-   *
-   * @summary Get open roles
-   */
-  getOpenRoles(): Promise<GetOpenRoles_Response_200> {
-    return this.core.fetch('/apply', 'get');
-  }
-
-  /**
-   * Returns with all of the error page types for this project
-   *
-   * @summary Get errors
-   */
-  getErrors(): Promise<GetErrors_Response_401 | GetErrors_Response_403> {
-    return this.core.fetch('/errors', 'get');
-  }
-
-  /**
-   * Returns project data for API key
-   *
-   * @summary Get metadata about the current project
-   */
-  getProject(): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403> {
-    return this.core.fetch('/', 'get');
-  }
-
-  /**
-   * Retrieve a list of versions associated with a project API key
-   *
-   * @summary Get versions
-   */
-  getVersions(): Promise<GetVersions_Response_401 | GetVersions_Response_403> {
-    return this.core.fetch('/version', 'get');
-  }
-
-  /**
-   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
-   *
-   * @summary Submit your application!
-   */
-  applyToReadMe<T = unknown>(body: Apply): Promise<T> {
-    return this.core.fetch('/apply', 'post', body);
-  }
-
-  /**
-   * Create a new changelog inside of this project
-   *
-   * @summary Create changelog
-   */
-  createChangelog<T = unknown>(body: Changelog): Promise<T> {
-    return this.core.fetch('/changelogs', 'post', body);
-  }
-
-  /**
-   * Returns the changelog with this slug
-   *
-   * @summary Get changelog
-   */
-  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'get', metadata);
-  }
-
-  /**
-   * Update a changelog with this slug
-   *
-   * @summary Update changelog
-   */
-  updateChangelog<T = unknown>(body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
-  }
-
-  /**
-   * Delete the changelog with this slug
-   *
-   * @summary Delete changelog
-   */
-  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
   /**
@@ -579,6 +498,24 @@ export default class SDK {
   }
 
   /**
+   * Returns all the roles we're hiring for at ReadMe!
+   *
+   * @summary Get open roles
+   */
+  getOpenRoles(): Promise<GetOpenRoles_Response_200> {
+    return this.core.fetch('/apply', 'get');
+  }
+
+  /**
+   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
+   *
+   * @summary Submit your application!
+   */
+  applyToReadMe<T = unknown>(body: Apply): Promise<T> {
+    return this.core.fetch('/apply', 'post', body);
+  }
+
+  /**
    * Returns all the categories for a specified version
    *
    * @summary Get all categories
@@ -644,6 +581,42 @@ export default class SDK {
    */
   getChangelogs(metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200> {
     return this.core.fetch('/changelogs', 'get', metadata);
+  }
+
+  /**
+   * Create a new changelog inside of this project
+   *
+   * @summary Create changelog
+   */
+  createChangelog<T = unknown>(body: Changelog): Promise<T> {
+    return this.core.fetch('/changelogs', 'post', body);
+  }
+
+  /**
+   * Returns the changelog with this slug
+   *
+   * @summary Get changelog
+   */
+  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T> {
+    return this.core.fetch('/changelogs/{slug}', 'get', metadata);
+  }
+
+  /**
+   * Update a changelog with this slug
+   *
+   * @summary Update changelog
+   */
+  updateChangelog<T = unknown>(body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T> {
+    return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
+  }
+
+  /**
+   * Delete the changelog with this slug
+   *
+   * @summary Delete changelog
+   */
+  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T> {
+    return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
   /**
@@ -758,6 +731,33 @@ export default class SDK {
   }
 
   /**
+   * Returns with all of the error page types for this project
+   *
+   * @summary Get errors
+   */
+  getErrors(): Promise<GetErrors_Response_401 | GetErrors_Response_403> {
+    return this.core.fetch('/errors', 'get');
+  }
+
+  /**
+   * Returns project data for API key
+   *
+   * @summary Get metadata about the current project
+   */
+  getProject(): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403> {
+    return this.core.fetch('/', 'get');
+  }
+
+  /**
+   * Retrieve a list of versions associated with a project API key
+   *
+   * @summary Get versions
+   */
+  getVersions(): Promise<GetVersions_Response_401 | GetVersions_Response_403> {
+    return this.core.fetch('/version', 'get');
+  }
+
+  /**
    * Create a new version
    *
    * @summary Create version
@@ -823,6 +823,36 @@ export type GetAPIRegistryMetadataParam = {
   uuid: string;
   [k: string]: unknown;
 };
+export interface GetAPIRegistry_Response_200 {
+  [k: string]: unknown;
+}
+export interface Error_REGISTRY_NOTFOUND {
+  /**
+   * An error code unique to the error received.
+   */
+  error?: string;
+  /**
+   * The reason why the error occured.
+   */
+  message?: string;
+  /**
+   * A helpful suggestion for how to alleviate the error.
+   */
+  suggestion?: string;
+  /**
+   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
+   */
+  docs?: string;
+  /**
+   * Information on where you can receive additional assistance from our wonderful support team.
+   */
+  help?: string;
+  /**
+   * A short poem we wrote you about your error.
+   */
+  poem?: string[];
+  [k: string]: unknown;
+}
 export type GetAPISpecificationMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
@@ -840,405 +870,45 @@ export type GetAPISpecificationMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface UploadAPISpecificationBodyParam {
+export interface GetAPISpecification_Response_200 {
   /**
-   * OpenAPI/Swagger file
+   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
    */
-  spec?: string;
+  Link?: string;
+  /**
+   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
+   */
+  'x-total-count'?: string;
   [k: string]: unknown;
 }
-export type UploadAPISpecificationMetadataParam = {
+export interface Error_VERSION_EMPTY {
   /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   * An error code unique to the error received.
    */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export interface UpdateAPISpecificationBodyParam {
+  error?: string;
   /**
-   * OpenAPI/Swagger file
+   * The reason why the error occured.
    */
-  spec?: string;
-  [k: string]: unknown;
-}
-export type UpdateAPISpecificationMetadataParam = {
+  message?: string;
   /**
-   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
+   * A helpful suggestion for how to alleviate the error.
    */
-  id: string;
-  [k: string]: unknown;
-};
-export type DeleteAPISpecificationMetadataParam = {
+  suggestion?: string;
   /**
-   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
+   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
    */
-  id: string;
-  [k: string]: unknown;
-};
-export type GetOpenRoles_Response_200 = JobOpening[];
-export interface JobOpening {
+  docs?: string;
   /**
-   * A slugified version of the job opening title.
+   * Information on where you can receive additional assistance from our wonderful support team.
    */
-  slug?: string;
+  help?: string;
   /**
-   * The job opening position.
+   * A short poem we wrote you about your error.
    */
-  title?: string;
-  /**
-   * The description for this open position. This content is formatted as HTML.
-   */
-  description?: string;
-  /**
-   * A short pullquote for the open position.
-   */
-  pullquote?: string;
-  /**
-   * Where this position is located at.
-   */
-  location?: string;
-  /**
-   * The internal organization you'll be working in.
-   */
-  department?: string;
-  /**
-   * The place where you can apply for the position!
-   */
-  url?: string;
+  poem?: string[];
   [k: string]: unknown;
 }
-export interface Apply {
-  /**
-   * Your full name
-   */
-  name: string;
-  /**
-   * A valid email we can reach you at
-   */
-  email: string;
-  /**
-   * The job you're looking to apply for (https://readme.com/careers)
-   */
-  job:
-    | 'Content Marketing Manager'
-    | 'Engineering Manager'
-    | 'Head of People'
-    | 'Marketing Campaigns Manager'
-    | 'Marketing Designer'
-    | 'Product Designer'
-    | 'Product Education Manager'
-    | 'Sales Development Representative'
-    | 'Support Engineer (Weekends)';
-  /**
-   * Learn more at https://pronoun.is/
-   */
-  pronouns?: string;
-  /**
-   * What have you been up to the past few years?
-   */
-  linkedin?: string;
-  /**
-   * Or Bitbucket, Gitlab or anywhere else your code is hosted!
-   */
-  github?: string;
-  /**
-   * What should we know about you?
-   */
-  coverLetter?: string;
-  /**
-   * Want to play with the API but not actually apply? Set this to true.
-   */
-  dontReallyApply?: boolean;
-  [k: string]: unknown;
-}
-export type GetCategoriesMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export interface Category {
-  /**
-   * A short title for the category. This is what will show in the sidebar.
-   */
-  title?: string;
-  /**
-   * A category can be part of your reference or guide documentation, which is determined by this field.
-   */
-  type?: 'reference' | 'guide';
-  [k: string]: unknown;
-}
-export type CreateCategoryMetadataParam = {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type GetCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type UpdateCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type DeleteCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type GetCategoryDocsMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type GetChangelogsMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-};
-export interface Changelog {
-  /**
-   * Title of the changelog
-   */
-  title: string;
-  type?: '' | 'added' | 'fixed' | 'improved' | 'deprecated' | 'removed';
-  /**
-   * Body content of the changelog
-   */
-  body: string;
-  /**
-   * Visibility of the changelog
-   */
-  hidden?: boolean;
-  [k: string]: unknown;
-}
-export type GetChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type UpdateChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type DeleteChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type GetCustomPagesMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-};
-export interface CustomPage {
-  /**
-   * Title of the custom page
-   */
-  title: string;
-  /**
-   * Body formatted in Markdown (displayed by default).
-   */
-  body?: string;
-  /**
-   * Body formatted in HTML (sanitized, only displayed if `htmlmode` is **true**).
-   */
-  html?: string;
-  /**
-   * **true** if `html` should be displayed, **false** if `body` should be displayed.
-   */
-  htmlmode?: boolean;
-  /**
-   * Visibility of the custom page
-   */
-  hidden?: boolean;
-  [k: string]: unknown;
-}
-export type GetCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type UpdateCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type DeleteCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-export type GetDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export interface Doc {
-  /**
-   * Title of the page
-   */
-  title: string;
-  /**
-   * Type of the page. The available types all show up under the /docs/ URL path of your docs project (also known as the "guides" section). Can be "basic" (most common), "error" (page desribing an API error), or "link" (page that redirects to an external link)
-   */
-  type?: 'basic' | 'error' | 'link';
-  /**
-   * Body content of the page, formatted in ReadMe or GitHub flavored Markdown. Accepts long page content, for example, greater than 100k characters
-   */
-  body?: string;
-  /**
-   * Category ID of the page, which you can get through https://docs.readme.com/reference/categories#getcategory
-   */
-  category: string;
-  /**
-   * Visibility of the page
-   */
-  hidden?: boolean;
-  /**
-   * The position of the page in your project sidebar.
-   */
-  order?: number;
-  /**
-   * For a subpage, specify the parent doc ID, which you can get through https://docs.readme.com/reference/docs#getdoc
-   */
-  parentDoc?: string;
-  error?: {
-    /**
-     * The error code for docs with the "error" type
-     */
-    code?: string;
-    [k: string]: unknown;
-  };
-  [k: string]: unknown;
-}
-export type UpdateDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type DeleteDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type CreateDocMetadataParam = {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type SearchDocsMetadataParam = {
-  /**
-   * Search string to look for
-   */
-  search: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-export type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export interface Error_APIKEY_EMPTY {
   /**
    * An error code unique to the error received.
@@ -1293,7 +963,7 @@ export interface Error_APIKEY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
+export type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_APIKEY_MISMATCH {
   /**
    * An error code unique to the error received.
@@ -1321,140 +991,6 @@ export interface Error_APIKEY_MISMATCH {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface CondensedProjectData {
-  name?: string;
-  subdomain?: string;
-  jwtSecret?: string;
-  /**
-   * The base URL for the project. If the project is not running under a custom domain, it will be `https://projectSubdomain.readme.io`, otherwise it can either be or `https://example.com` or, in the case of an enterprise child project `https://example.com/projectSubdomain`.
-   */
-  baseUrl?: string;
-  plan?: string;
-  [k: string]: unknown;
-}
-export type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetProject_Response_403 = Error_APIKEY_MISMATCH;
-export type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
-export interface Version {
-  /**
-   * Semantic Version
-   */
-  version: string;
-  /**
-   * Dubbed name of version
-   */
-  codename?: string;
-  /**
-   * Semantic Version to use as the base fork
-   */
-  from: string;
-  /**
-   * Should this be the **main** version
-   */
-  is_stable?: boolean;
-  is_beta?: boolean;
-  /**
-   * Should this be publically accessible?
-   */
-  is_hidden?: boolean;
-  /**
-   * Should this be deprecated? Only allowed in PUT operations
-   */
-  is_deprecated?: boolean;
-  [k: string]: unknown;
-}
-export type GetVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-export type UpdateVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-export type DeleteVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-export interface GetAPIRegistry_Response_200 {
-  [k: string]: unknown;
-}
-export interface Error_REGISTRY_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-export interface GetAPISpecification_Response_200 {
-  /**
-   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
-   */
-  Link?: string;
-  /**
-   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
-   */
-  'x-total-count'?: string;
-  [k: string]: unknown;
-}
-export interface Error_VERSION_EMPTY {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-export type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_VERSION_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1482,6 +1018,20 @@ export interface Error_VERSION_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export interface UploadAPISpecificationBodyParam {
+  /**
+   * OpenAPI/Swagger file
+   */
+  spec?: string;
+  [k: string]: unknown;
+}
+export type UploadAPISpecificationMetadataParam = {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export type UploadAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_INVALID
@@ -1624,6 +1174,20 @@ export interface Error_SPEC_TIMEOUT {
   poem?: string[];
   [k: string]: unknown;
 }
+export interface UpdateAPISpecificationBodyParam {
+  /**
+   * OpenAPI/Swagger file
+   */
+  spec?: string;
+  [k: string]: unknown;
+}
+export type UpdateAPISpecificationMetadataParam = {
+  /**
+   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
+   */
+  id: string;
+  [k: string]: unknown;
+};
 export type UpdateAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_ID_DUPLICATE
@@ -1687,6 +1251,13 @@ export interface Error_SPEC_ID_INVALID {
 }
 export type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+export type DeleteAPISpecificationMetadataParam = {
+  /**
+   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
+   */
+  id: string;
+  [k: string]: unknown;
+};
 export type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_SPEC_NOTFOUND {
@@ -1716,6 +1287,99 @@ export interface Error_SPEC_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export type GetOpenRoles_Response_200 = JobOpening[];
+export interface JobOpening {
+  /**
+   * A slugified version of the job opening title.
+   */
+  slug?: string;
+  /**
+   * The job opening position.
+   */
+  title?: string;
+  /**
+   * The description for this open position. This content is formatted as HTML.
+   */
+  description?: string;
+  /**
+   * A short pullquote for the open position.
+   */
+  pullquote?: string;
+  /**
+   * Where this position is located at.
+   */
+  location?: string;
+  /**
+   * The internal organization you'll be working in.
+   */
+  department?: string;
+  /**
+   * The place where you can apply for the position!
+   */
+  url?: string;
+  [k: string]: unknown;
+}
+export interface Apply {
+  /**
+   * Your full name
+   */
+  name: string;
+  /**
+   * A valid email we can reach you at
+   */
+  email: string;
+  /**
+   * The job you're looking to apply for (https://readme.com/careers)
+   */
+  job:
+    | 'Content Marketing Manager'
+    | 'Engineering Manager'
+    | 'Head of People'
+    | 'Marketing Campaigns Manager'
+    | 'Marketing Designer'
+    | 'Product Designer'
+    | 'Product Education Manager'
+    | 'Sales Development Representative'
+    | 'Support Engineer (Weekends)';
+  /**
+   * Learn more at https://pronoun.is/
+   */
+  pronouns?: string;
+  /**
+   * What have you been up to the past few years?
+   */
+  linkedin?: string;
+  /**
+   * Or Bitbucket, Gitlab or anywhere else your code is hosted!
+   */
+  github?: string;
+  /**
+   * What should we know about you?
+   */
+  coverLetter?: string;
+  /**
+   * Want to play with the API but not actually apply? Set this to true.
+   */
+  dontReallyApply?: boolean;
+  [k: string]: unknown;
+}
+export type GetCategoriesMetadataParam = {
+  /**
+   * Number of items to include in pagination (up to 100, defaults to 10)
+   */
+  perPage?: number;
+  /**
+   * Used to specify further pages (starts at 1)
+   */
+  page?: number;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export interface GetCategories_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
@@ -1727,6 +1391,24 @@ export interface GetCategories_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
+export interface Category {
+  /**
+   * A short title for the category. This is what will show in the sidebar.
+   */
+  title?: string;
+  /**
+   * A category can be part of your reference or guide documentation, which is determined by this field.
+   */
+  type?: 'reference' | 'guide';
+  [k: string]: unknown;
+}
+export type CreateCategoryMetadataParam = {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export interface Error_CATEGORY_INVALID {
   /**
    * An error code unique to the error received.
@@ -1754,6 +1436,19 @@ export interface Error_CATEGORY_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
+export type GetCategoryMetadataParam = {
+  /**
+   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export interface Error_CATEGORY_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1781,6 +1476,56 @@ export interface Error_CATEGORY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export type UpdateCategoryMetadataParam = {
+  /**
+   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
+export type DeleteCategoryMetadataParam = {
+  /**
+   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
+export type GetCategoryDocsMetadataParam = {
+  /**
+   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
+export type GetChangelogsMetadataParam = {
+  /**
+   * Number of items to include in pagination (up to 100, defaults to 10)
+   */
+  perPage?: number;
+  /**
+   * Used to specify further pages (starts at 1)
+   */
+  page?: number;
+  [k: string]: unknown;
+};
 export interface GetChangelogs_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
@@ -1792,6 +1537,54 @@ export interface GetChangelogs_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
+export interface Changelog {
+  /**
+   * Title of the changelog
+   */
+  title: string;
+  type?: '' | 'added' | 'fixed' | 'improved' | 'deprecated' | 'removed';
+  /**
+   * Body content of the changelog
+   */
+  body: string;
+  /**
+   * Visibility of the changelog
+   */
+  hidden?: boolean;
+  [k: string]: unknown;
+}
+export type GetChangelogMetadataParam = {
+  /**
+   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
+export type UpdateChangelogMetadataParam = {
+  /**
+   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
+export type DeleteChangelogMetadataParam = {
+  /**
+   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
+export type GetCustomPagesMetadataParam = {
+  /**
+   * Number of items to include in pagination (up to 100, defaults to 10)
+   */
+  perPage?: number;
+  /**
+   * Used to specify further pages (starts at 1)
+   */
+  page?: number;
+  [k: string]: unknown;
+};
 export interface GetCustomPages_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
@@ -1805,6 +1598,29 @@ export interface GetCustomPages_Response_200 {
 }
 export type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
+export interface CustomPage {
+  /**
+   * Title of the custom page
+   */
+  title: string;
+  /**
+   * Body formatted in Markdown (displayed by default).
+   */
+  body?: string;
+  /**
+   * Body formatted in HTML (sanitized, only displayed if `htmlmode` is **true**).
+   */
+  html?: string;
+  /**
+   * **true** if `html` should be displayed, **false** if `body` should be displayed.
+   */
+  htmlmode?: boolean;
+  /**
+   * Visibility of the custom page
+   */
+  hidden?: boolean;
+  [k: string]: unknown;
+}
 export interface Error_CUSTOMPAGE_INVALID {
   /**
    * An error code unique to the error received.
@@ -1834,6 +1650,13 @@ export interface Error_CUSTOMPAGE_INVALID {
 }
 export type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export type GetCustomPageMetadataParam = {
+  /**
+   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
 export type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_CUSTOMPAGE_NOTFOUND {
@@ -1863,10 +1686,37 @@ export interface Error_CUSTOMPAGE_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export type UpdateCustomPageMetadataParam = {
+  /**
+   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
 export type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export type DeleteCustomPageMetadataParam = {
+  /**
+   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
+   */
+  slug: string;
+  [k: string]: unknown;
+};
 export type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export type GetDocMetadataParam = {
+  /**
+   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_DOC_NOTFOUND {
@@ -1896,6 +1746,57 @@ export interface Error_DOC_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export interface Doc {
+  /**
+   * Title of the page
+   */
+  title: string;
+  /**
+   * Type of the page. The available types all show up under the /docs/ URL path of your docs project (also known as the "guides" section). Can be "basic" (most common), "error" (page desribing an API error), or "link" (page that redirects to an external link)
+   */
+  type?: 'basic' | 'error' | 'link';
+  /**
+   * Body content of the page, formatted in ReadMe or GitHub flavored Markdown. Accepts long page content, for example, greater than 100k characters
+   */
+  body?: string;
+  /**
+   * Category ID of the page, which you can get through https://docs.readme.com/reference/categories#getcategory
+   */
+  category: string;
+  /**
+   * Visibility of the page
+   */
+  hidden?: boolean;
+  /**
+   * The position of the page in your project sidebar.
+   */
+  order?: number;
+  /**
+   * For a subpage, specify the parent doc ID, which you can get through https://docs.readme.com/reference/docs#getdoc
+   */
+  parentDoc?: string;
+  error?: {
+    /**
+     * The error code for docs with the "error" type
+     */
+    code?: string;
+    [k: string]: unknown;
+  };
+  [k: string]: unknown;
+}
+export type UpdateDocMetadataParam = {
+  /**
+   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export interface Error_DOC_INVALID {
   /**
    * An error code unique to the error received.
@@ -1925,12 +1826,90 @@ export interface Error_DOC_INVALID {
 }
 export type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
+export type DeleteDocMetadataParam = {
+  /**
+   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
+   */
+  slug: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
+export type CreateDocMetadataParam = {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
+export type SearchDocsMetadataParam = {
+  /**
+   * Search string to look for
+   */
+  search: string;
+  [k: string]: unknown;
+} & {
+  /**
+   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
+   */
+  'x-readme-version'?: string;
+  [k: string]: unknown;
+};
 export type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
+export type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
+export interface CondensedProjectData {
+  name?: string;
+  subdomain?: string;
+  jwtSecret?: string;
+  /**
+   * The base URL for the project. If the project is not running under a custom domain, it will be `https://projectSubdomain.readme.io`, otherwise it can either be or `https://example.com` or, in the case of an enterprise child project `https://example.com/projectSubdomain`.
+   */
+  baseUrl?: string;
+  plan?: string;
+  [k: string]: unknown;
+}
+export type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export type GetProject_Response_403 = Error_APIKEY_MISMATCH;
+export type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
+export interface Version {
+  /**
+   * Semantic Version
+   */
+  version: string;
+  /**
+   * Dubbed name of version
+   */
+  codename?: string;
+  /**
+   * Semantic Version to use as the base fork
+   */
+  from: string;
+  /**
+   * Should this be the **main** version
+   */
+  is_stable?: boolean;
+  is_beta?: boolean;
+  /**
+   * Should this be publically accessible?
+   */
+  is_hidden?: boolean;
+  /**
+   * Should this be deprecated? Only allowed in PUT operations
+   */
+  is_deprecated?: boolean;
+  [k: string]: unknown;
+}
 export type CreateVersion_Response_400 = Error_VERSION_EMPTY | Error_VERSION_DUPLICATE | Error_VERSION_FORK_EMPTY;
 export interface Error_VERSION_DUPLICATE {
   /**
@@ -2015,8 +1994,22 @@ export interface Error_VERSION_FORK_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
+export type GetVersionMetadataParam = {
+  /**
+   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
+   */
+  versionId: string;
+  [k: string]: unknown;
+};
 export type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
+export type UpdateVersionMetadataParam = {
+  /**
+   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
+   */
+  versionId: string;
+  [k: string]: unknown;
+};
 export interface Error_VERSION_CANT_DEMOTE_STABLE {
   /**
    * An error code unique to the error received.
@@ -2046,6 +2039,13 @@ export interface Error_VERSION_CANT_DEMOTE_STABLE {
 }
 export type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
+export type DeleteVersionMetadataParam = {
+  /**
+   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
+   */
+  versionId: string;
+  [k: string]: unknown;
+};
 export interface Error_VERSION_CANT_REMOVE_STABLE {
   /**
    * An error code unique to the error received.

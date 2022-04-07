@@ -91,6 +91,21 @@ export default class SDK {
    */
   post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
+   * Uploads an image
+   *
+   */
+  post(path: string, body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  post(path: string, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Place an order for a pet
+   *
+   */
+  post(path: string, body: Order): Promise<Order>;
+  /**
    * This can only be done by the logged in user.
    *
    * @summary Create user
@@ -106,21 +121,6 @@ export default class SDK {
    *
    */
   post<T = unknown>(path: string, body: CreateUsersWithListInputBodyParam): Promise<T>;
-  /**
-   * Uploads an image
-   *
-   */
-  post(path: string, body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
-  /**
-   * Uploads an image
-   *
-   */
-  post(path: string, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
-  /**
-   * Place an order for a pet
-   *
-   */
-  post(path: string, body: Order): Promise<Order>;
   /**
    * Access any post endpoint on your API.
    *
@@ -155,17 +155,6 @@ export default class SDK {
   }
 
   /**
-   * Logs out current logged in user session
-   *
-   */
-  get<T = unknown>(path: string): Promise<T>;
-  /**
-   * Returns a map of status codes to quantities
-   *
-   * @summary Returns pet inventories by status
-   */
-  get(path: string): Promise<GetInventory_Response_200>;
-  /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
@@ -184,6 +173,12 @@ export default class SDK {
    */
   get(path: string, metadata: GetPetByIdMetadataParam): Promise<Pet>;
   /**
+   * Returns a map of status codes to quantities
+   *
+   * @summary Returns pet inventories by status
+   */
+  get(path: string): Promise<GetInventory_Response_200>;
+  /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
@@ -194,6 +189,11 @@ export default class SDK {
    *
    */
   get(path: string, metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
+  /**
+   * Logs out current logged in user session
+   *
+   */
+  get<T = unknown>(path: string): Promise<T>;
   /**
    * Get user by user name
    *
@@ -238,23 +238,6 @@ export default class SDK {
   }
 
   /**
-   * Logs out current logged in user session
-   *
-   */
-  logoutUser<T = unknown>(): Promise<T> {
-    return this.core.fetch('/user/logout', 'get');
-  }
-
-  /**
-   * Returns a map of status codes to quantities
-   *
-   * @summary Returns pet inventories by status
-   */
-  getInventory(): Promise<GetInventory_Response_200> {
-    return this.core.fetch('/store/inventory', 'get');
-  }
-
-  /**
    * Add a new pet to the store
    *
    */
@@ -268,6 +251,33 @@ export default class SDK {
    */
   updatePet<T = unknown>(body: Pet): Promise<T> {
     return this.core.fetch('/pet', 'put', body);
+  }
+
+  /**
+   * Multiple status values can be provided with comma separated strings
+   *
+   * @summary Finds Pets by status
+   */
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+    return this.core.fetch('/pet/findByStatus', 'get', metadata);
+  }
+
+  /**
+   * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+   *
+   * @summary Finds Pets by tags
+   */
+  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200> {
+    return this.core.fetch('/pet/findByTags', 'get', metadata);
+  }
+
+  /**
+   * Returns a single pet
+   *
+   * @summary Find pet by ID
+   */
+  getPetById(metadata: GetPetByIdMetadataParam): Promise<Pet> {
+    return this.core.fetch('/pet/{petId}', 'get', metadata);
   }
 
   /**
@@ -300,6 +310,50 @@ export default class SDK {
    */
   deletePet<T = unknown>(metadata: DeletePetMetadataParam): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'delete', metadata);
+  }
+
+  /**
+   * Uploads an image
+   *
+   */
+  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  uploadFile(metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  /**
+   * Uploads an image
+   *
+   */
+  uploadFile(body?: UploadFileBodyParam, metadata?: UploadFileMetadataParam): Promise<ApiResponse> {
+    return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
+  }
+
+  /**
+   * Returns a map of status codes to quantities
+   *
+   * @summary Returns pet inventories by status
+   */
+  getInventory(): Promise<GetInventory_Response_200> {
+    return this.core.fetch('/store/inventory', 'get');
+  }
+
+  /**
+   * Place an order for a pet
+   *
+   */
+  placeOrder(body: Order): Promise<Order> {
+    return this.core.fetch('/store/order', 'post', body);
+  }
+
+  /**
+   * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
+   *
+   * @summary Find purchase order by ID
+   */
+  getOrderById(metadata: GetOrderByIdMetadataParam): Promise<Order> {
+    return this.core.fetch('/store/order/{orderId}', 'get', metadata);
   }
 
   /**
@@ -337,6 +391,30 @@ export default class SDK {
   }
 
   /**
+   * Logs user into the system
+   *
+   */
+  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200> {
+    return this.core.fetch('/user/login', 'get', metadata);
+  }
+
+  /**
+   * Logs out current logged in user session
+   *
+   */
+  logoutUser<T = unknown>(): Promise<T> {
+    return this.core.fetch('/user/logout', 'get');
+  }
+
+  /**
+   * Get user by user name
+   *
+   */
+  getUserByName(metadata: GetUserByNameMetadataParam): Promise<User> {
+    return this.core.fetch('/user/{username}', 'get', metadata);
+  }
+
+  /**
    * This can only be done by the logged in user.
    *
    * @summary Updated user
@@ -352,84 +430,6 @@ export default class SDK {
    */
   deleteUser<T = unknown>(metadata: DeleteUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'delete', metadata);
-  }
-
-  /**
-   * Multiple status values can be provided with comma separated strings
-   *
-   * @summary Finds Pets by status
-   */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
-    return this.core.fetch('/pet/findByStatus', 'get', metadata);
-  }
-
-  /**
-   * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-   *
-   * @summary Finds Pets by tags
-   */
-  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200> {
-    return this.core.fetch('/pet/findByTags', 'get', metadata);
-  }
-
-  /**
-   * Returns a single pet
-   *
-   * @summary Find pet by ID
-   */
-  getPetById(metadata: GetPetByIdMetadataParam): Promise<Pet> {
-    return this.core.fetch('/pet/{petId}', 'get', metadata);
-  }
-
-  /**
-   * Uploads an image
-   *
-   */
-  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
-  /**
-   * Uploads an image
-   *
-   */
-  uploadFile(metadata: UploadFileMetadataParam): Promise<ApiResponse>;
-  /**
-   * Uploads an image
-   *
-   */
-  uploadFile(body?: UploadFileBodyParam, metadata?: UploadFileMetadataParam): Promise<ApiResponse> {
-    return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
-  }
-
-  /**
-   * Place an order for a pet
-   *
-   */
-  placeOrder(body: Order): Promise<Order> {
-    return this.core.fetch('/store/order', 'post', body);
-  }
-
-  /**
-   * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
-   *
-   * @summary Find purchase order by ID
-   */
-  getOrderById(metadata: GetOrderByIdMetadataParam): Promise<Order> {
-    return this.core.fetch('/store/order/{orderId}', 'get', metadata);
-  }
-
-  /**
-   * Logs user into the system
-   *
-   */
-  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200> {
-    return this.core.fetch('/user/login', 'get', metadata);
-  }
-
-  /**
-   * Get user by user name
-   *
-   */
-  getUserByName(metadata: GetUserByNameMetadataParam): Promise<User> {
-    return this.core.fetch('/user/{username}', 'get', metadata);
   }
 }
 
@@ -469,6 +469,7 @@ export type FindPetsByStatusMetadataParam = {
   status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
+export type FindPetsByStatus_Response_200 = Pet[];
 export type FindPetsByTagsMetadataParam = {
   /**
    * Tags to filter by
@@ -476,6 +477,7 @@ export type FindPetsByTagsMetadataParam = {
   tags: string[];
   [k: string]: unknown;
 };
+export type FindPetsByTags_Response_200 = Pet[];
 export type GetPetByIdMetadataParam = {
   /**
    * ID of pet to return
@@ -529,6 +531,12 @@ export type UploadFileMetadataParam = {
   petId: number;
   [k: string]: unknown;
 };
+export interface ApiResponse {
+  code?: number;
+  type?: string;
+  message?: string;
+  [k: string]: unknown;
+}
 export interface GetInventory_Response_200 {
   [k: string]: number;
 }
@@ -585,6 +593,7 @@ export type LoginUserMetadataParam = {
   password: string;
   [k: string]: unknown;
 };
+export type LoginUser_Response_200 = string;
 export type GetUserByNameMetadataParam = {
   /**
    * The name that needs to be fetched. Use user1 for testing.
@@ -606,12 +615,3 @@ export type DeleteUserMetadataParam = {
   username: string;
   [k: string]: unknown;
 };
-export type FindPetsByStatus_Response_200 = Pet[];
-export type FindPetsByTags_Response_200 = Pet[];
-export interface ApiResponse {
-  code?: number;
-  type?: string;
-  message?: string;
-  [k: string]: unknown;
-}
-export type LoginUser_Response_200 = string;
