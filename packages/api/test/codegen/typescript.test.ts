@@ -30,4 +30,12 @@ describe('typescript generator', function () {
     const ts = new TSGenerator(oas, './petstore.json');
     expect(await ts.generator()).toMatchSDKFixture('petstore');
   });
+
+  it('should work against our OAS', async function () {
+    const oas = await import('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
+    await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+    const ts = new TSGenerator(oas, './readme.json');
+    expect(await ts.generator()).toMatchSDKFixture('readme');
+  });
 });
