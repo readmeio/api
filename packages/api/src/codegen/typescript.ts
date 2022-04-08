@@ -1,6 +1,6 @@
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods, JSONSchema } from 'oas/@types/rmoas.types';
+import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/@types/rmoas.types';
 import type {
   ClassDeclaration,
   JSDocStructure,
@@ -12,16 +12,14 @@ import type {
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 
 import CodeGenerator from '.';
-import memoize from 'memoizee';
+import objectHash from 'object-hash';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
 
-const memoizedCompile = memoize(compile);
-
 type OperationTypeHousing = {
   types: {
-    params?: Record<'body' | 'formData' | 'metadata', string>;
+    params?: false | Record<'body' | 'formData' | 'metadata', string>;
     responses?: Record<string, string>;
   };
   operation: Operation;
@@ -45,6 +43,15 @@ export default class TSGenerator extends CodeGenerator {
 
   sdk: ClassDeclaration;
 
+  schemas: Map<
+    string,
+    {
+      schema: SchemaObject;
+      name: string;
+      tsType?: string;
+    }
+  >;
+
   constructor(spec: Oas, specPath: string) {
     super(spec, specPath);
 
@@ -64,6 +71,17 @@ export default class TSGenerator extends CodeGenerator {
 
     this.types = new Map();
     this.methodGenerics = new Map();
+    this.schemas = new Map();
+  }
+
+  static formatter(content: string) {
+    return prettier(content, {
+      format: true,
+      style: {
+        printWidth: 120,
+        singleQuote: true,
+      },
+    } as JSONSchemaToTypescriptOptions);
   }
 
   /**
@@ -219,7 +237,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     return this.project
       .getSourceFiles()
       .map(sourceFile => ({
-        [sourceFile.getBaseName()]: this.formatter(sourceFile.getFullText()),
+        [sourceFile.getBaseName()]: TSGenerator.formatter(sourceFile.getFullText()),
       }))
       .reduce((prev, next) => Object.assign(prev, next));
   }
@@ -334,7 +352,9 @@ sdk.server('https://eu.api.example.com/v14');`)
 
         parameters.body = {
           name: 'body',
-          type: paramTypes.body || paramTypes.formData,
+          type: paramTypes.body
+            ? this.schemas.get(paramTypes.body).tsType
+            : this.schemas.get(paramTypes.formData).tsType,
           hasQuestionToken: hasOptionalBody,
         };
       }
@@ -344,7 +364,7 @@ sdk.server('https://eu.api.example.com/v14');`)
 
         parameters.metadata = {
           name: 'metadata',
-          type: paramTypes.metadata,
+          type: this.schemas.get(paramTypes.metadata).tsType,
           hasQuestionToken: hasOptionalMetadata,
         };
       }
@@ -353,7 +373,9 @@ sdk.server('https://eu.api.example.com/v14');`)
     let returnType = 'Promise<T>';
     let typeParameters: (string | OptionalKind<TypeParameterDeclarationStructure>)[] = null;
     if (responseTypes) {
-      returnType = `Promise<${Object.values(responseTypes).join(' | ')}>`;
+      returnType = `Promise<${Object.values(responseTypes)
+        .map(hash => this.schemas.get(hash).tsType)
+        .join(' | ')}>`;
     } else {
       // We should only add the `<T>` method typing if we don't have any response types present.
       typeParameters = ['T = unknown'];
@@ -484,7 +506,7 @@ sdk.server('https://eu.api.example.com/v14');`)
   async convertJSONSchemaToTypescript(schema: JSONSchema, name: string) {
     // Though our JSON Schema type exposes JSONSchema4, which `json-schema-to-typescript` wants, it
     // won't accept our custom union type of JSON Schema 4, JSON Schema 6, and JSON Schema 7.
-    const ts = await memoizedCompile(schema as any, name, {
+    const ts = await compile(schema as any, name, {
       bannerComment: '',
 
       // Running Prettier here for every JSON Schema object we're generating is way too slow so
@@ -523,24 +545,37 @@ sdk.server('https://eu.api.example.com/v14');`)
     const operations: Record</* operationId */ string, OperationTypeHousing> = {};
     const methods = new Set();
 
+    // Prepare all of the schemas that we need to process for every operation within this API
+    // definition.
+    Object.entries(this.spec.getPaths()).forEach(([, ops]) => {
+      Object.entries(ops).forEach(([method, operation]: [HttpMethods, Operation]) => {
+        methods.add(method);
+
+        const operationId = operation.getOperationId();
+        const params = this.prepareParameterTypesForOperation(operation, operationId);
+        const responses = this.prepareResponseTypesForOperation(operation, operationId);
+
+        if (operation.hasOperationId()) {
+          operations[operation.getOperationId()] = {
+            types: {
+              params,
+              responses,
+            },
+            operation,
+          };
+        }
+      });
+    });
+
+    // Run through and convert every schema we need to use into TS types.
     await Promise.all(
-      Object.entries(this.spec.getPaths()).map(async ([, ops]) => {
-        await Promise.all(
-          Object.entries(ops).map(async ([method, operation]: [HttpMethods, Operation]) => {
-            methods.add(method);
+      Array.from(this.schemas.entries()).map(async ([hash, { schema, name: schemaName }]) => {
+        const ts = await this.convertJSONSchemaToTypescript(schema as JSONSchema, schemaName);
 
-            const operationId = operation.getOperationId();
-            const params = await this.getParameterTypesForOperation(operation, operationId);
-            const responses = await this.getResponseTypesForOperation(operation, operationId);
-
-            if (operation.hasOperationId()) {
-              operations[operation.getOperationId()] = {
-                types: { params, responses },
-                operation,
-              };
-            }
-          })
-        );
+        this.schemas.set(hash, {
+          ...this.schemas.get(hash),
+          tsType: ts.primaryType,
+        });
       })
     );
 
@@ -557,40 +592,40 @@ sdk.server('https://eu.api.example.com/v14');`)
    * @param operation
    * @param operationId
    */
-  async getParameterTypesForOperation(operation: Operation, operationId: string) {
-    let params;
-    const paramSchemas = operation.getParametersAsJsonSchema({
+  prepareParameterTypesForOperation(operation: Operation, operationId: string) {
+    const schemas = operation.getParametersAsJsonSchema({
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
     });
 
-    if (paramSchemas) {
-      params = await Promise.resolve(paramSchemas.map(param => ({ [param.type]: param.schema })))
-        .then(res => res.reduce((prev, next) => Object.assign(prev, next)))
-        .then(res => {
-          return Promise.all(
-            Object.entries(res).map(async ([paramType, schema]) => {
-              // @todo add tests for when schema is `{ type: string }`
-              const ts = await this.convertJSONSchemaToTypescript(
-                schema as JSONSchema,
-                `${operationId}_${paramType}_param`
-              );
-
-              return {
-                [paramType]: ts.primaryType,
-              };
-            })
-          );
-        })
-        .then(res => {
-          return res.reduce((prev, next) => Object.assign(prev, next), {}) as Record<
-            'body' | 'formData' | 'metadata',
-            string
-          >;
-        });
+    if (!schemas || !schemas.length) {
+      return false;
     }
 
-    return params;
+    const res = schemas
+      .map(param => ({ [param.type]: param.schema }))
+      .reduce((prev, next) => Object.assign(prev, next));
+
+    return Object.entries(res)
+      .map(([paramType, schema]) => {
+        const schemaName = schema['x-readme-ref-name'] || `${operationId}_${paramType}_param`;
+        const hash = objectHash({
+          name: schemaName,
+          schema,
+        });
+
+        if (!this.schemas.has(hash)) {
+          this.schemas.set(hash, {
+            schema,
+            name: schemaName,
+          });
+        }
+
+        return {
+          [paramType]: hash,
+        };
+      })
+      .reduce((prev, next) => Object.assign(prev, next), {}) as Record<'body' | 'formData' | 'metadata', string>;
   }
 
   /**
@@ -600,48 +635,42 @@ sdk.server('https://eu.api.example.com/v14');`)
    * @param operation
    * @param operationId
    */
-  async getResponseTypesForOperation(operation: Operation, operationId: string) {
-    return Promise.resolve(
-      operation
-        .getResponseStatusCodes()
-        .map(status => {
-          const schema = operation.getResponseAsJsonSchema(status);
-          if (!schema) {
-            return false;
-          }
+  prepareResponseTypesForOperation(operation: Operation, operationId: string) {
+    const schemas = operation
+      .getResponseStatusCodes()
+      .map(status => {
+        const schema = operation.getResponseAsJsonSchema(status);
+        if (!schema) {
+          return false;
+        }
 
-          return {
-            [status]: schema.shift(),
-          };
-        })
-        .reduce((prev, next) => Object.assign(prev, next))
-    )
-      .then(res => {
-        return Promise.all(
-          Object.entries(res).map(async ([status, jsonSchema]) => {
-            const ts = await this.convertJSONSchemaToTypescript(
-              jsonSchema.schema as JSONSchema,
-              `${operationId}_Response_${status}`
-            );
-
-            return {
-              [status]: ts.primaryType,
-            };
-          })
-        );
+        return {
+          [status]: schema.shift(),
+        };
       })
-      .then(res => res.reduce((prev, next) => Object.assign(prev, next), {}))
-      .then(res => (Object.keys(res).length ? res : undefined));
-  }
+      .reduce((prev, next) => Object.assign(prev, next));
 
-  // eslint-disable-next-line class-methods-use-this
-  formatter(content: string) {
-    return prettier(content, {
-      format: true,
-      style: {
-        printWidth: 120,
-        singleQuote: true,
-      },
-    } as JSONSchemaToTypescriptOptions);
+    const res = Object.entries(schemas)
+      .map(([status, { schema }]) => {
+        const schemaName = schema['x-readme-ref-name'] || `${operationId}_Response_${status}`;
+        const hash = objectHash({
+          name: schemaName,
+          schema,
+        });
+
+        if (!this.schemas.has(hash)) {
+          this.schemas.set(hash, {
+            schema,
+            name: schemaName,
+          });
+        }
+
+        return {
+          [status]: hash,
+        };
+      })
+      .reduce((prev, next) => Object.assign(prev, next), {});
+
+    return Object.keys(res).length ? res : undefined;
   }
 }
