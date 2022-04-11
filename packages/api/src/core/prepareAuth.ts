@@ -3,8 +3,8 @@ import type { Operation } from 'oas';
 
 type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';
 
-export default function prepareAuth(authKeys: (number | string)[][], operation: Operation) {
-  if (authKeys.length === 0) {
+export default function prepareAuth(authKey: (number | string)[], operation: Operation) {
+  if (authKey.length === 0) {
     return {};
   }
 
@@ -27,35 +27,24 @@ export default function prepareAuth(authKeys: (number | string)[][], operation: 
     return {};
   }
 
-  authKeys.forEach((authKey, idx) => {
-    const securityType = securitySchemes[idx] as SecurityType;
-    const schemes = security[securityType];
-    if (schemes.length > 1) {
-      throw new Error(
-        "Sorry, this API currently requires multiple forms of authentication which we don't yet support."
-      );
-    }
+  const securityType = securitySchemes[0] as SecurityType;
 
-    const scheme = schemes[0];
-    switch (scheme.type) {
-      case 'http':
-        if (scheme.scheme === 'basic') {
-          preparedAuth[scheme._key] = {
-            user: authKey[0],
-            pass: authKey.length === 2 ? authKey[1] : '',
-          };
-        } else if (scheme.scheme === 'bearer') {
-          if (authKey.length > 1) {
-            throw new Error(
-              'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
-            );
-          }
+  const schemes = security[securityType];
 
-          preparedAuth[scheme._key] = authKey[0];
-        }
-        break;
+  if (schemes.length > 1) {
+    throw new Error("Sorry, this API currently requires multiple forms of authentication which we don't yet support.");
+  }
 
-      case 'oauth2':
+  const scheme = schemes[0];
+
+  switch (scheme.type) {
+    case 'http':
+      if (scheme.scheme === 'basic') {
+        preparedAuth[scheme._key] = {
+          user: authKey[0],
+          pass: authKey.length === 2 ? authKey[1] : '',
+        };
+      } else if (scheme.scheme === 'bearer') {
         if (authKey.length > 1) {
           throw new Error(
             'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
@@ -63,24 +52,34 @@ export default function prepareAuth(authKeys: (number | string)[][], operation: 
         }
 
         preparedAuth[scheme._key] = authKey[0];
-        break;
+      }
+      break;
 
-      case 'apiKey':
-        if (authKey.length > 1) {
-          throw new Error(
-            'Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.'
-          );
-        }
+    case 'oauth2':
+      if (authKey.length > 1) {
+        throw new Error(
+          'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
+        );
+      }
 
-        if (scheme.in === 'query' || scheme.in === 'header' || scheme.in === 'cookie') {
-          preparedAuth[scheme._key] = authKey[0];
-        }
-        break;
+      preparedAuth[scheme._key] = authKey[0];
+      break;
 
-      default:
-        throw new Error(`Sorry, this API currently supports a scheme, ${scheme.type}, that we don't yet support.`);
-    }
-  });
+    case 'apiKey':
+      if (authKey.length > 1) {
+        throw new Error(
+          'Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.'
+        );
+      }
+
+      if (scheme.in === 'query' || scheme.in === 'header' || scheme.in === 'cookie') {
+        preparedAuth[scheme._key] = authKey[0];
+      }
+      break;
+
+    default:
+      throw new Error(`Sorry, this API currently supports a scheme, ${scheme.type}, that we don't yet support.`);
+  }
 
   return preparedAuth;
 }

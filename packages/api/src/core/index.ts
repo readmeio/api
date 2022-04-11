@@ -26,7 +26,7 @@ export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepa
 export default class APICore {
   spec: Oas;
 
-  private auth: (number | string)[][] = [];
+  private auth: (number | string)[] = [];
 
   private server:
     | false
@@ -59,7 +59,7 @@ export default class APICore {
   }
 
   setAuth(...values: string[] | number[]) {
-    this.auth.push(values);
+    this.auth = values;
     return this;
   }
 
