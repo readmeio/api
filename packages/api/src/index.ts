@@ -156,7 +156,6 @@ class Sdk {
        */
       auth: (...values: string[] | number[]) => {
         core.setAuth(...values);
-        return new Proxy(sdk, sdkProxy);
       },
 
       /**
