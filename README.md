@@ -25,7 +25,7 @@ All you need to use `api` is to supply it an OpenAPI definition and then use the
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/json/petstore.json');
 
-sdk.listPets().then(res => res.json()).then(res => {
+sdk.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
@@ -33,10 +33,11 @@ sdk.listPets().then(res => res.json()).then(res => {
 The OpenAPI definition is automatically downloaded, cached, and transformed into a chainable [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) Promise that you can use to make API requests.
 
 ### Authentication
-`api` supports API authentication through an `.auth()` method that you can chain to your requests, as such:
+`api` supports API authentication through an `.auth()` method:
 
 ```js
-sdk.auth('myApiToken').listPets().then(...);
+sdk.auth('myApiToken');
+sdk.listPets().then(...);
 ```
 
 With the exception of OpenID, it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
@@ -46,6 +47,8 @@ For example:
 * HTTP Basic auth: `sdk.auth('username', 'password')`
 * Bearer tokens (HTTP or OAuth 2): `sdk.auth('myBearerToken')`
 * API Keys: `sdk.auth('myApiKey')`
+
+> ℹ️ Note that `sdk.auth()` is not chainable.
 
 ### Parameters and Payloads
 When supplying parameters and/or request body payloads to an API request, you don't need to explicitly define what goes where since the API definition contains all that information. All you need to do is supply either one or two objects:

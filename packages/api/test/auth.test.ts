@@ -39,15 +39,6 @@ describe('#auth()', function () {
         mock.done();
       });
 
-      it.skip('should allow you to supply auth when chained with an operation', async function () {
-        const mock = nock('https://httpbin.org')
-          .get(/\/anything\/apiKey/)
-          .reply(200, uri => uri);
-
-        expect(await sdk.auth(apiKey).get('/anything/apiKey')).to.equal('/anything/apiKey?apiKey=123457890');
-        mock.done();
-      });
-
       it('should throw if you supply multiple auth keys', async function () {
         sdk.auth(apiKey, apiKey);
 
@@ -70,17 +61,6 @@ describe('#auth()', function () {
 
         sdk.auth(apiKey);
         expect(await sdk.put('/anything/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
-        mock.done();
-      });
-
-      it.skip('should allow you to supply auth when chained with an operation', async function () {
-        const mock = nock('https://httpbin.org')
-          .put('/anything/apiKey')
-          .reply(200, function () {
-            return this.req.headers;
-          });
-
-        expect(await sdk.auth(apiKey).put('/anything/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
         mock.done();
       });
 
@@ -113,19 +93,6 @@ describe('#auth()', function () {
         mock.done();
       });
 
-      it.skip('should allow you to supply auth when chained with an operation', async function () {
-        const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
-
-        const mock = nock('https://httpbin.org')
-          .post('/anything/basic')
-          .reply(200, function () {
-            return this.req.headers;
-          });
-
-        expect(await sdk.auth(user, pass).post('/anything/basic')).to.have.deep.property('authorization', [authHeader]);
-        mock.done();
-      });
-
       it('should allow you to not pass in a password', async function () {
         const mock = nock('https://httpbin.org')
           .post('/anything/basic')
@@ -155,19 +122,6 @@ describe('#auth()', function () {
         mock.done();
       });
 
-      it.skip('should allow you to supply auth when chained with an operation', async function () {
-        const mock = nock('https://httpbin.org')
-          .post('/anything/bearer')
-          .reply(200, function () {
-            return this.req.headers;
-          });
-
-        expect(await sdk.auth(apiKey).post('/anything/bearer')).to.have.deep.property('authorization', [
-          `Bearer ${apiKey}`,
-        ]);
-        mock.done();
-      });
-
       it('should throw if you pass in multiple bearer tokens', async function () {
         sdk.auth(apiKey, apiKey);
         await sdk
@@ -191,19 +145,6 @@ describe('#auth()', function () {
       sdk.auth(apiKey);
 
       expect(await sdk.post('/anything/oauth2')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
-      mock.done();
-    });
-
-    it.skip('should allow you to supply auth when chained with an operation', async function () {
-      const mock = nock('https://httpbin.org')
-        .post('/anything/oauth2')
-        .reply(200, function () {
-          return this.req.headers;
-        });
-
-      expect(await sdk.auth(apiKey).post('/anything/oauth2')).to.have.deep.property('authorization', [
-        `Bearer ${apiKey}`,
-      ]);
       mock.done();
     });
 
@@ -239,25 +180,5 @@ describe('#auth()', function () {
 
     sdk.auth(apiKey2);
     await sdk.get('/anything/apiKey').then(() => mock2.done());
-  });
-
-  // TODO: in future add support for modifying auth for each call
-  // https://github.com/readmeio/api/issues/102
-  // https://github.com/readmeio/api/commit/56ce53e08d590d4a532a494e86e46a50efc4d891
-  it.skip('should allow multiple calls to have different keys', async function () {
-    const apiKey1 = '12345';
-    const apiKey2 = '67890';
-    const mock1 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey: apiKey1 }).reply(200, {});
-    const mock2 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey: apiKey2 }).reply(200, {});
-
-    await sdk
-      .auth(apiKey1)
-      .get('/anything/apiKey')
-      .then(() => mock1.done());
-
-    await sdk
-      .auth(apiKey2)
-      .get('/anything/apiKey')
-      .then(() => mock2.done());
   });
 });
