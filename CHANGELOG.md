@@ -1,3 +1,9 @@
+## 4.4.0 (2022-04-25)
+
+* feat: backporting #431 to the v4 series ([4a1e077](https://github.com/readmeio/api/commit/4a1e077)), closes [#431](https://github.com/readmeio/api/issues/431)
+
+
+
 ## 4.3.0 (2022-04-05)
 
 * feat: ugprading oas dependencies on v4.2.1 ([c328fd4](https://github.com/readmeio/api/commit/c328fd4))
