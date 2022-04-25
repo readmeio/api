@@ -29,7 +29,7 @@ class Sdk {
   }
 
   load() {
-    const authKeys = [];
+    let authKeys = [];
     const cache = new Cache(this.uri);
     const self = this;
     let config = { parseResponse: true };
@@ -150,8 +150,7 @@ class Sdk {
 
     sdk = {
       auth: (...values) => {
-        authKeys.push(values);
-        return new Proxy(sdk, sdkProxy);
+        authKeys = values;
       },
       config: opts => {
         // Downside to having `opts` be merged into the existing `config` is that there isn't a clean way to reset your
