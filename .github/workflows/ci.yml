@@ -24,7 +24,7 @@ jobs:
 
       # Node 14 ships with npm@6 so for compatibility reasons we're upping this.
       - name: Install npm@8
-        if: matrix.node-version == '114'
+        if: matrix.node-version == '14'
         run: npm install -g npm@8
 
       - name: Install dependencies
