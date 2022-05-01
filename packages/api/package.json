@@ -32,7 +32,7 @@
     "@readme/oas-to-har": "^16.1.0",
     "@readme/openapi-parser": "^2.1.0",
     "datauri": "^4.1.0",
-    "fetch-har": "^6.1.0",
+    "fetch-har": "^8.0.0",
     "find-cache-dir": "^3.3.1",
     "form-data-encoder": "^1.7.1",
     "formdata-node": "^4.3.2",
