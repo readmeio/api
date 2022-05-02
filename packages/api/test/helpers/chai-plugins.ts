@@ -30,7 +30,7 @@ declare global {
 
 export default function chaiPlugins(_chai, utils) {
   utils.addProperty(chai.Assertion.prototype, 'customUserAgent', function () {
-    const userAgent = this._obj['user-agent'][0];
+    const userAgent = this._obj['user-agent'];
 
     this.assert(
       userAgent.match(/api \(node\)\/\d+.\d+.\d+/),

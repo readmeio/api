@@ -2,11 +2,13 @@
 import type { OASDocument } from 'oas/@types/rmoas.types';
 
 import { assert, expect } from 'chai';
-import nock from 'nock';
+import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 
 import api from '../src';
 import Cache from '../src/cache';
+
+import { responses as mockResponses } from './helpers/fetch-mock';
 
 import securityOas from '@readme/oas-examples/3.0/json/security.json';
 
@@ -27,16 +29,23 @@ describe('#auth()', function () {
     sdk = api(securityOas as unknown as OASDocument);
   });
 
+  afterEach(function () {
+    fetchMock.restore();
+  });
+
   describe('API Keys', function () {
     describe('in: query', function () {
       it('should allow you to supply auth', async function () {
-        const mock = nock('https://httpbin.org')
-          .get(/\/anything\/apiKey/)
-          .reply(200, uri => uri);
+        fetchMock.get(
+          {
+            url: 'https://httpbin.org/anything/apiKey',
+            query: { apiKey },
+          },
+          mockResponses.searchParams
+        );
 
         sdk.auth(apiKey);
         expect(await sdk.get('/anything/apiKey')).to.equal('/anything/apiKey?apiKey=123457890');
-        mock.done();
       });
 
       it('should throw if you supply multiple auth keys', async function () {
@@ -53,15 +62,10 @@ describe('#auth()', function () {
 
     describe('in: header', function () {
       it('should allow you to supply auth', async function () {
-        const mock = nock('https://httpbin.org')
-          .put('/anything/apiKey')
-          .reply(200, function () {
-            return this.req.headers;
-          });
+        fetchMock.put('https://httpbin.org/anything/apiKey', mockResponses.headers);
 
         sdk.auth(apiKey);
-        expect(await sdk.put('/anything/apiKey')).to.have.deep.property('x-api-key', ['123457890']);
-        mock.done();
+        expect(await sdk.put('/anything/apiKey')).to.have.deep.property('x-api-key', '123457890');
       });
 
       it('should throw if you supply multiple auth keys', async function () {
@@ -82,44 +86,30 @@ describe('#auth()', function () {
       it('should allow you to supply auth', async function () {
         const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 
-        const mock = nock('https://httpbin.org')
-          .post('/anything/basic')
-          .reply(200, function () {
-            return this.req.headers;
-          });
+        fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
 
         sdk.auth(user, pass);
-        expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', [authHeader]);
-        mock.done();
+        expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', authHeader);
       });
 
       it('should allow you to not pass in a password', async function () {
-        const mock = nock('https://httpbin.org')
-          .post('/anything/basic')
-          .reply(200, function () {
-            return this.req.headers;
-          });
+        fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
 
         sdk.auth(user);
 
-        expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', [
-          `Basic ${Buffer.from(`${user}:`).toString('base64')}`,
-        ]);
-        mock.done();
+        expect(await sdk.post('/anything/basic')).to.have.deep.property(
+          'authorization',
+          `Basic ${Buffer.from(`${user}:`).toString('base64')}`
+        );
       });
     });
 
     describe('scheme: bearer', function () {
       it('should allow you to supply auth', async function () {
-        const mock = nock('https://httpbin.org')
-          .post('/anything/bearer')
-          .reply(200, function () {
-            return this.req.headers;
-          });
+        fetchMock.post('https://httpbin.org/anything/bearer', mockResponses.headers);
 
         sdk.auth(apiKey);
-        expect(await sdk.post('/anything/bearer')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
-        mock.done();
+        expect(await sdk.post('/anything/bearer')).to.have.deep.property('authorization', `Bearer ${apiKey}`);
       });
 
       it('should throw if you pass in multiple bearer tokens', async function () {
@@ -136,16 +126,11 @@ describe('#auth()', function () {
 
   describe('OAuth 2', function () {
     it('should allow you to supply auth', async function () {
-      const mock = nock('https://httpbin.org')
-        .post('/anything/oauth2')
-        .reply(200, function () {
-          return this.req.headers;
-        });
+      fetchMock.post('https://httpbin.org/anything/oauth2', mockResponses.headers);
 
       sdk.auth(apiKey);
 
-      expect(await sdk.post('/anything/oauth2')).to.have.deep.property('authorization', [`Bearer ${apiKey}`]);
-      mock.done();
+      expect(await sdk.post('/anything/oauth2')).to.have.deep.property('authorization', `Bearer ${apiKey}`);
     });
 
     it('should throw if you pass in multiple bearer tokens', async function () {
@@ -160,25 +145,50 @@ describe('#auth()', function () {
   });
 
   it('should allow multiple calls to share an API key', async function () {
-    const mock1 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey }).reply(200, {});
-    const mock2 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey }).reply(200, {});
+    let calls = 0;
+    fetchMock.get(
+      {
+        url: 'https://httpbin.org/anything/apiKey',
+        query: { apiKey },
+      },
+      () => {
+        calls += 1;
+        return { calls };
+      }
+    );
 
     sdk.auth(apiKey);
 
-    await sdk.get('/anything/apiKey').then(() => mock1.done());
-    await sdk.get('/anything/apiKey').then(() => mock2.done());
+    await sdk.get('/anything/apiKey').then(res => expect(res.calls).to.equal(1));
+    await sdk.get('/anything/apiKey').then(res => expect(res.calls).to.equal(2));
   });
 
   it('should allow auth to be called again to change the key', async function () {
     const apiKey1 = '12345';
     const apiKey2 = '67890';
-    const mock1 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey: apiKey1 }).reply(200, {});
-    const mock2 = nock('https://httpbin.org').get('/anything/apiKey').query({ apiKey: apiKey2 }).reply(200, {});
+
+    fetchMock.get(
+      {
+        name: `fetch ${apiKey1}`,
+        url: 'https://httpbin.org/anything/apiKey',
+        query: { apiKey: apiKey1 },
+      },
+      mockResponses.searchParams
+    );
+
+    fetchMock.get(
+      {
+        name: `fetch ${apiKey2}`,
+        url: 'https://httpbin.org/anything/apiKey',
+        query: { apiKey: apiKey2 },
+      },
+      mockResponses.searchParams
+    );
 
     sdk.auth(apiKey1);
-    await sdk.get('/anything/apiKey').then(() => mock1.done());
+    await sdk.get('/anything/apiKey').then(res => expect(res).to.equal('/anything/apiKey?apiKey=12345'));
 
     sdk.auth(apiKey2);
-    await sdk.get('/anything/apiKey').then(() => mock2.done());
+    await sdk.get('/anything/apiKey').then(res => expect(res).to.equal('/anything/apiKey?apiKey=67890'));
   });
 });

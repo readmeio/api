@@ -22,13 +22,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Node 14 ships with npm@6 so for compatibility reasons we're upping this.
-      - name: Install npm@8
+      # Node 14 ships with npm@6 which doesn't install peerDeps by default.
+      - name: Install npm@7
         if: matrix.node-version == '14'
-        run: npm install -g npm@8
+        run: npm install -g npm@7
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build dists
+        run: npm run build
 
       - name: Run tests
         run: npm test
