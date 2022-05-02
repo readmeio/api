@@ -12,49 +12,8 @@ updates:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
 
-  ###
-  ###
-  ### root
-  ###
-  ###
   - package-ecosystem: npm
     directory: "/"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 10
-    reviewers:
-      - erunion
-    labels:
-      - dependencies
-    commit-message:
-      prefix: chore(deps)
-      prefix-development: chore(deps-dev)
-
-  ###
-  ###
-  ### api
-  ###
-  ###
-  - package-ecosystem: npm
-    directory: "/packages/api"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 10
-    reviewers:
-      - erunion
-    labels:
-      - dependencies
-    commit-message:
-      prefix: chore(deps)
-      prefix-development: chore(deps-dev)
-
-  ###
-  ###
-  ### httpsnippet-client-api
-  ###
-  ###
-  - package-ecosystem: npm
-    directory: "/packages/httpsnippet-client-api"
     schedule:
       interval: monthly
     open-pull-requests-limit: 10
