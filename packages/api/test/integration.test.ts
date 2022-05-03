@@ -16,8 +16,7 @@ import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json
 
 chai.use(chaiPlugins);
 
-// Our testing flow has some quirks with Node 18. These uploads normally work fine in a real
-// environment though.
+// Our testing flow has some quirks with Node 18 but these quirks don't exist in a real environment.
 const isNode18 = Number(process.versions.node.split('.')[0]) >= 18;
 
 describe('integration tests', function () {
