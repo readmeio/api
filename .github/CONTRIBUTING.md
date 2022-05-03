@@ -80,7 +80,7 @@ Running this normally you'll receive a JSON object back from the https://httpbin
 }
 ```
 
-To have `fetch-mck` mock this request we can construct a `mock.json` file that contains the following:
+To have `fetch-mock` mock this request we can construct a `mock.json` file that contains the following:
 
 ```json
 {
