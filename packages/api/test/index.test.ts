@@ -2,11 +2,13 @@ import type { OASDocument } from 'oas/@types/rmoas.types';
 
 import { assert, expect } from 'chai';
 import uniqueTempDir from 'unique-temp-dir';
-import nock from 'nock';
+import fetchMock from 'fetch-mock';
 
 import api from '../src';
 import Cache from '../src/cache';
 import pkg from '../package.json';
+
+import { responses as mockResponses } from './helpers/fetch-mock';
 
 let petstoreSdk;
 let readmeSdk;
@@ -30,6 +32,10 @@ describe('api', function () {
     readmeSdk = api(readme);
   });
 
+  afterEach(function () {
+    fetchMock.restore();
+  });
+
   describe('#preloading', function () {
     let uspto;
 
@@ -38,11 +44,8 @@ describe('api', function () {
     });
 
     it('should proxy an sdk for the first time', async function () {
-      const mock = nock('https://developer.uspto.gov/ds-api')
-        .get('/')
-        .reply(200, uri => uri)
-        .get('/two')
-        .reply(200, uri => uri);
+      fetchMock.get('https://developer.uspto.gov/ds-api/', mockResponses.url('pathname'));
+      fetchMock.get('https://developer.uspto.gov/ds-api/two', mockResponses.url('pathname'));
 
       // Asserting that we have not previously loaded this API.
       expect(new Cache(uspto).isCached()).to.be.false;
@@ -76,8 +79,6 @@ describe('api', function () {
 
       // Calling the same method again should also work as expected.
       expect(await sdk.get('/two')).to.equal('/ds-api/two');
-
-      mock.done();
     });
 
     it('should support supplying a raw JSON OAS object', function () {
@@ -95,10 +96,9 @@ describe('api', function () {
 
     describe('#operationId()', function () {
       it('should work for operationId', async function () {
-        const mock = nock(petstoreServerUrl).get('/pets').reply(200, 'it worked!');
+        fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
         expect(await petstoreSdk.findPets()).to.equal('it worked!');
-        mock.done();
       });
 
       it('should work with operationIds that have contain spaces', function () {
@@ -116,10 +116,9 @@ describe('api', function () {
       });
 
       it('should work for other methods', async function () {
-        const mock = nock(petstoreServerUrl).post('/pets').reply(200, 'it worked!');
+        fetchMock.post(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
         expect(await petstoreSdk.addPet()).to.equal('it worked!');
-        mock.done();
       });
 
       it.skip('should allow operationId to be the same as a http method');
@@ -136,10 +135,9 @@ describe('api', function () {
 
     describe('#method(path)', function () {
       it('should work for method and path', async function () {
-        const mock = nock(petstoreServerUrl).get('/pets').reply(200, 'it worked!');
+        fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
         expect(await petstoreSdk.get('/pets')).to.equal('it worked!');
-        mock.done();
       });
 
       it('should error if method does not exist', async function () {
@@ -164,7 +162,7 @@ describe('api', function () {
         message: `The endpoint you called (GET /pets/${petId}) doesn't exist`,
       };
 
-      const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(404, response);
+      fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, { body: response, status: 404 });
 
       await petstoreSdk
         .deletePet({ id: petId })
@@ -175,24 +173,17 @@ describe('api', function () {
           const json = await err.json();
           expect(json).to.deep.equal(response);
         });
-
-      mock.done();
     });
 
     it('should contain a custom user agent for the library in requests', async function () {
       const userAgent = `${pkg.name} (node)/${pkg.version}`;
-      const mock = nock(petstoreServerUrl, {
-        reqheaders: {
+      fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, mockResponses.headers, {
+        headers: {
           'User-Agent': userAgent,
         },
-      })
-        .delete(`/pets/${petId}`)
-        .reply(200, function () {
-          return this.req.headers['user-agent'];
-        });
+      });
 
-      expect(await petstoreSdk.deletePet({ id: petId })).to.deep.equal([userAgent]);
-      mock.done();
+      expect(await petstoreSdk.deletePet({ id: petId })).to.have.deep.property('user-agent', userAgent);
     });
 
     describe('operationId', function () {
@@ -202,20 +193,16 @@ describe('api', function () {
           name: 'Buster',
         };
 
-        const mock = nock(petstoreServerUrl).delete(`/pets/${petId}`).reply(200, response);
+        fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, response);
 
         expect(await petstoreSdk.deletePet({ id: petId })).to.deep.equal(response);
-        mock.done();
       });
 
       it('should pass through body for operationId', async function () {
         const body = { name: 'Buster' };
-        const mock = nock(petstoreServerUrl)
-          .post('/pets', body)
-          .reply(200, (uri, requestBody) => requestBody);
+        fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
         expect(await petstoreSdk.addPet(body)).to.deep.equal(body);
-        mock.done();
       });
 
       it('should pass through parameters and body for operationId', async function () {
@@ -225,16 +212,13 @@ describe('api', function () {
           body: 'updated body',
         };
 
-        const mock = nock('https://dash.readme.com/api/v1')
-          .put(`/changelogs/${slug}`, body)
-          .reply(200, (uri, requestBody) => ({ uri, requestBody }));
+        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
         readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.updateChangelog(body, { slug })).to.deep.equal({
           requestBody: body,
           uri: '/api/v1/changelogs/new-release',
         });
-        mock.done();
       });
     });
 
@@ -242,23 +226,17 @@ describe('api', function () {
       it('should pass through body for method + path', async function () {
         const body = { name: 'Buster' };
 
-        const mock = nock(petstoreServerUrl)
-          .post('/pets', body)
-          .reply(200, (uri, requestBody) => requestBody);
+        fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
         expect(await petstoreSdk.post('/pets', body)).to.deep.equal(body);
-        mock.done();
       });
 
       it('should pass through parameters for method + path', async function () {
         const slug = 'new-release';
-        const mock = nock('https://dash.readme.com/api/v1')
-          .put(`/changelogs/${slug}`)
-          .reply(200, uri => uri);
+        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.url('pathname'));
 
         readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.put('/changelogs/{slug}', { slug })).to.equal('/api/v1/changelogs/new-release');
-        mock.done();
       });
 
       it('should pass through parameters and body for method + path', async function () {
@@ -268,21 +246,13 @@ describe('api', function () {
           body: 'updated body',
         };
 
-        const mock = nock('https://dash.readme.com/api/v1')
-          .put(`/changelogs/${slug}`, body)
-          .reply(200, function (uri, requestBody) {
-            return {
-              uri,
-              requestBody,
-            };
-          });
+        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
         readmeSdk.server('https://dash.readme.com/api/v1');
         expect(await readmeSdk.put('/changelogs/{slug}', body, { slug })).to.deep.equal({
           uri: '/api/v1/changelogs/new-release',
           requestBody: body,
         });
-        mock.done();
       });
     });
 
@@ -323,18 +293,11 @@ describe('api', function () {
           ],
         };
 
-        const mock = nock('https://httpbin.org/')
-          .get('/anything')
-          .query(true)
-          .reply(200, function () {
-            return { path: this.req.path };
-          });
+        fetchMock.get('glob:https://*.*', mockResponses.searchParams);
 
-        expect(await queryEncoding.getAnything(params)).to.deep.equal({
-          path: '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item',
-        });
-
-        mock.done();
+        expect(await queryEncoding.getAnything(params)).to.equal(
+          '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
+        );
       });
 
       it("should not double encode query params if they're already encoded", async function () {
@@ -350,18 +313,11 @@ describe('api', function () {
           ],
         };
 
-        const mock = nock('https://httpbin.org/')
-          .get('/anything')
-          .query(true)
-          .reply(200, function () {
-            return { path: this.req.path };
-          });
+        fetchMock.get('glob:https://*.*', mockResponses.searchParams);
 
-        expect(await queryEncoding.getAnything(params)).to.deep.equal({
-          path: '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item',
-        });
-
-        mock.done();
+        expect(await queryEncoding.getAnything(params)).to.deep.equal(
+          '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
+        );
       });
     });
   });

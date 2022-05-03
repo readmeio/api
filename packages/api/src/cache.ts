@@ -82,7 +82,7 @@ export default class Cache {
 
   static async reset() {
     await fs.promises.rm(Cache.cacheStore);
-    await fs.promises.rmdir(Cache.specsCache, { recursive: true });
+    await fs.promises.rm(Cache.specsCache, { recursive: true });
   }
 
   static validate(json: any) {

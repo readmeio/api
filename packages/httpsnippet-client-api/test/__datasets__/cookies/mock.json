@@ -1,9 +1,12 @@
 {
-  "scope": "https://httpbin.org",
-  "method": "POST",
-  "path": "/anything",
-  "status": 200,
-  "reqheaders": {
-    "cookie": ["foo=bar; bar=baz"]
+  "req": {
+    "url": "https://httpbin.org/anything",
+    "method": "post",
+    "headers": {
+      "cookie": "foo=bar; bar=baz"
+    }
+  },
+  "res": {
+    "status": 200
   }
 }

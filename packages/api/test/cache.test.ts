@@ -2,7 +2,7 @@ import type { OASDocument } from 'oas/@types/rmoas.types';
 
 import chai, { assert, expect } from 'chai';
 import uniqueTempDir from 'unique-temp-dir';
-import nock from 'nock';
+import fetchMock from 'fetch-mock';
 import chaiPlugins from './helpers/chai-plugins';
 import fs from 'fs/promises';
 import Cache from '../src/cache';
@@ -30,7 +30,16 @@ describe('cache', function () {
         .load()
         .then(() => assert.fail())
         .catch(err => {
-          expect(err.message).to.equal('Only HTTP(S) protocols are supported');
+          // The native `fetch` implementation in Node 18 returns a different error, with the new
+          // `Error.cause` data, so we should make sure that we're catching that case instead of
+          // the `node-fetch` error message.
+          const isNode18 = Number(process.versions.node.split('.')[0]) >= 18;
+          if (isNode18) {
+            expect(err.message).to.equal('fetch failed');
+            expect(err.cause.message).to.equal('unknown scheme');
+          } else {
+            expect(err.message).to.equal('Only HTTP(S) protocols are supported');
+          }
         });
     });
 
@@ -61,9 +70,7 @@ describe('cache', function () {
       });
 
       it('should be able to load a definition', async function () {
-        const mock = nock('https://dash.readme.com')
-          .get('/api/v1/api-registry/n6kvf10vakpemvplxn')
-          .reply(200, readmeSpec);
+        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplxn', readmeSpec);
 
         const cacheStore = new Cache('@readme/v1.0#n6kvf10vakpemvplxn');
 
@@ -82,13 +89,13 @@ describe('cache', function () {
 
         expect(cacheStore.get().paths['/api-specification'].get.parameters).to.be.dereferenced;
         expect(cacheStore.isCached()).to.be.true;
-        mock.done();
+        fetchMock.restore();
       });
     });
 
     describe('URL', function () {
       it('should be able to load a definition', async function () {
-        const mock = nock('http://example.com').get('/readme.json').reply(200, readmeSpec);
+        fetchMock.get('http://example.com/readme.json', readmeSpec);
         const cacheStore = new Cache('http://example.com/readme.json');
 
         expect(cacheStore.isCached()).to.be.false;
@@ -106,27 +113,29 @@ describe('cache', function () {
 
         expect(cacheStore.get().paths['/api-specification'].get.parameters).to.be.dereferenced;
         expect(cacheStore.isCached()).to.be.true;
-        mock.done();
+        fetchMock.restore();
       });
 
       it('should error if the url cannot be reached', async function () {
-        const mock = nock('http://example.com').get('/unknown.json').reply(404);
+        fetchMock.get('https://example.com/unknown.json', { status: 404 });
 
-        await new Cache('http://example.com/unknown.json')
+        await new Cache('https://example.com/unknown.json')
           .load()
           .then(() => assert.fail())
           .catch(err => {
-            expect(err.message).to.equal('Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found');
+            expect(err.message).to.equal(
+              'Unable to retrieve URL (https://example.com/unknown.json). Reason: Not Found'
+            );
           });
 
-        mock.done();
+        fetchMock.restore();
       });
 
       it('should convert yaml to json', async function () {
         const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
-        const mock = nock('http://example.com').get('/readme.yaml').reply(200, spec);
+        fetchMock.get('https://example.com/readme.yaml', spec);
 
-        const definition = 'http://example.com/readme.yaml';
+        const definition = 'https://example.com/readme.yaml';
         const cacheStore = new Cache(definition);
         const hash = Cache.getCacheHash(definition);
 
@@ -135,7 +144,7 @@ describe('cache', function () {
         await cacheStore.load();
         expect(cacheStore.get().paths['/api-specification'].get.parameters).to.be.dereferenced;
         expect(cacheStore.isCached()).to.be.true;
-        mock.done();
+        fetchMock.restore();
 
         const cached = cacheStore.getCache();
         expect(cached).to.have.property(hash);

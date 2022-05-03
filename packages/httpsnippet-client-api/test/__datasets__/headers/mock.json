@@ -1,9 +1,12 @@
 {
-  "scope": "https://httpbin.org",
-  "method": "GET",
-  "path": "/anything",
-  "status": 200,
-  "reqheaders": {
-    "x-foo": ["Bar"]
+  "req": {
+    "url": "https://httpbin.org/anything",
+    "method": "GET",
+    "headers": {
+      "x-foo": "Bar"
+    }
+  },
+  "res": {
+    "status": 200
   }
 }

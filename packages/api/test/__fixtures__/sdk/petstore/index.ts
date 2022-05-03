@@ -448,6 +448,8 @@ export interface Pet {
   tags?: Tag[];
   /**
    * pet status in the store
+   *
+   * `available` `pending` `sold`
    */
   status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
@@ -547,6 +549,8 @@ export interface Order {
   shipDate?: string;
   /**
    * Order Status
+   *
+   * `placed` `approved` `delivered`
    */
   status?: 'placed' | 'approved' | 'delivered';
   complete?: boolean;

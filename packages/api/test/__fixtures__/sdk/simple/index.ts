@@ -120,6 +120,8 @@ export interface Pet {
   tags?: Tag[];
   /**
    * pet status in the store
+   *
+   * `available` `pending` `sold`
    */
   status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;

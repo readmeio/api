@@ -1,9 +1,12 @@
 {
-  "scope": "https://httpbin.org",
-  "method": "PUT",
-  "path": "/anything/apiKey",
-  "status": 200,
-  "reqheaders": {
-    "x-api-key": ["a5a220e"]
+  "req": {
+    "url": "https://httpbin.org/anything/apiKey",
+    "method": "put",
+    "headers": {
+      "x-api-key": "a5a220e"
+    }
+  },
+  "res": {
+    "status": 200
   }
 }

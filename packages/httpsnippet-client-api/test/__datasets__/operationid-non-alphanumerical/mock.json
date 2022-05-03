@@ -1,9 +1,15 @@
 {
-  "scope": "https://petstore.swagger.io",
-  "method": "GET",
-  "path": "/v2/pet/findByStatus?status=available",
-  "status": 200,
-  "reqheaders": {
-    "authorization": ["Bearer 123"]
+  "req": {
+    "url": "http://petstore.swagger.io/v2/pet/findByStatus",
+    "method": "GET",
+    "query": {
+      "status": "available"
+    },
+    "headers": {
+      "authorization": "Bearer 123"
+    }
+  },
+  "res": {
+    "status": 200
   }
 }

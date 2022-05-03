@@ -1,6 +1,9 @@
 {
-  "scope": "http://dev.local",
-  "method": "POST",
-  "path": "/v2/endpoint",
-  "status": 200
+  "req": {
+    "url": "http://dev.local/v2/endpoint",
+    "method": "POST"
+  },
+  "res": {
+    "status": 200
+  }
 }

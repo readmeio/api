@@ -21,7 +21,7 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": "^14 || ^16"
+    "node": ">=14"
   },
   "dependencies": {
     "content-type": "^1.0.4",
@@ -32,16 +32,17 @@
     "oas": "^18.0.1"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.5.0",
-    "@readme/oas-examples": "^5.0.0",
-    "@readme/openapi-parser": "^2.0.4",
+    "@readme/eslint-config": "^8.7.3",
+    "@readme/oas-examples": "^5.1.1",
+    "@readme/openapi-parser": "^2.2.0",
     "api": "file:../api",
     "chai": "^4.3.6",
-    "eslint": "^8.10.0",
+    "eslint": "^8.14.0",
+    "fetch-mock": "^9.11.0",
+    "isomorphic-fetch": "^3.0.0",
     "mocha": "^9.2.1",
-    "nock": "^13.2.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.2",
     "sinon": "^13.0.1",
     "sinon-chai": "^3.7.0"
   },
