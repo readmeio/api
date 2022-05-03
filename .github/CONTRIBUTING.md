@@ -44,7 +44,7 @@ Additionally if you need help verifying that your OpenAPI definition is valid yo
 
 #### `mock.json`
 
-This file is what is going to tell our test suite what endpoints your API test will be accessing so we can mock out those requests for you. Behind the scenes we use the amazing [`fetch-mock`](https://npm.im/fetch-mock) library for this.
+This file is what is going to tell our test suite what endpoints your API test will be accessing so we can mock out those requests for you. Behind the scenes we the [`fetch-mock`](https://npm.im/fetch-mock) library for this.
 Say you have the following snippet:
 
 ```js
