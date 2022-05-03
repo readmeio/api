@@ -11,7 +11,7 @@ import type {
 } from 'ts-morph';
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 
-import CodeGenerator from '.';
+import CodeGenerator from './generatorBase';
 import objectHash from 'object-hash';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';

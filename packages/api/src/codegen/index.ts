@@ -1,16 +1,12 @@
 import type Oas from 'oas';
+import type CodeGenerator from './generatorBase';
 
-export default abstract class CodeGenerator {
-  spec: Oas;
+import TSGenerator from './typescript';
 
-  specPath: string;
-
-  userAgent: string;
-
-  constructor(spec: Oas, specPath: string) {
-    this.spec = spec;
-    this.specPath = specPath;
+export default function codegen(language: 'ts' | 'js', spec: Oas, specPath: string): CodeGenerator {
+  if (language === 'ts' || language === 'js') {
+    return new TSGenerator(spec, specPath);
   }
 
-  abstract generator(): Promise<Record<string, string>>;
+  throw new TypeError('Unsupported language supplied.');
 }

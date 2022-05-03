@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "debug:bin": "node -r ts-node/register src/bin.ts",
     "lint": "eslint . --ext .js,.ts",
     "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
     "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts",
@@ -31,6 +32,8 @@
   "dependencies": {
     "@readme/oas-to-har": "^17.0.3",
     "@readme/openapi-parser": "^2.2.0",
+    "chalk": "^4.1.2",
+    "commander": "^9.2.0",
     "datauri": "^4.1.0",
     "fetch-har": "^8.0.1",
     "find-cache-dir": "^3.3.1",
@@ -45,6 +48,7 @@
     "make-dir": "^3.1.0",
     "oas": "^18.3.1",
     "object-hash": "^3.0.0",
+    "ora": "^5.4.1",
     "ts-morph": "^14.0.0"
   },
   "devDependencies": {
