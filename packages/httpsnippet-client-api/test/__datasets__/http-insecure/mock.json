@@ -1,6 +1,9 @@
 {
-  "scope": "http://httpbin.org",
-  "method": "GET",
-  "path": "/anything",
-  "status": 200
+  "req": {
+    "url": "http://httpbin.org/anything",
+    "method": "get"
+  },
+  "res": {
+    "status": 200
+  }
 }

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .js,.ts",
-    "prebuild": "rm -rf dist/ @types/; npm run prebuild.packageConfig",
+    "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
     "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts",
     "prepack": "npm run build",
     "pretest": "npm run lint",
@@ -32,7 +32,7 @@
     "@readme/oas-to-har": "^17.0.3",
     "@readme/openapi-parser": "^2.2.0",
     "datauri": "^4.1.0",
-    "fetch-har": "^8.0.0",
+    "fetch-har": "^8.0.1",
     "find-cache-dir": "^3.3.1",
     "form-data-encoder": "^1.7.1",
     "formdata-node": "^4.3.2",

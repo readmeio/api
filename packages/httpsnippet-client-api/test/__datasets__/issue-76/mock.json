@@ -1,6 +1,13 @@
 {
-  "scope": "https://petstore.swagger.io",
-  "method": "GET",
-  "path": "/v2/pet/findByStatus?status=available&api_key=a5a220e",
-  "status": 200
+  "req": {
+    "url": "http://petstore.swagger.io/v2/pet/findByStatus",
+    "method": "get",
+    "query": {
+      "status": "available",
+      "api_key": "a5a220e"
+    }
+  },
+  "res": {
+    "status": 200
+  }
 }

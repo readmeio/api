@@ -1,9 +1,16 @@
 {
-  "scope": "https://dash.readme.io",
-  "method": "GET",
-  "path": "/api/v1/api-specification?perPage=10&page=1",
-  "status": 200,
-  "reqheaders": {
-    "authorization": ["Basic OnB1Zw=="]
+  "req": {
+    "url": "https://dash.readme.io/api/v1/api-specification",
+    "method": "get",
+    "query": {
+      "perPage": 10,
+      "page": 1
+    },
+    "headers": {
+      "authorization": "Basic OnB1Zw=="
+    }
+  },
+  "res": {
+    "status": 200
   }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 /* eslint-disable mocha/no-setup-in-describe */
+require('isomorphic-fetch');
 const chai = require('chai');
 const { expect } = require('chai');
 const sinon = require('sinon');
@@ -10,7 +11,7 @@ const rimraf = require('rimraf');
 const fs = require('fs/promises');
 const HTTPSnippet = require('@readme/httpsnippet');
 const path = require('path');
-const nock = require('nock');
+const fetchMock = require('fetch-mock');
 const openapiParser = require('@readme/openapi-parser');
 const client = require('../src');
 const readme = require('@readme/oas-examples/3.0/json/readme.json');
@@ -161,6 +162,7 @@ describe('httpsnippet-client-api', function () {
 
         afterEach(function () {
           consoleStub.restore();
+          fetchMock.restore();
         });
 
         it('should generate the expected snippet', async function () {
@@ -175,16 +177,17 @@ describe('httpsnippet-client-api', function () {
         });
 
         it('should generate a functional snippet', async function () {
-          const nocks = nock.define([
-            {
-              scope: 'https://api.example.com',
-              method: 'GET',
-              path: `/${snippet}.json`,
-              status: 200,
-              response: definition,
-            },
-            { ...mock, response: `The ${snippet} request works properly!` },
-          ]);
+          if (!mock.req || !mock.res) {
+            throw new Error(
+              `The mock definition for ${snippet} must include required \`req\` and \`res\` expectations.`
+            );
+          }
+
+          fetchMock.get(`https://api.example.com/${snippet}.json`, { status: 200, body: definition });
+          fetchMock.mock(mock.req, {
+            ...mock.res,
+            body: `The ${snippet} request works properly!`,
+          });
 
           const code = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8').then(str => {
             // So we can test these snippets within a Node VM environment we need to remove the api
@@ -238,8 +241,6 @@ describe('httpsnippet-client-api', function () {
           });
 
           expect(consoleStub).to.be.calledWith(`The ${snippet} request works properly!`);
-
-          nocks.forEach(n => n.done());
         });
       });
     });

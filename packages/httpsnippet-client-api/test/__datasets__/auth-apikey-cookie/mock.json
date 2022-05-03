@@ -1,9 +1,12 @@
 {
-  "scope": "https://httpbin.org",
-  "method": "POST",
-  "path": "/anything/apiKey",
-  "status": 200,
-  "reqheaders": {
-    "cookie": ["api_key=buster"]
+  "req": {
+    "url": "https://httpbin.org/anything/apiKey",
+    "method": "post",
+    "headers": {
+      "cookie": "api_key=buster"
+    }
+  },
+  "res": {
+    "status": 200
   }
 }
