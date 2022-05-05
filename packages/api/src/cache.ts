@@ -93,9 +93,9 @@ export default class Cache {
     // The `validate` method handles dereferencing for us.
     return OpenAPIParser.validate(json, {
       dereference: {
-        // If circular `$refs` are ignored they'll remain in the API definition as
-        // `$ref: String`. This allows us to not only do easy circular reference detection but
-        // also stringify and  save dereferenced API definitions back into the cache directory.
+        // If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`.
+        // This allows us to not only do easy circular reference detection but also stringify and
+        // save dereferenced API definitions back into the cache directory.
         circular: 'ignore',
       },
     }).catch(err => {

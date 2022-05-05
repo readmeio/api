@@ -223,7 +223,7 @@ describe('cache', function () {
     });
 
     it('should be able to cache a definition that contains a circular reference', async function () {
-      const file = require.resolve('./__fixtures__/circular.oas.json');
+      const file = require.resolve('@readme/oas-examples/3.0/json/circular');
       const cacheStore = new Cache(file);
 
       expect(cacheStore.isCached()).to.be.false;

@@ -25,7 +25,7 @@ export default class Fetcher {
   async load() {
     if (typeof this.uri !== 'string') {
       throw new TypeError(
-        "Something disastrous happened and a non-string URI was supplied to the Fetcher library. This shouldn't have happened!"
+        "Something disastrous occurred and a non-string URI was supplied to the Fetcher library. This shouldn't have happened!"
       );
     }
 
