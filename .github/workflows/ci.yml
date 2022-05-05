@@ -3,10 +3,25 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
+  linting:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
 
+      # Node 14 ships with npm@6 which doesn't install peerDeps by default.
+      - name: Install npm@7
+        if: matrix.node-version == '14'
+        run: npm install -g npm@7
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+
+  build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version:
@@ -34,4 +49,4 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm test
+        run: npm test --ignore-scripts
