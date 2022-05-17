@@ -13,9 +13,11 @@ global.Headers = fetch.Headers;
 global.FormData = require('form-data');
 
 class Sdk {
-  constructor(uri) {
+  constructor(uri, opts = {}) {
     this.uri = uri;
     this.userAgent = `${pkg.name} (node)/${pkg.version}`;
+
+    this.cacheDir = opts.cacheDir ? opts.cacheDir : false;
   }
 
   static getOperations(spec) {
@@ -30,7 +32,7 @@ class Sdk {
 
   load() {
     let authKeys = [];
-    const cache = new Cache(this.uri);
+    const cache = new Cache(this.uri, this.cacheDir);
     const self = this;
     let config = { parseResponse: true };
     let server = false;
@@ -170,6 +172,6 @@ class Sdk {
   }
 }
 
-module.exports = uri => {
-  return new Sdk(uri).load();
+module.exports = (uri, opts = {}) => {
+  return new Sdk(uri, opts).load();
 };

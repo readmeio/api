@@ -1,13 +1,10 @@
-const sdk = require('./src')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/yaml/readme.yaml');
+// const path = require('path');
+const sdk = require('./src')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/yaml/readme.yaml', {
+  // Uncomment this line to load the SDK with a custom caching directory.
+  // cacheDir: path.join(process.cwd(), '.api'),
+});
 
-sdk
-  .auth('readmeApiToken')
-  .getChangelogs({
-    perPage: 10,
-    page: 1
-  })
-  .then(res => res.json())
-  .then(res => {
-    console.log(`there are ${res.length} changelogs`);
-    console.log(res[0]);
-  });
+sdk.getOpenRoles().then(res => {
+  console.log(`there are ${res.length} open roles`);
+  console.log(res[0]);
+});

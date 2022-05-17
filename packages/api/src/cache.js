@@ -9,18 +9,8 @@ const os = require('os');
 const path = require('path');
 const makeDir = require('make-dir');
 
-let cacheDir = findCacheDir({ name: pkg.name });
-if (typeof cacheDir === 'undefined') {
-  // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't writable, or there's no
-  // `package.json` in the root-most directory. If this happens, we can instead adhoc create a cache directory in the
-  // users OS temp directory and store our data there.
-  //
-  // @link https://github.com/avajs/find-cache-dir/issues/29
-  cacheDir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
-}
-
-class SdkCache {
-  constructor(uri) {
+class Cache {
+  constructor(uri, cacheDir = false) {
     /**
      * Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
      *
@@ -37,8 +27,23 @@ class SdkCache {
         : u;
 
     this.uri = resolveReadMeRegistryAccessor(uri);
-    this.uriHash = SdkCache.getCacheHash(this.uri);
-    this.dir = cacheDir;
+    this.uriHash = Cache.getCacheHash(this.uri);
+
+    if (cacheDir) {
+      this.dir = cacheDir;
+    } else {
+      this.dir = findCacheDir({ name: pkg.name });
+      if (typeof this.dir === 'undefined') {
+        // The `find-cache-dir` module returns `undefined` if the `node_modules/` directory isn't
+        // writable, or there's no `package.json` in the root-most directory. If this happens, we
+        // can instead adhoc create a cache directory in the users OS temp directory and store our
+        // data there.
+        //
+        // @link https://github.com/avajs/find-cache-dir/issues/29
+        this.dir = makeDir.sync(path.join(os.tmpdir(), pkg.name));
+      }
+    }
+
     this.cacheStore = path.join(this.dir, 'cache.json');
     this.specsCache = path.join(this.dir, 'specs');
 
@@ -206,4 +211,4 @@ class SdkCache {
   }
 }
 
-module.exports = SdkCache;
+module.exports = Cache;

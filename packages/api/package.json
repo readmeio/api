@@ -48,7 +48,8 @@
   "prettier": "@readme/eslint-config/prettier",
   "jest": {
     "testPathIgnorePatterns": [
-      "__tests__/__fixtures__/"
+      "__tests__/__fixtures__/",
+      ".api-test/"
     ]
   }
 }
