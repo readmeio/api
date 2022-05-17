@@ -23,7 +23,7 @@ npm install api --save
 Using `api` is as simple as supplying it an OpenAPI and using the SDK as you would any other!
 
 ```js
-const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas/master/packages/examples/3.0/json/petstore.json');
+const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
 
 sdk.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
@@ -163,4 +163,18 @@ By default we parse the response based on the `content-type` header for you. You
 
 ```js
 sdk.config({ parseResponse: false });
+```
+
+#### Where is the cache stored?
+
+By default the cache is configured with the [find-cache-dir](https://npm.im/find-cache-dir) library so the cache will be in `node_modules/.cache/api`. If placing this cache within the `node_modules/` directory is a problem for your environment (maybe you use `npm prune`) you can configure this by supplying an additional argument to the SDK instantiator:
+
+```js
+const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json', {
+  cacheDir: './path/to/my/custom/cache/dir',
+});
+
+sdk.listPets().then(res => {
+  console.log(`My pets name is ${res[0].name}!`);
+});
 ```
