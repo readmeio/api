@@ -1,3 +1,10 @@
+## 4.5.0 (2022-05-17)
+
+* docs: updating docs on the new cacheDir option ([8863791](https://github.com/readmeio/api/commit/8863791))
+* feat: adding support for a customizable cache directory ([d4a7df3](https://github.com/readmeio/api/commit/d4a7df3))
+
+
+
 ## 4.4.0 (2022-04-25)
 
 * feat: backporting #431 to the v4 series ([4a1e077](https://github.com/readmeio/api/commit/4a1e077)), closes [#431](https://github.com/readmeio/api/issues/431)
