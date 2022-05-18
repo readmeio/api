@@ -141,7 +141,6 @@ describe('#saveUrl()', () => {
 
     const cached = cacheStore.getCache();
     expect(cached).toHaveProperty(hash);
-    expect(cached[hash].path).toMatch(/\.json$/);
   });
 });
 
@@ -182,7 +181,6 @@ describe('#saveFile()', () => {
 
     const cached = cacheStore.getCache();
     expect(cached).toHaveProperty(hash);
-    expect(cached[hash].path).toMatch(/\.json$/);
   });
 });
 
@@ -250,6 +248,26 @@ describe('#get', () => {
 
   it('should load a file out of cache', async () => {
     await cacheStore.saveFile();
+
+    const loaded = cacheStore.get();
+    expect(loaded).toHaveProperty('components');
+    expect(loaded).toHaveProperty('info');
+    expect(loaded).toHaveProperty('paths');
+    expect(loaded).toHaveProperty('servers');
+  });
+
+  it('should support the legacy `path` property in the cache store', async () => {
+    await cacheStore.saveFile();
+
+    const cache = cacheStore.getCache();
+    cache['44ec0da6e10c8806831ba3d4126c1b66'].path = path.join(
+      cacheStore.specsCache,
+      `${cache['44ec0da6e10c8806831ba3d4126c1b66'].hash}.json`
+    );
+
+    delete cache['44ec0da6e10c8806831ba3d4126c1b66'].hash;
+
+    expect(Object.keys(cache)).toHaveLength(1);
 
     const loaded = cacheStore.get();
     expect(loaded).toHaveProperty('components');

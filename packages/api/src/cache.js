@@ -92,7 +92,18 @@ class Cache {
     }
 
     const cache = this.getCache();
-    return JSON.parse(fs.readFileSync(cache[this.uriHash].path, 'utf8'));
+
+    // Prior to v4.5.0 we were putting a fully resolved path to the API definition in the cache
+    // store but if you had specified a custom caching directory and would generate the cache on
+    // your system, that filepath would obviously not be the same in other environments. For this
+    // reason the `path` was removed from the cache store in favor of storing the `hash` instead.
+    //
+    // If we still have `path` in the config cache for backwards compatibility we should use it.
+    if ('path' in cache[this.uriHash]) {
+      return JSON.parse(fs.readFileSync(cache[this.uriHash].path, 'utf8'));
+    }
+
+    return JSON.parse(fs.readFileSync(path.join(this.specsCache, `${cache[this.uriHash].hash}.json`)));
   }
 
   async load() {
@@ -159,16 +170,16 @@ class Cache {
         const cache = self.getCache();
         if (!(self.uriHash in cache)) {
           const saved = JSON.stringify(spec, null, 2);
-          const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
+          const fileHash = crypto.createHash('md5').update(saved).digest('hex');
 
           cache[self.uriHash] = {
-            path: path.join(self.specsCache, `${jsonHash}.json`),
+            hash: fileHash,
             original: self.uri,
             title: 'title' in spec.info ? spec.info.title : undefined,
             version: 'version' in spec.info ? spec.info.version : undefined,
           };
 
-          fs.writeFileSync(cache[self.uriHash].path, saved);
+          fs.writeFileSync(path.join(self.specsCache, `${fileHash}.json`), saved);
           fs.writeFileSync(self.cacheStore, JSON.stringify(cache, null, 2));
 
           self.cache = cache;
