@@ -257,15 +257,15 @@ describe('#get', () => {
   });
 
   it('should support the legacy `path` property in the cache store', async () => {
+    const file = path.join(examplesDir, 'readme.yaml');
+    cacheStore = new Cache(file);
     await cacheStore.saveFile();
 
     const cache = cacheStore.getCache();
-    cache['44ec0da6e10c8806831ba3d4126c1b66'].path = path.join(
-      cacheStore.specsCache,
-      `${cache['44ec0da6e10c8806831ba3d4126c1b66'].hash}.json`
-    );
+    const cacheKey = Object.keys(cache)[0];
+    cache[cacheKey].path = path.join(cacheStore.specsCache, `${cache[cacheKey].hash}.json`);
 
-    delete cache['44ec0da6e10c8806831ba3d4126c1b66'].hash;
+    delete cache[cacheKey].hash;
 
     expect(Object.keys(cache)).toHaveLength(1);
 
