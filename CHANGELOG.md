@@ -1,3 +1,11 @@
+## <small>4.5.1 (2022-05-18)</small>
+
+* fix: broken test ([723299e](https://github.com/readmeio/api/commit/723299e))
+* fix: broken test ([cc0a5c1](https://github.com/readmeio/api/commit/cc0a5c1))
+* fix: stop storing absolute paths in the cache store to where specs are ([40e1376](https://github.com/readmeio/api/commit/40e1376))
+
+
+
 ## 4.5.0 (2022-05-17)
 
 * docs: updating docs on the new cacheDir option ([8863791](https://github.com/readmeio/api/commit/8863791))
