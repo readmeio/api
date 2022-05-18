@@ -9,18 +9,26 @@ import Cache from './cache';
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo';
 
+interface SDKOptions {
+  cacheDir?: string;
+}
+
 class Sdk {
   uri: string | OASDocument;
 
   userAgent: string;
 
-  constructor(uri: string | OASDocument) {
+  cacheDir: string | false;
+
+  constructor(uri: string | OASDocument, opts: SDKOptions = {}) {
     this.uri = uri;
     this.userAgent = `${PACKAGE_NAME} (node)/${PACKAGE_VERSION}`;
+
+    this.cacheDir = opts.cacheDir ? opts.cacheDir : false;
   }
 
   load() {
-    const cache = new Cache(this.uri);
+    const cache = new Cache(this.uri, this.cacheDir);
     const userAgent = this.userAgent;
 
     const core = new APICore();
@@ -199,6 +207,6 @@ class Sdk {
 // Why `export` vs `export default`? If we leave this as `export` then TS will transpile it into
 // a `module.exports` export so that when folks load this they don't need to load it as
 // `require('api').default`.
-export = (uri: string | OASDocument) => {
-  return new Sdk(uri).load();
+export = (uri: string | OASDocument, opts: SDKOptions = {}) => {
+  return new Sdk(uri, opts).load();
 };

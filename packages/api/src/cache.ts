@@ -13,7 +13,16 @@ import { PACKAGE_NAME } from './packageInfo';
 
 import Fetcher from './fetcher';
 
-type CacheStore = Record<string, { path: string; original: string | OASDocument; title?: string; version?: string }>;
+type CacheStore = Record<
+  string,
+  {
+    hash: string;
+    path?: string; // Deprecated in v4.5.0 in favor of `hash`.
+    original: string | OASDocument;
+    title?: string;
+    version?: string;
+  }
+>;
 
 export default class Cache {
   static dir: string;
@@ -30,8 +39,8 @@ export default class Cache {
 
   fetcher: Fetcher;
 
-  constructor(uri: string | OASDocument) {
-    Cache.setCacheDir();
+  constructor(uri: string | OASDocument, cacheDir: string | false = false) {
+    Cache.setCacheDir(cacheDir);
     Cache.cacheStore = path.join(Cache.dir, 'cache.json');
     Cache.specsCache = path.join(Cache.dir, 'specs');
 
@@ -58,7 +67,7 @@ export default class Cache {
     return crypto.createHash('md5').update(data).digest('hex');
   }
 
-  static setCacheDir(dir?: string) {
+  static setCacheDir(dir?: string | false) {
     if (dir) {
       Cache.dir = dir;
       return;
@@ -81,8 +90,17 @@ export default class Cache {
   }
 
   static async reset() {
-    await fs.promises.rm(Cache.cacheStore);
-    await fs.promises.rm(Cache.specsCache, { recursive: true });
+    if (Cache.cacheStore) {
+      await fs.promises.rm(Cache.cacheStore).catch(() => {
+        // no-op
+      });
+    }
+
+    if (Cache.specsCache) {
+      await fs.promises.rm(Cache.specsCache, { recursive: true }).catch(() => {
+        // no-op
+      });
+    }
   }
 
   static validate(json: any) {
@@ -138,7 +156,18 @@ export default class Cache {
     }
 
     const cache = this.getCache();
-    return JSON.parse(fs.readFileSync(cache[this.uriHash].path, 'utf8'));
+
+    // Prior to v4.5.0 we were putting a fully resolved path to the API definition in the cache
+    // store but if you had specified a custom caching directory and would generate the cache on
+    // your system, that filepath would obviously not be the same in other environments. For this
+    // reason the `path` was removed from the cache store in favor of storing the `hash` instead.
+    //
+    // If we still have `path` in the config cache for backwards compatibility we should use it.
+    if ('path' in cache[this.uriHash]) {
+      return JSON.parse(fs.readFileSync(cache[this.uriHash].path, 'utf8'));
+    }
+
+    return JSON.parse(fs.readFileSync(path.join(Cache.specsCache, `${cache[this.uriHash].hash}.json`), 'utf8'));
   }
 
   async load() {
@@ -163,16 +192,16 @@ export default class Cache {
     const cache = this.getCache();
     if (!(this.uriHash in cache)) {
       const saved = JSON.stringify(spec, null, 2);
-      const jsonHash = crypto.createHash('md5').update(saved).digest('hex');
+      const fileHash = crypto.createHash('md5').update(saved).digest('hex');
 
       cache[this.uriHash] = {
-        path: path.join(Cache.specsCache, `${jsonHash}.json`),
+        hash: fileHash,
         original: this.uri,
         title: 'title' in spec.info ? spec.info.title : undefined,
         version: 'version' in spec.info ? spec.info.version : undefined,
       };
 
-      fs.writeFileSync(cache[this.uriHash].path, saved);
+      fs.writeFileSync(path.join(Cache.specsCache, `${fileHash}.json`), saved);
       fs.writeFileSync(Cache.cacheStore, JSON.stringify(cache, null, 2));
 
       this.cached = cache;

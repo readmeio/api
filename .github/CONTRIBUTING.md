@@ -12,7 +12,7 @@ If you need help don't be afraid to open up an issue!
 
 ## Packages
 
-### `httpsnippet-client-api` snippet
+### `httpsnippet-client-api`
 
 If you wish to add or change functionality to how `api` snippets are generated, your changes should go within [the `httpsnippet-client-api` package in `packages/`](https://github.com/readmeio/api/tree/main/packages/httpsnippet-client-api). We have a nifty test suite set up there that'll run pre-made JS code snippets for the [`api`](https://npm.im/api) package within a virtual environment, with mocked out HTTP requests, to ensure that everything is well and good. It's pretty neat!
 

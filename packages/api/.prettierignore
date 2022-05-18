@@ -1,3 +1,4 @@
+.api/
 .nyc_output/
 dist/
 example.js

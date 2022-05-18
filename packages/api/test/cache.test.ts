@@ -1,6 +1,7 @@
 import type { OASDocument } from 'oas/@types/rmoas.types';
 
 import chai, { assert, expect } from 'chai';
+import path from 'path';
 import uniqueTempDir from 'unique-temp-dir';
 import fetchMock from 'fetch-mock';
 import chaiPlugins from './helpers/chai-plugins';
@@ -23,33 +24,6 @@ describe('cache', function () {
     it('should return a raw object if a JSON object was initially supplied', async function () {
       const res = await new Cache(readmeSpec as unknown as OASDocument).load();
       expect(res).to.deep.equal(readmeSpec);
-    });
-
-    it('should throw an error when a non-HTTP(S) url is supplied', async function () {
-      await new Cache('htt://example.com/openapi.json')
-        .load()
-        .then(() => assert.fail())
-        .catch(err => {
-          // The native `fetch` implementation in Node 18 returns a different error, with the new
-          // `Error.cause` data, so we should make sure that we're catching that case instead of
-          // the `node-fetch` error message.
-          const isNode18 = Number(process.versions.node.split('.')[0]) >= 18;
-          if (isNode18) {
-            expect(err.message).to.equal('fetch failed');
-            expect(err.cause.message).to.equal('unknown scheme');
-          } else {
-            expect(err.message).to.equal('Only HTTP(S) protocols are supported');
-          }
-        });
-    });
-
-    it('should throw an error if neither a url or file are detected', async function () {
-      await new Cache('/this/is/not/a/real/path.json')
-        .load()
-        .then(() => assert.fail())
-        .catch(err => {
-          expect(err.message).to.match(/supply a URL or a path on your filesystem/);
-        });
     });
 
     describe('ReadMe registry UUID', function () {
@@ -148,7 +122,6 @@ describe('cache', function () {
 
         const cached = cacheStore.getCache();
         expect(cached).to.have.property(hash);
-        expect(cached[hash].path).to.match(/\.json$/);
       });
     });
 
@@ -185,7 +158,6 @@ describe('cache', function () {
 
         const cached = cacheStore.getCache();
         expect(cached).to.have.property(hash);
-        expect(cached[hash].path).to.match(/\.json$/);
       });
     });
   });
@@ -256,6 +228,28 @@ describe('cache', function () {
       const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
       const cacheStore = new Cache(file);
       await cacheStore.load();
+
+      const loaded = cacheStore.get();
+      expect(loaded).to.have.property('components');
+      expect(loaded).to.have.property('info');
+      expect(loaded).to.have.property('paths');
+      expect(loaded).to.have.property('servers');
+    });
+
+    it('should support the legacy `path` property in the cache store', async function () {
+      await Cache.reset();
+
+      const file = require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml');
+      const cacheStore = new Cache(file);
+      await cacheStore.load();
+
+      const cache = cacheStore.getCache();
+      const cacheKey = Object.keys(cache)[0];
+      cache[cacheKey].path = path.join(Cache.specsCache, `${cache[cacheKey].hash}.json`);
+
+      delete cache[cacheKey].hash;
+
+      expect(Object.keys(cache)).to.have.length(1);
 
       const loaded = cacheStore.get();
       expect(loaded).to.have.property('components');
