@@ -39,7 +39,7 @@ describe('custom cache directory', () => {
     const cache = await fs.readFile(path.join(cacheDir, 'cache.json'), 'utf8').then(JSON.parse);
     expect(cache).toStrictEqual({
       bcace67532514a49e663e471602b7be6: {
-        path: `${cacheDir}/specs/f2068ebf6ce28b51a8467bf7ac53bbae.json`,
+        hash: 'f2068ebf6ce28b51a8467bf7ac53bbae',
         original: 'https://example.com/openapi.json',
         title: 'USPTO Data Set API',
         version: '1.0.0',
