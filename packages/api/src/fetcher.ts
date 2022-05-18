@@ -31,13 +31,16 @@ export default class Fetcher {
 
     return Promise.resolve(this.uri)
       .then(uri => {
+        let url;
         try {
-          const url = new URL(uri);
-
-          return Fetcher.getURL(url.href);
+          url = new URL(uri);
         } catch (err) {
+          // If that try fails for whatever reason than the URI that we have isn't a real URL and
+          // we can safely attempt to look for it on the filesystem.
           return Fetcher.getFile(uri);
         }
+
+        return Fetcher.getURL(url.href);
       })
       .then(res => Fetcher.validate(res))
       .then(res => res as OASDocument);
