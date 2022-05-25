@@ -25,7 +25,7 @@ All you need to use `api` is to supply it an OpenAPI definition and then use the
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
 
-sdk.listPets().then(res => {
+sdk.findPetsByStatus({ status: 'available' }).then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
@@ -37,7 +37,7 @@ The OpenAPI definition is automatically downloaded, cached, and transformed into
 
 ```js
 sdk.auth('myApiToken');
-sdk.listPets().then(...);
+sdk.findPetsByStatus({ status: 'available' }).then(...);
 ```
 
 With the exception of OpenID, it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
@@ -173,7 +173,7 @@ By default the cache is configured with the [find-cache-dir](https://npm.im/find
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json', {
   cacheDir: './path/to/my/custom/cache/dir',
 });
-sdk.listPets().then(res => {
+sdk.findPetsByStatus({ status: 'available' }).then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
