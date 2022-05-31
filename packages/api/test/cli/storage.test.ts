@@ -16,9 +16,13 @@ import petstoreSimple from '@readme/oas-examples/3.0/json/petstore-simple.json';
 chai.use(chaiPlugins);
 
 describe('storage', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  this.beforeAll(function () {
+  beforeEach(function () {
     Storage.setStorageDir(uniqueTempDir());
+  });
+
+  afterEach(function () {
+    Storage.reset();
+    fetchMock.restore();
   });
 
   describe('#generateIntegrityHash', function () {
@@ -29,12 +33,57 @@ describe('storage', function () {
     });
   });
 
-  describe('#load', function () {
-    afterEach(function () {
-      Storage.reset();
-      fetchMock.restore();
+  describe('#setIdentifier', function () {
+    it('should be able to update the identifier', function () {
+      const storage = new Storage('@petstore#n6kvf10vakpemvplx');
+
+      expect(storage.identifier).to.be.undefined;
+
+      storage.setIdentifier('petstore');
+
+      expect(storage.identifier).to.equal('petstore');
+    });
+  });
+
+  describe('#isInLockFile', function () {
+    it('should be able to look up in the lockfile by a given source', async function () {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', readmeSpec);
+
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, 'petstore');
+
+      expect(Storage.isInLockFile({ source })).to.be.false;
+
+      await storage.load();
+
+      expect(Storage.isInLockFile({ source })).to.deep.equal({
+        identifier: 'petstore',
+        source,
+        integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+        installerVersion: PACKAGE_VERSION,
+      });
     });
 
+    it('should be able to look up in the lockfile by a given identifier', async function () {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', readmeSpec);
+
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, 'petstore');
+
+      expect(Storage.isInLockFile({ identifier: 'petstore' })).to.be.false;
+
+      await storage.load();
+
+      expect(Storage.isInLockFile({ identifier: 'petstore' })).to.deep.equal({
+        identifier: 'petstore',
+        source,
+        integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+        installerVersion: PACKAGE_VERSION,
+      });
+    });
+  });
+
+  describe('#load', function () {
     it('should throw an error when a non-HTTP(S) url is supplied', async function () {
       await new Storage('htt://example.com/openapi.json', 'invalid-url')
         .load()

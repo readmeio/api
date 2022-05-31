@@ -9,17 +9,35 @@ import path from 'path';
 export default class Fetcher {
   uri: string | OASDocument;
 
+  /**
+   * @example @petstore/v1.0#n6kvf10vakpemvplx
+   * @example @petstore#n6kvf10vakpemvplx
+   */
+  // eslint-disable-next-line unicorn/no-unsafe-regex
+  static registryUUIDRegex = /^@(?<project>[a-zA-Z0-9-_]+)(\/?(?<version>.+))?#(?<uuid>[a-z0-9]+)$/;
+
   constructor(uri: string | OASDocument) {
-    /**
-     * Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
-     *
-     * @example @petstore/v1.0#n6kvf10vakpemvplx
-     * @example @petstore#n6kvf10vakpemvplx
-     */
-    this.uri =
-      typeof uri === 'string'
-        ? uri.replace(/^@[a-zA-Z0-9-_]+\/?(.+)#([a-z0-9]+)$/, 'https://dash.readme.com/api/v1/api-registry/$2')
+    if (typeof uri === 'string') {
+      // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
+      this.uri = Fetcher.isAPIRegistryUUID(uri)
+        ? uri.replace(Fetcher.registryUUIDRegex, 'https://dash.readme.com/api/v1/api-registry/$4')
         : uri;
+    } else {
+      this.uri = uri;
+    }
+  }
+
+  static isAPIRegistryUUID(uri: string) {
+    return Fetcher.registryUUIDRegex.test(uri);
+  }
+
+  static getProjectPrefixFromRegistryUUID(uri: string) {
+    const matches = uri.match(Fetcher.registryUUIDRegex);
+    if (!matches) {
+      return undefined;
+    }
+
+    return matches.groups.project;
   }
 
   async load() {

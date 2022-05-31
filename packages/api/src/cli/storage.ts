@@ -12,9 +12,7 @@ import Fetcher from '../fetcher';
 export default class Storage {
   static dir: string;
 
-  static lockfile: string;
-
-  static apisDir: string;
+  static lockfile: false | Lockfile;
 
   /**
    * This is the original source that the file came from (relative/absolute file path, URL, ReadMe
@@ -24,14 +22,10 @@ export default class Storage {
 
   identifier: string;
 
-  lockfile: false | Lockfile;
-
   fetcher: Fetcher;
 
-  constructor(source: string, identifier: string) {
+  constructor(source: string, identifier?: string) {
     Storage.setStorageDir();
-    Storage.lockfile = path.join(Storage.dir, 'api.json');
-    Storage.apisDir = path.join(Storage.dir, 'apis');
 
     this.fetcher = new Fetcher(source);
 
@@ -39,7 +33,15 @@ export default class Storage {
     this.identifier = identifier;
 
     // This should default to false so we have awareness if we've looked at the lockfile yet.
-    this.lockfile = false;
+    Storage.lockfile = false;
+  }
+
+  static getLockfilePath() {
+    return path.join(Storage.dir, 'api.json');
+  }
+
+  static getAPIsDir() {
+    return path.join(Storage.dir, 'apis');
   }
 
   static setStorageDir(dir?: string) {
@@ -52,8 +54,9 @@ export default class Storage {
       return;
     }
 
-    Storage.dir = makeDir.sync(path.join(__dirname, '.api'));
-    makeDir.sync(Storage.apisDir);
+    Storage.dir = makeDir.sync(path.join(process.cwd(), '.api'));
+
+    makeDir.sync(Storage.getAPIsDir());
   }
 
   /**
@@ -62,14 +65,13 @@ export default class Storage {
    * This will completely destroy the contents of the `.api/` directory!
    */
   static async reset() {
-    if (Storage.lockfile) {
-      await fs.promises.writeFile(Storage.lockfile, JSON.stringify(Storage.getDefaultLockfile(), null, 2));
-      // await fs.promises.rm(Storage.lockfile);
+    if (Storage.getLockfilePath()) {
+      await fs.promises.writeFile(Storage.getLockfilePath(), JSON.stringify(Storage.getDefaultLockfile(), null, 2));
     }
 
-    if (Storage.apisDir) {
-      await fs.promises.rm(Storage.apisDir, { recursive: true });
-      await fs.promises.mkdir(Storage.apisDir, { recursive: true });
+    if (Storage.getAPIsDir()) {
+      await fs.promises.rm(Storage.getAPIsDir(), { recursive: true });
+      await fs.promises.mkdir(Storage.getAPIsDir(), { recursive: true });
     }
   }
 
@@ -88,6 +90,42 @@ export default class Storage {
       .toString();
   }
 
+  static getLockfile() {
+    if (typeof Storage.lockfile === 'object') {
+      return Storage.lockfile;
+    }
+
+    if (fs.existsSync(Storage.getLockfilePath())) {
+      const file = fs.readFileSync(Storage.getLockfilePath(), 'utf8');
+      Storage.lockfile = JSON.parse(file) as Lockfile;
+    } else {
+      Storage.lockfile = Storage.getDefaultLockfile();
+    }
+
+    return Storage.lockfile;
+  }
+
+  static isInLockFile(search: { identifier?: string; source?: string }) {
+    if (!search.identifier && !search.source) {
+      throw new TypeError('An `identifier` or `source` must be supplied to this method to search in the lockfile.');
+    }
+
+    const lockfile = Storage.getLockfile();
+    const res = lockfile.apis.find(a => {
+      if (search.identifier) {
+        return a.identifier === search.identifier;
+      }
+
+      return a.source === search.source;
+    });
+
+    return res === undefined ? false : res;
+  }
+
+  setIdentifier(identifier: string) {
+    this.identifier = identifier;
+  }
+
   /**
    * Determine if the current spec + identifier we're working with is already in the lockfile.
    */
@@ -99,22 +137,8 @@ export default class Storage {
    * Retrieve the lockfile record for the current spec + identifier if it exists in the lockfile.
    */
   getFromLockfile() {
-    const lockfile = this.getLockfile();
+    const lockfile = Storage.getLockfile();
     return lockfile.apis.find(a => a.identifier === this.identifier);
-  }
-
-  getLockfile() {
-    if (typeof this.lockfile === 'object') {
-      return this.lockfile;
-    }
-
-    if (fs.existsSync(Storage.lockfile)) {
-      this.lockfile = JSON.parse(fs.readFileSync(Storage.lockfile, 'utf8')) as Lockfile;
-    } else {
-      this.lockfile = Storage.getDefaultLockfile();
-    }
-
-    return this.lockfile;
   }
 
   getAPIDefinition() {
@@ -122,8 +146,10 @@ export default class Storage {
       throw new Error(`${this.source} has not been cached yet and must do so before being retrieved.`);
     }
 
-    const identifierStorageDir = path.join(Storage.apisDir, this.identifier);
-    return JSON.parse(fs.readFileSync(path.join(identifierStorageDir, 'openapi.json'), 'utf8'));
+    const identifierStorageDir = path.join(Storage.getAPIsDir(), this.identifier);
+    const file = fs.readFileSync(path.join(identifierStorageDir, 'openapi.json'), 'utf8');
+
+    return JSON.parse(file);
   }
 
   async load() {
@@ -132,14 +158,14 @@ export default class Storage {
 
   /**
    * @example <caption>Storage directory structure</caption>
-   * api/
-   * ├── api.js               // The `package-lock.json` equivalent that records everything that's
+   * .api/
+   * ├── api.json             // The `package-lock.json` equivalent that records everything that's
    * |                        // installed, when it was installed, what the original source was,
    * |                        // and what version of `api` was used.
    * └── apis/
    *     ├── readme/
    *     │   ├── index.js     // We may offer the option to export a raw TS file for folks who want
-   *     |   |                  // that, but for now it'll be a compiled JS file.
+   *     |   |                // that, but for now it'll be a compiled JS file.
    *     │   ├── types.ts     // All types for their SDK, ready to use in an IDE.
    *     │   └── openapi.json
    *     └── petstore/
@@ -150,20 +176,24 @@ export default class Storage {
    * @param spec
    */
   save(spec: OASDocument) {
+    if (!this.identifier) {
+      throw new TypeError('An identifier must be set before saving the API definition into storage.');
+    }
+
     // Create our main `.api/` directory.
     if (!fs.existsSync(Storage.dir)) {
       fs.mkdirSync(Storage.dir, { recursive: true });
     }
 
     // Create the `.api/apis/` diretory where we'll be storing API definitions.
-    if (!fs.existsSync(Storage.apisDir)) {
-      fs.mkdirSync(Storage.apisDir, { recursive: true });
+    if (!fs.existsSync(Storage.getAPIsDir())) {
+      fs.mkdirSync(Storage.getAPIsDir(), { recursive: true });
     }
 
     if (!this.isInLockfile()) {
       // This API doesn't exist within our storage system yet so we need to record it in the
       // lockfile.
-      const identifierStorageDir = path.join(Storage.apisDir, this.identifier);
+      const identifierStorageDir = path.join(Storage.getAPIsDir(), this.identifier);
       const saved = JSON.stringify(spec, null, 2);
 
       // Create the `.api/apis/<identifier>` directory where we'll be storing this API definition
@@ -172,7 +202,7 @@ export default class Storage {
         fs.mkdirSync(identifierStorageDir, { recursive: true });
       }
 
-      (this.lockfile as Lockfile).apis.push({
+      (Storage.lockfile as Lockfile).apis.push({
         identifier: this.identifier,
         source: this.source,
         integrity: Storage.generateIntegrityHash(spec),
@@ -180,7 +210,7 @@ export default class Storage {
       } as LockfileAPI);
 
       fs.writeFileSync(path.join(identifierStorageDir, 'openapi.json'), saved);
-      fs.writeFileSync(Storage.lockfile, JSON.stringify(this.lockfile, null, 2));
+      fs.writeFileSync(Storage.getLockfilePath(), JSON.stringify(Storage.lockfile, null, 2));
     } else {
       // Is this the same spec that we already have? Should we update it? // @todo
     }
