@@ -30,6 +30,9 @@ updates:
       - dependency-name: chalk
         versions:
           - ">= 5"
+      - dependency-name: form-data-encoder
+        versions:
+          - ">= 2"
       - dependency-name: stringify-object
         versions:
           - ">= 4"
