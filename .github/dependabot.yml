@@ -25,7 +25,11 @@ updates:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
     ignore:
-      # stringify-object is now an ESM package and can't be used here without a rewrite.
+      # The following packages are now ESM-only and can't be used here without a rewrite.
+      - dependency-name: form-data-encoder
+        versions:
+          - ">= 2"
+
       - dependency-name: stringify-object
         versions:
           - ">= 4"
