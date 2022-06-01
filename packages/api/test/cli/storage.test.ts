@@ -2,6 +2,7 @@ import type { OASDocument } from 'oas/@types/rmoas.types';
 
 import 'isomorphic-fetch';
 import chai, { assert, expect } from 'chai';
+import path from 'path';
 import uniqueTempDir from 'unique-temp-dir';
 import fetchMock from 'fetch-mock';
 import chaiPlugins from '../helpers/chai-plugins';
@@ -385,6 +386,23 @@ describe('storage', function () {
     });
   });
 
+  describe('#saveSourceFiles()', function () {
+    it('should save source files into the storage identifiers directory', async function () {
+      const file = require.resolve('@readme/oas-examples/3.0/json/petstore-simple.json');
+      const storage = new Storage(file, 'petstore-simple');
+
+      expect(storage.isInLockfile()).to.be.false;
+
+      await storage.load();
+
+      const files = { 'index.js': '// I am a source file' };
+      storage.saveSourceFiles(files);
+
+      const sourceFile = await fs.readFile(path.join(storage.getIdentifierStorageDir(), 'index.js'), 'utf-8');
+      expect(sourceFile).to.equal('// I am a source file');
+    });
+  });
+
   describe('#getAPIDefinition', function () {
     it('should load a API definition out of storage', async function () {
       const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
@@ -398,13 +416,13 @@ describe('storage', function () {
       expect(spec).to.have.property('servers');
     });
 
-    it('should error if the file is not cached', function () {
+    it('should error if the file is not saved', function () {
       const file = require.resolve('@readme/oas-examples/3.0/json/security.json');
       const storage = new Storage(file, 'security');
 
       expect(() => {
         return storage.getAPIDefinition();
-      }).to.throw(`${file} has not been cached yet and must do so before being retrieved.`);
+      }).to.throw(`${file} has not been saved to storage yet and must do so before being retrieved.`);
     });
   });
 });

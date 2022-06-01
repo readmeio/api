@@ -106,6 +106,10 @@ export default class Storage {
   }
 
   static isInLockFile(search: { identifier?: string; source?: string }) {
+    // Because this method may run before we initialize a new storage object we should make sure
+    // that we have a storage directory present.
+    Storage.setStorageDir();
+
     if (!search.identifier && !search.source) {
       throw new TypeError('An `identifier` or `source` must be supplied to this method to search in the lockfile.');
     }
@@ -141,15 +145,37 @@ export default class Storage {
     return lockfile.apis.find(a => a.identifier === this.identifier);
   }
 
-  getAPIDefinition() {
+  getIdentifierStorageDir() {
     if (!this.isInLockfile()) {
-      throw new Error(`${this.source} has not been cached yet and must do so before being retrieved.`);
+      throw new Error(`${this.source} has not been saved to storage yet and must do so before being retrieved.`);
     }
 
-    const identifierStorageDir = path.join(Storage.getAPIsDir(), this.identifier);
-    const file = fs.readFileSync(path.join(identifierStorageDir, 'openapi.json'), 'utf8');
+    return path.join(Storage.getAPIsDir(), this.identifier);
+  }
+
+  getAPIDefinition() {
+    const file = fs.readFileSync(path.join(this.getIdentifierStorageDir(), 'openapi.json'), 'utf8');
 
     return JSON.parse(file);
+  }
+
+  saveSourceFiles(files: Record<string, string>) {
+    if (!this.isInLockfile()) {
+      throw new Error(`${this.source} has not been saved to storage yet and must do so before being retrieved.`);
+    }
+
+    return new Promise(resolve => {
+      const savedSource: string[] = [];
+      Object.entries(files).forEach(([fileName, contents]) => {
+        const sourceFilePath = path.join(this.getIdentifierStorageDir(), fileName);
+
+        fs.writeFileSync(sourceFilePath, contents);
+
+        savedSource.push(sourceFilePath);
+      });
+
+      resolve(savedSource);
+    });
   }
 
   async load() {
