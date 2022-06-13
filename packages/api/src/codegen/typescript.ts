@@ -10,12 +10,14 @@ import type {
   TypeParameterDeclarationStructure,
 } from 'ts-morph';
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
+import type { ExecaChildProcess } from 'execa';
 
 import CodeGenerator from './generatorBase';
 import objectHash from 'object-hash';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
+import execa from 'execa';
 
 type OperationTypeHousing = {
   types: {
@@ -58,6 +60,17 @@ export default class TSGenerator extends CodeGenerator {
     // @todo fill this user agent in with something contextual.
     this.userAgent = 'api/1.0.0';
 
+    this.requiredPackages = {
+      api: {
+        reason: "Required for the `api/core` library that the codegen'd SDK uses for making requests.",
+        url: 'https://npm.im/api',
+      },
+      oas: {
+        reason: 'Used within `api/core` and is also loaded for TypeScript types.',
+        url: 'https://npm.im/oas',
+      },
+    };
+
     this.project = new Project({
       manipulationSettings: {
         indentationText: IndentationText.TwoSpaces,
@@ -82,6 +95,10 @@ export default class TSGenerator extends CodeGenerator {
         singleQuote: true,
       },
     } as JSONSchemaToTypescriptOptions);
+  }
+
+  installer(): ExecaChildProcess<string> {
+    return execa('npm', ['install', ...Object.keys(this.requiredPackages), '--save']);
   }
 
   /**

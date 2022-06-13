@@ -1,7 +1,6 @@
 import { Command, Option } from 'commander';
 import ora from 'ora';
 import Oas from 'oas';
-// import { Listr } from 'listr2';
 // import * as pkg from '../../packageInfo';
 
 import codegen from '../../codegen';
@@ -10,6 +9,7 @@ import Storage from '../storage';
 import logger from '../logger';
 
 import prompts from 'prompts';
+import figures from 'figures';
 import validateNPMPackageName from 'validate-npm-package-name';
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
@@ -18,18 +18,10 @@ cmd
   .name('install')
   .description('install an API SDK into your codebase')
   .argument('<api>', 'an API to install')
-  .addOption(
-    new Option('-l, --lang <language>, --language <language>', 'SDK language')
-      .choices(['typescript'])
-      .default('typescript')
-  )
-  .action(async (api: string, options: { language: string }) => {
+  .addOption(new Option('-l, --lang <language>', 'SDK language').choices(['typescript', 'ts']).default('typescript'))
+  .action(async (api: string, options: { lang: string }) => {
     // @todo let them know that we're going to be creating a `.api/ directory
     // @todo detect if they have a gitigore and .npmignore and if .api woudl be ignored by that
-    if (options.language === 'typescript') {
-      // @todo let them know that we're going to be and adding `api` and `oas` into their `package.json`
-    }
-
     // @todo don't support swagger files without upconverting them
 
     if (Storage.isInLockFile({ source: api })) {
@@ -65,7 +57,7 @@ cmd
     }
 
     if (!identifier) {
-      logger('You must tell us what you would liek to identify this API as in order to install it.', true);
+      logger('You must tell us what you would like to identify this API as in order to install it.', true);
       process.exit(1);
     }
 
@@ -81,6 +73,7 @@ cmd
       })
       .then(Oas.init)
       .catch(err => {
+        // @todo cleanup installed files
         spinner.fail(spinner.text);
         logger(err.message, true);
         process.exit(1);
@@ -88,13 +81,15 @@ cmd
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();
-    const sdkSource = await codegen('ts', oas, './openapi.json')
+    const generator = codegen(options.lang, oas, './openapi.json');
+    const sdkSource = await generator
       .generator()
       .then(res => {
         spinner.succeed(spinner.text);
         return res;
       })
       .catch(err => {
+        // @todo cleanup installed files
         spinner.fail(spinner.text);
         logger(err.message, true);
         process.exit(1);
@@ -107,12 +102,42 @@ cmd
         spinner.succeed(spinner.text);
       })
       .catch(err => {
+        // @todo cleanup installed files
         spinner.fail(spinner.text);
         logger(err.message, true);
         process.exit(1);
       });
 
-    // @todo save `api` and `oas` into their `package.json`
+    if (generator.hasRequiredPackages()) {
+      logger(`${figures.warning} This generator requires some packages to be installed alongside it:`);
+      Object.entries(generator.requiredPackages).forEach(([pkg, pkgInfo]) => {
+        logger(`  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason} ${pkgInfo.url}`);
+      });
+
+      await prompts({
+        type: 'confirm',
+        name: 'value',
+        message: 'Is this okay?',
+        initial: true,
+      }).then(({ value }) => {
+        if (!value) {
+          // @todo cleanup installed files
+          logger('Installation cancelled.', true);
+          process.exit(1);
+        }
+      });
+
+      spinner = ora('Installing required packages').start();
+      try {
+        await generator.installer();
+        spinner.succeed(spinner.text);
+      } catch (err) {
+        // @todo cleanup installed files
+        spinner.fail(spinner.text);
+        logger(err.message, true);
+        process.exit(1);
+      }
+    }
 
     logger('🚀 All done!');
   })
