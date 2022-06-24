@@ -1,7 +1,4 @@
-// const config = require('config');
-// const core = require('@actions/core');
-// const debugPackage = require('debug')(config.get('cli'));
-// const isGHA = require('./isGitHub');
+/* eslint-disable no-console */
 import chalk from 'chalk';
 
 export default function logger(log: string, error?: boolean) {
@@ -11,9 +8,3 @@ export default function logger(log: string, error?: boolean) {
     console.log(log);
   }
 }
-
-// module.exports.debug = function debug(input) {
-//   /* istanbul ignore next */
-//   if (isGHA() && process.env.NODE_ENV !== 'testing') core.debug(`rdme: ${input}`);
-//   return debugPackage(input);
-// };
