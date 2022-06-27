@@ -1,7 +1,8 @@
 import type Oas from 'oas';
 import type { ExecaChildProcess } from 'execa';
+import type Storage from '../cli/storage';
 
-export default abstract class CodeGenerator {
+export default abstract class CodeGeneratorLanguage {
   spec: Oas;
 
   specPath: string;
@@ -17,7 +18,7 @@ export default abstract class CodeGenerator {
 
   abstract generator(): Promise<Record<string, string>>;
 
-  abstract installer(): ExecaChildProcess<string>;
+  abstract installer(storage: Storage): Promise<ExecaChildProcess<string>>;
 
   hasRequiredPackages() {
     return Boolean(Object.keys(this.requiredPackages));

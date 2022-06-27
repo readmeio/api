@@ -11,8 +11,11 @@ import type {
 } from 'ts-morph';
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 import type { ExecaChildProcess } from 'execa';
+import type Storage from '../../cli/storage';
 
-import CodeGenerator from './generatorBase';
+import fs from 'fs';
+import path from 'path';
+import CodeGeneratorLanguage from '../language';
 import objectHash from 'object-hash';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
@@ -32,7 +35,7 @@ function wordWrap(str: string, max = 88) {
   return str.replace(new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), '$1\n');
 }
 
-export default class TSGenerator extends CodeGenerator {
+export default class TSGenerator extends CodeGeneratorLanguage {
   userAgent: 'api/1.0.0';
 
   project: Project;
@@ -97,8 +100,21 @@ export default class TSGenerator extends CodeGenerator {
     } as JSONSchemaToTypescriptOptions);
   }
 
-  installer(): ExecaChildProcess<string> {
-    return execa('npm', ['install', ...Object.keys(this.requiredPackages), '--save']);
+  async installer(storage: Storage): Promise<ExecaChildProcess<string>> {
+    const installDir = storage.getIdentifierStorageDir();
+
+    const pkg = {
+      name: `@api/${storage.identifier}`,
+      main: './index.ts',
+    };
+
+    fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
+
+    await execa('npm', ['install', ...Object.keys(this.requiredPackages), '--save'], {
+      cwd: installDir,
+    });
+
+    return execa('npm', ['install', storage.getIdentifierStorageDir()]);
   }
 
   /**

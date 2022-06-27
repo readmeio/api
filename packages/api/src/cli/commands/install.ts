@@ -129,7 +129,7 @@ cmd
 
       spinner = ora('Installing required packages').start();
       try {
-        await generator.installer();
+        await generator.installer(storage);
         spinner.succeed(spinner.text);
       } catch (err) {
         // @todo cleanup installed files

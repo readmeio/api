@@ -1,13 +1,13 @@
 import type Oas from 'oas';
-import type CodeGenerator from './generatorBase';
+import type CodeGeneratorLanguage from './language';
 
-import TSGenerator from './typescript';
+import TSGenerator from './languages/typescript';
 
 export default function codegen(
   language: string | 'ts' | 'typescript' | 'js' | 'javascript',
   spec: Oas,
   specPath: string
-): CodeGenerator {
+): CodeGeneratorLanguage {
   if (language === 'ts' || language === 'typescript' || language === 'js' || language === 'javascript') {
     return new TSGenerator(spec, specPath);
   }

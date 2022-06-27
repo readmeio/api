@@ -115,6 +115,10 @@ export default class Storage {
     }
 
     const lockfile = Storage.getLockfile();
+    if (typeof lockfile !== 'object' || lockfile === null || !lockfile.apis) {
+      return false;
+    }
+
     const res = lockfile.apis.find(a => {
       if (search.identifier) {
         return a.identifier === search.identifier;
@@ -190,14 +194,18 @@ export default class Storage {
    * |                        // and what version of `api` was used.
    * └── apis/
    *     ├── readme/
+   *     |   ├── node_modules/
    *     │   ├── index.js     // We may offer the option to export a raw TS file for folks who want
    *     |   |                // that, but for now it'll be a compiled JS file.
    *     │   ├── types.ts     // All types for their SDK, ready to use in an IDE.
-   *     │   └── openapi.json
+   *     │   |── openapi.json
+   *     │   └── package.json
    *     └── petstore/
+   *         ├── node_modules/
    *         ├── index.js
    *         ├── types.ts
-   *         └── openapi.json
+   *         ├── openapi.json
+   *         └── package.json
    *
    * @param spec
    */
