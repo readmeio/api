@@ -1,7 +1,6 @@
 import { Command, Option } from 'commander';
 import ora from 'ora';
 import Oas from 'oas';
-// import * as pkg from '../../packageInfo';
 
 import codegen from '../../codegen';
 import Fetcher from '../../fetcher';
@@ -40,9 +39,9 @@ cmd
           'What would you like to identify this API as? This will be how you import the SDK. (eg. entering `petstore` would result in `@api/petstore`)',
         validate: value => {
           // Is this identifier already in storage?
-          // if (Storage.isInLockFile({ identifier: value })) {
-          //   return `"${value}" is already taken in your \`.api/\` directory. Please enter another identifier.`;
-          // }
+          if (Storage.isInLockFile({ identifier: value })) {
+            return `"${value}" is already taken in your \`.api/\` directory. Please enter another identifier.`;
+          }
 
           const isValidForNPM = validateNPMPackageName(`@api/${value}`);
           if (!isValidForNPM.validForNewPackages) {
@@ -68,7 +67,6 @@ cmd
       .load()
       .then(res => {
         spinner.succeed(spinner.text);
-        // console.log(Object.keys(res))
         return res;
       })
       .then(Oas.init)
