@@ -1,14 +1,14 @@
 import chai, { expect } from 'chai';
-import chaiPlugins from '../helpers/chai-plugins';
+import chaiPlugins from '../../helpers/chai-plugins';
 
 import Oas from 'oas';
-import TSGenerator from '../../src/codegen/typescript';
+import TSGenerator from '../../../src/codegen/languages/typescript';
 
 chai.use(chaiPlugins);
 
 describe('typescript generator', function () {
   it('should generate typescript code', async function () {
-    const oas = await import('../__fixtures__/simple.oas.json').then(Oas.init);
+    const oas = await import('../../__fixtures__/simple.oas.json').then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
     const ts = new TSGenerator(oas, './simple.oas.json');
@@ -16,7 +16,7 @@ describe('typescript generator', function () {
   });
 
   it('should be able to generate valid TS when a body is optional but metadata isnt', async function () {
-    const oas = await import('../__fixtures__/optional-payload.oas.json').then(Oas.init);
+    const oas = await import('../../__fixtures__/optional-payload.oas.json').then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
     const ts = new TSGenerator(oas, './optional-payload.oas.json');
