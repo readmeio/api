@@ -16,9 +16,6 @@ import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json
 
 chai.use(chaiPlugins);
 
-// Our testing flow has some quirks with Node 18 but these quirks don't exist in a real environment.
-const isNode18 = Number(process.versions.node.split('.')[0]) >= 18;
-
 describe('integration tests', function () {
   // eslint-disable-next-line mocha/no-setup-in-describe
   this.beforeAll(function () {
@@ -143,14 +140,12 @@ describe('integration tests', function () {
         expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="orderId"\r\n\r\n1234\r\n',
           '\r\nContent-Disposition: form-data; name="userId"\r\n\r\n5678\r\n',
-          isNode18
-            ? '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.txt"\r\nContent-Type: application/octet-stream\r\n\r\nHello world!\n\r\n'
-            : '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.txt"\r\nContent-Type: text/plain\r\n\r\nHello world!\n\r\n',
+          '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.txt"\r\nContent-Type: text/plain\r\n\r\nHello world!\n\r\n',
           '--\r\n\r\n',
         ]);
 
         expect(res.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${res.boundary}`);
-        expect(res.headers).to.have.deep.property('content-length', isNode18 ? '403' : '389');
+        expect(res.headers).to.have.deep.property('content-length', '389');
         expect(res.headers).to.have.a.customUserAgent;
       });
 
@@ -164,14 +159,12 @@ describe('integration tests', function () {
         const res = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
         expect(res.uri).to.equal('/anything/multipart-formdata');
         expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
-          isNode18
-            ? '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: application/octet-stream\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n'
-            : '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',
+          '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',
           '--\r\n\r\n',
         ]);
 
         expect(res.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${res.boundary}`);
-        expect(res.headers).to.have.deep.property('content-length', isNode18 ? '265' : '251');
+        expect(res.headers).to.have.deep.property('content-length', '251');
         expect(res.headers).to.have.a.customUserAgent;
       });
     });
