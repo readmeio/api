@@ -9,12 +9,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 14
-
-      # Node 14 ships with npm@6 which doesn't install peerDeps by default.
-      - name: Install npm@7
-        if: matrix.node-version == '14'
-        run: npm install -g npm@7
+          node-version: 16
 
       - run: npm ci
       - run: npm run build
