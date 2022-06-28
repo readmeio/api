@@ -4,6 +4,9 @@
   "description": "Generate an SDK from an OpenAPI definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "rdme": "dist/bin.js"
+  },
   "scripts": {
     "build": "tsc",
     "debug:bin": "node -r ts-node/register src/bin.ts",
