@@ -1,4 +1,4 @@
-.api/
+# .api/
 .nyc_output/
 dist/
 node_modules/

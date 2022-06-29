@@ -1,0 +1,8 @@
+{
+  "name": "@api/petstore",
+  "main": "./index.ts",
+  "dependencies": {
+    "api": "../../../",
+    "oas": "^18.3.3"
+  }
+}

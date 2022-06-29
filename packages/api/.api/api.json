@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "petstore",
+      "source": "https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json",
+      "integrity": "sha512-FSapRqUaxZYIPMPT+DN0E6xUfVdD/WadjTacNvwrk7scTzXhTZGNReEQ/lZfg9cz8yIvec2fqhTUAF2L4jVfRQ==",
+      "installerVersion": "4.2.0"
+    }
+  ]
+}
