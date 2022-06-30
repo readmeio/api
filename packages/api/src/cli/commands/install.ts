@@ -36,7 +36,7 @@ cmd
         type: 'text',
         name: 'value',
         message:
-          'What would you like to identify this API as? This will be how you import the SDK. (eg. entering `petstore` would result in `@api/petstore`)',
+          'What would you like to identify this API as? This will be how you import the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
         validate: value => {
           // Is this identifier already in storage?
           if (Storage.isInLockFile({ identifier: value })) {
