@@ -115,7 +115,7 @@ cmd
       await prompts({
         type: 'confirm',
         name: 'value',
-        message: 'Is this okay?',
+        message: 'OK to proceed with package installation?',
         initial: true,
       }).then(({ value }) => {
         if (!value) {
