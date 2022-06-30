@@ -10,12 +10,13 @@ import type {
   TypeParameterDeclarationStructure,
 } from 'ts-morph';
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
-import type { ExecaChildProcess } from 'execa';
-import type Storage from '../../cli/storage';
+import type Storage from '../../storage';
+import type { InstallerOptions } from '../language';
 
 import fs from 'fs';
 import path from 'path';
 import CodeGeneratorLanguage from '../language';
+import logger from '../../logger';
 import objectHash from 'object-hash';
 import { IndentationText, Project, QuoteKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
@@ -100,7 +101,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     } as JSONSchemaToTypescriptOptions);
   }
 
-  async installer(storage: Storage): Promise<ExecaChildProcess<string>> {
+  async installer(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
     const pkg = {
@@ -110,11 +111,23 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
-    await execa('npm', ['install', ...Object.keys(this.requiredPackages), '--save'], {
-      cwd: installDir,
+    await execa(
+      'npm',
+      ['install', ...Object.keys(this.requiredPackages), '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean),
+      { cwd: installDir }
+    ).then(res => {
+      if (opts.dryRun) {
+        (opts.logger ? opts.logger : logger)(res.command);
+        (opts.logger ? opts.logger : logger)(res.stdout);
+      }
     });
 
-    return execa('npm', ['install', storage.getIdentifierStorageDir()]);
+    return execa('npm', ['install', storage.getIdentifierStorageDir(), '--dry-run']).then(res => {
+      if (opts.dryRun) {
+        (opts.logger ? opts.logger : logger)(res.command);
+        (opts.logger ? opts.logger : logger)(res.stdout);
+      }
+    });
   }
 
   /**
