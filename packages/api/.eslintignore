@@ -1,2 +1,3 @@
 .nyc_output/
 dist/
+test/__fixtures__/sdk/
