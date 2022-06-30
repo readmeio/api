@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "rdme": "dist/bin.js"
+    "api": "dist/bin.js"
   },
   "scripts": {
     "build": "tsc",
