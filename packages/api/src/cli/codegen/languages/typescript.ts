@@ -18,7 +18,7 @@ import path from 'path';
 import CodeGeneratorLanguage from '../language';
 import logger from '../../logger';
 import objectHash from 'object-hash';
-import { IndentationText, Project, QuoteKind } from 'ts-morph';
+import { IndentationText, Project, QuoteKind, ScriptTarget } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
 import execa from 'execa';
@@ -41,6 +41,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   project: Project;
 
+  outputJS: boolean;
+
   types: Map<string, string>;
 
   files: Record<string, string>;
@@ -58,7 +60,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     }
   >;
 
-  constructor(spec: Oas, specPath: string) {
+  constructor(spec: Oas, specPath: string, options: { outputJS?: boolean } = { outputJS: false }) {
     super(spec, specPath);
 
     // @todo fill this user agent in with something contextual.
@@ -81,10 +83,13 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         quoteKind: QuoteKind.Single,
       },
       compilerOptions: {
-        // target: ScriptTarget.ES3,
+        declaration: true,
+        target: ScriptTarget.ES2015,
         outDir: 'dist',
       },
     });
+
+    this.outputJS = options.outputJS;
 
     this.types = new Map();
     this.methodGenerics = new Map();
@@ -279,7 +284,16 @@ sdk.server('https://eu.api.example.com/v14');`)
       sdkSource.addStatements(exp);
     });
 
-    // const result = project.emitToMemory();
+    if (this.outputJS) {
+      return this.project
+        .emitToMemory()
+        .getFiles()
+        .map(sourceFile => ({
+          [path.basename(sourceFile.filePath)]: TSGenerator.formatter(sourceFile.text),
+        }))
+        .reduce((prev, next) => Object.assign(prev, next));
+    }
+
     return this.project
       .getSourceFiles()
       .map(sourceFile => ({

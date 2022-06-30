@@ -9,7 +9,9 @@ export default function codegen(
   specPath: string
 ): CodeGeneratorLanguage {
   if (language === 'ts' || language === 'typescript' || language === 'js' || language === 'javascript') {
-    return new TSGenerator(spec, specPath);
+    return new TSGenerator(spec, specPath, {
+      outputJS: language === 'js' || language === 'javascript',
+    });
   }
 
   throw new TypeError(`Unsupported language supplied: ${language}`);

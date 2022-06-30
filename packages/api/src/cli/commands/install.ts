@@ -2,7 +2,7 @@ import { Command, Option } from 'commander';
 import ora from 'ora';
 import Oas from 'oas';
 
-import codegen from '../../codegen';
+import codegen from '../codegen';
 import Fetcher from '../../fetcher';
 import Storage from '../storage';
 import logger from '../logger';
@@ -17,7 +17,11 @@ cmd
   .name('install')
   .description('install an API SDK into your codebase')
   .argument('<api>', 'an API to install')
-  .addOption(new Option('-l, --lang <language>', 'SDK language').choices(['typescript', 'ts']).default('typescript'))
+  .addOption(
+    new Option('-l, --lang <language>', 'SDK language')
+      .choices(['javascript', 'js', 'typescript', 'ts'])
+      .default('typescript')
+  )
   .action(async (api: string, options: { lang: string }) => {
     // @todo let them know that we're going to be creating a `.api/ directory
     // @todo detect if they have a gitigore and .npmignore and if .api woudl be ignored by that
