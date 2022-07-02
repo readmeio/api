@@ -1,9 +1,11 @@
 import chai, { expect } from 'chai';
 import fs from 'fs';
+import path from 'path';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiPlugins from '../../../helpers/chai-plugins';
 
+import uniqueTempDir from 'unique-temp-dir';
 import Oas from 'oas';
 import Storage from '../../../../src/cli/storage';
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
@@ -14,20 +16,11 @@ chai.use(sinonChai);
 describe('typescript', function () {
   describe('#installer', function () {
     beforeEach(function () {
-      /**
-       * Create a unique temporary local directory here so we can test package installation. We need
-       * to do this instead of using something like `unique-temp-dir` because there's a bug in npm@8
-       * where if a package is installed to a non-local directory it'll throw an exception when
-       * attempting to install it as a `file:` dependency.
-       * @see {@link https://github.com/npm/cli/issues/3847}
-       */
-      Storage.setStorageDir(Math.random().toString(36).substring(2));
+      Storage.setStorageDir(uniqueTempDir());
     });
 
-    afterEach(async function () {
+    afterEach(function () {
       Storage.reset();
-      await fs.promises.rm(Storage.getAPIsDir(), { recursive: true });
-      await fs.promises.rm(Storage.dir, { recursive: true });
     });
 
     it('should install a `package.json` and the required packages', async function () {

@@ -32,9 +32,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Node 14 ships with npm@6 which doesn't install peerDeps by default.
+      # There's a bug in npm@8 where, if when using Workspaces, you to install a local package that
+      # isn't stored in  `packages/` npm will throw an exception. This affects all of our local
+      # codegen tests that attempt to test package installation. Hopefully there'll be a fix for
+      # this at some point, but in the meantime we should run all tests with npm@7.
+      #
+      # https://github.com/npm/cli/issues/3847
       - name: Install npm@7
-        if: matrix.node-version == '14'
+        #if: matrix.node-version == '14'
         run: npm install -g npm@7
 
       - name: Install dependencies
