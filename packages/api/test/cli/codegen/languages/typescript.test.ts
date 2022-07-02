@@ -1,6 +1,4 @@
 import chai, { expect } from 'chai';
-import fs from 'fs';
-import path from 'path';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiPlugins from '../../../helpers/chai-plugins';
