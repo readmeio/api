@@ -1,5 +1,5 @@
 import Oas from 'oas';
-import APICore from 'api/core';
+import APICore from 'api/dist/core';
 import definition from './simple.oas.json';
 export default class SDK {
   constructor() {

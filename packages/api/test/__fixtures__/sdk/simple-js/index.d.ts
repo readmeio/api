@@ -1,5 +1,5 @@
 import Oas from 'oas';
-import APICore from 'api/core';
+import APICore from 'api/dist/core';
 export default class SDK {
   spec: Oas;
   core: APICore;
