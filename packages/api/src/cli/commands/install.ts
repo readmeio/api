@@ -42,6 +42,10 @@ cmd
         message:
           'What would you like to identify this API as? This will be how you import the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
         validate: value => {
+          if (!value) {
+            return false;
+          }
+
           // Is this identifier already in storage?
           if (Storage.isInLockFile({ identifier: value })) {
             return `"${value}" is already taken in your \`.api/\` directory. Please enter another identifier.`;
