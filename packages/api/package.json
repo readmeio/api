@@ -2,10 +2,10 @@
   "name": "api",
   "version": "4.2.0",
   "description": "Generate an SDK from an OpenAPI definition",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
-    "rdme": "dist/bin.js"
+    "api": "./bin/api"
   },
   "scripts": {
     "build": "tsc",
@@ -70,6 +70,7 @@
     "@types/mocha": "^9.1.1",
     "@types/object-hash": "^2.2.1",
     "@types/prompts": "^2.0.14",
+    "@types/sinon-chai": "^3.2.8",
     "@types/ssri": "^7.1.1",
     "@types/validate-npm-package-name": "^3.0.3",
     "chai": "^4.3.6",
@@ -79,6 +80,8 @@
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
     "prettier": "^2.6.2",
+    "sinon": "^14.0.0",
+    "sinon-chai": "^3.7.0",
     "typescript": "^4.6.4",
     "unique-temp-dir": "^1.0.0"
   },

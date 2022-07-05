@@ -11,7 +11,6 @@ import Storage from '../../src/cli/storage';
 
 import { PACKAGE_VERSION } from '../../src/packageInfo';
 
-import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
 import petstoreSimple from '@readme/oas-examples/3.0/json/petstore-simple.json';
 
 chai.use(chaiPlugins);
@@ -48,7 +47,7 @@ describe('storage', function () {
 
   describe('#isInLockFile', function () {
     it('should be able to look up in the lockfile by a given source', async function () {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', readmeSpec);
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, 'petstore');
@@ -60,13 +59,13 @@ describe('storage', function () {
       expect(Storage.isInLockFile({ source })).to.deep.equal({
         identifier: 'petstore',
         source,
-        integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+        integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
         installerVersion: PACKAGE_VERSION,
       });
     });
 
     it('should be able to look up in the lockfile by a given identifier', async function () {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', readmeSpec);
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, 'petstore');
@@ -78,7 +77,7 @@ describe('storage', function () {
       expect(Storage.isInLockFile({ identifier: 'petstore' })).to.deep.equal({
         identifier: 'petstore',
         source,
-        integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+        integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
         installerVersion: PACKAGE_VERSION,
       });
     });
@@ -114,29 +113,23 @@ describe('storage', function () {
 
     describe('ReadMe registry UUID', function () {
       it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', async function () {
-        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', readmeSpec);
+        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
         const storage = new Storage('@petstore/v1.0#n6kvf10vakpemvplx', 'petstore');
 
         expect(storage.isInLockfile()).to.be.false;
 
         expect(await storage.load()).to.have.deep.property('info', {
-          description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '2.0.0',
-          title: 'API Endpoints',
-          contact: {
-            email: 'support@readme.io',
-            name: 'API Support',
-            url: 'https://docs.readme.com/docs/contact-support',
-          },
+          version: '1.0.0',
+          title: 'Single Path',
+          description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
-        expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).to.be.dereferenced;
         expect(storage.isInLockfile()).to.be.true;
         expect(storage.getFromLockfile()).to.deep.equal({
           identifier: 'petstore',
           source: '@petstore/v1.0#n6kvf10vakpemvplx',
-          integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+          integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -194,29 +187,23 @@ describe('storage', function () {
 
     describe('URL', function () {
       it('should be able to load a definition', async function () {
-        fetchMock.get('http://example.com/readme.json', readmeSpec);
+        fetchMock.get('http://example.com/readme.json', petstoreSimple);
 
         const storage = new Storage('http://example.com/readme.json', 'petstore');
 
         expect(storage.isInLockfile()).to.be.false;
 
         expect(await storage.load()).to.have.deep.property('info', {
-          description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '2.0.0',
-          title: 'API Endpoints',
-          contact: {
-            email: 'support@readme.io',
-            name: 'API Support',
-            url: 'https://docs.readme.com/docs/contact-support',
-          },
+          version: '1.0.0',
+          title: 'Single Path',
+          description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
-        expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).to.be.dereferenced;
         expect(storage.isInLockfile()).to.be.true;
         expect(storage.getFromLockfile()).to.deep.equal({
           identifier: 'petstore',
           source: 'http://example.com/readme.json',
-          integrity: 'sha512-mRdPk5/kzFb4ru5NJlcedCmAzGvwzOOk29dg6La0FgltEjeUgEfkgfD4ZKXzFvctLNKLI8qVXB7tkZsISV+7ZQ==',
+          integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
           installerVersion: PACKAGE_VERSION,
         });
       });
