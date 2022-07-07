@@ -9,6 +9,47 @@ import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
 chai.use(chaiPlugins);
 
 describe('fetcher', function () {
+  describe('#isAPIRegistryUUID', function () {
+    it('should detect the shorthand `@petstore/v1.0#uuid` syntax', function () {
+      expect(Fetcher.isAPIRegistryUUID('@petstore/v1.0#n6kvf10vakpemvplx')).to.be.true;
+    });
+
+    it('should detect the shorthand `@petstore#uuid` syntax', function () {
+      expect(Fetcher.isAPIRegistryUUID('@petstore#n6kvf10vakpemvplx')).to.be.true;
+    });
+
+    it("shouldn't detect improperly formatted shorthand registry accessors", function () {
+      expect(Fetcher.isAPIRegistryUUID('n6kvf10vakpemvplx')).to.be.false;
+    });
+
+    it("shouldn't detect urls as registry accessors", function () {
+      expect(Fetcher.isAPIRegistryUUID('https://example.com/openapi.json')).to.be.false;
+    });
+
+    it("shouldn't detect absolute file paths as registry accessors", function () {
+      const file = require.resolve('@readme/oas-examples/3.0/json/petstore-simple.json');
+      expect(Fetcher.isAPIRegistryUUID(file)).to.be.false;
+    });
+
+    it("shouldn't detect relative file paths as registry accessors", function () {
+      expect(Fetcher.isAPIRegistryUUID('../petstore.json')).to.be.false;
+    });
+  });
+
+  describe('#getProjectPrefixFromRegistryUUID', function () {
+    it('should retrieve the project prefix from the shorthand `@petstore/v1.0#uuid` syntax', function () {
+      expect(Fetcher.getProjectPrefixFromRegistryUUID('@petstore/v1.0#n6kvf10vakpemvplx')).to.equal('petstore');
+    });
+
+    it('should retrieve the project prefix from the shorthand `@petstore#uuid` syntax', function () {
+      expect(Fetcher.getProjectPrefixFromRegistryUUID('@petstore#n6kvf10vakpemvplx')).to.equal('petstore');
+    });
+
+    it("shouldn't return undefined on an improperly formatted shorthand registry accessor", function () {
+      expect(Fetcher.getProjectPrefixFromRegistryUUID('n6kvf10vakpemvplx')).to.be.undefined;
+    });
+  });
+
   describe('#load', function () {
     it('should throw an error when a non-HTTP(S) url is supplied', async function () {
       await new Fetcher('htt://example.com/openapi.json')

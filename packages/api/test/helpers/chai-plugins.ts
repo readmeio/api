@@ -60,8 +60,11 @@ export default function chaiPlugins(_chai, utils) {
     }
 
     // Assert that the files we're generating are what we're expecting in the fixture directory.
+    const sortedActualFiles = Object.keys(actualFiles);
+    sortedActualFiles.sort(); // `index.d.ts` files are generated last but are first in the filesystem
+
     new chai.Assertion(
-      Object.keys(actualFiles),
+      sortedActualFiles,
       "The generated files do not line up with what's in the fixture directory."
     ).to.be.deep.equal(expectedFiles);
 

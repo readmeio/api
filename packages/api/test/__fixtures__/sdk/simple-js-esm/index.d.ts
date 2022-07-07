@@ -1,31 +1,17 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`typescript generator should generate typescript code 1`] = `
-Object {
-  "index.ts": "import Oas from 'oas';
-import APICore from './src/core';
-import definition from './test/__fixtures__/simple.oas.json';
-
+import Oas from 'oas';
+import APICore from 'api/dist/core';
 export default class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
-
-  constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'api/1.0.0');
-  }
-
+  authKeys: (number | string)[][];
+  constructor();
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its \`Content-Type\` header\`.
+   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config: ConfigOptions) {
-    this.core.setConfig(config);
-  }
-
+  config(config: ConfigOptions): void;
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -35,7 +21,7 @@ export default class SDK {
    * supported by the OpenAPI specification.
    *
    * @example <caption>HTTP Basic auth</caption>
-   * sdk.auth('username', 'password');')
+   * sdk.auth('username', 'password');
    *
    * @example <caption>Bearer tokens (HTTP or OAuth 2)</caption>
    * sdk.auth('myBearerToken');
@@ -47,11 +33,7 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values: string[] | number[]) {
-    this.core.setAuth(...values);
-    return this;
-  }
-
+  auth(...values: string[] | number[]): this;
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -71,47 +53,35 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url: string, variables = {}) {
-    this.core.setServer(url, variables);
-  }
-
+  server(url: string, variables?: {}): void;
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
   get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
-  get(path: string, metadata?: Record<string, unknown>): Promise<unknown> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
-    return this.core.fetch('/pet/findByStatus', 'get', metadata);
-  }
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
 }
-
 interface ConfigOptions {
   /**
-   * By default we parse the response based on the \`Content-Type\` header of the request. You
+   * By default we parse the response based on the `Content-Type` header of the request. You
    * can disable this functionality by negating this option.
    */
   parseResponse: boolean;
 }
-export type FindPetsByStatusMetadataParam = {
+export declare type FindPetsByStatusMetadataParam = {
   /**
    * Status values that need to be considered for filter
    */
-  status: (\\"available\\" | \\"pending\\" | \\"sold\\")[];
+  status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
-export type FindPetsByStatus_Response_200 = Pet[];
+export declare type FindPetsByStatus_Response_200 = Pet[];
 export interface Pet {
   id?: number;
   category?: Category;
@@ -120,8 +90,10 @@ export interface Pet {
   tags?: Tag[];
   /**
    * pet status in the store
+   *
+   * `available` `pending` `sold`
    */
-  status?: \\"available\\" | \\"pending\\" | \\"sold\\";
+  status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
 }
 export interface Category {
@@ -134,6 +106,4 @@ export interface Tag {
   name?: string;
   [k: string]: unknown;
 }
-",
-}
-`;
+export {};
