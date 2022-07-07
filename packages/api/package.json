@@ -40,7 +40,7 @@
     "datauri": "^4.1.0",
     "execa": "^5.1.1",
     "fetch-har": "^8.0.3",
-    "figures": "^3.2.0",
+    "figures": "^4.0.1",
     "find-cache-dir": "^3.3.1",
     "form-data-encoder": "^1.7.2",
     "formdata-node": "^4.3.2",
