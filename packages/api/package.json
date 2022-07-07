@@ -56,7 +56,7 @@
     "ora": "^5.4.1",
     "prompts": "^2.4.2",
     "ssri": "^9.0.0",
-    "ts-morph": "^14.0.0",
+    "ts-morph": "^15.1.0",
     "validate-npm-package-name": "^4.0.0"
   },
   "devDependencies": {
