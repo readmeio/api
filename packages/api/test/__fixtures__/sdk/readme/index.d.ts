@@ -1,27 +1,17 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './readme.json';
-
 export default class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
-
-  constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'readme/2.0.0 (api/5.0-unit-testing)');
-  }
-
+  authKeys: (number | string)[][];
+  constructor();
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
    * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config: ConfigOptions) {
-    this.core.setConfig(config);
-  }
-
+  config(config: ConfigOptions): void;
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -43,11 +33,7 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values: string[] | number[]) {
-    this.core.setAuth(...values);
-    return this;
-  }
-
+  auth(...values: string[] | number[]): this;
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -67,10 +53,7 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url: string, variables = {}) {
-    this.core.setServer(url, variables);
-  }
-
+  server(url: string, variables?: {}): void;
   /**
    * Get an API definition file that's been uploaded to ReadMe
    *
@@ -186,16 +169,6 @@ export default class SDK {
     metadata: GetVersionMetadataParam
   ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND>;
   /**
-   * Access any get endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
-  /**
    * Upload an API specification to ReadMe. Or, to use a newer solution see https://docs.readme.com/docs/automatically-sync-api-specification-with-github
    *
    * @summary Upload specification
@@ -265,17 +238,6 @@ export default class SDK {
     CreateVersion_Response_400 | CreateVersion_Response_401 | CreateVersion_Response_403 | Error_VERSION_FORK_NOTFOUND
   >;
   /**
-   * Access any post endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'post', body, metadata);
-  }
-
-  /**
    * Update an API specification in ReadMe
    *
    * @summary Update specification
@@ -341,17 +303,6 @@ export default class SDK {
     Error_VERSION_CANT_DEMOTE_STABLE | UpdateVersion_Response_401 | UpdateVersion_Response_403 | Error_VERSION_NOTFOUND
   >;
   /**
-   * Access any put endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  put<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'put', body, metadata);
-  }
-
-  /**
    * Delete an API specification in ReadMe
    *
    * @summary Delete specification
@@ -409,27 +360,11 @@ export default class SDK {
     Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
   >;
   /**
-   * Access any delete endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  delete<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'delete', body, metadata);
-  }
-
-  /**
    * Get an API definition file that's been uploaded to ReadMe
    *
    * @summary Retrieve an entry from the API Registry
    */
-  getAPIRegistry(
-    metadata: GetAPIRegistryMetadataParam
-  ): Promise<GetAPIRegistry_Response_200 | Error_REGISTRY_NOTFOUND> {
-    return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
-  }
-
+  getAPIRegistry(metadata: GetAPIRegistryMetadataParam): Promise<GetAPIRegistry_Response_200 | Error_REGISTRY_NOTFOUND>;
   /**
    * Get API specification metadata
    *
@@ -443,10 +378,7 @@ export default class SDK {
     | GetAPISpecification_Response_401
     | GetAPISpecification_Response_403
     | Error_VERSION_NOTFOUND
-  > {
-    return this.core.fetch('/api-specification', 'get', metadata);
-  }
-
+  >;
   /**
    * Upload an API specification to ReadMe. Or, to use a newer solution see https://docs.readme.com/docs/automatically-sync-api-specification-with-github
    *
@@ -460,10 +392,7 @@ export default class SDK {
     | UploadAPISpecification_Response_401
     | UploadAPISpecification_Response_403
     | Error_SPEC_TIMEOUT
-  > {
-    return this.core.fetch('/api-specification', 'post', body, metadata);
-  }
-
+  >;
   /**
    * Update an API specification in ReadMe
    *
@@ -477,10 +406,7 @@ export default class SDK {
     | UpdateAPISpecification_Response_401
     | UpdateAPISpecification_Response_403
     | Error_SPEC_TIMEOUT
-  > {
-    return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
-  }
-
+  >;
   /**
    * Delete an API specification in ReadMe
    *
@@ -493,55 +419,37 @@ export default class SDK {
     | DeleteAPISpecification_Response_401
     | DeleteAPISpecification_Response_403
     | Error_SPEC_NOTFOUND
-  > {
-    return this.core.fetch('/api-specification/{id}', 'delete', metadata);
-  }
-
+  >;
   /**
    * Returns all the roles we're hiring for at ReadMe!
    *
    * @summary Get open roles
    */
-  getOpenRoles(): Promise<GetOpenRoles_Response_200> {
-    return this.core.fetch('/apply', 'get');
-  }
-
+  getOpenRoles(): Promise<GetOpenRoles_Response_200>;
   /**
    * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
    *
    * @summary Submit your application!
    */
-  applyToReadMe<T = unknown>(body: Apply): Promise<T> {
-    return this.core.fetch('/apply', 'post', body);
-  }
-
+  applyToReadMe<T = unknown>(body: Apply): Promise<T>;
   /**
    * Returns all the categories for a specified version
    *
    * @summary Get all categories
    */
-  getCategories(metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200> {
-    return this.core.fetch('/categories', 'get', metadata);
-  }
-
+  getCategories(metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200>;
   /**
    * Create a new category inside of this project
    *
    * @summary Create category
    */
-  createCategory(body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID> {
-    return this.core.fetch('/categories', 'post', body, metadata);
-  }
-
+  createCategory(body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID>;
   /**
    * Returns the category with this slug
    *
    * @summary Get category
    */
-  getCategory(metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
-    return this.core.fetch('/categories/{slug}', 'get', metadata);
-  }
-
+  getCategory(metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Change the properties of a category.
    *
@@ -550,10 +458,7 @@ export default class SDK {
   updateCategory(
     body: Category,
     metadata: UpdateCategoryMetadataParam
-  ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND> {
-    return this.core.fetch('/categories/{slug}', 'put', body, metadata);
-  }
-
+  ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND>;
   /**
    * Delete the category with this slug.
    * >⚠️Heads Up!
@@ -561,64 +466,43 @@ export default class SDK {
    *
    * @summary Delete category
    */
-  deleteCategory(metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
-    return this.core.fetch('/categories/{slug}', 'delete', metadata);
-  }
-
+  deleteCategory(metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Returns the docs and children docs within this category
    *
    * @summary Get docs for category
    */
-  getCategoryDocs(metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
-    return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
-  }
-
+  getCategoryDocs(metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Returns a list of changelogs associated with the project API key
    *
    * @summary Get changelogs
    */
-  getChangelogs(metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200> {
-    return this.core.fetch('/changelogs', 'get', metadata);
-  }
-
+  getChangelogs(metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200>;
   /**
    * Create a new changelog inside of this project
    *
    * @summary Create changelog
    */
-  createChangelog<T = unknown>(body: Changelog): Promise<T> {
-    return this.core.fetch('/changelogs', 'post', body);
-  }
-
+  createChangelog<T = unknown>(body: Changelog): Promise<T>;
   /**
    * Returns the changelog with this slug
    *
    * @summary Get changelog
    */
-  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'get', metadata);
-  }
-
+  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T>;
   /**
    * Update a changelog with this slug
    *
    * @summary Update changelog
    */
-  updateChangelog<T = unknown>(body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
-  }
-
+  updateChangelog<T = unknown>(body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
   /**
    * Delete the changelog with this slug
    *
    * @summary Delete changelog
    */
-  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T> {
-    return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
-  }
-
+  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T>;
   /**
    * Returns a list of custom pages associated with the project API key
    *
@@ -626,10 +510,7 @@ export default class SDK {
    */
   getCustomPages(
     metadata?: GetCustomPagesMetadataParam
-  ): Promise<GetCustomPages_Response_200 | GetCustomPages_Response_401 | GetCustomPages_Response_403> {
-    return this.core.fetch('/custompages', 'get', metadata);
-  }
-
+  ): Promise<GetCustomPages_Response_200 | GetCustomPages_Response_401 | GetCustomPages_Response_403>;
   /**
    * Create a new custom page inside of this project
    *
@@ -637,10 +518,7 @@ export default class SDK {
    */
   createCustomPage(
     body: CustomPage
-  ): Promise<Error_CUSTOMPAGE_INVALID | CreateCustomPage_Response_401 | CreateCustomPage_Response_403> {
-    return this.core.fetch('/custompages', 'post', body);
-  }
-
+  ): Promise<Error_CUSTOMPAGE_INVALID | CreateCustomPage_Response_401 | CreateCustomPage_Response_403>;
   /**
    * Returns the custom page with this slug
    *
@@ -648,10 +526,7 @@ export default class SDK {
    */
   getCustomPage(
     metadata: GetCustomPageMetadataParam
-  ): Promise<GetCustomPage_Response_401 | GetCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND> {
-    return this.core.fetch('/custompages/{slug}', 'get', metadata);
-  }
-
+  ): Promise<GetCustomPage_Response_401 | GetCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
   /**
    * Update a custom page with this slug
    *
@@ -662,10 +537,7 @@ export default class SDK {
     metadata: UpdateCustomPageMetadataParam
   ): Promise<
     Error_CUSTOMPAGE_INVALID | UpdateCustomPage_Response_401 | UpdateCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND
-  > {
-    return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
-  }
-
+  >;
   /**
    * Delete the custom page with this slug
    *
@@ -673,19 +545,13 @@ export default class SDK {
    */
   deleteCustomPage(
     metadata: DeleteCustomPageMetadataParam
-  ): Promise<DeleteCustomPage_Response_401 | DeleteCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND> {
-    return this.core.fetch('/custompages/{slug}', 'delete', metadata);
-  }
-
+  ): Promise<DeleteCustomPage_Response_401 | DeleteCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
   /**
    * Returns the doc with this slug
    *
    * @summary Get doc
    */
-  getDoc(metadata: GetDocMetadataParam): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND> {
-    return this.core.fetch('/docs/{slug}', 'get', metadata);
-  }
-
+  getDoc(metadata: GetDocMetadataParam): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
    * Update a doc with this slug
    *
@@ -694,10 +560,7 @@ export default class SDK {
   updateDoc(
     body: Doc,
     metadata: UpdateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | UpdateDoc_Response_401 | UpdateDoc_Response_403 | Error_DOC_NOTFOUND> {
-    return this.core.fetch('/docs/{slug}', 'put', body, metadata);
-  }
-
+  ): Promise<Error_DOC_INVALID | UpdateDoc_Response_401 | UpdateDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
    * Delete the doc with this slug
    *
@@ -705,10 +568,7 @@ export default class SDK {
    */
   deleteDoc(
     metadata: DeleteDocMetadataParam
-  ): Promise<DeleteDoc_Response_401 | DeleteDoc_Response_403 | Error_DOC_NOTFOUND> {
-    return this.core.fetch('/docs/{slug}', 'delete', metadata);
-  }
-
+  ): Promise<DeleteDoc_Response_401 | DeleteDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
    * Create a new doc inside of this project
    *
@@ -717,46 +577,31 @@ export default class SDK {
   createDoc(
     body: Doc,
     metadata?: CreateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | CreateDoc_Response_401 | CreateDoc_Response_403> {
-    return this.core.fetch('/docs', 'post', body, metadata);
-  }
-
+  ): Promise<Error_DOC_INVALID | CreateDoc_Response_401 | CreateDoc_Response_403>;
   /**
    * Returns all docs that match the search
    *
    * @summary Search docs
    */
-  searchDocs(metadata: SearchDocsMetadataParam): Promise<SearchDocs_Response_401 | SearchDocs_Response_403> {
-    return this.core.fetch('/docs/search', 'post', metadata);
-  }
-
+  searchDocs(metadata: SearchDocsMetadataParam): Promise<SearchDocs_Response_401 | SearchDocs_Response_403>;
   /**
    * Returns with all of the error page types for this project
    *
    * @summary Get errors
    */
-  getErrors(): Promise<GetErrors_Response_401 | GetErrors_Response_403> {
-    return this.core.fetch('/errors', 'get');
-  }
-
+  getErrors(): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
   /**
    * Returns project data for API key
    *
    * @summary Get metadata about the current project
    */
-  getProject(): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403> {
-    return this.core.fetch('/', 'get');
-  }
-
+  getProject(): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
   /**
    * Retrieve a list of versions associated with a project API key
    *
    * @summary Get versions
    */
-  getVersions(): Promise<GetVersions_Response_401 | GetVersions_Response_403> {
-    return this.core.fetch('/version', 'get');
-  }
-
+  getVersions(): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
   /**
    * Create a new version
    *
@@ -766,10 +611,7 @@ export default class SDK {
     body: Version
   ): Promise<
     CreateVersion_Response_400 | CreateVersion_Response_401 | CreateVersion_Response_403 | Error_VERSION_FORK_NOTFOUND
-  > {
-    return this.core.fetch('/version', 'post', body);
-  }
-
+  >;
   /**
    * Returns the version with this version ID
    *
@@ -777,10 +619,7 @@ export default class SDK {
    */
   getVersion(
     metadata: GetVersionMetadataParam
-  ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND> {
-    return this.core.fetch('/version/{versionId}', 'get', metadata);
-  }
-
+  ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND>;
   /**
    * Update an existing version
    *
@@ -791,10 +630,7 @@ export default class SDK {
     metadata: UpdateVersionMetadataParam
   ): Promise<
     Error_VERSION_CANT_DEMOTE_STABLE | UpdateVersion_Response_401 | UpdateVersion_Response_403 | Error_VERSION_NOTFOUND
-  > {
-    return this.core.fetch('/version/{versionId}', 'put', body, metadata);
-  }
-
+  >;
   /**
    * Delete a version
    *
@@ -804,11 +640,8 @@ export default class SDK {
     metadata: DeleteVersionMetadataParam
   ): Promise<
     Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
-  > {
-    return this.core.fetch('/version/{versionId}', 'delete', metadata);
-  }
+  >;
 }
-
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -816,7 +649,7 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export type GetAPIRegistryMetadataParam = {
+export declare type GetAPIRegistryMetadataParam = {
   /**
    * An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.
    */
@@ -853,7 +686,7 @@ export interface Error_REGISTRY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecificationMetadataParam = {
+export declare type GetAPISpecificationMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -908,7 +741,7 @@ export interface Error_VERSION_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 export interface Error_APIKEY_EMPTY {
   /**
    * An error code unique to the error received.
@@ -963,7 +796,7 @@ export interface Error_APIKEY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_APIKEY_MISMATCH {
   /**
    * An error code unique to the error received.
@@ -1025,14 +858,14 @@ export interface UploadAPISpecificationBodyParam {
   spec?: string;
   [k: string]: unknown;
 }
-export type UploadAPISpecificationMetadataParam = {
+export declare type UploadAPISpecificationMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type UploadAPISpecification_Response_400 =
+export declare type UploadAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_INVALID
   | Error_SPEC_INVALID_SCHEMA
@@ -1145,8 +978,8 @@ export interface Error_SPEC_VERSION_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UploadAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UploadAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+export declare type UploadAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type UploadAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_SPEC_TIMEOUT {
   /**
    * An error code unique to the error received.
@@ -1181,14 +1014,14 @@ export interface UpdateAPISpecificationBodyParam {
   spec?: string;
   [k: string]: unknown;
 }
-export type UpdateAPISpecificationMetadataParam = {
+export declare type UpdateAPISpecificationMetadataParam = {
   /**
    * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
    */
   id: string;
   [k: string]: unknown;
 };
-export type UpdateAPISpecification_Response_400 =
+export declare type UpdateAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_ID_DUPLICATE
   | Error_SPEC_ID_INVALID
@@ -1249,17 +1082,17 @@ export interface Error_SPEC_ID_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteAPISpecificationMetadataParam = {
+export declare type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteAPISpecificationMetadataParam = {
   /**
    * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
    */
   id: string;
   [k: string]: unknown;
 };
-export type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_SPEC_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1287,7 +1120,7 @@ export interface Error_SPEC_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetOpenRoles_Response_200 = JobOpening[];
+export declare type GetOpenRoles_Response_200 = JobOpening[];
 export interface JobOpening {
   /**
    * A slugified version of the job opening title.
@@ -1363,7 +1196,7 @@ export interface Apply {
   dontReallyApply?: boolean;
   [k: string]: unknown;
 }
-export type GetCategoriesMetadataParam = {
+export declare type GetCategoriesMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1402,7 +1235,7 @@ export interface Category {
   type?: 'reference' | 'guide';
   [k: string]: unknown;
 }
-export type CreateCategoryMetadataParam = {
+export declare type CreateCategoryMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
@@ -1436,7 +1269,7 @@ export interface Error_CATEGORY_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetCategoryMetadataParam = {
+export declare type GetCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1476,7 +1309,7 @@ export interface Error_CATEGORY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateCategoryMetadataParam = {
+export declare type UpdateCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1489,7 +1322,7 @@ export type UpdateCategoryMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type DeleteCategoryMetadataParam = {
+export declare type DeleteCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1502,7 +1335,7 @@ export type DeleteCategoryMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetCategoryDocsMetadataParam = {
+export declare type GetCategoryDocsMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1515,7 +1348,7 @@ export type GetCategoryDocsMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetChangelogsMetadataParam = {
+export declare type GetChangelogsMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1553,28 +1386,28 @@ export interface Changelog {
   hidden?: boolean;
   [k: string]: unknown;
 }
-export type GetChangelogMetadataParam = {
+export declare type GetChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type UpdateChangelogMetadataParam = {
+export declare type UpdateChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type DeleteChangelogMetadataParam = {
+export declare type DeleteChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type GetCustomPagesMetadataParam = {
+export declare type GetCustomPagesMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1596,8 +1429,8 @@ export interface GetCustomPages_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
-export type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
 export interface CustomPage {
   /**
    * Title of the custom page
@@ -1648,17 +1481,17 @@ export interface Error_CUSTOMPAGE_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type GetCustomPageMetadataParam = {
+export declare type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_CUSTOMPAGE_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1686,25 +1519,25 @@ export interface Error_CUSTOMPAGE_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateCustomPageMetadataParam = {
+export declare type UpdateCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteCustomPageMetadataParam = {
+export declare type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type GetDocMetadataParam = {
+export declare type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1717,8 +1550,8 @@ export type GetDocMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_DOC_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1784,7 +1617,7 @@ export interface Doc {
   };
   [k: string]: unknown;
 }
-export type UpdateDocMetadataParam = {
+export declare type UpdateDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1824,9 +1657,9 @@ export interface Error_DOC_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteDocMetadataParam = {
+export declare type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1839,18 +1672,18 @@ export type DeleteDocMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type CreateDocMetadataParam = {
+export declare type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
+export declare type CreateDocMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type SearchDocsMetadataParam = {
+export declare type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
+export declare type SearchDocsMetadataParam = {
   /**
    * Search string to look for
    */
@@ -1863,10 +1696,10 @@ export type SearchDocsMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
-export type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
+export declare type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
 export interface CondensedProjectData {
   name?: string;
   subdomain?: string;
@@ -1878,10 +1711,10 @@ export interface CondensedProjectData {
   plan?: string;
   [k: string]: unknown;
 }
-export type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetProject_Response_403 = Error_APIKEY_MISMATCH;
-export type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetProject_Response_403 = Error_APIKEY_MISMATCH;
+export declare type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
 export interface Version {
   /**
    * Semantic Version
@@ -1910,7 +1743,10 @@ export interface Version {
   is_deprecated?: boolean;
   [k: string]: unknown;
 }
-export type CreateVersion_Response_400 = Error_VERSION_EMPTY | Error_VERSION_DUPLICATE | Error_VERSION_FORK_EMPTY;
+export declare type CreateVersion_Response_400 =
+  | Error_VERSION_EMPTY
+  | Error_VERSION_DUPLICATE
+  | Error_VERSION_FORK_EMPTY;
 export interface Error_VERSION_DUPLICATE {
   /**
    * An error code unique to the error received.
@@ -1965,8 +1801,8 @@ export interface Error_VERSION_FORK_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export type CreateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateVersion_Response_403 = Error_APIKEY_MISMATCH;
+export declare type CreateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type CreateVersion_Response_403 = Error_APIKEY_MISMATCH;
 export interface Error_VERSION_FORK_NOTFOUND {
   /**
    * An error code unique to the error received.
@@ -1994,16 +1830,16 @@ export interface Error_VERSION_FORK_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetVersionMetadataParam = {
+export declare type GetVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
   versionId: string;
   [k: string]: unknown;
 };
-export type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
-export type UpdateVersionMetadataParam = {
+export declare type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
+export declare type UpdateVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
@@ -2037,9 +1873,9 @@ export interface Error_VERSION_CANT_DEMOTE_STABLE {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteVersionMetadataParam = {
+export declare type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
@@ -2073,5 +1909,6 @@ export interface Error_VERSION_CANT_REMOVE_STABLE {
   poem?: string[];
   [k: string]: unknown;
 }
-export type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
+export declare type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+export declare type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
+export {};

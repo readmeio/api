@@ -1,31 +1,27 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`typescript generator should generate typescript code 1`] = `
-Object {
-  "index.ts": "import Oas from 'oas';
-import APICore from './src/core';
-import definition from './test/__fixtures__/simple.oas.json';
-
-export default class SDK {
-  spec: Oas;
-  core: APICore;
-  authKeys: (number | string)[][] = [];
-
-  constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'api/1.0.0');
+'use strict';
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+var oas_1 = __importDefault(require('oas'));
+var core_1 = __importDefault(require('api/dist/core'));
+var simple_oas_json_1 = __importDefault(require('./simple.oas.json'));
+var SDK = /** @class */ (function () {
+  function SDK() {
+    this.authKeys = [];
+    this.spec = oas_1.default.init(simple_oas_json_1.default);
+    this.core = new core_1.default(this.spec, 'simple-js-cjs/1.0.0 (api/5.0-unit-testing)');
   }
-
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its \`Content-Type\` header\`.
+   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config: ConfigOptions) {
+  SDK.prototype.config = function (config) {
     this.core.setConfig(config);
-  }
-
+  };
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -35,7 +31,7 @@ export default class SDK {
    * supported by the OpenAPI specification.
    *
    * @example <caption>HTTP Basic auth</caption>
-   * sdk.auth('username', 'password');')
+   * sdk.auth('username', 'password');
    *
    * @example <caption>Bearer tokens (HTTP or OAuth 2)</caption>
    * sdk.auth('myBearerToken');
@@ -47,11 +43,15 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values: string[] | number[]) {
-    this.core.setAuth(...values);
+  SDK.prototype.auth = function () {
+    var _a;
+    var values = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      values[_i] = arguments[_i];
+    }
+    (_a = this.core).setAuth.apply(_a, values);
     return this;
-  }
-
+  };
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -71,69 +71,29 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url: string, variables = {}) {
+  SDK.prototype.server = function (url, variables) {
+    if (variables === void 0) {
+      variables = {};
+    }
     this.core.setServer(url, variables);
-  }
-
+  };
   /**
-   * Multiple status values can be provided with comma separated strings
+   * Access any get endpoint on your API.
    *
-   * @summary Finds Pets by status
+   * @param path API path to make a request against.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
-  get(path: string, metadata?: Record<string, unknown>): Promise<unknown> {
+  SDK.prototype.get = function (path, metadata) {
     return this.core.fetch(path, 'get', metadata);
-  }
-
+  };
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+  SDK.prototype.findPetsByStatus = function (metadata) {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
-  }
-}
-
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the \`Content-Type\` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-export type FindPetsByStatusMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: (\\"available\\" | \\"pending\\" | \\"sold\\")[];
-  [k: string]: unknown;
-};
-export type FindPetsByStatus_Response_200 = Pet[];
-export interface Pet {
-  id?: number;
-  category?: Category;
-  name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /**
-   * pet status in the store
-   */
-  status?: \\"available\\" | \\"pending\\" | \\"sold\\";
-  [k: string]: unknown;
-}
-export interface Category {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-export interface Tag {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-",
-}
-`;
+  };
+  return SDK;
+})();
+module.exports = SDK;

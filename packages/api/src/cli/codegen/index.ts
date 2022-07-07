@@ -3,16 +3,29 @@ import type CodeGeneratorLanguage from './language';
 
 import TSGenerator from './languages/typescript';
 
-export default function codegen(
-  language: string | 'ts' | 'typescript' | 'js' | 'javascript',
-  spec: Oas,
-  specPath: string
-): CodeGeneratorLanguage {
-  if (language === 'ts' || language === 'typescript' || language === 'js' || language === 'javascript') {
-    return new TSGenerator(spec, specPath, {
-      outputJS: language === 'js' || language === 'javascript',
-    });
-  }
+export type SupportedLanguages = 'js' | 'js-cjs' | 'js-esm' | 'ts';
 
-  throw new TypeError(`Unsupported language supplied: ${language}`);
+export default function codegen(
+  language: SupportedLanguages,
+  spec: Oas,
+  specPath: string,
+  identifier: string
+): CodeGeneratorLanguage {
+  switch (language) {
+    case 'js':
+      throw new TypeError('An export format of CommonJS or ECMAScript is required for JavaScript compilation.');
+
+    case 'js-cjs':
+    case 'js-esm':
+    case 'ts':
+      return new TSGenerator(spec, specPath, identifier, {
+        outputJS: ['js-cjs', 'js-esm'].includes(language),
+
+        // TS will always generate with ESM-like exports.
+        compilerTarget: language === 'js-cjs' ? 'cjs' : 'esm',
+      });
+
+    default:
+      throw new TypeError(`Unsupported language supplied: ${language}`);
+  }
 }

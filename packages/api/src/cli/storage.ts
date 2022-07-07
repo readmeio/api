@@ -197,13 +197,13 @@ export default class Storage {
    *     |   ├── node_modules/
    *     │   ├── index.js     // We may offer the option to export a raw TS file for folks who want
    *     |   |                // that, but for now it'll be a compiled JS file.
-   *     │   ├── types.ts     // All types for their SDK, ready to use in an IDE.
+   *     │   ├── index.d.ts   // All types for their SDK, ready to use in an IDE.
    *     │   |── openapi.json
    *     │   └── package.json
    *     └── petstore/
    *         ├── node_modules/
    *         ├── index.js
-   *         ├── types.ts
+   *         ├── index.d.ts
    *         ├── openapi.json
    *         └── package.json
    *

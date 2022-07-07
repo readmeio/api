@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './optional-payload.oas.json';
+import definition from './simple.oas.json';
 
 export default class SDK {
   spec: Oas;
@@ -9,7 +9,7 @@ export default class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'optional-payload/1.0.0 (api/5.0-unit-testing)');
+    this.core = new APICore(this.spec, 'simple-ts/1.0.0 (api/5.0-unit-testing)');
   }
 
   /**
@@ -72,52 +72,28 @@ export default class SDK {
   }
 
   /**
-   * Updates a pet in the store with form data
+   * Multiple status values can be provided with comma separated strings
    *
+   * @summary Finds Pets by status
    */
-  post<T = unknown>(
-    path: string,
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
+  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
   /**
-   * Updates a pet in the store with form data
-   *
-   */
-  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Access any post endpoint on your API.
+   * Access any get endpoint on your API.
    *
    * @param path API path to make a request against.
-   * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'post', body, metadata);
+  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
+    return this.core.fetch(path, 'get', metadata);
   }
 
   /**
-   * Updates a pet in the store with form data
+   * Multiple status values can be provided with comma separated strings
    *
+   * @summary Finds Pets by status
    */
-  updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
-  ): Promise<T> {
-    return this.core.fetch('/pet/{petId}', 'post', body, metadata);
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+    return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
 
@@ -128,21 +104,35 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export interface UpdatePetWithFormFormDataParam {
+export type FindPetsByStatusMetadataParam = {
   /**
-   * Updated name of the pet
+   * Status values that need to be considered for filter
    */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-export type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
+  status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
+export type FindPetsByStatus_Response_200 = Pet[];
+export interface Pet {
+  id?: number;
+  category?: Category;
+  name: string;
+  photoUrls: string[];
+  tags?: Tag[];
+  /**
+   * pet status in the store
+   *
+   * `available` `pending` `sold`
+   */
+  status?: 'available' | 'pending' | 'sold';
+  [k: string]: unknown;
+}
+export interface Category {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}
+export interface Tag {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}

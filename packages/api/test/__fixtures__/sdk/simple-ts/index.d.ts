@@ -1,21 +1,17 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './simple.oas.json';
 export default class SDK {
-  constructor() {
-    this.authKeys = [];
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'api/1.0.0');
-  }
+  spec: Oas;
+  core: APICore;
+  authKeys: (number | string)[][];
+  constructor();
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
    * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config) {
-    this.core.setConfig(config);
-  }
+  config(config: ConfigOptions): void;
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -37,10 +33,7 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values) {
-    this.core.setAuth(...values);
-    return this;
-  }
+  auth(...values: string[] | number[]): this;
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -60,24 +53,57 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url, variables = {}) {
-    this.core.setServer(url, variables);
-  }
-  /**
-   * Access any get endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get(path, metadata) {
-    return this.core.fetch(path, 'get', metadata);
-  }
+  server(url: string, variables?: {}): void;
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata) {
-    return this.core.fetch('/pet/findByStatus', 'get', metadata);
-  }
+  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  /**
+   * Multiple status values can be provided with comma separated strings
+   *
+   * @summary Finds Pets by status
+   */
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
 }
+interface ConfigOptions {
+  /**
+   * By default we parse the response based on the `Content-Type` header of the request. You
+   * can disable this functionality by negating this option.
+   */
+  parseResponse: boolean;
+}
+export declare type FindPetsByStatusMetadataParam = {
+  /**
+   * Status values that need to be considered for filter
+   */
+  status: ('available' | 'pending' | 'sold')[];
+  [k: string]: unknown;
+};
+export declare type FindPetsByStatus_Response_200 = Pet[];
+export interface Pet {
+  id?: number;
+  category?: Category;
+  name: string;
+  photoUrls: string[];
+  tags?: Tag[];
+  /**
+   * pet status in the store
+   *
+   * `available` `pending` `sold`
+   */
+  status?: 'available' | 'pending' | 'sold';
+  [k: string]: unknown;
+}
+export interface Category {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}
+export interface Tag {
+  id?: number;
+  name?: string;
+  [k: string]: unknown;
+}
+export {};

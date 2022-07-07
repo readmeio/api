@@ -37,11 +37,11 @@ function wordWrap(str: string, max = 88) {
 }
 
 export default class TSGenerator extends CodeGeneratorLanguage {
-  userAgent: 'api/1.0.0';
-
   project: Project;
 
   outputJS: boolean;
+
+  compilerTarget: 'cjs' | 'esm';
 
   types: Map<string, string>;
 
@@ -60,11 +60,27 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     }
   >;
 
-  constructor(spec: Oas, specPath: string, options: { outputJS?: boolean } = { outputJS: false }) {
-    super(spec, specPath);
+  constructor(
+    spec: Oas,
+    specPath: string,
+    identifier: string,
+    opts: {
+      outputJS?: boolean;
+      compilerTarget?: 'cjs' | 'esm';
+    } = {},
+  ) {
+    const options: { outputJS: boolean; compilerTarget: 'cjs' | 'esm' } = {
+      outputJS: false,
+      compilerTarget: 'cjs',
+      ...opts,
+    };
 
-    // @todo fill this user agent in with something contextual.
-    this.userAgent = 'api/1.0.0';
+    if (!options.outputJS) {
+      // TypeScript compilation will always target towards ESM-like imports and exports.
+      options.compilerTarget = 'esm';
+    }
+
+    super(spec, specPath, identifier);
 
     this.requiredPackages = {
       api: {
@@ -84,11 +100,21 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       },
       compilerOptions: {
         declaration: true,
-        target: ScriptTarget.ES2015,
+        resolveJsonModule: true,
+        target: options.compilerTarget === 'cjs' ? ScriptTarget.ES5 : ScriptTarget.ES2020,
         outDir: 'dist',
+
+        // If we're compiling to a CJS target then we need to include this compiler option
+        // otherwise TS will attempt to load our `openapi.json` import with a `.default` property
+        // which doesn't exist. `esModuleInterop` wraps imports in a small `__importDefault`
+        // function that does some determination to see if the module has a default export or not.
+        //
+        // Basically without this option CJS code will fail.
+        ...(options.compilerTarget === 'cjs' ? { esModuleInterop: true } : {}),
       },
     });
 
+    this.compilerTarget = options.compilerTarget;
     this.outputJS = options.outputJS;
 
     this.types = new Map();
@@ -111,23 +137,28 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     const pkg = {
       name: `@api/${storage.identifier}`,
-      main: './index.ts',
+      main: `./index.${this.outputJS ? 'js' : 'ts'}`,
+      types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
     };
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
-    await execa(
-      'npm',
-      ['install', ...Object.keys(this.requiredPackages), '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean),
-      { cwd: installDir }
-    ).then(res => {
+    const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+
+    // This will install packages required for the SDK within its installed directory in `.apis/`.
+    await execa('npm', [...npmInstall, ...Object.keys(this.requiredPackages)].filter(Boolean), {
+      cwd: installDir,
+    }).then(res => {
       if (opts.dryRun) {
         (opts.logger ? opts.logger : logger)(res.command);
         (opts.logger ? opts.logger : logger)(res.stdout);
       }
     });
 
-    return execa('npm', ['install', storage.getIdentifierStorageDir(), '--dry-run']).then(res => {
+    // This will install the installed SDK as a dependency within the current working directory,
+    // adding `@api/<sdk identifier>` as a dependency there so you can load it with
+    // `require('@api/<sdk identifier>)`.
+    return execa('npm', [...npmInstall, storage.getIdentifierStorageDir()].filter(Boolean)).then(res => {
       if (opts.dryRun) {
         (opts.logger ? opts.logger : logger)(res.command);
         (opts.logger ? opts.logger : logger)(res.stdout);
@@ -142,7 +173,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
   async generator() {
     const { operations, methods } = await this.loadOperationsAndMethods();
 
-    const sdkSource = this.project.createSourceFile('index.ts', 'export default class SDK {}');
+    const sdkSource = this.project.createSourceFile('index.ts', '');
 
     sdkSource.addImportDeclarations([
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
@@ -151,7 +182,29 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     ]);
 
     // @todo add TOS, License, info.* to a docblock at the top of the SDK.
-    this.sdk = sdkSource.getClassOrThrow('SDK');
+    this.sdk = sdkSource.addClass({
+      name: 'SDK',
+    });
+
+    // There's an annoying quirk with `ts-morph` where if we set the SDK class to be the default
+    // export with `isDefaultExport` then when we compile it to an ES5 target for CJS environments
+    // it'll be exported as `export.default = SDK`, which when you try to load it you'll need to
+    // run `require('@api/sdk').default`.
+    //
+    // Instead here by plainly creating the SDK class in the source file and then setting this
+    // export assignment it'll export the SDK class as `module.exports = SDK` so people can cleanly
+    // load the SDK with `require('@api/sdk)`.
+    //
+    // A whole lot of debugging went into here to let people not have to worry about `.default`
+    // messes. I hope it's worth it!
+    if (this.compilerTarget === 'cjs') {
+      sdkSource.addExportAssignment({
+        expression: 'SDK',
+      });
+    } else {
+      this.sdk.setIsDefaultExport(true);
+    }
+
     this.sdk.addProperties([
       { name: 'spec', type: 'Oas' },
       { name: 'core', type: 'APICore' },
@@ -294,12 +347,21 @@ sdk.server('https://eu.api.example.com/v14');`)
         .reduce((prev, next) => Object.assign(prev, next));
     }
 
-    return this.project
-      .getSourceFiles()
-      .map(sourceFile => ({
+    return [
+      ...this.project.getSourceFiles().map(sourceFile => ({
         [sourceFile.getBaseName()]: TSGenerator.formatter(sourceFile.getFullText()),
-      }))
-      .reduce((prev, next) => Object.assign(prev, next));
+      })),
+
+      // Because we're returning the raw source files for TS generation we also need to separately
+      // emit out our declaration files so we can put those into a separate file in the installed
+      // SDK directory.
+      ...this.project
+        .emitToMemory({ emitOnlyDtsFiles: true })
+        .getFiles()
+        .map(sourceFile => ({
+          [path.basename(sourceFile.filePath)]: TSGenerator.formatter(sourceFile.text),
+        })),
+    ].reduce((prev, next) => Object.assign(prev, next));
   }
 
   /**

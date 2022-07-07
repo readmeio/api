@@ -1,3 +1,5 @@
+import type { SupportedLanguages } from '../codegen';
+
 import { Command, Option } from 'commander';
 import ora from 'ora';
 import Oas from 'oas';
@@ -16,25 +18,59 @@ const cmd = new Command();
 cmd
   .name('install')
   .description('install an API SDK into your codebase')
-  .argument('<api>', 'an API to install')
+  .argument('<uri>', 'an API to install')
   .addOption(
-    new Option('-l, --lang <language>', 'SDK language')
-      .choices(['javascript', 'js', 'typescript', 'ts'])
-      .default('typescript')
+    new Option('-l, --lang <language>', 'SDK language').choices([
+      'js', // User generally wants JS, we'll prompt if they want CJS or ESM files.
+      'js-cjs',
+      'js-esm',
+      'ts',
+    ])
   )
-  .action(async (api: string, options: { lang: string }) => {
+  .action(async (uri: string, options: { lang: string }) => {
+    let language: SupportedLanguages;
+    if (options.lang) {
+      language = options.lang as SupportedLanguages;
+    } else {
+      ({ value: language } = await prompts({
+        type: 'select',
+        name: 'value',
+        message: 'What language would you like to generate an SDK for?',
+        choices: [
+          { title: 'TypeScript', value: 'ts' },
+          { title: 'JavaScript', value: 'js' },
+        ],
+        initial: 1,
+      }));
+    }
+
+    // Because our TS generation outputs raw TS source files we don't need to worry about CJS/ESM.
+    if (language === 'js') {
+      ({ value: language } = await prompts({
+        type: 'select',
+        name: 'value',
+        message: 'How are your project imports and exports structured?',
+        choices: [
+          { title: 'CommonJS', description: 'require/exports', value: 'cjs' },
+          { title: 'ECMAScript Modules', description: 'import/export', value: 'esm' },
+        ],
+        initial: 0,
+        format: sel => (sel === 'cjs' ? 'js-cjs' : 'js-esm'),
+      }));
+    }
+
     // @todo let them know that we're going to be creating a `.api/ directory
     // @todo detect if they have a gitigore and .npmignore and if .api woudl be ignored by that
     // @todo don't support swagger files without upconverting them
 
-    if (Storage.isInLockFile({ source: api })) {
+    if (Storage.isInLockFile({ source: uri })) {
       // @todo
       // logger(`It looks like you already have this API installed. Would you like to update it?`);
     }
 
     let identifier;
-    if (Fetcher.isAPIRegistryUUID(api)) {
-      identifier = Fetcher.getProjectPrefixFromRegistryUUID(api);
+    if (Fetcher.isAPIRegistryUUID(uri)) {
+      identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
     } else {
       ({ value: identifier } = await prompts({
         type: 'text',
@@ -69,7 +105,7 @@ cmd
     }
 
     let spinner = ora('Fetching your API').start();
-    const storage = new Storage(api, identifier);
+    const storage = new Storage(uri, identifier);
 
     const oas = await storage
       .load()
@@ -87,7 +123,7 @@ cmd
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();
-    const generator = codegen(options.lang, oas, './openapi.json');
+    const generator = codegen(language, oas, './openapi.json', identifier);
     const sdkSource = await generator
       .generator()
       .then(res => {

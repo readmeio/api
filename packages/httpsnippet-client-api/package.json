@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.7.3",
-    "@readme/oas-examples": "^5.1.1",
+    "@readme/oas-examples": "^5.4.1",
     "@readme/openapi-parser": "^2.2.0",
     "api": "file:../api",
     "chai": "^4.3.6",
