@@ -1,27 +1,17 @@
 import Oas from 'oas';
-import APICore from 'api/core';
-import definition from './simple.oas.json';
-
+import APICore from 'api/dist/core';
 export default class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
-
-  constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'api/1.0.0');
-  }
-
+  authKeys: (number | string)[][];
+  constructor();
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
    * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config: ConfigOptions) {
-    this.core.setConfig(config);
-  }
-
+  config(config: ConfigOptions): void;
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -43,11 +33,7 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values: string[] | number[]) {
-    this.core.setAuth(...values);
-    return this;
-  }
-
+  auth(...values: string[] | number[]): this;
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -67,36 +53,35 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url: string, variables = {}) {
-    this.core.setServer(url, variables);
-  }
-
+  server(url: string, variables?: {}): void;
   /**
-   * Multiple status values can be provided with comma separated strings
+   * Updates a pet in the store with form data
    *
-   * @summary Finds Pets by status
    */
-  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  post<T = unknown>(
+    path: string,
+    body: UpdatePetWithFormFormDataParam,
+    metadata: UpdatePetWithFormMetadataParam
+  ): Promise<T>;
   /**
-   * Access any get endpoint on your API.
+   * Updates a pet in the store with form data
    *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
+  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
-   * Multiple status values can be provided with comma separated strings
+   * Updates a pet in the store with form data
    *
-   * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
-    return this.core.fetch('/pet/findByStatus', 'get', metadata);
-  }
+  updatePetWithForm<T = unknown>(
+    body: UpdatePetWithFormFormDataParam,
+    metadata: UpdatePetWithFormMetadataParam
+  ): Promise<T>;
+  /**
+   * Updates a pet in the store with form data
+   *
+   */
+  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
 }
-
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -104,35 +89,22 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export type FindPetsByStatusMetadataParam = {
+export interface UpdatePetWithFormFormDataParam {
   /**
-   * Status values that need to be considered for filter
+   * Updated name of the pet
    */
-  status: ('available' | 'pending' | 'sold')[];
+  name?: string;
+  /**
+   * Updated status of the pet
+   */
+  status?: string;
+  [k: string]: unknown;
+}
+export declare type UpdatePetWithFormMetadataParam = {
+  /**
+   * ID of pet that needs to be updated
+   */
+  petId: number;
   [k: string]: unknown;
 };
-export type FindPetsByStatus_Response_200 = Pet[];
-export interface Pet {
-  id?: number;
-  category?: Category;
-  name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /**
-   * pet status in the store
-   *
-   * `available` `pending` `sold`
-   */
-  status?: 'available' | 'pending' | 'sold';
-  [k: string]: unknown;
-}
-export interface Category {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-export interface Tag {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
+export {};

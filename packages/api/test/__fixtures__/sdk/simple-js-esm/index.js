@@ -1,27 +1,21 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './optional-payload.oas.json';
-
+import definition from './simple.oas.json';
 export default class SDK {
-  spec: Oas;
-  core: APICore;
-  authKeys: (number | string)[][] = [];
-
   constructor() {
+    this.authKeys = [];
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'optional-payload/1.0.0 (api/5.0-unit-testing)');
+    this.core = new APICore(this.spec, 'simple-js-esm/1.0.0 (api/5.0-unit-testing)');
   }
-
   /**
    * Optionally configure various options, such as response parsing, that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
    * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
-  config(config: ConfigOptions) {
+  config(config) {
     this.core.setConfig(config);
   }
-
   /**
    * If the API you're using requires authentication you can supply the required credentials
    * through this method and the library will magically determine how they should be used
@@ -43,11 +37,10 @@ export default class SDK {
    * @see {@link https://spec.openapis.org/oas/v3.1.0#fixed-fields-22}
    * @param values Your auth credentials for the API; can specify up to two strings or numbers.
    */
-  auth(...values: string[] | number[]) {
+  auth(...values) {
     this.core.setAuth(...values);
     return this;
   }
-
   /**
    * If the API you're using offers alternate server URLs, and server variables, you can tell
    * the SDK which one to use with this method. To use it you can supply either one of the
@@ -67,82 +60,24 @@ export default class SDK {
    * @param url Server URL
    * @param variables An object of variables to replace into the server URL.
    */
-  server(url: string, variables = {}) {
+  server(url, variables = {}) {
     this.core.setServer(url, variables);
   }
-
   /**
-   * Updates a pet in the store with form data
-   *
-   */
-  post<T = unknown>(
-    path: string,
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Access any post endpoint on your API.
+   * Access any get endpoint on your API.
    *
    * @param path API path to make a request against.
-   * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'post', body, metadata);
+  get(path, metadata) {
+    return this.core.fetch(path, 'get', metadata);
   }
-
   /**
-   * Updates a pet in the store with form data
+   * Multiple status values can be provided with comma separated strings
    *
+   * @summary Finds Pets by status
    */
-  updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
-  ): Promise<T> {
-    return this.core.fetch('/pet/{petId}', 'post', body, metadata);
+  findPetsByStatus(metadata) {
+    return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
-
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-export interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-export type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};

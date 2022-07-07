@@ -25,11 +25,14 @@ updates:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
     ignore:
-      # The following packages are now ESM-only and can't be used here without a rewrite.
+      # The following are packages that we're ignoring updates from because they've moved to being
+      # ESM-only packages and we can't yet upgrade them.
+      - dependency-name: chalk
+        versions:
+          - ">= 5"
       - dependency-name: form-data-encoder
         versions:
           - ">= 2"
-
       - dependency-name: stringify-object
         versions:
           - ">= 4"

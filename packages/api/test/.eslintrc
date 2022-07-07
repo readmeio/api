@@ -2,17 +2,5 @@
   "extends": "@readme/eslint-config/testing-mocha",
   "rules": {
     "global-require": "off"
-  },
-  "overrides": [
-    {
-      "files": ["__fixtures__/sdk/**/*.ts"],
-      "rules": {
-        "@typescript-eslint/consistent-indexed-object-style": "off",
-        "import/extensions": "off",
-        "import/no-unresolved": "off",
-        "jsdoc/require-param": "off",
-        "lines-between-class-members": "off"
-      }
-    }
-  ]
+  }
 }

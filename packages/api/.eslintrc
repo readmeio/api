@@ -28,6 +28,13 @@
   },
   "overrides": [
     {
+      "files": ["bin/api"],
+      "rules": {
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
+      }
+    },
+    {
       "files": ["example.js"],
       "rules": {
         "@typescript-eslint/no-var-requires": "off",
