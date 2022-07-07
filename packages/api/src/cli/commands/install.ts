@@ -9,7 +9,8 @@ import Fetcher from '../../fetcher';
 import Storage from '../storage';
 import logger from '../logger';
 
-import prompts from 'prompts';
+import promptTerminal from '../lib/prompt';
+
 import figures from 'figures';
 import validateNPMPackageName from 'validate-npm-package-name';
 
@@ -32,7 +33,7 @@ cmd
     if (options.lang) {
       language = options.lang as SupportedLanguages;
     } else {
-      ({ value: language } = await prompts({
+      ({ value: language } = await promptTerminal({
         type: 'select',
         name: 'value',
         message: 'What language would you like to generate an SDK for?',
@@ -46,7 +47,7 @@ cmd
 
     // Because our TS generation outputs raw TS source files we don't need to worry about CJS/ESM.
     if (language === 'js') {
-      ({ value: language } = await prompts({
+      ({ value: language } = await promptTerminal({
         type: 'select',
         name: 'value',
         message: 'How are your project imports and exports structured?',
@@ -72,7 +73,7 @@ cmd
     if (Fetcher.isAPIRegistryUUID(uri)) {
       identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
     } else {
-      ({ value: identifier } = await prompts({
+      ({ value: identifier } = await promptTerminal({
         type: 'text',
         name: 'value',
         message:
@@ -156,7 +157,7 @@ cmd
         logger(`  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason} ${pkgInfo.url}`);
       });
 
-      await prompts({
+      await promptTerminal({
         type: 'confirm',
         name: 'value',
         message: 'OK to proceed with package installation?',
