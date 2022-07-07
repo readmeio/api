@@ -67,7 +67,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     opts: {
       outputJS?: boolean;
       compilerTarget?: 'cjs' | 'esm';
-    } = {},
+    } = {}
   ) {
     const options: { outputJS: boolean; compilerTarget: 'cjs' | 'esm' } = {
       outputJS: false,

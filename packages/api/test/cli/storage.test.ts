@@ -28,7 +28,7 @@ describe('storage', function () {
   describe('#generateIntegrityHash', function () {
     it('should generate an integrity hash for an API definition', function () {
       expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).to.equal(
-        'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug=='
+        'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg=='
       );
     });
   });
@@ -59,7 +59,7 @@ describe('storage', function () {
       expect(Storage.isInLockFile({ source })).to.deep.equal({
         identifier: 'petstore',
         source,
-        integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
       });
     });
@@ -77,7 +77,7 @@ describe('storage', function () {
       expect(Storage.isInLockFile({ identifier: 'petstore' })).to.deep.equal({
         identifier: 'petstore',
         source,
-        integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
       });
     });
@@ -129,7 +129,7 @@ describe('storage', function () {
         expect(storage.getFromLockfile()).to.deep.equal({
           identifier: 'petstore',
           source: '@petstore/v1.0#n6kvf10vakpemvplx',
-          integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -147,7 +147,7 @@ describe('storage', function () {
           description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
-        expect(storage.getAPIDefinition().paths['/pet/:id'].get).to.deep.equal({
+        expect(storage.getAPIDefinition().paths['/pet/{id}'].get).to.deep.equal({
           tags: ['pet'],
           summary: 'Find a pet',
           description: 'This operation will find a pet in the database.',
@@ -163,7 +163,7 @@ describe('storage', function () {
         expect(storage.getFromLockfile()).to.deep.equal({
           identifier: 'petstore',
           source: '@petstore#n6kvf10vakpemvplx',
-          integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -203,7 +203,7 @@ describe('storage', function () {
         expect(storage.getFromLockfile()).to.deep.equal({
           identifier: 'petstore',
           source: 'http://example.com/readme.json',
-          integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -333,7 +333,7 @@ describe('storage', function () {
       expect(storage.getFromLockfile()).to.deep.equal({
         identifier: 'petstore-simple',
         source: file,
-        integrity: 'sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==',
+        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
       });
     });
