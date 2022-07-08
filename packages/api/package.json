@@ -32,6 +32,12 @@
   "engines": {
     "node": ">=14"
   },
+  "keywords": [
+    "api",
+    "sdk",
+    "swagger",
+    "openapi"
+  ],
   "dependencies": {
     "@readme/oas-to-har": "^17.0.8",
     "@readme/openapi-parser": "^2.2.0",

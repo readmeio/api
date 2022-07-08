@@ -1,23 +1,58 @@
-# 🚀 api
+<p align="center">
+  <img width="150" src="https://user-images.githubusercontent.com/33762/177879321-ba117c74-2269-4124-ba25-e952f1c9bf82.png" />
+</p>
 
-[![npm](https://img.shields.io/npm/v/api)](https://npm.im/api) [![Build](https://github.com/readmeio/api/workflows/CI/badge.svg)](https://github.com/readmeio/api)
+<p align="center">
+  Automatic SDK generation from an OpenAPI definition.
+</p>
 
-Automatic SDK generation from an OpenAPI definition.
+<p align="center">
+  <a href="https://npm.im/api"><img src="https://img.shields.io/npm/v/api.svg" alt="NPM Version"></a>
+  <a href="https://github.com/readmeio/api"><img src="https://github.com/readmeio/api/workflows/CI/badge.svg" alt="Build status"></a>
+  <a href="https://npm.im/api"><img src="https://img.shields.io/node/v/api.svg" alt="Node Version"></a>
+</p>
 
-* [Installation](#installation)
-* [Usage](#usage)
-    * [Authentication](#authentication)
-    * [Parameters and Payloads](#parameters-and-payloads)
-    * [HTTP requests](#http-requests)
-    * [Server configurations](#server-configurations)
-* [How does it work?](#how-does-it-work)
-* [Interested in contributing?](#interested-in-contributing)
-* [FAQ](#faq)
+---
 
-## Installation
+* [Installation](https://api.readme.dev/docs/installation)
+* [Usage](https://api.readme.dev/docs/usage)
+    * @todo[Authentication](#authentication)
+    * @todo[Parameters and Payloads](#parameters-and-payloads)
+    * @todo[HTTP requests](#http-requests)
+    * @todo[Server configurations](#server-configurations)
+* @todo[How does it work?](#how-does-it-work)
+* @todo[Interested in contributing?](#interested-in-contributing)
+* @todo[FAQ](#faq)
+
+`api` is a library that facilitates creating an SDK from an OpenAPI definition. You can use its codegen offering to create an opinionated SDK for TypeScript or JS (+ TypeScript types).
+
+```sh
+$ npx api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json
 ```
-npm install api --save
+
+```js
+const sdk = require('@api/petstore');
+
+sdk.listPets().then(res => {
+  console.log(`My pets name is ${res[0].name}!`);
+});
 ```
+
+Or you can use it dynamically (though you won't have fancy TypeScript types):
+
+```js
+const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
+
+sdk.listPets().then(res => {
+  console.log(`My pets name is ${res[0].name}!`);
+});
+```
+
+
+---
+> Everything below this point needs to be moved to separate files in `docs/`
+---
+
 
 ## Usage
 All you need to use `api` is to supply it an OpenAPI definition and then use the SDK as you would any other!
@@ -37,7 +72,9 @@ The OpenAPI definition is automatically downloaded, cached, and transformed into
 
 ```js
 sdk.auth('myApiToken');
-sdk.listPets().then(...);
+sdk.listPets().then(res => {
+  // response
+});
 ```
 
 With the exception of OpenID, it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
@@ -173,6 +210,7 @@ By default the cache is configured with the [find-cache-dir](https://npm.im/find
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json', {
   cacheDir: './path/to/my/custom/cache/dir',
 });
+
 sdk.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
