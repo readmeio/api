@@ -1,8 +1,9 @@
-# 🚀 api
+# <img height=90 align=left alt="Rocket Launch" src=https://user-images.githubusercontent.com/886627/178147413-e820fd9c-ae58-4826-8863-4a919d3ae465.png /> api
 
-[![npm](https://img.shields.io/npm/v/api)](https://npm.im/api) [![Build](https://github.com/readmeio/api/workflows/CI/badge.svg)](https://github.com/readmeio/api)
+*Automatic SDK generation from an OpenAPI definition.* [<img alt="API on NPM" align=right src=https://img.shields.io/npm/v/api />](https://npm.im/api) [<img alt="API Build Status" align=right src=https://github.com/readmeio/api/workflows/CI/badge.svg />](https://github.com/readmeio/api)
 
-Automatic SDK generation from an OpenAPI definition.
+<br/>
+
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -13,6 +14,7 @@ Automatic SDK generation from an OpenAPI definition.
 * [How does it work?](#how-does-it-work)
 * [Interested in contributing?](#interested-in-contributing)
 * [FAQ](#faq)
+
 
 ## Installation
 ```
