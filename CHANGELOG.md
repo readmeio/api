@@ -1,3 +1,10 @@
+## 5.0.0-beta.1 (2022-07-10)
+
+* fix: downgrading json-schema-to-typescript to v10 (#475) ([31a1091](https://github.com/readmeio/api/commit/31a1091)), closes [#475](https://github.com/readmeio/api/issues/475)
+* feat: updating the packageInfo file for v5 beta0 ([a4df246](https://github.com/readmeio/api/commit/a4df246))
+
+
+
 ## 5.0.0-beta.0 (2022-07-08)
 
 * fix: cleaning up some unnecessarily complicated promises ([db41fd3](https://github.com/readmeio/api/commit/db41fd3))
