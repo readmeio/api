@@ -32,17 +32,17 @@
     "oas": "^18.0.1"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.7.3",
+    "@readme/eslint-config": "^8.8.1",
     "@readme/oas-examples": "^5.4.1",
     "@readme/openapi-parser": "^2.2.0",
     "api": "file:../api",
     "chai": "^4.3.6",
-    "eslint": "^8.14.0",
+    "eslint": "^8.19.0",
     "fetch-mock": "^9.11.0",
     "isomorphic-fetch": "^3.0.0",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0"
   },

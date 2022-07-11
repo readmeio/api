@@ -22,7 +22,7 @@ import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 function digestParameters(parameters: ParameterObject[]): Record<string, ParameterObject> {
   return parameters.reduce((prev, param) => {
     if ('$ref' in param || 'allOf' in param || 'anyOf' in param || 'oneOf' in param) {
-      throw new Error(`The OpenAPI document for this operation wasn't dereferenced before processing.`);
+      throw new Error("The OpenAPI document for this operation wasn't dereferenced before processing.");
     } else if (param.name in prev) {
       throw new Error(
         `The operation you are using has the same parameter, ${param.name}, spread across multiple entry points. We unfortunately can't handle this right now.`
@@ -123,7 +123,7 @@ function processFile(
     new TypeError(
       paramName
         ? `The data supplied for the \`${paramName}\` request body parameter is not a file handler that we support.`
-        : `The data supplied for the request body payload is not a file handler that we support.`
+        : 'The data supplied for the request body payload is not a file handler that we support.'
     )
   );
 }
