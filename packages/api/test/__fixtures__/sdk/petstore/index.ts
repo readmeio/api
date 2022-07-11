@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './petstore.json';
+import definition from './openapi.json';
 
 export default class SDK {
   spec: Oas;

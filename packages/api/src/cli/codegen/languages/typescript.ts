@@ -673,12 +673,17 @@ sdk.server('https://eu.api.example.com/v14');`)
       Object.entries(ops).forEach(([method, operation]: [HttpMethods, Operation]) => {
         methods.add(method);
 
-        const operationId = operation.getOperationId();
+        const operationId = operation.getOperationId({
+          // This `camelCase` option will clean up any weird characters that might be present in
+          // the `operationId` so as we don't break TS compilation with an invalid method accessor.
+          camelCase: true,
+        });
+
         const params = this.prepareParameterTypesForOperation(operation, operationId);
         const responses = this.prepareResponseTypesForOperation(operation, operationId);
 
         if (operation.hasOperationId()) {
-          operations[operation.getOperationId()] = {
+          operations[operationId] = {
             types: {
               params,
               responses,

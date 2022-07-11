@@ -3,7 +3,7 @@ import fs from 'fs';
 import Oas from 'oas';
 import prepareParams from '../../src/core/prepareParams';
 
-import payloadExamples from '../__fixtures__/payloads.oas.json';
+import payloadExamples from '../__fixtures__/definitions/payloads.json';
 
 describe('#prepareParams', function () {
   let fileUploads: Oas;
@@ -381,7 +381,7 @@ describe('#prepareParams', function () {
 
   describe('defaults', function () {
     it('should prefill defaults for required body parameters if not supplied', async function () {
-      const oas = await import('../__fixtures__/nested-defaults.oas.json').then(Oas.init);
+      const oas = await import('../__fixtures__/definitions/nested-defaults.json').then(Oas.init);
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');
