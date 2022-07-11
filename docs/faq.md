@@ -1,0 +1,45 @@
+---
+title: FAQ
+excerpt: TKTK
+category: 5d4c940cae4e610060475769
+---
+
+### Does this support YAML definitions?
+Yes! YAML definitions will be automatically converted to JSON before they're cached and loaded as an SDK.
+
+### Does this support Swagger 2.0 definitions?
+At the moment it does not. If you wish to use an API that has a Swagger 2.0 file, you'll need to first convert it to an OpenAPI 3 definition.
+
+### Does this support traditional OAuth 2 flows of creating tokens?
+Not yet, unfortunately. For APIs that use OAuth 2, you'll need a fully-qualified token already for `api` to make requests.
+
+### Does this support APIs that use multiple forms of authentication on a single request?
+Not yet! This is something we're thinking about how to handle, but it's difficult with the simplified nature of the `.auth()` method as it by design does not ask the user to inform the SDK of what kind of authentication scheme the token they're supplying it should match up against.
+
+### Will this work in browsers?
+The dynamic version of `api` will **not** work in browsers as it requires access to some filesystem handling for managing its cache state, but libraries generated with the CLI installation process should work in a browser. If they don't, or you have trouble, [please let us know](https://github.com/readmeio/api/issues)!
+
+### Will this validate my data before it reaches the API?
+Not yet! This is something we've got planned down the road.
+
+### Does this support OpenAPI definitions that require authentication to download?
+Not yet! The URL that you give the module must be publicy accessible. If it isn't, you can download it to your computer/server and then use the absolute path to that file instead.
+
+```sh
+$ npx api install ./path/to/downloaded.json
+```
+
+```js
+const sdk = require('api')('./path/to/downloaded.json');
+```
+
+### How do I access the Response object (for status and headers)?
+By default we parse the response based on the `content-type` header for you. You can disable this by doing the following:
+
+```js
+sdk.config({ parseResponse: false });
+```
+
+### Where is the cache stored?
+
+See [How does it work?](https://api.readme.dev/docs/how-does-it-work) for some information on how, when, and where `api` caches its data.
