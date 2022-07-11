@@ -758,8 +758,12 @@ sdk.server('https://eu.api.example.com/v14');`)
    * @param operationId
    */
   prepareResponseTypesForOperation(operation: Operation, operationId: string) {
-    const schemas = operation
-      .getResponseStatusCodes()
+    const responseStatusCodes = operation.getResponseStatusCodes();
+    if (!responseStatusCodes.length) {
+      return undefined;
+    }
+
+    const schemas = responseStatusCodes
       .map(status => {
         const schema = operation.getResponseAsJsonSchema(status);
         if (!schema) {
