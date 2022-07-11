@@ -7,9 +7,10 @@
 </p>
 
 <p align="center">
-  <a href="https://npm.im/api"><img src="https://img.shields.io/npm/v/api.svg" alt="NPM Version"></a>
-  <a href="https://github.com/readmeio/api"><img src="https://github.com/readmeio/api/workflows/CI/badge.svg" alt="Build status"></a>
-  <a href="https://npm.im/api"><img src="https://img.shields.io/node/v/api.svg" alt="Node Version"></a>
+  <a href="https://npm.im/api"><img src="https://img.shields.io/npm/v/api.svg?style=for-the-badge" alt="NPM Version"></a>
+  <a href="https://npm.im/api"><img src="https://img.shields.io/node/v/api.svg?style=for-the-badge" alt="Node Version"></a>
+  <a href="https://npm.im/api"><img src="https://img.shields.io/npm/l/api.svg?style=for-the-badge" alt="MIT License"></a>
+  <a href="https://github.com/readmeio/api"><img src="https://img.shields.io/github/workflow/status/readmeio/api/CI?style=for-the-badge" alt="Build status"></a>
 </p>
 
 * [Installation](https://api.readme.dev/docs/installation)
