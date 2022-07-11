@@ -12,7 +12,7 @@
     "debug:bin": "node -r ts-node/register src/bin.ts",
     "lint": "eslint . --ext .js,.ts",
     "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
-    "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts",
+    "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts",
     "prepack": "npm run build",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.{js,ts}\"",
