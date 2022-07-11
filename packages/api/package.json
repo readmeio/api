@@ -60,7 +60,7 @@
     "validate-npm-package-name": "^4.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.7.3",
+    "@readme/eslint-config": "^8.8.1",
     "@readme/oas-examples": "^5.4.1",
     "@types/chai": "^4.3.1",
     "@types/find-cache-dir": "^3.2.1",
@@ -73,12 +73,12 @@
     "@types/ssri": "^7.1.1",
     "@types/validate-npm-package-name": "^4.0.0",
     "chai": "^4.3.6",
-    "eslint": "^8.14.0",
+    "eslint": "^8.19.0",
     "fetch-mock": "^9.11.0",
     "mocha": "^10.0.0",
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
-    "prettier": "^2.6.2",
+    "prettier": "^2.7.1",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0",
     "typescript": "^4.6.4",
