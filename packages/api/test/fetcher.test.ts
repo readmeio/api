@@ -42,6 +42,10 @@ describe('fetcher', function () {
         .true;
     });
 
+    it('should detect a schemeless GitHub blob URL as one', function () {
+      expect(Fetcher.isGitHubBlobURL('//github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json')).to.be.true;
+    });
+
     it("shouldn't detect raw GitHub URLs as a blob URL", function () {
       expect(
         Fetcher.isGitHubBlobURL('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json')
