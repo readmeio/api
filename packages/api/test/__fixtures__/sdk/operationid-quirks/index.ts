@@ -9,7 +9,7 @@ export default class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'optional-payload/1.0.0 (api/5.0-unit-testing)');
+    this.core = new APICore(this.spec, 'operationid-quirks/1.0.0 (api/5.0-unit-testing)');
   }
 
   /**
@@ -72,52 +72,26 @@ export default class SDK {
   }
 
   /**
-   * Updates a pet in the store with form data
+   * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
-  post<T = unknown>(
-    path: string,
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
+  get<T = unknown>(path: string): Promise<T>;
   /**
-   * Updates a pet in the store with form data
-   *
-   */
-  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Access any post endpoint on your API.
+   * Access any get endpoint on your API.
    *
    * @param path API path to make a request against.
-   * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'post', body, metadata);
+  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
+    return this.core.fetch(path, 'get', metadata);
   }
 
   /**
-   * Updates a pet in the store with form data
+   * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
-  updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
-  ): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
-  updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
-  ): Promise<T> {
-    return this.core.fetch('/pet/{petId}', 'post', body, metadata);
+  findPetsByStatus<T = unknown>(): Promise<T> {
+    return this.core.fetch('/quirky-operationId', 'get');
   }
 }
 
@@ -128,21 +102,3 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-export type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};

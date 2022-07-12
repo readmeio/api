@@ -44,7 +44,7 @@ describe('typescript', function () {
       const storage = new Storage(file, 'petstore');
       await storage.load();
 
-      const ts = new TSGenerator(oas, './petstore.json', 'petstore', { compilerTarget: 'cjs' });
+      const ts = new TSGenerator(oas, './openapi.json', 'petstore', { compilerTarget: 'cjs' });
       await ts.installer(storage, { logger, dryRun: true });
 
       expect(logger).to.be.calledWith('npm install --save --dry-run api@beta oas');
@@ -54,18 +54,18 @@ describe('typescript', function () {
 
   describe('#generator', function () {
     it('should generate typescript (by default)', async function () {
-      const oas = await import('../../../__fixtures__/simple.oas.json').then(Oas.init);
+      const oas = await import('../../../__fixtures__/definitions/simple.json').then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const ts = new TSGenerator(oas, './simple.oas.json', 'simple-ts');
+      const ts = new TSGenerator(oas, './openapi.json', 'simple-ts');
       expect(await ts.generator()).toMatchSDKFixture('simple-ts');
     });
 
     it('should be able to generate valid TS when a body is optional but metadata isnt', async function () {
-      const oas = await import('../../../__fixtures__/optional-payload.oas.json').then(Oas.init);
+      const oas = await import('../../../__fixtures__/definitions/optional-payload.json').then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const ts = new TSGenerator(oas, './optional-payload.oas.json', 'optional-payload');
+      const ts = new TSGenerator(oas, './openapi.json', 'optional-payload');
       expect(await ts.generator()).toMatchSDKFixture('optional-payload');
     });
 
@@ -73,7 +73,7 @@ describe('typescript', function () {
       const oas = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const ts = new TSGenerator(oas, './petstore.json', 'petstore');
+      const ts = new TSGenerator(oas, './openapi.json', 'petstore');
       expect(await ts.generator()).toMatchSDKFixture('petstore');
     });
 
@@ -81,24 +81,32 @@ describe('typescript', function () {
       const oas = await import('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const ts = new TSGenerator(oas, './readme.json', 'readme');
+      const ts = new TSGenerator(oas, './openapi.json', 'readme');
       expect(await ts.generator()).toMatchSDKFixture('readme');
+    });
+
+    it('should handle some quirky `operationId` cases', async function () {
+      const oas = await import('../../../__fixtures__/definitions/operationid-quirks.json').then(Oas.init);
+      await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+      const ts = new TSGenerator(oas, './openapi.json', 'operationid-quirks');
+      expect(await ts.generator()).toMatchSDKFixture('operationid-quirks');
     });
 
     describe('javascript generation', function () {
       it('should generate a CommonJS library', async function () {
-        const oas = await import('../../../__fixtures__/simple.oas.json').then(Oas.init);
+        const oas = await import('../../../__fixtures__/definitions/simple.json').then(Oas.init);
         await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-        const ts = new TSGenerator(oas, './simple.oas.json', 'simple-js-cjs', { outputJS: true });
+        const ts = new TSGenerator(oas, './openapi.json', 'simple-js-cjs', { outputJS: true });
         expect(await ts.generator()).toMatchSDKFixture('simple-js-cjs');
       });
 
       it('should generate am ESM library', async function () {
-        const oas = await import('../../../__fixtures__/simple.oas.json').then(Oas.init);
+        const oas = await import('../../../__fixtures__/definitions/simple.json').then(Oas.init);
         await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-        const ts = new TSGenerator(oas, './simple.oas.json', 'simple-js-esm', {
+        const ts = new TSGenerator(oas, './openapi.json', 'simple-js-esm', {
           outputJS: true,
           compilerTarget: 'esm',
         });

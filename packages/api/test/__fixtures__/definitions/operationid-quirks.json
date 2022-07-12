@@ -1,0 +1,30 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Quirky `operationID` cases",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org/anything"
+    }
+  ],
+  "paths": {
+    "/quirky-operationId": {
+      "get": {
+        "description": "This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.",
+        "operationId": "find/?*!@#$%^&*()-=_.,<>+[]{}\\|pets-by_status"
+      }
+    },
+    "/no-operation-id": {
+      "get": {
+        "description": "This operation doesn't have an `operationId` so we should create one."
+      }
+    },
+    "/get-operation-path-starts-with-an-http-method": {
+      "get": {
+        "description": "This operation has no `operationId` but because path starts with an HTTP method when we generate an `operationId` that has `get` doubled."
+      }
+    }
+  }
+}

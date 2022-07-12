@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './simple.oas.json';
+import definition from './openapi.json';
 export default class SDK {
   constructor() {
     this.authKeys = [];
