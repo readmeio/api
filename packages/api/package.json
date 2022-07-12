@@ -34,9 +34,9 @@
   },
   "keywords": [
     "api",
+    "openapi",
     "sdk",
-    "swagger",
-    "openapi"
+    "swagger"
   ],
   "dependencies": {
     "@readme/oas-to-har": "^17.0.8",
