@@ -59,7 +59,7 @@ export default class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
   /**
    * Multiple status values can be provided with comma separated strings
    *

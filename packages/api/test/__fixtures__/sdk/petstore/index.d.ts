@@ -58,13 +58,13 @@ export default class SDK {
    * Add a new pet to the store
    *
    */
-  post<T = unknown>(path: string, body: Pet): Promise<T>;
+  post<T = unknown>(path: '/pet', body: Pet): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   post<T = unknown>(
-    path: string,
+    path: '/pet/{petId}',
     body: UpdatePetWithFormFormDataParam,
     metadata: UpdatePetWithFormMetadataParam
   ): Promise<T>;
@@ -72,111 +72,115 @@ export default class SDK {
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(path: '/pet/{petId}', metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * Uploads an image
    *
    */
-  post(path: string, body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(
+    path: '/pet/{petId}/uploadImage',
+    body: UploadFileBodyParam,
+    metadata: UploadFileMetadataParam
+  ): Promise<ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  post(path: string, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(path: '/pet/{petId}/uploadImage', metadata: UploadFileMetadataParam): Promise<ApiResponse>;
   /**
    * Place an order for a pet
    *
    */
-  post(path: string, body: Order): Promise<Order>;
+  post(path: '/store/order', body: Order): Promise<Order>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Create user
    */
-  post<T = unknown>(path: string, body: User): Promise<T>;
+  post<T = unknown>(path: '/user', body: User): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: string, body: CreateUsersWithArrayInputBodyParam): Promise<T>;
+  post<T = unknown>(path: '/user/createWithArray', body: CreateUsersWithArrayInputBodyParam): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: string, body: CreateUsersWithListInputBodyParam): Promise<T>;
+  post<T = unknown>(path: '/user/createWithList', body: CreateUsersWithListInputBodyParam): Promise<T>;
   /**
    * Update an existing pet
    *
    */
-  put<T = unknown>(path: string, body: Pet): Promise<T>;
+  put<T = unknown>(path: '/pet', body: Pet): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Updated user
    */
-  put<T = unknown>(path: string, body: User, metadata: UpdateUserMetadataParam): Promise<T>;
+  put<T = unknown>(path: '/user/{username}', body: User, metadata: UpdateUserMetadataParam): Promise<T>;
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
    */
-  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
    */
-  get(path: string, metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
+  get(path: '/pet/findByTags', metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
   /**
    * Returns a single pet
    *
    * @summary Find pet by ID
    */
-  get(path: string, metadata: GetPetByIdMetadataParam): Promise<Pet>;
+  get(path: '/pet/{petId}', metadata: GetPetByIdMetadataParam): Promise<Pet>;
   /**
    * Returns a map of status codes to quantities
    *
    * @summary Returns pet inventories by status
    */
-  get(path: string): Promise<GetInventory_Response_200>;
+  get(path: '/store/inventory'): Promise<GetInventory_Response_200>;
   /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
    */
-  get(path: string, metadata: GetOrderByIdMetadataParam): Promise<Order>;
+  get(path: '/store/order/{orderId}', metadata: GetOrderByIdMetadataParam): Promise<Order>;
   /**
    * Logs user into the system
    *
    */
-  get(path: string, metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
+  get(path: '/user/login', metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
   /**
    * Logs out current logged in user session
    *
    */
-  get<T = unknown>(path: string): Promise<T>;
+  get<T = unknown>(path: '/user/logout'): Promise<T>;
   /**
    * Get user by user name
    *
    */
-  get(path: string, metadata: GetUserByNameMetadataParam): Promise<User>;
+  get(path: '/user/{username}', metadata: GetUserByNameMetadataParam): Promise<User>;
   /**
    * Deletes a pet
    *
    */
-  delete<T = unknown>(path: string, metadata: DeletePetMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/pet/{petId}', metadata: DeletePetMetadataParam): Promise<T>;
   /**
    * For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
    *
    * @summary Delete purchase order by ID
    */
-  delete<T = unknown>(path: string, metadata: DeleteOrderMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/store/order/{orderId}', metadata: DeleteOrderMetadataParam): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Delete user
    */
-  delete<T = unknown>(path: string, metadata: DeleteUserMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/user/{username}', metadata: DeleteUserMetadataParam): Promise<T>;
   /**
    * Add a new pet to the store
    *

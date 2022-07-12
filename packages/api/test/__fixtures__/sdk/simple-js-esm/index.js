@@ -64,7 +64,7 @@ export default class SDK {
     this.core.setServer(url, variables);
   }
   /**
-   * Access any get endpoint on your API.
+   * Access any GET endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.

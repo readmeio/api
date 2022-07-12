@@ -76,9 +76,9 @@ export default class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(path: string, metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
   /**
-   * Access any get endpoint on your API.
+   * Access any GET endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
