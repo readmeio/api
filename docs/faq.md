@@ -1,11 +1,10 @@
 ---
 title: FAQ
-excerpt: TKTK
 category: 5d4c940cae4e610060475769
 ---
 
 ### Does this support YAML definitions?
-Yes! YAML definitions will be automatically converted to JSON before they're cached and loaded as an SDK.
+Yes! YAML definitions will be automatically converted to JSON when they're fetched for either SDK code generation or dynamic `api` usage.
 
 ### Does this support Swagger 2.0 definitions?
 At the moment it does not. If you wish to use an API that has a Swagger 2.0 file, you'll need to first convert it to an OpenAPI 3 definition.

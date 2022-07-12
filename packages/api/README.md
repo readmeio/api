@@ -25,13 +25,14 @@
 `api` is a library that facilitates creating an SDK from an OpenAPI definition. You can use its codegen offering to create an opinionated SDK for TypeScript or JS (+ TypeScript types).
 
 ```sh
-$ npx api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json
+$ npx api install https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json
 ```
 
 ```js
-const sdk = require('@api/petstore');
+const SDK = require('@api/petstore');
 
-sdk.listPets().then(res => {
+const petstore = new SDK();
+petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```
@@ -39,9 +40,9 @@ sdk.listPets().then(res => {
 Or you can use it dynamically (though you won't have fancy TypeScript types):
 
 ```js
-const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
+const petstore = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
 
-sdk.listPets().then(res => {
+petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
 ```

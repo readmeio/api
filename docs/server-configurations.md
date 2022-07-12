@@ -1,6 +1,5 @@
 ---
 title: Server Configurations
-excerpt: TKTK
 category: 62cc6ce22b8b6601da6cb12d
 ---
 
