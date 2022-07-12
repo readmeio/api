@@ -373,7 +373,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
     const docblock: OptionalKind<JSDocStructure> = {
       description: writer => {
-        writer.writeLine(`Access any ${method} endpoint on your API.`);
+        writer.writeLine(`Access any ${method.toUpperCase()} endpoint on your API.`);
         return writer;
       },
       tags: [{ tagName: 'param', text: 'path API path to make a request against.' }],
@@ -589,7 +589,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         this.methodGenerics.get(operation.method).addOverload({
           typeParameters,
           parameters: [
-            { name: 'path', type: 'string' },
+            { name: 'path', type: `'${operation.path}'` },
             { ...parameters.body, hasQuestionToken: false },
             { ...parameters.metadata, hasQuestionToken: false },
           ],
@@ -600,14 +600,14 @@ sdk.server('https://eu.api.example.com/v14');`)
         // Create an overload that just has a single `metadata` parameter.
         this.methodGenerics.get(operation.method).addOverload({
           typeParameters,
-          parameters: [{ name: 'path', type: 'string' }, parameters.metadata],
+          parameters: [{ name: 'path', type: `'${operation.path}'` }, parameters.metadata],
           returnType,
           docs: docblock ? [docblock] : null,
         });
       } else {
         this.methodGenerics.get(operation.method).addOverload({
           typeParameters: responseTypes ? null : ['T = unknown'],
-          parameters: [{ name: 'path', type: 'string' }, ...Object.values(parameters)],
+          parameters: [{ name: 'path', type: `'${operation.path}'` }, ...Object.values(parameters)],
           returnType,
           docs: docblock ? [docblock] : null,
         });

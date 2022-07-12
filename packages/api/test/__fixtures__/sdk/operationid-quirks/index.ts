@@ -75,9 +75,9 @@ export default class SDK {
    * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
-  get<T = unknown>(path: string): Promise<T>;
+  get<T = unknown>(path: '/quirky-operationId'): Promise<T>;
   /**
-   * Access any get endpoint on your API.
+   * Access any GET endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
@@ -90,7 +90,7 @@ export default class SDK {
    * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
-  findPetsByStatus<T = unknown>(): Promise<T> {
+  quirkyOperationIdString<T = unknown>(): Promise<T> {
     return this.core.fetch('/quirky-operationId', 'get');
   }
 }

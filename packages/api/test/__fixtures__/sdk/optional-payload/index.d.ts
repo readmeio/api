@@ -59,7 +59,7 @@ export default class SDK {
    *
    */
   post<T = unknown>(
-    path: string,
+    path: '/pet/{petId}',
     body: UpdatePetWithFormFormDataParam,
     metadata: UpdatePetWithFormMetadataParam
   ): Promise<T>;
@@ -67,7 +67,7 @@ export default class SDK {
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: string, metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(path: '/pet/{petId}', metadata: UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *

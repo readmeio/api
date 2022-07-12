@@ -77,7 +77,7 @@ export default class SDK {
    * @summary Retrieve an entry from the API Registry
    */
   get(
-    path: string,
+    path: '/api-registry/{uuid}',
     metadata: GetAPIRegistryMetadataParam
   ): Promise<GetAPIRegistry_Response_200 | Error_REGISTRY_NOTFOUND>;
   /**
@@ -86,7 +86,7 @@ export default class SDK {
    * @summary Get metadata
    */
   get(
-    path: string,
+    path: '/api-specification',
     metadata?: GetAPISpecificationMetadataParam
   ): Promise<
     | GetAPISpecification_Response_200
@@ -100,44 +100,44 @@ export default class SDK {
    *
    * @summary Get open roles
    */
-  get(path: string): Promise<GetOpenRoles_Response_200>;
+  get(path: '/apply'): Promise<GetOpenRoles_Response_200>;
   /**
    * Returns all the categories for a specified version
    *
    * @summary Get all categories
    */
-  get(path: string, metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200>;
+  get(path: '/categories', metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200>;
   /**
    * Returns the category with this slug
    *
    * @summary Get category
    */
-  get(path: string, metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  get(path: '/categories/{slug}', metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Returns the docs and children docs within this category
    *
    * @summary Get docs for category
    */
-  get(path: string, metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  get(path: '/categories/{slug}/docs', metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Returns a list of changelogs associated with the project API key
    *
    * @summary Get changelogs
    */
-  get(path: string, metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200>;
+  get(path: '/changelogs', metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200>;
   /**
    * Returns the changelog with this slug
    *
    * @summary Get changelog
    */
-  get<T = unknown>(path: string, metadata: GetChangelogMetadataParam): Promise<T>;
+  get<T = unknown>(path: '/changelogs/{slug}', metadata: GetChangelogMetadataParam): Promise<T>;
   /**
    * Returns a list of custom pages associated with the project API key
    *
    * @summary Get custom pages
    */
   get(
-    path: string,
+    path: '/custompages',
     metadata?: GetCustomPagesMetadataParam
   ): Promise<GetCustomPages_Response_200 | GetCustomPages_Response_401 | GetCustomPages_Response_403>;
   /**
@@ -146,7 +146,7 @@ export default class SDK {
    * @summary Get custom page
    */
   get(
-    path: string,
+    path: '/custompages/{slug}',
     metadata: GetCustomPageMetadataParam
   ): Promise<GetCustomPage_Response_401 | GetCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
   /**
@@ -155,7 +155,7 @@ export default class SDK {
    * @summary Get doc
    */
   get(
-    path: string,
+    path: '/docs/{slug}',
     metadata: GetDocMetadataParam
   ): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
@@ -163,30 +163,30 @@ export default class SDK {
    *
    * @summary Get errors
    */
-  get(path: string): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
+  get(path: '/errors'): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
   /**
    * Returns project data for API key
    *
    * @summary Get metadata about the current project
    */
-  get(path: string): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
+  get(path: '/'): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
   /**
    * Retrieve a list of versions associated with a project API key
    *
    * @summary Get versions
    */
-  get(path: string): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
+  get(path: '/version'): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
   /**
    * Returns the version with this version ID
    *
    * @summary Get version
    */
   get(
-    path: string,
+    path: '/version/{versionId}',
     metadata: GetVersionMetadataParam
   ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND>;
   /**
-   * Access any get endpoint on your API.
+   * Access any GET endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
@@ -201,7 +201,7 @@ export default class SDK {
    * @summary Upload specification
    */
   post(
-    path: string,
+    path: '/api-specification',
     body: UploadAPISpecificationBodyParam,
     metadata?: UploadAPISpecificationMetadataParam
   ): Promise<
@@ -215,26 +215,26 @@ export default class SDK {
    *
    * @summary Submit your application!
    */
-  post<T = unknown>(path: string, body: Apply): Promise<T>;
+  post<T = unknown>(path: '/apply', body: Apply): Promise<T>;
   /**
    * Create a new category inside of this project
    *
    * @summary Create category
    */
-  post(path: string, body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID>;
+  post(path: '/categories', body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID>;
   /**
    * Create a new changelog inside of this project
    *
    * @summary Create changelog
    */
-  post<T = unknown>(path: string, body: Changelog): Promise<T>;
+  post<T = unknown>(path: '/changelogs', body: Changelog): Promise<T>;
   /**
    * Create a new custom page inside of this project
    *
    * @summary Create custom page
    */
   post(
-    path: string,
+    path: '/custompages',
     body: CustomPage
   ): Promise<Error_CUSTOMPAGE_INVALID | CreateCustomPage_Response_401 | CreateCustomPage_Response_403>;
   /**
@@ -243,7 +243,7 @@ export default class SDK {
    * @summary Create doc
    */
   post(
-    path: string,
+    path: '/docs',
     body: Doc,
     metadata?: CreateDocMetadataParam
   ): Promise<Error_DOC_INVALID | CreateDoc_Response_401 | CreateDoc_Response_403>;
@@ -252,20 +252,23 @@ export default class SDK {
    *
    * @summary Search docs
    */
-  post(path: string, metadata: SearchDocsMetadataParam): Promise<SearchDocs_Response_401 | SearchDocs_Response_403>;
+  post(
+    path: '/docs/search',
+    metadata: SearchDocsMetadataParam
+  ): Promise<SearchDocs_Response_401 | SearchDocs_Response_403>;
   /**
    * Create a new version
    *
    * @summary Create version
    */
   post(
-    path: string,
+    path: '/version',
     body: Version
   ): Promise<
     CreateVersion_Response_400 | CreateVersion_Response_401 | CreateVersion_Response_403 | Error_VERSION_FORK_NOTFOUND
   >;
   /**
-   * Access any post endpoint on your API.
+   * Access any POST endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param body Request body payload data.
@@ -281,7 +284,7 @@ export default class SDK {
    * @summary Update specification
    */
   put(
-    path: string,
+    path: '/api-specification/{id}',
     body: UpdateAPISpecificationBodyParam,
     metadata: UpdateAPISpecificationMetadataParam
   ): Promise<
@@ -296,7 +299,7 @@ export default class SDK {
    * @summary Update category
    */
   put(
-    path: string,
+    path: '/categories/{slug}',
     body: Category,
     metadata: UpdateCategoryMetadataParam
   ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND>;
@@ -305,14 +308,14 @@ export default class SDK {
    *
    * @summary Update changelog
    */
-  put<T = unknown>(path: string, body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
+  put<T = unknown>(path: '/changelogs/{slug}', body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
   /**
    * Update a custom page with this slug
    *
    * @summary Update custom page
    */
   put(
-    path: string,
+    path: '/custompages/{slug}',
     body: CustomPage,
     metadata: UpdateCustomPageMetadataParam
   ): Promise<
@@ -324,7 +327,7 @@ export default class SDK {
    * @summary Update doc
    */
   put(
-    path: string,
+    path: '/docs/{slug}',
     body: Doc,
     metadata: UpdateDocMetadataParam
   ): Promise<Error_DOC_INVALID | UpdateDoc_Response_401 | UpdateDoc_Response_403 | Error_DOC_NOTFOUND>;
@@ -334,14 +337,14 @@ export default class SDK {
    * @summary Update version
    */
   put(
-    path: string,
+    path: '/version/{versionId}',
     body: Version,
     metadata: UpdateVersionMetadataParam
   ): Promise<
     Error_VERSION_CANT_DEMOTE_STABLE | UpdateVersion_Response_401 | UpdateVersion_Response_403 | Error_VERSION_NOTFOUND
   >;
   /**
-   * Access any put endpoint on your API.
+   * Access any PUT endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param body Request body payload data.
@@ -357,7 +360,7 @@ export default class SDK {
    * @summary Delete specification
    */
   delete(
-    path: string,
+    path: '/api-specification/{id}',
     metadata: DeleteAPISpecificationMetadataParam
   ): Promise<
     | Error_SPEC_ID_INVALID
@@ -372,20 +375,20 @@ export default class SDK {
    *
    * @summary Delete category
    */
-  delete(path: string, metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  delete(path: '/categories/{slug}', metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
   /**
    * Delete the changelog with this slug
    *
    * @summary Delete changelog
    */
-  delete<T = unknown>(path: string, metadata: DeleteChangelogMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/changelogs/{slug}', metadata: DeleteChangelogMetadataParam): Promise<T>;
   /**
    * Delete the custom page with this slug
    *
    * @summary Delete custom page
    */
   delete(
-    path: string,
+    path: '/custompages/{slug}',
     metadata: DeleteCustomPageMetadataParam
   ): Promise<DeleteCustomPage_Response_401 | DeleteCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
   /**
@@ -394,7 +397,7 @@ export default class SDK {
    * @summary Delete doc
    */
   delete(
-    path: string,
+    path: '/docs/{slug}',
     metadata: DeleteDocMetadataParam
   ): Promise<DeleteDoc_Response_401 | DeleteDoc_Response_403 | Error_DOC_NOTFOUND>;
   /**
@@ -403,13 +406,13 @@ export default class SDK {
    * @summary Delete version
    */
   delete(
-    path: string,
+    path: '/version/{versionId}',
     metadata: DeleteVersionMetadataParam
   ): Promise<
     Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
   >;
   /**
-   * Access any delete endpoint on your API.
+   * Access any DELETE endpoint on your API.
    *
    * @param path API path to make a request against.
    * @param body Request body payload data.
