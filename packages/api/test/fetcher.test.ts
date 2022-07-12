@@ -36,6 +36,19 @@ describe('fetcher', function () {
     });
   });
 
+  describe('#isGitHubBlobURL', function () {
+    it('should detect GitHub blob URLs', function () {
+      expect(Fetcher.isGitHubBlobURL('https://github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json')).to.be
+        .true;
+    });
+
+    it("shouldn't detect raw GitHub URLs as a blob URL", function () {
+      expect(
+        Fetcher.isGitHubBlobURL('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json')
+      ).to.be.false;
+    });
+  });
+
   describe('#getProjectPrefixFromRegistryUUID', function () {
     it('should retrieve the project prefix from the shorthand `@petstore/v1.0#uuid` syntax', function () {
       expect(Fetcher.getProjectPrefixFromRegistryUUID('@petstore/v1.0#n6kvf10vakpemvplx')).to.equal('petstore');
@@ -76,6 +89,20 @@ describe('fetcher', function () {
         .catch(err => {
           expect(err.message).to.match(/supply a URL or a path on your filesystem/);
         });
+    });
+
+    describe('GitHub URLs', function () {
+      it('should resolve a GitHub blob URL to its accessible raw counterpart', function () {
+        expect(new Fetcher('https://github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json').uri).to.equal(
+          'https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json'
+        );
+      });
+
+      it('should leave an already raw GitHub URL alone', function () {
+        expect(
+          new Fetcher('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json').uri
+        ).to.equal('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json');
+      });
     });
 
     describe('ReadMe registry UUID', function () {

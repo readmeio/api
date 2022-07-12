@@ -18,10 +18,21 @@ export default class Fetcher {
 
   constructor(uri: string | OASDocument) {
     if (typeof uri === 'string') {
-      // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
-      this.uri = Fetcher.isAPIRegistryUUID(uri)
-        ? uri.replace(Fetcher.registryUUIDRegex, 'https://dash.readme.com/api/v1/api-registry/$4')
-        : uri;
+      if (Fetcher.isAPIRegistryUUID(uri)) {
+        // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
+        this.uri = uri.replace(Fetcher.registryUUIDRegex, 'https://dash.readme.com/api/v1/api-registry/$4');
+      } else if (Fetcher.isGitHubBlobURL(uri)) {
+        /**
+         * People may try to use a public repository URL to the source viewer on GitHub not knowing
+         * that this page actually serves HTML. In this case we want to rewrite these to the "raw"
+         * version of this page that'll allow us to access the API definition.
+         *
+         * @example https://github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json
+         */
+        this.uri = uri.replace(/\/\/github.com/, '//raw.githubusercontent.com').replace(/\/blob\//, '/');
+      } else {
+        this.uri = uri;
+      }
     } else {
       this.uri = uri;
     }
@@ -29,6 +40,10 @@ export default class Fetcher {
 
   static isAPIRegistryUUID(uri: string) {
     return Fetcher.registryUUIDRegex.test(uri);
+  }
+
+  static isGitHubBlobURL(uri: string) {
+    return /\/\/github.com\/[-_a-zA-Z0-9]+\/[-_a-zA-Z0-9]+\/blob\/(.*).(yaml|json|yml)/.test(uri);
   }
 
   static getProjectPrefixFromRegistryUUID(uri: string) {
