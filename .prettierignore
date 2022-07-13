@@ -1,0 +1,13 @@
+# api subpackage
+packages/api/.api/
+packages/api/.nyc_output/
+packages/api/test/
+packages/api/.eslint*
+packages/api/.gitignore
+packages/api/.mocharc.json
+packages/api/.prettier*
+packages/api/example.js
+
+# httpsnippet-client-api subpackage
+packages/httpsnippet-client-api/.nyc_output/
+packages/httpsnippet-client-api/test/__datasets__/**/output.js

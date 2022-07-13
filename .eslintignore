@@ -1,0 +1,9 @@
+# api subpackage
+packages/api/.nyc_output/
+packages/api/dist/
+packages/api/test/__fixtures__/sdk/
+
+# httpsnippet-client-api subpackage
+packages/httpsnippet-client-api/.nyc_output/
+packages/httpsnippet-client-api/node_modules/
+packages/httpsnippet-client-api/test/__datasets__/**/output.js

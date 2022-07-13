@@ -1,3 +1,0 @@
-.nyc_output/
-node_modules/
-test/__datasets__/**/output.js
