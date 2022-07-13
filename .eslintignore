@@ -1,3 +1,5 @@
+!.alexrc.js
+
 # api subpackage
 packages/api/.nyc_output/
 packages/api/dist/

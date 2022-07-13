@@ -2,6 +2,7 @@
   "name": "api-monorepo",
   "private": true,
   "scripts": {
+    "alex": "alex .",
     "build": "npx lerna run build --stream",
     "clean": "npx lerna clean",
     "lint": "eslint . --ext .js,.ts",
@@ -28,6 +29,7 @@
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@readme/eslint-config": "^8.8.3",
+    "alex": "^10.0.0",
     "eslint": "^8.19.0",
     "husky": "^8.0.1",
     "prettier": "^2.7.1"
