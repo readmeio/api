@@ -14,6 +14,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint
+      - run: npm run prettier # This step is needed to check our Markdown docs
 
   build:
     runs-on: ubuntu-latest
