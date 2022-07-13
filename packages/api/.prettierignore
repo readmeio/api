@@ -1,5 +1,0 @@
-.api/
-.nyc_output/
-dist/
-example.js
-test/__fixtures__/sdk/

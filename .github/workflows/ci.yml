@@ -14,6 +14,10 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint
+      - name: Prettier formatting check for Markdown docs
+        run: npm run prettier
+      - name: Insensitive language check for Markdown docs
+        run: npm run alex
 
   build:
     runs-on: ubuntu-latest

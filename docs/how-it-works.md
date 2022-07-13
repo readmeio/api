@@ -9,7 +9,7 @@ Behind the scenes `api` will:
 2. Dereference the definition so it's easier for us to handle.
 3. Cache the definition so we don't need to re-fetch it.
 4. Process the definition into chainable methods for HTTP verbs and operation IDs.
-    * If you're using the dynamic `api` offering this is done whenever you call `api` by way of a JavaScript [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). If you're using the code generation offering this only done at compilation time.
+   - If you're using the dynamic `api` offering this is done whenever you call `api` by way of a JavaScript [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). If you're using the code generation offering this only done at compilation time.
 
 ## Fetching
 
@@ -19,8 +19,8 @@ At its core `api` is a syntactical sugar wrapper for the [Fetch API](https://dev
 
 Depending on the way you're using `api`, either dynamically or with code generation, there are two caching mechanisms in place:
 
-* CLI code generation: `.api/`
-* Dynamic usage: `node_modules/.cache/api`
+- CLI code generation: `.api/`
+- Dynamic usage: `node_modules/.cache/api`
 
 ### `.api/` directory
 

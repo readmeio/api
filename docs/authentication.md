@@ -16,9 +16,9 @@ With the exception of OpenID, it supports all forms of authentication supported 
 
 For example:
 
-* HTTP Basic auth: `sdk.auth('username', 'password')`
-* Bearer tokens (HTTP or OAuth 2): `sdk.auth('myBearerToken')`
-* API Keys: `sdk.auth('myApiKey')`
+- HTTP Basic auth: `sdk.auth('username', 'password')`
+- Bearer tokens (HTTP or OAuth 2): `sdk.auth('myBearerToken')`
+- API Keys: `sdk.auth('myApiKey')`
 
 > ℹ️
 >

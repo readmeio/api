@@ -37,7 +37,7 @@ Within `openapi.json` you'll want to spec out the OpenAPI definition that will b
 If you'd like to reference one of the definitions that we provide in the [`@readme/oas-examples`](https://npm.im/@readme/oas-examples) package then you can rename `openapi.json` to `openapi.js` and have a single line of the following and the test suite will pick it up!
 
 ```js
-module.exports = require("@readme/oas-examples/path/to/spec");
+module.exports = require('@readme/oas-examples/path/to/spec');
 ```
 
 Additionally if you need help verifying that your OpenAPI definition is valid you can run `npx rdme validate path/to/your/definition.json`.
@@ -48,14 +48,14 @@ This file is what is going to tell our test suite what endpoints your API test w
 Say you have the following snippet:
 
 ```js
-const sdk = require("api")(
-  "https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/__datasets__/query/openapi.json"
+const sdk = require('api')(
+  'https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/__datasets__/query/openapi.json'
 );
 
 sdk
-  .get("/anything", { foo: ["bar", "baz"], baz: "abc", key: "value" })
-  .then((res) => console.log(res))
-  .catch((err) => console.error(err));
+  .get('/anything', { foo: ['bar', 'baz'], baz: 'abc', key: 'value' })
+  .then(res => console.log(res))
+  .catch(err => console.error(err));
 ```
 
 Running this normally you'll receive a JSON object back from the https://httpbin.org server referenced in that OpenAPI definition:
