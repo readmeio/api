@@ -9,12 +9,12 @@ category: 5d4c940cae4e610060475769
 
 The code generation installation process that `api` offers comes in the form of an `api` CLI that will:
 
-* Download and cache your OpenAPI definition into a `.api/` directory.
-* Generate a full `api` library appropriate for the language you want.
-  * Note that only TypeScript and JavaScript (targeting CommonJS or ECMAScript) are available right now but more languages are planned for the future. ✨
-* Install necessary packages required for the generated library to run.
-* Install a `@api/your-api` package in your local `package.json`
-  * This allows you to use the library with `require('@api/your-api')` or `import '@api/your-api'`.
+- Download and cache your OpenAPI definition into a `.api/` directory.
+- Generate a full `api` library appropriate for the language you want.
+  - Note that only TypeScript and JavaScript (targeting CommonJS or ECMAScript) are available right now but more languages are planned for the future. ✨
+- Install necessary packages required for the generated library to run.
+- Install a `@api/your-api` package in your local `package.json`
+  - This allows you to use the library with `require('@api/your-api')` or `import '@api/your-api'`.
 
 ![CLI installation demonstration](./images/installer.gif)
 
