@@ -51,4 +51,4 @@ sdk.config({ parseResponse: false });
 
 ### Where is the cache stored?
 
-See [How does it work?](https://api.readme.dev/docs/how-does-it-work) for some information on how, when, and where `api` caches its data.
+See [How does it work?](https://api.readme.dev/docs/how-it-works) for some information on how, when, and where `api` caches its data.
