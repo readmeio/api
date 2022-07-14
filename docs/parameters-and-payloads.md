@@ -32,7 +32,7 @@ sdk.updatePet({ name: 'Buster 2' }, { petId: 1234 }).then(...)
 
 Since we've supplied two objects here, the SDK automatically knows that you're supplying both a `body` and `metadata`, and can make a PUT request against `/pets/1234` for you.
 
-> ℹ️
+> 📘
 >
 > For background, the algorithm to determine if you're supplying a `body` or `metadata` for the first parameter runs a difference check against the payloads for either. If what you're supplying matches +25% of what is documented in the operation's request body payload, then we'll treat it as a `body` payload.
 >

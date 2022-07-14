@@ -47,7 +47,7 @@ petstore.listPets().then(res => {
 
 The OpenAPI definition is automatically downloaded, cached, and transformed into a chainable [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) Promise that you can use to make API requests.
 
-> ℹ️
+> 📘
 >
 > By using the dynamic, non-code-generated version of `api`, you will not have access to any TypeScript types to assist you in using an API.
 

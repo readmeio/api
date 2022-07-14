@@ -20,6 +20,6 @@ For example:
 - Bearer tokens (HTTP or OAuth 2): `sdk.auth('myBearerToken')`
 - API Keys: `sdk.auth('myApiKey')`
 
-> ℹ️
+> 📘
 >
 > Note that `sdk.auth()` is not chainable.
