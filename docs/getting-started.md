@@ -4,7 +4,7 @@ category: 5d4c940cae4e610060475769
 ---
 
 <p align="center">
-  <img width="400" src="./images/logo.svg" />
+  <img width="400" src="https://raw.githubusercontent.com/readmeio/api/main/docs/images/logo.svg" />
 </p>
 
 <p align="center">
