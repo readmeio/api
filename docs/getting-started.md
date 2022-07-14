@@ -36,7 +36,9 @@ petstore.listPets().then(res => {
 Or you can use it dynamically (though you won't have fancy TypeScript types):
 
 ```js
-const petstore = require('api')('https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json');
+const petstore = require('api')(
+  'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json'
+);
 
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
