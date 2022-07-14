@@ -34,11 +34,11 @@ Since we've supplied two objects here, the SDK automatically knows that you're s
 
 > ℹ️
 >
-> For background, the algorithm to determine if you're supplying a `body` or `metadata` for the first parameter runs a difference check against the payloads for either and if what you're supplying matches +25% of what is documented in the operations request body payload then we'll treat it as a `body` payload.
+> For background, the algorithm to determine if you're supplying a `body` or `metadata` for the first parameter runs a difference check against the payloads for either. If what you're supplying matches +25% of what is documented in the operation's request body payload, then we'll treat it as a `body` payload.
 >
-> We do this difference check because we've found that request body payloads might not always be as fully fleshed out in OpenAPI definitions as metadata parameters are.
+> We do this difference check because we've found that request body payloads might not always be as fully fleshed out in OpenAPI definitions, whereas metadata parameters typically are.
 
-### multipart/form-data
+### `multipart/form-data`
 
 What about a `multipart/form-data` request? That works too, and you don't even have to worry about the fun of multipart boundaries!
 

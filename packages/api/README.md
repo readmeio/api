@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  Automatic SDK generation from an OpenAPI definition.
+  Magical SDK generation from an OpenAPI definition 🪄
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ petstore.listPets().then(res => {
 Or you can use it dynamically (though you won't have fancy TypeScript types):
 
 ```js
-const petstore = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
+const petstore = require('api')('https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json');
 
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
