@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "5.0.0-beta.1",
-  "description": "Generate an SDK from an OpenAPI definition",
+  "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
@@ -10,12 +10,9 @@
   "scripts": {
     "build": "tsc",
     "debug:bin": "node -r ts-node/register src/bin.ts",
-    "lint": "eslint . --ext .js,.ts",
     "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
     "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts",
     "prepack": "npm run build",
-    "pretest": "npm run lint",
-    "prettier": "prettier --list-different --write \"./**/**.{js,ts}\"",
     "test": "nyc mocha \"test/**/*.test.ts\""
   },
   "repository": {
@@ -23,7 +20,7 @@
     "url": "https://github.com/readmeio/api.git",
     "directory": "packages/api"
   },
-  "homepage": "https://github.com/readmeio/api",
+  "homepage": "https://api.readme.dev",
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"
   },
@@ -32,6 +29,12 @@
   "engines": {
     "node": ">=14"
   },
+  "keywords": [
+    "api",
+    "openapi",
+    "sdk",
+    "swagger"
+  ],
   "dependencies": {
     "@readme/oas-to-har": "^17.0.8",
     "@readme/openapi-parser": "^2.2.0",
@@ -60,7 +63,6 @@
     "validate-npm-package-name": "^4.0.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^8.8.1",
     "@readme/oas-examples": "^5.4.1",
     "@types/chai": "^4.3.1",
     "@types/find-cache-dir": "^3.2.1",
@@ -73,12 +75,10 @@
     "@types/ssri": "^7.1.1",
     "@types/validate-npm-package-name": "^4.0.0",
     "chai": "^4.3.6",
-    "eslint": "^8.19.0",
     "fetch-mock": "^9.11.0",
     "mocha": "^10.0.0",
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
-    "prettier": "^2.7.1",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0",
     "typescript": "^4.7.4",
