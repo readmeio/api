@@ -3,17 +3,17 @@ title: How does it work?
 category: 5d4c940cae4e610060475769
 ---
 
-Behind the scenes `api` will:
+Behind the scenes, `api` will:
 
 1. Fetch the supplied OpenAPI definition, either from a publically accessible URL, an absolute/relative path, or a [ReadMe API Registry ](https://docs.readme.com/reference/getapiregistry) UUID.
 2. Dereference the definition so it's easier for us to handle.
 3. Cache the definition so we don't need to re-fetch it.
 4. Process the definition into chainable methods for HTTP verbs and operation IDs.
-   - If you're using the dynamic `api` offering this is done whenever you call `api` by way of a JavaScript [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy). If you're using the code generation offering this only done at compilation time.
+   - If you're using the code generation offering this only done at compilation time. If you're using the dynamic `api` offering this is done whenever you call `api` by way of a JavaScript [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy).
 
 ## Fetching
 
-At its core `api` is a syntactical sugar wrapper for the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and [HAR specification](http://www.softwareishard.com/blog/har-12-spec/). Parameters and payloads are compiled into a HAR according to the OpenAPI definition in question, using [@readme/oas-to-har](https://npm.im/@readme/oas-to-har) and then executed with [fetch-har](https://npm.im/fetch-har).
+At its core, `api` is a syntactical sugar wrapper for the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) and the [HAR specification](http://www.softwareishard.com/blog/har-12-spec/). Parameters and payloads are compiled into a HAR according to the OpenAPI definition in question, using [@readme/oas-to-har](https://npm.im/@readme/oas-to-har) and then executed with [fetch-har](https://npm.im/fetch-har).
 
 ## Caching
 
@@ -24,7 +24,7 @@ Depending on the way you're using `api`, either dynamically or with code generat
 
 ### `.api/` directory
 
-The `.api/` directory is wher the CLI installation process stores all of its information: installation records, OpenAPI definitions, and code generated libraries. Its structure is as such:
+The `.api/` directory is where the CLI installation process stores all of its information: installation records, OpenAPI definitions, and code generated libraries. Its structure is as such:
 
 ```
 .api/
@@ -36,7 +36,7 @@ The `.api/` directory is wher the CLI installation process stores all of its inf
     ├── readme/
     |   ├── node_modules/
     │   ├── index.js
-    │   ├── index.d.ts   // All types for the SDK, ready to use in your an IDE.
+    │   ├── index.d.ts   // All types for the SDK, ready to use in your IDE.
     │   |── openapi.json
     │   └── package.json
     └── petstore/
@@ -65,7 +65,7 @@ The `api.json` file within `.api/` is where the CLI keeps track of everything th
 }
 ```
 
-In the future commands will be added to the CLI that will take advantage of this information, but for now it's only used to determine if you've already installed an API to the same `identifier` (say, to prevent you from installing `@developers/v2.0#nysezql0wwo236` twice).
+In the future, commands will be added to the CLI that will take advantage of this information, but for now it's only used to determine if you've already installed an API to the same `identifier` (say, to prevent you from installing `@developers/v2.0#nysezql0wwo236` twice).
 
 ### `node_modules/.cache/api`
 
@@ -89,7 +89,7 @@ Because the dynamic version of `api` cannot have access to the `identifier` syst
 
 The `cache.json` file in `node_modules/.cache/api` is where the dynamic version of API stores and pulls all of its data from. OpenAPI definitions are indexed within this file by their original acessor (`require('api')('http://example.com/some-accessor')`).
 
-The `hash` within this is then an md5 of the full OpenAPI definition that we retrieved.
+The `hash` within this is an `md5` of the full OpenAPI definition that we retrieved.
 
 If for some reason this file gets lost, or the accessor you're supplying to `api` changes for whatever reason `api` will re-retrieve the OpenAPI definition at run-time.
 
@@ -106,7 +106,7 @@ If for some reason this file gets lost, or the accessor you're supplying to `api
 
 #### Custom cache directory
 
-By default the cache is configured with the [find-cache-dir](https://npm.im/find-cache-dir) library so the cache will be in `node_modules/.cache/api`. If placing this cache within the `node_modules/` directory is a problem for your environment (maybe you use `npm prune`) you can customize this by supplying an additional argument to the `api` instantiator:
+By default the cache is configured with the [find-cache-dir](https://npm.im/find-cache-dir) library so the cache will be in `node_modules/.cache/api`. If placing this cache within the `node_modules/` directory is a problem for your environment (e.g. if you use `npm prune`), you can customize this by supplying an additional argument to the `api` instantiator:
 
 ```js
 const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json', {
