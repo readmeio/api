@@ -4,6 +4,7 @@
   "scripts": {
     "alex": "alex .",
     "build": "npx lerna run build --stream",
+    "build-docs": "node bin/build-markdown.js",
     "clean": "npx lerna clean",
     "lint": "eslint . --ext .js,.ts",
     "prepare": "husky install",
@@ -31,6 +32,7 @@
     "@readme/eslint-config": "^8.8.3",
     "alex": "^10.0.0",
     "eslint": "^8.19.0",
+    "hercule": "^5.1.3",
     "husky": "^8.0.1",
     "prettier": "^2.7.1"
   },
