@@ -2,8 +2,8 @@ name: Sync `docs` directory to ReadMe
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   sync:
@@ -21,4 +21,4 @@ jobs:
       - name: Sync docs to ReadMe
         uses: readmeio/rdme@7.3.0
         with:
-          rdme: docs ./dist/docs --key=${{ secrets.README_API_KEY }} --version=1.0
+          rdme: docs ./dist/docs --key=${{ secrets.README_API_KEY }} --version=1.0 --dryRun
