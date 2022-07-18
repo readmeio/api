@@ -1,5 +1,5 @@
 const stringifyObject = require('stringify-object');
-const CodeBuilder = require('@readme/httpsnippet/src/helpers/code-builder');
+const { CodeBuilder } = require('@readme/httpsnippet/dist/helpers/code-builder');
 const contentType = require('content-type');
 const Oas = require('oas').default;
 
@@ -68,221 +68,222 @@ function getAuthSources(operation) {
   return matchers;
 }
 
-module.exports = function (source, options) {
-  const opts = { indent: '  ', ...options };
+module.exports = {
+  info: {
+    key: 'api',
+    title: 'API',
+    link: 'https://npm.im/api',
+    description: 'Automatic SDK generation from an OpenAPI definition.',
+  },
+  convert: (source, options) => {
+    const opts = { indent: '  ', ...options };
 
-  if (!('apiDefinitionUri' in opts)) {
-    throw new Error('This HTTP Snippet client must have an `apiDefinitionUri` option supplied to it.');
-  } else if (!('apiDefinition' in opts)) {
-    throw new Error('This HTTP Snippet client must have an `apiDefinition` option supplied to it.');
-  }
-
-  const method = source.method.toLowerCase();
-  const oas = new Oas(opts.apiDefinition);
-  const apiDefinition = oas.getDefinition();
-  const foundOperation = oas.findOperation(source.url, method);
-  if (!foundOperation) {
-    throw new Error(
-      `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${source.url}`
-    );
-  }
-
-  const operationSlugs = foundOperation.url.slugs;
-  const operation = oas.operation(foundOperation.url.nonNormalizedPath, method);
-  const path = operation.path;
-  const authData = [];
-  const authSources = getAuthSources(operation);
-
-  const code = new CodeBuilder(opts.indent);
-
-  code.push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
-  code.blank();
-
-  // If we have multiple servers configured and our source URL differs from the stock URL that we
-  // receive from our `oas` library then the URL either has server variables contained in it (that
-  // don't match the defaults), or the OAS offers alternate server URLs and we should expose that
-  // in the generated snippet.
-  const configData = [];
-  if ((apiDefinition.servers || []).length > 1) {
-    const stockUrl = oas.url();
-    const baseUrl = source.url.replace(path, '');
-    if (baseUrl !== stockUrl) {
-      const serverVars = oas.splitVariables(baseUrl);
-      const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
-
-      configData.push(`sdk.server('${serverUrl}');`);
-    }
-  }
-
-  let metadata = {};
-  Object.keys(source.queryObj).forEach(param => {
-    if (authSources.query.includes(param)) {
-      authData.push(buildAuthSnippet(source.queryObj[param]));
-
-      // If this query param is part of an auth source then we don't want it doubled up in the
-      // snippet.
-      return;
+    if (!('apiDefinitionUri' in opts)) {
+      throw new Error('This HTTP Snippet client must have an `apiDefinitionUri` option supplied to it.');
+    } else if (!('apiDefinition' in opts)) {
+      throw new Error('This HTTP Snippet client must have an `apiDefinition` option supplied to it.');
     }
 
-    metadata[param] = source.queryObj[param];
-  });
-
-  Object.keys(source.cookiesObj).forEach(cookie => {
-    if (authSources.cookie.includes(cookie)) {
-      authData.push(buildAuthSnippet(source.cookiesObj[cookie]));
-
-      // If this cookie is part of an auth source then we don't want it doubled up.
-      return;
+    const method = source.method.toLowerCase();
+    const oas = new Oas(opts.apiDefinition);
+    const apiDefinition = oas.getDefinition();
+    const foundOperation = oas.findOperation(source.url, method);
+    if (!foundOperation) {
+      throw new Error(
+        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${source.url}`
+      );
     }
 
-    // Note that we may have the potential to overlap any cookie that also shares the name as
-    // another metadata parameter. This problem is currently inherent to `api` and not this
-    // snippet generator.
-    metadata[cookie] = source.cookiesObj[cookie];
-  });
+    const operationSlugs = foundOperation.url.slugs;
+    const operation = oas.operation(foundOperation.url.nonNormalizedPath, method);
+    const path = operation.path;
+    const authData = [];
+    const authSources = getAuthSources(operation);
 
-  // If we have path parameters present, we should only add them in if we have an `operationId` as
-  // we don't want metadata to duplicate what we'll be setting the path in the snippet to.
-  if (operation.hasOperationId()) {
-    Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
-      // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
-      // we can safely do this substring here without asserting this context.
-      metadata[param.substring(1)] = value;
-    });
-  }
+    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
+    // const code = new CodeBuilder(opts.indent);
 
-  if (Object.keys(source.headersObj).length) {
-    const headers = source.headersObj;
+    push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
+    blank();
 
-    Object.keys(headers).forEach(header => {
-      // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to
-      // make sure we're able to match them properly.
-      const headerLc = header.toLowerCase();
+    // If we have multiple servers configured and our source URL differs from the stock URL that we
+    // receive from our `oas` library then the URL either has server variables contained in it (that
+    // don't match the defaults), or the OAS offers alternate server URLs and we should expose that
+    // in the generated snippet.
+    const configData = [];
+    if ((apiDefinition.servers || []).length > 1) {
+      const stockUrl = oas.url();
+      const baseUrl = source.url.replace(path, '');
+      if (baseUrl !== stockUrl) {
+        const serverVars = oas.splitVariables(baseUrl);
+        const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
 
-      if (headerLc in authSources.header) {
-        // If this header has been set up as an authentication header, let's remove it and add it
-        // into our auth data so we can build up an `.auth()` snippet for the SDK.
-        const authScheme = authSources.header[headerLc];
-        if (authScheme === '*') {
-          authData.push(buildAuthSnippet(headers[header]));
-        } else {
-          let authKey = headers[header].replace(`${authSources.header[headerLc]} `, '');
-          if (authScheme.toLowerCase() === 'basic') {
-            authKey = Buffer.from(authKey, 'base64').toString('ascii');
-            authKey = authKey.split(':');
-          }
-
-          authData.push(buildAuthSnippet(authKey));
-        }
-
-        delete headers[header];
-      } else if (headerLc === 'content-type') {
-        // `Content-Type` headers are automatically added within the SDK so we can filter them out
-        // if they don't have parameters attached to them.
-        const parsedContentType = contentType.parse(headers[header]);
-        if (!Object.keys(parsedContentType.parameters).length) {
-          delete headers[header];
-        }
-      } else if (headerLc === 'accept') {
-        // If the `Accept` header here is not the default or first `Accept` header for the
-        // operations' request body then we should add it otherwise we can let the SDK handle it
-        // itself.
-        if (headers[header] === operation.getContentType()) {
-          delete headers[header];
-        }
+        configData.push(`sdk.server('${serverUrl}');`);
       }
+    }
+
+    let metadata = {};
+    Object.keys(source.queryObj).forEach(param => {
+      if (authSources.query.includes(param)) {
+        authData.push(buildAuthSnippet(source.queryObj[param]));
+
+        // If this query param is part of an auth source then we don't want it doubled up in the
+        // snippet.
+        return;
+      }
+
+      metadata[param] = source.queryObj[param];
     });
 
-    if (Object.keys(headers).length > 0) {
-      metadata = Object.assign(metadata, headers);
-    }
-  }
+    Object.keys(source.cookiesObj).forEach(cookie => {
+      if (authSources.cookie.includes(cookie)) {
+        authData.push(buildAuthSnippet(source.cookiesObj[cookie]));
 
-  let body;
-  switch (source.postData.mimeType) {
-    case 'application/x-www-form-urlencoded':
-      body = source.postData.paramsObj;
-      break;
-
-    case 'application/json':
-      if (source.postData.jsonObj) {
-        body = source.postData.jsonObj;
+        // If this cookie is part of an auth source then we don't want it doubled up.
+        return;
       }
-      break;
 
-    case 'multipart/form-data':
-      if (source.postData.params) {
-        body = {};
+      // Note that we may have the potential to overlap any cookie that also shares the name as
+      // another metadata parameter. This problem is currently inherent to `api` and not this
+      // snippet generator.
+      metadata[cookie] = source.cookiesObj[cookie];
+    });
 
-        // If there's a `Content-Type` header present in the metadata, but it's for the
-        // `multipart/form-data` request then dump it off the snippet. We shouldn't offload that
-        // unnecessary bloat of multipart boundaries to the user, instead letting the SDK handle it
-        // automatically.
-        if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
-          delete metadata['content-type'];
-        }
+    // If we have path parameters present, we should only add them in if we have an `operationId` as
+    // we don't want metadata to duplicate what we'll be setting the path in the snippet to.
+    if (operation.hasOperationId()) {
+      Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
+        // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
+        // we can safely do this substring here without asserting this context.
+        metadata[param.substring(1)] = value;
+      });
+    }
 
-        source.postData.params.forEach(function (param) {
-          if (param.fileName) {
-            body[param.name] = param.fileName;
+    if (Object.keys(source.headersObj).length) {
+      const headers = source.headersObj;
+
+      Object.keys(headers).forEach(header => {
+        // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to
+        // make sure we're able to match them properly.
+        const headerLc = header.toLowerCase();
+
+        if (headerLc in authSources.header) {
+          // If this header has been set up as an authentication header, let's remove it and add it
+          // into our auth data so we can build up an `.auth()` snippet for the SDK.
+          const authScheme = authSources.header[headerLc];
+          if (authScheme === '*') {
+            authData.push(buildAuthSnippet(headers[header]));
           } else {
-            body[param.name] = param.value;
+            let authKey = headers[header].replace(`${authSources.header[headerLc]} `, '');
+            if (authScheme.toLowerCase() === 'basic') {
+              authKey = Buffer.from(authKey, 'base64').toString('ascii');
+              authKey = authKey.split(':');
+            }
+
+            authData.push(buildAuthSnippet(authKey));
           }
-        });
+
+          delete headers[header];
+        } else if (headerLc === 'content-type') {
+          // `Content-Type` headers are automatically added within the SDK so we can filter them out
+          // if they don't have parameters attached to them.
+          const parsedContentType = contentType.parse(headers[header]);
+          if (!Object.keys(parsedContentType.parameters).length) {
+            delete headers[header];
+          }
+        } else if (headerLc === 'accept') {
+          // If the `Accept` header here is not the default or first `Accept` header for the
+          // operations' request body then we should add it otherwise we can let the SDK handle it
+          // itself.
+          if (headers[header] === operation.getContentType()) {
+            delete headers[header];
+          }
+        }
+      });
+
+      if (Object.keys(headers).length > 0) {
+        metadata = Object.assign(metadata, headers);
       }
-      break;
+    }
 
-    default:
-      if (source.postData.text) {
-        body = source.postData.text;
-      }
-  }
+    let body;
+    switch (source.postData.mimeType) {
+      case 'application/x-www-form-urlencoded':
+        body = source.postData.paramsObj;
+        break;
 
-  const args = [];
+      case 'application/json':
+        if (source.postData.jsonObj) {
+          body = source.postData.jsonObj;
+        }
+        break;
 
-  let accessor = method;
-  if (operation.hasOperationId()) {
-    accessor = operation.getOperationId({ camelCase: true });
-  } else {
-    // Since we're not using an operationId as our primary accessor we need to take the current
-    // operation that we're working with and transpile back our path parameters on top of it.
-    const slugs = Object.fromEntries(
-      Object.keys(operationSlugs).map(slug => [slug.replace(/:(.*)/, '$1'), operationSlugs[slug]])
-    );
+      case 'multipart/form-data':
+        if (source.postData.params) {
+          body = {};
 
-    args.push(`'${decodeURIComponent(oas.replaceUrl(path, slugs))}'`);
-  }
+          // If there's a `Content-Type` header present in the metadata, but it's for the
+          // `multipart/form-data` request then dump it off the snippet. We shouldn't offload that
+          // unnecessary bloat of multipart boundaries to the user, instead letting the SDK handle it
+          // automatically.
+          if ('content-type' in metadata && metadata['content-type'].indexOf('multipart/form-data') === 0) {
+            delete metadata['content-type'];
+          }
 
-  // If we're going to be rendering out body params and metadata we should cut their character
-  // limit in half because we'll be rendering them in their own lines.
-  const inlineCharacterLimit = typeof body !== 'undefined' && Object.keys(metadata).length > 0 ? 40 : 80;
-  if (typeof body !== 'undefined') {
-    args.push(stringify(body, { inlineCharacterLimit }));
-  }
+          source.postData.params.forEach(function (param) {
+            if (param.fileName) {
+              body[param.name] = param.fileName;
+            } else {
+              body[param.name] = param.value;
+            }
+          });
+        }
+        break;
 
-  if (Object.keys(metadata).length > 0) {
-    args.push(stringify(metadata, { inlineCharacterLimit }));
-  }
+      default:
+        if (source.postData.text) {
+          body = source.postData.text;
+        }
+    }
 
-  if (authData.length) {
-    code.push(authData.join('\n'));
-  }
+    const args = [];
 
-  if (configData.length) {
-    code.push(configData.join('\n'));
-  }
+    let accessor = method;
+    if (operation.hasOperationId()) {
+      accessor = operation.getOperationId({ camelCase: true });
+    } else {
+      // Since we're not using an operationId as our primary accessor we need to take the current
+      // operation that we're working with and transpile back our path parameters on top of it.
+      const slugs = Object.fromEntries(
+        Object.keys(operationSlugs).map(slug => [slug.replace(/:(.*)/, '$1'), operationSlugs[slug]])
+      );
 
-  code
-    .push(`sdk.${accessor}(${args.join(', ')})`)
-    .push(1, '.then(res => console.log(res))')
-    .push(1, '.catch(err => console.error(err));');
+      args.push(`'${decodeURIComponent(oas.replaceUrl(path, slugs))}'`);
+    }
 
-  return code.join();
-};
+    // If we're going to be rendering out body params and metadata we should cut their character
+    // limit in half because we'll be rendering them in their own lines.
+    const inlineCharacterLimit = typeof body !== 'undefined' && Object.keys(metadata).length > 0 ? 40 : 80;
+    if (typeof body !== 'undefined') {
+      args.push(stringify(body, { inlineCharacterLimit }));
+    }
 
-module.exports.info = {
-  key: 'api',
-  title: 'API',
-  link: 'https://npm.im/api',
-  description: 'Automatic SDK generation from an OpenAPI definition.',
+    if (Object.keys(metadata).length > 0) {
+      args.push(stringify(metadata, { inlineCharacterLimit }));
+    }
+
+    if (authData.length) {
+      push(authData.join('\n'));
+    }
+
+    if (configData.length) {
+      push(configData.join('\n'));
+    }
+
+    push(`sdk.${accessor}(${args.join(', ')})`);
+    push('.then(res => console.log(res))', 1);
+    push('.catch(err => console.error(err));', 1);
+
+    return join();
+  },
 };
