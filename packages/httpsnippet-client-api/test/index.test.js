@@ -9,7 +9,7 @@ const sinonChai = require('sinon-chai');
 const vm = require('vm');
 const rimraf = require('rimraf');
 const fs = require('fs/promises');
-const HTTPSnippet = require('@readme/httpsnippet');
+const { HTTPSnippet, addTargetClient } = require('@readme/httpsnippet');
 const path = require('path');
 const fetchMock = require('fetch-mock');
 const openapiParser = require('@readme/openapi-parser');
@@ -68,7 +68,7 @@ describe('httpsnippet-client-api', function () {
     try {
       // Mocha doesn't tear this down so if you run Mocha with `--watch` it'll be set up already
       // throwing the error that we're ignoring below.
-      HTTPSnippet.addTargetClient('node', client);
+      addTargetClient('node', client);
     } catch (err) {
       if (err.message !== 'The supplied custom target client already exists, please use a different key') {
         throw err;
