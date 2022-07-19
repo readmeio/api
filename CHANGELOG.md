@@ -1,3 +1,22 @@
+## 5.0.0-beta.2 (2022-07-19)
+
+* feat: add support for github blob URLs (#484) ([f8b20a8](https://github.com/readmeio/api/commit/f8b20a8)), closes [#484](https://github.com/readmeio/api/issues/484)
+* feat: improved typescript method acecssor `path` type generation (#482) ([8db66e7](https://github.com/readmeio/api/commit/8db66e7)), closes [#482](https://github.com/readmeio/api/issues/482)
+* feat: updating httpsnippet-client-api to be compatible with httpsnippet v4 (#491) ([cb357f2](https://github.com/readmeio/api/commit/cb357f2)), closes [#491](https://github.com/readmeio/api/issues/491)
+* feat: updating httpsnippet-client-api to work on httpsnippet v4 + TS rewrite (#492) ([8b11be6](https://github.com/readmeio/api/commit/8b11be6)), closes [#492](https://github.com/readmeio/api/issues/492)
+* fix: making sure that packageInfo file updates get committed on release ([1b770b4](https://github.com/readmeio/api/commit/1b770b4))
+* fix: rearrange markdown comment ([a992a86](https://github.com/readmeio/api/commit/a992a86))
+* fix: typescript crashes (#480) ([78dc3b2](https://github.com/readmeio/api/commit/78dc3b2)), closes [#480](https://github.com/readmeio/api/issues/480)
+* ci: getting started content reuse using hercule (#490) ([7803460](https://github.com/readmeio/api/commit/7803460)), closes [#490](https://github.com/readmeio/api/issues/490)
+* docs: fixing a bad url ([618fee3](https://github.com/readmeio/api/commit/618fee3))
+* docs: tweaks to callouts so they look better on our docs ([fc25a5e](https://github.com/readmeio/api/commit/fc25a5e))
+* docs: updating documentation for v5 (#469) ([c77e900](https://github.com/readmeio/api/commit/c77e900)), closes [#469](https://github.com/readmeio/api/issues/469) [#475](https://github.com/readmeio/api/issues/475) [#479](https://github.com/readmeio/api/issues/479) [#473](https://github.com/readmeio/api/issues/473)
+* docs: updating relative image paths to be absolute in our docs ([1f49792](https://github.com/readmeio/api/commit/1f49792))
+* chore(deps-dev): bump typescript from 4.6.4 to 4.7.4 (#473) ([4aea544](https://github.com/readmeio/api/commit/4aea544)), closes [#473](https://github.com/readmeio/api/issues/473)
+* chore(deps-dev): bumping dev deps (#479) ([1434753](https://github.com/readmeio/api/commit/1434753)), closes [#479](https://github.com/readmeio/api/issues/479)
+
+
+
 ## 5.0.0-beta.1 (2022-07-10)
 
 * fix: downgrading json-schema-to-typescript to v10 (#475) ([31a1091](https://github.com/readmeio/api/commit/31a1091)), closes [#475](https://github.com/readmeio/api/issues/475)
