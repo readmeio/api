@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": ["dom", "es2020"],
+    "noImplicitAny": true,
+    "outDir": "dist/"
+  },
+  "include": ["./src/**/*"]
+}

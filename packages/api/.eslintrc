@@ -1,10 +1,5 @@
 {
-  "extends": [
-    "@readme/eslint-config",
-    "@readme/eslint-config/docs",
-    "@readme/eslint-config/typescript"
-  ],
-  "root": true,
+  "extends": ["@readme/eslint-config/docs"],
   "globals": {
     "fetch": true,
     "Response": true

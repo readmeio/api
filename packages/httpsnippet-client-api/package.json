@@ -2,10 +2,13 @@
   "name": "httpsnippet-client-api",
   "version": "5.0.0-beta.1",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "nyc mocha \"test/**/*.test.js\"",
-    "test:watch": "nyc mocha \"test/**/*.test.js\" --watch"
+    "build": "tsc",
+    "prebuild": "rm -rf dist/",
+    "prepack": "npm run build",
+    "test": "nyc mocha \"test/**/*.test.ts\""
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,8 @@
   "devDependencies": {
     "@readme/oas-examples": "^5.4.1",
     "@readme/openapi-parser": "^2.2.0",
+    "@types/content-type": "^1.1.5",
+    "@types/stringify-object": "^4.0.1",
     "api": "file:../api",
     "chai": "^4.3.6",
     "fetch-mock": "^9.11.0",
@@ -38,7 +43,14 @@
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "sinon": "^14.0.0",
-    "sinon-chai": "^3.7.0"
+    "sinon-chai": "^3.7.0",
+    "typescript": "^4.7.4"
   },
-  "prettier": "@readme/eslint-config/prettier"
+  "prettier": "@readme/eslint-config/prettier",
+  "nyc": {
+    "exclude": [
+      "dist/",
+      "test/"
+    ]
+  }
 }

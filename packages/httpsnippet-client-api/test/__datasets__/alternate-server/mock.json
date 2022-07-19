@@ -1,9 +1,0 @@
-{
-  "req": {
-    "url": "http://dev.local/v2/endpoint",
-    "method": "POST"
-  },
-  "res": {
-    "status": 200
-  }
-}

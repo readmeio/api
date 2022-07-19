@@ -1,9 +1,0 @@
-{
-  "req": {
-    "url": "http://petstore.swagger.io/v2/store/order/1234",
-    "method": "get"
-  },
-  "res": {
-    "status": 200
-  }
-}
