@@ -1,4 +1,15 @@
 {
-  "extends": "@readme/eslint-config",
-  "root": true
+  "extends": [
+    "@readme/eslint-config",
+    "@readme/eslint-config/typescript"
+  ],
+  "root": true,
+  "overrides": [
+    {
+      "files": ["bin/**"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
 }

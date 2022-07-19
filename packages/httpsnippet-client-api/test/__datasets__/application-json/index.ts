@@ -1,0 +1,66 @@
+import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { SnippetMock } from '../../index.test';
+import definition from './openapi.json';
+
+const mock: SnippetMock = {
+  har: {
+    bodySize: 0,
+    cookies: [],
+    headers: [
+      {
+        name: 'content-type',
+        value: 'application/json',
+      },
+    ],
+    headersSize: 0,
+    httpVersion: 'HTTP/1.1',
+    method: 'POST',
+    postData: {
+      mimeType: 'application/json',
+      text: JSON.stringify({
+        number: 1,
+        string: 'f"oo',
+        arr: [1, 2, 3],
+        nested: { a: 'b' },
+        arr_mix: [
+          1,
+          'a',
+
+          // This isn't present in the resulting request payloadbecause it's an empty object and
+          // `api` filters these out.
+          { arr_mix_nested: {} },
+        ],
+        boolean: false,
+      }),
+    },
+    queryString: [],
+    url: 'http://httpbin.org/anything',
+  },
+  definition: definition as OASDocument,
+  fetch: {
+    req: {
+      url: 'http://httpbin.org/anything',
+      method: 'post',
+      functionMatcher: (url, opts) => {
+        return (
+          opts.body ===
+          JSON.stringify({
+            number: 1,
+            string: 'f"oo',
+            arr: [1, 2, 3],
+            nested: {
+              a: 'b',
+            },
+            arr_mix: [1, 'a'],
+            boolean: false,
+          })
+        );
+      },
+    },
+    res: {
+      status: 200,
+    },
+  },
+};
+
+export default mock;

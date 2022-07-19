@@ -15,10 +15,10 @@ npm install --save httpsnippet-client-api
 ## Usage
 
 ```js
-const httpsnippet = require('httpsnippet');
-const client = require('httpsnippet-client-api');
+import { HTTPSnippet, addTargetClient } from 'httpsnippet';
+import client = require('httpsnippet-client-api');
 
-HTTPSnippet.addTargetClient('node', client);
+addTargetClient('node', client);
 
 const har = {
   "log": {
