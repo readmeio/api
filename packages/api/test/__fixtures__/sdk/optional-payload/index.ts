@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './openapi.json';
+import definition from '../../../__fixtures__/definitions/optional-payload.json';
 
 export default class SDK {
   spec: Oas;

@@ -10,7 +10,7 @@ packages/api/.prettier*
 packages/api/CHANGELOG.md
 packages/api/dist/
 packages/api/example.js
-packages/api/test/
+packages/api/test/__fixtures/sdk/
 
 # httpsnippet-client-api subpackage
 packages/httpsnippet-client-api/.nyc_output/

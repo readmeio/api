@@ -23,6 +23,11 @@ import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
 import execa from 'execa';
 
+export type TSGeneratorOptions = {
+  outputJS?: boolean;
+  compilerTarget?: 'cjs' | 'esm';
+};
+
 type OperationTypeHousing = {
   types: {
     params?: false | Record<'body' | 'formData' | 'metadata', string>;
@@ -60,15 +65,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     }
   >;
 
-  constructor(
-    spec: Oas,
-    specPath: string,
-    identifier: string,
-    opts: {
-      outputJS?: boolean;
-      compilerTarget?: 'cjs' | 'esm';
-    } = {}
-  ) {
+  constructor(spec: Oas, specPath: string, identifier: string, opts: TSGeneratorOptions = {}) {
     const options: { outputJS: boolean; compilerTarget: 'cjs' | 'esm' } = {
       outputJS: false,
       compilerTarget: 'cjs',

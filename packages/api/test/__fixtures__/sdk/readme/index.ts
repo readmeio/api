@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './openapi.json';
+import definition from '@readme/oas-examples/3.0/json/readme.json';
 
 export default class SDK {
   spec: Oas;
