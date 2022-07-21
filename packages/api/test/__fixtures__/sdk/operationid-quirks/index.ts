@@ -2,7 +2,7 @@ import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/operationid-quirks.json';
 
-export default class SDK {
+class SDK {
   spec: Oas;
   core: APICore;
   authKeys: (number | string)[][] = [];
@@ -93,6 +93,10 @@ export default class SDK {
   quirkyOperationIdString<T = unknown>(): Promise<T> {
     return this.core.fetch('/quirky-operationId', 'get');
   }
+}
+
+export default function createSDK(): SDK {
+  return new SDK();
 }
 
 interface ConfigOptions {

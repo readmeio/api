@@ -1,7 +1,7 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
-export default class SDK {
+class SDK {
   constructor() {
     this.authKeys = [];
     this.spec = Oas.init(definition);
@@ -80,4 +80,7 @@ export default class SDK {
   findPetsByStatus(metadata) {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
+}
+export default function createSDK() {
+  return new SDK();
 }

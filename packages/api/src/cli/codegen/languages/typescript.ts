@@ -3,6 +3,7 @@ import type { Operation } from 'oas';
 import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/@types/rmoas.types';
 import type {
   ClassDeclaration,
+  FunctionDeclaration,
   JSDocStructure,
   MethodDeclaration,
   OptionalKind,
@@ -56,6 +57,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   sdk: ClassDeclaration;
 
+  sdkExport: FunctionDeclaration;
+
   schemas: Map<
     string,
     {
@@ -97,9 +100,9 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       },
       compilerOptions: {
         declaration: true,
+        outDir: 'dist',
         resolveJsonModule: true,
         target: options.compilerTarget === 'cjs' ? ScriptTarget.ES5 : ScriptTarget.ES2020,
-        outDir: 'dist',
 
         // If we're compiling to a CJS target then we need to include this compiler option
         // otherwise TS will attempt to load our `openapi.json` import with a `.default` property
@@ -183,6 +186,15 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       name: 'SDK',
     });
 
+    this.sdkExport = sdkSource.addFunction({
+      name: 'createSDK',
+      returnType: 'SDK',
+      statements: writer => {
+        writer.writeLine('return new SDK();');
+        return writer;
+      },
+    });
+
     // There's an annoying quirk with `ts-morph` where if we set the SDK class to be the default
     // export with `isDefaultExport` then when we compile it to an ES5 target for CJS environments
     // it'll be exported as `export.default = SDK`, which when you try to load it you'll need to
@@ -196,10 +208,10 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     // messes. I hope it's worth it!
     if (this.compilerTarget === 'cjs') {
       sdkSource.addExportAssignment({
-        expression: 'SDK',
+        expression: 'createSDK',
       });
     } else {
-      this.sdk.setIsDefaultExport(true);
+      this.sdkExport.setIsDefaultExport(true);
     }
 
     this.sdk.addProperties([
@@ -331,7 +343,43 @@ sdk.server('https://eu.api.example.com/v14');`)
     // @todo should all of these isolated into their own file outside of the main sdk class file?
     // Add all known types that we're using into the SDK.
     Array.from(this.types.values()).forEach(exp => {
-      sdkSource.addStatements(exp);
+      /**
+       * When `ts-morph` compiles declaration files when we're targeting CJS environments it creates
+       * the default export as `export = _default` instead of `export default const _default`. This
+       * causes TS to throw a TS2309 error for "An export assignment cannot be used in a module
+       * with other exported elements" because our types and interfaces are also being exported and
+       * the `export =` overrides those.
+       *
+       * Fixing this is, to be frank, a fucking HARD problem for a couple reasons:
+       *
+       *  1. Our JSON Schema types and interfaces are coming from `json-schema-to-typescript` and
+       *    that library exports its data a raw string containing multiple types and interfaces.
+       *    The only way we're able to capture and use them in our codegenerated SDK is because
+       *    we're ingesting that string into `ts-morph` and then using its APIs to extract exported
+       *    declarations (which are still strings) and then they're re-inserted into our main
+       *    source file here.
+       *  2. Though `ts-morph` has APIs for adding type aliases and interfaces to a source file what
+       *    it doesn't have is the ability to pass in a string, or a `Writer` class that exposes,
+       *    to write raw strings to a type or an interface. If it did we'd be able to replace this
+       *    `addStatements` call with an `addTypeAlias` and `addInterface` call for each of our
+       *    JSON Schema schemas that we've got along with an `isExported` flag for `ts-morph` to
+       *    export it.
+       *
+       * Because neither of these are solvable problems right now we're instead opting to **not**
+       * export types and interfaces from these SDKs. This isn't a great solution because it
+       * /slightly/ reduces the usability of the TS codegen functionality but in order for the TS
+       * declaration files that we generate to be valid this is the only option that we've got.
+       *
+       * However, that said, if somebody needs an interface or type exported they can export it
+       * themselves in the SDK code that we compile for them.
+       *
+       * @fixme
+       */
+      sdkSource.addStatements(
+        // All expressions coming out of `json-schema-to-typescript` are exported so by popping this
+        // off we'll just be inserting plain interfaces and types into the SDK source.
+        exp.substring('export '.length)
+      );
     });
 
     if (this.outputJS) {

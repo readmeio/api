@@ -96,4 +96,7 @@ var SDK = /** @class */ (function () {
   };
   return SDK;
 })();
-module.exports = SDK;
+function createSDK() {
+  return new SDK();
+}
+module.exports = createSDK;

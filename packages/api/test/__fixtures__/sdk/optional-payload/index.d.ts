@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-export default class SDK {
+declare class SDK {
   spec: Oas;
   core: APICore;
   authKeys: (number | string)[][];
@@ -82,6 +82,7 @@ export default class SDK {
    */
   updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
 }
+export default function createSDK(): SDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -89,7 +90,7 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export interface UpdatePetWithFormFormDataParam {
+interface UpdatePetWithFormFormDataParam {
   /**
    * Updated name of the pet
    */
@@ -100,7 +101,7 @@ export interface UpdatePetWithFormFormDataParam {
   status?: string;
   [k: string]: unknown;
 }
-export declare type UpdatePetWithFormMetadataParam = {
+declare type UpdatePetWithFormMetadataParam = {
   /**
    * ID of pet that needs to be updated
    */

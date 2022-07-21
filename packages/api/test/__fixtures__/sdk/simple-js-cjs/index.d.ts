@@ -67,7 +67,8 @@ declare class SDK {
    */
   findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
 }
-export = SDK;
+declare function createSDK(): SDK;
+export = createSDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -75,15 +76,15 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export declare type FindPetsByStatusMetadataParam = {
+declare type FindPetsByStatusMetadataParam = {
   /**
    * Status values that need to be considered for filter
    */
   status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
-export declare type FindPetsByStatus_Response_200 = Pet[];
-export interface Pet {
+declare type FindPetsByStatus_Response_200 = Pet[];
+interface Pet {
   id?: number;
   category?: Category;
   name: string;
@@ -97,12 +98,12 @@ export interface Pet {
   status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
 }
-export interface Category {
+interface Category {
   id?: number;
   name?: string;
   [k: string]: unknown;
 }
-export interface Tag {
+interface Tag {
   id?: number;
   name?: string;
   [k: string]: unknown;

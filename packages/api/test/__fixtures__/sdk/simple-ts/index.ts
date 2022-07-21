@@ -2,7 +2,7 @@ import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
 
-export default class SDK {
+class SDK {
   spec: Oas;
   core: APICore;
   authKeys: (number | string)[][] = [];
@@ -97,6 +97,10 @@ export default class SDK {
   }
 }
 
+export default function createSDK(): SDK {
+  return new SDK();
+}
+
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -104,15 +108,15 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export type FindPetsByStatusMetadataParam = {
+type FindPetsByStatusMetadataParam = {
   /**
    * Status values that need to be considered for filter
    */
   status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
-export type FindPetsByStatus_Response_200 = Pet[];
-export interface Pet {
+type FindPetsByStatus_Response_200 = Pet[];
+interface Pet {
   id?: number;
   category?: Category;
   name: string;
@@ -126,12 +130,12 @@ export interface Pet {
   status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
 }
-export interface Category {
+interface Category {
   id?: number;
   name?: string;
   [k: string]: unknown;
 }
-export interface Tag {
+interface Tag {
   id?: number;
   name?: string;
   [k: string]: unknown;
