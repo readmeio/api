@@ -23,7 +23,6 @@ Once you have your library generated and installed you can use your SDK like you
 ```js
 const SDK = require('@api/petstore');
 
-const petstore = new SDK();
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });
