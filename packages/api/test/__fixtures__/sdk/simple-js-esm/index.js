@@ -81,6 +81,7 @@ class SDK {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
-export default function createSDK() {
+const createSDK = (() => {
   return new SDK();
-}
+})();
+export default createSDK;

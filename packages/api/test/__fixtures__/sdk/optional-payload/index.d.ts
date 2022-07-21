@@ -82,7 +82,8 @@ declare class SDK {
    */
   updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
 }
-export default function createSDK(): SDK;
+declare const createSDK: SDK;
+export default createSDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -108,4 +109,3 @@ declare type UpdatePetWithFormMetadataParam = {
   petId: number;
   [k: string]: unknown;
 };
-export {};

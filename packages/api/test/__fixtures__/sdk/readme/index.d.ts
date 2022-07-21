@@ -645,7 +645,8 @@ declare class SDK {
     Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
   >;
 }
-export default function createSDK(): SDK;
+declare const createSDK: SDK;
+export default createSDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -1912,4 +1913,3 @@ interface Error_VERSION_CANT_REMOVE_STABLE {
 }
 declare type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
 declare type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
-export {};

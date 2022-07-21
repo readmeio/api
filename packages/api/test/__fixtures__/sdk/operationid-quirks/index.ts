@@ -95,9 +95,10 @@ class SDK {
   }
 }
 
-export default function createSDK(): SDK {
+const createSDK = (() => {
   return new SDK();
-}
+})();
+export default createSDK;
 
 interface ConfigOptions {
   /**

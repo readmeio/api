@@ -3,12 +3,12 @@ import type { Operation } from 'oas';
 import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/@types/rmoas.types';
 import type {
   ClassDeclaration,
-  FunctionDeclaration,
   JSDocStructure,
   MethodDeclaration,
   OptionalKind,
   ParameterDeclarationStructure,
   TypeParameterDeclarationStructure,
+  VariableStatement,
 } from 'ts-morph';
 import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 import type Storage from '../../storage';
@@ -19,7 +19,7 @@ import path from 'path';
 import CodeGeneratorLanguage from '../language';
 import logger from '../../logger';
 import objectHash from 'object-hash';
-import { IndentationText, Project, QuoteKind, ScriptTarget } from 'ts-morph';
+import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
 import execa from 'execa';
@@ -57,7 +57,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   sdk: ClassDeclaration;
 
-  sdkExport: FunctionDeclaration;
+  sdkExport: VariableStatement;
 
   schemas: Map<
     string,
@@ -186,32 +186,57 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       name: 'SDK',
     });
 
-    this.sdkExport = sdkSource.addFunction({
-      name: 'createSDK',
-      returnType: 'SDK',
-      statements: writer => {
-        writer.writeLine('return new SDK();');
-        return writer;
-      },
+    this.sdkExport = sdkSource.addVariableStatement({
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [
+        {
+          name: 'createSDK',
+          initializer: writer => {
+            // `ts-morph` doesn't have any way to cleanly create an IFEE.
+            writer.writeLine('(() => { return new SDK(); })()');
+            return writer;
+          },
+        },
+      ],
     });
 
-    // There's an annoying quirk with `ts-morph` where if we set the SDK class to be the default
-    // export with `isDefaultExport` then when we compile it to an ES5 target for CJS environments
-    // it'll be exported as `export.default = SDK`, which when you try to load it you'll need to
-    // run `require('@api/sdk').default`.
-    //
-    // Instead here by plainly creating the SDK class in the source file and then setting this
-    // export assignment it'll export the SDK class as `module.exports = SDK` so people can cleanly
-    // load the SDK with `require('@api/sdk)`.
-    //
-    // A whole lot of debugging went into here to let people not have to worry about `.default`
-    // messes. I hope it's worth it!
+    /**
+     * There's an annoying quirk with `ts-morph` where if we set the `createSDK` function to be the
+     * default export with `isDefaultExport` then when we compile it to an ES5 target for CJS
+     * environments it'll be exported as `export.default = createSDK`, which when you try to load it
+     * you'll need to run `require('@api/sdk').default`.
+     *
+     * Instead here by plainly creating `createSDK` in the source file and then setting this export
+     * assignment it'll export the SDK IFEE initializer as `module.exports = createSDK` so people
+     * can cleanly load their SDK with `require('@api/sdk)`.
+     *
+     * A whole lot of debugging went into here to let people not have to worry about `.default`
+     * messes. I hope it's worth it!
+     */
     if (this.compilerTarget === 'cjs') {
       sdkSource.addExportAssignment({
         expression: 'createSDK',
       });
     } else {
-      this.sdkExport.setIsDefaultExport(true);
+      /**
+       * Because `createSDK` above is an IFEE constant we can't use `setIsDefaultExport` on it due
+       * to `ts-morph` not having great handling for IFEE's.
+       *
+       * If we were to call `setIsDefaultExport` on our IFEE to attempt to compile it as
+       * `export default createSDK` then `ts-morph` hard crashes with a "Error replacing tree: The
+       * children of the old and new trees were expected to have the same count" exception due to
+       * it not being able properly handle IFEE's. It's for that reason that we need to manually
+       * write a statement expression to set `createSDK` as the default export.
+       *
+       * Another quirk that this work avoids is there being an empty `export {};` at the very end
+       * of our compiled `d.ts` declaration file. I'm not sure why it was being added, and it
+       * didn't appear to be harming anything, but us manually creating this export statement
+       * causes it to go away.
+       *
+       * Thankfully, fortunately, and curiously, these are all only problems in non-CJS compiled
+       * targets. ¯\_(ツ)_/¯
+       */
+      sdkSource.addStatements('export default createSDK');
     }
 
     this.sdk.addProperties([

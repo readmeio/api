@@ -67,7 +67,8 @@ declare class SDK {
    */
   findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
 }
-export default function createSDK(): SDK;
+declare const createSDK: SDK;
+export default createSDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -107,4 +108,3 @@ interface Tag {
   name?: string;
   [k: string]: unknown;
 }
-export {};

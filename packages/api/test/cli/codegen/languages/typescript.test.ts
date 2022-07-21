@@ -2,6 +2,7 @@
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
 import chai, { expect } from 'chai';
+import fetchMock from 'fetch-mock';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiPlugins from '../../../helpers/chai-plugins';
@@ -21,6 +22,8 @@ import uniqueTempDir from 'unique-temp-dir';
 import Oas from 'oas';
 import Storage from '../../../../src/cli/storage';
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
+
+import { responses as mockResponse } from '../../../helpers/fetch-mock';
 
 chai.use(chaiPlugins);
 chai.use(sinonChai);
@@ -97,6 +100,30 @@ describe('typescript', function () {
           compilerTarget: 'esm',
         })
       );
+    });
+
+    describe('integration', function () {
+      afterEach(function () {
+        fetchMock.restore();
+      });
+
+      it('should be able to make an API request (TS)', async function () {
+        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
+
+        await sdk.findPetsByStatus({ status: ['available'] }).then(res => {
+          expect(res).to.equal('/v2/pet/findByStatus?status=available');
+        });
+      });
+
+      it('should be able to make an API request (JS)', async function () {
+        const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
+        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
+
+        await sdk.findPetsByStatus({ status: ['available'] }).then(res => {
+          expect(res).to.equal('/v2/pet/findByStatus?status=available');
+        });
+      });
     });
   });
 });

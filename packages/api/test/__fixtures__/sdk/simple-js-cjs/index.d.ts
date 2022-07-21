@@ -67,7 +67,7 @@ declare class SDK {
    */
   findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
 }
-declare function createSDK(): SDK;
+declare const createSDK: SDK;
 export = createSDK;
 interface ConfigOptions {
   /**
