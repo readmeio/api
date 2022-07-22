@@ -31,7 +31,6 @@ $ npx api install https://raw.githubusercontent.com/OAI/OpenAPI-Specification/ma
 ```js
 const SDK = require('@api/petstore');
 
-const petstore = new SDK();
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
 });

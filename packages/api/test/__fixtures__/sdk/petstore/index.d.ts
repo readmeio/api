@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-export default class SDK {
+declare class SDK {
   spec: Oas;
   core: APICore;
   authKeys: (number | string)[][];
@@ -304,6 +304,8 @@ export default class SDK {
    */
   deleteUser<T = unknown>(metadata: DeleteUserMetadataParam): Promise<T>;
 }
+declare const createSDK: SDK;
+export default createSDK;
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -311,7 +313,7 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export interface Pet {
+interface Pet {
   id?: number;
   category?: Category;
   name: string;
@@ -325,40 +327,40 @@ export interface Pet {
   status?: 'available' | 'pending' | 'sold';
   [k: string]: unknown;
 }
-export interface Category {
+interface Category {
   id?: number;
   name?: string;
   [k: string]: unknown;
 }
-export interface Tag {
+interface Tag {
   id?: number;
   name?: string;
   [k: string]: unknown;
 }
-export declare type FindPetsByStatusMetadataParam = {
+declare type FindPetsByStatusMetadataParam = {
   /**
    * Status values that need to be considered for filter
    */
   status: ('available' | 'pending' | 'sold')[];
   [k: string]: unknown;
 };
-export declare type FindPetsByStatus_Response_200 = Pet[];
-export declare type FindPetsByTagsMetadataParam = {
+declare type FindPetsByStatus_Response_200 = Pet[];
+declare type FindPetsByTagsMetadataParam = {
   /**
    * Tags to filter by
    */
   tags: string[];
   [k: string]: unknown;
 };
-export declare type FindPetsByTags_Response_200 = Pet[];
-export declare type GetPetByIdMetadataParam = {
+declare type FindPetsByTags_Response_200 = Pet[];
+declare type GetPetByIdMetadataParam = {
   /**
    * ID of pet to return
    */
   petId: number;
   [k: string]: unknown;
 };
-export interface UpdatePetWithFormFormDataParam {
+interface UpdatePetWithFormFormDataParam {
   /**
    * Updated name of the pet
    */
@@ -369,14 +371,14 @@ export interface UpdatePetWithFormFormDataParam {
   status?: string;
   [k: string]: unknown;
 }
-export declare type UpdatePetWithFormMetadataParam = {
+declare type UpdatePetWithFormMetadataParam = {
   /**
    * ID of pet that needs to be updated
    */
   petId: number;
   [k: string]: unknown;
 };
-export declare type DeletePetMetadataParam = {
+declare type DeletePetMetadataParam = {
   /**
    * Pet id to delete
    */
@@ -386,7 +388,7 @@ export declare type DeletePetMetadataParam = {
   api_key?: string;
   [k: string]: unknown;
 };
-export interface UploadFileBodyParam {
+interface UploadFileBodyParam {
   /**
    * Additional data to pass to server
    */
@@ -397,23 +399,23 @@ export interface UploadFileBodyParam {
   file?: string;
   [k: string]: unknown;
 }
-export declare type UploadFileMetadataParam = {
+declare type UploadFileMetadataParam = {
   /**
    * ID of pet to update
    */
   petId: number;
   [k: string]: unknown;
 };
-export interface ApiResponse {
+interface ApiResponse {
   code?: number;
   type?: string;
   message?: string;
   [k: string]: unknown;
 }
-export interface GetInventory_Response_200 {
+interface GetInventory_Response_200 {
   [k: string]: number;
 }
-export interface Order {
+interface Order {
   id?: number;
   petId?: number;
   quantity?: number;
@@ -427,21 +429,21 @@ export interface Order {
   complete?: boolean;
   [k: string]: unknown;
 }
-export declare type GetOrderByIdMetadataParam = {
+declare type GetOrderByIdMetadataParam = {
   /**
    * ID of pet that needs to be fetched
    */
   orderId: number;
   [k: string]: unknown;
 };
-export declare type DeleteOrderMetadataParam = {
+declare type DeleteOrderMetadataParam = {
   /**
    * ID of the order that needs to be deleted
    */
   orderId: number;
   [k: string]: unknown;
 };
-export interface User {
+interface User {
   id?: number;
   username?: string;
   firstName?: string;
@@ -455,9 +457,9 @@ export interface User {
   userStatus?: number;
   [k: string]: unknown;
 }
-export declare type CreateUsersWithArrayInputBodyParam = User[];
-export declare type CreateUsersWithListInputBodyParam = User[];
-export declare type LoginUserMetadataParam = {
+declare type CreateUsersWithArrayInputBodyParam = User[];
+declare type CreateUsersWithListInputBodyParam = User[];
+declare type LoginUserMetadataParam = {
   /**
    * The user name for login
    */
@@ -468,26 +470,25 @@ export declare type LoginUserMetadataParam = {
   password: string;
   [k: string]: unknown;
 };
-export declare type LoginUser_Response_200 = string;
-export declare type GetUserByNameMetadataParam = {
+declare type LoginUser_Response_200 = string;
+declare type GetUserByNameMetadataParam = {
   /**
    * The name that needs to be fetched. Use user1 for testing.
    */
   username: string;
   [k: string]: unknown;
 };
-export declare type UpdateUserMetadataParam = {
+declare type UpdateUserMetadataParam = {
   /**
    * name that need to be updated
    */
   username: string;
   [k: string]: unknown;
 };
-export declare type DeleteUserMetadataParam = {
+declare type DeleteUserMetadataParam = {
   /**
    * The name that needs to be deleted
    */
   username: string;
   [k: string]: unknown;
 };
-export {};

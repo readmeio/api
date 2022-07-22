@@ -1,8 +1,8 @@
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from './openapi.json';
+import definition from '@readme/oas-examples/3.0/json/readme.json';
 
-export default class SDK {
+class SDK {
   spec: Oas;
   core: APICore;
   authKeys: (number | string)[][] = [];
@@ -812,6 +812,11 @@ export default class SDK {
   }
 }
 
+const createSDK = (() => {
+  return new SDK();
+})();
+export default createSDK;
+
 interface ConfigOptions {
   /**
    * By default we parse the response based on the `Content-Type` header of the request. You
@@ -819,17 +824,17 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-export type GetAPIRegistryMetadataParam = {
+type GetAPIRegistryMetadataParam = {
   /**
    * An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.
    */
   uuid: string;
   [k: string]: unknown;
 };
-export interface GetAPIRegistry_Response_200 {
+interface GetAPIRegistry_Response_200 {
   [k: string]: unknown;
 }
-export interface Error_REGISTRY_NOTFOUND {
+interface Error_REGISTRY_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -856,7 +861,7 @@ export interface Error_REGISTRY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecificationMetadataParam = {
+type GetAPISpecificationMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -873,7 +878,7 @@ export type GetAPISpecificationMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface GetAPISpecification_Response_200 {
+interface GetAPISpecification_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
    */
@@ -884,7 +889,7 @@ export interface GetAPISpecification_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
-export interface Error_VERSION_EMPTY {
+interface Error_VERSION_EMPTY {
   /**
    * An error code unique to the error received.
    */
@@ -911,8 +916,8 @@ export interface Error_VERSION_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export interface Error_APIKEY_EMPTY {
+type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+interface Error_APIKEY_EMPTY {
   /**
    * An error code unique to the error received.
    */
@@ -939,7 +944,7 @@ export interface Error_APIKEY_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_APIKEY_NOTFOUND {
+interface Error_APIKEY_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -966,8 +971,8 @@ export interface Error_APIKEY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_APIKEY_MISMATCH {
+type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_APIKEY_MISMATCH {
   /**
    * An error code unique to the error received.
    */
@@ -994,7 +999,7 @@ export interface Error_APIKEY_MISMATCH {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_VERSION_NOTFOUND {
+interface Error_VERSION_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1021,26 +1026,26 @@ export interface Error_VERSION_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface UploadAPISpecificationBodyParam {
+interface UploadAPISpecificationBodyParam {
   /**
    * OpenAPI/Swagger file
    */
   spec?: string;
   [k: string]: unknown;
 }
-export type UploadAPISpecificationMetadataParam = {
+type UploadAPISpecificationMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type UploadAPISpecification_Response_400 =
+type UploadAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_INVALID
   | Error_SPEC_INVALID_SCHEMA
   | Error_SPEC_VERSION_NOTFOUND;
-export interface Error_SPEC_FILE_EMPTY {
+interface Error_SPEC_FILE_EMPTY {
   /**
    * An error code unique to the error received.
    */
@@ -1067,7 +1072,7 @@ export interface Error_SPEC_FILE_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_SPEC_INVALID {
+interface Error_SPEC_INVALID {
   /**
    * An error code unique to the error received.
    */
@@ -1094,7 +1099,7 @@ export interface Error_SPEC_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_SPEC_INVALID_SCHEMA {
+interface Error_SPEC_INVALID_SCHEMA {
   /**
    * An error code unique to the error received.
    */
@@ -1121,7 +1126,7 @@ export interface Error_SPEC_INVALID_SCHEMA {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_SPEC_VERSION_NOTFOUND {
+interface Error_SPEC_VERSION_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1148,9 +1153,9 @@ export interface Error_SPEC_VERSION_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UploadAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UploadAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_SPEC_TIMEOUT {
+type UploadAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type UploadAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_SPEC_TIMEOUT {
   /**
    * An error code unique to the error received.
    */
@@ -1177,28 +1182,28 @@ export interface Error_SPEC_TIMEOUT {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface UpdateAPISpecificationBodyParam {
+interface UpdateAPISpecificationBodyParam {
   /**
    * OpenAPI/Swagger file
    */
   spec?: string;
   [k: string]: unknown;
 }
-export type UpdateAPISpecificationMetadataParam = {
+type UpdateAPISpecificationMetadataParam = {
   /**
    * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
    */
   id: string;
   [k: string]: unknown;
 };
-export type UpdateAPISpecification_Response_400 =
+type UpdateAPISpecification_Response_400 =
   | Error_SPEC_FILE_EMPTY
   | Error_SPEC_ID_DUPLICATE
   | Error_SPEC_ID_INVALID
   | Error_SPEC_INVALID
   | Error_SPEC_INVALID_SCHEMA
   | Error_SPEC_VERSION_NOTFOUND;
-export interface Error_SPEC_ID_DUPLICATE {
+interface Error_SPEC_ID_DUPLICATE {
   /**
    * An error code unique to the error received.
    */
@@ -1225,7 +1230,7 @@ export interface Error_SPEC_ID_DUPLICATE {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_SPEC_ID_INVALID {
+interface Error_SPEC_ID_INVALID {
   /**
    * An error code unique to the error received.
    */
@@ -1252,18 +1257,18 @@ export interface Error_SPEC_ID_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteAPISpecificationMetadataParam = {
+type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+type DeleteAPISpecificationMetadataParam = {
   /**
    * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
    */
   id: string;
   [k: string]: unknown;
 };
-export type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_SPEC_NOTFOUND {
+type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_SPEC_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1290,8 +1295,8 @@ export interface Error_SPEC_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetOpenRoles_Response_200 = JobOpening[];
-export interface JobOpening {
+type GetOpenRoles_Response_200 = JobOpening[];
+interface JobOpening {
   /**
    * A slugified version of the job opening title.
    */
@@ -1322,7 +1327,7 @@ export interface JobOpening {
   url?: string;
   [k: string]: unknown;
 }
-export interface Apply {
+interface Apply {
   /**
    * Your full name
    */
@@ -1366,7 +1371,7 @@ export interface Apply {
   dontReallyApply?: boolean;
   [k: string]: unknown;
 }
-export type GetCategoriesMetadataParam = {
+type GetCategoriesMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1383,7 +1388,7 @@ export type GetCategoriesMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface GetCategories_Response_200 {
+interface GetCategories_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
    */
@@ -1394,7 +1399,7 @@ export interface GetCategories_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
-export interface Category {
+interface Category {
   /**
    * A short title for the category. This is what will show in the sidebar.
    */
@@ -1405,14 +1410,14 @@ export interface Category {
   type?: 'reference' | 'guide';
   [k: string]: unknown;
 }
-export type CreateCategoryMetadataParam = {
+type CreateCategoryMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface Error_CATEGORY_INVALID {
+interface Error_CATEGORY_INVALID {
   /**
    * An error code unique to the error received.
    */
@@ -1439,7 +1444,7 @@ export interface Error_CATEGORY_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetCategoryMetadataParam = {
+type GetCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1452,7 +1457,7 @@ export type GetCategoryMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface Error_CATEGORY_NOTFOUND {
+interface Error_CATEGORY_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1479,7 +1484,7 @@ export interface Error_CATEGORY_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateCategoryMetadataParam = {
+type UpdateCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1492,7 +1497,7 @@ export type UpdateCategoryMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type DeleteCategoryMetadataParam = {
+type DeleteCategoryMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1505,7 +1510,7 @@ export type DeleteCategoryMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetCategoryDocsMetadataParam = {
+type GetCategoryDocsMetadataParam = {
   /**
    * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
    */
@@ -1518,7 +1523,7 @@ export type GetCategoryDocsMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetChangelogsMetadataParam = {
+type GetChangelogsMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1529,7 +1534,7 @@ export type GetChangelogsMetadataParam = {
   page?: number;
   [k: string]: unknown;
 };
-export interface GetChangelogs_Response_200 {
+interface GetChangelogs_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
    */
@@ -1540,7 +1545,7 @@ export interface GetChangelogs_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
-export interface Changelog {
+interface Changelog {
   /**
    * Title of the changelog
    */
@@ -1556,28 +1561,28 @@ export interface Changelog {
   hidden?: boolean;
   [k: string]: unknown;
 }
-export type GetChangelogMetadataParam = {
+type GetChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type UpdateChangelogMetadataParam = {
+type UpdateChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type DeleteChangelogMetadataParam = {
+type DeleteChangelogMetadataParam = {
   /**
    * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type GetCustomPagesMetadataParam = {
+type GetCustomPagesMetadataParam = {
   /**
    * Number of items to include in pagination (up to 100, defaults to 10)
    */
@@ -1588,7 +1593,7 @@ export type GetCustomPagesMetadataParam = {
   page?: number;
   [k: string]: unknown;
 };
-export interface GetCustomPages_Response_200 {
+interface GetCustomPages_Response_200 {
   /**
    * Pagination information. See https://docs.readme.com/reference/pagination for more information.
    */
@@ -1599,9 +1604,9 @@ export interface GetCustomPages_Response_200 {
   'x-total-count'?: string;
   [k: string]: unknown;
 }
-export type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
-export interface CustomPage {
+type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
+interface CustomPage {
   /**
    * Title of the custom page
    */
@@ -1624,7 +1629,7 @@ export interface CustomPage {
   hidden?: boolean;
   [k: string]: unknown;
 }
-export interface Error_CUSTOMPAGE_INVALID {
+interface Error_CUSTOMPAGE_INVALID {
   /**
    * An error code unique to the error received.
    */
@@ -1651,18 +1656,18 @@ export interface Error_CUSTOMPAGE_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type GetCustomPageMetadataParam = {
+type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+type GetCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_CUSTOMPAGE_NOTFOUND {
+type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_CUSTOMPAGE_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1689,25 +1694,25 @@ export interface Error_CUSTOMPAGE_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateCustomPageMetadataParam = {
+type UpdateCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteCustomPageMetadataParam = {
+type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+type DeleteCustomPageMetadataParam = {
   /**
    * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
    */
   slug: string;
   [k: string]: unknown;
 };
-export type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-export type GetDocMetadataParam = {
+type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
+type GetDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1720,9 +1725,9 @@ export type GetDocMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_DOC_NOTFOUND {
+type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_DOC_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1749,7 +1754,7 @@ export interface Error_DOC_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Doc {
+interface Doc {
   /**
    * Title of the page
    */
@@ -1787,7 +1792,7 @@ export interface Doc {
   };
   [k: string]: unknown;
 }
-export type UpdateDocMetadataParam = {
+type UpdateDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1800,7 +1805,7 @@ export type UpdateDocMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export interface Error_DOC_INVALID {
+interface Error_DOC_INVALID {
   /**
    * An error code unique to the error received.
    */
@@ -1827,9 +1832,9 @@ export interface Error_DOC_INVALID {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteDocMetadataParam = {
+type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
+type DeleteDocMetadataParam = {
   /**
    * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
    */
@@ -1842,18 +1847,18 @@ export type DeleteDocMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type CreateDocMetadataParam = {
+type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
+type CreateDocMetadataParam = {
   /**
    * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
    */
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
-export type SearchDocsMetadataParam = {
+type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
+type SearchDocsMetadataParam = {
   /**
    * Search string to look for
    */
@@ -1866,11 +1871,11 @@ export type SearchDocsMetadataParam = {
   'x-readme-version'?: string;
   [k: string]: unknown;
 };
-export type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
-export type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
-export interface CondensedProjectData {
+type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
+type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
+interface CondensedProjectData {
   name?: string;
   subdomain?: string;
   jwtSecret?: string;
@@ -1881,11 +1886,11 @@ export interface CondensedProjectData {
   plan?: string;
   [k: string]: unknown;
 }
-export type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetProject_Response_403 = Error_APIKEY_MISMATCH;
-export type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
-export interface Version {
+type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetProject_Response_403 = Error_APIKEY_MISMATCH;
+type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
+interface Version {
   /**
    * Semantic Version
    */
@@ -1913,8 +1918,8 @@ export interface Version {
   is_deprecated?: boolean;
   [k: string]: unknown;
 }
-export type CreateVersion_Response_400 = Error_VERSION_EMPTY | Error_VERSION_DUPLICATE | Error_VERSION_FORK_EMPTY;
-export interface Error_VERSION_DUPLICATE {
+type CreateVersion_Response_400 = Error_VERSION_EMPTY | Error_VERSION_DUPLICATE | Error_VERSION_FORK_EMPTY;
+interface Error_VERSION_DUPLICATE {
   /**
    * An error code unique to the error received.
    */
@@ -1941,7 +1946,7 @@ export interface Error_VERSION_DUPLICATE {
   poem?: string[];
   [k: string]: unknown;
 }
-export interface Error_VERSION_FORK_EMPTY {
+interface Error_VERSION_FORK_EMPTY {
   /**
    * An error code unique to the error received.
    */
@@ -1968,9 +1973,9 @@ export interface Error_VERSION_FORK_EMPTY {
   poem?: string[];
   [k: string]: unknown;
 }
-export type CreateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type CreateVersion_Response_403 = Error_APIKEY_MISMATCH;
-export interface Error_VERSION_FORK_NOTFOUND {
+type CreateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type CreateVersion_Response_403 = Error_APIKEY_MISMATCH;
+interface Error_VERSION_FORK_NOTFOUND {
   /**
    * An error code unique to the error received.
    */
@@ -1997,23 +2002,23 @@ export interface Error_VERSION_FORK_NOTFOUND {
   poem?: string[];
   [k: string]: unknown;
 }
-export type GetVersionMetadataParam = {
+type GetVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
   versionId: string;
   [k: string]: unknown;
 };
-export type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
-export type UpdateVersionMetadataParam = {
+type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
+type UpdateVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
   versionId: string;
   [k: string]: unknown;
 };
-export interface Error_VERSION_CANT_DEMOTE_STABLE {
+interface Error_VERSION_CANT_DEMOTE_STABLE {
   /**
    * An error code unique to the error received.
    */
@@ -2040,16 +2045,16 @@ export interface Error_VERSION_CANT_DEMOTE_STABLE {
   poem?: string[];
   [k: string]: unknown;
 }
-export type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
-export type DeleteVersionMetadataParam = {
+type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
+type DeleteVersionMetadataParam = {
   /**
    * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
    */
   versionId: string;
   [k: string]: unknown;
 };
-export interface Error_VERSION_CANT_REMOVE_STABLE {
+interface Error_VERSION_CANT_REMOVE_STABLE {
   /**
    * An error code unique to the error received.
    */
@@ -2076,5 +2081,5 @@ export interface Error_VERSION_CANT_REMOVE_STABLE {
   poem?: string[];
   [k: string]: unknown;
 }
-export type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-export type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
+type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
+type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
