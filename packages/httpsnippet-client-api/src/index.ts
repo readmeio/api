@@ -1,6 +1,8 @@
 import type { Operation } from 'oas';
 import type { HttpMethods, OASDocument } from 'oas/@types/rmoas.types';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
+import type { ReducedHelperObject } from '@readme/httpsnippet/dist/helpers/reducer';
+
 import stringifyObject from 'stringify-object';
 import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';
 import contentType from 'content-type';
@@ -88,7 +90,7 @@ const client: Client<APIOptions> = {
     link: 'https://npm.im/api',
     description: 'Automatic SDK generation from an OpenAPI definition.',
   },
-  convert: (source, options) => {
+  convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
       ...options,
     };
@@ -102,10 +104,10 @@ const client: Client<APIOptions> = {
     const method = source.method.toLowerCase() as HttpMethods;
     const oas = new Oas(opts.apiDefinition);
     const apiDefinition = oas.getDefinition();
-    const foundOperation = oas.findOperation(source.url, method);
+    const foundOperation = oas.findOperation(url, method);
     if (!foundOperation) {
       throw new Error(
-        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${source.url}`
+        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${url}`
       );
     }
 
@@ -116,7 +118,6 @@ const client: Client<APIOptions> = {
     const authSources = getAuthSources(operation);
 
     const { blank, push, join } = new CodeBuilder({ indent: opts.indent || '  ' });
-    // const code = new CodeBuilder(opts.indent);
 
     push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
     blank();
@@ -128,7 +129,7 @@ const client: Client<APIOptions> = {
     const configData = [];
     if ((apiDefinition.servers || []).length > 1) {
       const stockUrl = oas.url();
-      const baseUrl = source.url.replace(path, '');
+      const baseUrl = url.replace(path, '');
       if (baseUrl !== stockUrl) {
         const serverVars = oas.splitVariables(baseUrl);
         const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
@@ -138,21 +139,21 @@ const client: Client<APIOptions> = {
     }
 
     let metadata: Record<string, string | string[]> = {};
-    Object.keys(source.queryObj).forEach(param => {
+    Object.keys(queryObj).forEach(param => {
       if (authSources.query.includes(param)) {
-        authData.push(buildAuthSnippet(source.queryObj[param]));
+        authData.push(buildAuthSnippet(queryObj[param]));
 
         // If this query param is part of an auth source then we don't want it doubled up in the
         // snippet.
         return;
       }
 
-      metadata[param] = source.queryObj[param];
+      metadata[param] = queryObj[param];
     });
 
-    Object.keys(source.cookiesObj).forEach(cookie => {
+    Object.keys(cookiesObj).forEach(cookie => {
       if (authSources.cookie.includes(cookie)) {
-        authData.push(buildAuthSnippet(source.cookiesObj[cookie]));
+        authData.push(buildAuthSnippet(cookiesObj[cookie]));
 
         // If this cookie is part of an auth source then we don't want it doubled up.
         return;
@@ -161,7 +162,7 @@ const client: Client<APIOptions> = {
       // Note that we may have the potential to overlap any cookie that also shares the name as
       // another metadata parameter. This problem is currently inherent to `api` and not this
       // snippet generator.
-      metadata[cookie] = source.cookiesObj[cookie];
+      metadata[cookie] = cookiesObj[cookie];
     });
 
     // If we have path parameters present, we should only add them in if we have an `operationId` as
@@ -174,23 +175,24 @@ const client: Client<APIOptions> = {
       });
     }
 
-    if (Object.keys(source.headersObj).length) {
-      const headers = source.headersObj;
+    if (Object.keys(headersObj).length) {
+      const headers = headersObj;
+      const requestHeaders: ReducedHelperObject = {};
 
       Object.keys(headers).forEach(header => {
         // Headers in HTTPSnippet are case-insensitive so we need to add in some special handling to
         // make sure we're able to match them properly.
-        const headerLc = header.toLowerCase();
+        const headerLower = header.toLowerCase();
 
-        if (headerLc in authSources.header) {
+        if (headerLower in authSources.header) {
           // If this header has been set up as an authentication header, let's remove it and add it
           // into our auth data so we can build up an `.auth()` snippet for the SDK.
-          const authScheme = authSources.header[headerLc];
+          const authScheme = authSources.header[headerLower];
           if (authScheme === '*') {
             authData.push(buildAuthSnippet(headers[header]));
           } else {
             // @ts-expect-error `headers[header]` is typed improperly in HTTPSnippet.
-            let authKey = headers[header].replace(`${authSources.header[headerLc]} `, '');
+            let authKey = headers[header].replace(`${authSources.header[headerLower]} `, '');
             if (authScheme.toLowerCase() === 'basic') {
               authKey = Buffer.from(authKey, 'base64').toString('ascii');
               authKey = authKey.split(':');
@@ -200,43 +202,51 @@ const client: Client<APIOptions> = {
           }
 
           delete headers[header];
-        } else if (headerLc === 'content-type') {
+          return;
+        } else if (headerLower === 'content-type') {
           // `Content-Type` headers are automatically added within the SDK so we can filter them out
           // if they don't have parameters attached to them.
           // @ts-expect-error `headers[header]` is typed improperly in HTTPSnippet.
           const parsedContentType = contentType.parse(headers[header]);
           if (!Object.keys(parsedContentType.parameters).length) {
             delete headers[header];
+            return;
           }
-        } else if (headerLc === 'accept') {
+        } else if (headerLower === 'accept') {
           // If the `Accept` header here is not the default or first `Accept` header for the
           // operations' request body then we should add it otherwise we can let the SDK handle it
           // itself.
           if (headers[header] === operation.getContentType()) {
             delete headers[header];
+            return;
           }
         }
+
+        // If we haven't used our header anywhere else, or we've deleted it from the payload
+        // because it'll be handled internally by `api` then we should add the lowercased version
+        // of our header into the generated code snippet.
+        requestHeaders[headerLower] = headers[header];
       });
 
-      if (Object.keys(headers).length > 0) {
-        metadata = Object.assign(metadata, headers);
+      if (Object.keys(requestHeaders).length > 0) {
+        metadata = Object.assign(metadata, requestHeaders);
       }
     }
 
     let body: any;
-    switch (source.postData.mimeType) {
+    switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        body = source.postData.paramsObj;
+        body = postData.paramsObj;
         break;
 
       case 'application/json':
-        if (source.postData.jsonObj) {
-          body = source.postData.jsonObj;
+        if (postData.jsonObj) {
+          body = postData.jsonObj;
         }
         break;
 
       case 'multipart/form-data':
-        if (source.postData.params) {
+        if (postData.params) {
           body = {};
 
           // If there's a `Content-Type` header present in the metadata, but it's for the
@@ -247,7 +257,7 @@ const client: Client<APIOptions> = {
             delete metadata['content-type'];
           }
 
-          source.postData.params.forEach(function (param) {
+          postData.params.forEach(function (param) {
             if (param.fileName) {
               body[param.name] = param.fileName;
             } else {
@@ -258,8 +268,8 @@ const client: Client<APIOptions> = {
         break;
 
       default:
-        if (source.postData.text) {
-          body = source.postData.text;
+        if (postData.text) {
+          body = postData.text;
         }
     }
 

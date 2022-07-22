@@ -184,7 +184,25 @@ export default async function prepareParams(operation: Operation, body?: unknown
         // isn't anything we can do about it.
         params.body = merge(params.body, body);
       } else {
-        const intersection = Object.keys(body).filter(value => Object.keys(digestedParameters).includes(value)).length;
+        const headerParams: string[] = [];
+        Object.entries(digestedParameters).forEach(([paramName, param]) => {
+          // Headers are sent case-insensitive so we need to make sure that we're properly
+          // matching them when detecting what our incoming payload looks like.
+          if (param.in === 'header') {
+            headerParams.push(paramName.toLowerCase());
+          }
+        });
+
+        const intersection = Object.keys(body).filter(value => {
+          if (Object.keys(digestedParameters).includes(value)) {
+            return true;
+          } else if (headerParams.includes(value.toLowerCase())) {
+            return true;
+          }
+
+          return false;
+        }).length;
+
         if (intersection && intersection / Object.keys(body).length > 0.25) {
           /* eslint-disable no-param-reassign */
           // If more than 25% of the body intersects with the parameters that we've got on hand,
@@ -276,8 +294,14 @@ export default async function prepareParams(operation: Operation, body?: unknown
 
     Object.entries(digestedParameters).forEach(([paramName, param]) => {
       let value: any;
-      if (typeof metadata === 'object' && !isEmpty(metadata) && paramName in metadata) {
-        value = metadata[paramName];
+      if (typeof metadata === 'object' && !isEmpty(metadata)) {
+        if (paramName in metadata) {
+          value = metadata[paramName];
+        } else if (param.in === 'header') {
+          // Headers are sent case-insensitive so we need to make sure that we're properly
+          // matching them when detecting what our incoming payload looks like.
+          value = metadata[Object.keys(metadata).find(k => k.toLowerCase() === paramName.toLowerCase())];
+        }
       }
 
       if (value === undefined) {
@@ -295,7 +319,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
           delete metadata[paramName];
           break;
         case 'header':
-          params.header[paramName] = value;
+          params.header[paramName.toLowerCase()] = value;
           delete metadata[paramName];
           break;
         case 'cookie':

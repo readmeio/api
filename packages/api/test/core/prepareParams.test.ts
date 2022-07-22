@@ -358,6 +358,19 @@ describe('#prepareParams', function () {
       });
     });
 
+    it('should support matching on case-insensitive header parameters', async function () {
+      const operation = parameterStyle.operation('/anything/headers', 'get');
+      const metadata = {
+        PrimItive: 'buster',
+      };
+
+      expect(await prepareParams(operation, metadata)).to.deep.equal({
+        header: {
+          primitive: 'buster',
+        },
+      });
+    });
+
     it('should support path parameters', async function () {
       const operation = parameterStyle.operation('/anything/path/{primitive}/{array}/{object}', 'get');
       const metadata = {
