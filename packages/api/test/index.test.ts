@@ -109,7 +109,7 @@ describe('api', function () {
         // counterpart will.
         await petstoreSDK['find pet by id']()
           .then(() => {
-            throw new Error('This operationID should have thrown an exception');
+            throw new Error('This operationID accessor should have thrown an exception.');
           })
           .catch(err => {
             expect(err.message).to.equal(
