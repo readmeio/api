@@ -1,5 +1,5 @@
 /* eslint-disable mocha/no-setup-in-describe */
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';

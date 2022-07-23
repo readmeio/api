@@ -1,5 +1,5 @@
 import type { Operation } from 'oas';
-import type { HttpMethods, OASDocument } from 'oas/@types/rmoas.types';
+import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
 import stringifyObject from 'stringify-object';
 import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';

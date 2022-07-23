@@ -1,6 +1,6 @@
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/@types/rmoas.types';
+import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/dist/rmoas.types';
 import type {
   ClassDeclaration,
   JSDocStructure,
