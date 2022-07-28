@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 import type { SnippetMock } from '../../index.test';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
 

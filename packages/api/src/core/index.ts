@@ -1,6 +1,6 @@
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods } from 'oas/@types/rmoas.types';
+import type { HttpMethods } from 'oas/dist/rmoas.types';
 
 import 'isomorphic-fetch';
 import fetchHar from 'fetch-har';

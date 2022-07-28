@@ -1,5 +1,5 @@
 import type { Operation } from 'oas';
-import type { ParameterObject, SchemaObject } from 'oas/@types/rmoas.types';
+import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
 import type { ReadStream } from 'fs';
 
 import lodashMerge from 'lodash.merge';
@@ -10,7 +10,7 @@ import getStream from 'get-stream';
 import datauri from 'datauri/sync';
 import DatauriParser from 'datauri/parser';
 import removeUndefinedObjects from 'remove-undefined-objects';
-
+import caseless from 'caseless';
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 
 /**
@@ -198,19 +198,19 @@ export default async function prepareParams(operation: Operation, body?: unknown
         // isn't anything we can do about it.
         params.body = merge(params.body, body);
       } else {
-        const headerParams: string[] = [];
+        const headerParams = caseless({});
         Object.entries(digestedParameters).forEach(([paramName, param]) => {
           // Headers are sent case-insensitive so we need to make sure that we're properly
           // matching them when detecting what our incoming payload looks like.
           if (param.in === 'header') {
-            headerParams.push(paramName.toLowerCase());
+            headerParams.set(paramName, '');
           }
         });
 
         const intersection = Object.keys(body).filter(value => {
           if (Object.keys(digestedParameters).includes(value)) {
             return true;
-          } else if (headerParams.includes(value.toLowerCase())) {
+          } else if (headerParams.has(value)) {
             return true;
           }
 

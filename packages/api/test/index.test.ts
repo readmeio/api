@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import { assert, expect } from 'chai';
 import uniqueTempDir from 'unique-temp-dir';
@@ -10,8 +10,8 @@ import pkg from '../package.json';
 
 import { responses as mockResponses } from './helpers/fetch-mock';
 
-let petstoreSdk;
-let readmeSdk;
+let petstoreSDK;
+let readmeSDK;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 describe('api', function () {
@@ -25,11 +25,11 @@ describe('api', function () {
   beforeEach(async function () {
     const petstore = require.resolve('@readme/oas-examples/3.0/json/petstore-expanded.json');
     await new Cache(petstore).load();
-    petstoreSdk = api(petstore);
+    petstoreSDK = api(petstore);
 
     const readme = require.resolve('@readme/oas-examples/3.0/json/readme.json');
     await new Cache(readme).load();
-    readmeSdk = api(readme);
+    readmeSDK = api(readme);
   });
 
   afterEach(function () {
@@ -90,7 +90,7 @@ describe('api', function () {
   describe('#accessors', function () {
     it('should have a function for each http method', function () {
       ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'].forEach(method => {
-        expect(petstoreSdk[method]).to.be.a('function');
+        expect(petstoreSDK[method]).to.be.a('function');
       });
     });
 
@@ -98,11 +98,26 @@ describe('api', function () {
       it('should work for operationId', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSdk.findPets()).to.equal('it worked!');
+        expect(await petstoreSDK.findPets()).to.equal('it worked!');
       });
 
-      it('should work with operationIds that have contain spaces', function () {
-        expect(petstoreSdk['find pet by id']).to.be.a('function');
+      it('should work with operationIds that have contain spaces', async function () {
+        fetchMock.get(`${petstoreServerUrl}/pets/1234`, mockResponses.real('it worked!'));
+
+        // Because we don't want people using ugly operationIDs like this we transform them into
+        // JS-friendly method accessors so this one won't be available but its `findPetById`
+        // counterpart will.
+        await petstoreSDK['find pet by id']()
+          .then(() => {
+            throw new Error('This operationID accessor should have thrown an exception.');
+          })
+          .catch(err => {
+            expect(err.message).to.equal(
+              'Sorry, `find pet by id` does not appear to be a valid operation on this API.'
+            );
+          });
+
+        expect(await petstoreSDK.findPetById({ id: 1234 })).to.equal('it worked!');
       });
 
       it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {
@@ -112,19 +127,19 @@ describe('api', function () {
         // `camelCase` option on `Operation.getOperationId()` should transform it into
         // `findPetById`.
         expect(petstore.paths['/pets/{id}'].get.operationId).to.equal('find pet by id');
-        expect(petstoreSdk.findPetById).to.be.a('function');
+        expect(petstoreSDK.findPetById).to.be.a('function');
       });
 
       it('should work for other methods', async function () {
         fetchMock.post(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSdk.addPet()).to.equal('it worked!');
+        expect(await petstoreSDK.addPet()).to.equal('it worked!');
       });
 
       it.skip('should allow operationId to be the same as a http method');
 
       it('should error if an operationId does not exist', async function () {
-        await petstoreSdk
+        await petstoreSDK
           .findPetz()
           .then(() => assert.fail())
           .catch(err => {
@@ -137,11 +152,11 @@ describe('api', function () {
       it('should work for method and path', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSdk.get('/pets')).to.equal('it worked!');
+        expect(await petstoreSDK.get('/pets')).to.equal('it worked!');
       });
 
       it('should error if method does not exist', async function () {
-        await petstoreSdk
+        await petstoreSDK
           .fetch('/pets')
           .then(() => assert.fail())
           .catch(err => {
@@ -164,7 +179,7 @@ describe('api', function () {
 
       fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, { body: response, status: 404 });
 
-      await petstoreSdk
+      await petstoreSDK
         .deletePet({ id: petId })
         .then(() => assert.fail())
         .catch(async err => {
@@ -183,7 +198,7 @@ describe('api', function () {
         },
       });
 
-      expect(await petstoreSdk.deletePet({ id: petId })).to.have.deep.property('user-agent', userAgent);
+      expect(await petstoreSDK.deletePet({ id: petId })).to.have.deep.property('user-agent', userAgent);
     });
 
     describe('operationId', function () {
@@ -195,14 +210,14 @@ describe('api', function () {
 
         fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, response);
 
-        expect(await petstoreSdk.deletePet({ id: petId })).to.deep.equal(response);
+        expect(await petstoreSDK.deletePet({ id: petId })).to.deep.equal(response);
       });
 
       it('should pass through body for operationId', async function () {
         const body = { name: 'Buster' };
         fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
-        expect(await petstoreSdk.addPet(body)).to.deep.equal(body);
+        expect(await petstoreSDK.addPet(body)).to.deep.equal(body);
       });
 
       it('should pass through parameters and body for operationId', async function () {
@@ -214,8 +229,8 @@ describe('api', function () {
 
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
-        readmeSdk.server('https://dash.readme.com/api/v1');
-        expect(await readmeSdk.updateChangelog(body, { slug })).to.deep.equal({
+        readmeSDK.server('https://dash.readme.com/api/v1');
+        expect(await readmeSDK.updateChangelog(body, { slug })).to.deep.equal({
           requestBody: body,
           uri: '/api/v1/changelogs/new-release',
         });
@@ -228,15 +243,15 @@ describe('api', function () {
 
         fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
-        expect(await petstoreSdk.post('/pets', body)).to.deep.equal(body);
+        expect(await petstoreSDK.post('/pets', body)).to.deep.equal(body);
       });
 
       it('should pass through parameters for method + path', async function () {
         const slug = 'new-release';
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.url('pathname'));
 
-        readmeSdk.server('https://dash.readme.com/api/v1');
-        expect(await readmeSdk.put('/changelogs/{slug}', { slug })).to.equal('/api/v1/changelogs/new-release');
+        readmeSDK.server('https://dash.readme.com/api/v1');
+        expect(await readmeSDK.put('/changelogs/{slug}', { slug })).to.equal('/api/v1/changelogs/new-release');
       });
 
       it('should pass through parameters and body for method + path', async function () {
@@ -248,8 +263,8 @@ describe('api', function () {
 
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
-        readmeSdk.server('https://dash.readme.com/api/v1');
-        expect(await readmeSdk.put('/changelogs/{slug}', body, { slug })).to.deep.equal({
+        readmeSDK.server('https://dash.readme.com/api/v1');
+        expect(await readmeSDK.put('/changelogs/{slug}', body, { slug })).to.deep.equal({
           uri: '/api/v1/changelogs/new-release',
           requestBody: body,
         });

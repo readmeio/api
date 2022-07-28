@@ -2,7 +2,7 @@
 /* eslint-disable mocha/no-setup-in-describe */
 import type { HarRequest, Request } from '@readme/httpsnippet';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 import type { MockMatcher, MockOptions } from 'fetch-mock';
 
 import 'isomorphic-fetch';
