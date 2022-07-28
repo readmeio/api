@@ -59,6 +59,7 @@
     "object-hash": "^3.0.0",
     "ora": "^5.4.1",
     "prompts": "^2.4.2",
+    "remove-undefined-objects": "^2.0.1",
     "ssri": "^9.0.0",
     "ts-morph": "^15.1.0",
     "validate-npm-package-name": "^4.0.0"

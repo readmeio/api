@@ -101,6 +101,23 @@ describe('#prepareParams', function () {
     });
   });
 
+  it('should ignore a supplied second parameter if its an empty object', async function () {
+    const spec = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    await spec.dereference();
+
+    const operation = spec.operation('/pet/findByStatus', 'get');
+
+    const metadata = {
+      status: ['available'],
+    };
+
+    expect(await prepareParams(operation, metadata, {})).to.deep.equal({
+      query: {
+        status: ['available'],
+      },
+    });
+  });
+
   describe('content types', function () {
     describe('application/x-www-form-urlencoded', function () {
       it('should support preparing formData payloads', async function () {

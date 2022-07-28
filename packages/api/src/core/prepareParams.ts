@@ -9,6 +9,7 @@ import stream from 'stream';
 import getStream from 'get-stream';
 import datauri from 'datauri/sync';
 import DatauriParser from 'datauri/parser';
+import removeUndefinedObjects from 'remove-undefined-objects';
 import caseless from 'caseless';
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 
@@ -143,6 +144,18 @@ export default async function prepareParams(operation: Operation, body?: unknown
   const digestedParameters = digestParameters(operation.getParameters());
   const hasDigestedParams = !!Object.keys(digestedParameters).length;
   const jsonSchema = operation.getParametersAsJsonSchema();
+
+  /**
+   * It might be common for somebody to run `sdk.findPetsByStatus({ status: 'available' }, {})`, in
+   * which case we want to filter out the second (metadata) parameter and treat the first parameter
+   * as the metadata instead. If we don't do this, their supplied `status` metadata will be treated
+   * as a body parameter, and because there's no `status` body parameter, and no supplied metadata
+   * (because it's an empty object), the request won't send a payload.
+   *
+   * @see {@link https://github.com/readmeio/api/issues/449}
+   */
+  // eslint-disable-next-line no-param-reassign
+  metadata = removeUndefinedObjects(metadata);
 
   if (!jsonSchema && (body !== undefined || metadata !== undefined)) {
     throw new Error(
