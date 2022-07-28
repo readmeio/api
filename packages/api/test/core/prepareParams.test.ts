@@ -107,12 +107,11 @@ describe('#prepareParams', function () {
 
     const operation = spec.operation('/pet/findByStatus', 'get');
 
-    const body = {
+    const metadata = {
       status: ['available'],
     };
-    const metadata = {};
 
-    expect(await prepareParams(operation, body, metadata)).to.deep.equal({
+    expect(await prepareParams(operation, metadata, {})).to.deep.equal({
       query: {
         status: ['available'],
       },
