@@ -15,6 +15,10 @@ const mock: SnippetMock = {
         name: 'x-foo',
         value: 'Bar',
       },
+      {
+        name: 'X-Bar',
+        value: 'foo',
+      },
     ],
     headersSize: 0,
     httpVersion: 'HTTP/1.1',
@@ -31,6 +35,7 @@ const mock: SnippetMock = {
       url: 'https://httpbin.org/anything',
       method: 'GET',
       headers: {
+        'x-bar': 'foo',
         'x-foo': 'Bar',
       },
     },

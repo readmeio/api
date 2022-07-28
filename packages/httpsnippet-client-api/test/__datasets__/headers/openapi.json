@@ -19,6 +19,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "header",
+            "name": "x-bar",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
