@@ -38,6 +38,7 @@
   "dependencies": {
     "@readme/oas-to-har": "^17.0.8",
     "@readme/openapi-parser": "^2.2.0",
+    "caseless": "^0.12.0",
     "chalk": "^4.1.2",
     "commander": "^9.2.0",
     "datauri": "^4.1.0",
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.4.1",
+    "@types/caseless": "^0.12.2",
     "@types/chai": "^4.3.1",
     "@types/find-cache-dir": "^3.2.1",
     "@types/js-yaml": "^4.0.5",
