@@ -1,5 +1,5 @@
 import type { Operation } from 'oas';
-import type { ParameterObject, SchemaObject } from 'oas/@types/rmoas.types';
+import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
 import type { ReadStream } from 'fs';
 
 import lodashMerge from 'lodash.merge';

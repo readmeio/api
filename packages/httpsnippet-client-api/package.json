@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "@readme/httpsnippet": "^4.0.3",
-    "oas": "^18.0.1"
+    "oas": "^18.3.4"
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.4.1",

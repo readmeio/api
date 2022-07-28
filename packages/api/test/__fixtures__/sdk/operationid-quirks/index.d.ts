@@ -63,7 +63,7 @@ declare class SDK {
    * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
-  quirkyOperationIdString<T = unknown>(): Promise<T>;
+  quirky_OperationId_string<T = unknown>(): Promise<T>;
 }
 declare const createSDK: SDK;
 export default createSDK;

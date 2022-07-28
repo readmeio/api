@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import 'isomorphic-fetch';
 import chai, { assert, expect } from 'chai';
