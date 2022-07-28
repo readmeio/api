@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/@types/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import chai, { expect } from 'chai';
 import fetchMock from 'fetch-mock';
