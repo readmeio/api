@@ -1,3 +1,18 @@
+## 5.0.0-beta.3 (2022-08-01)
+
+* chore: updating packageInfo ([9b43093](https://github.com/readmeio/api/commit/9b43093))
+* chore(deps-dev): bump @readme/eslint-config from 8.8.3 to 9.0.0 (#502) ([d084273](https://github.com/readmeio/api/commit/d084273)), closes [#502](https://github.com/readmeio/api/issues/502)
+* chore(deps-dev): bump eslint from 8.19.0 to 8.21.0 (#501) ([ab18053](https://github.com/readmeio/api/commit/ab18053)), closes [#501](https://github.com/readmeio/api/issues/501)
+* chore(deps): bump readmeio/rdme from 7.3.0 to 7.5.0 (#500) ([404fddf](https://github.com/readmeio/api/commit/404fddf)), closes [#500](https://github.com/readmeio/api/issues/500)
+* fix: bug where operationIDs with underscores were being modified (#497) ([6519b4f](https://github.com/readmeio/api/commit/6519b4f)), closes [#497](https://github.com/readmeio/api/issues/497)
+* fix: generated SDKs now ship an IFEE (#494) ([9d1247f](https://github.com/readmeio/api/commit/9d1247f)), closes [#494](https://github.com/readmeio/api/issues/494)
+* fix: removing undefined objects from incoming metadata parameters (#496) ([3183a8e](https://github.com/readmeio/api/commit/3183a8e)), closes [#496](https://github.com/readmeio/api/issues/496)
+* feat: adding support for case-insensitive header parameters (#495) ([895f8d5](https://github.com/readmeio/api/commit/895f8d5)), closes [#495](https://github.com/readmeio/api/issues/495)
+* docs: minor doc change to test something in production ([8aaef93](https://github.com/readmeio/api/commit/8aaef93))
+* docs: revert change ([b580517](https://github.com/readmeio/api/commit/b580517))
+
+
+
 ## 5.0.0-beta.2 (2022-07-19)
 
 * feat: add support for github blob URLs (#484) ([f8b20a8](https://github.com/readmeio/api/commit/f8b20a8)), closes [#484](https://github.com/readmeio/api/issues/484)
