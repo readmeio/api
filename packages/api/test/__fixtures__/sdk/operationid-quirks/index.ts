@@ -77,6 +77,11 @@ class SDK {
    */
   get<T = unknown>(path: '/quirky-operationId'): Promise<T>;
   /**
+   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
+   *
+   */
+  get<T = unknown>(path: '/hyphenated-operation-id'): Promise<T>;
+  /**
    * Access any GET endpoint on your API.
    *
    * @param path API path to make a request against.
@@ -92,6 +97,14 @@ class SDK {
    */
   quirky_OperationId_string<T = unknown>(): Promise<T> {
     return this.core.fetch('/quirky-operationId', 'get');
+  }
+
+  /**
+   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
+   *
+   */
+  hyphenatedOperationId<T = unknown>(): Promise<T> {
+    return this.core.fetch('/hyphenated-operation-id', 'get');
   }
 }
 

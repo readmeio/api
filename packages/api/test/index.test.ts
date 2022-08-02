@@ -122,8 +122,8 @@ describe('api', function () {
       it('should work with operationIds that contain hyphens', async function () {
         fetchMock.get('https://httpbin.org/anything/hyphenated-operation-id', mockResponses.real('it worked!'));
 
-        expect(await operationIDQuirksSDK['get-pet']()).to.equal('it worked!');
-        expect(await operationIDQuirksSDK.getPet()).to.equal('it worked!');
+        expect(await operationIDQuirksSDK['hyphenated-operation-id']()).to.equal('it worked!');
+        expect(await operationIDQuirksSDK.hyphenatedOperationId()).to.equal('it worked!');
       });
 
       it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {

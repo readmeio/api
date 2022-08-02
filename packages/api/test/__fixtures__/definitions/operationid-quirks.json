@@ -28,8 +28,8 @@
     },
     "/hyphenated-operation-id": {
       "get": {
-        "operationId": "get-pet",
-        "description": "This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow"
+        "operationId": "hyphenated-operation-id",
+        "description": "This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow."
       }
     }
   }
