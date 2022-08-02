@@ -12,6 +12,7 @@ import { responses as mockResponses } from './helpers/fetch-mock';
 
 let petstoreSDK;
 let readmeSDK;
+let operationIDQuirksSDK;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 describe('api', function () {
@@ -30,6 +31,10 @@ describe('api', function () {
     const readme = require.resolve('@readme/oas-examples/3.0/json/readme.json');
     await new Cache(readme).load();
     readmeSDK = api(readme);
+
+    const operationIDQuirks = require.resolve('./__fixtures__/definitions/operationid-quirks.json');
+    await new Cache(readme).load();
+    operationIDQuirksSDK = api(operationIDQuirks);
   });
 
   afterEach(function () {
@@ -73,8 +78,11 @@ describe('api', function () {
         'patch',
         'trace',
         'listDataSets',
+        'list-data-sets',
         'listSearchableFields',
+        'list-searchable-fields',
         'performSearch',
+        'perform-search',
       ]);
 
       // Calling the same method again should also work as expected.
@@ -104,20 +112,18 @@ describe('api', function () {
       it('should work with operationIds that have contain spaces', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets/1234`, mockResponses.real('it worked!'));
 
-        // Because we don't want people using ugly operationIDs like this we transform them into
-        // JS-friendly method accessors so this one won't be available but its `findPetById`
-        // counterpart will.
-        await petstoreSDK['find pet by id']()
-          .then(() => {
-            throw new Error('This operationID accessor should have thrown an exception.');
-          })
-          .catch(err => {
-            expect(err.message).to.equal(
-              'Sorry, `find pet by id` does not appear to be a valid operation on this API.'
-            );
-          });
+        expect(await petstoreSDK['find pet by id']({ id: 1234 })).to.equal('it worked!');
 
+        // Because we don't want people using ugly `operationID` accessors like the above we
+        // transform them into JS-friendly method accessors also.
         expect(await petstoreSDK.findPetById({ id: 1234 })).to.equal('it worked!');
+      });
+
+      it('should work with operationIds that contain hyphens', async function () {
+        fetchMock.get('https://httpbin.org/anything/hyphenated-operation-id', mockResponses.real('it worked!'));
+
+        expect(await operationIDQuirksSDK['get-pet']()).to.equal('it worked!');
+        expect(await operationIDQuirksSDK.getPet()).to.equal('it worked!');
       });
 
       it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {
