@@ -13,12 +13,12 @@ const mock: SnippetMock = {
       mimeType: 'application/json',
     },
     queryString: [],
-    url: 'http://dev.local/v2/endpoint',
+    url: 'http://dev.local/v2/global',
   },
   definition,
   fetch: {
     req: {
-      url: 'http://dev.local/v2/endpoint',
+      url: 'http://dev.local/v2/global',
       method: 'POST',
     },
     res: {
