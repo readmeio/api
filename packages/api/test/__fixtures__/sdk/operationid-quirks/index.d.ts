@@ -60,10 +60,20 @@ declare class SDK {
    */
   get<T = unknown>(path: '/quirky-operationId'): Promise<T>;
   /**
+   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
+   *
+   */
+  get<T = unknown>(path: '/hyphenated-operation-id'): Promise<T>;
+  /**
    * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
    *
    */
   quirky_OperationId_string<T = unknown>(): Promise<T>;
+  /**
+   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
+   *
+   */
+  hyphenatedOperationId<T = unknown>(): Promise<T>;
 }
 declare const createSDK: SDK;
 export default createSDK;

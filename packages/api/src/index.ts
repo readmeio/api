@@ -73,12 +73,28 @@ class Sdk {
           // cleans up any `operationId` that we might have into something that can be used as a
           // valid JS method.
           const operationId = next.getOperationId({ camelCase: true });
+          const originalOperationId = next.getOperationId();
 
-          return Object.assign(prev, {
+          const op = {
             [operationId]: ((operation: Operation, ...args: unknown[]) => {
               return core.fetchOperation(operation, ...args);
             }).bind(null, next),
-          });
+          };
+
+          if (operationId !== originalOperationId) {
+            // If we cleaned up their operation ID into a friendly method accessor (`findPetById`
+            // versus `find pet by id`) we should still let them use the non-friendly version if
+            // they want.
+            //
+            // This work is to maintain backwards compatibility with `api@4` and does not exist
+            // within our code generated SDKs -- those only allow the cleaner camelCase
+            // `operationId` to be used.
+            op[originalOperationId] = ((operation: Operation, ...args: unknown[]) => {
+              return core.fetchOperation(operation, ...args);
+            }).bind(null, next);
+          }
+
+          return Object.assign(prev, op);
         }, {});
     }
 

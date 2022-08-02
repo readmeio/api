@@ -25,6 +25,12 @@
       "get": {
         "description": "This operation has no `operationId` but because path starts with an HTTP method when we generate an `operationId` that has `get` doubled."
       }
+    },
+    "/hyphenated-operation-id": {
+      "get": {
+        "operationId": "hyphenated-operation-id",
+        "description": "This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow."
+      }
     }
   }
 }
