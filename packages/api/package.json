@@ -36,14 +36,14 @@
     "swagger"
   ],
   "dependencies": {
-    "@readme/oas-to-har": "^17.0.8",
+    "@readme/oas-to-har": "^17.1.2",
     "@readme/openapi-parser": "^2.2.0",
     "caseless": "^0.12.0",
     "chalk": "^4.1.2",
-    "commander": "^9.2.0",
+    "commander": "^9.4.0",
     "datauri": "^4.1.0",
     "execa": "^5.1.1",
-    "fetch-har": "^8.0.3",
+    "fetch-har": "^8.1.3",
     "figures": "^3.2.0",
     "find-cache-dir": "^3.3.1",
     "form-data-encoder": "^1.7.2",
@@ -65,7 +65,7 @@
     "validate-npm-package-name": "^4.0.0"
   },
   "devDependencies": {
-    "@readme/oas-examples": "^5.4.1",
+    "@readme/oas-examples": "^5.5.0",
     "@types/caseless": "^0.12.2",
     "@types/chai": "^4.3.1",
     "@types/find-cache-dir": "^3.2.1",
