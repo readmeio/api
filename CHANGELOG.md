@@ -1,3 +1,9 @@
+## <small>4.5.2 (2022-08-02)</small>
+
+* fix: backport v5 operationId accessor changes ([1b78b39](https://github.com/readmeio/api/commit/1b78b39))
+
+
+
 ## <small>4.5.1 (2022-05-18)</small>
 
 * fix: broken test ([723299e](https://github.com/readmeio/api/commit/723299e))
