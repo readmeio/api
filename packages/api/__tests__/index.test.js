@@ -14,6 +14,7 @@ const examplesDir = path.join(__dirname, 'examples');
 
 let petstoreSdk;
 let readmeSdk;
+let operationIdsSDK;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 beforeEach(async () => {
@@ -24,6 +25,10 @@ beforeEach(async () => {
     ),
     [`${[examplesDir]}/readme.json`]: await realFs.readFile(
       require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+      'utf8'
+    ),
+    [`${[examplesDir]}/operation-ids.json`]: await realFs.readFile(
+      require.resolve('./__fixtures__/operation-ids.oas.json'),
       'utf8'
     ),
     [`${[examplesDir]}/uspto.json`]: await realFs.readFile(
@@ -39,6 +44,10 @@ beforeEach(async () => {
   const readme = path.join(examplesDir, 'readme.json');
   await new Cache(readme).saveFile();
   readmeSdk = api(readme);
+
+  const operationIds = path.join(examplesDir, 'operation-ids.json');
+  await new Cache(readme).saveFile();
+  operationIdsSDK = api(operationIds);
 });
 
 afterEach(() => {
@@ -79,8 +88,11 @@ describe('#preloading', () => {
       'head',
       'patch',
       'trace',
+      'listDataSets',
       'list-data-sets',
+      'listSearchableFields',
       'list-searchable-fields',
+      'performSearch',
       'perform-search',
     ]);
 
@@ -113,8 +125,26 @@ describe('#accessors', () => {
       }).not.toThrow();
     });
 
-    it('should work with operationIds that have contain spaces', () => {
-      expect(typeof petstoreSdk['find pet by id']).toBe('function');
+    it('should work with operationIds that have contain spaces', async () => {
+      const mock = nock(petstoreServerUrl).get('/pets/1234').twice().reply(200, 'it worked!');
+
+      await expect(petstoreSdk['find pet by id']({ id: 1234 })).resolves.toBe('it worked!');
+
+      // Because we don't want people using ugly operationIDs like the above we transform them into
+      // JS-friendly method accessors also.
+      await expect(petstoreSdk.findPetById({ id: 1234 })).resolves.toBe('it worked!');
+      mock.done();
+    });
+
+    it('should work with operationIds that contain hyphens', async () => {
+      const mock = nock('https://httpbin.org').get('/anything').twice().reply(200, 'it worked!');
+
+      await expect(operationIdsSDK['get-pet']()).resolves.toBe('it worked!');
+
+      // Because we don't want people using ugly operationIDs like the above we transform them into
+      // JS-friendly method accessors also.
+      await expect(operationIdsSDK.getPet()).resolves.toBe('it worked!');
+      mock.done();
     });
 
     it('should work for other methods', () => {

@@ -20,16 +20,6 @@ class Sdk {
     this.cacheDir = opts.cacheDir ? opts.cacheDir : false;
   }
 
-  static getOperations(spec) {
-    return Object.keys(spec.api.paths)
-      .map(path => {
-        return Object.keys(spec.api.paths[path]).map(method => {
-          return spec.operation(path, method);
-        });
-      })
-      .reduce((prev, next) => prev.concat(next), []);
-  }
-
   load() {
     let authKeys = [];
     const cache = new Cache(this.uri, this.cacheDir);
@@ -70,30 +60,62 @@ class Sdk {
       });
     }
 
+    /**
+     * Create dynamic accessors for every HTTP method that the OpenAPI specification supports.
+     *
+     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7}
+     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7}
+     */
     function loadMethods(spec) {
       const supportedVerbs = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'];
 
       return supportedVerbs
-        .map(name => {
+        .map(httpVerb => {
           return {
-            [name]: ((method, path, ...args) => {
+            [httpVerb]: ((method, path, ...args) => {
               const operation = spec.operation(path, method);
               return fetchOperation(spec, operation, ...args);
-            }).bind(null, name),
+            }).bind(null, httpVerb),
           };
         })
         .reduce((prev, next) => Object.assign(prev, next));
     }
 
+    /**
+     * Create dynamic accessors for every operation with a defined operation ID. If an operation
+     * does not have an operation ID it can be accessed by its `.method('/path')` accessor instead.
+     *
+     * @param spec
+     */
     function loadOperations(spec) {
-      return Sdk.getOperations(spec)
-        .filter(operation => operation.schema.operationId)
+      return Object.entries(spec.getPaths())
+        .map(([, operations]) => Object.values(operations))
+        .reduce((prev, next) => prev.concat(next), [])
+        .filter(operation => operation.hasOperationId())
         .reduce((prev, next) => {
-          return Object.assign(prev, {
-            [next.schema.operationId]: ((operation, ...args) => {
+          // `getOperationId()` creates dynamic operation IDs when one isn't available but we need
+          // to know here if we actually have one present or not. The `camelCase` option here also
+          // cleans up any `operationId` that we might have into something that can be used as a
+          // valid JS method.
+          const operationId = next.getOperationId({ camelCase: true });
+          const originalOperationId = next.getOperationId();
+
+          const op = {
+            [operationId]: ((operation, ...args) => {
               return fetchOperation(spec, operation, ...args);
             }).bind(null, next),
-          });
+          };
+
+          if (operationId !== originalOperationId) {
+            // If we cleaned up their operation ID into a friendly method accessor (`findPetById`
+            // versus `find pet by id`) we should still let them use the non-friendly version if
+            // they want.
+            op[originalOperationId] = ((operation, ...args) => {
+              return fetchOperation(spec, operation, ...args);
+            }).bind(null, next);
+          }
+
+          return Object.assign(prev, op);
         }, {});
     }
 
