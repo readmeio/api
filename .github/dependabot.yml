@@ -39,6 +39,9 @@ updates:
       - dependency-name: form-data-encoder
         versions:
           - ">= 2"
+      - dependency-name: formdata-node
+        versions:
+          - ">= 5"
       - dependency-name: ora
         versions:
           - ">= 6"
