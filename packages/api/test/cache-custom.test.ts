@@ -1,11 +1,12 @@
-import { expect } from 'chai';
-import path from 'path';
 import fs from 'fs/promises';
-import api from '../src';
-import Cache from '../src/cache';
-import fetchMock from 'fetch-mock';
+import path from 'path';
 
 import uspto from '@readme/oas-examples/3.0/json/uspto.json';
+import { expect } from 'chai';
+import fetchMock from 'fetch-mock';
+
+import api from '../src';
+import Cache from '../src/cache';
 
 describe('cache (custom directory)', function () {
   let cacheDir;

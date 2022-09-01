@@ -2,25 +2,25 @@
 /* eslint-disable mocha/no-setup-in-describe */
 import type { HarRequest, Request } from '@readme/httpsnippet';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
-import type { OASDocument } from 'oas/dist/rmoas.types';
 import type { MockMatcher, MockOptions } from 'fetch-mock';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import 'isomorphic-fetch';
-import chai, { expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-import vm from 'vm';
-import rimraf from 'rimraf';
 import { readdirSync } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
-import fetchMock from 'fetch-mock';
-import openapiParser from '@readme/openapi-parser';
+import vm from 'vm';
 
 import { HTTPSnippet, addTargetClient } from '@readme/httpsnippet';
-import client from '../src';
-
 import readme from '@readme/oas-examples/3.0/json/readme.json';
+import openapiParser from '@readme/openapi-parser';
+import chai, { expect } from 'chai';
+import fetchMock from 'fetch-mock';
+import 'isomorphic-fetch';
+import rimraf from 'rimraf';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+
+import client from '../src';
 
 chai.use(sinonChai);
 

@@ -1,11 +1,10 @@
+import serverVariables from '@readme/oas-examples/3.0/json/server-variables.json';
 import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 
 import api from '../src';
 import Cache from '../src/cache';
-
-import serverVariables from '@readme/oas-examples/3.0/json/server-variables.json';
 
 let sdk;
 const petId = 123;

@@ -1,10 +1,11 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import 'isomorphic-fetch';
-import OpenAPIParser from '@readme/openapi-parser';
-import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
+
+import OpenAPIParser from '@readme/openapi-parser';
+import 'isomorphic-fetch';
+import yaml from 'js-yaml';
 
 export default class Fetcher {
   uri: string | OASDocument;

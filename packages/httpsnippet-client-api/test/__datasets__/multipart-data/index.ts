@@ -1,7 +1,9 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
 import type { SnippetMock } from '../../index.test';
-import definition from './openapi.json';
+import type { OASDocument } from 'oas/dist/rmoas.types';
+
 import { streamToString } from '../../helpers/fetch-mock';
+
+import definition from './openapi.json';
 
 /**
  * This test case is testing that when we have HAR `postData` of a file and the `value` is present

@@ -1,5 +1,6 @@
-import 'isomorphic-fetch';
 import { expect } from 'chai';
+import 'isomorphic-fetch';
+
 import parseResponse from '../../src/core/parseResponse';
 
 const responseBody = JSON.stringify({

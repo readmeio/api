@@ -1,10 +1,12 @@
-import chai, { assert, expect } from 'chai';
-import fetchMock from 'fetch-mock';
-import chaiPlugins from './helpers/chai-plugins';
 import fs from 'fs/promises';
-import Fetcher from '../src/fetcher';
 
 import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
+import chai, { assert, expect } from 'chai';
+import fetchMock from 'fetch-mock';
+
+import Fetcher from '../src/fetcher';
+
+import chaiPlugins from './helpers/chai-plugins';
 
 chai.use(chaiPlugins);
 

@@ -1,8 +1,9 @@
-import { assert, expect } from 'chai';
 import fs from 'fs';
-import Oas from 'oas';
-import prepareParams from '../../src/core/prepareParams';
 
+import { assert, expect } from 'chai';
+import Oas from 'oas';
+
+import prepareParams from '../../src/core/prepareParams';
 import payloadExamples from '../__fixtures__/definitions/payloads.json';
 
 describe('#prepareParams', function () {

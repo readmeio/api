@@ -1,5 +1,6 @@
-import type Oas from 'oas';
 import type Storage from '../storage';
+import type Oas from 'oas';
+
 import { PACKAGE_NAME, PACKAGE_VERSION } from '../../packageInfo';
 
 export interface InstallerOptions {

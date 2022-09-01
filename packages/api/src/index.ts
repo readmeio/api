@@ -1,12 +1,11 @@
+import type { ConfigOptions } from './core';
 import type { Operation } from 'oas';
 import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
-import type { ConfigOptions } from './core';
 
 import Oas from 'oas';
-import APICore from './core';
 
 import Cache from './cache';
-
+import APICore from './core';
 import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo';
 
 interface SDKOptions {

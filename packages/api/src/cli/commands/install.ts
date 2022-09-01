@@ -1,18 +1,16 @@
 import type { SupportedLanguages } from '../codegen';
 
 import { Command, Option } from 'commander';
-import ora from 'ora';
-import Oas from 'oas';
-
-import codegen from '../codegen';
-import Fetcher from '../../fetcher';
-import Storage from '../storage';
-import logger from '../logger';
-
-import promptTerminal from '../lib/prompt';
-
 import figures from 'figures';
+import Oas from 'oas';
+import ora from 'ora';
 import validateNPMPackageName from 'validate-npm-package-name';
+
+import Fetcher from '../../fetcher';
+import codegen from '../codegen';
+import promptTerminal from '../lib/prompt';
+import logger from '../logger';
+import Storage from '../storage';
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
 const cmd = new Command();

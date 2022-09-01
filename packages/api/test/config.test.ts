@@ -1,5 +1,6 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
+import petstore from '@readme/oas-examples/3.0/json/petstore.json';
 import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -8,7 +9,6 @@ import api from '../src';
 import Cache from '../src/cache';
 
 import { response, responses as mockResponses } from './helpers/fetch-mock';
-import petstore from '@readme/oas-examples/3.0/json/petstore.json';
 
 let sdk;
 const petId = 123;

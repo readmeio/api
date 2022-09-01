@@ -1,3 +1,6 @@
+import type Storage from '../../storage';
+import type { InstallerOptions } from '../language';
+import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/dist/rmoas.types';
@@ -10,19 +13,18 @@ import type {
   TypeParameterDeclarationStructure,
   VariableStatement,
 } from 'ts-morph';
-import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
-import type Storage from '../../storage';
-import type { InstallerOptions } from '../language';
 
 import fs from 'fs';
 import path from 'path';
-import CodeGeneratorLanguage from '../language';
-import logger from '../../logger';
-import objectHash from 'object-hash';
-import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
+
+import execa from 'execa';
 import { compile } from 'json-schema-to-typescript';
 import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
-import execa from 'execa';
+import objectHash from 'object-hash';
+import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
+
+import logger from '../../logger';
+import CodeGeneratorLanguage from '../language';
 
 export type TSGeneratorOptions = {
   outputJS?: boolean;

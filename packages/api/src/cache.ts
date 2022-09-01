@@ -1,17 +1,17 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import 'isomorphic-fetch';
-import OpenAPIParser from '@readme/openapi-parser';
 import crypto from 'crypto';
-import findCacheDir from 'find-cache-dir';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+
+import OpenAPIParser from '@readme/openapi-parser';
+import findCacheDir from 'find-cache-dir';
+import 'isomorphic-fetch';
 import makeDir from 'make-dir';
 
-import { PACKAGE_NAME } from './packageInfo';
-
 import Fetcher from './fetcher';
+import { PACKAGE_NAME } from './packageInfo';
 
 type CacheStore = Record<
   string,

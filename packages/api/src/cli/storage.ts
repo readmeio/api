@@ -1,13 +1,13 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import ssri from 'ssri';
 import fs from 'fs';
 import path from 'path';
-import makeDir from 'make-dir';
 
-import { PACKAGE_VERSION } from '../packageInfo';
+import makeDir from 'make-dir';
+import ssri from 'ssri';
 
 import Fetcher from '../fetcher';
+import { PACKAGE_VERSION } from '../packageInfo';
 
 export default class Storage {
   static dir: string;

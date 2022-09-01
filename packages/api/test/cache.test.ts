@@ -1,14 +1,16 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import chai, { assert, expect } from 'chai';
-import path from 'path';
-import uniqueTempDir from 'unique-temp-dir';
-import fetchMock from 'fetch-mock';
-import chaiPlugins from './helpers/chai-plugins';
 import fs from 'fs/promises';
-import Cache from '../src/cache';
+import path from 'path';
 
 import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
+import chai, { assert, expect } from 'chai';
+import fetchMock from 'fetch-mock';
+import uniqueTempDir from 'unique-temp-dir';
+
+import Cache from '../src/cache';
+
+import chaiPlugins from './helpers/chai-plugins';
 
 chai.use(chaiPlugins);
 

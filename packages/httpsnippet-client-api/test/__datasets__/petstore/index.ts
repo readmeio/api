@@ -1,5 +1,6 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
 import type { SnippetMock } from '../../index.test';
+import type { OASDocument } from 'oas/dist/rmoas.types';
+
 import definition from '@readme/oas-examples/3.0/json/petstore.json';
 
 const mock: SnippetMock = {

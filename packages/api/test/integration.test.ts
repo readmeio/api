@@ -1,18 +1,17 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
+import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
+import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 import chai, { expect } from 'chai';
+import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
-import datauri from 'datauri';
-import chaiPlugins from './helpers/chai-plugins';
 
 import api from '../src';
 import Cache from '../src/cache';
 
+import chaiPlugins from './helpers/chai-plugins';
 import { responses as mockResponse } from './helpers/fetch-mock';
-
-import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
-import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 
 chai.use(chaiPlugins);
 
