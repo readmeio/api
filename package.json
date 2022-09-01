@@ -29,7 +29,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
-    "@readme/eslint-config": "^9.0.0",
+    "@readme/eslint-config": "^10.1.0",
     "alex": "^10.0.0",
     "eslint": "^8.19.0",
     "hercule": "^5.1.3",
