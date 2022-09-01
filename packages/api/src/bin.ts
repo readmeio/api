@@ -1,6 +1,7 @@
 import { Command } from 'commander';
-import * as pkg from './packageInfo';
+
 import commands from './cli/commands';
+import * as pkg from './packageInfo';
 
 (async () => {
   const program = new Command();

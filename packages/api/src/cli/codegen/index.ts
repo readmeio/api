@@ -1,5 +1,5 @@
-import type Oas from 'oas';
 import type CodeGeneratorLanguage from './language';
+import type Oas from 'oas';
 
 import TSGenerator from './languages/typescript';
 

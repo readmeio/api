@@ -1,8 +1,8 @@
 import { assert, expect } from 'chai';
-import APICore from '../../src/core';
-import Oas from 'oas';
 import fetchMock from 'fetch-mock';
+import Oas from 'oas';
 
+import APICore from '../../src/core';
 import { responses as mockResponse } from '../helpers/fetch-mock';
 
 describe('APICore', function () {

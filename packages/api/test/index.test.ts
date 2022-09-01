@@ -1,12 +1,12 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import { assert, expect } from 'chai';
-import uniqueTempDir from 'unique-temp-dir';
 import fetchMock from 'fetch-mock';
+import uniqueTempDir from 'unique-temp-dir';
 
+import pkg from '../package.json';
 import api from '../src';
 import Cache from '../src/cache';
-import pkg from '../package.json';
 
 import { responses as mockResponses } from './helpers/fetch-mock';
 

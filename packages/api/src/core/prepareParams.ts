@@ -1,16 +1,18 @@
+import type { ReadStream } from 'fs';
 import type { Operation } from 'oas';
 import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
-import type { ReadStream } from 'fs';
 
-import lodashMerge from 'lodash.merge';
 import fs from 'fs/promises';
 import path from 'path';
 import stream from 'stream';
-import getStream from 'get-stream';
-import datauri from 'datauri/sync';
-import DatauriParser from 'datauri/parser';
-import removeUndefinedObjects from 'remove-undefined-objects';
+
 import caseless from 'caseless';
+import DatauriParser from 'datauri/parser';
+import datauri from 'datauri/sync';
+import getStream from 'get-stream';
+import lodashMerge from 'lodash.merge';
+import removeUndefinedObjects from 'remove-undefined-objects';
+
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 
 /**

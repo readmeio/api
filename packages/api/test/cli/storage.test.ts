@@ -1,17 +1,17 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import 'isomorphic-fetch';
-import chai, { assert, expect } from 'chai';
-import path from 'path';
-import uniqueTempDir from 'unique-temp-dir';
-import fetchMock from 'fetch-mock';
-import chaiPlugins from '../helpers/chai-plugins';
 import fs from 'fs/promises';
-import Storage from '../../src/cli/storage';
-
-import { PACKAGE_VERSION } from '../../src/packageInfo';
+import path from 'path';
 
 import petstoreSimple from '@readme/oas-examples/3.0/json/petstore-simple.json';
+import chai, { assert, expect } from 'chai';
+import fetchMock from 'fetch-mock';
+import 'isomorphic-fetch';
+import uniqueTempDir from 'unique-temp-dir';
+
+import Storage from '../../src/cli/storage';
+import { PACKAGE_VERSION } from '../../src/packageInfo';
+import chaiPlugins from '../helpers/chai-plugins';
 
 chai.use(chaiPlugins);
 

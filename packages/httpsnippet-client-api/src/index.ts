@@ -1,12 +1,12 @@
+import type { ReducedHelperObject } from '@readme/httpsnippet/dist/helpers/reducer';
+import type { Client } from '@readme/httpsnippet/dist/targets/targets';
 import type { Operation } from 'oas';
 import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
-import type { Client } from '@readme/httpsnippet/dist/targets/targets';
-import type { ReducedHelperObject } from '@readme/httpsnippet/dist/helpers/reducer';
 
-import stringifyObject from 'stringify-object';
 import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';
 import contentType from 'content-type';
 import Oas from 'oas';
+import stringifyObject from 'stringify-object';
 
 // This should really be an exported type in `oas`.
 type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';

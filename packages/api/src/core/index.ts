@@ -2,10 +2,10 @@ import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods } from 'oas/dist/rmoas.types';
 
-import 'isomorphic-fetch';
-import fetchHar from 'fetch-har';
 import oasToHar from '@readme/oas-to-har';
+import fetchHar from 'fetch-har';
 import { FormDataEncoder } from 'form-data-encoder';
+import 'isomorphic-fetch';
 
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 import parseResponse from './parseResponse';

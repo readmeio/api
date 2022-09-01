@@ -1,7 +1,8 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { transcludeFile } = require('hercule/promises');
 const fs = require('fs');
 const path = require('path');
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { transcludeFile } = require('hercule/promises');
 
 /**
  * all Markdown files located at within the `docs` directory

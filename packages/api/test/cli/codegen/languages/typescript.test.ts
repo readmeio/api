@@ -3,10 +3,11 @@ import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/t
 
 import chai, { expect } from 'chai';
 import fetchMock from 'fetch-mock';
+import mockRequire from 'mock-require';
+import Oas from 'oas';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import chaiPlugins from '../../../helpers/chai-plugins';
-import mockRequire from 'mock-require';
+import uniqueTempDir from 'unique-temp-dir';
 
 // Because `packageInfo` is generated at build time and we're using it in tests, everytime we build
 // a new release our tests will also need to get updated because we use `PACKAGE_VERSION` in user
@@ -18,11 +19,9 @@ mockRequire('../../../../src/packageInfo', {
   PACKAGE_VERSION: '5.0-unit-testing',
 });
 
-import uniqueTempDir from 'unique-temp-dir';
-import Oas from 'oas';
-import Storage from '../../../../src/cli/storage';
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
-
+import Storage from '../../../../src/cli/storage';
+import chaiPlugins from '../../../helpers/chai-plugins';
 import { responses as mockResponse } from '../../../helpers/fetch-mock';
 
 chai.use(chaiPlugins);

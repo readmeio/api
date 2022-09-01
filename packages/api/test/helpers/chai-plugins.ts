@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import chai from 'chai';
 import fs from 'fs';
 import path from 'path';
+
+import chai from 'chai';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

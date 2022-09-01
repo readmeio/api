@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import getJSONSchemaDefaults from '../../src/core/getJSONSchemaDefaults';
 import Oas from 'oas';
+
+import getJSONSchemaDefaults from '../../src/core/getJSONSchemaDefaults';
 
 describe('#getJSONSchemaDefaults()', function () {
   it('should get defaults off an operation', async function () {

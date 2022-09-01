@@ -1,10 +1,11 @@
 /* eslint-disable import/first */
+import os from 'os';
+
 import { expect } from 'chai';
 import mockRequire from 'mock-require';
 
 mockRequire('find-cache-dir', () => undefined);
 
-import os from 'os';
 import Cache from '../src/cache';
 
 describe('cache (temp dir handling)', function () {

@@ -1,4 +1,5 @@
 import type { SnippetMock } from '../../index.test';
+
 import definition from '@readme/oas-examples/3.0/json/server-variables.json';
 
 const mock: SnippetMock = {
