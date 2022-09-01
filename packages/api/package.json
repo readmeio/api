@@ -36,7 +36,7 @@
     "swagger"
   ],
   "dependencies": {
-    "@readme/oas-to-har": "^17.1.2",
+    "@readme/oas-to-har": "^18.0.0",
     "@readme/openapi-parser": "^2.2.0",
     "caseless": "^0.12.0",
     "chalk": "^4.1.2",

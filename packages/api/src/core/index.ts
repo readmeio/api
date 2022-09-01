@@ -88,9 +88,10 @@ export default class APICore {
         }
       }
 
+      // @ts-expect-error `this.auth` typing is off. FIXME
       const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
 
-      return fetchHar(har, {
+      return fetchHar(har as any, {
         userAgent: this.userAgent,
         files: data.files || {},
         multipartEncoder: FormDataEncoder,
