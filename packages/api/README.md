@@ -36,6 +36,10 @@ petstore.listPets().then(res => {
 });
 ```
 
+> 📘
+>
+> Please note that using `api` through `npx` is currently only available on the v5 beta that we're still working on. If you're using v4 or sooner the [dynamic usage documentation](https://api.readme.dev/docs/usage#dynamically) pertains to you.
+
 Or you can use it dynamically (though you won't have fancy TypeScript types):
 
 ```js
