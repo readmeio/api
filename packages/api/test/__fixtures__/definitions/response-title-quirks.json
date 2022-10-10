@@ -1,0 +1,77 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Testing an OAS that has response `title` props that start with a number",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/anything": {
+      "get": {
+        "operationId": "getAnything",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status values that need to be considered for filter",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["available", "pending", "sold"],
+                "default": "available"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "2XX": {
+            "description": "2XX",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "260 Created (token)": {
+                    "value": "{\n\t\"id\": \"e450ec69-dac2-4858-b4c9-6d3af44bb5f8\",\n\t\"user\": {\n\t\t\"id\": \"dd57ae92-bd88-4663-bb9f-5bfd6d75ff85\",\n\t\t\"type\": \"customer\",\n\t\t\"uniqueId\": \"john-smith\"\n\t},\n\t\"session\": {\n\t\t\"id\": \"1063547f-30a1-44c4-ae6f-1dfad5b64403\",\n\t\t\"externalRef\": \"external-session-ref\",\n\t\t\"isAuthenticated\": false\n\t},\n\t\"token\": \"eyJh...\"\n}"
+                  },
+                  "260 Created": {
+                    "value": "{\n\t\"id\": \"e450ec69-dac2-4858-b4c9-6d3af44bb5f8\",\n\t\"user\": {\n\t\t\"id\": \"dd57ae92-bd88-4663-bb9f-5bfd6d75ff85\",\n\t\t\"type\": \"customer\",\n\t\t\"uniqueId\": \"john-smith\"\n\t},\n\t\"session\": {\n\t\t\"id\": \"1063547f-30a1-44c4-ae6f-1dfad5b64403\",\n\t\t\"externalRef\": \"external-session-ref\",\n\t\t\"isAuthenticated\": false\n\t}\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "260 Created (token)",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "e450ec69-dac2-4858-b4c9-6d3af44bb5f8"
+                        }
+                      }
+                    },
+                    {
+                      "title": "260 Created",
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "e450ec69-dac2-4858-b4c9-6d3af44bb5f8"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

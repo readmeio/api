@@ -86,6 +86,11 @@ describe('typescript', function () {
       assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks')
     );
 
+    it(
+      'should handle `title` props that start with a number',
+      assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks')
+    );
+
     describe('javascript generation', function () {
       it(
         'should generate a CommonJS library',

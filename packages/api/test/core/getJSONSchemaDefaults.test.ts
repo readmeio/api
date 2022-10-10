@@ -9,7 +9,7 @@ describe('#getJSONSchemaDefaults()', function () {
     await oas.dereference();
 
     const operation = oas.operation('/{dataset}/{version}/records', 'post');
-    const defaults = getJSONSchemaDefaults(operation.getParametersAsJsonSchema());
+    const defaults = getJSONSchemaDefaults(operation.getParametersAsJSONSchema());
 
     expect(defaults).to.deep.equal({
       path: {
@@ -27,7 +27,7 @@ describe('#getJSONSchemaDefaults()', function () {
     await oas.dereference();
 
     const operation = oas.operation('/pet', 'post');
-    const defaults = getJSONSchemaDefaults(operation.getParametersAsJsonSchema());
+    const defaults = getJSONSchemaDefaults(operation.getParametersAsJSONSchema());
 
     expect(defaults).to.deep.equal({
       body: {
@@ -46,7 +46,7 @@ describe('#getJSONSchemaDefaults()', function () {
     await oas.dereference();
 
     const operation = oas.operation('/cookies', 'get');
-    const defaults = getJSONSchemaDefaults(operation.getParametersAsJsonSchema());
+    const defaults = getJSONSchemaDefaults(operation.getParametersAsJSONSchema());
 
     expect(defaults).to.deep.equal({});
   });

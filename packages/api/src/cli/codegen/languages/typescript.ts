@@ -44,6 +44,22 @@ function wordWrap(str: string, max = 88) {
   return str.replace(new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), '$1\n');
 }
 
+function schemaTransformer(schema: SchemaObject) {
+  if (schema.title) {
+    // If this schema starts with a number we should prefix it with something else as
+    // `json-schema-to-typescript` will generate an invalid TypeScript type or interface when
+    // this happens, resulting in a full codegen crash.
+    //
+    // https://github.com/readmeio/api/issues/499
+    if (/^\d/.test(schema.title)) {
+      // eslint-disable-next-line no-param-reassign
+      schema.title = `_${schema.title}`;
+    }
+  }
+
+  return schema;
+}
+
 export default class TSGenerator extends CodeGeneratorLanguage {
   project: Project;
 
@@ -508,7 +524,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     paramTypes?: OperationTypeHousing['types']['params'],
     responseTypes?: OperationTypeHousing['types']['responses']
   ) {
-    const docblock: OptionalKind<JSDocStructure> = { tags: [] };
+    const docblock: OptionalKind<JSDocStructure> = {};
     const summary = operation.getSummary();
     const description = operation.getDescription();
     if (summary || description) {
@@ -527,7 +543,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       };
 
       if (summary && description) {
-        docblock.tags.push({ tagName: 'summary', text: summary });
+        docblock.tags = [{ tagName: 'summary', text: summary }];
       }
     }
 
@@ -579,7 +595,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       name: operationId,
       typeParameters,
       returnType,
-      docs: docblock ? [docblock] : null,
+      docs: Object.keys(docblock).length ? [docblock] : null,
       statements: writer => {
         /**
          * @example return this.core.fetch('/pet/findByStatus', 'get', body, metadata);
@@ -626,7 +642,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           { ...parameters.metadata, hasQuestionToken: false },
         ],
         returnType,
-        docs: docblock ? [docblock] : null,
+        docs: Object.keys(docblock).length ? [docblock] : null,
       });
 
       // Create an overload that just has a single `metadata` parameter.
@@ -634,7 +650,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         typeParameters,
         parameters: [{ ...parameters.metadata }],
         returnType,
-        docs: docblock ? [docblock] : null,
+        docs: Object.keys(docblock).length ? [docblock] : null,
       });
 
       // Create an overload that has both `body` and `metadata` parameters as optional. Even though
@@ -666,7 +682,7 @@ sdk.server('https://eu.api.example.com/v14');`)
             { ...parameters.metadata, hasQuestionToken: false },
           ],
           returnType,
-          docs: docblock ? [docblock] : null,
+          docs: Object.keys(docblock).length ? [docblock] : null,
         });
 
         // Create an overload that just has a single `metadata` parameter.
@@ -674,14 +690,14 @@ sdk.server('https://eu.api.example.com/v14');`)
           typeParameters,
           parameters: [{ name: 'path', type: `'${operation.path}'` }, parameters.metadata],
           returnType,
-          docs: docblock ? [docblock] : null,
+          docs: Object.keys(docblock).length ? [docblock] : null,
         });
       } else {
         this.methodGenerics.get(operation.method).addOverload({
           typeParameters: responseTypes ? null : ['T = unknown'],
           parameters: [{ name: 'path', type: `'${operation.path}'` }, ...Object.values(parameters)],
           returnType,
-          docs: docblock ? [docblock] : null,
+          docs: Object.keys(docblock).length ? [docblock] : null,
         });
       }
     }
@@ -792,9 +808,10 @@ sdk.server('https://eu.api.example.com/v14');`)
    * @param operationId
    */
   prepareParameterTypesForOperation(operation: Operation, operationId: string) {
-    const schemas = operation.getParametersAsJsonSchema({
+    const schemas = operation.getParametersAsJSONSchema({
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
+      transformer: schemaTransformer,
     });
 
     if (!schemas || !schemas.length) {
@@ -842,7 +859,10 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     const schemas = responseStatusCodes
       .map(status => {
-        const schema = operation.getResponseAsJsonSchema(status);
+        const schema = operation.getResponseAsJSONSchema(status, {
+          transformer: schemaTransformer,
+        });
+
         if (!schema) {
           return false;
         }
