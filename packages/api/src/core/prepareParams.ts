@@ -145,7 +145,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   let metadataIntersected = false;
   const digestedParameters = digestParameters(operation.getParameters());
   const hasDigestedParams = !!Object.keys(digestedParameters).length;
-  const jsonSchema = operation.getParametersAsJsonSchema();
+  const jsonSchema = operation.getParametersAsJSONSchema();
 
   /**
    * It might be common for somebody to run `sdk.findPetsByStatus({ status: 'available' }, {})`, in
