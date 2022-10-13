@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 declare class SDK {
@@ -91,21 +92,41 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-declare type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
+declare const schemas: {
+  readonly updatePetWithForm: {
+    readonly formData: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly name: {
+          readonly description: 'Updated name of the pet';
+          readonly type: 'string';
+        };
+        readonly status: {
+          readonly description: 'Updated status of the pet';
+          readonly type: 'string';
+        };
+      };
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly petId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of pet that needs to be updated';
+            };
+          };
+          readonly required: readonly ['petId'];
+        }
+      ];
+    };
+  };
 };
+declare type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.updatePetWithForm.formData>;
+declare type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.updatePetWithForm.metadata>;

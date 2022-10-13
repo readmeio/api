@@ -61,7 +61,7 @@ describe('typescript', function () {
       const ts = new TSGenerator(oas, './openapi.json', 'petstore', { compilerTarget: 'cjs' });
       await ts.installer(storage, { logger, dryRun: true });
 
-      expect(logger).to.be.calledWith('npm install --save --dry-run api@beta oas');
+      expect(logger).to.be.calledWith('npm install --save --dry-run api@beta json-schema-to-ts oas');
       expect(logger).to.be.calledWith(`npm install --save --dry-run ${Storage.dir}/apis/petstore`);
     });
   });

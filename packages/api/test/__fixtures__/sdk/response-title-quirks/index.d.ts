@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 declare class SDK {
@@ -54,8 +55,8 @@ declare class SDK {
    * @param variables An object of variables to replace into the server URL.
    */
   server(url: string, variables?: {}): void;
-  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX>;
-  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX>;
+  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
+  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
 }
 declare const createSDK: SDK;
 export default createSDK;
@@ -66,19 +67,56 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-declare type GetAnythingMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
+declare const schemas: {
+  readonly getAnything: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly status: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'string';
+                readonly enum: readonly ['available', 'pending', 'sold'];
+                readonly default: 'available';
+              };
+              readonly $schema: 'https://json-schema.org/draft/2020-12/schema#';
+              readonly description: 'Status values that need to be considered for filter';
+            };
+          };
+          readonly required: readonly ['status'];
+        }
+      ];
+    };
+    readonly response: {
+      readonly '2XX': {
+        readonly oneOf: readonly [
+          {
+            readonly title: '260 Created (token)';
+            readonly type: 'object';
+            readonly properties: {
+              readonly id: {
+                readonly type: 'string';
+                readonly examples: readonly ['e450ec69-dac2-4858-b4c9-6d3af44bb5f8'];
+              };
+            };
+          },
+          {
+            readonly title: '260 Created';
+            readonly type: 'object';
+            readonly properties: {
+              readonly id: {
+                readonly type: 'string';
+                readonly examples: readonly ['e450ec69-dac2-4858-b4c9-6d3af44bb5f8'];
+              };
+            };
+          }
+        ];
+        readonly $schema: 'https://json-schema.org/draft/2020-12/schema#';
+      };
+    };
+  };
 };
-declare type GetAnything_Response_2XX = _260CreatedToken | _260Created;
-interface _260CreatedToken {
-  id?: string;
-  [k: string]: unknown;
-}
-interface _260Created {
-  id?: string;
-  [k: string]: unknown;
-}
+declare type GetAnythingMetadataParam = FromSchema<typeof schemas.getAnything.metadata>;
+declare type GetAnythingResponse2Xx = FromSchema<typeof schemas.getAnything.response['2XX']>;

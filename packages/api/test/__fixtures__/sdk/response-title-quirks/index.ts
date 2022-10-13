@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/response-title-quirks.json';
@@ -71,7 +72,7 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX>;
+  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -82,7 +83,7 @@ class SDK {
     return this.core.fetch(path, 'get', metadata);
   }
 
-  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX> {
+  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx> {
     return this.core.fetch('/anything', 'get', metadata);
   }
 }
@@ -99,19 +100,51 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-type GetAnythingMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
-};
-type GetAnything_Response_2XX = _260CreatedToken | _260Created;
-interface _260CreatedToken {
-  id?: string;
-  [k: string]: unknown;
-}
-interface _260Created {
-  id?: string;
-  [k: string]: unknown;
-}
+
+const schemas = {
+  getAnything: {
+    metadata: {
+      allOf: [
+        {
+          type: 'object',
+          properties: {
+            status: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: ['available', 'pending', 'sold'],
+                default: 'available',
+              },
+              $schema: 'https://json-schema.org/draft/2020-12/schema#',
+              description: 'Status values that need to be considered for filter',
+            },
+          },
+          required: ['status'],
+        },
+      ],
+    },
+    response: {
+      '2XX': {
+        oneOf: [
+          {
+            title: '260 Created (token)',
+            type: 'object',
+            properties: {
+              id: { type: 'string', examples: ['e450ec69-dac2-4858-b4c9-6d3af44bb5f8'] },
+            },
+          },
+          {
+            title: '260 Created',
+            type: 'object',
+            properties: {
+              id: { type: 'string', examples: ['e450ec69-dac2-4858-b4c9-6d3af44bb5f8'] },
+            },
+          },
+        ],
+        $schema: 'https://json-schema.org/draft/2020-12/schema#',
+      },
+    },
+  },
+} as const;
+type GetAnythingMetadataParam = FromSchema<typeof schemas.getAnything.metadata>;
+type GetAnythingResponse2Xx = FromSchema<typeof schemas.getAnything.response['2XX']>;

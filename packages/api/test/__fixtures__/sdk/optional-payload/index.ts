@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/optional-payload.json';
@@ -133,21 +134,36 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};
+
+const schemas = {
+  updatePetWithForm: {
+    formData: {
+      type: 'object',
+      properties: {
+        name: { description: 'Updated name of the pet', type: 'string' },
+        status: { description: 'Updated status of the pet', type: 'string' },
+      },
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    metadata: {
+      allOf: [
+        {
+          type: 'object',
+          properties: {
+            petId: {
+              type: 'integer',
+              format: 'int64',
+              minimum: -9223372036854776000,
+              maximum: 9223372036854776000,
+              $schema: 'http://json-schema.org/draft-04/schema#',
+              description: 'ID of pet that needs to be updated',
+            },
+          },
+          required: ['petId'],
+        },
+      ],
+    },
+  },
+} as const;
+type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.updatePetWithForm.formData>;
+type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.updatePetWithForm.metadata>;

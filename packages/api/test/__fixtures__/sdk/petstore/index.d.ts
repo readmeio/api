@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 declare class SDK {
@@ -102,12 +103,18 @@ declare class SDK {
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: '/user/createWithArray', body: CreateUsersWithArrayInputBodyParam): Promise<T>;
+  post<T = unknown>(
+    path: '/user/createWithArray',
+    body: CreateUsersWithArrayInputBodyParam
+  ): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: '/user/createWithList', body: CreateUsersWithListInputBodyParam): Promise<T>;
+  post<T = unknown>(
+    path: '/user/createWithList',
+    body: CreateUsersWithListInputBodyParam
+  ): Promise<T>;
   /**
    * Update an existing pet
    *
@@ -118,19 +125,29 @@ declare class SDK {
    *
    * @summary Updated user
    */
-  put<T = unknown>(path: '/user/{username}', body: User, metadata: UpdateUserMetadataParam): Promise<T>;
+  put<T = unknown>(
+    path: '/user/{username}',
+    body: User,
+    metadata: UpdateUserMetadataParam
+  ): Promise<T>;
   /**
    * Multiple status values can be provided with comma separated strings
    *
    * @summary Finds Pets by status
    */
-  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(
+    path: '/pet/findByStatus',
+    metadata: FindPetsByStatusMetadataParam
+  ): Promise<FindPetsByStatusResponse200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
    */
-  get(path: '/pet/findByTags', metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
+  get(
+    path: '/pet/findByTags',
+    metadata: FindPetsByTagsMetadataParam
+  ): Promise<FindPetsByTagsResponse200>;
   /**
    * Returns a single pet
    *
@@ -142,7 +159,7 @@ declare class SDK {
    *
    * @summary Returns pet inventories by status
    */
-  get(path: '/store/inventory'): Promise<GetInventory_Response_200>;
+  get(path: '/store/inventory'): Promise<GetInventoryResponse200>;
   /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
@@ -153,7 +170,7 @@ declare class SDK {
    * Logs user into the system
    *
    */
-  get(path: '/user/login', metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
+  get(path: '/user/login', metadata: LoginUserMetadataParam): Promise<LoginUserResponse200>;
   /**
    * Logs out current logged in user session
    *
@@ -174,7 +191,10 @@ declare class SDK {
    *
    * @summary Delete purchase order by ID
    */
-  delete<T = unknown>(path: '/store/order/{orderId}', metadata: DeleteOrderMetadataParam): Promise<T>;
+  delete<T = unknown>(
+    path: '/store/order/{orderId}',
+    metadata: DeleteOrderMetadataParam
+  ): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
@@ -196,13 +216,13 @@ declare class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatusResponse200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
    */
-  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
+  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTagsResponse200>;
   /**
    * Returns a single pet
    *
@@ -242,7 +262,7 @@ declare class SDK {
    *
    * @summary Returns pet inventories by status
    */
-  getInventory(): Promise<GetInventory_Response_200>;
+  getInventory(): Promise<GetInventoryResponse200>;
   /**
    * Place an order for a pet
    *
@@ -280,7 +300,7 @@ declare class SDK {
    * Logs user into the system
    *
    */
-  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
+  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUserResponse200>;
   /**
    * Logs out current logged in user session
    *
@@ -313,182 +333,734 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
-interface Pet {
-  id?: number;
-  category?: Category;
-  name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /**
-   * pet status in the store
-   *
-   * `available` `pending` `sold`
-   */
-  status?: 'available' | 'pending' | 'sold';
-  [k: string]: unknown;
-}
-interface Category {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-interface Tag {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-declare type FindPetsByStatusMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
+declare const schemas: {
+  readonly $ref: {
+    readonly Pet: {
+      readonly type: 'object';
+      readonly required: readonly ['name', 'photoUrls'];
+      readonly properties: {
+        readonly id: {
+          readonly type: 'integer';
+          readonly format: 'int64';
+          readonly readOnly: true;
+          readonly default: 40;
+          readonly examples: readonly [25];
+          readonly minimum: -9223372036854776000;
+          readonly maximum: 9223372036854776000;
+        };
+        readonly category: {
+          readonly type: 'object';
+          readonly properties: {
+            readonly id: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+            };
+            readonly name: {
+              readonly type: 'string';
+            };
+          };
+          readonly title: 'Category';
+          readonly 'x-readme-ref-name': 'Category';
+        };
+        readonly name: {
+          readonly type: 'string';
+          readonly examples: readonly ['doggie'];
+        };
+        readonly photoUrls: {
+          readonly type: 'array';
+          readonly items: {
+            readonly type: 'string';
+            readonly examples: readonly ['https://example.com/photo.png'];
+          };
+        };
+        readonly tags: {
+          readonly type: 'array';
+          readonly items: {
+            readonly type: 'object';
+            readonly properties: {
+              readonly id: {
+                readonly type: 'integer';
+                readonly format: 'int64';
+                readonly minimum: -9223372036854776000;
+                readonly maximum: 9223372036854776000;
+              };
+              readonly name: {
+                readonly type: 'string';
+              };
+            };
+            readonly title: 'Tag';
+            readonly 'x-readme-ref-name': 'Tag';
+          };
+        };
+        readonly status: {
+          readonly type: 'string';
+          readonly description: 'pet status in the store';
+          readonly enum: readonly ['available', 'pending', 'sold'];
+        };
+      };
+      readonly title: 'Pet';
+      readonly 'x-readme-ref-name': 'Pet';
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly ApiResponse: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly code: {
+          readonly type: 'integer';
+          readonly format: 'int32';
+          readonly minimum: -2147483648;
+          readonly maximum: 2147483647;
+        };
+        readonly type: {
+          readonly type: 'string';
+        };
+        readonly message: {
+          readonly type: 'string';
+        };
+      };
+      readonly title: 'ApiResponse';
+      readonly 'x-readme-ref-name': 'ApiResponse';
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly Order: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly id: {
+          readonly type: 'integer';
+          readonly format: 'int64';
+          readonly minimum: -9223372036854776000;
+          readonly maximum: 9223372036854776000;
+        };
+        readonly petId: {
+          readonly type: 'integer';
+          readonly format: 'int64';
+          readonly minimum: -9223372036854776000;
+          readonly maximum: 9223372036854776000;
+        };
+        readonly quantity: {
+          readonly type: 'integer';
+          readonly format: 'int32';
+          readonly minimum: -2147483648;
+          readonly maximum: 2147483647;
+        };
+        readonly shipDate: {
+          readonly type: 'string';
+          readonly format: 'date-time';
+        };
+        readonly status: {
+          readonly type: 'string';
+          readonly description: 'Order Status';
+          readonly enum: readonly ['placed', 'approved', 'delivered'];
+        };
+        readonly complete: {
+          readonly type: 'boolean';
+          readonly default: false;
+        };
+      };
+      readonly title: 'Order';
+      readonly 'x-readme-ref-name': 'Order';
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly User: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly id: {
+          readonly type: 'integer';
+          readonly format: 'int64';
+          readonly minimum: -9223372036854776000;
+          readonly maximum: 9223372036854776000;
+        };
+        readonly username: {
+          readonly type: 'string';
+        };
+        readonly firstName: {
+          readonly type: 'string';
+        };
+        readonly lastName: {
+          readonly type: 'string';
+        };
+        readonly email: {
+          readonly type: 'string';
+        };
+        readonly password: {
+          readonly type: 'string';
+        };
+        readonly phone: {
+          readonly type: 'string';
+        };
+        readonly userStatus: {
+          readonly type: 'integer';
+          readonly format: 'int32';
+          readonly description: 'User Status';
+          readonly minimum: -2147483648;
+          readonly maximum: 2147483647;
+        };
+      };
+      readonly title: 'User';
+      readonly 'x-readme-ref-name': 'User';
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+  };
+  readonly findPetsByStatus: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly status: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'string';
+                readonly enum: readonly ['available', 'pending', 'sold'];
+                readonly default: 'available';
+              };
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'Status values that need to be considered for filter';
+            };
+          };
+          readonly required: readonly ['status'];
+        }
+      ];
+    };
+    readonly response: {
+      readonly '200': {
+        readonly type: 'array';
+        readonly items: {
+          readonly type: 'object';
+          readonly required: readonly ['name', 'photoUrls'];
+          readonly properties: {
+            readonly id: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly readOnly: true;
+              readonly default: 40;
+              readonly examples: readonly [25];
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+            };
+            readonly category: {
+              readonly type: 'object';
+              readonly properties: {
+                readonly id: {
+                  readonly type: 'integer';
+                  readonly format: 'int64';
+                  readonly minimum: -9223372036854776000;
+                  readonly maximum: 9223372036854776000;
+                };
+                readonly name: {
+                  readonly type: 'string';
+                };
+              };
+              readonly title: 'Category';
+              readonly 'x-readme-ref-name': 'Category';
+            };
+            readonly name: {
+              readonly type: 'string';
+              readonly examples: readonly ['doggie'];
+            };
+            readonly photoUrls: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'string';
+                readonly examples: readonly ['https://example.com/photo.png'];
+              };
+            };
+            readonly tags: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'object';
+                readonly properties: {
+                  readonly id: {
+                    readonly type: 'integer';
+                    readonly format: 'int64';
+                    readonly minimum: -9223372036854776000;
+                    readonly maximum: 9223372036854776000;
+                  };
+                  readonly name: {
+                    readonly type: 'string';
+                  };
+                };
+                readonly title: 'Tag';
+                readonly 'x-readme-ref-name': 'Tag';
+              };
+            };
+            readonly status: {
+              readonly type: 'string';
+              readonly description: 'pet status in the store\n\n`available` `pending` `sold`';
+              readonly enum: readonly ['available', 'pending', 'sold'];
+            };
+          };
+          readonly title: 'Pet';
+          readonly 'x-readme-ref-name': 'Pet';
+        };
+        readonly $schema: 'http://json-schema.org/draft-04/schema#';
+      };
+    };
+  };
+  readonly findPetsByTags: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly tags: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'string';
+              };
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'Tags to filter by';
+            };
+          };
+          readonly required: readonly ['tags'];
+        }
+      ];
+    };
+    readonly response: {
+      readonly '200': {
+        readonly type: 'array';
+        readonly items: {
+          readonly type: 'object';
+          readonly required: readonly ['name', 'photoUrls'];
+          readonly properties: {
+            readonly id: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly readOnly: true;
+              readonly default: 40;
+              readonly examples: readonly [25];
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+            };
+            readonly category: {
+              readonly type: 'object';
+              readonly properties: {
+                readonly id: {
+                  readonly type: 'integer';
+                  readonly format: 'int64';
+                  readonly minimum: -9223372036854776000;
+                  readonly maximum: 9223372036854776000;
+                };
+                readonly name: {
+                  readonly type: 'string';
+                };
+              };
+              readonly title: 'Category';
+              readonly 'x-readme-ref-name': 'Category';
+            };
+            readonly name: {
+              readonly type: 'string';
+              readonly examples: readonly ['doggie'];
+            };
+            readonly photoUrls: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'string';
+                readonly examples: readonly ['https://example.com/photo.png'];
+              };
+            };
+            readonly tags: {
+              readonly type: 'array';
+              readonly items: {
+                readonly type: 'object';
+                readonly properties: {
+                  readonly id: {
+                    readonly type: 'integer';
+                    readonly format: 'int64';
+                    readonly minimum: -9223372036854776000;
+                    readonly maximum: 9223372036854776000;
+                  };
+                  readonly name: {
+                    readonly type: 'string';
+                  };
+                };
+                readonly title: 'Tag';
+                readonly 'x-readme-ref-name': 'Tag';
+              };
+            };
+            readonly status: {
+              readonly type: 'string';
+              readonly description: 'pet status in the store\n\n`available` `pending` `sold`';
+              readonly enum: readonly ['available', 'pending', 'sold'];
+            };
+          };
+          readonly title: 'Pet';
+          readonly 'x-readme-ref-name': 'Pet';
+        };
+        readonly $schema: 'http://json-schema.org/draft-04/schema#';
+      };
+    };
+  };
+  readonly getPetById: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly petId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of pet to return';
+            };
+          };
+          readonly required: readonly ['petId'];
+        }
+      ];
+    };
+  };
+  readonly updatePetWithForm: {
+    readonly formData: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly name: {
+          readonly description: 'Updated name of the pet';
+          readonly type: 'string';
+        };
+        readonly status: {
+          readonly description: 'Updated status of the pet';
+          readonly type: 'string';
+        };
+      };
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly petId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of pet that needs to be updated';
+            };
+          };
+          readonly required: readonly ['petId'];
+        }
+      ];
+    };
+  };
+  readonly deletePet: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly petId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'Pet id to delete';
+            };
+          };
+          readonly required: readonly ['petId'];
+        },
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly api_key: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+            };
+          };
+          readonly required: readonly [];
+        }
+      ];
+    };
+  };
+  readonly uploadFile: {
+    readonly body: {
+      readonly type: 'object';
+      readonly properties: {
+        readonly additionalMetadata: {
+          readonly description: 'Additional data to pass to server';
+          readonly type: 'string';
+        };
+        readonly file: {
+          readonly description: 'file to upload';
+          readonly type: 'string';
+          readonly format: 'binary';
+        };
+      };
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly petId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: -9223372036854776000;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of pet to update';
+            };
+          };
+          readonly required: readonly ['petId'];
+        }
+      ];
+    };
+  };
+  readonly getInventory: {
+    readonly response: {
+      readonly '200': {
+        readonly type: 'object';
+        readonly additionalProperties: {
+          readonly type: 'integer';
+          readonly format: 'int32';
+          readonly minimum: -2147483648;
+          readonly maximum: 2147483647;
+        };
+        readonly $schema: 'http://json-schema.org/draft-04/schema#';
+      };
+    };
+  };
+  readonly getOrderById: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly orderId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: 1;
+              readonly maximum: 10;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of pet that needs to be fetched';
+            };
+          };
+          readonly required: readonly ['orderId'];
+        }
+      ];
+    };
+  };
+  readonly deleteOrder: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly orderId: {
+              readonly type: 'integer';
+              readonly format: 'int64';
+              readonly minimum: 1;
+              readonly maximum: 9223372036854776000;
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'ID of the order that needs to be deleted';
+            };
+          };
+          readonly required: readonly ['orderId'];
+        }
+      ];
+    };
+  };
+  readonly createUsersWithArrayInput: {
+    readonly body: {
+      readonly type: 'array';
+      readonly items: {
+        readonly type: 'object';
+        readonly properties: {
+          readonly id: {
+            readonly type: 'integer';
+            readonly format: 'int64';
+            readonly minimum: -9223372036854776000;
+            readonly maximum: 9223372036854776000;
+          };
+          readonly username: {
+            readonly type: 'string';
+          };
+          readonly firstName: {
+            readonly type: 'string';
+          };
+          readonly lastName: {
+            readonly type: 'string';
+          };
+          readonly email: {
+            readonly type: 'string';
+          };
+          readonly password: {
+            readonly type: 'string';
+          };
+          readonly phone: {
+            readonly type: 'string';
+          };
+          readonly userStatus: {
+            readonly type: 'integer';
+            readonly format: 'int32';
+            readonly description: 'User Status';
+            readonly minimum: -2147483648;
+            readonly maximum: 2147483647;
+          };
+        };
+        readonly title: 'User';
+        readonly 'x-readme-ref-name': 'User';
+      };
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+  };
+  readonly createUsersWithListInput: {
+    readonly body: {
+      readonly type: 'array';
+      readonly items: {
+        readonly type: 'object';
+        readonly properties: {
+          readonly id: {
+            readonly type: 'integer';
+            readonly format: 'int64';
+            readonly minimum: -9223372036854776000;
+            readonly maximum: 9223372036854776000;
+          };
+          readonly username: {
+            readonly type: 'string';
+          };
+          readonly firstName: {
+            readonly type: 'string';
+          };
+          readonly lastName: {
+            readonly type: 'string';
+          };
+          readonly email: {
+            readonly type: 'string';
+          };
+          readonly password: {
+            readonly type: 'string';
+          };
+          readonly phone: {
+            readonly type: 'string';
+          };
+          readonly userStatus: {
+            readonly type: 'integer';
+            readonly format: 'int32';
+            readonly description: 'User Status';
+            readonly minimum: -2147483648;
+            readonly maximum: 2147483647;
+          };
+        };
+        readonly title: 'User';
+        readonly 'x-readme-ref-name': 'User';
+      };
+      readonly $schema: 'http://json-schema.org/draft-04/schema#';
+    };
+  };
+  readonly loginUser: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly username: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'The user name for login';
+            };
+            readonly password: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'The password for login in clear text';
+            };
+          };
+          readonly required: readonly ['username', 'password'];
+        }
+      ];
+    };
+    readonly response: {
+      readonly '200': {
+        readonly type: 'string';
+        readonly $schema: 'http://json-schema.org/draft-04/schema#';
+      };
+    };
+  };
+  readonly getUserByName: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly username: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'The name that needs to be fetched. Use user1 for testing. ';
+            };
+          };
+          readonly required: readonly ['username'];
+        }
+      ];
+    };
+  };
+  readonly updateUser: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly username: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'name that need to be updated';
+            };
+          };
+          readonly required: readonly ['username'];
+        }
+      ];
+    };
+  };
+  readonly deleteUser: {
+    readonly metadata: {
+      readonly allOf: readonly [
+        {
+          readonly type: 'object';
+          readonly properties: {
+            readonly username: {
+              readonly type: 'string';
+              readonly $schema: 'http://json-schema.org/draft-04/schema#';
+              readonly description: 'The name that needs to be deleted';
+            };
+          };
+          readonly required: readonly ['username'];
+        }
+      ];
+    };
+  };
 };
-declare type FindPetsByStatus_Response_200 = Pet[];
-declare type FindPetsByTagsMetadataParam = {
-  /**
-   * Tags to filter by
-   */
-  tags: string[];
-  [k: string]: unknown;
-};
-declare type FindPetsByTags_Response_200 = Pet[];
-declare type GetPetByIdMetadataParam = {
-  /**
-   * ID of pet to return
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-declare type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-declare type DeletePetMetadataParam = {
-  /**
-   * Pet id to delete
-   */
-  petId: number;
-  [k: string]: unknown;
-} & {
-  api_key?: string;
-  [k: string]: unknown;
-};
-interface UploadFileBodyParam {
-  /**
-   * Additional data to pass to server
-   */
-  additionalMetadata?: string;
-  /**
-   * file to upload
-   */
-  file?: string;
-  [k: string]: unknown;
-}
-declare type UploadFileMetadataParam = {
-  /**
-   * ID of pet to update
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-interface ApiResponse {
-  code?: number;
-  type?: string;
-  message?: string;
-  [k: string]: unknown;
-}
-interface GetInventory_Response_200 {
-  [k: string]: number;
-}
-interface Order {
-  id?: number;
-  petId?: number;
-  quantity?: number;
-  shipDate?: string;
-  /**
-   * Order Status
-   *
-   * `placed` `approved` `delivered`
-   */
-  status?: 'placed' | 'approved' | 'delivered';
-  complete?: boolean;
-  [k: string]: unknown;
-}
-declare type GetOrderByIdMetadataParam = {
-  /**
-   * ID of pet that needs to be fetched
-   */
-  orderId: number;
-  [k: string]: unknown;
-};
-declare type DeleteOrderMetadataParam = {
-  /**
-   * ID of the order that needs to be deleted
-   */
-  orderId: number;
-  [k: string]: unknown;
-};
-interface User {
-  id?: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
-  /**
-   * User Status
-   */
-  userStatus?: number;
-  [k: string]: unknown;
-}
-declare type CreateUsersWithArrayInputBodyParam = User[];
-declare type CreateUsersWithListInputBodyParam = User[];
-declare type LoginUserMetadataParam = {
-  /**
-   * The user name for login
-   */
-  username: string;
-  /**
-   * The password for login in clear text
-   */
-  password: string;
-  [k: string]: unknown;
-};
-declare type LoginUser_Response_200 = string;
-declare type GetUserByNameMetadataParam = {
-  /**
-   * The name that needs to be fetched. Use user1 for testing.
-   */
-  username: string;
-  [k: string]: unknown;
-};
-declare type UpdateUserMetadataParam = {
-  /**
-   * name that need to be updated
-   */
-  username: string;
-  [k: string]: unknown;
-};
-declare type DeleteUserMetadataParam = {
-  /**
-   * The name that needs to be deleted
-   */
-  username: string;
-  [k: string]: unknown;
-};
+declare type Pet = FromSchema<typeof schemas.$ref.Pet>;
+declare type FindPetsByStatusMetadataParam = FromSchema<typeof schemas.findPetsByStatus.metadata>;
+declare type FindPetsByStatusResponse200 = FromSchema<
+  typeof schemas.findPetsByStatus.response['200']
+>;
+declare type FindPetsByTagsMetadataParam = FromSchema<typeof schemas.findPetsByTags.metadata>;
+declare type FindPetsByTagsResponse200 = FromSchema<typeof schemas.findPetsByTags.response['200']>;
+declare type GetPetByIdMetadataParam = FromSchema<typeof schemas.getPetById.metadata>;
+declare type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.updatePetWithForm.formData>;
+declare type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.updatePetWithForm.metadata>;
+declare type DeletePetMetadataParam = FromSchema<typeof schemas.deletePet.metadata>;
+declare type UploadFileBodyParam = FromSchema<typeof schemas.uploadFile.body>;
+declare type UploadFileMetadataParam = FromSchema<typeof schemas.uploadFile.metadata>;
+declare type ApiResponse = FromSchema<typeof schemas.$ref.ApiResponse>;
+declare type GetInventoryResponse200 = FromSchema<typeof schemas.getInventory.response['200']>;
+declare type Order = FromSchema<typeof schemas.$ref.Order>;
+declare type GetOrderByIdMetadataParam = FromSchema<typeof schemas.getOrderById.metadata>;
+declare type DeleteOrderMetadataParam = FromSchema<typeof schemas.deleteOrder.metadata>;
+declare type User = FromSchema<typeof schemas.$ref.User>;
+declare type CreateUsersWithArrayInputBodyParam = FromSchema<
+  typeof schemas.createUsersWithArrayInput.body
+>;
+declare type CreateUsersWithListInputBodyParam = FromSchema<
+  typeof schemas.createUsersWithListInput.body
+>;
+declare type LoginUserMetadataParam = FromSchema<typeof schemas.loginUser.metadata>;
+declare type LoginUserResponse200 = FromSchema<typeof schemas.loginUser.response['200']>;
+declare type GetUserByNameMetadataParam = FromSchema<typeof schemas.getUserByName.metadata>;
+declare type UpdateUserMetadataParam = FromSchema<typeof schemas.updateUser.metadata>;
+declare type DeleteUserMetadataParam = FromSchema<typeof schemas.deleteUser.metadata>;

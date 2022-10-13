@@ -1,9 +1,8 @@
 import type Storage from '../../storage';
 import type { InstallerOptions } from '../language';
-import type { Options as JSONSchemaToTypescriptOptions } from 'json-schema-to-typescript';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods, JSONSchema, SchemaObject } from 'oas/dist/rmoas.types';
+import type { HttpMethods } from 'oas/dist/rmoas.types';
 import type {
   ClassDeclaration,
   JSDocStructure,
@@ -18,9 +17,10 @@ import fs from 'fs';
 import path from 'path';
 
 import execa from 'execa';
-import { compile } from 'json-schema-to-typescript';
-import { format as prettier } from 'json-schema-to-typescript/dist/src/formatter';
-import objectHash from 'object-hash';
+import camelCase from 'lodash.camelcase';
+import setWith from 'lodash.setwith';
+import startCase from 'lodash.startcase';
+import { format as prettier } from 'prettier';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import logger from '../../logger';
@@ -44,20 +44,8 @@ function wordWrap(str: string, max = 88) {
   return str.replace(new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), '$1\n');
 }
 
-function schemaTransformer(schema: SchemaObject) {
-  if (schema.title) {
-    // If this schema starts with a number we should prefix it with something else as
-    // `json-schema-to-typescript` will generate an invalid TypeScript type or interface when
-    // this happens, resulting in a full codegen crash.
-    //
-    // https://github.com/readmeio/api/issues/499
-    if (/^\d/.test(schema.title)) {
-      // eslint-disable-next-line no-param-reassign
-      schema.title = `_${schema.title}`;
-    }
-  }
-
-  return schema;
+function pascalCase(str: string) {
+  return startCase(camelCase(str)).replace(/ /g, '');
 }
 
 export default class TSGenerator extends CodeGeneratorLanguage {
@@ -77,12 +65,18 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   sdkExport: VariableStatement;
 
-  schemas: Map<
+  schemas: Record<
     string,
     {
-      schema: SchemaObject;
-      name: string;
-      tsType?: string;
+      $ref?: Record<string, any>;
+      [k: string]: Record<
+        string,
+        {
+          body?: any;
+          metadata?: any;
+          response?: Record<string, any>;
+        }
+      >;
     }
   >;
 
@@ -104,6 +98,10 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       'api@beta': {
         reason: "Required for the `api/dist/core` library that the codegen'd SDK uses for making requests.",
         url: 'https://npm.im/api',
+      },
+      'json-schema-to-ts': {
+        reason: 'Required for TypeScript type handling.',
+        url: 'https://npm.im/json-schema-to-ts',
       },
       oas: {
         reason: 'Used within `api/dist/core` and is also loaded for TypeScript types.',
@@ -137,17 +135,15 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     this.types = new Map();
     this.methodGenerics = new Map();
-    this.schemas = new Map();
+    this.schemas = {};
   }
 
   static formatter(content: string) {
     return prettier(content, {
-      format: true,
-      style: {
-        printWidth: 120,
-        singleQuote: true,
-      },
-    } as JSONSchemaToTypescriptOptions);
+      parser: 'typescript',
+      printWidth: 100,
+      singleQuote: true,
+    });
   }
 
   async installer(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
@@ -189,11 +185,13 @@ export default class TSGenerator extends CodeGeneratorLanguage {
    *
    */
   async generator() {
-    const { operations, methods } = await this.loadOperationsAndMethods();
+    const { operations, methods } = this.loadOperationsAndMethods();
 
     const sdkSource = this.project.createSourceFile('index.ts', '');
 
     sdkSource.addImportDeclarations([
+      // @fixme don't export this if there are no schemas
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
       { defaultImport: 'APICore', moduleSpecifier: 'api/dist/core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
@@ -383,9 +381,26 @@ sdk.server('https://eu.api.example.com/v14');`)
       this.createOperationAccessor(data.operation, operationId, data.types.params, data.types.responses);
     });
 
+    /**
+     * @todo These schemas we're exporting are dereferenced which is adding a lot of bloat. Fix this!
+     * @fixme don't export schemas if there are none
+     */
+    sdkSource.addVariableStatement({
+      declarationKind: VariableDeclarationKind.Const,
+      declarations: [
+        {
+          name: 'schemas',
+          initializer: writer => {
+            writer.writeLine(`${JSON.stringify(this.schemas)} as const`);
+            return writer;
+          },
+        },
+      ],
+    });
+
     // @todo should all of these isolated into their own file outside of the main sdk class file?
     // Add all known types that we're using into the SDK.
-    Array.from(this.types.values()).forEach(exp => {
+    Array.from(this.types.entries()).forEach(([typeName, exp]) => {
       /**
        * When `ts-morph` compiles declaration files when we're targeting CJS environments it creates
        * the default export as `export = _default` instead of `export default const _default`. This
@@ -421,7 +436,8 @@ sdk.server('https://eu.api.example.com/v14');`)
       sdkSource.addStatements(
         // All expressions coming out of `json-schema-to-typescript` are exported so by popping this
         // off we'll just be inserting plain interfaces and types into the SDK source.
-        exp.substring('export '.length)
+        // exp.substring('export '.length)
+        `type ${typeName} = ${exp}`
       );
     });
 
@@ -455,7 +471,6 @@ sdk.server('https://eu.api.example.com/v14');`)
   /**
    * Create a generic HTTP method accessor on the SDK.
    *
-   * @param method
    */
   createGenericMethodAccessor(method: string) {
     const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
@@ -513,10 +528,6 @@ sdk.server('https://eu.api.example.com/v14');`)
   /**
    * Create operation accessors on the SDK.
    *
-   * @param operation
-   * @param operationId
-   * @param paramTypes
-   * @param responseTypes
    */
   createOperationAccessor(
     operation: Operation,
@@ -562,9 +573,7 @@ sdk.server('https://eu.api.example.com/v14');`)
 
         parameters.body = {
           name: 'body',
-          type: paramTypes.body
-            ? this.schemas.get(paramTypes.body).tsType
-            : this.schemas.get(paramTypes.formData).tsType,
+          type: paramTypes.body ? paramTypes.body : paramTypes.formData,
           hasQuestionToken: hasOptionalBody,
         };
       }
@@ -574,7 +583,7 @@ sdk.server('https://eu.api.example.com/v14');`)
 
         parameters.metadata = {
           name: 'metadata',
-          type: this.schemas.get(paramTypes.metadata).tsType,
+          type: paramTypes.metadata,
           hasQuestionToken: hasOptionalMetadata,
         };
       }
@@ -584,7 +593,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     let typeParameters: (string | OptionalKind<TypeParameterDeclarationStructure>)[] = null;
     if (responseTypes) {
       returnType = `Promise<${Object.values(responseTypes)
-        .map(hash => this.schemas.get(hash).tsType)
+        .map(responseType => responseType)
         .join(' | ')}>`;
     } else {
       // We should only add the `<T>` method typing if we don't have any response types present.
@@ -704,54 +713,12 @@ sdk.server('https://eu.api.example.com/v14');`)
   }
 
   /**
-   * Convert a JSON Schema object into a readily available TypeScript type or interface along with
-   * any `$ref` pointers that are in use and turn those into TS types too.
-   *
-   * Under the hood this uses https://npm.im/json-schema-to-typescript for all composition and
-   * conversion.
-   *
-   * @param schema
-   * @param name
-   */
-  async convertJSONSchemaToTypescript(schema: JSONSchema, name: string) {
-    // Though our JSON Schema type exposes JSONSchema4, which `json-schema-to-typescript` wants, it
-    // won't accept our custom union type of JSON Schema 4, JSON Schema 6, and JSON Schema 7.
-    const ts = await compile(schema as any, name, {
-      bannerComment: '',
-
-      // Running Prettier here for every JSON Schema object we're generating is way too slow so
-      // we're instead running it at the very end after we've constructed the SDK.
-      format: false,
-    });
-
-    let primaryType: string;
-    const tempProject = this.project.createSourceFile(`${name}.types.tmp.ts`, ts);
-    const declarations = tempProject.getExportedDeclarations();
-
-    Array.from(declarations.keys()).forEach(declarationName => {
-      if (!primaryType) {
-        primaryType = declarationName;
-      }
-
-      declarations.get(declarationName).forEach(declaration => {
-        this.types.set(declarationName, declaration.getText());
-      });
-    });
-
-    this.project.removeSourceFile(tempProject);
-
-    return {
-      primaryType,
-    };
-  }
-
-  /**
    * Scour through the current OpenAPI definition and compile a store of every operation, along
    * with every HTTP method that's in use, and their available TypeScript types that we can use,
    * along with every HTTP method that's in use.
    *
    */
-  async loadOperationsAndMethods() {
+  loadOperationsAndMethods() {
     const operations: Record</* operationId */ string, OperationTypeHousing> = {};
     const methods = new Set();
 
@@ -782,18 +749,6 @@ sdk.server('https://eu.api.example.com/v14');`)
       });
     });
 
-    // Run through and convert every schema we need to use into TS types.
-    await Promise.all(
-      Array.from(this.schemas.entries()).map(async ([hash, { schema, name: schemaName }]) => {
-        const ts = await this.convertJSONSchemaToTypescript(schema as JSONSchema, schemaName);
-
-        this.schemas.set(hash, {
-          ...this.schemas.get(hash),
-          tsType: ts.primaryType,
-        });
-      })
-    );
-
     return {
       operations,
       methods,
@@ -804,14 +759,11 @@ sdk.server('https://eu.api.example.com/v14');`)
    * Compile the parameter (path, query, cookie, and header) schemas for an API operation into
    * usable TypeScript types.
    *
-   * @param operation
-   * @param operationId
    */
   prepareParameterTypesForOperation(operation: Operation, operationId: string) {
     const schemas = operation.getParametersAsJSONSchema({
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
-      transformer: schemaTransformer,
     });
 
     if (!schemas || !schemas.length) {
@@ -824,21 +776,21 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     return Object.entries(res)
       .map(([paramType, schema]) => {
-        const schemaName = schema['x-readme-ref-name'] || `${operationId}_${paramType}_param`;
-        const hash = objectHash({
-          name: schemaName,
-          schema,
-        });
+        let typeName;
+        if (schema['x-readme-ref-name']) {
+          typeName = pascalCase(schema['x-readme-ref-name']);
+        } else {
+          typeName = pascalCase(`${operationId} ${paramType} Param`);
+        }
 
-        if (!this.schemas.has(hash)) {
-          this.schemas.set(hash, {
-            schema,
-            name: schemaName,
-          });
+        if (schema['x-readme-ref-name']) {
+          this.addSchemaToExport(schema, typeName, `$ref.${typeName}`);
+        } else {
+          this.addSchemaToExport(schema, typeName, `${operationId}.${paramType}`);
         }
 
         return {
-          [paramType]: hash,
+          [paramType]: typeName,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {}) as Record<'body' | 'formData' | 'metadata', string>;
@@ -848,8 +800,6 @@ sdk.server('https://eu.api.example.com/v14');`)
    * Compile the response schemas for an API operation into usable TypeScript types.
    *
    * @todo what does this do for a spec that has no responses?
-   * @param operation
-   * @param operationId
    */
   prepareResponseTypesForOperation(operation: Operation, operationId: string) {
     const responseStatusCodes = operation.getResponseStatusCodes();
@@ -859,10 +809,7 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     const schemas = responseStatusCodes
       .map(status => {
-        const schema = operation.getResponseAsJSONSchema(status, {
-          transformer: schemaTransformer,
-        });
-
+        const schema = operation.getResponseAsJSONSchema(status);
         if (!schema) {
           return false;
         }
@@ -875,25 +822,44 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     const res = Object.entries(schemas)
       .map(([status, { schema }]) => {
-        const schemaName = schema['x-readme-ref-name'] || `${operationId}_Response_${status}`;
-        const hash = objectHash({
-          name: schemaName,
-          schema,
-        });
+        let typeName;
+        if (schema['x-readme-ref-name']) {
+          typeName = pascalCase(schema['x-readme-ref-name']);
+        } else {
+          /**
+           * @fixme if `status` is `2XX`, `pascalCase` will transform it into `2Xx`
+           */
+          typeName = pascalCase(`${operationId} Response ${status}`);
+        }
 
-        if (!this.schemas.has(hash)) {
-          this.schemas.set(hash, {
-            schema,
-            name: schemaName,
-          });
+        if (schema['x-readme-ref-name']) {
+          this.addSchemaToExport(schema, typeName, `$ref.${typeName}`);
+        } else {
+          // Because `status` will usually be a number here we need to set the pointer for it
+          // within  an `[]` as if we do `FromSchema<typeoif schemas.operation.response.200>`,
+          // TypeScript will throw a compilation error.
+          this.addSchemaToExport(schema, typeName, `${operationId}.response['${status}']`);
         }
 
         return {
-          [status]: hash,
+          [status]: typeName,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {});
 
     return Object.keys(res).length ? res : undefined;
+  }
+
+  /**
+   * Add a given schema into our schema dataset that we'll be be exporting as types.
+   *
+   */
+  addSchemaToExport(schema: any, typeName: string, pointer: string) {
+    if (this.types.has(typeName)) {
+      return;
+    }
+
+    setWith(this.schemas, pointer, schema, Object);
+    this.types.set(typeName, `FromSchema<typeof schemas.${pointer}>`);
   }
 }

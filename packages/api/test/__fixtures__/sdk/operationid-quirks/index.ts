@@ -1,3 +1,4 @@
+import type { FromSchema } from 'json-schema-to-ts';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/operationid-quirks.json';
@@ -120,3 +121,5 @@ interface ConfigOptions {
    */
   parseResponse: boolean;
 }
+
+const schemas = {} as const;
