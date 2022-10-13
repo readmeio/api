@@ -55,8 +55,8 @@ declare class SDK {
    * @param variables An object of variables to replace into the server URL.
    */
   server(url: string, variables?: {}): void;
-  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
-  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
+  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2XX>;
+  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2XX>;
 }
 declare const createSDK: SDK;
 export default createSDK;
@@ -119,4 +119,4 @@ declare const schemas: {
   };
 };
 declare type GetAnythingMetadataParam = FromSchema<typeof schemas.getAnything.metadata>;
-declare type GetAnythingResponse2Xx = FromSchema<typeof schemas.getAnything.response['2XX']>;
+declare type GetAnythingResponse2XX = FromSchema<typeof schemas.getAnything.response['2XX']>;

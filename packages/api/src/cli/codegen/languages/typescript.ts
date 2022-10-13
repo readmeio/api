@@ -17,14 +17,13 @@ import fs from 'fs';
 import path from 'path';
 
 import execa from 'execa';
-import camelCase from 'lodash.camelcase';
 import setWith from 'lodash.setwith';
-import startCase from 'lodash.startcase';
-import { format as prettier } from 'prettier';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import logger from '../../logger';
 import CodeGeneratorLanguage from '../language';
+
+import { formatter, generateTypeName, wordWrap } from './typescript/util';
 
 export type TSGeneratorOptions = {
   outputJS?: boolean;
@@ -38,15 +37,6 @@ type OperationTypeHousing = {
   };
   operation: Operation;
 };
-
-// https://www.30secondsofcode.org/js/s/word-wrap
-function wordWrap(str: string, max = 88) {
-  return str.replace(new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), '$1\n');
-}
-
-function pascalCase(str: string) {
-  return startCase(camelCase(str)).replace(/ /g, '');
-}
 
 export default class TSGenerator extends CodeGeneratorLanguage {
   project: Project;
@@ -136,14 +126,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     this.types = new Map();
     this.methodGenerics = new Map();
     this.schemas = {};
-  }
-
-  static formatter(content: string) {
-    return prettier(content, {
-      parser: 'typescript',
-      printWidth: 100,
-      singleQuote: true,
-    });
   }
 
   async installer(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
@@ -446,14 +428,14 @@ sdk.server('https://eu.api.example.com/v14');`)
         .emitToMemory()
         .getFiles()
         .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: TSGenerator.formatter(sourceFile.text),
+          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
         }))
         .reduce((prev, next) => Object.assign(prev, next));
     }
 
     return [
       ...this.project.getSourceFiles().map(sourceFile => ({
-        [sourceFile.getBaseName()]: TSGenerator.formatter(sourceFile.getFullText()),
+        [sourceFile.getBaseName()]: formatter(sourceFile.getFullText()),
       })),
 
       // Because we're returning the raw source files for TS generation we also need to separately
@@ -463,7 +445,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         .emitToMemory({ emitOnlyDtsFiles: true })
         .getFiles()
         .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: TSGenerator.formatter(sourceFile.text),
+          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
         })),
     ].reduce((prev, next) => Object.assign(prev, next));
   }
@@ -778,9 +760,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       .map(([paramType, schema]) => {
         let typeName;
         if (schema['x-readme-ref-name']) {
-          typeName = pascalCase(schema['x-readme-ref-name']);
+          typeName = generateTypeName(schema['x-readme-ref-name']);
         } else {
-          typeName = pascalCase(`${operationId} ${paramType} Param`);
+          typeName = generateTypeName(operationId, paramType, 'param');
         }
 
         if (schema['x-readme-ref-name']) {
@@ -824,12 +806,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       .map(([status, { schema }]) => {
         let typeName;
         if (schema['x-readme-ref-name']) {
-          typeName = pascalCase(schema['x-readme-ref-name']);
+          typeName = generateTypeName(schema['x-readme-ref-name']);
         } else {
-          /**
-           * @fixme if `status` is `2XX`, `pascalCase` will transform it into `2Xx`
-           */
-          typeName = pascalCase(`${operationId} Response ${status}`);
+          typeName = generateTypeName(operationId, 'response', status);
         }
 
         if (schema['x-readme-ref-name']) {

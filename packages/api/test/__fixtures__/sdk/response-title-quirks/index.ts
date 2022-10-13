@@ -72,7 +72,7 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx>;
+  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2XX>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -83,7 +83,7 @@ class SDK {
     return this.core.fetch(path, 'get', metadata);
   }
 
-  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2Xx> {
+  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnythingResponse2XX> {
     return this.core.fetch('/anything', 'get', metadata);
   }
 }
@@ -147,4 +147,4 @@ const schemas = {
   },
 } as const;
 type GetAnythingMetadataParam = FromSchema<typeof schemas.getAnything.metadata>;
-type GetAnythingResponse2Xx = FromSchema<typeof schemas.getAnything.response['2XX']>;
+type GetAnythingResponse2XX = FromSchema<typeof schemas.getAnything.response['2XX']>;
