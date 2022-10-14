@@ -398,9 +398,8 @@ sdk.server('https://eu.api.example.com/v14');`)
 
   /**
    * Create our main schemas file. This is where all of the JSON Schema that our TypeScript typing
-   * infrastructure sources its data from. Without this, there are no types.
+   * infrastructure sources its data from. Without this there are no types.
    *
-   * @todo It'd be nice if all these variables, and their corresponding exports, were alphbetical.
    */
   createSchemasFile() {
     const sourceFile = this.project.createSourceFile('schemas.ts', '');
@@ -808,7 +807,6 @@ sdk.server('https://eu.api.example.com/v14');`)
   /**
    * Compile the response schemas for an API operation into usable TypeScript types.
    *
-   * @todo what does this do for a spec that has no responses?
    */
   prepareResponseTypesForOperation(operation: Operation, operationId: string) {
     const responseStatusCodes = operation.getResponseStatusCodes();
