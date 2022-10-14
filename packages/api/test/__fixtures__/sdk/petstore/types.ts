@@ -1,7 +1,8 @@
 import type { FromSchema } from 'json-schema-to-ts';
 import * as schemas from './schemas';
 
-export type ApiResponse = FromSchema<typeof schemas.$ref.ApiResponse>;
+export type ApiResponse = FromSchema<typeof schemas.ApiResponse>;
+export type Category = FromSchema<typeof schemas.Category>;
 export type CreateUsersWithArrayInputBodyParam = FromSchema<
   typeof schemas.createUsersWithArrayInput.body
 >;
@@ -23,11 +24,12 @@ export type GetPetByIdMetadataParam = FromSchema<typeof schemas.getPetById.metad
 export type GetUserByNameMetadataParam = FromSchema<typeof schemas.getUserByName.metadata>;
 export type LoginUserMetadataParam = FromSchema<typeof schemas.loginUser.metadata>;
 export type LoginUserResponse200 = FromSchema<typeof schemas.loginUser.response['200']>;
-export type Order = FromSchema<typeof schemas.$ref.Order>;
-export type Pet = FromSchema<typeof schemas.$ref.Pet>;
+export type Order = FromSchema<typeof schemas.Order>;
+export type Pet = FromSchema<typeof schemas.Pet>;
+export type Tag = FromSchema<typeof schemas.Tag>;
 export type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.updatePetWithForm.formData>;
 export type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.updatePetWithForm.metadata>;
 export type UpdateUserMetadataParam = FromSchema<typeof schemas.updateUser.metadata>;
 export type UploadFileBodyParam = FromSchema<typeof schemas.uploadFile.body>;
 export type UploadFileMetadataParam = FromSchema<typeof schemas.uploadFile.metadata>;
-export type User = FromSchema<typeof schemas.$ref.User>;
+export type User = FromSchema<typeof schemas.User>;

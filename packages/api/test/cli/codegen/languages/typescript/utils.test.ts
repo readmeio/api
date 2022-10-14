@@ -32,5 +32,9 @@ describe('ts codegen utils', function () {
       expect(generateTypeName('123_$Abc')).to.equal('$123Abc');
       expect(generateTypeName('Abc-de-f')).to.equal('AbcDeF');
     });
+
+    it('should generate a safe name from the string to constant work we have in codegen for $ref pointers', function () {
+      expect(generateTypeName('::convert::Pet')).to.equal('ConvertPet');
+    });
   });
 });

@@ -2,7 +2,7 @@ import type Storage from '../../storage';
 import type { InstallerOptions } from '../language';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods } from 'oas/dist/rmoas.types';
+import type { HttpMethods, SchemaObject } from 'oas/dist/rmoas.types';
 import type {
   ClassDeclaration,
   JSDocStructure,
@@ -54,17 +54,14 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   schemas: Record<
     string,
-    {
-      $ref?: Record<string, any>;
-      [k: string]: Record<
-        string,
-        {
-          body?: any;
-          metadata?: any;
-          response?: Record<string, any>;
-        }
-      >;
-    }
+    // Operation-level type
+    | {
+        body?: any;
+        metadata?: any;
+        response?: Record<string, any>;
+      }
+    // Wholesale collection of `$ref` pointer types
+    | Record<string, any>
   >;
 
   constructor(spec: Oas, specPath: string, identifier: string, opts: TSGeneratorOptions = {}) {
@@ -408,14 +405,32 @@ sdk.server('https://eu.api.example.com/v14');`)
   createSchemasFile() {
     const sourceFile = this.project.createSourceFile('schemas.ts', '');
 
-    Object.entries(this.schemas).forEach(([schemaName, schema]) => {
+    const sortedSchemas = new Map(Array.from(Object.entries(this.schemas)).sort());
+
+    Array.from(sortedSchemas).forEach(([schemaName, schema]) => {
       sourceFile.addVariableStatement({
         declarationKind: VariableDeclarationKind.Const,
         declarations: [
           {
             name: schemaName,
             initializer: writer => {
-              writer.writeLine(`${JSON.stringify(schema)} as const`);
+              /**
+               * This is the conversion prefix that we add to all `$ref` pointers we find in
+               * generated JSON Schema.
+               *
+               * Because the pointer name is a string we want to have it reference the schema
+               * constant we're adding into the codegen'd schema file. As there's no way, not even
+               * using `eval()` in this case, to convert a string to a constant we're prefixing
+               * them with this so we can later remove it and rewrite the value to a literal.
+               * eg. `'Pet'` becomes `Pet`.
+               *
+               * And because our TypeScript type name generator properly ignores `:`, this is safe
+               * to prepend to all generated type names.
+               */
+              let str = JSON.stringify(schema);
+              str = str.replace(/"::convert::([a-zA-Z_$\\d]*)"/g, '$1');
+
+              writer.writeLine(`${str} as const`);
               return writer;
             },
           },
@@ -423,7 +438,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       });
     });
 
-    sourceFile.addStatements(`export { ${Object.keys(this.schemas).join(', ')} }`);
+    sourceFile.addStatements(`export { ${Array.from(sortedSchemas.keys()).join(', ')} }`);
 
     return sourceFile;
   }
@@ -746,6 +761,18 @@ sdk.server('https://eu.api.example.com/v14');`)
     const schemas = operation.getParametersAsJSONSchema({
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
+      transformer: (s: SchemaObject) => {
+        // As our schemas are dereferenced in the `oas` library we don't want to pollute our
+        // codegen'd schemas file with duplicate schemas.
+        if ('x-readme-ref-name' in s) {
+          const typeName = generateTypeName(s['x-readme-ref-name']);
+          this.addSchemaToExport(s, typeName, `${typeName}`);
+
+          return `::convert::${typeName}` as SchemaObject;
+        }
+
+        return s;
+      },
     });
 
     if (!schemas || !schemas.length) {
@@ -757,17 +784,15 @@ sdk.server('https://eu.api.example.com/v14');`)
       .reduce((prev, next) => Object.assign(prev, next));
 
     return Object.entries(res)
-      .map(([paramType, schema]) => {
+      .map(([paramType, schema]: [string, string | unknown]) => {
         let typeName;
-        if (schema['x-readme-ref-name']) {
-          typeName = generateTypeName(schema['x-readme-ref-name']);
+
+        if (typeof schema === 'string' && schema.startsWith('::convert::')) {
+          // If this schema is a string and has our conversion prefix then we've already created
+          // a type for it.
+          typeName = schema.replace('::convert::', '');
         } else {
           typeName = generateTypeName(operationId, paramType, 'param');
-        }
-
-        if (schema['x-readme-ref-name']) {
-          this.addSchemaToExport(schema, typeName, `$ref.${typeName}`);
-        } else {
           this.addSchemaToExport(schema, typeName, `${operationId}.${paramType}`);
         }
 
@@ -793,7 +818,21 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     const schemas = responseStatusCodes
       .map(status => {
-        const schema = operation.getResponseAsJSONSchema(status);
+        const schema = operation.getResponseAsJSONSchema(status, {
+          transformer: (s: SchemaObject) => {
+            // As our schemas are dereferenced in the `oas` library we don't want to pollute our
+            // codegen'd schemas file with duplicate schemas.
+            if ('x-readme-ref-name' in s) {
+              const typeName = generateTypeName(s['x-readme-ref-name']);
+              this.addSchemaToExport(s, typeName, `${typeName}`);
+
+              return `::convert::${typeName}` as SchemaObject;
+            }
+
+            return s;
+          },
+        });
+
         if (!schema) {
           return false;
         }
@@ -807,17 +846,16 @@ sdk.server('https://eu.api.example.com/v14');`)
     const res = Object.entries(schemas)
       .map(([status, { schema }]) => {
         let typeName;
-        if (schema['x-readme-ref-name']) {
-          typeName = generateTypeName(schema['x-readme-ref-name']);
+
+        if (typeof schema === 'string' && schema.startsWith('::convert::')) {
+          // If this schema is a string and has our conversion prefix then we've already created
+          // a type for it.
+          typeName = schema.replace('::convert::', '');
         } else {
           typeName = generateTypeName(operationId, 'response', status);
-        }
 
-        if (schema['x-readme-ref-name']) {
-          this.addSchemaToExport(schema, typeName, `$ref.${typeName}`);
-        } else {
           // Because `status` will usually be a number here we need to set the pointer for it
-          // within  an `[]` as if we do `FromSchema<typeoif schemas.operation.response.200>`,
+          // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
           // TypeScript will throw a compilation error.
           this.addSchemaToExport(schema, typeName, `${operationId}.response['${status}']`);
         }

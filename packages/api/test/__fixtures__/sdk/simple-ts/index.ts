@@ -108,4 +108,13 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-export type { FindPetsByStatusMetadataParam, FindPetsByStatusResponse200 } from './types';
+export type {
+  ApiResponse,
+  Category,
+  FindPetsByStatusMetadataParam,
+  FindPetsByStatusResponse200,
+  Order,
+  Pet,
+  Tag,
+  User,
+} from './types';

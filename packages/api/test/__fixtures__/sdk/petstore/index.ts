@@ -495,6 +495,7 @@ export default createSDK;
 
 export type {
   ApiResponse,
+  Category,
   CreateUsersWithArrayInputBodyParam,
   CreateUsersWithListInputBodyParam,
   DeleteOrderMetadataParam,
@@ -512,6 +513,7 @@ export type {
   LoginUserResponse200,
   Order,
   Pet,
+  Tag,
   UpdatePetWithFormFormDataParam,
   UpdatePetWithFormMetadataParam,
   UpdateUserMetadataParam,
