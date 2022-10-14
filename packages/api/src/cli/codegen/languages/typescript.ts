@@ -10,7 +10,6 @@ import type {
   OptionalKind,
   ParameterDeclarationStructure,
   TypeParameterDeclarationStructure,
-  VariableStatement,
 } from 'ts-morph';
 
 import fs from 'fs';
@@ -52,8 +51,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
   methodGenerics: Map<string, MethodDeclaration>;
 
   sdk: ClassDeclaration;
-
-  sdkExport: VariableStatement;
 
   schemas: Record<
     string,
@@ -105,7 +102,9 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         quoteKind: QuoteKind.Single,
       },
       compilerOptions: {
-        declaration: true,
+        // If we're exporting a TypeScript SDK then we don't need to pollute the codegen directory
+        // with unnecessary declaration `.d.ts` files.
+        declaration: options.outputJS,
         outDir: 'dist',
         resolveJsonModule: true,
         target: options.compilerTarget === 'cjs' ? ScriptTarget.ES5 : ScriptTarget.ES2020,
@@ -167,81 +166,113 @@ export default class TSGenerator extends CodeGeneratorLanguage {
    *
    */
   async generator() {
+    const sdkSource = this.createSourceFile();
+
+    if (Object.keys(this.schemas).length) {
+      this.createSchemasFile();
+      this.createTypesFile();
+
+      // Export all of our available types so they can be used in SDK implementations.
+      //
+      // We're exporting all of the types individually because TS has no way right now of allowing
+      // us to do `export type * from './types'` on a non-named entry.
+      //
+      // https://github.com/microsoft/TypeScript/issues/37238
+      const types = Array.from(this.types.keys());
+      types.sort();
+
+      sdkSource.addExportDeclarations([
+        {
+          isTypeOnly: true,
+          namedExports: types,
+          moduleSpecifier: './types',
+        },
+      ]);
+    } else {
+      // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
+      sdkSource
+        .getImportDeclarations()
+        .find(id => id.getText() === "import type * as types from './types';")
+        .remove();
+    }
+
+    if (this.outputJS) {
+      return this.project
+        .emitToMemory()
+        .getFiles()
+        .map(sourceFile => {
+          const file = path.basename(sourceFile.filePath);
+          if (file === 'schemas.js' || file === 'types.js') {
+            // If we're generating a JS SDK then we don't need to generate these two files as the
+            // user will have `.d.ts` files for them instead.
+            return {};
+          }
+
+          let code = formatter(sourceFile.text);
+          if (file === 'index.js' && this.compilerTarget === 'cjs') {
+            /**
+             * There's an annoying quirk with `ts-morph` where if we're exporting a default export
+             * to a CJS environment, it'll export it as `exports.default`. Because we don't want
+             * folks in these environments to have to load their SDKs with
+             * `require('@api/sdk').default` we're overriding that here to change it to being the
+             * module exports.
+             *
+             * `ts-morph` unfortunately doesn't give us any options for programatically doing this
+             * so we need to resort to modifying the emitted JS code.
+             */
+            code = code.replace('exports.default = createSDK;', 'module.exports = createSDK;');
+          }
+
+          return {
+            [file]: code,
+          };
+        })
+        .reduce((prev, next) => Object.assign(prev, next));
+    }
+
+    return [
+      ...this.project.getSourceFiles().map(sourceFile => ({
+        [sourceFile.getBaseName()]: formatter(sourceFile.getFullText()),
+      })),
+
+      // Because we're returning the raw source files for TS generation we also need to separately
+      // emit out our declaration files so we can put those into a separate file in the installed
+      // SDK directory.
+      ...this.project
+        .emitToMemory({ emitOnlyDtsFiles: true })
+        .getFiles()
+        .map(sourceFile => ({
+          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
+        })),
+    ].reduce((prev, next) => Object.assign(prev, next));
+  }
+
+  /**
+   * Create our main SDK source file.
+   *
+   */
+  createSourceFile() {
     const { operations, methods } = this.loadOperationsAndMethods();
 
-    const sdkSource = this.project.createSourceFile('index.ts', '');
+    const sourceFile = this.project.createSourceFile('index.ts', '');
 
-    sdkSource.addImportDeclarations([
-      // @fixme don't export this if there are no schemas
-      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
+    sourceFile.addImportDeclarations([
+      // This import will be automatically removed later if the SDK ends up not having any types.
+      { defaultImport: 'type * as types', moduleSpecifier: './types' },
+      { defaultImport: 'type { ConfigOptions }', moduleSpecifier: 'api/dist/core' },
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
       { defaultImport: 'APICore', moduleSpecifier: 'api/dist/core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
     ]);
 
     // @todo add TOS, License, info.* to a docblock at the top of the SDK.
-    this.sdk = sdkSource.addClass({
+    this.sdk = sourceFile.addClass({
       name: 'SDK',
-    });
-
-    this.sdkExport = sdkSource.addVariableStatement({
-      declarationKind: VariableDeclarationKind.Const,
-      declarations: [
-        {
-          name: 'createSDK',
-          initializer: writer => {
-            // `ts-morph` doesn't have any way to cleanly create an IFEE.
-            writer.writeLine('(() => { return new SDK(); })()');
-            return writer;
-          },
-        },
+      properties: [
+        { name: 'spec', type: 'Oas' },
+        { name: 'core', type: 'APICore' },
       ],
     });
-
-    /**
-     * There's an annoying quirk with `ts-morph` where if we set the `createSDK` function to be the
-     * default export with `isDefaultExport` then when we compile it to an ES5 target for CJS
-     * environments it'll be exported as `export.default = createSDK`, which when you try to load it
-     * you'll need to run `require('@api/sdk').default`.
-     *
-     * Instead here by plainly creating `createSDK` in the source file and then setting this export
-     * assignment it'll export the SDK IFEE initializer as `module.exports = createSDK` so people
-     * can cleanly load their SDK with `require('@api/sdk)`.
-     *
-     * A whole lot of debugging went into here to let people not have to worry about `.default`
-     * messes. I hope it's worth it!
-     */
-    if (this.compilerTarget === 'cjs') {
-      sdkSource.addExportAssignment({
-        expression: 'createSDK',
-      });
-    } else {
-      /**
-       * Because `createSDK` above is an IFEE constant we can't use `setIsDefaultExport` on it due
-       * to `ts-morph` not having great handling for IFEE's.
-       *
-       * If we were to call `setIsDefaultExport` on our IFEE to attempt to compile it as
-       * `export default createSDK` then `ts-morph` hard crashes with a "Error replacing tree: The
-       * children of the old and new trees were expected to have the same count" exception due to
-       * it not being able properly handle IFEE's. It's for that reason that we need to manually
-       * write a statement expression to set `createSDK` as the default export.
-       *
-       * Another quirk that this work avoids is there being an empty `export {};` at the very end
-       * of our compiled `d.ts` declaration file. I'm not sure why it was being added, and it
-       * didn't appear to be harming anything, but us manually creating this export statement
-       * causes it to go away.
-       *
-       * Thankfully, fortunately, and curiously, these are all only problems in non-CJS compiled
-       * targets. ¯\_(ツ)_/¯
-       */
-      sdkSource.addStatements('export default createSDK');
-    }
-
-    this.sdk.addProperties([
-      { name: 'spec', type: 'Oas' },
-      { name: 'core', type: 'APICore' },
-      { name: 'authKeys', type: '(number | string)[][]', initializer: '[]' },
-    ]);
 
     this.sdk.addConstructor({
       statements: writer => {
@@ -252,21 +283,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     });
 
     // Add our core API methods for controlling auth, servers, and various configurable abilities.
-    sdkSource.addInterface({
-      name: 'ConfigOptions',
-      properties: [
-        {
-          name: 'parseResponse',
-          type: 'boolean',
-          docs: [
-            wordWrap(
-              'By default we parse the response based on the `Content-Type` header of the request. You can disable this functionality by negating this option.'
-            ),
-          ],
-        },
-      ],
-    });
-
     this.sdk.addMethods([
       {
         name: 'config',
@@ -363,91 +379,75 @@ sdk.server('https://eu.api.example.com/v14');`)
       this.createOperationAccessor(data.operation, operationId, data.types.params, data.types.responses);
     });
 
-    /**
-     * @todo These schemas we're exporting are dereferenced which is adding a lot of bloat. Fix this!
-     * @fixme don't export schemas if there are none
-     */
-    sdkSource.addVariableStatement({
+    // Export our SDK into the source file.
+    sourceFile.addVariableStatement({
       declarationKind: VariableDeclarationKind.Const,
       declarations: [
         {
-          name: 'schemas',
+          name: 'createSDK',
           initializer: writer => {
-            writer.writeLine(`${JSON.stringify(this.schemas)} as const`);
+            // `ts-morph` doesn't have any way to cleanly create an IFEE.
+            writer.writeLine('(() => { return new SDK(); })()');
             return writer;
           },
         },
       ],
     });
 
-    // @todo should all of these isolated into their own file outside of the main sdk class file?
-    // Add all known types that we're using into the SDK.
-    Array.from(this.types.entries()).forEach(([typeName, exp]) => {
-      /**
-       * When `ts-morph` compiles declaration files when we're targeting CJS environments it creates
-       * the default export as `export = _default` instead of `export default const _default`. This
-       * causes TS to throw a TS2309 error for "An export assignment cannot be used in a module
-       * with other exported elements" because our types and interfaces are also being exported and
-       * the `export =` overrides those.
-       *
-       * Fixing this is, to be frank, a fucking HARD problem for a couple reasons:
-       *
-       *  1. Our JSON Schema types and interfaces are coming from `json-schema-to-typescript` and
-       *    that library exports its data a raw string containing multiple types and interfaces.
-       *    The only way we're able to capture and use them in our codegenerated SDK is because
-       *    we're ingesting that string into `ts-morph` and then using its APIs to extract exported
-       *    declarations (which are still strings) and then they're re-inserted into our main
-       *    source file here.
-       *  2. Though `ts-morph` has APIs for adding type aliases and interfaces to a source file what
-       *    it doesn't have is the ability to pass in a string, or a `Writer` class that exposes,
-       *    to write raw strings to a type or an interface. If it did we'd be able to replace this
-       *    `addStatements` call with an `addTypeAlias` and `addInterface` call for each of our
-       *    JSON Schema schemas that we've got along with an `isExported` flag for `ts-morph` to
-       *    export it.
-       *
-       * Because neither of these are solvable problems right now we're instead opting to **not**
-       * export types and interfaces from these SDKs. This isn't a great solution because it
-       * /slightly/ reduces the usability of the TS codegen functionality but in order for the TS
-       * declaration files that we generate to be valid this is the only option that we've got.
-       *
-       * However, that said, if somebody needs an interface or type exported they can export it
-       * themselves in the SDK code that we compile for them.
-       *
-       * @fixme
-       */
-      sdkSource.addStatements(
-        // All expressions coming out of `json-schema-to-typescript` are exported so by popping this
-        // off we'll just be inserting plain interfaces and types into the SDK source.
-        // exp.substring('export '.length)
-        `type ${typeName} = ${exp}`
-      );
+    sourceFile.addExportAssignment({ isExportEquals: false, expression: 'createSDK' });
+
+    return sourceFile;
+  }
+
+  /**
+   * Create our main schemas file. This is where all of the JSON Schema that our TypeScript typing
+   * infrastructure sources its data from. Without this, there are no types.
+   *
+   * @todo It'd be nice if all these variables, and their corresponding exports, were alphbetical.
+   */
+  createSchemasFile() {
+    const sourceFile = this.project.createSourceFile('schemas.ts', '');
+
+    Object.entries(this.schemas).forEach(([schemaName, schema]) => {
+      sourceFile.addVariableStatement({
+        declarationKind: VariableDeclarationKind.Const,
+        declarations: [
+          {
+            name: schemaName,
+            initializer: writer => {
+              writer.writeLine(`${JSON.stringify(schema)} as const`);
+              return writer;
+            },
+          },
+        ],
+      });
     });
 
-    if (this.outputJS) {
-      return this.project
-        .emitToMemory()
-        .getFiles()
-        .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
-        }))
-        .reduce((prev, next) => Object.assign(prev, next));
-    }
+    sourceFile.addStatements(`export { ${Object.keys(this.schemas).join(', ')} }`);
 
-    return [
-      ...this.project.getSourceFiles().map(sourceFile => ({
-        [sourceFile.getBaseName()]: formatter(sourceFile.getFullText()),
-      })),
+    return sourceFile;
+  }
 
-      // Because we're returning the raw source files for TS generation we also need to separately
-      // emit out our declaration files so we can put those into a separate file in the installed
-      // SDK directory.
-      ...this.project
-        .emitToMemory({ emitOnlyDtsFiles: true })
-        .getFiles()
-        .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
-        })),
-    ].reduce((prev, next) => Object.assign(prev, next));
+  /**
+   * Create our main types file. This sources its data from the JSON Schema `schemas.ts` file and
+   * will re-export types to be used in TypeScript implementations and IDE intellisense. This
+   * typing work is functional with the `json-schema-to-ts` library.
+   *
+   * @see {@link https://npm.im/json-schema-to-ts}
+   */
+  createTypesFile() {
+    const sourceFile = this.project.createSourceFile('types.ts', '');
+
+    sourceFile.addImportDeclarations([
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
+      { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
+    ]);
+
+    Array.from(new Map(Array.from(this.types.entries()).sort())).forEach(([typeName, typeExpression]) => {
+      sourceFile.addTypeAlias({ isExported: true, name: typeName, type: typeExpression });
+    });
+
+    return sourceFile;
   }
 
   /**
@@ -458,7 +458,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
     const docblock: OptionalKind<JSDocStructure> = {
       description: writer => {
-        writer.writeLine(`Access any ${method.toUpperCase()} endpoint on your API.`);
+        writer.writeLine(wordWrap(`Access any ${method.toUpperCase()} endpoint on your API.`));
         return writer;
       },
       tags: [{ tagName: 'param', text: 'path API path to make a request against.' }],
@@ -772,7 +772,9 @@ sdk.server('https://eu.api.example.com/v14');`)
         }
 
         return {
-          [paramType]: typeName,
+          // Types are prefixed with `types.` because that's how we're importing them from
+          // `types.d.ts`.
+          [paramType]: `types.${typeName}`,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {}) as Record<'body' | 'formData' | 'metadata', string>;
@@ -821,7 +823,9 @@ sdk.server('https://eu.api.example.com/v14');`)
         }
 
         return {
-          [status]: typeName,
+          // Types are prefixed with `types.` because that's how we're importing them from
+          // `types.d.ts`.
+          [status]: `types.${typeName}`,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {});

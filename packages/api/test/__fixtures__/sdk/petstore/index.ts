@@ -1,4 +1,5 @@
-import type { FromSchema } from 'json-schema-to-ts';
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/petstore.json';
@@ -6,7 +7,6 @@ import definition from '@readme/oas-examples/3.0/json/petstore.json';
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -76,53 +76,59 @@ class SDK {
    * Add a new pet to the store
    *
    */
-  post<T = unknown>(path: '/pet', body: Pet): Promise<T>;
+  post<T = unknown>(path: '/pet', body: types.Pet): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   post<T = unknown>(
     path: '/pet/{petId}',
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: '/pet/{petId}', metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(
+    path: '/pet/{petId}',
+    metadata: types.UpdatePetWithFormMetadataParam
+  ): Promise<T>;
   /**
    * Uploads an image
    *
    */
   post(
     path: '/pet/{petId}/uploadImage',
-    body: UploadFileBodyParam,
-    metadata: UploadFileMetadataParam
-  ): Promise<ApiResponse>;
+    body: types.UploadFileBodyParam,
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  post(path: '/pet/{petId}/uploadImage', metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(
+    path: '/pet/{petId}/uploadImage',
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Place an order for a pet
    *
    */
-  post(path: '/store/order', body: Order): Promise<Order>;
+  post(path: '/store/order', body: types.Order): Promise<types.Order>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Create user
    */
-  post<T = unknown>(path: '/user', body: User): Promise<T>;
+  post<T = unknown>(path: '/user', body: types.User): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
   post<T = unknown>(
     path: '/user/createWithArray',
-    body: CreateUsersWithArrayInputBodyParam
+    body: types.CreateUsersWithArrayInputBodyParam
   ): Promise<T>;
   /**
    * Creates list of users with given input array
@@ -130,7 +136,7 @@ class SDK {
    */
   post<T = unknown>(
     path: '/user/createWithList',
-    body: CreateUsersWithListInputBodyParam
+    body: types.CreateUsersWithListInputBodyParam
   ): Promise<T>;
   /**
    * Access any POST endpoint on your API.
@@ -147,7 +153,7 @@ class SDK {
    * Update an existing pet
    *
    */
-  put<T = unknown>(path: '/pet', body: Pet): Promise<T>;
+  put<T = unknown>(path: '/pet', body: types.Pet): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
@@ -155,8 +161,8 @@ class SDK {
    */
   put<T = unknown>(
     path: '/user/{username}',
-    body: User,
-    metadata: UpdateUserMetadataParam
+    body: types.User,
+    metadata: types.UpdateUserMetadataParam
   ): Promise<T>;
   /**
    * Access any PUT endpoint on your API.
@@ -176,8 +182,8 @@ class SDK {
    */
   get(
     path: '/pet/findByStatus',
-    metadata: FindPetsByStatusMetadataParam
-  ): Promise<FindPetsByStatusResponse200>;
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
@@ -185,31 +191,37 @@ class SDK {
    */
   get(
     path: '/pet/findByTags',
-    metadata: FindPetsByTagsMetadataParam
-  ): Promise<FindPetsByTagsResponse200>;
+    metadata: types.FindPetsByTagsMetadataParam
+  ): Promise<types.FindPetsByTagsResponse200>;
   /**
    * Returns a single pet
    *
    * @summary Find pet by ID
    */
-  get(path: '/pet/{petId}', metadata: GetPetByIdMetadataParam): Promise<Pet>;
+  get(path: '/pet/{petId}', metadata: types.GetPetByIdMetadataParam): Promise<types.Pet>;
   /**
    * Returns a map of status codes to quantities
    *
    * @summary Returns pet inventories by status
    */
-  get(path: '/store/inventory'): Promise<GetInventoryResponse200>;
+  get(path: '/store/inventory'): Promise<types.GetInventoryResponse200>;
   /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
    */
-  get(path: '/store/order/{orderId}', metadata: GetOrderByIdMetadataParam): Promise<Order>;
+  get(
+    path: '/store/order/{orderId}',
+    metadata: types.GetOrderByIdMetadataParam
+  ): Promise<types.Order>;
   /**
    * Logs user into the system
    *
    */
-  get(path: '/user/login', metadata: LoginUserMetadataParam): Promise<LoginUserResponse200>;
+  get(
+    path: '/user/login',
+    metadata: types.LoginUserMetadataParam
+  ): Promise<types.LoginUserResponse200>;
   /**
    * Logs out current logged in user session
    *
@@ -219,7 +231,7 @@ class SDK {
    * Get user by user name
    *
    */
-  get(path: '/user/{username}', metadata: GetUserByNameMetadataParam): Promise<User>;
+  get(path: '/user/{username}', metadata: types.GetUserByNameMetadataParam): Promise<types.User>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -234,7 +246,7 @@ class SDK {
    * Deletes a pet
    *
    */
-  delete<T = unknown>(path: '/pet/{petId}', metadata: DeletePetMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/pet/{petId}', metadata: types.DeletePetMetadataParam): Promise<T>;
   /**
    * For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
    *
@@ -242,14 +254,17 @@ class SDK {
    */
   delete<T = unknown>(
     path: '/store/order/{orderId}',
-    metadata: DeleteOrderMetadataParam
+    metadata: types.DeleteOrderMetadataParam
   ): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Delete user
    */
-  delete<T = unknown>(path: '/user/{username}', metadata: DeleteUserMetadataParam): Promise<T>;
+  delete<T = unknown>(
+    path: '/user/{username}',
+    metadata: types.DeleteUserMetadataParam
+  ): Promise<T>;
   /**
    * Access any DELETE endpoint on your API.
    *
@@ -269,7 +284,7 @@ class SDK {
    * Add a new pet to the store
    *
    */
-  addPet<T = unknown>(body: Pet): Promise<T> {
+  addPet<T = unknown>(body: types.Pet): Promise<T> {
     return this.core.fetch('/pet', 'post', body);
   }
 
@@ -277,7 +292,7 @@ class SDK {
    * Update an existing pet
    *
    */
-  updatePet<T = unknown>(body: Pet): Promise<T> {
+  updatePet<T = unknown>(body: types.Pet): Promise<T> {
     return this.core.fetch('/pet', 'put', body);
   }
 
@@ -286,7 +301,9 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatusResponse200> {
+  findPetsByStatus(
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 
@@ -295,7 +312,9 @@ class SDK {
    *
    * @summary Finds Pets by tags
    */
-  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTagsResponse200> {
+  findPetsByTags(
+    metadata: types.FindPetsByTagsMetadataParam
+  ): Promise<types.FindPetsByTagsResponse200> {
     return this.core.fetch('/pet/findByTags', 'get', metadata);
   }
 
@@ -304,7 +323,7 @@ class SDK {
    *
    * @summary Find pet by ID
    */
-  getPetById(metadata: GetPetByIdMetadataParam): Promise<Pet> {
+  getPetById(metadata: types.GetPetByIdMetadataParam): Promise<types.Pet> {
     return this.core.fetch('/pet/{petId}', 'get', metadata);
   }
 
@@ -313,21 +332,21 @@ class SDK {
    *
    */
   updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  updatePetWithForm<T = unknown>(metadata: types.UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
+    body?: types.UpdatePetWithFormFormDataParam,
+    metadata?: types.UpdatePetWithFormMetadataParam
   ): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
@@ -336,7 +355,7 @@ class SDK {
    * Deletes a pet
    *
    */
-  deletePet<T = unknown>(metadata: DeletePetMetadataParam): Promise<T> {
+  deletePet<T = unknown>(metadata: types.DeletePetMetadataParam): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'delete', metadata);
   }
 
@@ -344,17 +363,23 @@ class SDK {
    * Uploads an image
    *
    */
-  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  uploadFile(
+    body: types.UploadFileBodyParam,
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  uploadFile(metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  uploadFile(metadata: types.UploadFileMetadataParam): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  uploadFile(body?: UploadFileBodyParam, metadata?: UploadFileMetadataParam): Promise<ApiResponse> {
+  uploadFile(
+    body?: types.UploadFileBodyParam,
+    metadata?: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
   }
 
@@ -363,7 +388,7 @@ class SDK {
    *
    * @summary Returns pet inventories by status
    */
-  getInventory(): Promise<GetInventoryResponse200> {
+  getInventory(): Promise<types.GetInventoryResponse200> {
     return this.core.fetch('/store/inventory', 'get');
   }
 
@@ -371,7 +396,7 @@ class SDK {
    * Place an order for a pet
    *
    */
-  placeOrder(body: Order): Promise<Order> {
+  placeOrder(body: types.Order): Promise<types.Order> {
     return this.core.fetch('/store/order', 'post', body);
   }
 
@@ -380,7 +405,7 @@ class SDK {
    *
    * @summary Find purchase order by ID
    */
-  getOrderById(metadata: GetOrderByIdMetadataParam): Promise<Order> {
+  getOrderById(metadata: types.GetOrderByIdMetadataParam): Promise<types.Order> {
     return this.core.fetch('/store/order/{orderId}', 'get', metadata);
   }
 
@@ -389,7 +414,7 @@ class SDK {
    *
    * @summary Delete purchase order by ID
    */
-  deleteOrder<T = unknown>(metadata: DeleteOrderMetadataParam): Promise<T> {
+  deleteOrder<T = unknown>(metadata: types.DeleteOrderMetadataParam): Promise<T> {
     return this.core.fetch('/store/order/{orderId}', 'delete', metadata);
   }
 
@@ -398,7 +423,7 @@ class SDK {
    *
    * @summary Create user
    */
-  createUser<T = unknown>(body: User): Promise<T> {
+  createUser<T = unknown>(body: types.User): Promise<T> {
     return this.core.fetch('/user', 'post', body);
   }
 
@@ -406,7 +431,9 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithArrayInput<T = unknown>(body: CreateUsersWithArrayInputBodyParam): Promise<T> {
+  createUsersWithArrayInput<T = unknown>(
+    body: types.CreateUsersWithArrayInputBodyParam
+  ): Promise<T> {
     return this.core.fetch('/user/createWithArray', 'post', body);
   }
 
@@ -414,7 +441,7 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithListInput<T = unknown>(body: CreateUsersWithListInputBodyParam): Promise<T> {
+  createUsersWithListInput<T = unknown>(body: types.CreateUsersWithListInputBodyParam): Promise<T> {
     return this.core.fetch('/user/createWithList', 'post', body);
   }
 
@@ -422,7 +449,7 @@ class SDK {
    * Logs user into the system
    *
    */
-  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUserResponse200> {
+  loginUser(metadata: types.LoginUserMetadataParam): Promise<types.LoginUserResponse200> {
     return this.core.fetch('/user/login', 'get', metadata);
   }
 
@@ -438,7 +465,7 @@ class SDK {
    * Get user by user name
    *
    */
-  getUserByName(metadata: GetUserByNameMetadataParam): Promise<User> {
+  getUserByName(metadata: types.GetUserByNameMetadataParam): Promise<types.User> {
     return this.core.fetch('/user/{username}', 'get', metadata);
   }
 
@@ -447,7 +474,7 @@ class SDK {
    *
    * @summary Updated user
    */
-  updateUser<T = unknown>(body: User, metadata: UpdateUserMetadataParam): Promise<T> {
+  updateUser<T = unknown>(body: types.User, metadata: types.UpdateUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'put', body, metadata);
   }
 
@@ -456,7 +483,7 @@ class SDK {
    *
    * @summary Delete user
    */
-  deleteUser<T = unknown>(metadata: DeleteUserMetadataParam): Promise<T> {
+  deleteUser<T = unknown>(metadata: types.DeleteUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'delete', metadata);
   }
 }
@@ -466,627 +493,29 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-
-const schemas = {
-  $ref: {
-    Pet: {
-      type: 'object',
-      required: ['name', 'photoUrls'],
-      properties: {
-        id: {
-          type: 'integer',
-          format: 'int64',
-          readOnly: true,
-          default: 40,
-          examples: [25],
-          minimum: -9223372036854776000,
-          maximum: 9223372036854776000,
-        },
-        category: {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'integer',
-              format: 'int64',
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-            },
-            name: { type: 'string' },
-          },
-          title: 'Category',
-          'x-readme-ref-name': 'Category',
-        },
-        name: { type: 'string', examples: ['doggie'] },
-        photoUrls: {
-          type: 'array',
-          items: { type: 'string', examples: ['https://example.com/photo.png'] },
-        },
-        tags: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'integer',
-                format: 'int64',
-                minimum: -9223372036854776000,
-                maximum: 9223372036854776000,
-              },
-              name: { type: 'string' },
-            },
-            title: 'Tag',
-            'x-readme-ref-name': 'Tag',
-          },
-        },
-        status: {
-          type: 'string',
-          description: 'pet status in the store',
-          enum: ['available', 'pending', 'sold'],
-        },
-      },
-      title: 'Pet',
-      'x-readme-ref-name': 'Pet',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ApiResponse: {
-      type: 'object',
-      properties: {
-        code: { type: 'integer', format: 'int32', minimum: -2147483648, maximum: 2147483647 },
-        type: { type: 'string' },
-        message: { type: 'string' },
-      },
-      title: 'ApiResponse',
-      'x-readme-ref-name': 'ApiResponse',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Order: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'integer',
-          format: 'int64',
-          minimum: -9223372036854776000,
-          maximum: 9223372036854776000,
-        },
-        petId: {
-          type: 'integer',
-          format: 'int64',
-          minimum: -9223372036854776000,
-          maximum: 9223372036854776000,
-        },
-        quantity: { type: 'integer', format: 'int32', minimum: -2147483648, maximum: 2147483647 },
-        shipDate: { type: 'string', format: 'date-time' },
-        status: {
-          type: 'string',
-          description: 'Order Status',
-          enum: ['placed', 'approved', 'delivered'],
-        },
-        complete: { type: 'boolean', default: false },
-      },
-      title: 'Order',
-      'x-readme-ref-name': 'Order',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    User: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'integer',
-          format: 'int64',
-          minimum: -9223372036854776000,
-          maximum: 9223372036854776000,
-        },
-        username: { type: 'string' },
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-        email: { type: 'string' },
-        password: { type: 'string' },
-        phone: { type: 'string' },
-        userStatus: {
-          type: 'integer',
-          format: 'int32',
-          description: 'User Status',
-          minimum: -2147483648,
-          maximum: 2147483647,
-        },
-      },
-      title: 'User',
-      'x-readme-ref-name': 'User',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-  findPetsByStatus: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            status: {
-              type: 'array',
-              items: {
-                type: 'string',
-                enum: ['available', 'pending', 'sold'],
-                default: 'available',
-              },
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Status values that need to be considered for filter',
-            },
-          },
-          required: ['status'],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'array',
-        items: {
-          type: 'object',
-          required: ['name', 'photoUrls'],
-          properties: {
-            id: {
-              type: 'integer',
-              format: 'int64',
-              readOnly: true,
-              default: 40,
-              examples: [25],
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-            },
-            category: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'integer',
-                  format: 'int64',
-                  minimum: -9223372036854776000,
-                  maximum: 9223372036854776000,
-                },
-                name: { type: 'string' },
-              },
-              title: 'Category',
-              'x-readme-ref-name': 'Category',
-            },
-            name: { type: 'string', examples: ['doggie'] },
-            photoUrls: {
-              type: 'array',
-              items: { type: 'string', examples: ['https://example.com/photo.png'] },
-            },
-            tags: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'integer',
-                    format: 'int64',
-                    minimum: -9223372036854776000,
-                    maximum: 9223372036854776000,
-                  },
-                  name: { type: 'string' },
-                },
-                title: 'Tag',
-                'x-readme-ref-name': 'Tag',
-              },
-            },
-            status: {
-              type: 'string',
-              description: 'pet status in the store\n\n`available` `pending` `sold`',
-              enum: ['available', 'pending', 'sold'],
-            },
-          },
-          title: 'Pet',
-          'x-readme-ref-name': 'Pet',
-        },
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  findPetsByTags: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            tags: {
-              type: 'array',
-              items: { type: 'string' },
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Tags to filter by',
-            },
-          },
-          required: ['tags'],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'array',
-        items: {
-          type: 'object',
-          required: ['name', 'photoUrls'],
-          properties: {
-            id: {
-              type: 'integer',
-              format: 'int64',
-              readOnly: true,
-              default: 40,
-              examples: [25],
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-            },
-            category: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'integer',
-                  format: 'int64',
-                  minimum: -9223372036854776000,
-                  maximum: 9223372036854776000,
-                },
-                name: { type: 'string' },
-              },
-              title: 'Category',
-              'x-readme-ref-name': 'Category',
-            },
-            name: { type: 'string', examples: ['doggie'] },
-            photoUrls: {
-              type: 'array',
-              items: { type: 'string', examples: ['https://example.com/photo.png'] },
-            },
-            tags: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  id: {
-                    type: 'integer',
-                    format: 'int64',
-                    minimum: -9223372036854776000,
-                    maximum: 9223372036854776000,
-                  },
-                  name: { type: 'string' },
-                },
-                title: 'Tag',
-                'x-readme-ref-name': 'Tag',
-              },
-            },
-            status: {
-              type: 'string',
-              description: 'pet status in the store\n\n`available` `pending` `sold`',
-              enum: ['available', 'pending', 'sold'],
-            },
-          },
-          title: 'Pet',
-          'x-readme-ref-name': 'Pet',
-        },
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getPetById: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            petId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'ID of pet to return',
-            },
-          },
-          required: ['petId'],
-        },
-      ],
-    },
-  },
-  updatePetWithForm: {
-    formData: {
-      type: 'object',
-      properties: {
-        name: { description: 'Updated name of the pet', type: 'string' },
-        status: { description: 'Updated status of the pet', type: 'string' },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            petId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'ID of pet that needs to be updated',
-            },
-          },
-          required: ['petId'],
-        },
-      ],
-    },
-  },
-  deletePet: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            petId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Pet id to delete',
-            },
-          },
-          required: ['petId'],
-        },
-        {
-          type: 'object',
-          properties: {
-            api_key: { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  uploadFile: {
-    body: {
-      type: 'object',
-      properties: {
-        additionalMetadata: { description: 'Additional data to pass to server', type: 'string' },
-        file: { description: 'file to upload', type: 'string', format: 'binary' },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            petId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: -9223372036854776000,
-              maximum: 9223372036854776000,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'ID of pet to update',
-            },
-          },
-          required: ['petId'],
-        },
-      ],
-    },
-  },
-  getInventory: {
-    response: {
-      '200': {
-        type: 'object',
-        additionalProperties: {
-          type: 'integer',
-          format: 'int32',
-          minimum: -2147483648,
-          maximum: 2147483647,
-        },
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getOrderById: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            orderId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: 1,
-              maximum: 10,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'ID of pet that needs to be fetched',
-            },
-          },
-          required: ['orderId'],
-        },
-      ],
-    },
-  },
-  deleteOrder: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            orderId: {
-              type: 'integer',
-              format: 'int64',
-              minimum: 1,
-              maximum: 9223372036854776000,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'ID of the order that needs to be deleted',
-            },
-          },
-          required: ['orderId'],
-        },
-      ],
-    },
-  },
-  createUsersWithArrayInput: {
-    body: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'integer',
-            format: 'int64',
-            minimum: -9223372036854776000,
-            maximum: 9223372036854776000,
-          },
-          username: { type: 'string' },
-          firstName: { type: 'string' },
-          lastName: { type: 'string' },
-          email: { type: 'string' },
-          password: { type: 'string' },
-          phone: { type: 'string' },
-          userStatus: {
-            type: 'integer',
-            format: 'int32',
-            description: 'User Status',
-            minimum: -2147483648,
-            maximum: 2147483647,
-          },
-        },
-        title: 'User',
-        'x-readme-ref-name': 'User',
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-  createUsersWithListInput: {
-    body: {
-      type: 'array',
-      items: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'integer',
-            format: 'int64',
-            minimum: -9223372036854776000,
-            maximum: 9223372036854776000,
-          },
-          username: { type: 'string' },
-          firstName: { type: 'string' },
-          lastName: { type: 'string' },
-          email: { type: 'string' },
-          password: { type: 'string' },
-          phone: { type: 'string' },
-          userStatus: {
-            type: 'integer',
-            format: 'int32',
-            description: 'User Status',
-            minimum: -2147483648,
-            maximum: 2147483647,
-          },
-        },
-        title: 'User',
-        'x-readme-ref-name': 'User',
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-  loginUser: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            username: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'The user name for login',
-            },
-            password: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'The password for login in clear text',
-            },
-          },
-          required: ['username', 'password'],
-        },
-      ],
-    },
-    response: { '200': { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' } },
-  },
-  getUserByName: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            username: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'The name that needs to be fetched. Use user1 for testing. ',
-            },
-          },
-          required: ['username'],
-        },
-      ],
-    },
-  },
-  updateUser: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            username: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'name that need to be updated',
-            },
-          },
-          required: ['username'],
-        },
-      ],
-    },
-  },
-  deleteUser: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            username: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'The name that needs to be deleted',
-            },
-          },
-          required: ['username'],
-        },
-      ],
-    },
-  },
-} as const;
-type Pet = FromSchema<typeof schemas.$ref.Pet>;
-type FindPetsByStatusMetadataParam = FromSchema<typeof schemas.findPetsByStatus.metadata>;
-type FindPetsByStatusResponse200 = FromSchema<typeof schemas.findPetsByStatus.response['200']>;
-type FindPetsByTagsMetadataParam = FromSchema<typeof schemas.findPetsByTags.metadata>;
-type FindPetsByTagsResponse200 = FromSchema<typeof schemas.findPetsByTags.response['200']>;
-type GetPetByIdMetadataParam = FromSchema<typeof schemas.getPetById.metadata>;
-type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.updatePetWithForm.formData>;
-type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.updatePetWithForm.metadata>;
-type DeletePetMetadataParam = FromSchema<typeof schemas.deletePet.metadata>;
-type UploadFileBodyParam = FromSchema<typeof schemas.uploadFile.body>;
-type UploadFileMetadataParam = FromSchema<typeof schemas.uploadFile.metadata>;
-type ApiResponse = FromSchema<typeof schemas.$ref.ApiResponse>;
-type GetInventoryResponse200 = FromSchema<typeof schemas.getInventory.response['200']>;
-type Order = FromSchema<typeof schemas.$ref.Order>;
-type GetOrderByIdMetadataParam = FromSchema<typeof schemas.getOrderById.metadata>;
-type DeleteOrderMetadataParam = FromSchema<typeof schemas.deleteOrder.metadata>;
-type User = FromSchema<typeof schemas.$ref.User>;
-type CreateUsersWithArrayInputBodyParam = FromSchema<typeof schemas.createUsersWithArrayInput.body>;
-type CreateUsersWithListInputBodyParam = FromSchema<typeof schemas.createUsersWithListInput.body>;
-type LoginUserMetadataParam = FromSchema<typeof schemas.loginUser.metadata>;
-type LoginUserResponse200 = FromSchema<typeof schemas.loginUser.response['200']>;
-type GetUserByNameMetadataParam = FromSchema<typeof schemas.getUserByName.metadata>;
-type UpdateUserMetadataParam = FromSchema<typeof schemas.updateUser.metadata>;
-type DeleteUserMetadataParam = FromSchema<typeof schemas.deleteUser.metadata>;
+export type {
+  ApiResponse,
+  CreateUsersWithArrayInputBodyParam,
+  CreateUsersWithListInputBodyParam,
+  DeleteOrderMetadataParam,
+  DeletePetMetadataParam,
+  DeleteUserMetadataParam,
+  FindPetsByStatusMetadataParam,
+  FindPetsByStatusResponse200,
+  FindPetsByTagsMetadataParam,
+  FindPetsByTagsResponse200,
+  GetInventoryResponse200,
+  GetOrderByIdMetadataParam,
+  GetPetByIdMetadataParam,
+  GetUserByNameMetadataParam,
+  LoginUserMetadataParam,
+  LoginUserResponse200,
+  Order,
+  Pet,
+  UpdatePetWithFormFormDataParam,
+  UpdatePetWithFormMetadataParam,
+  UpdateUserMetadataParam,
+  UploadFileBodyParam,
+  UploadFileMetadataParam,
+  User,
+} from './types';

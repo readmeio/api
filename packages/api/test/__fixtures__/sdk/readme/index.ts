@@ -1,4 +1,5 @@
-import type { FromSchema } from 'json-schema-to-ts';
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
@@ -6,7 +7,6 @@ import definition from '@readme/oas-examples/3.0/json/readme.json';
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -79,8 +79,8 @@ class SDK {
    */
   get(
     path: '/api-registry/{uuid}',
-    metadata: GetApiRegistryMetadataParam
-  ): Promise<GetApiRegistryResponse200 | ErrorRegistryNotfound>;
+    metadata: types.GetApiRegistryMetadataParam
+  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound>;
   /**
    * Get API specification metadata
    *
@@ -88,20 +88,20 @@ class SDK {
    */
   get(
     path: '/api-specification',
-    metadata?: GetApiSpecificationMetadataParam
+    metadata?: types.GetApiSpecificationMetadataParam
   ): Promise<
-    | GetApiSpecificationResponse200
-    | ErrorVersionEmpty
-    | GetApiSpecificationResponse401
-    | GetApiSpecificationResponse403
-    | ErrorVersionNotfound
+    | types.GetApiSpecificationResponse200
+    | types.ErrorVersionEmpty
+    | types.GetApiSpecificationResponse401
+    | types.GetApiSpecificationResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Returns all the roles we're hiring for at ReadMe!
    *
    * @summary Get open roles
    */
-  get(path: '/apply'): Promise<GetOpenRolesResponse200>;
+  get(path: '/apply'): Promise<types.GetOpenRolesResponse200>;
   /**
    * Returns all the categories for a specified version
    *
@@ -109,8 +109,8 @@ class SDK {
    */
   get(
     path: '/categories',
-    metadata?: GetCategoriesMetadataParam
-  ): Promise<GetCategoriesResponse200>;
+    metadata?: types.GetCategoriesMetadataParam
+  ): Promise<types.GetCategoriesResponse200>;
   /**
    * Returns the category with this slug
    *
@@ -118,8 +118,8 @@ class SDK {
    */
   get(
     path: '/categories/{slug}',
-    metadata: GetCategoryMetadataParam
-  ): Promise<ErrorCategoryNotfound>;
+    metadata: types.GetCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Returns the docs and children docs within this category
    *
@@ -127,8 +127,8 @@ class SDK {
    */
   get(
     path: '/categories/{slug}/docs',
-    metadata: GetCategoryDocsMetadataParam
-  ): Promise<ErrorCategoryNotfound>;
+    metadata: types.GetCategoryDocsMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Returns a list of changelogs associated with the project API key
    *
@@ -136,14 +136,17 @@ class SDK {
    */
   get(
     path: '/changelogs',
-    metadata?: GetChangelogsMetadataParam
-  ): Promise<GetChangelogsResponse200>;
+    metadata?: types.GetChangelogsMetadataParam
+  ): Promise<types.GetChangelogsResponse200>;
   /**
    * Returns the changelog with this slug
    *
    * @summary Get changelog
    */
-  get<T = unknown>(path: '/changelogs/{slug}', metadata: GetChangelogMetadataParam): Promise<T>;
+  get<T = unknown>(
+    path: '/changelogs/{slug}',
+    metadata: types.GetChangelogMetadataParam
+  ): Promise<T>;
   /**
    * Returns a list of custom pages associated with the project API key
    *
@@ -151,8 +154,12 @@ class SDK {
    */
   get(
     path: '/custompages',
-    metadata?: GetCustomPagesMetadataParam
-  ): Promise<GetCustomPagesResponse200 | GetCustomPagesResponse401 | GetCustomPagesResponse403>;
+    metadata?: types.GetCustomPagesMetadataParam
+  ): Promise<
+    | types.GetCustomPagesResponse200
+    | types.GetCustomPagesResponse401
+    | types.GetCustomPagesResponse403
+  >;
   /**
    * Returns the custom page with this slug
    *
@@ -160,8 +167,10 @@ class SDK {
    */
   get(
     path: '/custompages/{slug}',
-    metadata: GetCustomPageMetadataParam
-  ): Promise<GetCustomPageResponse401 | GetCustomPageResponse403 | ErrorCustompageNotfound>;
+    metadata: types.GetCustomPageMetadataParam
+  ): Promise<
+    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
+  >;
   /**
    * Returns the doc with this slug
    *
@@ -169,26 +178,30 @@ class SDK {
    */
   get(
     path: '/docs/{slug}',
-    metadata: GetDocMetadataParam
-  ): Promise<GetDocResponse401 | GetDocResponse403 | ErrorDocNotfound>;
+    metadata: types.GetDocMetadataParam
+  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound>;
   /**
    * Returns with all of the error page types for this project
    *
    * @summary Get errors
    */
-  get(path: '/errors'): Promise<GetErrorsResponse401 | GetErrorsResponse403>;
+  get(path: '/errors'): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403>;
   /**
    * Returns project data for API key
    *
    * @summary Get metadata about the current project
    */
-  get(path: '/'): Promise<CondensedProjectData | GetProjectResponse401 | GetProjectResponse403>;
+  get(
+    path: '/'
+  ): Promise<
+    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
+  >;
   /**
    * Retrieve a list of versions associated with a project API key
    *
    * @summary Get versions
    */
-  get(path: '/version'): Promise<GetVersionsResponse401 | GetVersionsResponse403>;
+  get(path: '/version'): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403>;
   /**
    * Returns the version with this version ID
    *
@@ -196,8 +209,10 @@ class SDK {
    */
   get(
     path: '/version/{versionId}',
-    metadata: GetVersionMetadataParam
-  ): Promise<GetVersionResponse401 | GetVersionResponse403 | ErrorVersionNotfound>;
+    metadata: types.GetVersionMetadataParam
+  ): Promise<
+    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
+  >;
   /**
    * Access any GET endpoint on your API.
    *
@@ -215,20 +230,20 @@ class SDK {
    */
   post(
     path: '/api-specification',
-    body: UploadApiSpecificationBodyParam,
-    metadata?: UploadApiSpecificationMetadataParam
+    body: types.UploadApiSpecificationBodyParam,
+    metadata?: types.UploadApiSpecificationMetadataParam
   ): Promise<
-    | UploadApiSpecificationResponse400
-    | UploadApiSpecificationResponse401
-    | UploadApiSpecificationResponse403
-    | ErrorSpecTimeout
+    | types.UploadApiSpecificationResponse400
+    | types.UploadApiSpecificationResponse401
+    | types.UploadApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   >;
   /**
    * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
    *
    * @summary Submit your application!
    */
-  post<T = unknown>(path: '/apply', body: Apply): Promise<T>;
+  post<T = unknown>(path: '/apply', body: types.Apply): Promise<T>;
   /**
    * Create a new category inside of this project
    *
@@ -236,15 +251,15 @@ class SDK {
    */
   post(
     path: '/categories',
-    body: Category,
-    metadata?: CreateCategoryMetadataParam
-  ): Promise<ErrorCategoryInvalid>;
+    body: types.Category,
+    metadata?: types.CreateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid>;
   /**
    * Create a new changelog inside of this project
    *
    * @summary Create changelog
    */
-  post<T = unknown>(path: '/changelogs', body: Changelog): Promise<T>;
+  post<T = unknown>(path: '/changelogs', body: types.Changelog): Promise<T>;
   /**
    * Create a new custom page inside of this project
    *
@@ -252,8 +267,12 @@ class SDK {
    */
   post(
     path: '/custompages',
-    body: CustomPage
-  ): Promise<ErrorCustompageInvalid | CreateCustomPageResponse401 | CreateCustomPageResponse403>;
+    body: types.CustomPage
+  ): Promise<
+    | types.ErrorCustompageInvalid
+    | types.CreateCustomPageResponse401
+    | types.CreateCustomPageResponse403
+  >;
   /**
    * Create a new doc inside of this project
    *
@@ -261,9 +280,9 @@ class SDK {
    */
   post(
     path: '/docs',
-    body: Doc,
-    metadata?: CreateDocMetadataParam
-  ): Promise<ErrorDocInvalid | CreateDocResponse401 | CreateDocResponse403>;
+    body: types.Doc,
+    metadata?: types.CreateDocMetadataParam
+  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403>;
   /**
    * Returns all docs that match the search
    *
@@ -271,8 +290,8 @@ class SDK {
    */
   post(
     path: '/docs/search',
-    metadata: SearchDocsMetadataParam
-  ): Promise<SearchDocsResponse401 | SearchDocsResponse403>;
+    metadata: types.SearchDocsMetadataParam
+  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403>;
   /**
    * Create a new version
    *
@@ -280,12 +299,12 @@ class SDK {
    */
   post(
     path: '/version',
-    body: Version
+    body: types.Version
   ): Promise<
-    | CreateVersionResponse400
-    | CreateVersionResponse401
-    | CreateVersionResponse403
-    | ErrorVersionForkNotfound
+    | types.CreateVersionResponse400
+    | types.CreateVersionResponse401
+    | types.CreateVersionResponse403
+    | types.ErrorVersionForkNotfound
   >;
   /**
    * Access any POST endpoint on your API.
@@ -305,13 +324,13 @@ class SDK {
    */
   put(
     path: '/api-specification/{id}',
-    body: UpdateApiSpecificationBodyParam,
-    metadata: UpdateApiSpecificationMetadataParam
+    body: types.UpdateApiSpecificationBodyParam,
+    metadata: types.UpdateApiSpecificationMetadataParam
   ): Promise<
-    | UpdateApiSpecificationResponse400
-    | UpdateApiSpecificationResponse401
-    | UpdateApiSpecificationResponse403
-    | ErrorSpecTimeout
+    | types.UpdateApiSpecificationResponse400
+    | types.UpdateApiSpecificationResponse401
+    | types.UpdateApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   >;
   /**
    * Change the properties of a category.
@@ -320,9 +339,9 @@ class SDK {
    */
   put(
     path: '/categories/{slug}',
-    body: Category,
-    metadata: UpdateCategoryMetadataParam
-  ): Promise<ErrorCategoryInvalid | ErrorCategoryNotfound>;
+    body: types.Category,
+    metadata: types.UpdateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound>;
   /**
    * Update a changelog with this slug
    *
@@ -330,8 +349,8 @@ class SDK {
    */
   put<T = unknown>(
     path: '/changelogs/{slug}',
-    body: Changelog,
-    metadata: UpdateChangelogMetadataParam
+    body: types.Changelog,
+    metadata: types.UpdateChangelogMetadataParam
   ): Promise<T>;
   /**
    * Update a custom page with this slug
@@ -340,13 +359,13 @@ class SDK {
    */
   put(
     path: '/custompages/{slug}',
-    body: CustomPage,
-    metadata: UpdateCustomPageMetadataParam
+    body: types.CustomPage,
+    metadata: types.UpdateCustomPageMetadataParam
   ): Promise<
-    | ErrorCustompageInvalid
-    | UpdateCustomPageResponse401
-    | UpdateCustomPageResponse403
-    | ErrorCustompageNotfound
+    | types.ErrorCustompageInvalid
+    | types.UpdateCustomPageResponse401
+    | types.UpdateCustomPageResponse403
+    | types.ErrorCustompageNotfound
   >;
   /**
    * Update a doc with this slug
@@ -355,9 +374,14 @@ class SDK {
    */
   put(
     path: '/docs/{slug}',
-    body: Doc,
-    metadata: UpdateDocMetadataParam
-  ): Promise<ErrorDocInvalid | UpdateDocResponse401 | UpdateDocResponse403 | ErrorDocNotfound>;
+    body: types.Doc,
+    metadata: types.UpdateDocMetadataParam
+  ): Promise<
+    | types.ErrorDocInvalid
+    | types.UpdateDocResponse401
+    | types.UpdateDocResponse403
+    | types.ErrorDocNotfound
+  >;
   /**
    * Update an existing version
    *
@@ -365,13 +389,13 @@ class SDK {
    */
   put(
     path: '/version/{versionId}',
-    body: Version,
-    metadata: UpdateVersionMetadataParam
+    body: types.Version,
+    metadata: types.UpdateVersionMetadataParam
   ): Promise<
-    | ErrorVersionCantDemoteStable
-    | UpdateVersionResponse401
-    | UpdateVersionResponse403
-    | ErrorVersionNotfound
+    | types.ErrorVersionCantDemoteStable
+    | types.UpdateVersionResponse401
+    | types.UpdateVersionResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Access any PUT endpoint on your API.
@@ -391,12 +415,12 @@ class SDK {
    */
   delete(
     path: '/api-specification/{id}',
-    metadata: DeleteApiSpecificationMetadataParam
+    metadata: types.DeleteApiSpecificationMetadataParam
   ): Promise<
-    | ErrorSpecIdInvalid
-    | DeleteApiSpecificationResponse401
-    | DeleteApiSpecificationResponse403
-    | ErrorSpecNotfound
+    | types.ErrorSpecIdInvalid
+    | types.DeleteApiSpecificationResponse401
+    | types.DeleteApiSpecificationResponse403
+    | types.ErrorSpecNotfound
   >;
   /**
    * Delete the category with this slug.
@@ -407,8 +431,8 @@ class SDK {
    */
   delete(
     path: '/categories/{slug}',
-    metadata: DeleteCategoryMetadataParam
-  ): Promise<ErrorCategoryNotfound>;
+    metadata: types.DeleteCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Delete the changelog with this slug
    *
@@ -416,7 +440,7 @@ class SDK {
    */
   delete<T = unknown>(
     path: '/changelogs/{slug}',
-    metadata: DeleteChangelogMetadataParam
+    metadata: types.DeleteChangelogMetadataParam
   ): Promise<T>;
   /**
    * Delete the custom page with this slug
@@ -425,8 +449,12 @@ class SDK {
    */
   delete(
     path: '/custompages/{slug}',
-    metadata: DeleteCustomPageMetadataParam
-  ): Promise<DeleteCustomPageResponse401 | DeleteCustomPageResponse403 | ErrorCustompageNotfound>;
+    metadata: types.DeleteCustomPageMetadataParam
+  ): Promise<
+    | types.DeleteCustomPageResponse401
+    | types.DeleteCustomPageResponse403
+    | types.ErrorCustompageNotfound
+  >;
   /**
    * Delete the doc with this slug
    *
@@ -434,8 +462,8 @@ class SDK {
    */
   delete(
     path: '/docs/{slug}',
-    metadata: DeleteDocMetadataParam
-  ): Promise<DeleteDocResponse401 | DeleteDocResponse403 | ErrorDocNotfound>;
+    metadata: types.DeleteDocMetadataParam
+  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound>;
   /**
    * Delete a version
    *
@@ -443,12 +471,12 @@ class SDK {
    */
   delete(
     path: '/version/{versionId}',
-    metadata: DeleteVersionMetadataParam
+    metadata: types.DeleteVersionMetadataParam
   ): Promise<
-    | ErrorVersionCantRemoveStable
-    | DeleteVersionResponse401
-    | DeleteVersionResponse403
-    | ErrorVersionNotfound
+    | types.ErrorVersionCantRemoveStable
+    | types.DeleteVersionResponse401
+    | types.DeleteVersionResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Access any DELETE endpoint on your API.
@@ -471,8 +499,8 @@ class SDK {
    * @summary Retrieve an entry from the API Registry
    */
   getAPIRegistry(
-    metadata: GetApiRegistryMetadataParam
-  ): Promise<GetApiRegistryResponse200 | ErrorRegistryNotfound> {
+    metadata: types.GetApiRegistryMetadataParam
+  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound> {
     return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
   }
 
@@ -482,13 +510,13 @@ class SDK {
    * @summary Get metadata
    */
   getAPISpecification(
-    metadata?: GetApiSpecificationMetadataParam
+    metadata?: types.GetApiSpecificationMetadataParam
   ): Promise<
-    | GetApiSpecificationResponse200
-    | ErrorVersionEmpty
-    | GetApiSpecificationResponse401
-    | GetApiSpecificationResponse403
-    | ErrorVersionNotfound
+    | types.GetApiSpecificationResponse200
+    | types.ErrorVersionEmpty
+    | types.GetApiSpecificationResponse401
+    | types.GetApiSpecificationResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/api-specification', 'get', metadata);
   }
@@ -499,13 +527,13 @@ class SDK {
    * @summary Upload specification
    */
   uploadAPISpecification(
-    body: UploadApiSpecificationBodyParam,
-    metadata?: UploadApiSpecificationMetadataParam
+    body: types.UploadApiSpecificationBodyParam,
+    metadata?: types.UploadApiSpecificationMetadataParam
   ): Promise<
-    | UploadApiSpecificationResponse400
-    | UploadApiSpecificationResponse401
-    | UploadApiSpecificationResponse403
-    | ErrorSpecTimeout
+    | types.UploadApiSpecificationResponse400
+    | types.UploadApiSpecificationResponse401
+    | types.UploadApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   > {
     return this.core.fetch('/api-specification', 'post', body, metadata);
   }
@@ -516,13 +544,13 @@ class SDK {
    * @summary Update specification
    */
   updateAPISpecification(
-    body: UpdateApiSpecificationBodyParam,
-    metadata: UpdateApiSpecificationMetadataParam
+    body: types.UpdateApiSpecificationBodyParam,
+    metadata: types.UpdateApiSpecificationMetadataParam
   ): Promise<
-    | UpdateApiSpecificationResponse400
-    | UpdateApiSpecificationResponse401
-    | UpdateApiSpecificationResponse403
-    | ErrorSpecTimeout
+    | types.UpdateApiSpecificationResponse400
+    | types.UpdateApiSpecificationResponse401
+    | types.UpdateApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   > {
     return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
   }
@@ -533,12 +561,12 @@ class SDK {
    * @summary Delete specification
    */
   deleteAPISpecification(
-    metadata: DeleteApiSpecificationMetadataParam
+    metadata: types.DeleteApiSpecificationMetadataParam
   ): Promise<
-    | ErrorSpecIdInvalid
-    | DeleteApiSpecificationResponse401
-    | DeleteApiSpecificationResponse403
-    | ErrorSpecNotfound
+    | types.ErrorSpecIdInvalid
+    | types.DeleteApiSpecificationResponse401
+    | types.DeleteApiSpecificationResponse403
+    | types.ErrorSpecNotfound
   > {
     return this.core.fetch('/api-specification/{id}', 'delete', metadata);
   }
@@ -548,7 +576,7 @@ class SDK {
    *
    * @summary Get open roles
    */
-  getOpenRoles(): Promise<GetOpenRolesResponse200> {
+  getOpenRoles(): Promise<types.GetOpenRolesResponse200> {
     return this.core.fetch('/apply', 'get');
   }
 
@@ -557,7 +585,7 @@ class SDK {
    *
    * @summary Submit your application!
    */
-  applyToReadMe<T = unknown>(body: Apply): Promise<T> {
+  applyToReadMe<T = unknown>(body: types.Apply): Promise<T> {
     return this.core.fetch('/apply', 'post', body);
   }
 
@@ -566,7 +594,9 @@ class SDK {
    *
    * @summary Get all categories
    */
-  getCategories(metadata?: GetCategoriesMetadataParam): Promise<GetCategoriesResponse200> {
+  getCategories(
+    metadata?: types.GetCategoriesMetadataParam
+  ): Promise<types.GetCategoriesResponse200> {
     return this.core.fetch('/categories', 'get', metadata);
   }
 
@@ -576,9 +606,9 @@ class SDK {
    * @summary Create category
    */
   createCategory(
-    body: Category,
-    metadata?: CreateCategoryMetadataParam
-  ): Promise<ErrorCategoryInvalid> {
+    body: types.Category,
+    metadata?: types.CreateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -587,7 +617,7 @@ class SDK {
    *
    * @summary Get category
    */
-  getCategory(metadata: GetCategoryMetadataParam): Promise<ErrorCategoryNotfound> {
+  getCategory(metadata: types.GetCategoryMetadataParam): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'get', metadata);
   }
 
@@ -597,9 +627,9 @@ class SDK {
    * @summary Update category
    */
   updateCategory(
-    body: Category,
-    metadata: UpdateCategoryMetadataParam
-  ): Promise<ErrorCategoryInvalid | ErrorCategoryNotfound> {
+    body: types.Category,
+    metadata: types.UpdateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -610,7 +640,9 @@ class SDK {
    *
    * @summary Delete category
    */
-  deleteCategory(metadata: DeleteCategoryMetadataParam): Promise<ErrorCategoryNotfound> {
+  deleteCategory(
+    metadata: types.DeleteCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'delete', metadata);
   }
 
@@ -619,7 +651,9 @@ class SDK {
    *
    * @summary Get docs for category
    */
-  getCategoryDocs(metadata: GetCategoryDocsMetadataParam): Promise<ErrorCategoryNotfound> {
+  getCategoryDocs(
+    metadata: types.GetCategoryDocsMetadataParam
+  ): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
   }
 
@@ -628,7 +662,9 @@ class SDK {
    *
    * @summary Get changelogs
    */
-  getChangelogs(metadata?: GetChangelogsMetadataParam): Promise<GetChangelogsResponse200> {
+  getChangelogs(
+    metadata?: types.GetChangelogsMetadataParam
+  ): Promise<types.GetChangelogsResponse200> {
     return this.core.fetch('/changelogs', 'get', metadata);
   }
 
@@ -637,7 +673,7 @@ class SDK {
    *
    * @summary Create changelog
    */
-  createChangelog<T = unknown>(body: Changelog): Promise<T> {
+  createChangelog<T = unknown>(body: types.Changelog): Promise<T> {
     return this.core.fetch('/changelogs', 'post', body);
   }
 
@@ -646,7 +682,7 @@ class SDK {
    *
    * @summary Get changelog
    */
-  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T> {
+  getChangelog<T = unknown>(metadata: types.GetChangelogMetadataParam): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'get', metadata);
   }
 
@@ -656,8 +692,8 @@ class SDK {
    * @summary Update changelog
    */
   updateChangelog<T = unknown>(
-    body: Changelog,
-    metadata: UpdateChangelogMetadataParam
+    body: types.Changelog,
+    metadata: types.UpdateChangelogMetadataParam
   ): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
   }
@@ -667,7 +703,7 @@ class SDK {
    *
    * @summary Delete changelog
    */
-  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T> {
+  deleteChangelog<T = unknown>(metadata: types.DeleteChangelogMetadataParam): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
@@ -677,8 +713,12 @@ class SDK {
    * @summary Get custom pages
    */
   getCustomPages(
-    metadata?: GetCustomPagesMetadataParam
-  ): Promise<GetCustomPagesResponse200 | GetCustomPagesResponse401 | GetCustomPagesResponse403> {
+    metadata?: types.GetCustomPagesMetadataParam
+  ): Promise<
+    | types.GetCustomPagesResponse200
+    | types.GetCustomPagesResponse401
+    | types.GetCustomPagesResponse403
+  > {
     return this.core.fetch('/custompages', 'get', metadata);
   }
 
@@ -688,8 +728,12 @@ class SDK {
    * @summary Create custom page
    */
   createCustomPage(
-    body: CustomPage
-  ): Promise<ErrorCustompageInvalid | CreateCustomPageResponse401 | CreateCustomPageResponse403> {
+    body: types.CustomPage
+  ): Promise<
+    | types.ErrorCustompageInvalid
+    | types.CreateCustomPageResponse401
+    | types.CreateCustomPageResponse403
+  > {
     return this.core.fetch('/custompages', 'post', body);
   }
 
@@ -699,8 +743,10 @@ class SDK {
    * @summary Get custom page
    */
   getCustomPage(
-    metadata: GetCustomPageMetadataParam
-  ): Promise<GetCustomPageResponse401 | GetCustomPageResponse403 | ErrorCustompageNotfound> {
+    metadata: types.GetCustomPageMetadataParam
+  ): Promise<
+    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
+  > {
     return this.core.fetch('/custompages/{slug}', 'get', metadata);
   }
 
@@ -710,13 +756,13 @@ class SDK {
    * @summary Update custom page
    */
   updateCustomPage(
-    body: CustomPage,
-    metadata: UpdateCustomPageMetadataParam
+    body: types.CustomPage,
+    metadata: types.UpdateCustomPageMetadataParam
   ): Promise<
-    | ErrorCustompageInvalid
-    | UpdateCustomPageResponse401
-    | UpdateCustomPageResponse403
-    | ErrorCustompageNotfound
+    | types.ErrorCustompageInvalid
+    | types.UpdateCustomPageResponse401
+    | types.UpdateCustomPageResponse403
+    | types.ErrorCustompageNotfound
   > {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
@@ -727,8 +773,12 @@ class SDK {
    * @summary Delete custom page
    */
   deleteCustomPage(
-    metadata: DeleteCustomPageMetadataParam
-  ): Promise<DeleteCustomPageResponse401 | DeleteCustomPageResponse403 | ErrorCustompageNotfound> {
+    metadata: types.DeleteCustomPageMetadataParam
+  ): Promise<
+    | types.DeleteCustomPageResponse401
+    | types.DeleteCustomPageResponse403
+    | types.ErrorCustompageNotfound
+  > {
     return this.core.fetch('/custompages/{slug}', 'delete', metadata);
   }
 
@@ -738,8 +788,8 @@ class SDK {
    * @summary Get doc
    */
   getDoc(
-    metadata: GetDocMetadataParam
-  ): Promise<GetDocResponse401 | GetDocResponse403 | ErrorDocNotfound> {
+    metadata: types.GetDocMetadataParam
+  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound> {
     return this.core.fetch('/docs/{slug}', 'get', metadata);
   }
 
@@ -749,9 +799,14 @@ class SDK {
    * @summary Update doc
    */
   updateDoc(
-    body: Doc,
-    metadata: UpdateDocMetadataParam
-  ): Promise<ErrorDocInvalid | UpdateDocResponse401 | UpdateDocResponse403 | ErrorDocNotfound> {
+    body: types.Doc,
+    metadata: types.UpdateDocMetadataParam
+  ): Promise<
+    | types.ErrorDocInvalid
+    | types.UpdateDocResponse401
+    | types.UpdateDocResponse403
+    | types.ErrorDocNotfound
+  > {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -761,8 +816,8 @@ class SDK {
    * @summary Delete doc
    */
   deleteDoc(
-    metadata: DeleteDocMetadataParam
-  ): Promise<DeleteDocResponse401 | DeleteDocResponse403 | ErrorDocNotfound> {
+    metadata: types.DeleteDocMetadataParam
+  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound> {
     return this.core.fetch('/docs/{slug}', 'delete', metadata);
   }
 
@@ -772,9 +827,9 @@ class SDK {
    * @summary Create doc
    */
   createDoc(
-    body: Doc,
-    metadata?: CreateDocMetadataParam
-  ): Promise<ErrorDocInvalid | CreateDocResponse401 | CreateDocResponse403> {
+    body: types.Doc,
+    metadata?: types.CreateDocMetadataParam
+  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -784,8 +839,8 @@ class SDK {
    * @summary Search docs
    */
   searchDocs(
-    metadata: SearchDocsMetadataParam
-  ): Promise<SearchDocsResponse401 | SearchDocsResponse403> {
+    metadata: types.SearchDocsMetadataParam
+  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403> {
     return this.core.fetch('/docs/search', 'post', metadata);
   }
 
@@ -794,7 +849,7 @@ class SDK {
    *
    * @summary Get errors
    */
-  getErrors(): Promise<GetErrorsResponse401 | GetErrorsResponse403> {
+  getErrors(): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403> {
     return this.core.fetch('/errors', 'get');
   }
 
@@ -803,7 +858,9 @@ class SDK {
    *
    * @summary Get metadata about the current project
    */
-  getProject(): Promise<CondensedProjectData | GetProjectResponse401 | GetProjectResponse403> {
+  getProject(): Promise<
+    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
+  > {
     return this.core.fetch('/', 'get');
   }
 
@@ -812,7 +869,7 @@ class SDK {
    *
    * @summary Get versions
    */
-  getVersions(): Promise<GetVersionsResponse401 | GetVersionsResponse403> {
+  getVersions(): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403> {
     return this.core.fetch('/version', 'get');
   }
 
@@ -822,12 +879,12 @@ class SDK {
    * @summary Create version
    */
   createVersion(
-    body: Version
+    body: types.Version
   ): Promise<
-    | CreateVersionResponse400
-    | CreateVersionResponse401
-    | CreateVersionResponse403
-    | ErrorVersionForkNotfound
+    | types.CreateVersionResponse400
+    | types.CreateVersionResponse401
+    | types.CreateVersionResponse403
+    | types.ErrorVersionForkNotfound
   > {
     return this.core.fetch('/version', 'post', body);
   }
@@ -838,8 +895,10 @@ class SDK {
    * @summary Get version
    */
   getVersion(
-    metadata: GetVersionMetadataParam
-  ): Promise<GetVersionResponse401 | GetVersionResponse403 | ErrorVersionNotfound> {
+    metadata: types.GetVersionMetadataParam
+  ): Promise<
+    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
+  > {
     return this.core.fetch('/version/{versionId}', 'get', metadata);
   }
 
@@ -849,13 +908,13 @@ class SDK {
    * @summary Update version
    */
   updateVersion(
-    body: Version,
-    metadata: UpdateVersionMetadataParam
+    body: types.Version,
+    metadata: types.UpdateVersionMetadataParam
   ): Promise<
-    | ErrorVersionCantDemoteStable
-    | UpdateVersionResponse401
-    | UpdateVersionResponse403
-    | ErrorVersionNotfound
+    | types.ErrorVersionCantDemoteStable
+    | types.UpdateVersionResponse401
+    | types.UpdateVersionResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
@@ -866,12 +925,12 @@ class SDK {
    * @summary Delete version
    */
   deleteVersion(
-    metadata: DeleteVersionMetadataParam
+    metadata: types.DeleteVersionMetadataParam
   ): Promise<
-    | ErrorVersionCantRemoveStable
-    | DeleteVersionResponse401
-    | DeleteVersionResponse403
-    | ErrorVersionNotfound
+    | types.ErrorVersionCantRemoveStable
+    | types.DeleteVersionResponse401
+    | types.DeleteVersionResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/version/{versionId}', 'delete', metadata);
   }
@@ -882,5156 +941,107 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-
-const schemas = {
-  getAPIRegistry: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            uuid: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.',
-            },
-          },
-          required: ['uuid'],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'object',
-        additionalProperties: true,
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  $ref: {
-    ErrorRegistryNotfound: {
-      title: 'error_REGISTRY_NOTFOUND',
-      'x-readme-ref-name': 'error_REGISTRY_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'REGISTRY_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorVersionEmpty: {
-      title: 'error_VERSION_EMPTY',
-      'x-readme-ref-name': 'error_VERSION_EMPTY',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'VERSION_EMPTY',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorVersionNotfound: {
-      title: 'error_VERSION_NOTFOUND',
-      'x-readme-ref-name': 'error_VERSION_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'VERSION_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorSpecTimeout: {
-      title: 'error_SPEC_TIMEOUT',
-      'x-readme-ref-name': 'error_SPEC_TIMEOUT',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'SPEC_TIMEOUT',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorSpecIdInvalid: {
-      title: 'error_SPEC_ID_INVALID',
-      'x-readme-ref-name': 'error_SPEC_ID_INVALID',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'SPEC_ID_INVALID',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorSpecNotfound: {
-      title: 'error_SPEC_NOTFOUND',
-      'x-readme-ref-name': 'error_SPEC_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'SPEC_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Apply: {
-      type: 'object',
-      properties: {
-        name: { type: 'string', minLength: 1, description: 'Your full name', default: 'Your Name' },
-        email: {
-          type: 'string',
-          format: 'email',
-          description: 'A valid email we can reach you at',
-          default: 'you@example.com',
-        },
-        job: {
-          type: 'string',
-          description: "The job you're looking to apply for (https://readme.com/careers)",
-          enum: [
-            'Content Marketing Manager',
-            'Engineering Manager',
-            'Head of People',
-            'Marketing Campaigns Manager',
-            'Marketing Designer',
-            'Product Designer',
-            'Product Education Manager',
-            'Sales Development Representative',
-            'Support Engineer (Weekends)',
-          ],
-          default: 'Content Marketing Manager',
-        },
-        pronouns: { type: 'string', description: 'Learn more at https://pronoun.is/' },
-        linkedin: {
-          type: 'string',
-          format: 'url',
-          description: 'What have you been up to the past few years?',
-        },
-        github: {
-          type: 'string',
-          description: 'Or Bitbucket, Gitlab or anywhere else your code is hosted!',
-          format: 'url',
-        },
-        coverLetter: {
-          type: 'string',
-          format: 'blob',
-          description: 'What should we know about you?',
-        },
-        dontReallyApply: {
-          type: 'boolean',
-          description: 'Want to play with the API but not actually apply? Set this to true.',
-          default: false,
-        },
-      },
-      required: ['name', 'email', 'job'],
-      title: 'apply',
-      'x-readme-ref-name': 'apply',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Category: {
-      type: 'object',
-      title: 'category',
-      'x-readme-ref-name': 'category',
-      required: ['title'],
-      properties: {
-        title: {
-          type: 'string',
-          description: 'A short title for the category. This is what will show in the sidebar.',
-        },
-        type: {
-          type: 'string',
-          enum: ['reference', 'guide'],
-          default: 'guide',
-          description:
-            'A category can be part of your reference or guide documentation, which is determined by this field.',
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorCategoryInvalid: {
-      title: 'error_CATEGORY_INVALID',
-      'x-readme-ref-name': 'error_CATEGORY_INVALID',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'CATEGORY_INVALID',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorCategoryNotfound: {
-      title: 'error_CATEGORY_NOTFOUND',
-      'x-readme-ref-name': 'error_CATEGORY_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'CATEGORY_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Changelog: {
-      type: 'object',
-      properties: {
-        title: { type: 'string', description: 'Title of the changelog' },
-        type: { type: 'string', enum: ['', 'added', 'fixed', 'improved', 'deprecated', 'removed'] },
-        body: { type: 'string', description: 'Body content of the changelog' },
-        hidden: { type: 'boolean', description: 'Visibility of the changelog', default: true },
-      },
-      required: ['title', 'body'],
-      title: 'changelog',
-      'x-readme-ref-name': 'changelog',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    CustomPage: {
-      type: 'object',
-      properties: {
-        title: { type: 'string', description: 'Title of the custom page' },
-        body: { description: 'Body formatted in Markdown (displayed by default).', type: 'string' },
-        html: {
-          description:
-            'Body formatted in HTML (sanitized, only displayed if `htmlmode` is **true**).',
-          type: 'string',
-        },
-        htmlmode: {
-          description:
-            '**true** if `html` should be displayed, **false** if `body` should be displayed.',
-          type: 'boolean',
-          default: false,
-        },
-        hidden: { type: 'boolean', description: 'Visibility of the custom page', default: true },
-      },
-      required: ['title'],
-      title: 'customPage',
-      'x-readme-ref-name': 'customPage',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorCustompageInvalid: {
-      title: 'error_CUSTOMPAGE_INVALID',
-      'x-readme-ref-name': 'error_CUSTOMPAGE_INVALID',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'CUSTOMPAGE_INVALID',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorCustompageNotfound: {
-      title: 'error_CUSTOMPAGE_NOTFOUND',
-      'x-readme-ref-name': 'error_CUSTOMPAGE_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'CUSTOMPAGE_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorDocNotfound: {
-      title: 'error_DOC_NOTFOUND',
-      'x-readme-ref-name': 'error_DOC_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'DOC_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Doc: {
-      type: 'object',
-      properties: {
-        title: { type: 'string', description: 'Title of the page' },
-        type: {
-          type: 'string',
-          description:
-            'Type of the page. The available types all show up under the /docs/ URL path of your docs project (also known as the "guides" section). Can be "basic" (most common), "error" (page desribing an API error), or "link" (page that redirects to an external link)',
-          enum: ['basic', 'error', 'link'],
-        },
-        body: {
-          type: 'string',
-          description:
-            'Body content of the page, formatted in ReadMe or GitHub flavored Markdown. Accepts long page content, for example, greater than 100k characters',
-        },
-        category: {
-          type: 'string',
-          description:
-            'Category ID of the page, which you can get through https://docs.readme.com/reference/categories#getcategory ',
-        },
-        hidden: { type: 'boolean', description: 'Visibility of the page', default: true },
-        order: {
-          type: 'integer',
-          description: 'The position of the page in your project sidebar.',
-          default: 999,
-        },
-        parentDoc: {
-          type: 'string',
-          description:
-            'For a subpage, specify the parent doc ID, which you can get through https://docs.readme.com/reference/docs#getdoc',
-        },
-        error: {
-          type: 'object',
-          properties: {
-            code: { type: 'string', description: 'The error code for docs with the "error" type' },
-          },
-        },
-      },
-      required: ['title', 'category'],
-      title: 'doc',
-      'x-readme-ref-name': 'doc',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorDocInvalid: {
-      title: 'error_DOC_INVALID',
-      'x-readme-ref-name': 'error_DOC_INVALID',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'DOC_INVALID',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    CondensedProjectData: {
-      type: 'object',
-      properties: {
-        name: { type: 'string' },
-        subdomain: { type: 'string' },
-        jwtSecret: { type: 'string' },
-        baseUrl: {
-          type: 'string',
-          format: 'url',
-          description:
-            'The base URL for the project. If the project is not running under a custom domain, it will be `https://projectSubdomain.readme.io`, otherwise it can either be or `https://example.com` or, in the case of an enterprise child project `https://example.com/projectSubdomain`.',
-        },
-        plan: { type: 'string' },
-      },
-      title: 'condensedProjectData',
-      'x-readme-ref-name': 'condensedProjectData',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    Version: {
-      type: 'object',
-      properties: {
-        version: { type: 'string', description: 'Semantic Version' },
-        codename: { type: 'string', description: 'Dubbed name of version' },
-        from: { type: 'string', description: 'Semantic Version to use as the base fork' },
-        is_stable: { type: 'boolean', description: 'Should this be the **main** version' },
-        is_beta: { type: 'boolean', default: true },
-        is_hidden: { type: 'boolean', description: 'Should this be publically accessible?' },
-        is_deprecated: {
-          type: 'boolean',
-          description: 'Should this be deprecated? Only allowed in PUT operations',
-        },
-      },
-      required: ['version', 'from'],
-      title: 'version',
-      'x-readme-ref-name': 'version',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorVersionForkNotfound: {
-      title: 'error_VERSION_FORK_NOTFOUND',
-      'x-readme-ref-name': 'error_VERSION_FORK_NOTFOUND',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'VERSION_FORK_NOTFOUND',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorVersionCantDemoteStable: {
-      title: 'error_VERSION_CANT_DEMOTE_STABLE',
-      'x-readme-ref-name': 'error_VERSION_CANT_DEMOTE_STABLE',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'VERSION_CANT_DEMOTE_STABLE',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    ErrorVersionCantRemoveStable: {
-      title: 'error_VERSION_CANT_REMOVE_STABLE',
-      'x-readme-ref-name': 'error_VERSION_CANT_REMOVE_STABLE',
-      type: 'object',
-      properties: {
-        error: {
-          type: 'string',
-          description: 'An error code unique to the error received.',
-          default: 'VERSION_CANT_REMOVE_STABLE',
-        },
-        message: { type: 'string', description: 'The reason why the error occured.' },
-        suggestion: {
-          type: 'string',
-          description: 'A helpful suggestion for how to alleviate the error.',
-        },
-        docs: {
-          type: 'string',
-          format: 'url',
-          description:
-            'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-          examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-        },
-        help: {
-          type: 'string',
-          description:
-            'Information on where you can receive additional assistance from our wonderful support team.',
-          examples: ['If you need help, email support@readme.io'],
-        },
-        poem: {
-          type: 'array',
-          description: 'A short poem we wrote you about your error.',
-          items: { type: 'string' },
-          examples: [
-            "If you're seeing this error,",
-            "Things didn't quite go the way we hoped.",
-            'When we tried to process your request,',
-            "Maybe trying again it'll work—who knows!",
-          ],
-        },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-  getAPISpecification: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            perPage: {
-              type: 'integer',
-              default: 10,
-              minimum: 1,
-              maximum: 100,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-            },
-            page: {
-              type: 'integer',
-              default: 1,
-              minimum: 1,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Used to specify further pages (starts at 1)',
-            },
-          },
-          required: [],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'object',
-        properties: {
-          Link: {
-            type: 'string',
-            description:
-              'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-          },
-          'x-total-count': {
-            type: 'string',
-            description:
-              'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-          },
-        },
-      },
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  uploadAPISpecification: {
-    body: {
-      type: 'object',
-      properties: {
-        spec: { description: 'OpenAPI/Swagger file', type: 'string', format: 'binary' },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '400': {
-        oneOf: [
-          {
-            title: 'error_SPEC_FILE_EMPTY',
-            'x-readme-ref-name': 'error_SPEC_FILE_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_FILE_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_INVALID',
-            'x-readme-ref-name': 'error_SPEC_INVALID',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_INVALID',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_INVALID_SCHEMA',
-            'x-readme-ref-name': 'error_SPEC_INVALID_SCHEMA',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_INVALID_SCHEMA',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_VERSION_NOTFOUND',
-            'x-readme-ref-name': 'error_SPEC_VERSION_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_VERSION_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  updateAPISpecification: {
-    body: {
-      type: 'object',
-      properties: {
-        spec: { description: 'OpenAPI/Swagger file', type: 'string', format: 'binary' },
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.',
-            },
-          },
-          required: ['id'],
-        },
-      ],
-    },
-    response: {
-      '400': {
-        oneOf: [
-          {
-            title: 'error_SPEC_FILE_EMPTY',
-            'x-readme-ref-name': 'error_SPEC_FILE_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_FILE_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_ID_DUPLICATE',
-            'x-readme-ref-name': 'error_SPEC_ID_DUPLICATE',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_ID_DUPLICATE',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_ID_INVALID',
-            'x-readme-ref-name': 'error_SPEC_ID_INVALID',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_ID_INVALID',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_INVALID',
-            'x-readme-ref-name': 'error_SPEC_INVALID',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_INVALID',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_INVALID_SCHEMA',
-            'x-readme-ref-name': 'error_SPEC_INVALID_SCHEMA',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_INVALID_SCHEMA',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_SPEC_VERSION_NOTFOUND',
-            'x-readme-ref-name': 'error_SPEC_VERSION_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'SPEC_VERSION_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  deleteAPISpecification: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.',
-            },
-          },
-          required: ['id'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getOpenRoles: {
-    response: {
-      '200': {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              description: 'A slugified version of the job opening title.',
-              examples: ['api-engineer'],
-            },
-            title: {
-              type: 'string',
-              description: 'The job opening position.',
-              examples: ['API Engineer'],
-            },
-            description: {
-              type: 'string',
-              description:
-                'The description for this open position. This content is formatted as HTML.',
-            },
-            pullquote: {
-              type: 'string',
-              description: 'A short pullquote for the open position.',
-              examples: ['Deeply knowledgeable of the web, HTTP, and the API space.'],
-            },
-            location: {
-              type: 'string',
-              description: 'Where this position is located at.',
-              examples: ['Remote'],
-            },
-            department: {
-              type: 'string',
-              description: "The internal organization you'll be working in.",
-              examples: ['Engineering'],
-            },
-            url: {
-              type: 'string',
-              format: 'url',
-              description: 'The place where you can apply for the position!',
-            },
-          },
-          title: 'jobOpening',
-          'x-readme-ref-name': 'jobOpening',
-        },
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getCategories: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            perPage: {
-              type: 'integer',
-              default: 10,
-              minimum: 1,
-              maximum: 100,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-            },
-            page: {
-              type: 'integer',
-              default: 1,
-              minimum: 1,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Used to specify further pages (starts at 1)',
-            },
-          },
-          required: [],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'object',
-        properties: {
-          Link: {
-            type: 'string',
-            description:
-              'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-          },
-          'x-total-count': {
-            type: 'string',
-            description:
-              'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-          },
-        },
-      },
-    },
-  },
-  createCategory: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  getCategory: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['getting-started'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  updateCategory: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['getting-started'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  deleteCategory: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['getting-started'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  getCategoryDocs: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['getting-started'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-  },
-  getChangelogs: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            perPage: {
-              type: 'integer',
-              default: 10,
-              minimum: 1,
-              maximum: 100,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-            },
-            page: {
-              type: 'integer',
-              default: 1,
-              minimum: 1,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Used to specify further pages (starts at 1)',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'object',
-        properties: {
-          Link: {
-            type: 'string',
-            description:
-              'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-          },
-          'x-total-count': {
-            type: 'string',
-            description:
-              'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-          },
-        },
-      },
-    },
-  },
-  getChangelog: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-  },
-  updateChangelog: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-  },
-  deleteChangelog: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-  },
-  getCustomPages: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            perPage: {
-              type: 'integer',
-              default: 10,
-              minimum: 1,
-              maximum: 100,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-            },
-            page: {
-              type: 'integer',
-              default: 1,
-              minimum: 1,
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Used to specify further pages (starts at 1)',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '200': {
-        type: 'object',
-        properties: {
-          Link: {
-            type: 'string',
-            description:
-              'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-          },
-          'x-total-count': {
-            type: 'string',
-            description:
-              'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-          },
-        },
-      },
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  createCustomPage: {
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getCustomPage: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  updateCustomPage: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  deleteCustomPage: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
-            },
-          },
-          required: ['slug'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getDoc: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['new-features'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  updateDoc: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['new-features'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  deleteDoc: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            slug: {
-              type: 'string',
-              examples: ['new-features'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
-            },
-          },
-          required: ['slug'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  createDoc: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  searchDocs: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            search: {
-              type: 'string',
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description: 'Search string to look for',
-            },
-          },
-          required: ['search'],
-        },
-        {
-          type: 'object',
-          properties: {
-            'x-readme-version': {
-              type: 'string',
-              examples: ['v3.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-            },
-          },
-          required: [],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getErrors: {
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getProject: {
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getVersions: {
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  createVersion: {
-    response: {
-      '400': {
-        oneOf: [
-          {
-            title: 'error_VERSION_EMPTY',
-            'x-readme-ref-name': 'error_VERSION_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'VERSION_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_VERSION_DUPLICATE',
-            'x-readme-ref-name': 'error_VERSION_DUPLICATE',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'VERSION_DUPLICATE',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_VERSION_FORK_EMPTY',
-            'x-readme-ref-name': 'error_VERSION_FORK_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'VERSION_FORK_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  getVersion: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            versionId: {
-              type: 'string',
-              examples: ['v1.0.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
-            },
-          },
-          required: ['versionId'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  updateVersion: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            versionId: {
-              type: 'string',
-              examples: ['v1.0.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
-            },
-          },
-          required: ['versionId'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-  deleteVersion: {
-    metadata: {
-      allOf: [
-        {
-          type: 'object',
-          properties: {
-            versionId: {
-              type: 'string',
-              examples: ['v1.0.0'],
-              $schema: 'http://json-schema.org/draft-04/schema#',
-              description:
-                'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
-            },
-          },
-          required: ['versionId'],
-        },
-      ],
-    },
-    response: {
-      '401': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_EMPTY',
-            'x-readme-ref-name': 'error_APIKEY_EMPTY',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_EMPTY',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-          {
-            title: 'error_APIKEY_NOTFOUND',
-            'x-readme-ref-name': 'error_APIKEY_NOTFOUND',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_NOTFOUND',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-      '403': {
-        oneOf: [
-          {
-            title: 'error_APIKEY_MISMATCH',
-            'x-readme-ref-name': 'error_APIKEY_MISMATCH',
-            type: 'object',
-            properties: {
-              error: {
-                type: 'string',
-                description: 'An error code unique to the error received.',
-                default: 'APIKEY_MISMATCH',
-              },
-              message: { type: 'string', description: 'The reason why the error occured.' },
-              suggestion: {
-                type: 'string',
-                description: 'A helpful suggestion for how to alleviate the error.',
-              },
-              docs: {
-                type: 'string',
-                format: 'url',
-                description:
-                  'A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.',
-                examples: ['https://docs.readme.com/logs/6883d0ee-cf79-447a-826f-a48f7d5bdf5f'],
-              },
-              help: {
-                type: 'string',
-                description:
-                  'Information on where you can receive additional assistance from our wonderful support team.',
-                examples: ['If you need help, email support@readme.io'],
-              },
-              poem: {
-                type: 'array',
-                description: 'A short poem we wrote you about your error.',
-                items: { type: 'string' },
-                examples: [
-                  "If you're seeing this error,",
-                  "Things didn't quite go the way we hoped.",
-                  'When we tried to process your request,',
-                  "Maybe trying again it'll work—who knows!",
-                ],
-              },
-            },
-          },
-        ],
-        $schema: 'http://json-schema.org/draft-04/schema#',
-      },
-    },
-  },
-} as const;
-type GetApiRegistryMetadataParam = FromSchema<typeof schemas.getAPIRegistry.metadata>;
-type GetApiRegistryResponse200 = FromSchema<typeof schemas.getAPIRegistry.response['200']>;
-type ErrorRegistryNotfound = FromSchema<typeof schemas.$ref.ErrorRegistryNotfound>;
-type GetApiSpecificationMetadataParam = FromSchema<typeof schemas.getAPISpecification.metadata>;
-type GetApiSpecificationResponse200 = FromSchema<
-  typeof schemas.getAPISpecification.response['200']
->;
-type ErrorVersionEmpty = FromSchema<typeof schemas.$ref.ErrorVersionEmpty>;
-type GetApiSpecificationResponse401 = FromSchema<
-  typeof schemas.getAPISpecification.response['401']
->;
-type GetApiSpecificationResponse403 = FromSchema<
-  typeof schemas.getAPISpecification.response['403']
->;
-type ErrorVersionNotfound = FromSchema<typeof schemas.$ref.ErrorVersionNotfound>;
-type UploadApiSpecificationBodyParam = FromSchema<typeof schemas.uploadAPISpecification.body>;
-type UploadApiSpecificationMetadataParam = FromSchema<
-  typeof schemas.uploadAPISpecification.metadata
->;
-type UploadApiSpecificationResponse400 = FromSchema<
-  typeof schemas.uploadAPISpecification.response['400']
->;
-type UploadApiSpecificationResponse401 = FromSchema<
-  typeof schemas.uploadAPISpecification.response['401']
->;
-type UploadApiSpecificationResponse403 = FromSchema<
-  typeof schemas.uploadAPISpecification.response['403']
->;
-type ErrorSpecTimeout = FromSchema<typeof schemas.$ref.ErrorSpecTimeout>;
-type UpdateApiSpecificationBodyParam = FromSchema<typeof schemas.updateAPISpecification.body>;
-type UpdateApiSpecificationMetadataParam = FromSchema<
-  typeof schemas.updateAPISpecification.metadata
->;
-type UpdateApiSpecificationResponse400 = FromSchema<
-  typeof schemas.updateAPISpecification.response['400']
->;
-type UpdateApiSpecificationResponse401 = FromSchema<
-  typeof schemas.updateAPISpecification.response['401']
->;
-type UpdateApiSpecificationResponse403 = FromSchema<
-  typeof schemas.updateAPISpecification.response['403']
->;
-type DeleteApiSpecificationMetadataParam = FromSchema<
-  typeof schemas.deleteAPISpecification.metadata
->;
-type ErrorSpecIdInvalid = FromSchema<typeof schemas.$ref.ErrorSpecIdInvalid>;
-type DeleteApiSpecificationResponse401 = FromSchema<
-  typeof schemas.deleteAPISpecification.response['401']
->;
-type DeleteApiSpecificationResponse403 = FromSchema<
-  typeof schemas.deleteAPISpecification.response['403']
->;
-type ErrorSpecNotfound = FromSchema<typeof schemas.$ref.ErrorSpecNotfound>;
-type GetOpenRolesResponse200 = FromSchema<typeof schemas.getOpenRoles.response['200']>;
-type Apply = FromSchema<typeof schemas.$ref.Apply>;
-type GetCategoriesMetadataParam = FromSchema<typeof schemas.getCategories.metadata>;
-type GetCategoriesResponse200 = FromSchema<typeof schemas.getCategories.response['200']>;
-type Category = FromSchema<typeof schemas.$ref.Category>;
-type CreateCategoryMetadataParam = FromSchema<typeof schemas.createCategory.metadata>;
-type ErrorCategoryInvalid = FromSchema<typeof schemas.$ref.ErrorCategoryInvalid>;
-type GetCategoryMetadataParam = FromSchema<typeof schemas.getCategory.metadata>;
-type ErrorCategoryNotfound = FromSchema<typeof schemas.$ref.ErrorCategoryNotfound>;
-type UpdateCategoryMetadataParam = FromSchema<typeof schemas.updateCategory.metadata>;
-type DeleteCategoryMetadataParam = FromSchema<typeof schemas.deleteCategory.metadata>;
-type GetCategoryDocsMetadataParam = FromSchema<typeof schemas.getCategoryDocs.metadata>;
-type GetChangelogsMetadataParam = FromSchema<typeof schemas.getChangelogs.metadata>;
-type GetChangelogsResponse200 = FromSchema<typeof schemas.getChangelogs.response['200']>;
-type Changelog = FromSchema<typeof schemas.$ref.Changelog>;
-type GetChangelogMetadataParam = FromSchema<typeof schemas.getChangelog.metadata>;
-type UpdateChangelogMetadataParam = FromSchema<typeof schemas.updateChangelog.metadata>;
-type DeleteChangelogMetadataParam = FromSchema<typeof schemas.deleteChangelog.metadata>;
-type GetCustomPagesMetadataParam = FromSchema<typeof schemas.getCustomPages.metadata>;
-type GetCustomPagesResponse200 = FromSchema<typeof schemas.getCustomPages.response['200']>;
-type GetCustomPagesResponse401 = FromSchema<typeof schemas.getCustomPages.response['401']>;
-type GetCustomPagesResponse403 = FromSchema<typeof schemas.getCustomPages.response['403']>;
-type CustomPage = FromSchema<typeof schemas.$ref.CustomPage>;
-type ErrorCustompageInvalid = FromSchema<typeof schemas.$ref.ErrorCustompageInvalid>;
-type CreateCustomPageResponse401 = FromSchema<typeof schemas.createCustomPage.response['401']>;
-type CreateCustomPageResponse403 = FromSchema<typeof schemas.createCustomPage.response['403']>;
-type GetCustomPageMetadataParam = FromSchema<typeof schemas.getCustomPage.metadata>;
-type GetCustomPageResponse401 = FromSchema<typeof schemas.getCustomPage.response['401']>;
-type GetCustomPageResponse403 = FromSchema<typeof schemas.getCustomPage.response['403']>;
-type ErrorCustompageNotfound = FromSchema<typeof schemas.$ref.ErrorCustompageNotfound>;
-type UpdateCustomPageMetadataParam = FromSchema<typeof schemas.updateCustomPage.metadata>;
-type UpdateCustomPageResponse401 = FromSchema<typeof schemas.updateCustomPage.response['401']>;
-type UpdateCustomPageResponse403 = FromSchema<typeof schemas.updateCustomPage.response['403']>;
-type DeleteCustomPageMetadataParam = FromSchema<typeof schemas.deleteCustomPage.metadata>;
-type DeleteCustomPageResponse401 = FromSchema<typeof schemas.deleteCustomPage.response['401']>;
-type DeleteCustomPageResponse403 = FromSchema<typeof schemas.deleteCustomPage.response['403']>;
-type GetDocMetadataParam = FromSchema<typeof schemas.getDoc.metadata>;
-type GetDocResponse401 = FromSchema<typeof schemas.getDoc.response['401']>;
-type GetDocResponse403 = FromSchema<typeof schemas.getDoc.response['403']>;
-type ErrorDocNotfound = FromSchema<typeof schemas.$ref.ErrorDocNotfound>;
-type Doc = FromSchema<typeof schemas.$ref.Doc>;
-type UpdateDocMetadataParam = FromSchema<typeof schemas.updateDoc.metadata>;
-type ErrorDocInvalid = FromSchema<typeof schemas.$ref.ErrorDocInvalid>;
-type UpdateDocResponse401 = FromSchema<typeof schemas.updateDoc.response['401']>;
-type UpdateDocResponse403 = FromSchema<typeof schemas.updateDoc.response['403']>;
-type DeleteDocMetadataParam = FromSchema<typeof schemas.deleteDoc.metadata>;
-type DeleteDocResponse401 = FromSchema<typeof schemas.deleteDoc.response['401']>;
-type DeleteDocResponse403 = FromSchema<typeof schemas.deleteDoc.response['403']>;
-type CreateDocMetadataParam = FromSchema<typeof schemas.createDoc.metadata>;
-type CreateDocResponse401 = FromSchema<typeof schemas.createDoc.response['401']>;
-type CreateDocResponse403 = FromSchema<typeof schemas.createDoc.response['403']>;
-type SearchDocsMetadataParam = FromSchema<typeof schemas.searchDocs.metadata>;
-type SearchDocsResponse401 = FromSchema<typeof schemas.searchDocs.response['401']>;
-type SearchDocsResponse403 = FromSchema<typeof schemas.searchDocs.response['403']>;
-type GetErrorsResponse401 = FromSchema<typeof schemas.getErrors.response['401']>;
-type GetErrorsResponse403 = FromSchema<typeof schemas.getErrors.response['403']>;
-type CondensedProjectData = FromSchema<typeof schemas.$ref.CondensedProjectData>;
-type GetProjectResponse401 = FromSchema<typeof schemas.getProject.response['401']>;
-type GetProjectResponse403 = FromSchema<typeof schemas.getProject.response['403']>;
-type GetVersionsResponse401 = FromSchema<typeof schemas.getVersions.response['401']>;
-type GetVersionsResponse403 = FromSchema<typeof schemas.getVersions.response['403']>;
-type Version = FromSchema<typeof schemas.$ref.Version>;
-type CreateVersionResponse400 = FromSchema<typeof schemas.createVersion.response['400']>;
-type CreateVersionResponse401 = FromSchema<typeof schemas.createVersion.response['401']>;
-type CreateVersionResponse403 = FromSchema<typeof schemas.createVersion.response['403']>;
-type ErrorVersionForkNotfound = FromSchema<typeof schemas.$ref.ErrorVersionForkNotfound>;
-type GetVersionMetadataParam = FromSchema<typeof schemas.getVersion.metadata>;
-type GetVersionResponse401 = FromSchema<typeof schemas.getVersion.response['401']>;
-type GetVersionResponse403 = FromSchema<typeof schemas.getVersion.response['403']>;
-type UpdateVersionMetadataParam = FromSchema<typeof schemas.updateVersion.metadata>;
-type ErrorVersionCantDemoteStable = FromSchema<typeof schemas.$ref.ErrorVersionCantDemoteStable>;
-type UpdateVersionResponse401 = FromSchema<typeof schemas.updateVersion.response['401']>;
-type UpdateVersionResponse403 = FromSchema<typeof schemas.updateVersion.response['403']>;
-type DeleteVersionMetadataParam = FromSchema<typeof schemas.deleteVersion.metadata>;
-type ErrorVersionCantRemoveStable = FromSchema<typeof schemas.$ref.ErrorVersionCantRemoveStable>;
-type DeleteVersionResponse401 = FromSchema<typeof schemas.deleteVersion.response['401']>;
-type DeleteVersionResponse403 = FromSchema<typeof schemas.deleteVersion.response['403']>;
+export type {
+  Apply,
+  Category,
+  Changelog,
+  CondensedProjectData,
+  CreateCategoryMetadataParam,
+  CreateCustomPageResponse401,
+  CreateCustomPageResponse403,
+  CreateDocMetadataParam,
+  CreateDocResponse401,
+  CreateDocResponse403,
+  CreateVersionResponse400,
+  CreateVersionResponse401,
+  CreateVersionResponse403,
+  CustomPage,
+  DeleteApiSpecificationMetadataParam,
+  DeleteApiSpecificationResponse401,
+  DeleteApiSpecificationResponse403,
+  DeleteCategoryMetadataParam,
+  DeleteChangelogMetadataParam,
+  DeleteCustomPageMetadataParam,
+  DeleteCustomPageResponse401,
+  DeleteCustomPageResponse403,
+  DeleteDocMetadataParam,
+  DeleteDocResponse401,
+  DeleteDocResponse403,
+  DeleteVersionMetadataParam,
+  DeleteVersionResponse401,
+  DeleteVersionResponse403,
+  Doc,
+  ErrorCategoryInvalid,
+  ErrorCategoryNotfound,
+  ErrorCustompageInvalid,
+  ErrorCustompageNotfound,
+  ErrorDocInvalid,
+  ErrorDocNotfound,
+  ErrorRegistryNotfound,
+  ErrorSpecIdInvalid,
+  ErrorSpecNotfound,
+  ErrorSpecTimeout,
+  ErrorVersionCantDemoteStable,
+  ErrorVersionCantRemoveStable,
+  ErrorVersionEmpty,
+  ErrorVersionForkNotfound,
+  ErrorVersionNotfound,
+  GetApiRegistryMetadataParam,
+  GetApiRegistryResponse200,
+  GetApiSpecificationMetadataParam,
+  GetApiSpecificationResponse200,
+  GetApiSpecificationResponse401,
+  GetApiSpecificationResponse403,
+  GetCategoriesMetadataParam,
+  GetCategoriesResponse200,
+  GetCategoryDocsMetadataParam,
+  GetCategoryMetadataParam,
+  GetChangelogMetadataParam,
+  GetChangelogsMetadataParam,
+  GetChangelogsResponse200,
+  GetCustomPageMetadataParam,
+  GetCustomPageResponse401,
+  GetCustomPageResponse403,
+  GetCustomPagesMetadataParam,
+  GetCustomPagesResponse200,
+  GetCustomPagesResponse401,
+  GetCustomPagesResponse403,
+  GetDocMetadataParam,
+  GetDocResponse401,
+  GetDocResponse403,
+  GetErrorsResponse401,
+  GetErrorsResponse403,
+  GetOpenRolesResponse200,
+  GetProjectResponse401,
+  GetProjectResponse403,
+  GetVersionMetadataParam,
+  GetVersionResponse401,
+  GetVersionResponse403,
+  GetVersionsResponse401,
+  GetVersionsResponse403,
+  SearchDocsMetadataParam,
+  SearchDocsResponse401,
+  SearchDocsResponse403,
+  UpdateApiSpecificationBodyParam,
+  UpdateApiSpecificationMetadataParam,
+  UpdateApiSpecificationResponse400,
+  UpdateApiSpecificationResponse401,
+  UpdateApiSpecificationResponse403,
+  UpdateCategoryMetadataParam,
+  UpdateChangelogMetadataParam,
+  UpdateCustomPageMetadataParam,
+  UpdateCustomPageResponse401,
+  UpdateCustomPageResponse403,
+  UpdateDocMetadataParam,
+  UpdateDocResponse401,
+  UpdateDocResponse403,
+  UpdateVersionMetadataParam,
+  UpdateVersionResponse401,
+  UpdateVersionResponse403,
+  UploadApiSpecificationBodyParam,
+  UploadApiSpecificationMetadataParam,
+  UploadApiSpecificationResponse400,
+  UploadApiSpecificationResponse401,
+  UploadApiSpecificationResponse403,
+  Version,
+} from './types';
