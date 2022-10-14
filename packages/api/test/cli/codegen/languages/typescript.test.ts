@@ -81,6 +81,7 @@ describe('typescript', function () {
 
     it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
+    // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
       assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks')
