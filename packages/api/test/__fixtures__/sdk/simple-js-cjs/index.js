@@ -4,7 +4,6 @@ var __importDefault =
   function (mod) {
     return mod && mod.__esModule ? mod : { default: mod };
   };
-Object.defineProperty(exports, '__esModule', { value: true });
 var oas_1 = __importDefault(require('oas'));
 var core_1 = __importDefault(require('api/dist/core'));
 var simple_json_1 = __importDefault(require('../../../__fixtures__/definitions/simple.json'));

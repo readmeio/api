@@ -217,7 +217,9 @@ export default class TSGenerator extends CodeGeneratorLanguage {
              * `ts-morph` unfortunately doesn't give us any options for programatically doing this
              * so we need to resort to modifying the emitted JS code.
              */
-            code = code.replace('exports.default = createSDK;', 'module.exports = createSDK;');
+            code = code
+              .replace(/Object\.defineProperty\(exports, '__esModule', { value: true }\);\n/, '')
+              .replace('exports.default = createSDK;', 'module.exports = createSDK;');
           }
 
           return {
@@ -472,7 +474,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
     const docblock: OptionalKind<JSDocStructure> = {
       description: writer => {
-        writer.writeLine(wordWrap(`Access any ${method.toUpperCase()} endpoint on your API.`));
+        writer.writeLine(`Access any ${method.toUpperCase()} endpoint on your API.`);
         return writer;
       },
       tags: [{ tagName: 'param', text: 'path API path to make a request against.' }],
