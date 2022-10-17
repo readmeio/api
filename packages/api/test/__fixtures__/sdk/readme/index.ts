@@ -1,3 +1,5 @@
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
@@ -5,7 +7,6 @@ import definition from '@readme/oas-examples/3.0/json/readme.json';
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -78,8 +79,8 @@ class SDK {
    */
   get(
     path: '/api-registry/{uuid}',
-    metadata: GetAPIRegistryMetadataParam
-  ): Promise<GetAPIRegistry_Response_200 | Error_REGISTRY_NOTFOUND>;
+    metadata: types.GetApiRegistryMetadataParam
+  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound>;
   /**
    * Get API specification metadata
    *
@@ -87,50 +88,65 @@ class SDK {
    */
   get(
     path: '/api-specification',
-    metadata?: GetAPISpecificationMetadataParam
+    metadata?: types.GetApiSpecificationMetadataParam
   ): Promise<
-    | GetAPISpecification_Response_200
-    | Error_VERSION_EMPTY
-    | GetAPISpecification_Response_401
-    | GetAPISpecification_Response_403
-    | Error_VERSION_NOTFOUND
+    | types.GetApiSpecificationResponse200
+    | types.ErrorVersionEmpty
+    | types.GetApiSpecificationResponse401
+    | types.GetApiSpecificationResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Returns all the roles we're hiring for at ReadMe!
    *
    * @summary Get open roles
    */
-  get(path: '/apply'): Promise<GetOpenRoles_Response_200>;
+  get(path: '/apply'): Promise<types.GetOpenRolesResponse200>;
   /**
    * Returns all the categories for a specified version
    *
    * @summary Get all categories
    */
-  get(path: '/categories', metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200>;
+  get(
+    path: '/categories',
+    metadata?: types.GetCategoriesMetadataParam
+  ): Promise<types.GetCategoriesResponse200>;
   /**
    * Returns the category with this slug
    *
    * @summary Get category
    */
-  get(path: '/categories/{slug}', metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  get(
+    path: '/categories/{slug}',
+    metadata: types.GetCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Returns the docs and children docs within this category
    *
    * @summary Get docs for category
    */
-  get(path: '/categories/{slug}/docs', metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  get(
+    path: '/categories/{slug}/docs',
+    metadata: types.GetCategoryDocsMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Returns a list of changelogs associated with the project API key
    *
    * @summary Get changelogs
    */
-  get(path: '/changelogs', metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200>;
+  get(
+    path: '/changelogs',
+    metadata?: types.GetChangelogsMetadataParam
+  ): Promise<types.GetChangelogsResponse200>;
   /**
    * Returns the changelog with this slug
    *
    * @summary Get changelog
    */
-  get<T = unknown>(path: '/changelogs/{slug}', metadata: GetChangelogMetadataParam): Promise<T>;
+  get<T = unknown>(
+    path: '/changelogs/{slug}',
+    metadata: types.GetChangelogMetadataParam
+  ): Promise<T>;
   /**
    * Returns a list of custom pages associated with the project API key
    *
@@ -138,8 +154,12 @@ class SDK {
    */
   get(
     path: '/custompages',
-    metadata?: GetCustomPagesMetadataParam
-  ): Promise<GetCustomPages_Response_200 | GetCustomPages_Response_401 | GetCustomPages_Response_403>;
+    metadata?: types.GetCustomPagesMetadataParam
+  ): Promise<
+    | types.GetCustomPagesResponse200
+    | types.GetCustomPagesResponse401
+    | types.GetCustomPagesResponse403
+  >;
   /**
    * Returns the custom page with this slug
    *
@@ -147,8 +167,10 @@ class SDK {
    */
   get(
     path: '/custompages/{slug}',
-    metadata: GetCustomPageMetadataParam
-  ): Promise<GetCustomPage_Response_401 | GetCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
+    metadata: types.GetCustomPageMetadataParam
+  ): Promise<
+    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
+  >;
   /**
    * Returns the doc with this slug
    *
@@ -156,26 +178,30 @@ class SDK {
    */
   get(
     path: '/docs/{slug}',
-    metadata: GetDocMetadataParam
-  ): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND>;
+    metadata: types.GetDocMetadataParam
+  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound>;
   /**
    * Returns with all of the error page types for this project
    *
    * @summary Get errors
    */
-  get(path: '/errors'): Promise<GetErrors_Response_401 | GetErrors_Response_403>;
+  get(path: '/errors'): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403>;
   /**
    * Returns project data for API key
    *
    * @summary Get metadata about the current project
    */
-  get(path: '/'): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403>;
+  get(
+    path: '/'
+  ): Promise<
+    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
+  >;
   /**
    * Retrieve a list of versions associated with a project API key
    *
    * @summary Get versions
    */
-  get(path: '/version'): Promise<GetVersions_Response_401 | GetVersions_Response_403>;
+  get(path: '/version'): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403>;
   /**
    * Returns the version with this version ID
    *
@@ -183,8 +209,10 @@ class SDK {
    */
   get(
     path: '/version/{versionId}',
-    metadata: GetVersionMetadataParam
-  ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND>;
+    metadata: types.GetVersionMetadataParam
+  ): Promise<
+    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
+  >;
   /**
    * Access any GET endpoint on your API.
    *
@@ -202,32 +230,36 @@ class SDK {
    */
   post(
     path: '/api-specification',
-    body: UploadAPISpecificationBodyParam,
-    metadata?: UploadAPISpecificationMetadataParam
+    body: types.UploadApiSpecificationBodyParam,
+    metadata?: types.UploadApiSpecificationMetadataParam
   ): Promise<
-    | UploadAPISpecification_Response_400
-    | UploadAPISpecification_Response_401
-    | UploadAPISpecification_Response_403
-    | Error_SPEC_TIMEOUT
+    | types.UploadApiSpecificationResponse400
+    | types.UploadApiSpecificationResponse401
+    | types.UploadApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   >;
   /**
    * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
    *
    * @summary Submit your application!
    */
-  post<T = unknown>(path: '/apply', body: Apply): Promise<T>;
+  post<T = unknown>(path: '/apply', body: types.Apply): Promise<T>;
   /**
    * Create a new category inside of this project
    *
    * @summary Create category
    */
-  post(path: '/categories', body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID>;
+  post(
+    path: '/categories',
+    body: types.Category,
+    metadata?: types.CreateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid>;
   /**
    * Create a new changelog inside of this project
    *
    * @summary Create changelog
    */
-  post<T = unknown>(path: '/changelogs', body: Changelog): Promise<T>;
+  post<T = unknown>(path: '/changelogs', body: types.Changelog): Promise<T>;
   /**
    * Create a new custom page inside of this project
    *
@@ -235,8 +267,12 @@ class SDK {
    */
   post(
     path: '/custompages',
-    body: CustomPage
-  ): Promise<Error_CUSTOMPAGE_INVALID | CreateCustomPage_Response_401 | CreateCustomPage_Response_403>;
+    body: types.CustomPage
+  ): Promise<
+    | types.ErrorCustompageInvalid
+    | types.CreateCustomPageResponse401
+    | types.CreateCustomPageResponse403
+  >;
   /**
    * Create a new doc inside of this project
    *
@@ -244,9 +280,9 @@ class SDK {
    */
   post(
     path: '/docs',
-    body: Doc,
-    metadata?: CreateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | CreateDoc_Response_401 | CreateDoc_Response_403>;
+    body: types.Doc,
+    metadata?: types.CreateDocMetadataParam
+  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403>;
   /**
    * Returns all docs that match the search
    *
@@ -254,8 +290,8 @@ class SDK {
    */
   post(
     path: '/docs/search',
-    metadata: SearchDocsMetadataParam
-  ): Promise<SearchDocs_Response_401 | SearchDocs_Response_403>;
+    metadata: types.SearchDocsMetadataParam
+  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403>;
   /**
    * Create a new version
    *
@@ -263,9 +299,12 @@ class SDK {
    */
   post(
     path: '/version',
-    body: Version
+    body: types.Version
   ): Promise<
-    CreateVersion_Response_400 | CreateVersion_Response_401 | CreateVersion_Response_403 | Error_VERSION_FORK_NOTFOUND
+    | types.CreateVersionResponse400
+    | types.CreateVersionResponse401
+    | types.CreateVersionResponse403
+    | types.ErrorVersionForkNotfound
   >;
   /**
    * Access any POST endpoint on your API.
@@ -285,13 +324,13 @@ class SDK {
    */
   put(
     path: '/api-specification/{id}',
-    body: UpdateAPISpecificationBodyParam,
-    metadata: UpdateAPISpecificationMetadataParam
+    body: types.UpdateApiSpecificationBodyParam,
+    metadata: types.UpdateApiSpecificationMetadataParam
   ): Promise<
-    | UpdateAPISpecification_Response_400
-    | UpdateAPISpecification_Response_401
-    | UpdateAPISpecification_Response_403
-    | Error_SPEC_TIMEOUT
+    | types.UpdateApiSpecificationResponse400
+    | types.UpdateApiSpecificationResponse401
+    | types.UpdateApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   >;
   /**
    * Change the properties of a category.
@@ -300,15 +339,19 @@ class SDK {
    */
   put(
     path: '/categories/{slug}',
-    body: Category,
-    metadata: UpdateCategoryMetadataParam
-  ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND>;
+    body: types.Category,
+    metadata: types.UpdateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound>;
   /**
    * Update a changelog with this slug
    *
    * @summary Update changelog
    */
-  put<T = unknown>(path: '/changelogs/{slug}', body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T>;
+  put<T = unknown>(
+    path: '/changelogs/{slug}',
+    body: types.Changelog,
+    metadata: types.UpdateChangelogMetadataParam
+  ): Promise<T>;
   /**
    * Update a custom page with this slug
    *
@@ -316,10 +359,13 @@ class SDK {
    */
   put(
     path: '/custompages/{slug}',
-    body: CustomPage,
-    metadata: UpdateCustomPageMetadataParam
+    body: types.CustomPage,
+    metadata: types.UpdateCustomPageMetadataParam
   ): Promise<
-    Error_CUSTOMPAGE_INVALID | UpdateCustomPage_Response_401 | UpdateCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND
+    | types.ErrorCustompageInvalid
+    | types.UpdateCustomPageResponse401
+    | types.UpdateCustomPageResponse403
+    | types.ErrorCustompageNotfound
   >;
   /**
    * Update a doc with this slug
@@ -328,9 +374,14 @@ class SDK {
    */
   put(
     path: '/docs/{slug}',
-    body: Doc,
-    metadata: UpdateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | UpdateDoc_Response_401 | UpdateDoc_Response_403 | Error_DOC_NOTFOUND>;
+    body: types.Doc,
+    metadata: types.UpdateDocMetadataParam
+  ): Promise<
+    | types.ErrorDocInvalid
+    | types.UpdateDocResponse401
+    | types.UpdateDocResponse403
+    | types.ErrorDocNotfound
+  >;
   /**
    * Update an existing version
    *
@@ -338,10 +389,13 @@ class SDK {
    */
   put(
     path: '/version/{versionId}',
-    body: Version,
-    metadata: UpdateVersionMetadataParam
+    body: types.Version,
+    metadata: types.UpdateVersionMetadataParam
   ): Promise<
-    Error_VERSION_CANT_DEMOTE_STABLE | UpdateVersion_Response_401 | UpdateVersion_Response_403 | Error_VERSION_NOTFOUND
+    | types.ErrorVersionCantDemoteStable
+    | types.UpdateVersionResponse401
+    | types.UpdateVersionResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Access any PUT endpoint on your API.
@@ -361,12 +415,12 @@ class SDK {
    */
   delete(
     path: '/api-specification/{id}',
-    metadata: DeleteAPISpecificationMetadataParam
+    metadata: types.DeleteApiSpecificationMetadataParam
   ): Promise<
-    | Error_SPEC_ID_INVALID
-    | DeleteAPISpecification_Response_401
-    | DeleteAPISpecification_Response_403
-    | Error_SPEC_NOTFOUND
+    | types.ErrorSpecIdInvalid
+    | types.DeleteApiSpecificationResponse401
+    | types.DeleteApiSpecificationResponse403
+    | types.ErrorSpecNotfound
   >;
   /**
    * Delete the category with this slug.
@@ -375,13 +429,19 @@ class SDK {
    *
    * @summary Delete category
    */
-  delete(path: '/categories/{slug}', metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND>;
+  delete(
+    path: '/categories/{slug}',
+    metadata: types.DeleteCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound>;
   /**
    * Delete the changelog with this slug
    *
    * @summary Delete changelog
    */
-  delete<T = unknown>(path: '/changelogs/{slug}', metadata: DeleteChangelogMetadataParam): Promise<T>;
+  delete<T = unknown>(
+    path: '/changelogs/{slug}',
+    metadata: types.DeleteChangelogMetadataParam
+  ): Promise<T>;
   /**
    * Delete the custom page with this slug
    *
@@ -389,8 +449,12 @@ class SDK {
    */
   delete(
     path: '/custompages/{slug}',
-    metadata: DeleteCustomPageMetadataParam
-  ): Promise<DeleteCustomPage_Response_401 | DeleteCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND>;
+    metadata: types.DeleteCustomPageMetadataParam
+  ): Promise<
+    | types.DeleteCustomPageResponse401
+    | types.DeleteCustomPageResponse403
+    | types.ErrorCustompageNotfound
+  >;
   /**
    * Delete the doc with this slug
    *
@@ -398,8 +462,8 @@ class SDK {
    */
   delete(
     path: '/docs/{slug}',
-    metadata: DeleteDocMetadataParam
-  ): Promise<DeleteDoc_Response_401 | DeleteDoc_Response_403 | Error_DOC_NOTFOUND>;
+    metadata: types.DeleteDocMetadataParam
+  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound>;
   /**
    * Delete a version
    *
@@ -407,9 +471,12 @@ class SDK {
    */
   delete(
     path: '/version/{versionId}',
-    metadata: DeleteVersionMetadataParam
+    metadata: types.DeleteVersionMetadataParam
   ): Promise<
-    Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
+    | types.ErrorVersionCantRemoveStable
+    | types.DeleteVersionResponse401
+    | types.DeleteVersionResponse403
+    | types.ErrorVersionNotfound
   >;
   /**
    * Access any DELETE endpoint on your API.
@@ -418,7 +485,11 @@ class SDK {
    * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  delete<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
+  delete<T = unknown>(
+    path: string,
+    body?: unknown,
+    metadata?: Record<string, unknown>
+  ): Promise<T> {
     return this.core.fetch(path, 'delete', body, metadata);
   }
 
@@ -428,8 +499,8 @@ class SDK {
    * @summary Retrieve an entry from the API Registry
    */
   getAPIRegistry(
-    metadata: GetAPIRegistryMetadataParam
-  ): Promise<GetAPIRegistry_Response_200 | Error_REGISTRY_NOTFOUND> {
+    metadata: types.GetApiRegistryMetadataParam
+  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound> {
     return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
   }
 
@@ -439,13 +510,13 @@ class SDK {
    * @summary Get metadata
    */
   getAPISpecification(
-    metadata?: GetAPISpecificationMetadataParam
+    metadata?: types.GetApiSpecificationMetadataParam
   ): Promise<
-    | GetAPISpecification_Response_200
-    | Error_VERSION_EMPTY
-    | GetAPISpecification_Response_401
-    | GetAPISpecification_Response_403
-    | Error_VERSION_NOTFOUND
+    | types.GetApiSpecificationResponse200
+    | types.ErrorVersionEmpty
+    | types.GetApiSpecificationResponse401
+    | types.GetApiSpecificationResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/api-specification', 'get', metadata);
   }
@@ -456,13 +527,13 @@ class SDK {
    * @summary Upload specification
    */
   uploadAPISpecification(
-    body: UploadAPISpecificationBodyParam,
-    metadata?: UploadAPISpecificationMetadataParam
+    body: types.UploadApiSpecificationBodyParam,
+    metadata?: types.UploadApiSpecificationMetadataParam
   ): Promise<
-    | UploadAPISpecification_Response_400
-    | UploadAPISpecification_Response_401
-    | UploadAPISpecification_Response_403
-    | Error_SPEC_TIMEOUT
+    | types.UploadApiSpecificationResponse400
+    | types.UploadApiSpecificationResponse401
+    | types.UploadApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   > {
     return this.core.fetch('/api-specification', 'post', body, metadata);
   }
@@ -473,13 +544,13 @@ class SDK {
    * @summary Update specification
    */
   updateAPISpecification(
-    body: UpdateAPISpecificationBodyParam,
-    metadata: UpdateAPISpecificationMetadataParam
+    body: types.UpdateApiSpecificationBodyParam,
+    metadata: types.UpdateApiSpecificationMetadataParam
   ): Promise<
-    | UpdateAPISpecification_Response_400
-    | UpdateAPISpecification_Response_401
-    | UpdateAPISpecification_Response_403
-    | Error_SPEC_TIMEOUT
+    | types.UpdateApiSpecificationResponse400
+    | types.UpdateApiSpecificationResponse401
+    | types.UpdateApiSpecificationResponse403
+    | types.ErrorSpecTimeout
   > {
     return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
   }
@@ -490,12 +561,12 @@ class SDK {
    * @summary Delete specification
    */
   deleteAPISpecification(
-    metadata: DeleteAPISpecificationMetadataParam
+    metadata: types.DeleteApiSpecificationMetadataParam
   ): Promise<
-    | Error_SPEC_ID_INVALID
-    | DeleteAPISpecification_Response_401
-    | DeleteAPISpecification_Response_403
-    | Error_SPEC_NOTFOUND
+    | types.ErrorSpecIdInvalid
+    | types.DeleteApiSpecificationResponse401
+    | types.DeleteApiSpecificationResponse403
+    | types.ErrorSpecNotfound
   > {
     return this.core.fetch('/api-specification/{id}', 'delete', metadata);
   }
@@ -505,7 +576,7 @@ class SDK {
    *
    * @summary Get open roles
    */
-  getOpenRoles(): Promise<GetOpenRoles_Response_200> {
+  getOpenRoles(): Promise<types.GetOpenRolesResponse200> {
     return this.core.fetch('/apply', 'get');
   }
 
@@ -514,7 +585,7 @@ class SDK {
    *
    * @summary Submit your application!
    */
-  applyToReadMe<T = unknown>(body: Apply): Promise<T> {
+  applyToReadMe<T = unknown>(body: types.Apply): Promise<T> {
     return this.core.fetch('/apply', 'post', body);
   }
 
@@ -523,7 +594,9 @@ class SDK {
    *
    * @summary Get all categories
    */
-  getCategories(metadata?: GetCategoriesMetadataParam): Promise<GetCategories_Response_200> {
+  getCategories(
+    metadata?: types.GetCategoriesMetadataParam
+  ): Promise<types.GetCategoriesResponse200> {
     return this.core.fetch('/categories', 'get', metadata);
   }
 
@@ -532,7 +605,10 @@ class SDK {
    *
    * @summary Create category
    */
-  createCategory(body: Category, metadata?: CreateCategoryMetadataParam): Promise<Error_CATEGORY_INVALID> {
+  createCategory(
+    body: types.Category,
+    metadata?: types.CreateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -541,7 +617,7 @@ class SDK {
    *
    * @summary Get category
    */
-  getCategory(metadata: GetCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
+  getCategory(metadata: types.GetCategoryMetadataParam): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'get', metadata);
   }
 
@@ -551,9 +627,9 @@ class SDK {
    * @summary Update category
    */
   updateCategory(
-    body: Category,
-    metadata: UpdateCategoryMetadataParam
-  ): Promise<Error_CATEGORY_INVALID | Error_CATEGORY_NOTFOUND> {
+    body: types.Category,
+    metadata: types.UpdateCategoryMetadataParam
+  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -564,7 +640,9 @@ class SDK {
    *
    * @summary Delete category
    */
-  deleteCategory(metadata: DeleteCategoryMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
+  deleteCategory(
+    metadata: types.DeleteCategoryMetadataParam
+  ): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}', 'delete', metadata);
   }
 
@@ -573,7 +651,9 @@ class SDK {
    *
    * @summary Get docs for category
    */
-  getCategoryDocs(metadata: GetCategoryDocsMetadataParam): Promise<Error_CATEGORY_NOTFOUND> {
+  getCategoryDocs(
+    metadata: types.GetCategoryDocsMetadataParam
+  ): Promise<types.ErrorCategoryNotfound> {
     return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
   }
 
@@ -582,7 +662,9 @@ class SDK {
    *
    * @summary Get changelogs
    */
-  getChangelogs(metadata?: GetChangelogsMetadataParam): Promise<GetChangelogs_Response_200> {
+  getChangelogs(
+    metadata?: types.GetChangelogsMetadataParam
+  ): Promise<types.GetChangelogsResponse200> {
     return this.core.fetch('/changelogs', 'get', metadata);
   }
 
@@ -591,7 +673,7 @@ class SDK {
    *
    * @summary Create changelog
    */
-  createChangelog<T = unknown>(body: Changelog): Promise<T> {
+  createChangelog<T = unknown>(body: types.Changelog): Promise<T> {
     return this.core.fetch('/changelogs', 'post', body);
   }
 
@@ -600,7 +682,7 @@ class SDK {
    *
    * @summary Get changelog
    */
-  getChangelog<T = unknown>(metadata: GetChangelogMetadataParam): Promise<T> {
+  getChangelog<T = unknown>(metadata: types.GetChangelogMetadataParam): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'get', metadata);
   }
 
@@ -609,7 +691,10 @@ class SDK {
    *
    * @summary Update changelog
    */
-  updateChangelog<T = unknown>(body: Changelog, metadata: UpdateChangelogMetadataParam): Promise<T> {
+  updateChangelog<T = unknown>(
+    body: types.Changelog,
+    metadata: types.UpdateChangelogMetadataParam
+  ): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
   }
 
@@ -618,7 +703,7 @@ class SDK {
    *
    * @summary Delete changelog
    */
-  deleteChangelog<T = unknown>(metadata: DeleteChangelogMetadataParam): Promise<T> {
+  deleteChangelog<T = unknown>(metadata: types.DeleteChangelogMetadataParam): Promise<T> {
     return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
@@ -628,8 +713,12 @@ class SDK {
    * @summary Get custom pages
    */
   getCustomPages(
-    metadata?: GetCustomPagesMetadataParam
-  ): Promise<GetCustomPages_Response_200 | GetCustomPages_Response_401 | GetCustomPages_Response_403> {
+    metadata?: types.GetCustomPagesMetadataParam
+  ): Promise<
+    | types.GetCustomPagesResponse200
+    | types.GetCustomPagesResponse401
+    | types.GetCustomPagesResponse403
+  > {
     return this.core.fetch('/custompages', 'get', metadata);
   }
 
@@ -639,8 +728,12 @@ class SDK {
    * @summary Create custom page
    */
   createCustomPage(
-    body: CustomPage
-  ): Promise<Error_CUSTOMPAGE_INVALID | CreateCustomPage_Response_401 | CreateCustomPage_Response_403> {
+    body: types.CustomPage
+  ): Promise<
+    | types.ErrorCustompageInvalid
+    | types.CreateCustomPageResponse401
+    | types.CreateCustomPageResponse403
+  > {
     return this.core.fetch('/custompages', 'post', body);
   }
 
@@ -650,8 +743,10 @@ class SDK {
    * @summary Get custom page
    */
   getCustomPage(
-    metadata: GetCustomPageMetadataParam
-  ): Promise<GetCustomPage_Response_401 | GetCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND> {
+    metadata: types.GetCustomPageMetadataParam
+  ): Promise<
+    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
+  > {
     return this.core.fetch('/custompages/{slug}', 'get', metadata);
   }
 
@@ -661,10 +756,13 @@ class SDK {
    * @summary Update custom page
    */
   updateCustomPage(
-    body: CustomPage,
-    metadata: UpdateCustomPageMetadataParam
+    body: types.CustomPage,
+    metadata: types.UpdateCustomPageMetadataParam
   ): Promise<
-    Error_CUSTOMPAGE_INVALID | UpdateCustomPage_Response_401 | UpdateCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND
+    | types.ErrorCustompageInvalid
+    | types.UpdateCustomPageResponse401
+    | types.UpdateCustomPageResponse403
+    | types.ErrorCustompageNotfound
   > {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
@@ -675,8 +773,12 @@ class SDK {
    * @summary Delete custom page
    */
   deleteCustomPage(
-    metadata: DeleteCustomPageMetadataParam
-  ): Promise<DeleteCustomPage_Response_401 | DeleteCustomPage_Response_403 | Error_CUSTOMPAGE_NOTFOUND> {
+    metadata: types.DeleteCustomPageMetadataParam
+  ): Promise<
+    | types.DeleteCustomPageResponse401
+    | types.DeleteCustomPageResponse403
+    | types.ErrorCustompageNotfound
+  > {
     return this.core.fetch('/custompages/{slug}', 'delete', metadata);
   }
 
@@ -685,7 +787,9 @@ class SDK {
    *
    * @summary Get doc
    */
-  getDoc(metadata: GetDocMetadataParam): Promise<GetDoc_Response_401 | GetDoc_Response_403 | Error_DOC_NOTFOUND> {
+  getDoc(
+    metadata: types.GetDocMetadataParam
+  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound> {
     return this.core.fetch('/docs/{slug}', 'get', metadata);
   }
 
@@ -695,9 +799,14 @@ class SDK {
    * @summary Update doc
    */
   updateDoc(
-    body: Doc,
-    metadata: UpdateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | UpdateDoc_Response_401 | UpdateDoc_Response_403 | Error_DOC_NOTFOUND> {
+    body: types.Doc,
+    metadata: types.UpdateDocMetadataParam
+  ): Promise<
+    | types.ErrorDocInvalid
+    | types.UpdateDocResponse401
+    | types.UpdateDocResponse403
+    | types.ErrorDocNotfound
+  > {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -707,8 +816,8 @@ class SDK {
    * @summary Delete doc
    */
   deleteDoc(
-    metadata: DeleteDocMetadataParam
-  ): Promise<DeleteDoc_Response_401 | DeleteDoc_Response_403 | Error_DOC_NOTFOUND> {
+    metadata: types.DeleteDocMetadataParam
+  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound> {
     return this.core.fetch('/docs/{slug}', 'delete', metadata);
   }
 
@@ -718,9 +827,9 @@ class SDK {
    * @summary Create doc
    */
   createDoc(
-    body: Doc,
-    metadata?: CreateDocMetadataParam
-  ): Promise<Error_DOC_INVALID | CreateDoc_Response_401 | CreateDoc_Response_403> {
+    body: types.Doc,
+    metadata?: types.CreateDocMetadataParam
+  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -729,7 +838,9 @@ class SDK {
    *
    * @summary Search docs
    */
-  searchDocs(metadata: SearchDocsMetadataParam): Promise<SearchDocs_Response_401 | SearchDocs_Response_403> {
+  searchDocs(
+    metadata: types.SearchDocsMetadataParam
+  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403> {
     return this.core.fetch('/docs/search', 'post', metadata);
   }
 
@@ -738,7 +849,7 @@ class SDK {
    *
    * @summary Get errors
    */
-  getErrors(): Promise<GetErrors_Response_401 | GetErrors_Response_403> {
+  getErrors(): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403> {
     return this.core.fetch('/errors', 'get');
   }
 
@@ -747,7 +858,9 @@ class SDK {
    *
    * @summary Get metadata about the current project
    */
-  getProject(): Promise<CondensedProjectData | GetProject_Response_401 | GetProject_Response_403> {
+  getProject(): Promise<
+    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
+  > {
     return this.core.fetch('/', 'get');
   }
 
@@ -756,7 +869,7 @@ class SDK {
    *
    * @summary Get versions
    */
-  getVersions(): Promise<GetVersions_Response_401 | GetVersions_Response_403> {
+  getVersions(): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403> {
     return this.core.fetch('/version', 'get');
   }
 
@@ -766,9 +879,12 @@ class SDK {
    * @summary Create version
    */
   createVersion(
-    body: Version
+    body: types.Version
   ): Promise<
-    CreateVersion_Response_400 | CreateVersion_Response_401 | CreateVersion_Response_403 | Error_VERSION_FORK_NOTFOUND
+    | types.CreateVersionResponse400
+    | types.CreateVersionResponse401
+    | types.CreateVersionResponse403
+    | types.ErrorVersionForkNotfound
   > {
     return this.core.fetch('/version', 'post', body);
   }
@@ -779,8 +895,10 @@ class SDK {
    * @summary Get version
    */
   getVersion(
-    metadata: GetVersionMetadataParam
-  ): Promise<GetVersion_Response_401 | GetVersion_Response_403 | Error_VERSION_NOTFOUND> {
+    metadata: types.GetVersionMetadataParam
+  ): Promise<
+    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
+  > {
     return this.core.fetch('/version/{versionId}', 'get', metadata);
   }
 
@@ -790,10 +908,13 @@ class SDK {
    * @summary Update version
    */
   updateVersion(
-    body: Version,
-    metadata: UpdateVersionMetadataParam
+    body: types.Version,
+    metadata: types.UpdateVersionMetadataParam
   ): Promise<
-    Error_VERSION_CANT_DEMOTE_STABLE | UpdateVersion_Response_401 | UpdateVersion_Response_403 | Error_VERSION_NOTFOUND
+    | types.ErrorVersionCantDemoteStable
+    | types.UpdateVersionResponse401
+    | types.UpdateVersionResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
@@ -804,9 +925,12 @@ class SDK {
    * @summary Delete version
    */
   deleteVersion(
-    metadata: DeleteVersionMetadataParam
+    metadata: types.DeleteVersionMetadataParam
   ): Promise<
-    Error_VERSION_CANT_REMOVE_STABLE | DeleteVersion_Response_401 | DeleteVersion_Response_403 | Error_VERSION_NOTFOUND
+    | types.ErrorVersionCantRemoveStable
+    | types.DeleteVersionResponse401
+    | types.DeleteVersionResponse403
+    | types.ErrorVersionNotfound
   > {
     return this.core.fetch('/version/{versionId}', 'delete', metadata);
   }
@@ -817,1269 +941,129 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-type GetAPIRegistryMetadataParam = {
-  /**
-   * An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.
-   */
-  uuid: string;
-  [k: string]: unknown;
-};
-interface GetAPIRegistry_Response_200 {
-  [k: string]: unknown;
-}
-interface Error_REGISTRY_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetAPISpecificationMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-interface GetAPISpecification_Response_200 {
-  /**
-   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
-   */
-  Link?: string;
-  /**
-   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
-   */
-  'x-total-count'?: string;
-  [k: string]: unknown;
-}
-interface Error_VERSION_EMPTY {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-interface Error_APIKEY_EMPTY {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_APIKEY_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_APIKEY_MISMATCH {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_VERSION_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface UploadAPISpecificationBodyParam {
-  /**
-   * OpenAPI/Swagger file
-   */
-  spec?: string;
-  [k: string]: unknown;
-}
-type UploadAPISpecificationMetadataParam = {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type UploadAPISpecification_Response_400 =
-  | Error_SPEC_FILE_EMPTY
-  | Error_SPEC_INVALID
-  | Error_SPEC_INVALID_SCHEMA
-  | Error_SPEC_VERSION_NOTFOUND;
-interface Error_SPEC_FILE_EMPTY {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_SPEC_INVALID {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_SPEC_INVALID_SCHEMA {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_SPEC_VERSION_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UploadAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type UploadAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_SPEC_TIMEOUT {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface UpdateAPISpecificationBodyParam {
-  /**
-   * OpenAPI/Swagger file
-   */
-  spec?: string;
-  [k: string]: unknown;
-}
-type UpdateAPISpecificationMetadataParam = {
-  /**
-   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
-   */
-  id: string;
-  [k: string]: unknown;
-};
-type UpdateAPISpecification_Response_400 =
-  | Error_SPEC_FILE_EMPTY
-  | Error_SPEC_ID_DUPLICATE
-  | Error_SPEC_ID_INVALID
-  | Error_SPEC_INVALID
-  | Error_SPEC_INVALID_SCHEMA
-  | Error_SPEC_VERSION_NOTFOUND;
-interface Error_SPEC_ID_DUPLICATE {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_SPEC_ID_INVALID {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UpdateAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type UpdateAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-type DeleteAPISpecificationMetadataParam = {
-  /**
-   * ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.
-   */
-  id: string;
-  [k: string]: unknown;
-};
-type DeleteAPISpecification_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type DeleteAPISpecification_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_SPEC_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetOpenRoles_Response_200 = JobOpening[];
-interface JobOpening {
-  /**
-   * A slugified version of the job opening title.
-   */
-  slug?: string;
-  /**
-   * The job opening position.
-   */
-  title?: string;
-  /**
-   * The description for this open position. This content is formatted as HTML.
-   */
-  description?: string;
-  /**
-   * A short pullquote for the open position.
-   */
-  pullquote?: string;
-  /**
-   * Where this position is located at.
-   */
-  location?: string;
-  /**
-   * The internal organization you'll be working in.
-   */
-  department?: string;
-  /**
-   * The place where you can apply for the position!
-   */
-  url?: string;
-  [k: string]: unknown;
-}
-interface Apply {
-  /**
-   * Your full name
-   */
-  name: string;
-  /**
-   * A valid email we can reach you at
-   */
-  email: string;
-  /**
-   * The job you're looking to apply for (https://readme.com/careers)
-   */
-  job:
-    | 'Content Marketing Manager'
-    | 'Engineering Manager'
-    | 'Head of People'
-    | 'Marketing Campaigns Manager'
-    | 'Marketing Designer'
-    | 'Product Designer'
-    | 'Product Education Manager'
-    | 'Sales Development Representative'
-    | 'Support Engineer (Weekends)';
-  /**
-   * Learn more at https://pronoun.is/
-   */
-  pronouns?: string;
-  /**
-   * What have you been up to the past few years?
-   */
-  linkedin?: string;
-  /**
-   * Or Bitbucket, Gitlab or anywhere else your code is hosted!
-   */
-  github?: string;
-  /**
-   * What should we know about you?
-   */
-  coverLetter?: string;
-  /**
-   * Want to play with the API but not actually apply? Set this to true.
-   */
-  dontReallyApply?: boolean;
-  [k: string]: unknown;
-}
-type GetCategoriesMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-interface GetCategories_Response_200 {
-  /**
-   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
-   */
-  Link?: string;
-  /**
-   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
-   */
-  'x-total-count'?: string;
-  [k: string]: unknown;
-}
-interface Category {
-  /**
-   * A short title for the category. This is what will show in the sidebar.
-   */
-  title?: string;
-  /**
-   * A category can be part of your reference or guide documentation, which is determined by this field.
-   */
-  type?: 'reference' | 'guide';
-  [k: string]: unknown;
-}
-type CreateCategoryMetadataParam = {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-interface Error_CATEGORY_INVALID {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-interface Error_CATEGORY_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UpdateCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type DeleteCategoryMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type GetCategoryDocsMetadataParam = {
-  /**
-   * A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type GetChangelogsMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-};
-interface GetChangelogs_Response_200 {
-  /**
-   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
-   */
-  Link?: string;
-  /**
-   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
-   */
-  'x-total-count'?: string;
-  [k: string]: unknown;
-}
-interface Changelog {
-  /**
-   * Title of the changelog
-   */
-  title: string;
-  type?: '' | 'added' | 'fixed' | 'improved' | 'deprecated' | 'removed';
-  /**
-   * Body content of the changelog
-   */
-  body: string;
-  /**
-   * Visibility of the changelog
-   */
-  hidden?: boolean;
-  [k: string]: unknown;
-}
-type GetChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type UpdateChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type DeleteChangelogMetadataParam = {
-  /**
-   * A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type GetCustomPagesMetadataParam = {
-  /**
-   * Number of items to include in pagination (up to 100, defaults to 10)
-   */
-  perPage?: number;
-  /**
-   * Used to specify further pages (starts at 1)
-   */
-  page?: number;
-  [k: string]: unknown;
-};
-interface GetCustomPages_Response_200 {
-  /**
-   * Pagination information. See https://docs.readme.com/reference/pagination for more information.
-   */
-  Link?: string;
-  /**
-   * The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.
-   */
-  'x-total-count'?: string;
-  [k: string]: unknown;
-}
-type GetCustomPages_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetCustomPages_Response_403 = Error_APIKEY_MISMATCH;
-interface CustomPage {
-  /**
-   * Title of the custom page
-   */
-  title: string;
-  /**
-   * Body formatted in Markdown (displayed by default).
-   */
-  body?: string;
-  /**
-   * Body formatted in HTML (sanitized, only displayed if `htmlmode` is **true**).
-   */
-  html?: string;
-  /**
-   * **true** if `html` should be displayed, **false** if `body` should be displayed.
-   */
-  htmlmode?: boolean;
-  /**
-   * Visibility of the custom page
-   */
-  hidden?: boolean;
-  [k: string]: unknown;
-}
-interface Error_CUSTOMPAGE_INVALID {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type CreateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type CreateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-type GetCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type GetCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_CUSTOMPAGE_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UpdateCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type UpdateCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type UpdateCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-type DeleteCustomPageMetadataParam = {
-  /**
-   * A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"
-   */
-  slug: string;
-  [k: string]: unknown;
-};
-type DeleteCustomPage_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type DeleteCustomPage_Response_403 = Error_APIKEY_MISMATCH;
-type GetDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type GetDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetDoc_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_DOC_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Doc {
-  /**
-   * Title of the page
-   */
-  title: string;
-  /**
-   * Type of the page. The available types all show up under the /docs/ URL path of your docs project (also known as the "guides" section). Can be "basic" (most common), "error" (page desribing an API error), or "link" (page that redirects to an external link)
-   */
-  type?: 'basic' | 'error' | 'link';
-  /**
-   * Body content of the page, formatted in ReadMe or GitHub flavored Markdown. Accepts long page content, for example, greater than 100k characters
-   */
-  body?: string;
-  /**
-   * Category ID of the page, which you can get through https://docs.readme.com/reference/categories#getcategory
-   */
-  category: string;
-  /**
-   * Visibility of the page
-   */
-  hidden?: boolean;
-  /**
-   * The position of the page in your project sidebar.
-   */
-  order?: number;
-  /**
-   * For a subpage, specify the parent doc ID, which you can get through https://docs.readme.com/reference/docs#getdoc
-   */
-  parentDoc?: string;
-  error?: {
-    /**
-     * The error code for docs with the "error" type
-     */
-    code?: string;
-    [k: string]: unknown;
-  };
-  [k: string]: unknown;
-}
-type UpdateDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-interface Error_DOC_INVALID {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UpdateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type UpdateDoc_Response_403 = Error_APIKEY_MISMATCH;
-type DeleteDocMetadataParam = {
-  /**
-   * A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"
-   */
-  slug: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type DeleteDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type DeleteDoc_Response_403 = Error_APIKEY_MISMATCH;
-type CreateDocMetadataParam = {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type CreateDoc_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type CreateDoc_Response_403 = Error_APIKEY_MISMATCH;
-type SearchDocsMetadataParam = {
-  /**
-   * Search string to look for
-   */
-  search: string;
-  [k: string]: unknown;
-} & {
-  /**
-   * Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.
-   */
-  'x-readme-version'?: string;
-  [k: string]: unknown;
-};
-type SearchDocs_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type SearchDocs_Response_403 = Error_APIKEY_MISMATCH;
-type GetErrors_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetErrors_Response_403 = Error_APIKEY_MISMATCH;
-interface CondensedProjectData {
-  name?: string;
-  subdomain?: string;
-  jwtSecret?: string;
-  /**
-   * The base URL for the project. If the project is not running under a custom domain, it will be `https://projectSubdomain.readme.io`, otherwise it can either be or `https://example.com` or, in the case of an enterprise child project `https://example.com/projectSubdomain`.
-   */
-  baseUrl?: string;
-  plan?: string;
-  [k: string]: unknown;
-}
-type GetProject_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetProject_Response_403 = Error_APIKEY_MISMATCH;
-type GetVersions_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetVersions_Response_403 = Error_APIKEY_MISMATCH;
-interface Version {
-  /**
-   * Semantic Version
-   */
-  version: string;
-  /**
-   * Dubbed name of version
-   */
-  codename?: string;
-  /**
-   * Semantic Version to use as the base fork
-   */
-  from: string;
-  /**
-   * Should this be the **main** version
-   */
-  is_stable?: boolean;
-  is_beta?: boolean;
-  /**
-   * Should this be publically accessible?
-   */
-  is_hidden?: boolean;
-  /**
-   * Should this be deprecated? Only allowed in PUT operations
-   */
-  is_deprecated?: boolean;
-  [k: string]: unknown;
-}
-type CreateVersion_Response_400 = Error_VERSION_EMPTY | Error_VERSION_DUPLICATE | Error_VERSION_FORK_EMPTY;
-interface Error_VERSION_DUPLICATE {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-interface Error_VERSION_FORK_EMPTY {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type CreateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type CreateVersion_Response_403 = Error_APIKEY_MISMATCH;
-interface Error_VERSION_FORK_NOTFOUND {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type GetVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-type GetVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type GetVersion_Response_403 = Error_APIKEY_MISMATCH;
-type UpdateVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-interface Error_VERSION_CANT_DEMOTE_STABLE {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type UpdateVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type UpdateVersion_Response_403 = Error_APIKEY_MISMATCH;
-type DeleteVersionMetadataParam = {
-  /**
-   * Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).
-   */
-  versionId: string;
-  [k: string]: unknown;
-};
-interface Error_VERSION_CANT_REMOVE_STABLE {
-  /**
-   * An error code unique to the error received.
-   */
-  error?: string;
-  /**
-   * The reason why the error occured.
-   */
-  message?: string;
-  /**
-   * A helpful suggestion for how to alleviate the error.
-   */
-  suggestion?: string;
-  /**
-   * A [ReadMe Metrics](https://readme.com/metrics/) log URL where you can see more information the request that you made. If we have metrics URLs unavailable for your request, this URL will be a URL to our API Reference.
-   */
-  docs?: string;
-  /**
-   * Information on where you can receive additional assistance from our wonderful support team.
-   */
-  help?: string;
-  /**
-   * A short poem we wrote you about your error.
-   */
-  poem?: string[];
-  [k: string]: unknown;
-}
-type DeleteVersion_Response_401 = Error_APIKEY_EMPTY | Error_APIKEY_NOTFOUND;
-type DeleteVersion_Response_403 = Error_APIKEY_MISMATCH;
+export type {
+  Apply,
+  BaseError,
+  Category,
+  Changelog,
+  CondensedProjectData,
+  CreateCategoryMetadataParam,
+  CreateCustomPageResponse401,
+  CreateCustomPageResponse403,
+  CreateDocMetadataParam,
+  CreateDocResponse401,
+  CreateDocResponse403,
+  CreateVersionResponse400,
+  CreateVersionResponse401,
+  CreateVersionResponse403,
+  CustomPage,
+  DeleteApiSpecificationMetadataParam,
+  DeleteApiSpecificationResponse401,
+  DeleteApiSpecificationResponse403,
+  DeleteCategoryMetadataParam,
+  DeleteChangelogMetadataParam,
+  DeleteCustomPageMetadataParam,
+  DeleteCustomPageResponse401,
+  DeleteCustomPageResponse403,
+  DeleteDocMetadataParam,
+  DeleteDocResponse401,
+  DeleteDocResponse403,
+  DeleteVersionMetadataParam,
+  DeleteVersionResponse401,
+  DeleteVersionResponse403,
+  Doc,
+  ErrorApikeyEmpty,
+  ErrorApikeyMismatch,
+  ErrorApikeyNotfound,
+  ErrorApplyInvalidEmail,
+  ErrorApplyInvalidJob,
+  ErrorApplyInvalidName,
+  ErrorCategoryInvalid,
+  ErrorCategoryNotfound,
+  ErrorChangelogInvalid,
+  ErrorChangelogNotfound,
+  ErrorCustompageInvalid,
+  ErrorCustompageNotfound,
+  ErrorDocInvalid,
+  ErrorDocNotfound,
+  ErrorEndpointNotfound,
+  ErrorInternalError,
+  ErrorProjectNotfound,
+  ErrorRegistryNotfound,
+  ErrorSpecFileEmpty,
+  ErrorSpecIdDuplicate,
+  ErrorSpecIdInvalid,
+  ErrorSpecInvalid,
+  ErrorSpecInvalidSchema,
+  ErrorSpecNotfound,
+  ErrorSpecTimeout,
+  ErrorSpecVersionNotfound,
+  ErrorUnexpectedError,
+  ErrorVersionCantDemoteStable,
+  ErrorVersionCantRemoveStable,
+  ErrorVersionDuplicate,
+  ErrorVersionEmpty,
+  ErrorVersionForkEmpty,
+  ErrorVersionForkNotfound,
+  ErrorVersionInvalid,
+  ErrorVersionNotfound,
+  GetApiRegistryMetadataParam,
+  GetApiRegistryResponse200,
+  GetApiSpecificationMetadataParam,
+  GetApiSpecificationResponse200,
+  GetApiSpecificationResponse401,
+  GetApiSpecificationResponse403,
+  GetCategoriesMetadataParam,
+  GetCategoriesResponse200,
+  GetCategoryDocsMetadataParam,
+  GetCategoryMetadataParam,
+  GetChangelogMetadataParam,
+  GetChangelogsMetadataParam,
+  GetChangelogsResponse200,
+  GetCustomPageMetadataParam,
+  GetCustomPageResponse401,
+  GetCustomPageResponse403,
+  GetCustomPagesMetadataParam,
+  GetCustomPagesResponse200,
+  GetCustomPagesResponse401,
+  GetCustomPagesResponse403,
+  GetDocMetadataParam,
+  GetDocResponse401,
+  GetDocResponse403,
+  GetErrorsResponse401,
+  GetErrorsResponse403,
+  GetOpenRolesResponse200,
+  GetProjectResponse401,
+  GetProjectResponse403,
+  GetVersionMetadataParam,
+  GetVersionResponse401,
+  GetVersionResponse403,
+  GetVersionsResponse401,
+  GetVersionsResponse403,
+  JobOpening,
+  SearchDocsMetadataParam,
+  SearchDocsResponse401,
+  SearchDocsResponse403,
+  UpdateApiSpecificationBodyParam,
+  UpdateApiSpecificationMetadataParam,
+  UpdateApiSpecificationResponse400,
+  UpdateApiSpecificationResponse401,
+  UpdateApiSpecificationResponse403,
+  UpdateCategoryMetadataParam,
+  UpdateChangelogMetadataParam,
+  UpdateCustomPageMetadataParam,
+  UpdateCustomPageResponse401,
+  UpdateCustomPageResponse403,
+  UpdateDocMetadataParam,
+  UpdateDocResponse401,
+  UpdateDocResponse403,
+  UpdateVersionMetadataParam,
+  UpdateVersionResponse401,
+  UpdateVersionResponse403,
+  UploadApiSpecificationBodyParam,
+  UploadApiSpecificationMetadataParam,
+  UploadApiSpecificationResponse400,
+  UploadApiSpecificationResponse401,
+  UploadApiSpecificationResponse403,
+  Version,
+} from './types';

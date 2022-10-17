@@ -3,7 +3,6 @@ import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
 class SDK {
   constructor() {
-    this.authKeys = [];
     this.spec = Oas.init(definition);
     this.core = new APICore(this.spec, 'simple-js-esm/1.0.0 (api/5.0-unit-testing)');
   }

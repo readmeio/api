@@ -1,3 +1,5 @@
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
@@ -5,7 +7,6 @@ import definition from '../../../__fixtures__/definitions/simple.json';
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -76,7 +77,10 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(
+    path: '/pet/findByStatus',
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -92,7 +96,9 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+  findPetsByStatus(
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
@@ -102,42 +108,13 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-type FindPetsByStatusMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
-};
-type FindPetsByStatus_Response_200 = Pet[];
-interface Pet {
-  id?: number;
-  category?: Category;
-  name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /**
-   * pet status in the store
-   *
-   * `available` `pending` `sold`
-   */
-  status?: 'available' | 'pending' | 'sold';
-  [k: string]: unknown;
-}
-interface Category {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-interface Tag {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
+export type {
+  ApiResponse,
+  Category,
+  FindPetsByStatusMetadataParam,
+  FindPetsByStatusResponse200,
+  Order,
+  Pet,
+  Tag,
+  User,
+} from './types';

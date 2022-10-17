@@ -1,3 +1,5 @@
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/optional-payload.json';
@@ -5,7 +7,6 @@ import definition from '../../../__fixtures__/definitions/optional-payload.json'
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -77,14 +78,17 @@ class SDK {
    */
   post<T = unknown>(
     path: '/pet/{petId}',
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: '/pet/{petId}', metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(
+    path: '/pet/{petId}',
+    metadata: types.UpdatePetWithFormMetadataParam
+  ): Promise<T>;
   /**
    * Access any POST endpoint on your API.
    *
@@ -101,21 +105,21 @@ class SDK {
    *
    */
   updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  updatePetWithForm<T = unknown>(metadata: types.UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
+    body?: types.UpdatePetWithFormFormDataParam,
+    metadata?: types.UpdatePetWithFormMetadataParam
   ): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
@@ -126,28 +130,4 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};
+export type { UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam } from './types';

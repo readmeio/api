@@ -11,12 +11,16 @@
     // @todo fix these eventually
     "@typescript-eslint/no-explicit-any": "off",
 
+    // We use `@fixme` in some spots and it's fine.
+    "jsdoc/check-tag-names": "off",
+
     // Though we aren't requiring JSDoc blocks to be present, if they are they should be properly
     // formatted.
     "jsdoc/require-jsdoc": "off",
     "jsdoc/tag-lines": "off",
 
     // TypeScript types are better suited for these cases instead.
+    "jsdoc/require-param": "off",
     "jsdoc/require-param-type": "off",
     "jsdoc/require-returns": "off",
     "jsdoc/require-returns-type": "off"

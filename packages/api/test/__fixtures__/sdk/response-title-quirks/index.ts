@@ -1,3 +1,5 @@
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/response-title-quirks.json';
@@ -5,7 +7,6 @@ import definition from '../../../__fixtures__/definitions/response-title-quirks.
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -71,7 +72,10 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  get(path: '/anything', metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX>;
+  get(
+    path: '/anything',
+    metadata: types.GetAnythingMetadataParam
+  ): Promise<types.GetAnythingResponse2XX>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -82,7 +86,7 @@ class SDK {
     return this.core.fetch(path, 'get', metadata);
   }
 
-  getAnything(metadata: GetAnythingMetadataParam): Promise<GetAnything_Response_2XX> {
+  getAnything(metadata: types.GetAnythingMetadataParam): Promise<types.GetAnythingResponse2XX> {
     return this.core.fetch('/anything', 'get', metadata);
   }
 }
@@ -92,26 +96,4 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-type GetAnythingMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
-};
-type GetAnything_Response_2XX = _260CreatedToken | _260Created;
-interface _260CreatedToken {
-  id?: string;
-  [k: string]: unknown;
-}
-interface _260Created {
-  id?: string;
-  [k: string]: unknown;
-}
+export type { GetAnythingMetadataParam, GetAnythingResponse2XX } from './types';

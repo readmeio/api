@@ -9,7 +9,6 @@ var core_1 = __importDefault(require('api/dist/core'));
 var simple_json_1 = __importDefault(require('../../../__fixtures__/definitions/simple.json'));
 var SDK = /** @class */ (function () {
   function SDK() {
-    this.authKeys = [];
     this.spec = oas_1.default.init(simple_json_1.default);
     this.core = new core_1.default(this.spec, 'simple-js-cjs/1.0.0 (api/5.0-unit-testing)');
   }

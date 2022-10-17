@@ -61,7 +61,7 @@ describe('typescript', function () {
       const ts = new TSGenerator(oas, './openapi.json', 'petstore', { compilerTarget: 'cjs' });
       await ts.installer(storage, { logger, dryRun: true });
 
-      expect(logger).to.be.calledWith('npm install --save --dry-run api@beta oas');
+      expect(logger).to.be.calledWith('npm install --save --dry-run api@beta json-schema-to-ts oas');
       expect(logger).to.be.calledWith(`npm install --save --dry-run ${Storage.dir}/apis/petstore`);
     });
   });
@@ -81,6 +81,7 @@ describe('typescript', function () {
 
     it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
+    // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
       assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks')

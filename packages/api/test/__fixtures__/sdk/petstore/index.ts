@@ -1,3 +1,5 @@
+import type * as types from './types';
+import type { ConfigOptions } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/petstore.json';
@@ -5,7 +7,6 @@ import definition from '@readme/oas-examples/3.0/json/petstore.json';
 class SDK {
   spec: Oas;
   core: APICore;
-  authKeys: (number | string)[][] = [];
 
   constructor() {
     this.spec = Oas.init(definition);
@@ -75,56 +76,68 @@ class SDK {
    * Add a new pet to the store
    *
    */
-  post<T = unknown>(path: '/pet', body: Pet): Promise<T>;
+  post<T = unknown>(path: '/pet', body: types.Pet): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   post<T = unknown>(
     path: '/pet/{petId}',
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  post<T = unknown>(path: '/pet/{petId}', metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  post<T = unknown>(
+    path: '/pet/{petId}',
+    metadata: types.UpdatePetWithFormMetadataParam
+  ): Promise<T>;
   /**
    * Uploads an image
    *
    */
   post(
     path: '/pet/{petId}/uploadImage',
-    body: UploadFileBodyParam,
-    metadata: UploadFileMetadataParam
-  ): Promise<ApiResponse>;
+    body: types.UploadFileBodyParam,
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  post(path: '/pet/{petId}/uploadImage', metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  post(
+    path: '/pet/{petId}/uploadImage',
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Place an order for a pet
    *
    */
-  post(path: '/store/order', body: Order): Promise<Order>;
+  post(path: '/store/order', body: types.Order): Promise<types.Order>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Create user
    */
-  post<T = unknown>(path: '/user', body: User): Promise<T>;
+  post<T = unknown>(path: '/user', body: types.User): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: '/user/createWithArray', body: CreateUsersWithArrayInputBodyParam): Promise<T>;
+  post<T = unknown>(
+    path: '/user/createWithArray',
+    body: types.CreateUsersWithArrayInputBodyParam
+  ): Promise<T>;
   /**
    * Creates list of users with given input array
    *
    */
-  post<T = unknown>(path: '/user/createWithList', body: CreateUsersWithListInputBodyParam): Promise<T>;
+  post<T = unknown>(
+    path: '/user/createWithList',
+    body: types.CreateUsersWithListInputBodyParam
+  ): Promise<T>;
   /**
    * Access any POST endpoint on your API.
    *
@@ -140,13 +153,17 @@ class SDK {
    * Update an existing pet
    *
    */
-  put<T = unknown>(path: '/pet', body: Pet): Promise<T>;
+  put<T = unknown>(path: '/pet', body: types.Pet): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Updated user
    */
-  put<T = unknown>(path: '/user/{username}', body: User, metadata: UpdateUserMetadataParam): Promise<T>;
+  put<T = unknown>(
+    path: '/user/{username}',
+    body: types.User,
+    metadata: types.UpdateUserMetadataParam
+  ): Promise<T>;
   /**
    * Access any PUT endpoint on your API.
    *
@@ -163,36 +180,48 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(path: '/pet/findByStatus', metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200>;
+  get(
+    path: '/pet/findByStatus',
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200>;
   /**
    * Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
    *
    * @summary Finds Pets by tags
    */
-  get(path: '/pet/findByTags', metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200>;
+  get(
+    path: '/pet/findByTags',
+    metadata: types.FindPetsByTagsMetadataParam
+  ): Promise<types.FindPetsByTagsResponse200>;
   /**
    * Returns a single pet
    *
    * @summary Find pet by ID
    */
-  get(path: '/pet/{petId}', metadata: GetPetByIdMetadataParam): Promise<Pet>;
+  get(path: '/pet/{petId}', metadata: types.GetPetByIdMetadataParam): Promise<types.Pet>;
   /**
    * Returns a map of status codes to quantities
    *
    * @summary Returns pet inventories by status
    */
-  get(path: '/store/inventory'): Promise<GetInventory_Response_200>;
+  get(path: '/store/inventory'): Promise<types.GetInventoryResponse200>;
   /**
    * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
    *
    * @summary Find purchase order by ID
    */
-  get(path: '/store/order/{orderId}', metadata: GetOrderByIdMetadataParam): Promise<Order>;
+  get(
+    path: '/store/order/{orderId}',
+    metadata: types.GetOrderByIdMetadataParam
+  ): Promise<types.Order>;
   /**
    * Logs user into the system
    *
    */
-  get(path: '/user/login', metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200>;
+  get(
+    path: '/user/login',
+    metadata: types.LoginUserMetadataParam
+  ): Promise<types.LoginUserResponse200>;
   /**
    * Logs out current logged in user session
    *
@@ -202,7 +231,7 @@ class SDK {
    * Get user by user name
    *
    */
-  get(path: '/user/{username}', metadata: GetUserByNameMetadataParam): Promise<User>;
+  get(path: '/user/{username}', metadata: types.GetUserByNameMetadataParam): Promise<types.User>;
   /**
    * Access any GET endpoint on your API.
    *
@@ -217,19 +246,25 @@ class SDK {
    * Deletes a pet
    *
    */
-  delete<T = unknown>(path: '/pet/{petId}', metadata: DeletePetMetadataParam): Promise<T>;
+  delete<T = unknown>(path: '/pet/{petId}', metadata: types.DeletePetMetadataParam): Promise<T>;
   /**
    * For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
    *
    * @summary Delete purchase order by ID
    */
-  delete<T = unknown>(path: '/store/order/{orderId}', metadata: DeleteOrderMetadataParam): Promise<T>;
+  delete<T = unknown>(
+    path: '/store/order/{orderId}',
+    metadata: types.DeleteOrderMetadataParam
+  ): Promise<T>;
   /**
    * This can only be done by the logged in user.
    *
    * @summary Delete user
    */
-  delete<T = unknown>(path: '/user/{username}', metadata: DeleteUserMetadataParam): Promise<T>;
+  delete<T = unknown>(
+    path: '/user/{username}',
+    metadata: types.DeleteUserMetadataParam
+  ): Promise<T>;
   /**
    * Access any DELETE endpoint on your API.
    *
@@ -237,7 +272,11 @@ class SDK {
    * @param body Request body payload data.
    * @param metadata Object containing all path, query, header, and cookie parameters to supply.
    */
-  delete<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
+  delete<T = unknown>(
+    path: string,
+    body?: unknown,
+    metadata?: Record<string, unknown>
+  ): Promise<T> {
     return this.core.fetch(path, 'delete', body, metadata);
   }
 
@@ -245,7 +284,7 @@ class SDK {
    * Add a new pet to the store
    *
    */
-  addPet<T = unknown>(body: Pet): Promise<T> {
+  addPet<T = unknown>(body: types.Pet): Promise<T> {
     return this.core.fetch('/pet', 'post', body);
   }
 
@@ -253,7 +292,7 @@ class SDK {
    * Update an existing pet
    *
    */
-  updatePet<T = unknown>(body: Pet): Promise<T> {
+  updatePet<T = unknown>(body: types.Pet): Promise<T> {
     return this.core.fetch('/pet', 'put', body);
   }
 
@@ -262,7 +301,9 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(metadata: FindPetsByStatusMetadataParam): Promise<FindPetsByStatus_Response_200> {
+  findPetsByStatus(
+    metadata: types.FindPetsByStatusMetadataParam
+  ): Promise<types.FindPetsByStatusResponse200> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 
@@ -271,7 +312,9 @@ class SDK {
    *
    * @summary Finds Pets by tags
    */
-  findPetsByTags(metadata: FindPetsByTagsMetadataParam): Promise<FindPetsByTags_Response_200> {
+  findPetsByTags(
+    metadata: types.FindPetsByTagsMetadataParam
+  ): Promise<types.FindPetsByTagsResponse200> {
     return this.core.fetch('/pet/findByTags', 'get', metadata);
   }
 
@@ -280,7 +323,7 @@ class SDK {
    *
    * @summary Find pet by ID
    */
-  getPetById(metadata: GetPetByIdMetadataParam): Promise<Pet> {
+  getPetById(metadata: types.GetPetByIdMetadataParam): Promise<types.Pet> {
     return this.core.fetch('/pet/{petId}', 'get', metadata);
   }
 
@@ -289,21 +332,21 @@ class SDK {
    *
    */
   updatePetWithForm<T = unknown>(
-    body: UpdatePetWithFormFormDataParam,
-    metadata: UpdatePetWithFormMetadataParam
+    body: types.UpdatePetWithFormFormDataParam,
+    metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm<T = unknown>(metadata: UpdatePetWithFormMetadataParam): Promise<T>;
+  updatePetWithForm<T = unknown>(metadata: types.UpdatePetWithFormMetadataParam): Promise<T>;
   /**
    * Updates a pet in the store with form data
    *
    */
   updatePetWithForm<T = unknown>(
-    body?: UpdatePetWithFormFormDataParam,
-    metadata?: UpdatePetWithFormMetadataParam
+    body?: types.UpdatePetWithFormFormDataParam,
+    metadata?: types.UpdatePetWithFormMetadataParam
   ): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
@@ -312,7 +355,7 @@ class SDK {
    * Deletes a pet
    *
    */
-  deletePet<T = unknown>(metadata: DeletePetMetadataParam): Promise<T> {
+  deletePet<T = unknown>(metadata: types.DeletePetMetadataParam): Promise<T> {
     return this.core.fetch('/pet/{petId}', 'delete', metadata);
   }
 
@@ -320,17 +363,23 @@ class SDK {
    * Uploads an image
    *
    */
-  uploadFile(body: UploadFileBodyParam, metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  uploadFile(
+    body: types.UploadFileBodyParam,
+    metadata: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  uploadFile(metadata: UploadFileMetadataParam): Promise<ApiResponse>;
+  uploadFile(metadata: types.UploadFileMetadataParam): Promise<types.ApiResponse>;
   /**
    * Uploads an image
    *
    */
-  uploadFile(body?: UploadFileBodyParam, metadata?: UploadFileMetadataParam): Promise<ApiResponse> {
+  uploadFile(
+    body?: types.UploadFileBodyParam,
+    metadata?: types.UploadFileMetadataParam
+  ): Promise<types.ApiResponse> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
   }
 
@@ -339,7 +388,7 @@ class SDK {
    *
    * @summary Returns pet inventories by status
    */
-  getInventory(): Promise<GetInventory_Response_200> {
+  getInventory(): Promise<types.GetInventoryResponse200> {
     return this.core.fetch('/store/inventory', 'get');
   }
 
@@ -347,7 +396,7 @@ class SDK {
    * Place an order for a pet
    *
    */
-  placeOrder(body: Order): Promise<Order> {
+  placeOrder(body: types.Order): Promise<types.Order> {
     return this.core.fetch('/store/order', 'post', body);
   }
 
@@ -356,7 +405,7 @@ class SDK {
    *
    * @summary Find purchase order by ID
    */
-  getOrderById(metadata: GetOrderByIdMetadataParam): Promise<Order> {
+  getOrderById(metadata: types.GetOrderByIdMetadataParam): Promise<types.Order> {
     return this.core.fetch('/store/order/{orderId}', 'get', metadata);
   }
 
@@ -365,7 +414,7 @@ class SDK {
    *
    * @summary Delete purchase order by ID
    */
-  deleteOrder<T = unknown>(metadata: DeleteOrderMetadataParam): Promise<T> {
+  deleteOrder<T = unknown>(metadata: types.DeleteOrderMetadataParam): Promise<T> {
     return this.core.fetch('/store/order/{orderId}', 'delete', metadata);
   }
 
@@ -374,7 +423,7 @@ class SDK {
    *
    * @summary Create user
    */
-  createUser<T = unknown>(body: User): Promise<T> {
+  createUser<T = unknown>(body: types.User): Promise<T> {
     return this.core.fetch('/user', 'post', body);
   }
 
@@ -382,7 +431,9 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithArrayInput<T = unknown>(body: CreateUsersWithArrayInputBodyParam): Promise<T> {
+  createUsersWithArrayInput<T = unknown>(
+    body: types.CreateUsersWithArrayInputBodyParam
+  ): Promise<T> {
     return this.core.fetch('/user/createWithArray', 'post', body);
   }
 
@@ -390,7 +441,7 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithListInput<T = unknown>(body: CreateUsersWithListInputBodyParam): Promise<T> {
+  createUsersWithListInput<T = unknown>(body: types.CreateUsersWithListInputBodyParam): Promise<T> {
     return this.core.fetch('/user/createWithList', 'post', body);
   }
 
@@ -398,7 +449,7 @@ class SDK {
    * Logs user into the system
    *
    */
-  loginUser(metadata: LoginUserMetadataParam): Promise<LoginUser_Response_200> {
+  loginUser(metadata: types.LoginUserMetadataParam): Promise<types.LoginUserResponse200> {
     return this.core.fetch('/user/login', 'get', metadata);
   }
 
@@ -414,7 +465,7 @@ class SDK {
    * Get user by user name
    *
    */
-  getUserByName(metadata: GetUserByNameMetadataParam): Promise<User> {
+  getUserByName(metadata: types.GetUserByNameMetadataParam): Promise<types.User> {
     return this.core.fetch('/user/{username}', 'get', metadata);
   }
 
@@ -423,7 +474,7 @@ class SDK {
    *
    * @summary Updated user
    */
-  updateUser<T = unknown>(body: User, metadata: UpdateUserMetadataParam): Promise<T> {
+  updateUser<T = unknown>(body: types.User, metadata: types.UpdateUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'put', body, metadata);
   }
 
@@ -432,7 +483,7 @@ class SDK {
    *
    * @summary Delete user
    */
-  deleteUser<T = unknown>(metadata: DeleteUserMetadataParam): Promise<T> {
+  deleteUser<T = unknown>(metadata: types.DeleteUserMetadataParam): Promise<T> {
     return this.core.fetch('/user/{username}', 'delete', metadata);
   }
 }
@@ -442,189 +493,31 @@ const createSDK = (() => {
 })();
 export default createSDK;
 
-interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You
-   * can disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
-interface Pet {
-  id?: number;
-  category?: Category;
-  name: string;
-  photoUrls: string[];
-  tags?: Tag[];
-  /**
-   * pet status in the store
-   *
-   * `available` `pending` `sold`
-   */
-  status?: 'available' | 'pending' | 'sold';
-  [k: string]: unknown;
-}
-interface Category {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-interface Tag {
-  id?: number;
-  name?: string;
-  [k: string]: unknown;
-}
-type FindPetsByStatusMetadataParam = {
-  /**
-   * Status values that need to be considered for filter
-   */
-  status: ('available' | 'pending' | 'sold')[];
-  [k: string]: unknown;
-};
-type FindPetsByStatus_Response_200 = Pet[];
-type FindPetsByTagsMetadataParam = {
-  /**
-   * Tags to filter by
-   */
-  tags: string[];
-  [k: string]: unknown;
-};
-type FindPetsByTags_Response_200 = Pet[];
-type GetPetByIdMetadataParam = {
-  /**
-   * ID of pet to return
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-interface UpdatePetWithFormFormDataParam {
-  /**
-   * Updated name of the pet
-   */
-  name?: string;
-  /**
-   * Updated status of the pet
-   */
-  status?: string;
-  [k: string]: unknown;
-}
-type UpdatePetWithFormMetadataParam = {
-  /**
-   * ID of pet that needs to be updated
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-type DeletePetMetadataParam = {
-  /**
-   * Pet id to delete
-   */
-  petId: number;
-  [k: string]: unknown;
-} & {
-  api_key?: string;
-  [k: string]: unknown;
-};
-interface UploadFileBodyParam {
-  /**
-   * Additional data to pass to server
-   */
-  additionalMetadata?: string;
-  /**
-   * file to upload
-   */
-  file?: string;
-  [k: string]: unknown;
-}
-type UploadFileMetadataParam = {
-  /**
-   * ID of pet to update
-   */
-  petId: number;
-  [k: string]: unknown;
-};
-interface ApiResponse {
-  code?: number;
-  type?: string;
-  message?: string;
-  [k: string]: unknown;
-}
-interface GetInventory_Response_200 {
-  [k: string]: number;
-}
-interface Order {
-  id?: number;
-  petId?: number;
-  quantity?: number;
-  shipDate?: string;
-  /**
-   * Order Status
-   *
-   * `placed` `approved` `delivered`
-   */
-  status?: 'placed' | 'approved' | 'delivered';
-  complete?: boolean;
-  [k: string]: unknown;
-}
-type GetOrderByIdMetadataParam = {
-  /**
-   * ID of pet that needs to be fetched
-   */
-  orderId: number;
-  [k: string]: unknown;
-};
-type DeleteOrderMetadataParam = {
-  /**
-   * ID of the order that needs to be deleted
-   */
-  orderId: number;
-  [k: string]: unknown;
-};
-interface User {
-  id?: number;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  password?: string;
-  phone?: string;
-  /**
-   * User Status
-   */
-  userStatus?: number;
-  [k: string]: unknown;
-}
-type CreateUsersWithArrayInputBodyParam = User[];
-type CreateUsersWithListInputBodyParam = User[];
-type LoginUserMetadataParam = {
-  /**
-   * The user name for login
-   */
-  username: string;
-  /**
-   * The password for login in clear text
-   */
-  password: string;
-  [k: string]: unknown;
-};
-type LoginUser_Response_200 = string;
-type GetUserByNameMetadataParam = {
-  /**
-   * The name that needs to be fetched. Use user1 for testing.
-   */
-  username: string;
-  [k: string]: unknown;
-};
-type UpdateUserMetadataParam = {
-  /**
-   * name that need to be updated
-   */
-  username: string;
-  [k: string]: unknown;
-};
-type DeleteUserMetadataParam = {
-  /**
-   * The name that needs to be deleted
-   */
-  username: string;
-  [k: string]: unknown;
-};
+export type {
+  ApiResponse,
+  Category,
+  CreateUsersWithArrayInputBodyParam,
+  CreateUsersWithListInputBodyParam,
+  DeleteOrderMetadataParam,
+  DeletePetMetadataParam,
+  DeleteUserMetadataParam,
+  FindPetsByStatusMetadataParam,
+  FindPetsByStatusResponse200,
+  FindPetsByTagsMetadataParam,
+  FindPetsByTagsResponse200,
+  GetInventoryResponse200,
+  GetOrderByIdMetadataParam,
+  GetPetByIdMetadataParam,
+  GetUserByNameMetadataParam,
+  LoginUserMetadataParam,
+  LoginUserResponse200,
+  Order,
+  Pet,
+  Tag,
+  UpdatePetWithFormFormDataParam,
+  UpdatePetWithFormMetadataParam,
+  UpdateUserMetadataParam,
+  UploadFileBodyParam,
+  UploadFileMetadataParam,
+  User,
+} from './types';
