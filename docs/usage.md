@@ -21,7 +21,7 @@ The code generation installation process that `api` offers comes in the form of 
 Once you have your library generated and installed you can use your SDK like you would any other:
 
 ```js
-const SDK = require('@api/petstore');
+const petstore = require('@api/petstore');
 
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);

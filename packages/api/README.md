@@ -29,7 +29,7 @@ $ npx api@beta install https://raw.githubusercontent.com/OAI/OpenAPI-Specificati
 ```
 
 ```js
-const SDK = require('@api/petstore');
+const petstore = require('@api/petstore');
 
 petstore.listPets().then(res => {
   console.log(`My pets name is ${res[0].name}!`);
