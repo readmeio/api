@@ -64,7 +64,7 @@
     "prettier": "^2.7.1",
     "prompts": "^2.4.2",
     "remove-undefined-objects": "^2.0.1",
-    "ssri": "^9.0.0",
+    "ssri": "^10.0.0",
     "ts-morph": "^16.0.0",
     "validate-npm-package-name": "^4.0.0"
   },
