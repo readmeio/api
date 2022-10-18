@@ -21,7 +21,6 @@ import getJSONSchemaDefaults from './getJSONSchemaDefaults';
  *
  * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#parameterObject}
  * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameterObject}
- * @param parameters
  */
 function digestParameters(parameters: ParameterObject[]): Record<string, ParameterObject> {
   return parameters.reduce((prev, param) => {
@@ -69,8 +68,6 @@ function merge(src: any, target: any) {
  * Ingest a file path or readable stream into a common object that we can later use to process it
  * into a parameters object for making an API request.
  *
- * @param paramName
- * @param file
  */
 function processFile(
   paramName: string,
@@ -137,9 +134,6 @@ function processFile(
  * operation to see what's what and prepare any available parameters to be used in an API request
  * with `@readme/oas-to-har`.
  *
- * @param operation
- * @param body
- * @param metadata
  */
 export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
   let metadataIntersected = false;

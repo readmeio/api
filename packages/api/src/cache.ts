@@ -149,7 +149,7 @@ export default class Cache {
 
   async load() {
     // If the class was supplied a raw object we should still validate and make sure that it's
-    // dereferenced in  order for everything to function, but we shouldn't worry about saving it
+    // dereferenced in order for everything to function, but we shouldn't worry about saving it
     // into the cache directory architecture.
     if (typeof this.uri === 'object') {
       return Fetcher.validate(this.uri);
