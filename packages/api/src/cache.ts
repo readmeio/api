@@ -5,7 +5,6 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import OpenAPIParser from '@readme/openapi-parser';
 import findCacheDir from 'find-cache-dir';
 import 'isomorphic-fetch';
 import makeDir from 'make-dir';
@@ -103,28 +102,6 @@ export default class Cache {
     }
   }
 
-  static validate(json: any) {
-    if (json.swagger) {
-      throw new Error('Sorry, this module only supports OpenAPI definitions.');
-    }
-
-    // The `validate` method handles dereferencing for us.
-    return OpenAPIParser.validate(json, {
-      dereference: {
-        // If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`.
-        // This allows us to not only do easy circular reference detection but also stringify and
-        // save dereferenced API definitions back into the cache directory.
-        circular: 'ignore',
-      },
-    }).catch(err => {
-      if (/is not a valid openapi definition/i.test(err.message)) {
-        throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
-      }
-
-      throw err;
-    });
-  }
-
   isCached() {
     const cache = this.getCache();
     return cache && this.uriHash in cache;
@@ -171,10 +148,11 @@ export default class Cache {
   }
 
   async load() {
-    // If the class was supplied a raw object, just go ahead and bypass the caching system and
-    // return that.
+    // If the class was supplied a raw object we should still validate and make sure that it's
+    // dereferenced in  order for everything to function, but we shouldn't worry about saving it
+    // into the cache directory architecture.
     if (typeof this.uri === 'object') {
-      return this.uri;
+      return Fetcher.validate(this.uri);
     }
 
     return this.fetcher.load().then(async spec => this.save(spec));

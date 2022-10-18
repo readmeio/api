@@ -282,6 +282,11 @@ describe('api', function () {
 
       beforeEach(function () {
         queryEncoding = api({
+          openapi: '3.1.0',
+          info: {
+            version: '1.0.0',
+            title: '',
+          },
           servers: [{ url: 'https://httpbin.org/' }],
           paths: {
             '/anything': {

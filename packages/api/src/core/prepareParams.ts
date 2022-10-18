@@ -144,7 +144,6 @@ function processFile(
 export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
   let metadataIntersected = false;
   const digestedParameters = digestParameters(operation.getParameters());
-  const hasDigestedParams = !!Object.keys(digestedParameters).length;
   const jsonSchema = operation.getParametersAsJSONSchema();
 
   /**
@@ -192,45 +191,42 @@ export default async function prepareParams(operation: Operation, body?: unknown
     } else if (typeof metadata === 'undefined') {
       // No metadata was explicitly provided so we need to analyze the body to determine if it's a
       // body or should be actually be treated as metadata.
-      if (!hasDigestedParams) {
-        // If no parameters were able to be digested it's because this operation has none so then
-        // we just have to assume that what the user supplied was for a body and not metadata. This
-        // might lead to unwanted false positives if the API definition isn't accurate but short of
-        // throwing an error (one that the user would have no control over resolving anyways) there
-        // isn't anything we can do about it.
-        params.body = merge(params.body, body);
-      } else {
-        const headerParams = caseless({});
-        Object.entries(digestedParameters).forEach(([paramName, param]) => {
-          // Headers are sent case-insensitive so we need to make sure that we're properly
-          // matching them when detecting what our incoming payload looks like.
-          if (param.in === 'header') {
-            headerParams.set(paramName, '');
-          }
-        });
-
-        const intersection = Object.keys(body).filter(value => {
-          if (Object.keys(digestedParameters).includes(value)) {
-            return true;
-          } else if (headerParams.has(value)) {
-            return true;
-          }
-
-          return false;
-        }).length;
-
-        if (intersection && intersection / Object.keys(body).length > 0.25) {
-          /* eslint-disable no-param-reassign */
-          // If more than 25% of the body intersects with the parameters that we've got on hand,
-          // then we should treat it as a metadata object and organize into parameters.
-          metadataIntersected = true;
-          metadata = merge(params.body, body) as Record<string, unknown>;
-          body = undefined;
-          /* eslint-enable no-param-reassign */
-        } else {
-          // For all other cases, we should just treat the supplied body as a body.
-          params.body = merge(params.body, body);
+      const headerParams = caseless({});
+      Object.entries(digestedParameters).forEach(([paramName, param]) => {
+        // Headers are sent case-insensitive so we need to make sure that we're properly
+        // matching them when detecting what our incoming payload looks like.
+        if (param.in === 'header') {
+          headerParams.set(paramName, '');
         }
+      });
+
+      // `Accept` headers can't be defined as normal parameters but we should always allow the
+      // user to supply them.
+      if (!headerParams.has('accept')) {
+        headerParams.set('accept', '');
+      }
+
+      const intersection = Object.keys(body).filter(value => {
+        if (Object.keys(digestedParameters).includes(value)) {
+          return true;
+        } else if (headerParams.has(value)) {
+          return true;
+        }
+
+        return false;
+      }).length;
+
+      if (intersection && intersection / Object.keys(body).length > 0.25) {
+        /* eslint-disable no-param-reassign */
+        // If more than 25% of the body intersects with the parameters that we've got on hand,
+        // then we should treat it as a metadata object and organize into parameters.
+        metadataIntersected = true;
+        metadata = merge(params.body, body) as Record<string, unknown>;
+        body = undefined;
+        /* eslint-enable no-param-reassign */
+      } else {
+        // For all other cases, we should just treat the supplied body as a body.
+        params.body = merge(params.body, body);
       }
     } else {
       // Body and metadata were both supplied.
@@ -302,7 +298,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   // Only spend time trying to organize metadata into parameters if we were able to digest
   // parameters out of the operation schema. If we couldn't digest anything, but metadata was
   // supplied then we wouldn't know how to send it in the request!
-  if (hasDigestedParams) {
+  if (typeof metadata !== 'undefined') {
     if (!('cookie' in params)) params.cookie = {};
     if (!('header' in params)) params.header = {};
     if (!('path' in params)) params.path = {};
@@ -310,13 +306,15 @@ export default async function prepareParams(operation: Operation, body?: unknown
 
     Object.entries(digestedParameters).forEach(([paramName, param]) => {
       let value: any;
+      let metadataHeaderParam;
       if (typeof metadata === 'object' && !isEmpty(metadata)) {
         if (paramName in metadata) {
           value = metadata[paramName];
         } else if (param.in === 'header') {
           // Headers are sent case-insensitive so we need to make sure that we're properly
           // matching them when detecting what our incoming payload looks like.
-          value = metadata[Object.keys(metadata).find(k => k.toLowerCase() === paramName.toLowerCase())];
+          metadataHeaderParam = Object.keys(metadata).find(k => k.toLowerCase() === paramName.toLowerCase());
+          value = metadata[metadataHeaderParam];
         }
       }
 
@@ -336,7 +334,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
           break;
         case 'header':
           params.header[paramName.toLowerCase()] = value;
-          delete metadata[paramName];
+          delete metadata[metadataHeaderParam];
           break;
         case 'cookie':
           params.cookie[paramName] = value;
@@ -361,6 +359,15 @@ export default async function prepareParams(operation: Operation, body?: unknown
     if (!isEmpty(metadata)) {
       if (operation.isFormUrlEncoded()) {
         params.formData = merge(params.formData, metadata);
+      } else if (typeof metadata === 'object') {
+        // If the user supplied an `accept` header themselves we should allow it through. Normally
+        // `accept` headers are automatically handled by `@readme/oas-to-har` but in the event that
+        // maybe the user wants to return XML for an API that normally returns JSON this is the
+        // only way with this library that they can do that.
+        const acceptHeaderParam = Object.keys(metadata).find(m => m.toLowerCase() === 'accept');
+        if (acceptHeaderParam) {
+          params.header.accept = metadata[acceptHeaderParam] as string;
+        }
       } else {
         // Any other remaining unused metadata will be unused because we don't know where to place
         // it in the request.

@@ -3,6 +3,7 @@ import type { OASDocument } from 'oas/dist/rmoas.types';
 import fs from 'fs/promises';
 import path from 'path';
 
+import petstoreSpec from '@readme/oas-examples/3.0/json/petstore.json';
 import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
@@ -23,9 +24,19 @@ describe('cache', function () {
   });
 
   describe('#load', function () {
-    it('should return a raw object if a JSON object was initially supplied', async function () {
-      const res = await new Cache(readmeSpec as unknown as OASDocument).load();
-      expect(res).to.deep.equal(readmeSpec);
+    describe('raw object', function () {
+      it('should return a raw object if a JSON object was initially supplied', async function () {
+        const res = await new Cache(readmeSpec as unknown as OASDocument).load();
+        expect(res).to.deep.equal(readmeSpec);
+      });
+
+      it('should return a raw object if supplied, but still validate and dereference it', async function () {
+        const res = await new Cache(petstoreSpec as unknown as OASDocument).load();
+        expect(Object.keys((res.paths['/pet'].post as any).requestBody.content)).to.deep.equal([
+          'application/json',
+          'application/xml',
+        ]);
+      });
     });
 
     describe('ReadMe registry UUID', function () {

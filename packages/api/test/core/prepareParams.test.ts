@@ -389,6 +389,51 @@ describe('#prepareParams', function () {
       });
     });
 
+    describe('`accept` header overrides', function () {
+      it('should support supplying an `accept` header parameter', async function () {
+        const operation = parameterStyle.operation('/anything/headers', 'get');
+        const metadata = {
+          primitive: 'buster',
+          accept: 'application/json',
+        };
+
+        expect(await prepareParams(operation, metadata)).to.deep.equal({
+          header: {
+            primitive: 'buster',
+            accept: 'application/json',
+          },
+        });
+      });
+
+      it('should support supplying a case-insensitive `accept` header parameter', async function () {
+        const operation = parameterStyle.operation('/anything/headers', 'get');
+        const metadata = {
+          primitive: 'buster',
+          ACCept: 'application/json',
+        };
+
+        expect(await prepareParams(operation, metadata)).to.deep.equal({
+          header: {
+            primitive: 'buster',
+            accept: 'application/json',
+          },
+        });
+      });
+
+      it('should support supplying **only** an `accept` header parameter', async function () {
+        const operation = parameterStyle.operation('/anything/headers', 'get');
+        const metadata = {
+          accept: 'application/json',
+        };
+
+        expect(await prepareParams(operation, metadata)).to.deep.equal({
+          header: {
+            accept: 'application/json',
+          },
+        });
+      });
+    });
+
     it('should support path parameters', async function () {
       const operation = parameterStyle.operation('/anything/path/{primitive}/{array}/{object}', 'get');
       const metadata = {
