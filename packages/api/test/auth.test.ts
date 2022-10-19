@@ -44,7 +44,8 @@ describe('#auth()', function () {
         );
 
         sdk.auth(apiKey);
-        expect(await sdk.get('/anything/apiKey')).to.equal('/anything/apiKey?apiKey=123457890');
+        const { data } = await sdk.get('/anything/apiKey');
+        expect(data).to.equal('/anything/apiKey?apiKey=123457890');
       });
 
       it('should throw if you supply multiple auth keys', async function () {
@@ -64,7 +65,8 @@ describe('#auth()', function () {
         fetchMock.put('https://httpbin.org/anything/apiKey', mockResponses.headers);
 
         sdk.auth(apiKey);
-        expect(await sdk.put('/anything/apiKey')).to.have.deep.property('x-api-key', '123457890');
+        const { data } = await sdk.put('/anything/apiKey');
+        expect(data).to.have.deep.property('x-api-key', '123457890');
       });
 
       it('should throw if you supply multiple auth keys', async function () {
@@ -88,7 +90,10 @@ describe('#auth()', function () {
         fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
 
         sdk.auth(user, pass);
-        expect(await sdk.post('/anything/basic')).to.have.deep.property('authorization', authHeader);
+
+        await sdk.post('/anything/basic').then(({ data }) => {
+          expect(data).to.have.deep.property('authorization', authHeader);
+        });
       });
 
       it('should allow you to not pass in a password', async function () {
@@ -96,10 +101,9 @@ describe('#auth()', function () {
 
         sdk.auth(user);
 
-        expect(await sdk.post('/anything/basic')).to.have.deep.property(
-          'authorization',
-          `Basic ${Buffer.from(`${user}:`).toString('base64')}`
-        );
+        await sdk.post('/anything/basic').then(({ data }) => {
+          expect(data).to.have.deep.property('authorization', `Basic ${Buffer.from(`${user}:`).toString('base64')}`);
+        });
       });
     });
 
@@ -108,7 +112,10 @@ describe('#auth()', function () {
         fetchMock.post('https://httpbin.org/anything/bearer', mockResponses.headers);
 
         sdk.auth(apiKey);
-        expect(await sdk.post('/anything/bearer')).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+
+        await sdk.post('/anything/bearer').then(({ data }) => {
+          expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+        });
       });
 
       it('should throw if you pass in multiple bearer tokens', async function () {
@@ -129,7 +136,9 @@ describe('#auth()', function () {
 
       sdk.auth(apiKey);
 
-      expect(await sdk.post('/anything/oauth2')).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+      await sdk.post('/anything/oauth2').then(({ data }) => {
+        expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+      });
     });
 
     it('should throw if you pass in multiple bearer tokens', async function () {
@@ -158,8 +167,8 @@ describe('#auth()', function () {
 
     sdk.auth(apiKey);
 
-    await sdk.get('/anything/apiKey').then(res => expect(res.calls).to.equal(1));
-    await sdk.get('/anything/apiKey').then(res => expect(res.calls).to.equal(2));
+    await sdk.get('/anything/apiKey').then(({ data }) => expect(data.calls).to.equal(1));
+    await sdk.get('/anything/apiKey').then(({ data }) => expect(data.calls).to.equal(2));
   });
 
   it('should allow auth to be called again to change the key', async function () {
@@ -185,9 +194,9 @@ describe('#auth()', function () {
     );
 
     sdk.auth(apiKey1);
-    await sdk.get('/anything/apiKey').then(res => expect(res).to.equal('/anything/apiKey?apiKey=12345'));
+    await sdk.get('/anything/apiKey').then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=12345'));
 
     sdk.auth(apiKey2);
-    await sdk.get('/anything/apiKey').then(res => expect(res).to.equal('/anything/apiKey?apiKey=67890'));
+    await sdk.get('/anything/apiKey').then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=67890'));
   });
 });

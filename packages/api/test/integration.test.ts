@@ -54,11 +54,11 @@ describe('integration tests', function () {
         version: 'oa_citations',
       };
 
-      const res = await api(usptoSpec).post('/{dataset}/{version}/records', body, metadata);
-      expect(res.uri).to.equal('/anything/v1/oa_citations/records');
-      expect(res.requestBody).to.equal('criteria=propertyName%3Avalue');
-      expect(res.headers).to.have.deep.property('content-type', 'application/x-www-form-urlencoded');
-      expect(res.headers).to.have.a.customUserAgent;
+      const { data } = await api(usptoSpec).post('/{dataset}/{version}/records', body, metadata);
+      expect(data.uri).to.equal('/anything/v1/oa_citations/records');
+      expect(data.requestBody).to.equal('criteria=propertyName%3Avalue');
+      expect(data.headers).to.have.deep.property('content-type', 'application/x-www-form-urlencoded');
+      expect(data.headers).to.have.a.customUserAgent;
     });
 
     // it.skip('should send along required parameters if not supplied', async function () {
@@ -67,7 +67,8 @@ describe('integration tests', function () {
     //     version: 'oa_citations',
     //   };
 
-    //   await expect(api(usptoSpec).post('/{dataset}/{version}/records', metadata)).resolves.toStrictEqual({
+    //   const { data } = await api(usptoSpec).post('/{dataset}/{version}/records', metadata);
+    //   await expect(data).resolves.toStrictEqual({
     //     args: {},
     //     data: '',
     //     files: {},
@@ -91,11 +92,11 @@ describe('integration tests', function () {
 
     const file = `${__dirname}/__fixtures__/owlbert.png`;
 
-    const res = await api(fileUploads as unknown as OASDocument).post('/anything/image-png', file);
-    expect(res.uri).to.equal('/anything/image-png');
-    expect(res.requestBody).to.equal(await datauri(file));
-    expect(res.headers).to.have.deep.property('content-type', 'image/png');
-    expect(res.headers).to.have.a.customUserAgent;
+    const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/image-png', file);
+    expect(data.uri).to.equal('/anything/image-png');
+    expect(data.requestBody).to.equal(await datauri(file));
+    expect(data.headers).to.have.deep.property('content-type', 'image/png');
+    expect(data.headers).to.have.a.customUserAgent;
   });
 
   describe('header handling', function () {
@@ -111,11 +112,11 @@ describe('integration tests', function () {
         accept: 'text/xml',
       };
 
-      const res = await api(petstore as unknown as OASDocument).post('/pet', body, metadata);
-      expect(res.uri).to.equal('/v2/pet');
-      expect(res.requestBody).to.equal('{"id":1234,"name":"buster"}');
-      expect(res.headers).to.have.deep.property('accept', 'text/xml');
-      expect(res.headers).to.have.a.customUserAgent;
+      const { data } = await api(petstore as unknown as OASDocument).post('/pet', body, metadata);
+      expect(data.uri).to.equal('/v2/pet');
+      expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
+      expect(data.headers).to.have.deep.property('accept', 'text/xml');
+      expect(data.headers).to.have.a.customUserAgent;
     });
 
     it('should support supplying **only** an `accept` header', async function () {
@@ -125,11 +126,11 @@ describe('integration tests', function () {
         accept: 'text/xml',
       };
 
-      const res = await api(petstore as unknown as OASDocument).post('/pet', metadata);
-      expect(res.uri).to.equal('/v2/pet');
-      expect(res.requestBody).to.be.undefined;
-      expect(res.headers).to.have.deep.property('accept', 'text/xml');
-      expect(res.headers).to.have.a.customUserAgent;
+      const { data } = await api(petstore as unknown as OASDocument).post('/pet', metadata);
+      expect(data.uri).to.equal('/v2/pet');
+      expect(data.requestBody).to.be.undefined;
+      expect(data.headers).to.have.deep.property('accept', 'text/xml');
+      expect(data.headers).to.have.a.customUserAgent;
     });
   });
 
@@ -146,18 +147,18 @@ describe('integration tests', function () {
         },
       };
 
-      const res = await api(parametersStyle as unknown as OASDocument).post('/anything/form-data/form', body);
-      expect(res.uri).to.equal('/anything/form-data/form');
-      expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
+      const { data } = await api(parametersStyle as unknown as OASDocument).post('/anything/form-data/form', body);
+      expect(data.uri).to.equal('/anything/form-data/form');
+      expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
         '\r\nContent-Disposition: form-data; name="primitive"\r\n\r\nstring\r\n',
         '\r\nContent-Disposition: form-data; name="array"\r\n\r\nstring\r\n',
         '\r\nContent-Disposition: form-data; name="object"\r\n\r\nfoo,foo-string,bar,bar-string\r\n',
         '--\r\n\r\n',
       ]);
 
-      expect(res.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${res.boundary}`);
-      expect(res.headers).to.have.deep.property('content-length', '356');
-      expect(res.headers).to.have.a.customUserAgent;
+      expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
+      expect(data.headers).to.have.deep.property('content-length', '356');
+      expect(data.headers).to.have.a.customUserAgent;
     });
 
     describe('files', function () {
@@ -170,18 +171,18 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.txt`,
         };
 
-        const res = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
-        expect(res.uri).to.equal('/anything/multipart-formdata');
-        expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
+        const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
+        expect(data.uri).to.equal('/anything/multipart-formdata');
+        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="orderId"\r\n\r\n1234\r\n',
           '\r\nContent-Disposition: form-data; name="userId"\r\n\r\n5678\r\n',
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.txt"\r\nContent-Type: text/plain\r\n\r\nHello world!\n\r\n',
           '--\r\n\r\n',
         ]);
 
-        expect(res.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${res.boundary}`);
-        expect(res.headers).to.have.deep.property('content-length', '389');
-        expect(res.headers).to.have.a.customUserAgent;
+        expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
+        expect(data.headers).to.have.deep.property('content-length', '389');
+        expect(data.headers).to.have.a.customUserAgent;
       });
 
       it('should support plaintext files containing unicode characters', async function () {
@@ -191,16 +192,16 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
         };
 
-        const res = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
-        expect(res.uri).to.equal('/anything/multipart-formdata');
-        expect(res.requestBody.split(`--${res.boundary}`).filter(Boolean)).to.deep.equal([
+        const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
+        expect(data.uri).to.equal('/anything/multipart-formdata');
+        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',
           '--\r\n\r\n',
         ]);
 
-        expect(res.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${res.boundary}`);
-        expect(res.headers).to.have.deep.property('content-length', '251');
-        expect(res.headers).to.have.a.customUserAgent;
+        expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
+        expect(data.headers).to.have.deep.property('content-length', '251');
+        expect(data.headers).to.have.a.customUserAgent;
       });
     });
 
@@ -210,8 +211,8 @@ describe('integration tests', function () {
     //     `${__dirname}/__fixtures__/owlbert-shrub.png`,
     //   ];
 
-    //   await api(fileUploads).post('/anything/form-data', body).then(res => {
-    //     console.logx(res)
+    //   await api(fileUploads).post('/anything/form-data', body).then({ data } => {
+    //     console.log(data)
     //   })
     // });
   });

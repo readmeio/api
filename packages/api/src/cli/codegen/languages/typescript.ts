@@ -3,14 +3,7 @@ import type { InstallerOptions } from '../language';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, SchemaObject } from 'oas/dist/rmoas.types';
-import type {
-  ClassDeclaration,
-  JSDocStructure,
-  MethodDeclaration,
-  OptionalKind,
-  ParameterDeclarationStructure,
-  TypeParameterDeclarationStructure,
-} from 'ts-morph';
+import type { ClassDeclaration, JSDocStructure, OptionalKind, ParameterDeclarationStructure } from 'ts-morph';
 
 import fs from 'fs';
 import path from 'path';
@@ -48,8 +41,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   files: Record<string, string>;
 
-  methodGenerics: Map<string, MethodDeclaration>;
-
   sdk: ClassDeclaration;
 
   schemas: Record<
@@ -63,6 +54,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     // Wholesale collection of `$ref` pointer types
     | Record<string, any>
   >;
+
+  usesHTTPMethodRangeInterface = false;
 
   constructor(spec: Oas, specPath: string, identifier: string, opts: TSGeneratorOptions = {}) {
     const options: { outputJS: boolean; compilerTarget: 'cjs' | 'esm' } = {
@@ -120,7 +113,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     this.outputJS = options.outputJS;
 
     this.types = new Map();
-    this.methodGenerics = new Map();
     this.schemas = {};
   }
 
@@ -193,6 +185,15 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         .remove();
     }
 
+    // If this SDK doesn't use the `HTTPMethodRange` interface for handling `2XX` response status
+    // codes then we should remove it from being imported.
+    if (!this.usesHTTPMethodRangeInterface) {
+      sdkSource
+        .getImportDeclarations()
+        .find(id => id.getText().includes('HTTPMethodRange'))
+        .replaceWithText("import type { ConfigOptions, FetchResponse } from 'api/dist/core'");
+    }
+
     if (this.outputJS) {
       return this.project
         .emitToMemory()
@@ -251,14 +252,18 @@ export default class TSGenerator extends CodeGeneratorLanguage {
    *
    */
   createSourceFile() {
-    const { operations, methods } = this.loadOperationsAndMethods();
+    const { operations } = this.loadOperationsAndMethods();
 
     const sourceFile = this.project.createSourceFile('index.ts', '');
 
     sourceFile.addImportDeclarations([
       // This import will be automatically removed later if the SDK ends up not having any types.
       { defaultImport: 'type * as types', moduleSpecifier: './types' },
-      { defaultImport: 'type { ConfigOptions }', moduleSpecifier: 'api/dist/core' },
+      {
+        // `HTTPMethodRange` will be conditionally removed later if it ends up not being used.
+        defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
+        moduleSpecifier: 'api/dist/core',
+      },
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
       { defaultImport: 'APICore', moduleSpecifier: 'api/dist/core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
@@ -290,16 +295,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         docs: [
           {
             description: writer =>
-              writer.writeLine(
-                wordWrap('Optionally configure various options, such as response parsing, that the SDK allows.')
-              ),
-            tags: [
-              { tagName: 'param', text: 'config Object of supported SDK options and toggles.' },
-              {
-                tagName: 'param',
-                text: 'config.parseResponse If responses are parsed according to its `Content-Type` header.',
-              },
-            ],
+              writer.writeLine(wordWrap('Optionally configure various options that the SDK allows.')),
+            tags: [{ tagName: 'param', text: 'config Object of supported SDK options and toggles.' }],
           },
         ],
       },
@@ -369,9 +366,6 @@ sdk.server('https://eu.api.example.com/v14');`)
         ],
       },
     ]);
-
-    // Add all common method accessors into the SDK.
-    Array.from(methods).forEach((method: string) => this.createGenericMethodAccessor(method));
 
     // Add all available operation ID accessors into the SDK.
     Object.entries(operations).forEach(([operationId, data]: [string, OperationTypeHousing]) => {
@@ -467,63 +461,6 @@ sdk.server('https://eu.api.example.com/v14');`)
   }
 
   /**
-   * Create a generic HTTP method accessor on the SDK.
-   *
-   */
-  createGenericMethodAccessor(method: string) {
-    const parameters: OptionalKind<ParameterDeclarationStructure>[] = [{ name: 'path', type: 'string' }];
-    const docblock: OptionalKind<JSDocStructure> = {
-      description: writer => {
-        writer.writeLine(`Access any ${method.toUpperCase()} endpoint on your API.`);
-        return writer;
-      },
-      tags: [{ tagName: 'param', text: 'path API path to make a request against.' }],
-    };
-
-    // Method generic body + metadata parameters are always optional.
-    if (method !== 'get') {
-      parameters.push({ name: 'body', type: 'unknown', hasQuestionToken: true });
-      docblock.tags.push({ tagName: 'param', text: 'body Request body payload data.' });
-    }
-
-    parameters.push({ name: 'metadata', type: 'Record<string, unknown>', hasQuestionToken: true });
-    docblock.tags.push({
-      tagName: 'param',
-      text: 'metadata Object containing all path, query, header, and cookie parameters to supply.',
-    });
-
-    this.methodGenerics.set(
-      method,
-      this.sdk.addMethod({
-        name: method,
-        returnType: 'Promise<T>',
-        parameters,
-        typeParameters: ['T = unknown'],
-        docs: [docblock],
-        statements: writer => {
-          /**
-           * @example return this.core.fetch(path, 'get', body, metadata);
-           * @example return this.core.fetch(path, 'get', metadata);
-           */
-          const fetchStmt = writer.write('return this.core.fetch(path, ').quote(method).write(', ');
-
-          const fetchArgs = parameters.slice(1).map(p => p.name);
-          fetchArgs.forEach((arg, i) => {
-            fetchStmt.write(arg);
-            if (fetchArgs.length > 1 && i !== fetchArgs.length) {
-              fetchStmt.write(', ');
-            }
-          });
-
-          fetchStmt.write(');');
-
-          return fetchStmt;
-        },
-      })
-    );
-  }
-
-  /**
    * Create operation accessors on the SDK.
    *
    */
@@ -542,9 +479,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       // what we surface the main docblock description.
       docblock.description = writer => {
         if (description) {
-          writer.writeLine(description);
+          writer.writeLine(wordWrap(description));
         } else if (summary) {
-          writer.writeLine(summary);
+          writer.writeLine(wordWrap(summary));
         }
 
         writer.newLineIfLastNot();
@@ -587,20 +524,31 @@ sdk.server('https://eu.api.example.com/v14');`)
       }
     }
 
-    let returnType = 'Promise<T>';
-    let typeParameters: (string | OptionalKind<TypeParameterDeclarationStructure>)[] = null;
+    let returnType = 'Promise<FetchResponse<number, unknown>>';
     if (responseTypes) {
-      returnType = `Promise<${Object.values(responseTypes)
-        .map(responseType => responseType)
+      returnType = `Promise<${Object.entries(responseTypes)
+        .map(([status, responseType]) => {
+          if (status.toLowerCase() === 'default') {
+            return `FetchResponse<number, ${responseType}>`;
+          } else if (status.length === 3 && status.toUpperCase().endsWith('XX')) {
+            const statusPrefix = status.slice(0, 1);
+            if (!Number.isInteger(Number(statusPrefix))) {
+              // If this matches the `_XX` format, but it isn't `{number}XX` then we can't handle
+              // it and should instead fall back to treating it as an unknown number.
+              return `FetchResponse<number, ${responseType}>`;
+            }
+
+            this.usesHTTPMethodRangeInterface = true;
+            return `FetchResponse<HTTPMethodRange<${statusPrefix}00, ${statusPrefix}99>, ${responseType}>`;
+          }
+
+          return `FetchResponse<${status}, ${responseType}>`;
+        })
         .join(' | ')}>`;
-    } else {
-      // We should only add the `<T>` method typing if we don't have any response types present.
-      typeParameters = ['T = unknown'];
     }
 
     const operationIdAccessor = this.sdk.addMethod({
       name: operationId,
-      typeParameters,
       returnType,
       docs: Object.keys(docblock).length ? [docblock] : null,
       statements: writer => {
@@ -643,7 +591,6 @@ sdk.server('https://eu.api.example.com/v14');`)
     if (shouldAddAltTypedOverloads) {
       // Create an overload that has both `body` and `metadata` parameters as required.
       operationIdAccessor.addOverload({
-        typeParameters,
         parameters: [
           { ...parameters.body, hasQuestionToken: false },
           { ...parameters.metadata, hasQuestionToken: false },
@@ -654,7 +601,6 @@ sdk.server('https://eu.api.example.com/v14');`)
 
       // Create an overload that just has a single `metadata` parameter.
       operationIdAccessor.addOverload({
-        typeParameters,
         parameters: [{ ...parameters.metadata }],
         returnType,
         docs: Object.keys(docblock).length ? [docblock] : null,
@@ -673,40 +619,6 @@ sdk.server('https://eu.api.example.com/v14');`)
       ]);
     } else {
       operationIdAccessor.addParameters(Object.values(parameters));
-    }
-
-    // Add a typed generic HTTP method overload for this operation.
-    if (this.methodGenerics.has(operation.method)) {
-      // If we created alternate overloads for the operation accessor then we need to do the same
-      // for its generic HTTP counterpart.
-      if (shouldAddAltTypedOverloads) {
-        // Create an overload that has both `body` and `metadata` parameters as required.
-        this.methodGenerics.get(operation.method).addOverload({
-          typeParameters,
-          parameters: [
-            { name: 'path', type: `'${operation.path}'` },
-            { ...parameters.body, hasQuestionToken: false },
-            { ...parameters.metadata, hasQuestionToken: false },
-          ],
-          returnType,
-          docs: Object.keys(docblock).length ? [docblock] : null,
-        });
-
-        // Create an overload that just has a single `metadata` parameter.
-        this.methodGenerics.get(operation.method).addOverload({
-          typeParameters,
-          parameters: [{ name: 'path', type: `'${operation.path}'` }, parameters.metadata],
-          returnType,
-          docs: Object.keys(docblock).length ? [docblock] : null,
-        });
-      } else {
-        this.methodGenerics.get(operation.method).addOverload({
-          typeParameters: responseTypes ? null : ['T = unknown'],
-          parameters: [{ name: 'path', type: `'${operation.path}'` }, ...Object.values(parameters)],
-          returnType,
-          docs: Object.keys(docblock).length ? [docblock] : null,
-        });
-      }
     }
   }
 

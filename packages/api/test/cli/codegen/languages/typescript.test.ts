@@ -92,6 +92,8 @@ describe('typescript', function () {
       assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks')
     );
 
+    it.skip('should handle a operations with a `default` response');
+
     describe('javascript generation', function () {
       it(
         'should generate a CommonJS library',
@@ -116,26 +118,37 @@ describe('typescript', function () {
         const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-        await sdk.findPetsByStatus({ status: ['available'] }).then(res => {
-          expect(res).to.equal('/v2/pet/findByStatus?status=available');
+        await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
+          expect(data).to.equal('/v2/pet/findByStatus?status=available');
+          expect(status).to.equal(200);
+          expect(headers).to.be.an.instanceOf(Headers);
+          expect(res).to.be.an.instanceOf(Response);
         });
       });
 
-      it('should be able to make an API request with an `accept` header` (TS)', async function () {
+      it('should be able to make an API request with an `accept` header`', async function () {
         const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
-        await sdk.findPetsByStatus({ status: ['available'], accept: 'application/xml' }).then(res => {
-          expect(res).to.have.deep.property('accept', 'application/xml');
-        });
+        await sdk
+          .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
+          .then(({ data, status, headers, res }) => {
+            expect(data).to.have.deep.property('accept', 'application/xml');
+            expect(status).to.equal(200);
+            expect(headers).to.be.an.instanceOf(Headers);
+            expect(res).to.be.an.instanceOf(Response);
+          });
       });
 
       it('should be able to make an API request (JS + CommonJS)', async function () {
         const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-        await sdk.findPetsByStatus({ status: ['available'] }).then(res => {
-          expect(res).to.equal('/v2/pet/findByStatus?status=available');
+        await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
+          expect(data).to.equal('/v2/pet/findByStatus?status=available');
+          expect(status).to.equal(200);
+          expect(headers).to.be.an.instanceOf(Headers);
+          expect(res).to.be.an.instanceOf(Response);
         });
       });
 
@@ -143,8 +156,11 @@ describe('typescript', function () {
         const sdk = await import('../../../__fixtures__/sdk/simple-js-esm').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-        await sdk.findPetsByStatus({ status: ['available'] }).then(res => {
-          expect(res).to.equal('/v2/pet/findByStatus?status=available');
+        await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
+          expect(data).to.equal('/v2/pet/findByStatus?status=available');
+          expect(status).to.equal(200);
+          expect(headers).to.be.an.instanceOf(Headers);
+          expect(res).to.be.an.instanceOf(Response);
         });
       });
     });

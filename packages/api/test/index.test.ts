@@ -61,7 +61,7 @@ describe('api', function () {
       expect(new Cache(uspto).isCached()).to.be.false;
       expect(Object.keys(sdk)).to.deep.equal(['auth', 'config', 'server']);
 
-      expect(await sdk.get('/')).to.equal('/ds-api/');
+      await sdk.get('/').then(({ data }) => expect(data).to.equal('/ds-api/'));
 
       // Now that we've called something on the SDK, it should now be fully loaded.
       expect(new Cache(uspto).isCached()).to.be.true;
@@ -86,7 +86,7 @@ describe('api', function () {
       ]);
 
       // Calling the same method again should also work as expected.
-      expect(await sdk.get('/two')).to.equal('/ds-api/two');
+      await sdk.get('/two').then(({ data }) => expect(data).to.equal('/ds-api/two'));
     });
 
     it('should support supplying a raw JSON OAS object', function () {
@@ -106,24 +106,24 @@ describe('api', function () {
       it('should work for operationId', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSDK.findPets()).to.equal('it worked!');
+        await petstoreSDK.findPets().then(({ data }) => expect(data).to.equal('it worked!'));
       });
 
       it('should work with operationIds that have contain spaces', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets/1234`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSDK['find pet by id']({ id: 1234 })).to.equal('it worked!');
+        await petstoreSDK['find pet by id']({ id: 1234 }).then(({ data }) => expect(data).to.equal('it worked!'));
 
         // Because we don't want people using ugly `operationID` accessors like the above we
         // transform them into JS-friendly method accessors also.
-        expect(await petstoreSDK.findPetById({ id: 1234 })).to.equal('it worked!');
+        await petstoreSDK.findPetById({ id: 1234 }).then(({ data }) => expect(data).to.equal('it worked!'));
       });
 
       it('should work with operationIds that contain hyphens', async function () {
         fetchMock.get('https://httpbin.org/anything/hyphenated-operation-id', mockResponses.real('it worked!'));
 
-        expect(await operationIDQuirksSDK['hyphenated-operation-id']()).to.equal('it worked!');
-        expect(await operationIDQuirksSDK.hyphenatedOperationId()).to.equal('it worked!');
+        await operationIDQuirksSDK['hyphenated-operation-id']().then(({ data }) => expect(data).to.equal('it worked!'));
+        await operationIDQuirksSDK.hyphenatedOperationId().then(({ data }) => expect(data).to.equal('it worked!'));
       });
 
       it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {
@@ -139,7 +139,7 @@ describe('api', function () {
       it('should work for other methods', async function () {
         fetchMock.post(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSDK.addPet()).to.equal('it worked!');
+        await petstoreSDK.addPet().then(({ data }) => expect(data).to.equal('it worked!'));
       });
 
       it.skip('should allow operationId to be the same as a http method');
@@ -158,7 +158,7 @@ describe('api', function () {
       it('should work for method and path', async function () {
         fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
 
-        expect(await petstoreSDK.get('/pets')).to.equal('it worked!');
+        await petstoreSDK.get('/pets').then(({ data }) => expect(data).to.equal('it worked!'));
       });
 
       it('should error if method does not exist', async function () {
@@ -204,7 +204,9 @@ describe('api', function () {
         },
       });
 
-      expect(await petstoreSDK.deletePet({ id: petId })).to.have.deep.property('user-agent', userAgent);
+      await petstoreSDK.deletePet({ id: petId }).then(({ data }) => {
+        expect(data).to.have.deep.property('user-agent', userAgent);
+      });
     });
 
     describe('operationId', function () {
@@ -216,14 +218,14 @@ describe('api', function () {
 
         fetchMock.delete(`${petstoreServerUrl}/pets/${petId}`, response);
 
-        expect(await petstoreSDK.deletePet({ id: petId })).to.deep.equal(response);
+        await petstoreSDK.deletePet({ id: petId }).then(({ data }) => expect(data).to.deep.equal(response));
       });
 
       it('should pass through body for operationId', async function () {
         const body = { name: 'Buster' };
         fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
-        expect(await petstoreSDK.addPet(body)).to.deep.equal(body);
+        await petstoreSDK.addPet(body).then(({ data }) => expect(data).to.deep.equal(body));
       });
 
       it('should pass through parameters and body for operationId', async function () {
@@ -236,9 +238,11 @@ describe('api', function () {
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
         readmeSDK.server('https://dash.readme.com/api/v1');
-        expect(await readmeSDK.updateChangelog(body, { slug })).to.deep.equal({
-          requestBody: body,
-          uri: '/api/v1/changelogs/new-release',
+        await readmeSDK.updateChangelog(body, { slug }).then(({ data }) => {
+          expect(data).to.deep.equal({
+            requestBody: body,
+            uri: '/api/v1/changelogs/new-release',
+          });
         });
       });
     });
@@ -249,7 +253,7 @@ describe('api', function () {
 
         fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
 
-        expect(await petstoreSDK.post('/pets', body)).to.deep.equal(body);
+        await petstoreSDK.post('/pets', body).then(({ data }) => expect(data).to.deep.equal(body));
       });
 
       it('should pass through parameters for method + path', async function () {
@@ -257,7 +261,9 @@ describe('api', function () {
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.url('pathname'));
 
         readmeSDK.server('https://dash.readme.com/api/v1');
-        expect(await readmeSDK.put('/changelogs/{slug}', { slug })).to.equal('/api/v1/changelogs/new-release');
+        await readmeSDK.put('/changelogs/{slug}', { slug }).then(({ data }) => {
+          expect(data).to.equal('/api/v1/changelogs/new-release');
+        });
       });
 
       it('should pass through parameters and body for method + path', async function () {
@@ -270,9 +276,11 @@ describe('api', function () {
         fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
 
         readmeSDK.server('https://dash.readme.com/api/v1');
-        expect(await readmeSDK.put('/changelogs/{slug}', body, { slug })).to.deep.equal({
-          uri: '/api/v1/changelogs/new-release',
-          requestBody: body,
+        await readmeSDK.put('/changelogs/{slug}', body, { slug }).then(({ data }) => {
+          expect(data).to.deep.equal({
+            uri: '/api/v1/changelogs/new-release',
+            requestBody: body,
+          });
         });
       });
     });
@@ -321,9 +329,11 @@ describe('api', function () {
 
         fetchMock.get('glob:https://*.*', mockResponses.searchParams);
 
-        expect(await queryEncoding.getAnything(params)).to.equal(
-          '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
-        );
+        await queryEncoding.getAnything(params).then(({ data }) => {
+          expect(data).to.equal(
+            '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
+          );
+        });
       });
 
       it("should not double encode query params if they're already encoded", async function () {
@@ -341,9 +351,11 @@ describe('api', function () {
 
         fetchMock.get('glob:https://*.*', mockResponses.searchParams);
 
-        expect(await queryEncoding.getAnything(params)).to.deep.equal(
-          '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
-        );
+        await queryEncoding.getAnything(params).then(({ data }) => {
+          expect(data).to.deep.equal(
+            '/anything?stringPound=something%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'
+          );
+        });
       });
     });
   });

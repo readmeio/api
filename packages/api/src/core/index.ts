@@ -7,19 +7,29 @@ import fetchHar from 'fetch-har';
 import { FormDataEncoder } from 'form-data-encoder';
 import 'isomorphic-fetch';
 
+import FetchError from './errors/fetchError';
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 import parseResponse from './parseResponse';
 import prepareAuth from './prepareAuth';
 import prepareParams from './prepareParams';
 import prepareServer from './prepareServer';
 
-export interface ConfigOptions {
-  /**
-   * By default we parse the response based on the `Content-Type` header of the request. You can
-   * disable this functionality by negating this option.
-   */
-  parseResponse: boolean;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ConfigOptions {}
+
+export type FetchResponse<status, data> = {
+  data: data;
+  status: status;
+  headers: Headers;
+  res: Response;
+};
+
+// https://stackoverflow.com/a/39495173
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc['length']]>;
+
+export type HTTPMethodRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;
 
 export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepareServer };
 
@@ -35,7 +45,7 @@ export default class APICore {
         variables?: Record<string, string | number>;
       } = false;
 
-  private config: ConfigOptions = { parseResponse: true };
+  private config: ConfigOptions = {};
 
   private userAgent: string;
 
@@ -95,14 +105,14 @@ export default class APICore {
         userAgent: this.userAgent,
         files: data.files || {},
         multipartEncoder: FormDataEncoder,
-      }).then((res: Response) => {
+      }).then(async (res: Response) => {
+        const parsed = await parseResponse(res);
+
         if (res.status >= 400 && res.status <= 599) {
-          throw res;
+          throw new FetchError(parsed.status, parsed.data, parsed.headers, parsed.res);
         }
 
-        if (this.config.parseResponse === false) return res;
-
-        return parseResponse(res);
+        return parsed;
       });
     });
   }

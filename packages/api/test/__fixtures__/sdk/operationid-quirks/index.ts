@@ -1,4 +1,4 @@
-import type { ConfigOptions } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/operationid-quirks.json';
@@ -13,10 +13,9 @@ class SDK {
   }
 
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions) {
     this.core.setConfig(config);
@@ -72,38 +71,21 @@ class SDK {
   }
 
   /**
-   * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
+   * This mess of a string is intentionally nasty so we can be sure that we're not including
+   * anything that wouldn't look right as an operationID for a potential method accessor in
+   * `api`.
    *
    */
-  get<T = unknown>(path: '/quirky-operationId'): Promise<T>;
-  /**
-   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
-   *
-   */
-  get<T = unknown>(path: '/hyphenated-operation-id'): Promise<T>;
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
-  /**
-   * This mess of a string is intentionally nasty so we can be sure that we're not including anything that wouldn't look right as an operationID for a potential method accessor in `api`.
-   *
-   */
-  quirky_OperationId_string<T = unknown>(): Promise<T> {
+  quirky_OperationId_string(): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/quirky-operationId', 'get');
   }
 
   /**
-   * This operation has an `operationId` with hypens yet it should still be accessible in the dynamic `api` flow.
+   * This operation has an `operationId` with hypens yet it should still be accessible in the
+   * dynamic `api` flow.
    *
    */
-  hyphenatedOperationId<T = unknown>(): Promise<T> {
+  hyphenatedOperationId(): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/hyphenated-operation-id', 'get');
   }
 }

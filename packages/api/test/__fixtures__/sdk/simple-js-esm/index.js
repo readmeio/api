@@ -7,10 +7,9 @@ class SDK {
     this.core = new APICore(this.spec, 'simple-js-esm/1.0.0 (api/5.0-unit-testing)');
   }
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config) {
     this.core.setConfig(config);
@@ -61,15 +60,6 @@ class SDK {
    */
   server(url, variables = {}) {
     this.core.setServer(url, variables);
-  }
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get(path, metadata) {
-    return this.core.fetch(path, 'get', metadata);
   }
   /**
    * Multiple status values can be provided with comma separated strings

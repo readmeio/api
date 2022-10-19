@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
@@ -14,10 +14,9 @@ class SDK {
   }
 
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions) {
     this.core.setConfig(config);
@@ -77,28 +76,9 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(
-    path: '/pet/findByStatus',
-    metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<types.FindPetsByStatusResponse200>;
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
-  /**
-   * Multiple status values can be provided with comma separated strings
-   *
-   * @summary Finds Pets by status
-   */
   findPetsByStatus(
     metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<types.FindPetsByStatusResponse200> {
+  ): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }

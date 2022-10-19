@@ -13,10 +13,9 @@ var SDK = /** @class */ (function () {
     this.core = new core_1.default(this.spec, 'simple-js-cjs/1.0.0 (api/5.0-unit-testing)');
   }
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   SDK.prototype.config = function (config) {
     this.core.setConfig(config);
@@ -75,15 +74,6 @@ var SDK = /** @class */ (function () {
       variables = {};
     }
     this.core.setServer(url, variables);
-  };
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  SDK.prototype.get = function (path, metadata) {
-    return this.core.fetch(path, 'get', metadata);
   };
   /**
    * Multiple status values can be provided with comma separated strings

@@ -8,13 +8,19 @@ export default async function getResponseBody(response: Response) {
 
   const responseBody = await response.text();
 
+  let data = responseBody;
   if (isJSON) {
     try {
-      return JSON.parse(responseBody);
+      data = JSON.parse(responseBody);
     } catch (e) {
       // If our JSON parsing failed then we can just return plaintext instead.
     }
   }
 
-  return responseBody;
+  return {
+    data,
+    status: response.status,
+    headers: response.headers,
+    res: response,
+  };
 }

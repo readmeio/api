@@ -32,7 +32,7 @@ describe('#server()', function () {
   it('should use server variable defaults if no server or variables are supplied', async function () {
     fetchMock.post('https://demo.example.com:443/v2/', response);
 
-    expect(await sdk.post('/')).to.deep.equal(response);
+    await sdk.post('/').then(({ data }) => expect(data).to.deep.equal(response));
   });
 
   it('should support supplying a full server url', async function () {
@@ -40,7 +40,7 @@ describe('#server()', function () {
 
     sdk.server('https://buster.example.com:3000/v14');
 
-    expect(await sdk.post('/')).to.deep.equal(response);
+    await sdk.post('/').then(({ data }) => expect(data).to.deep.equal(response));
   });
 
   it('should support supplying a server url with server variables', async function () {
@@ -51,7 +51,7 @@ describe('#server()', function () {
       basePath: 'v14',
     });
 
-    expect(await sdk.post('/')).to.deep.equal(response);
+    await sdk.post('/').then(({ data }) => expect(data).to.deep.equal(response));
   });
 
   it.skip('should be able to supply a url on an OAS that has no servers defined');

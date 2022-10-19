@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse, HTTPMethodRange } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/response-title-quirks.json';
@@ -14,10 +14,9 @@ class SDK {
   }
 
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions) {
     this.core.setConfig(config);
@@ -72,21 +71,9 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  get(
-    path: '/anything',
+  getAnything(
     metadata: types.GetAnythingMetadataParam
-  ): Promise<types.GetAnythingResponse2XX>;
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
-  getAnything(metadata: types.GetAnythingMetadataParam): Promise<types.GetAnythingResponse2XX> {
+  ): Promise<FetchResponse<HTTPMethodRange<200, 299>, types.GetAnythingResponse2XX>> {
     return this.core.fetch('/anything', 'get', metadata);
   }
 }

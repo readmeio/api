@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 declare class SDK {
@@ -7,10 +7,9 @@ declare class SDK {
   core: APICore;
   constructor();
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions): void;
   /**
@@ -60,18 +59,9 @@ declare class SDK {
    *
    * @summary Finds Pets by status
    */
-  get(
-    path: '/pet/findByStatus',
-    metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<types.FindPetsByStatusResponse200>;
-  /**
-   * Multiple status values can be provided with comma separated strings
-   *
-   * @summary Finds Pets by status
-   */
   findPetsByStatus(
     metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<types.FindPetsByStatusResponse200>;
+  ): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>>;
 }
 declare const createSDK: SDK;
 export default createSDK;
