@@ -14,8 +14,13 @@ import prepareAuth from './prepareAuth';
 import prepareParams from './prepareParams';
 import prepareServer from './prepareServer';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ConfigOptions {}
+export interface ConfigOptions {
+  /**
+   * Override the default `fetch` request timeout of 30 seconds. This number should be represented
+   * in milliseconds.
+   */
+  timeout?: number;
+}
 
 export type FetchResponse<status, data> = {
   data: data;
@@ -101,19 +106,34 @@ export default class APICore {
       // @ts-expect-error `this.auth` typing is off. FIXME
       const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
 
+      let timeoutSignal: any;
+      const init: RequestInit = {};
+      if (this.config.timeout) {
+        const controller = new AbortController();
+        timeoutSignal = setTimeout(() => controller.abort(), this.config.timeout);
+        init.signal = controller.signal;
+      }
+
       return fetchHar(har as any, {
-        userAgent: this.userAgent,
         files: data.files || {},
+        init,
         multipartEncoder: FormDataEncoder,
-      }).then(async (res: Response) => {
-        const parsed = await parseResponse(res);
+        userAgent: this.userAgent,
+      })
+        .then(async (res: Response) => {
+          const parsed = await parseResponse(res);
 
-        if (res.status >= 400 && res.status <= 599) {
-          throw new FetchError(parsed.status, parsed.data, parsed.headers, parsed.res);
-        }
+          if (res.status >= 400 && res.status <= 599) {
+            throw new FetchError(parsed.status, parsed.data, parsed.headers, parsed.res);
+          }
 
-        return parsed;
-      });
+          return parsed;
+        })
+        .finally(() => {
+          if (this.config.timeout) {
+            clearTimeout(timeoutSignal);
+          }
+        });
     });
   }
 }

@@ -10,6 +10,7 @@ declare class SDK {
    * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
+   * @param config.timeout Override the default `fetch` request timeout of 30 seconds (30000ms).
    */
   config(config: ConfigOptions): void;
   /**

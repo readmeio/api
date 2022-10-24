@@ -29,6 +29,12 @@ export const responses = {
     };
   },
 
+  delay: (res, delay) => {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(res), delay);
+    });
+  },
+
   headers: (url, opts) => {
     // `opts.headers` returns a `HeadersList` object instead of `Headers` as the typing suggests so
     // we need to convert it to an array before converting it to an object.
