@@ -1,6 +1,6 @@
 const sdk = require('api')('https://api.example.com/full-many-query-params.json');
 
-sdk.post('/anything', {
+sdk.postAnything({
   foo: 'bar',
   foo2: 'bar2',
   foo3: 'bar3',

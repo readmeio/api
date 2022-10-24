@@ -1,6 +1,6 @@
 const sdk = require('api')('https://api.example.com/application-json.json');
 
-sdk.post('/anything', {
+sdk.postAnything({
   number: 1,
   string: 'f"oo',
   arr: [1, 2, 3],

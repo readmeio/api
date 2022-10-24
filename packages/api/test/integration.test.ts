@@ -54,7 +54,7 @@ describe('integration tests', function () {
         version: 'oa_citations',
       };
 
-      const { data } = await api(usptoSpec).post('/{dataset}/{version}/records', body, metadata);
+      const { data } = await api(usptoSpec).performSearch(body, metadata);
       expect(data.uri).to.equal('/anything/v1/oa_citations/records');
       expect(data.requestBody).to.equal('criteria=propertyName%3Avalue');
       expect(data.headers).to.have.deep.property('content-type', 'application/x-www-form-urlencoded');
@@ -92,7 +92,7 @@ describe('integration tests', function () {
 
     const file = `${__dirname}/__fixtures__/owlbert.png`;
 
-    const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/image-png', file);
+    const { data } = await api(fileUploads as unknown as OASDocument).postAnythingImagePng(file);
     expect(data.uri).to.equal('/anything/image-png');
     expect(data.requestBody).to.equal(await datauri(file));
     expect(data.headers).to.have.deep.property('content-type', 'image/png');
@@ -112,7 +112,7 @@ describe('integration tests', function () {
         accept: 'text/xml',
       };
 
-      const { data } = await api(petstore as unknown as OASDocument).post('/pet', body, metadata);
+      const { data } = await api(petstore as unknown as OASDocument).addPet(body, metadata);
       expect(data.uri).to.equal('/v2/pet');
       expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
       expect(data.headers).to.have.deep.property('accept', 'text/xml');
@@ -126,7 +126,7 @@ describe('integration tests', function () {
         accept: 'text/xml',
       };
 
-      const { data } = await api(petstore as unknown as OASDocument).post('/pet', metadata);
+      const { data } = await api(petstore as unknown as OASDocument).addPet(metadata);
       expect(data.uri).to.equal('/v2/pet');
       expect(data.requestBody).to.be.undefined;
       expect(data.headers).to.have.deep.property('accept', 'text/xml');
@@ -147,7 +147,7 @@ describe('integration tests', function () {
         },
       };
 
-      const { data } = await api(parametersStyle as unknown as OASDocument).post('/anything/form-data/form', body);
+      const { data } = await api(parametersStyle as unknown as OASDocument).formData_form_nonExploded(body);
       expect(data.uri).to.equal('/anything/form-data/form');
       expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
         '\r\nContent-Disposition: form-data; name="primitive"\r\n\r\nstring\r\n',
@@ -171,7 +171,7 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.txt`,
         };
 
-        const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
+        const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
         expect(data.uri).to.equal('/anything/multipart-formdata');
         expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="orderId"\r\n\r\n1234\r\n',
@@ -192,7 +192,7 @@ describe('integration tests', function () {
           documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
         };
 
-        const { data } = await api(fileUploads as unknown as OASDocument).post('/anything/multipart-formdata', body);
+        const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
         expect(data.uri).to.equal('/anything/multipart-formdata');
         expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',

@@ -44,15 +44,17 @@ describe('#auth()', function () {
         );
 
         sdk.auth(apiKey);
-        const { data } = await sdk.get('/anything/apiKey');
-        expect(data).to.equal('/anything/apiKey?apiKey=123457890');
+
+        await sdk.getAnythingApikey().then(({ data }) => {
+          expect(data).to.equal('/anything/apiKey?apiKey=123457890');
+        });
       });
 
       it('should throw if you supply multiple auth keys', async function () {
         sdk.auth(apiKey, apiKey);
 
         await sdk
-          .get('/anything/apiKey')
+          .getAnythingApikey()
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single key is needed/i);
@@ -65,15 +67,16 @@ describe('#auth()', function () {
         fetchMock.put('https://httpbin.org/anything/apiKey', mockResponses.headers);
 
         sdk.auth(apiKey);
-        const { data } = await sdk.put('/anything/apiKey');
-        expect(data).to.have.deep.property('x-api-key', '123457890');
+        await sdk.putAnythingApikey().then(({ data }) => {
+          expect(data).to.have.deep.property('x-api-key', '123457890');
+        });
       });
 
       it('should throw if you supply multiple auth keys', async function () {
         sdk.auth(apiKey, apiKey);
 
         await sdk
-          .put('/anything/apiKey')
+          .putAnythingApikey()
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single key is needed/i);
@@ -91,7 +94,7 @@ describe('#auth()', function () {
 
         sdk.auth(user, pass);
 
-        await sdk.post('/anything/basic').then(({ data }) => {
+        await sdk.postAnythingBasic().then(({ data }) => {
           expect(data).to.have.deep.property('authorization', authHeader);
         });
       });
@@ -101,7 +104,7 @@ describe('#auth()', function () {
 
         sdk.auth(user);
 
-        await sdk.post('/anything/basic').then(({ data }) => {
+        await sdk.postAnythingBasic().then(({ data }) => {
           expect(data).to.have.deep.property('authorization', `Basic ${Buffer.from(`${user}:`).toString('base64')}`);
         });
       });
@@ -113,7 +116,7 @@ describe('#auth()', function () {
 
         sdk.auth(apiKey);
 
-        await sdk.post('/anything/bearer').then(({ data }) => {
+        await sdk.postAnythingBearer().then(({ data }) => {
           expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
         });
       });
@@ -121,7 +124,7 @@ describe('#auth()', function () {
       it('should throw if you pass in multiple bearer tokens', async function () {
         sdk.auth(apiKey, apiKey);
         await sdk
-          .post('/anything/bearer')
+          .postAnythingBearer()
           .then(() => assert.fail())
           .catch(err => {
             expect(err.message).to.match(/only a single token is needed/i);
@@ -136,7 +139,7 @@ describe('#auth()', function () {
 
       sdk.auth(apiKey);
 
-      await sdk.post('/anything/oauth2').then(({ data }) => {
+      await sdk.postAnythingOauth2().then(({ data }) => {
         expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
       });
     });
@@ -144,7 +147,7 @@ describe('#auth()', function () {
     it('should throw if you pass in multiple bearer tokens', async function () {
       sdk.auth(apiKey, apiKey);
       await sdk
-        .post('/anything/oauth2')
+        .postAnythingOauth2()
         .then(() => assert.fail())
         .catch(err => {
           expect(err.message).to.match(/only a single token is needed/i);
@@ -167,8 +170,8 @@ describe('#auth()', function () {
 
     sdk.auth(apiKey);
 
-    await sdk.get('/anything/apiKey').then(({ data }) => expect(data.calls).to.equal(1));
-    await sdk.get('/anything/apiKey').then(({ data }) => expect(data.calls).to.equal(2));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data.calls).to.equal(1));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data.calls).to.equal(2));
   });
 
   it('should allow auth to be called again to change the key', async function () {
@@ -194,9 +197,9 @@ describe('#auth()', function () {
     );
 
     sdk.auth(apiKey1);
-    await sdk.get('/anything/apiKey').then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=12345'));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=12345'));
 
     sdk.auth(apiKey2);
-    await sdk.get('/anything/apiKey').then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=67890'));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=67890'));
   });
 });

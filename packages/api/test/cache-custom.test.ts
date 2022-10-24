@@ -35,7 +35,7 @@ describe('cache (custom directory)', function () {
 
     const sdk = api('https://example.com/openapi.json', { cacheDir });
 
-    await sdk.get('/');
+    await sdk.listDataSets();
 
     // Our custom caching directory should have our cached spec in it.
     const files = [...(await fs.readdir(cacheDir)), ...(await fs.readdir(path.join(cacheDir, 'specs')))];

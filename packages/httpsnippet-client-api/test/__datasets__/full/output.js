@@ -1,6 +1,6 @@
 const sdk = require('api')('https://api.example.com/full.json');
 
-sdk.post('/anything', {foo: 'bar'}, {
+sdk.postAnything({foo: 'bar'}, {
   foo: ['bar', 'baz'],
   baz: 'abc',
   key: 'value',

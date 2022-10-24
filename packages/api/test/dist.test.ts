@@ -28,7 +28,7 @@ describe('typescript dist verification', function () {
 
     const sdk = api(uspto as unknown as OASDocument);
 
-    await sdk.post('/oa_citations/v1/records').then(({ data }) => {
+    await sdk.performSearch().then(({ data }) => {
       expect(data).to.equal('/ds-api/oa_citations/v1/records');
     });
   });
@@ -43,7 +43,7 @@ describe('typescript dist verification', function () {
     const sdk = api(securityOas as unknown as OASDocument);
 
     sdk.auth(user, pass);
-    await sdk.post('/anything/basic').then(({ data }) => {
+    await sdk.postAnythingBasic().then(({ data }) => {
       expect(data).to.have.deep.property('authorization', authHeader);
     });
   });

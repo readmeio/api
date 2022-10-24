@@ -165,15 +165,12 @@ const client: Client<APIOptions> = {
       metadata[cookie] = cookiesObj[cookie];
     });
 
-    // If we have path parameters present, we should only add them in if we have an `operationId` as
-    // we don't want metadata to duplicate what we'll be setting the path in the snippet to.
-    if (operation.hasOperationId()) {
-      Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
-        // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
-        // we can safely do this substring here without asserting this context.
-        metadata[param.substring(1)] = value;
-      });
-    }
+    // If we have path parameters present we should add them into the metadata object.
+    Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
+      // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
+      // we can safely do this substring here without asserting this context.
+      metadata[param.substring(1)] = value;
+    });
 
     if (Object.keys(headersObj).length) {
       const headers = headersObj;
@@ -275,18 +272,7 @@ const client: Client<APIOptions> = {
 
     const args = [];
 
-    let accessor: string = method;
-    if (operation.hasOperationId()) {
-      accessor = operation.getOperationId({ camelCase: true });
-    } else {
-      // Since we're not using an operationId as our primary accessor we need to take the current
-      // operation that we're working with and transpile back our path parameters on top of it.
-      const slugs = Object.fromEntries(
-        Object.keys(operationSlugs).map(slug => [slug.replace(/:(.*)/, '$1'), operationSlugs[slug]])
-      );
-
-      args.push(`'${decodeURIComponent(oas.replaceUrl(path, slugs))}'`);
-    }
+    const accessor = operation.getOperationId({ camelCase: true });
 
     // If we're going to be rendering out body params and metadata we should cut their character
     // limit in half because we'll be rendering them in their own lines.

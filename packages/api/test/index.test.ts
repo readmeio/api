@@ -61,7 +61,7 @@ describe('api', function () {
       expect(new Cache(uspto).isCached()).to.be.false;
       expect(Object.keys(sdk)).to.deep.equal(['auth', 'config', 'server']);
 
-      await sdk.get('/').then(({ data }) => expect(data).to.equal('/ds-api/'));
+      await sdk.listDataSets().then(({ data }) => expect(data).to.equal('/ds-api/'));
 
       // Now that we've called something on the SDK, it should now be fully loaded.
       expect(new Cache(uspto).isCached()).to.be.true;
@@ -69,14 +69,6 @@ describe('api', function () {
         'auth',
         'config',
         'server',
-        'get',
-        'put',
-        'post',
-        'delete',
-        'options',
-        'head',
-        'patch',
-        'trace',
         'listDataSets',
         'list-data-sets',
         'listSearchableFields',
@@ -86,12 +78,7 @@ describe('api', function () {
       ]);
 
       // Calling the same method again should also work as expected.
-      await sdk.get('/two').then(({ data }) => expect(data).to.equal('/ds-api/two'));
-    });
-
-    it('should support supplying a raw JSON OAS object', function () {
-      const sdk = api(uspto);
-      expect(sdk.get).to.be.a('function');
+      await sdk.listDataSets().then(({ data }) => expect(data).to.equal('/ds-api/'));
     });
   });
 
@@ -152,25 +139,6 @@ describe('api', function () {
             expect(err.message).to.match(/does not appear to be a valid operation/);
           });
       });
-    });
-
-    describe('#method(path)', function () {
-      it('should work for method and path', async function () {
-        fetchMock.get(`${petstoreServerUrl}/pets`, mockResponses.real('it worked!'));
-
-        await petstoreSDK.get('/pets').then(({ data }) => expect(data).to.equal('it worked!'));
-      });
-
-      it('should error if method does not exist', async function () {
-        await petstoreSDK
-          .fetch('/pets')
-          .then(() => assert.fail())
-          .catch(err => {
-            expect(err.message).to.match(/does not appear to be a valid operation/);
-          });
-      });
-
-      it.skip('should error if a path does not exist on a method');
     });
   });
 
@@ -240,44 +208,6 @@ describe('api', function () {
           expect(data).to.deep.equal({
             requestBody: body,
             uri: '/api/v1/changelogs/new-release',
-          });
-        });
-      });
-    });
-
-    describe('method + path', function () {
-      it('should pass through body for method + path', async function () {
-        const body = { name: 'Buster' };
-
-        fetchMock.post(`${petstoreServerUrl}/pets`, body, { body });
-
-        await petstoreSDK.post('/pets', body).then(({ data }) => expect(data).to.deep.equal(body));
-      });
-
-      it('should pass through parameters for method + path', async function () {
-        const slug = 'new-release';
-        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.url('pathname'));
-
-        readmeSDK.server('https://dash.readme.com/api/v1');
-        await readmeSDK.put('/changelogs/{slug}', { slug }).then(({ data }) => {
-          expect(data).to.equal('/api/v1/changelogs/new-release');
-        });
-      });
-
-      it('should pass through parameters and body for method + path', async function () {
-        const slug = 'new-release';
-        const body = {
-          title: 'revised title',
-          body: 'updated body',
-        };
-
-        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponses.requestBody, { body });
-
-        readmeSDK.server('https://dash.readme.com/api/v1');
-        await readmeSDK.put('/changelogs/{slug}', body, { slug }).then(({ data }) => {
-          expect(data).to.deep.equal({
-            uri: '/api/v1/changelogs/new-release',
-            requestBody: body,
           });
         });
       });
