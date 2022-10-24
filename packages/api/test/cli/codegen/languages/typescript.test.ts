@@ -121,6 +121,15 @@ describe('typescript', function () {
         });
       });
 
+      it('should be able to make an API request with an `accept` header` (TS)', async function () {
+        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
+
+        await sdk.findPetsByStatus({ status: ['available'], accept: 'application/xml' }).then(res => {
+          expect(res).to.have.deep.property('accept', 'application/xml');
+        });
+      });
+
       it('should be able to make an API request (JS + CommonJS)', async function () {
         const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);

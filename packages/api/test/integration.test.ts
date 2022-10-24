@@ -1,6 +1,7 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
+import petstore from '@readme/oas-examples/3.0/json/petstore.json';
 import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 import chai, { expect } from 'chai';
 import datauri from 'datauri';
@@ -95,6 +96,41 @@ describe('integration tests', function () {
     expect(res.requestBody).to.equal(await datauri(file));
     expect(res.headers).to.have.deep.property('content-type', 'image/png');
     expect(res.headers).to.have.a.customUserAgent;
+  });
+
+  describe('header handling', function () {
+    it('should support supplying an `accept` header', async function () {
+      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+
+      const body = {
+        id: 1234,
+        name: 'buster',
+      };
+
+      const metadata = {
+        accept: 'text/xml',
+      };
+
+      const res = await api(petstore as unknown as OASDocument).post('/pet', body, metadata);
+      expect(res.uri).to.equal('/v2/pet');
+      expect(res.requestBody).to.equal('{"id":1234,"name":"buster"}');
+      expect(res.headers).to.have.deep.property('accept', 'text/xml');
+      expect(res.headers).to.have.a.customUserAgent;
+    });
+
+    it('should support supplying **only** an `accept` header', async function () {
+      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+
+      const metadata = {
+        accept: 'text/xml',
+      };
+
+      const res = await api(petstore as unknown as OASDocument).post('/pet', metadata);
+      expect(res.uri).to.equal('/v2/pet');
+      expect(res.requestBody).to.be.undefined;
+      expect(res.headers).to.have.deep.property('accept', 'text/xml');
+      expect(res.headers).to.have.a.customUserAgent;
+    });
   });
 
   describe('multipart/form-data', function () {
