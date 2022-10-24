@@ -62,7 +62,7 @@ describe('typescript', function () {
       await ts.installer(storage, { logger, dryRun: true });
 
       expect(logger).to.be.calledWith('npm install --save --dry-run api@beta json-schema-to-ts oas');
-      expect(logger).to.be.calledWith(`npm install --save --dry-run ${Storage.dir}/apis/petstore`);
+      expect(logger).to.be.calledWith('npm install --save --dry-run'); // This is the `@api/petstore` install.
     });
   });
 
@@ -121,8 +121,8 @@ describe('typescript', function () {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).to.equal('/v2/pet/findByStatus?status=available');
           expect(status).to.equal(200);
-          expect(headers).to.be.an.instanceOf(Headers);
-          expect(res).to.be.an.instanceOf(Response);
+          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
+          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
         });
       });
 
@@ -135,8 +135,8 @@ describe('typescript', function () {
           .then(({ data, status, headers, res }) => {
             expect(data).to.have.deep.property('accept', 'application/xml');
             expect(status).to.equal(200);
-            expect(headers).to.be.an.instanceOf(Headers);
-            expect(res).to.be.an.instanceOf(Response);
+            expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
+            expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
           });
       });
 
@@ -147,8 +147,8 @@ describe('typescript', function () {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).to.equal('/v2/pet/findByStatus?status=available');
           expect(status).to.equal(200);
-          expect(headers).to.be.an.instanceOf(Headers);
-          expect(res).to.be.an.instanceOf(Response);
+          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
+          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
         });
       });
 
@@ -159,8 +159,8 @@ describe('typescript', function () {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).to.equal('/v2/pet/findByStatus?status=available');
           expect(status).to.equal(200);
-          expect(headers).to.be.an.instanceOf(Headers);
-          expect(res).to.be.an.instanceOf(Response);
+          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
+          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
         });
       });
     });

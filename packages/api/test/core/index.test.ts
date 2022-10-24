@@ -77,7 +77,7 @@ describe('APICore', function () {
             expect(err.status).to.equal(404);
             expect(err.data).to.equal('Could not find that pet.');
             expect(err.headers).to.have.header('content-type', /text\/plain/);
-            expect(err.res).to.be.an.instanceOf(Response);
+            expect(err.res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
           });
       });
     });
