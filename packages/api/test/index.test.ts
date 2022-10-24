@@ -188,11 +188,9 @@ describe('api', function () {
       await petstoreSDK
         .deletePet({ id: petId })
         .then(() => assert.fail())
-        .catch(async err => {
-          expect(err.status).to.equal(404);
-
-          const json = await err.json();
-          expect(json).to.deep.equal(response);
+        .catch(({ data, status }) => {
+          expect(status).to.equal(404);
+          expect(data).to.deep.equal(response);
         });
     });
 
