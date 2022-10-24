@@ -8,5 +8,5 @@ sdk.post('/anything', {
   arr_mix: [1, 'a', {arr_mix_nested: {}}],
   boolean: false
 })
-  .then(res => console.log(res))
+  .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

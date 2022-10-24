@@ -308,7 +308,7 @@ const client: Client<APIOptions> = {
     }
 
     push(`sdk.${accessor}(${args.join(', ')})`);
-    push('.then(res => console.log(res))', 1);
+    push('.then(({ data }) => console.log(data))', 1);
     push('.catch(err => console.error(err));', 1);
 
     return join();

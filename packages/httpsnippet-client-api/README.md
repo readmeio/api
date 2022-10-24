@@ -60,6 +60,6 @@ const sdk = require('api')('https://api.example.com/openapi.json');
 sdk.auth('a5a220e');
 sdk
   .put('/apiKey')
-  .then(res => console.log(res))
+  .then(({ data }}) => console.log(data))
   .catch(err => console.error(err));
 ```

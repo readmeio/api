@@ -2,5 +2,5 @@ const sdk = require('api')('https://api.example.com/operationid-non-alphanumeric
 
 sdk.auth('123');
 sdk.findPetsByStatus({status: 'available'})
-  .then(res => console.log(res))
+  .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

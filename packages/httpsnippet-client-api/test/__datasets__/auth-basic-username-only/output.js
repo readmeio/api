@@ -2,5 +2,5 @@ const sdk = require('api')('https://api.example.com/auth-basic-username-only.jso
 
 sdk.auth('buster');
 sdk.getAPISpecification({perPage: '10', page: '1'})
-  .then(res => console.log(res))
+  .then(({ data }) => console.log(data))
   .catch(err => console.error(err));
