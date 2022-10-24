@@ -134,6 +134,41 @@ describe('integration tests', function () {
     });
   });
 
+  describe('header handling', function () {
+    it('should support supplying an `accept` header', async function () {
+      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+
+      const body = {
+        id: 1234,
+        name: 'buster',
+      };
+
+      const metadata = {
+        accept: 'text/xml',
+      };
+
+      const res = await api(petstore as unknown as OASDocument).post('/pet', body, metadata);
+      expect(res.uri).to.equal('/v2/pet');
+      expect(res.requestBody).to.equal('{"id":1234,"name":"buster"}');
+      expect(res.headers).to.have.deep.property('accept', 'text/xml');
+      expect(res.headers).to.have.a.customUserAgent;
+    });
+
+    it('should support supplying **only** an `accept` header', async function () {
+      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+
+      const metadata = {
+        accept: 'text/xml',
+      };
+
+      const res = await api(petstore as unknown as OASDocument).post('/pet', metadata);
+      expect(res.uri).to.equal('/v2/pet');
+      expect(res.requestBody).to.be.undefined;
+      expect(res.headers).to.have.deep.property('accept', 'text/xml');
+      expect(res.headers).to.have.a.customUserAgent;
+    });
+  });
+
   describe('multipart/form-data', function () {
     it('should support `multipart/form-data` requests', async function () {
       fetchMock.post('https://httpbin.org/anything/form-data/form', mockResponse.multipart);
