@@ -6,6 +6,8 @@ import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
 import { FormDataEncoder } from 'form-data-encoder';
 import 'isomorphic-fetch';
+// `AbortController` was shipped in Node 15 so when Node 14 is EOL'd we can drop this dependency.
+import { AbortController } from 'node-abort-controller';
 
 import FetchError from './errors/fetchError';
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
@@ -111,7 +113,9 @@ export default class APICore {
       if (this.config.timeout) {
         const controller = new AbortController();
         timeoutSignal = setTimeout(() => controller.abort(), this.config.timeout);
-        init.signal = controller.signal;
+        // @todo Typing on `AbortController` coming out of `node-abort-controler` isn't right so when
+        // we eventually drop that dependency we can remove the `as any` here.
+        init.signal = controller.signal as any;
       }
 
       return fetchHar(har as any, {
