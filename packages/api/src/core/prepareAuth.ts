@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import type { Operation } from 'oas';
 
-type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';
-
 export default function prepareAuth(authKey: (number | string)[], operation: Operation) {
   if (authKey.length === 0) {
     return {};
@@ -18,25 +16,63 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
       }
   > = {};
 
-  const security = operation.prepareSecurity();
-
-  const securitySchemes = Object.keys(security);
-  if (securitySchemes.length === 0) {
+  const security = operation.getSecurity();
+  if (security.length === 0) {
     // If there's no auth configured on this operation, don't prepare anything (even if it was
     // supplied by the user).
     return {};
   }
 
-  const securityType = securitySchemes[0] as SecurityType;
-
-  const schemes = security[securityType];
-
-  if (schemes.length > 1) {
-    throw new Error("Sorry, this API currently requires multiple forms of authentication which we don't yet support.");
+  // Does this operation require multiple forms of auth?
+  if (security.every(s => Object.keys(s).length > 1)) {
+    throw new Error(
+      "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support."
+    );
   }
 
-  const scheme = schemes[0];
+  // Since we can only handle single auth security configurations, let's pull those out. This code
+  // is a bit opaque but `security` here may look like `[{ basic: [] }, { oauth2: [], basic: []}]`
+  // and are filtering it down to only single-auth requirements of `[{ basic: [] }]`.
+  const usableSecurity = security
+    .map(s => {
+      return Object.keys(s).length === 1 ? s : false;
+    })
+    .filter(Boolean);
 
+  const usableSecuritySchemes = usableSecurity.map(s => Object.keys(s)).reduce((prev, next) => prev.concat(next), []);
+  const preparedSecurity = operation.prepareSecurity();
+
+  // If we have two auth tokens present let's look for Basic Auth in their configuration.
+  if (authKey.length >= 2) {
+    // If this operation doesn't support HTTP Basic auth but we have two tokens, that's a paddlin.
+    if (!('Basic' in preparedSecurity)) {
+      throw new Error('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+    }
+
+    const schemes = preparedSecurity.Basic.filter(s => usableSecuritySchemes.includes(s._key));
+    if (!schemes.length) {
+      throw new Error('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+    }
+
+    const scheme = schemes.shift();
+    preparedAuth[scheme._key] = {
+      user: authKey[0],
+      pass: authKey.length === 2 ? authKey[1] : '',
+    };
+
+    return preparedAuth;
+  }
+
+  // If we know we don't need to use HTTP Basic auth because we have a username+password then we
+  // can pick the first usable security scheme available and try to use that. This might not always
+  // be the auth scheme that the user wants, but we don't have any other way for the user to tell
+  // us what they want with the current `sdk.auth()` API.
+  const usableScheme = usableSecuritySchemes[0];
+  const schemes = Object.entries(preparedSecurity)
+    .map(([, ps]) => ps.filter(s => usableScheme === s._key))
+    .reduce((prev, next) => prev.concat(next), []);
+
+  const scheme = schemes.shift();
   switch (scheme.type) {
     case 'http':
       if (scheme.scheme === 'basic') {
@@ -45,40 +81,24 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
           pass: authKey.length === 2 ? authKey[1] : '',
         };
       } else if (scheme.scheme === 'bearer') {
-        if (authKey.length > 1) {
-          throw new Error(
-            'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
-          );
-        }
-
         preparedAuth[scheme._key] = authKey[0];
       }
       break;
 
     case 'oauth2':
-      if (authKey.length > 1) {
-        throw new Error(
-          'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
-        );
-      }
-
       preparedAuth[scheme._key] = authKey[0];
       break;
 
     case 'apiKey':
-      if (authKey.length > 1) {
-        throw new Error(
-          'Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.'
-        );
-      }
-
       if (scheme.in === 'query' || scheme.in === 'header' || scheme.in === 'cookie') {
         preparedAuth[scheme._key] = authKey[0];
       }
       break;
 
     default:
-      throw new Error(`Sorry, this API currently supports a scheme, ${scheme.type}, that we don't yet support.`);
+      throw new Error(
+        `Sorry, this API currently supports a security scheme, ${scheme.type}, which this library doesn't yet support.`
+      );
   }
 
   return preparedAuth;

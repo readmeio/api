@@ -69,7 +69,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "@readme/oas-examples": "^5.5.0",
+    "@readme/oas-examples": "^5.7.1",
     "@types/caseless": "^0.12.2",
     "@types/chai": "^4.3.1",
     "@types/find-cache-dir": "^3.2.1",

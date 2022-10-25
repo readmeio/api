@@ -1,154 +1,226 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
+import securityMultipleOas from '@readme/oas-examples/3.0/json/security-multiple.json';
 import securityOas from '@readme/oas-examples/3.0/json/security.json';
 import { expect } from 'chai';
 import Oas from 'oas';
 
 import prepareAuth from '../../src/core/prepareAuth';
+import authQuirksOas from '../__fixtures__/definitions/auth-quirks.json';
 
 const oas = Oas.init(securityOas as unknown as OASDocument);
 
 describe('#prepareAuth()', function () {
-  describe('apiKey', function () {
-    const apiKey = '123457890';
+  it('should not do anything if the operation has no auth', async function () {
+    const uspto = await import('@readme/oas-examples/3.0/json/uspto.json').then(r => r.default).then(Oas.init);
+    const operation = uspto.operation('/', 'get');
+    const authKeys = ['12345'];
 
-    describe('in: query', function () {
-      it('should support query auth', function () {
-        const operation = oas.operation('/anything/apiKey', 'get');
-        const authKeys = [apiKey];
-
-        expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          apiKey_query: '123457890',
-        });
-      });
-
-      it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/anything/apiKey', 'get');
-        const authKeys = [apiKey, apiKey];
-
-        expect(() => {
-          prepareAuth(authKeys, operation);
-        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
-      });
-    });
-
-    describe('in: header', function () {
-      it('should support header auth', function () {
-        const operation = oas.operation('/anything/apiKey', 'put');
-        const authKeys = [apiKey];
-
-        expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          apiKey_header: '123457890',
-        });
-      });
-
-      it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/anything/apiKey', 'put');
-        const authKeys = [apiKey, apiKey];
-
-        expect(() => {
-          prepareAuth(authKeys, operation);
-        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
-      });
-    });
-
-    describe('in: cookie', function () {
-      it('should support cookie auth', function () {
-        const operation = oas.operation('/anything/apiKey', 'post');
-        const authKeys = [apiKey];
-
-        expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          apiKey_cookie: '123457890',
-        });
-      });
-
-      it('should throw if you supply multiple auth keys', function () {
-        const operation = oas.operation('/anything/apiKey', 'post');
-        const authKeys = [apiKey, apiKey];
-
-        expect(() => {
-          prepareAuth(authKeys, operation);
-        }).to.throw('Multiple auth keys were supplied for the auth on this endpoint, but only a single key is needed.');
-      });
-    });
+    expect(prepareAuth(authKeys, operation)).to.deep.equal({});
   });
 
-  describe('HTTP', function () {
-    describe('scheme: basic', function () {
-      const user = 'username';
-      const pass = 'changeme';
+  describe('single auth setups', function () {
+    describe('apiKey', function () {
+      const apiKey = '123457890';
 
-      it('should supprot basic auth', function () {
-        const operation = oas.operation('/anything/basic', 'post');
-        const authKeys = [user, pass];
+      describe('in: query', function () {
+        it('should support query auth', function () {
+          const operation = oas.operation('/anything/apiKey', 'get');
+          const authKeys = [apiKey];
 
-        expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          basic: {
-            user: 'username',
-            pass: 'changeme',
-          },
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            apiKey_query: '123457890',
+          });
+        });
+
+        it('should throw if you supply multiple auth keys', function () {
+          const operation = oas.operation('/anything/apiKey', 'get');
+          const authKeys = [apiKey, apiKey];
+
+          expect(() => {
+            prepareAuth(authKeys, operation);
+          }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
         });
       });
 
-      it('should allow you to not pass in a password', function () {
-        const operation = oas.operation('/anything/basic', 'post');
-        const authKeys = [user];
+      describe('in: header', function () {
+        it('should support header auth', function () {
+          const operation = oas.operation('/anything/apiKey', 'put');
+          const authKeys = [apiKey];
 
-        expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          basic: {
-            user: 'username',
-            pass: '',
-          },
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            apiKey_header: '123457890',
+          });
+        });
+
+        it('should throw if you supply multiple auth keys', function () {
+          const operation = oas.operation('/anything/apiKey', 'put');
+          const authKeys = [apiKey, apiKey];
+
+          expect(() => {
+            prepareAuth(authKeys, operation);
+          }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+        });
+      });
+
+      describe('in: cookie', function () {
+        it('should support cookie auth', function () {
+          const operation = oas.operation('/anything/apiKey', 'post');
+          const authKeys = [apiKey];
+
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            apiKey_cookie: '123457890',
+          });
+        });
+
+        it('should throw if you supply multiple auth keys', function () {
+          const operation = oas.operation('/anything/apiKey', 'post');
+          const authKeys = [apiKey, apiKey];
+
+          expect(() => {
+            prepareAuth(authKeys, operation);
+          }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
         });
       });
     });
 
-    describe('scheme: bearer', function () {
+    describe('HTTP', function () {
+      describe('scheme: basic', function () {
+        const user = 'buster';
+        const pass = 'hunter1';
+
+        it('should supprot basic auth', function () {
+          const operation = oas.operation('/anything/basic', 'post');
+          const authKeys = [user, pass];
+
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            basic: {
+              user: 'buster',
+              pass: 'hunter1',
+            },
+          });
+        });
+
+        it('should allow you to not pass in a password', function () {
+          const operation = oas.operation('/anything/basic', 'post');
+          const authKeys = [user];
+
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            basic: {
+              user: 'buster',
+              pass: '',
+            },
+          });
+        });
+      });
+
+      describe('scheme: bearer', function () {
+        const apiKey = '123457890';
+
+        it('should support bearer auth', function () {
+          const operation = oas.operation('/anything/bearer', 'post');
+          const authKeys = [apiKey];
+
+          expect(prepareAuth(authKeys, operation)).to.deep.equal({
+            bearer: '123457890',
+          });
+        });
+
+        it('should throw if you pass in multiple bearer tokens', function () {
+          const operation = oas.operation('/anything/bearer', 'post');
+          const authKeys = [apiKey, apiKey];
+
+          expect(() => {
+            prepareAuth(authKeys, operation);
+          }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+        });
+      });
+    });
+
+    describe('OAuth 2', function () {
       const apiKey = '123457890';
 
-      it('should support bearer auth', function () {
-        const operation = oas.operation('/anything/bearer', 'post');
+      it('should support oauth2 auth', function () {
+        const operation = oas.operation('/anything/oauth2', 'post');
         const authKeys = [apiKey];
 
         expect(prepareAuth(authKeys, operation)).to.deep.equal({
-          bearer: '123457890',
+          oauth2: '123457890',
         });
       });
 
       it('should throw if you pass in multiple bearer tokens', function () {
-        const operation = oas.operation('/anything/bearer', 'post');
+        const operation = oas.operation('/anything/oauth2', 'post');
         const authKeys = [apiKey, apiKey];
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw(
-          'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
-        );
+        }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
       });
     });
   });
 
-  describe('OAuth 2', function () {
-    const apiKey = '123457890';
+  describe('multi auth configurations', function () {
+    describe('AND', function () {
+      it('should throw an exception on an operation that requires two forms of auth', function () {
+        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const operation = multipleAuth.operation('/anything/and', 'post');
+        const authKeys = ['buster', 'hunter1'];
 
-    it('should support oauth2 auth', function () {
-      const operation = oas.operation('/anything/oauth2', 'post');
-      const authKeys = [apiKey];
+        expect(() => {
+          prepareAuth(authKeys, operation);
+        }).to.throw(
+          "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support."
+        );
+      });
 
-      expect(prepareAuth(authKeys, operation)).to.deep.equal({
-        oauth2: '123457890',
+      it('should allow usage if an operation has an AND config but one is a single token', function () {
+        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const operation = multipleAuth.operation('/anything/many-and-or', 'post');
+        const authKeys = ['123457890'];
+
+        expect(prepareAuth(authKeys, operation)).to.deep.equal({
+          bearer_jwt: '123457890',
+        });
+      });
+
+      it('should allow usage if an operation has an AND config but one is username + password', function () {
+        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const operation = multipleAuth.operation('/anything/many-and-or', 'post');
+        const authKeys = ['buster', 'hunter1'];
+
+        expect(prepareAuth(authKeys, operation)).to.deep.equal({
+          basic: {
+            user: 'buster',
+            pass: 'hunter1',
+          },
+        });
       });
     });
 
-    it('should throw if you pass in multiple bearer tokens', function () {
-      const operation = oas.operation('/anything/oauth2', 'post');
-      const authKeys = [apiKey, apiKey];
+    describe('OR', function () {
+      it('should throw an exception on an operation that requires two forms of auth', function () {
+        const authQuirks = Oas.init(authQuirksOas as unknown as OASDocument);
+        const operation = authQuirks.operation('/anything/or-and', 'post');
+        const authKeys = ['buster', 'hunter1'];
 
-      expect(() => {
-        prepareAuth(authKeys, operation);
-      }).to.throw(
-        'Multiple auth tokens were supplied for the auth on this endpoint, but only a single token is needed.'
-      );
+        expect(() => {
+          prepareAuth(authKeys, operation);
+        }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+      });
+
+      it('should support supplying username+password credentials to an operation that allows OAuth 2 or Basic', function () {
+        const authQuirks = Oas.init(authQuirksOas as unknown as OASDocument);
+        const operation = authQuirks.operation('/anything', 'post');
+        const authKeys = ['buster', 'hunter1'];
+
+        expect(prepareAuth(authKeys, operation)).to.deep.equal({
+          basicAuth: {
+            user: 'buster',
+            pass: 'hunter1',
+          },
+        });
+      });
     });
   });
 });
