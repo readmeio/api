@@ -5,5 +5,5 @@
     "resolveJsonModule": true
   },
   "include": ["../src/**/*", "*.ts", "**/*"],
-  "exclude": ["__fixtures__/sdk/"]
+  "exclude": ["fixtures/sdk/"]
 }

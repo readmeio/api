@@ -18,7 +18,7 @@ If you wish to add or change functionality to how `api` snippets are generated, 
 
 To add a new test into this suite you should do the following:
 
-1. Create a new directory for your test in `packages/httpsnippet-client-api/test/__datasets__`. This directory should be a short and clear description of what you're testing.
+1. Create a new directory for your test in `packages/httpsnippet-client-api/test/datasets`. This directory should be a short and clear description of what you're testing.
    - If you need to give additional context to your test, please add a `README` in this directory!
 2. In this new directory you'll need to create 4 files: `har.json`, `openapi.json`, `mock.json`, and `output.js`.
 
@@ -49,7 +49,7 @@ Say you have the following snippet:
 
 ```js
 const sdk = require('api')(
-  'https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/__datasets__/query/openapi.json'
+  'https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/datasets/query/openapi.json'
 );
 
 sdk

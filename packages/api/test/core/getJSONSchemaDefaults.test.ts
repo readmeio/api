@@ -23,7 +23,7 @@ describe('#getJSONSchemaDefaults()', function () {
   });
 
   it('should be able to handle nested objects', async function () {
-    const oas = await import('../__fixtures__/definitions/nested-defaults.json').then(Oas.init);
+    const oas = await import('../fixtures/definitions/nested-defaults.json').then(Oas.init);
     await oas.dereference();
 
     const operation = oas.operation('/pet', 'post');

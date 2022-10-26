@@ -211,7 +211,7 @@ describe('fetcher', function () {
       });
 
       it('should be able to handle a relative path', async function () {
-        const fetcher = new Fetcher('../api/test/__fixtures__/oas.json');
+        const fetcher = new Fetcher('../api/test/fixtures/oas.json');
 
         expect(await fetcher.load()).to.have.deep.property('info', {
           version: '1.0.0',

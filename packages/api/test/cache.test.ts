@@ -150,7 +150,7 @@ describe('cache', function () {
       });
 
       it('should be able to handle a relative path', async function () {
-        const cacheStore = new Cache('../api/test/__fixtures__/oas.json');
+        const cacheStore = new Cache('../api/test/fixtures/oas.json');
 
         expect(cacheStore.isCached()).to.be.false;
 

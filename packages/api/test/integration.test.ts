@@ -90,7 +90,7 @@ describe('integration tests', function () {
   it('should support `image/png` requests', async function () {
     fetchMock.post('https://httpbin.org/anything/image-png', mockResponse.datauri);
 
-    const file = `${__dirname}/__fixtures__/owlbert.png`;
+    const file = `${__dirname}/fixtures/owlbert.png`;
 
     const { data } = await api(fileUploads as unknown as OASDocument).postAnythingImagePng(file);
     expect(data.uri).to.equal('/anything/image-png');
@@ -168,7 +168,7 @@ describe('integration tests', function () {
         const body = {
           orderId: 1234,
           userId: 5678,
-          documentFile: `${__dirname}/__fixtures__/hello.txt`,
+          documentFile: `${__dirname}/fixtures/hello.txt`,
         };
 
         const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
@@ -189,7 +189,7 @@ describe('integration tests', function () {
         fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
 
         const body = {
-          documentFile: `${__dirname}/__fixtures__/hello.jp.txt`,
+          documentFile: `${__dirname}/fixtures/hello.jp.txt`,
         };
 
         const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
@@ -207,8 +207,8 @@ describe('integration tests', function () {
 
     // it.skip('should support `multipart/form-data` requests with an array of files', async function () {
     //   const body = [
-    //     `${__dirname}/__fixtures__/owlbert.png`,
-    //     `${__dirname}/__fixtures__/owlbert-shrub.png`,
+    //     `${__dirname}/fixtures/owlbert.png`,
+    //     `${__dirname}/fixtures/owlbert-shrub.png`,
     //   ];
 
     //   await api(fileUploads).post('/anything/form-data', body).then({ data } => {

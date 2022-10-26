@@ -260,7 +260,7 @@ describe('storage', function () {
       });
 
       it('should be able to handle a relative path', async function () {
-        const file = '../api/test/__fixtures__/oas.json';
+        const file = '../api/test/fixtures/oas.json';
         const storage = new Storage(file, 'relative-path');
 
         expect(storage.isInLockfile()).to.be.false;

@@ -23,7 +23,7 @@ declare global {
        * Assert that the contents of a given SDK match what we're expecting against a specific
        * fixture.
        *
-       * @param fixture Fixture directory in `test/__fixtures__/sdk/`.
+       * @param fixture Fixture directory in `test/fixtures/sdk/`.
        */
       toMatchSDKFixture: (fixture: string) => void;
 
@@ -55,7 +55,7 @@ export default function chaiPlugins(_chai, utils) {
   });
 
   utils.addMethod(chai.Assertion.prototype, 'toMatchSDKFixture', function (fixture: string) {
-    const dir = path.resolve(`test/__fixtures__/sdk/${fixture}`);
+    const dir = path.resolve(`test/fixtures/sdk/${fixture}`);
     const actualFiles: Record<string, string> = this._obj;
 
     let expectedFiles;

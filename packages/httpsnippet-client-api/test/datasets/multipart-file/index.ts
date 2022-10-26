@@ -23,7 +23,7 @@ const mock: SnippetMock = {
       params: [
         {
           name: 'foo',
-          fileName: 'test/__fixtures__/files/hello.txt',
+          fileName: 'test/fixtures/files/hello.txt',
           contentType: 'text/plain',
         },
       ],

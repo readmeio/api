@@ -24,7 +24,7 @@ import client from '../src';
 
 chai.use(sinonChai);
 
-const DATASETS_DIR = path.join(__dirname, '__datasets__');
+const DATASETS_DIR = path.join(__dirname, 'datasets');
 const SNIPPETS = readdirSync(DATASETS_DIR);
 
 // eslint-disable-next-line mocha/no-exports

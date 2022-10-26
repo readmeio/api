@@ -4,7 +4,7 @@ import { assert, expect } from 'chai';
 import Oas from 'oas';
 
 import prepareParams from '../../src/core/prepareParams';
-import payloadExamples from '../__fixtures__/definitions/payloads.json';
+import payloadExamples from '../fixtures/definitions/payloads.json';
 
 describe('#prepareParams', function () {
   let fileUploads: Oas;
@@ -168,7 +168,7 @@ describe('#prepareParams', function () {
     describe('image/png', function () {
       it('should support a file path payload', async function () {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = `${__dirname}/../__fixtures__/owlbert.png`;
+        const body = `${__dirname}/../fixtures/owlbert.png`;
 
         const res = await prepareParams(operation, body);
         expect(res.body).to.contain('data:image/png;name=owlbert.png;base64,');
@@ -177,7 +177,7 @@ describe('#prepareParams', function () {
 
       it('should support a file stream payload', async function () {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = fs.createReadStream('./test/__fixtures__/owlbert.png');
+        const body = fs.createReadStream('./test/fixtures/owlbert.png');
 
         const res = await prepareParams(operation, body);
         expect(res.body).to.contain('data:image/png;name=owlbert.png;base64,');
@@ -200,7 +200,7 @@ describe('#prepareParams', function () {
       it('should handle when the file path is relative', async function () {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: './test/__fixtures__/owlbert.png',
+          documentFile: './test/fixtures/owlbert.png',
         };
 
         const res = await prepareParams(operation, body);
@@ -211,7 +211,7 @@ describe('#prepareParams', function () {
       it('should handle a multipart body when a property is a file stream', async function () {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: fs.createReadStream('./test/__fixtures__/owlbert.png'),
+          documentFile: fs.createReadStream('./test/fixtures/owlbert.png'),
         };
 
         const res = await prepareParams(operation, body);
@@ -243,12 +243,12 @@ describe('#prepareParams', function () {
     it("should not reject files that don't exist", async function () {
       const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
       const body = {
-        documentFile: './test/__fixtures__/owlbert.jpg',
+        documentFile: './test/fixtures/owlbert.jpg',
       };
 
       expect(await prepareParams(operation, body)).to.deep.equal({
         body: {
-          documentFile: './test/__fixtures__/owlbert.jpg',
+          documentFile: './test/fixtures/owlbert.jpg',
         },
       });
     });
@@ -457,7 +457,7 @@ describe('#prepareParams', function () {
 
   describe('defaults', function () {
     it('should prefill defaults for required body parameters if not supplied', async function () {
-      const oas = await import('../__fixtures__/definitions/nested-defaults.json').then(Oas.init);
+      const oas = await import('../fixtures/definitions/nested-defaults.json').then(Oas.init);
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');

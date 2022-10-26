@@ -16,7 +16,7 @@ import definition from './openapi.json';
  *      {
  *        "name": "foo",
  *        "value": "Hello World",
- *        "fileName": "test/__fixtures__/files/hello.txt",
+ *        "fileName": "test/fixtures/files/hello.txt",
  *        "contentType": "text/plain"
  *      }
  *    ]
@@ -41,7 +41,7 @@ const mock: SnippetMock = {
         {
           name: 'foo',
           value: 'Hello World',
-          fileName: 'test/__fixtures__/files/hello.txt',
+          fileName: 'test/fixtures/files/hello.txt',
           contentType: 'text/plain',
         },
       ],

@@ -32,7 +32,7 @@ describe('api', function () {
     await new Cache(readme).load();
     readmeSDK = api(readme);
 
-    const operationIDQuirks = require.resolve('./__fixtures__/definitions/operationid-quirks.json');
+    const operationIDQuirks = require.resolve('./fixtures/definitions/operationid-quirks.json');
     await new Cache(readme).load();
     operationIDQuirksSDK = api(operationIDQuirks);
   });

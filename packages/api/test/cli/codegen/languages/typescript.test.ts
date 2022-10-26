@@ -69,12 +69,12 @@ describe('typescript', function () {
   describe('#generator', function () {
     it(
       'should generate typescript (by default)',
-      assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts')
+      assertSDKFixture('../../../fixtures/definitions/simple.json', 'simple-ts')
     );
 
     it(
       'should be able to generate valid TS when a body is optional but metadata isnt',
-      assertSDKFixture('../../../__fixtures__/definitions/optional-payload.json', 'optional-payload')
+      assertSDKFixture('../../../fixtures/definitions/optional-payload.json', 'optional-payload')
     );
 
     it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
@@ -84,12 +84,12 @@ describe('typescript', function () {
     // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
-      assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks')
+      assertSDKFixture('../../../fixtures/definitions/operationid-quirks.json', 'operationid-quirks')
     );
 
     it(
       'should handle `title` props that start with a number',
-      assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks')
+      assertSDKFixture('../../../fixtures/definitions/response-title-quirks.json', 'response-title-quirks')
     );
 
     it.skip('should handle a operations with a `default` response');
@@ -97,12 +97,12 @@ describe('typescript', function () {
     describe('javascript generation', function () {
       it(
         'should generate a CommonJS library',
-        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-cjs', { outputJS: true })
+        assertSDKFixture('../../../fixtures/definitions/simple.json', 'simple-js-cjs', { outputJS: true })
       );
 
       it(
         'should generate am ESM library',
-        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-esm', {
+        assertSDKFixture('../../../fixtures/definitions/simple.json', 'simple-js-esm', {
           outputJS: true,
           compilerTarget: 'esm',
         })
@@ -115,7 +115,7 @@ describe('typescript', function () {
       });
 
       it('should be able to make an API request (TS)', async function () {
-        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        const sdk = await import('../../../fixtures/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -127,7 +127,7 @@ describe('typescript', function () {
       });
 
       it('should be able to make an API request with an `accept` header`', async function () {
-        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        const sdk = await import('../../../fixtures/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
@@ -141,7 +141,7 @@ describe('typescript', function () {
       });
 
       it('should be able to make an API request (JS + CommonJS)', async function () {
-        const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
+        const sdk = await import('../../../fixtures/sdk/simple-js-cjs').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -153,7 +153,7 @@ describe('typescript', function () {
       });
 
       it('should be able to make an API request (JS + ESM)', async function () {
-        const sdk = await import('../../../__fixtures__/sdk/simple-js-esm').then(r => r.default);
+        const sdk = await import('../../../fixtures/sdk/simple-js-esm').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
