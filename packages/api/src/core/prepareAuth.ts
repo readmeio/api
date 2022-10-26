@@ -97,7 +97,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
 
     default:
       throw new Error(
-        `Sorry, this API currently supports a security scheme, ${scheme.type}, which this library doesn't yet support.`
+        `Sorry, this API currently uses a security scheme, ${scheme.type}, which this library doesn't yet support.`
       );
   }
 
