@@ -2,7 +2,7 @@ import type * as types from './types';
 import type { ConfigOptions, FetchResponse, HTTPMethodRange } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
-import definition from '../../../__fixtures__/definitions/response-title-quirks.json';
+import definition from '../../../fixtures/definitions/response-title-quirks.json';
 
 class SDK {
   spec: Oas;

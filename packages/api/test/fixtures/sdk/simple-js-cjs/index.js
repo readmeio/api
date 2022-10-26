@@ -6,7 +6,7 @@ var __importDefault =
   };
 var oas_1 = __importDefault(require('oas'));
 var core_1 = __importDefault(require('api/dist/core'));
-var simple_json_1 = __importDefault(require('../../../__fixtures__/definitions/simple.json'));
+var simple_json_1 = __importDefault(require('../../../fixtures/definitions/simple.json'));
 var SDK = /** @class */ (function () {
   function SDK() {
     this.spec = oas_1.default.init(simple_json_1.default);
