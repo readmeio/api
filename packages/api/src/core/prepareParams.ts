@@ -169,7 +169,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
         if (Object.keys(body).length <= 2) {
           const bodyParams = caseless(body);
 
-          if (bodyParams.has('authorization') || bodyParams.has('accept')) {
+          if (specialHeaders.some(header => bodyParams.has(header))) {
             throwNoParamsError = false;
           }
         }
