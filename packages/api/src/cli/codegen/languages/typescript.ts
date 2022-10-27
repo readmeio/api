@@ -614,7 +614,15 @@ sdk.server('https://eu.api.example.com/v14');`)
       // see if what the user is supplying is `metadata` or `body` content when they supply one or
       // both.
       operationIdAccessor.addParameters([
-        { ...parameters.body, hasQuestionToken: true },
+        {
+          ...parameters.body,
+          // Overloads have to be the most distilled version of the method so that's why we need to
+          // type `body` as either `body` or `metadata`. If we didn't do this, if `body` was a JSON
+          // Schema type that didn't allow `additionalProperties` then the implementation overload
+          // would throw type errors.
+          type: `${parameters.body.type} | ${parameters.metadata.type}`,
+          hasQuestionToken: true,
+        },
         { ...parameters.metadata, hasQuestionToken: true },
       ]);
     } else {
@@ -644,18 +652,13 @@ sdk.server('https://eu.api.example.com/v14');`)
           camelCase: true,
         });
 
-        const params = this.prepareParameterTypesForOperation(operation, operationId);
-        const responses = this.prepareResponseTypesForOperation(operation, operationId);
-
-        if (operation.hasOperationId()) {
-          operations[operationId] = {
-            types: {
-              params,
-              responses,
-            },
-            operation,
-          };
-        }
+        operations[operationId] = {
+          types: {
+            params: this.prepareParameterTypesForOperation(operation, operationId),
+            responses: this.prepareResponseTypesForOperation(operation, operationId),
+          },
+          operation,
+        };
       });
     });
 
@@ -672,6 +675,7 @@ sdk.server('https://eu.api.example.com/v14');`)
    */
   prepareParameterTypesForOperation(operation: Operation, operationId: string) {
     const schemas = operation.getParametersAsJSONSchema({
+      includeDiscriminatorMappingRefs: false,
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
       transformer: (s: SchemaObject) => {
@@ -731,6 +735,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     const schemas = responseStatusCodes
       .map(status => {
         const schema = operation.getResponseAsJSONSchema(status, {
+          includeDiscriminatorMappingRefs: false,
           transformer: (s: SchemaObject) => {
             // As our schemas are dereferenced in the `oas` library we don't want to pollute our
             // codegen'd schemas file with duplicate schemas.

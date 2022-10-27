@@ -1,0 +1,252 @@
+#! /usr/bin/env node
+/**
+ * This script regenerates the list of real world API definitions from APIs.guru that the test
+ * suite uses for parsing and validating integration tests.
+ *
+ * @link https://github.com/APIs-guru/openapi-directory
+ */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-param-reassign */
+const fs = require('fs');
+
+require('isomorphic-fetch');
+
+fetch('https://api.apis.guru/v2/list.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Unable to download real-world APIs from apis.guru');
+    }
+
+    return response.json();
+  })
+  .then(apis => {
+    // GitHub's CORS policy blocks this request
+    // delete apis['googleapis.com:adsense'];
+
+    // These APIs cause infinite loops in json-schema-ref-parser. Still investigating.
+    // https://github.com/APIDevTools/json-schema-ref-parser/issues/56
+    // delete apis['bungie.net'];
+    // delete apis['stripe.com'];
+    // delete apis['docusign.net'];
+    // delete apis['kubernetes.io'];
+    // delete apis['microsoft.com:graph'];
+
+    // hangs
+    // delete apis['presalytics.io:ooxml'];
+
+    // base security declaration in path/get operation (error message below)
+    // "type array but found type null at #/paths//vault/callback/get/security"
+    // delete apis['apideck.com:vault'];
+
+    // These APIs have validation issues.
+    delete apis['adyen.com:CheckoutService'];
+    delete apis['adyen.com:MarketPayNotificationService'];
+    delete apis['adyen.com:PaymentService'];
+    delete apis['adyen.com:PayoutService'];
+    delete apis['adyen.com:RecurringService'];
+    delete apis['avaza.com'];
+    delete apis['azure.com:azsadmin-Operations'];
+    delete apis['azure.com:azsadmin-RegionHealth'];
+    delete apis['azure.com:deviceprovisioningservices-iotdps'];
+    delete apis['azure.com:labservices-ML'];
+    delete apis['azure.com:migrateprojects-migrate'];
+    delete apis['azure.com:network-interfaceEndpoint'];
+    delete apis['azure.com:network-loadBalancer'];
+    delete apis['azure.com:network-networkInterface'];
+    delete apis['azure.com:network-networkProfile'];
+    delete apis['azure.com:network-networkSecurityGroup'];
+    delete apis['azure.com:network-privateEndpoint'];
+    delete apis['azure.com:network-publicIpAddress'];
+    delete apis['azure.com:network-routeTable'];
+    delete apis['azure.com:network-serviceEndpointPolicy'];
+    delete apis['azure.com:network-virtualNetwork'];
+    delete apis['azure.com:network-virtualNetworkTap'];
+    delete apis['azure.com:provisioningservices-iotdps'];
+    delete apis['azure.com:web-service'];
+    delete apis['billbee.io'];
+    delete apis['blazemeter.com'];
+    delete apis['calorieninjas.com'];
+    delete apis['clarify.io'];
+    delete apis['clicksend.com'];
+    delete apis['cloudmersive.com:ocr'];
+    delete apis['contribly.com'];
+    delete apis['enode.io'];
+    delete apis['evetech.net'];
+    delete apis['frankiefinancial.io'];
+    delete apis['geneea.com'];
+    delete apis['github.com'];
+    delete apis['github.com:api.github.com'];
+    delete apis['github.com:ghes-2.18'];
+    delete apis['github.com:ghes-2.19'];
+    delete apis['github.com:ghes-2.20'];
+    delete apis['github.com:ghes-2.21'];
+    delete apis['github.com:ghes-2.22'];
+    delete apis['github.com:ghes-3.0'];
+    delete apis['github.com:ghes-3.1'];
+    delete apis['googleapis.com:accessapproval'];
+    delete apis['googleapis.com:admin'];
+    delete apis['googleapis.com:adsense'];
+    delete apis['googleapis.com:bigqueryreservation'];
+
+    // These APIs have circular refs, which the library doesn't yet support.
+    // https://github.com/readmeio/api/issues/549
+    delete apis['amazonaws.com:ce'];
+    delete apis['apideck.com:accounting'];
+    delete apis['apideck.com:connector'];
+    delete apis['appcenter.ms'];
+    delete apis['atlassian.com:jira'];
+    delete apis['azure.com:alertsmanagement-AlertsManagement'];
+    delete apis['azure.com:applicationinsights-eaSubscriptionMigration_API'];
+    delete apis['azure.com:applicationinsights-swagger'];
+    delete apis['azure.com:appplatform'];
+    delete apis['azure.com:azsadmin-Deployment'];
+    delete apis['azure.com:azsadmin-FileContainer'];
+    delete apis['azure.com:azsadmin-Location'];
+    delete apis['azure.com:azsadmin-UpdateRuns'];
+    delete apis['azure.com:azure-kusto'];
+    delete apis['azure.com:azureactivedirectory'];
+    delete apis['azure.com:batch-BatchManagement'];
+    delete apis['azure.com:batchai-BatchAI'];
+    delete apis['azure.com:billing'];
+    delete apis['azure.com:cognitiveservices-FormRecognizer'];
+    delete apis['azure.com:cognitiveservices-LUIS-Authoring'];
+    delete apis['azure.com:cognitiveservices-Personalizer'];
+    delete apis['azure.com:cognitiveservices-QnAMaker'];
+    delete apis['azure.com:cognitiveservices-QnAMakerRuntime'];
+    delete apis['azure.com:cognitiveservices-TextAnalytics'];
+    delete apis['azure.com:consumption'];
+    delete apis['azure.com:containerinstance-containerInstance'];
+    delete apis['azure.com:containerservice-managedClusters'];
+    delete apis['azure.com:containerservice-openShiftManagedClusters'];
+    delete apis['azure.com:containerservices-managedClusters'];
+    delete apis['azure.com:containerservices-openShiftManagedClusters'];
+    delete apis['azure.com:cost-management-costmanagement'];
+    delete apis['azure.com:customproviders'];
+    delete apis['azure.com:databox'];
+    delete apis['azure.com:databoxedge'];
+    delete apis['azure.com:datafactory'];
+    delete apis['azure.com:datalake-analytics-job'];
+    delete apis['azure.com:datashare-DataShare'];
+    delete apis['azure.com:deploymentmanager'];
+    delete apis['azure.com:devops'];
+    delete apis['azure.com:devtestlabs-DTL'];
+    delete apis['azure.com:digitaltwins'];
+    delete apis['azure.com:dns'];
+    delete apis['azure.com:domainservices'];
+    delete apis['azure.com:edgegateway'];
+    delete apis['azure.com:engagementfabric-EngagementFabric'];
+    delete apis['azure.com:hardwaresecuritymodules-dedicatedhsm'];
+    delete apis['azure.com:hybridcompute-HybridCompute'];
+    delete apis['azure.com:keyvault'];
+    delete apis['azure.com:logic'];
+    delete apis['azure.com:machinelearning-webservices'];
+    delete apis['azure.com:machinelearningservices-artifact'];
+    delete apis['azure.com:machinelearningservices-datastore'];
+    delete apis['azure.com:machinelearningservices-execution'];
+    delete apis['azure.com:machinelearningservices-runHistory'];
+    delete apis['azure.com:managementgroups-management'];
+    delete apis['azure.com:mariadb'];
+    delete apis['azure.com:mariadb-DataEncryptionKeys'];
+    delete apis['azure.com:mariadb-PrivateEndpointConnections'];
+    delete apis['azure.com:mariadb-PrivateLinkResources'];
+    delete apis['azure.com:mediaservices-AccountFilters'];
+    delete apis['azure.com:mediaservices-Accounts'];
+    delete apis['azure.com:mediaservices-Assets'];
+    delete apis['azure.com:mediaservices-AssetsAndAssetFilters'];
+    delete apis['azure.com:mediaservices-ContentKeyPolicies'];
+    delete apis['azure.com:mediaservices-Encoding'];
+    delete apis['azure.com:mediaservices-MediaGraphs'];
+    delete apis['azure.com:mediaservices-StreamingPoliciesAndStreamingLocators'];
+    delete apis['azure.com:mediaservices-streamingservice'];
+    delete apis['azure.com:migrate'];
+    delete apis['azure.com:msi-ManagedIdentity'];
+    delete apis['azure.com:mysql'];
+    delete apis['azure.com:mysql-DataEncryptionKeys'];
+    delete apis['azure.com:mysql-PrivateEndpointConnections'];
+    delete apis['azure.com:mysql-PrivateLinkResources'];
+    delete apis['azure.com:network'];
+    delete apis['azure.com:network-applicationGateway'];
+    delete apis['azure.com:network-ddosCustomPolicy'];
+    delete apis['azure.com:operationalinsights-swagger'];
+    delete apis['azure.com:policyinsights-policyMetadata'];
+    delete apis['azure.com:policyinsights-remediations'];
+    delete apis['azure.com:portal'];
+    delete apis['azure.com:postgresql'];
+    delete apis['azure.com:postgresql-DataEncryptionKeys'];
+    delete apis['azure.com:postgresql-PrivateEndpointConnections'];
+    delete apis['azure.com:postgresql-PrivateLinkResources'];
+    delete apis['azure.com:privatedns'];
+    delete apis['azure.com:recoveryservicessiterecovery-service'];
+    delete apis['azure.com:resources']
+    delete apis['azure.com:resources-deploymentScripts'];
+    delete apis['azure.com:resources-management'];
+    delete apis['azure.com:search'];
+    delete apis['azure.com:search-searchservice'];
+    delete apis['azure.com:signalr'];
+    delete apis['azure.com:storage-file'];
+    delete apis['azure.com:storagecache'];
+    delete apis['azure.com:timeseriesinsights'];
+    delete apis['azure.com:trafficmanager'];
+    delete apis['azure.com:trafficmanager-trafficmanageranalytics'];
+    delete apis['azure.com:vmwarecloudsimple'];
+    delete apis['azure.com:web-Provider'];
+    delete apis['azure.com:windowsesu'];
+    delete apis['azure.com:workloadmonitor-Microsoft.WorkloadMonitor'];
+    delete apis['bbc.co.uk'];
+    delete apis['bbci.co.uk'];
+    delete apis['bigoven.com'];
+    delete apis['bigredcloud.com'];
+    delete apis['bitbucket.org'];
+    delete apis['britbox.co.uk'];
+    delete apis['bungie.net'];
+    delete apis['bunq.com'];
+    delete apis['callfire.com'];
+    delete apis['canada-holidays.ca'];
+    delete apis['corrently.io'];
+    delete apis['cpy.re:peertube'];
+    delete apis['credas.co.uk:pi'];
+    delete apis['cybertaxonomy.eu'];
+    delete apis['daniweb.com'];
+    delete apis['dataflowkit.com'];
+    delete apis['dev.to'];
+    delete apis['docusign.net'];
+    delete apis['dracoon.team'];
+    delete apis['ebay.com:commerce-taxonomy'];
+    delete apis['getsandbox.com'];
+    delete apis['gitea.io'];
+    delete apis['googleapis.com:analyticsadmin'];
+    delete apis['googleapis.com:analyticsdata'];
+    delete apis['googleapis.com:androidenterprise'];
+    delete apis['googleapis.com:androidmanagement'];
+    delete apis['googleapis.com:automl'];
+    delete apis['googleapis.com:bigquery'];
+    delete apis['googleapis.com:bigquerydatatransfer'];
+    delete apis['googleapis.com:bigtableadmin'];
+    delete apis['googleapis.com:chat'];
+    delete apis['googleapis.com:chromepolicy'];
+    delete apis['googleapis.com:civicinfo'];
+
+    Object.entries(apis).forEach(([service]) => {
+      // Every Amazon OAS is **huge** (100k+ lines) and really bog the smoketest down. They should
+      // probably be manually tested instead.
+      if (service.startsWith('amazonaws.com:')) {
+        delete apis[service];
+      }
+    });
+
+    return apis;
+  })
+  .then(apis => {
+    return Object.entries(apis).map(([name, api]) => {
+      const latestVersion = api.versions[api.preferred];
+
+      return {
+        name,
+        version: api.preferred,
+        url: latestVersion.swaggerUrl,
+      };
+    });
+  })
+  .then(apis => {
+    fs.writeFileSync(`${__dirname}/real-world-apis.json`, JSON.stringify(apis, null, 2));
+  });

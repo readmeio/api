@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
-import chai, { expect } from 'chai';
+import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import mockRequire from 'mock-require';
 import Oas from 'oas';
@@ -34,10 +34,19 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
 
     const ts = new TSGenerator(oas, file, fixture, opts);
     expect(await ts.generator()).toMatchSDKFixture(fixture);
+
+    // Make sure that we can load the SDK without any TS compilation errors.
+    const sdk = await import(`../../../__fixtures__/sdk/${fixture}`).then(r => r.default);
+    expect(sdk.constructor.name).to.equal('SDK');
   };
 }
 
 describe('typescript', function () {
+  beforeEach(function () {
+    // Package installation and codegen can take a bit.
+    this.currentTest.timeout(20000);
+  });
+
   describe('#installer', function () {
     beforeEach(function () {
       Storage.setStorageDir(uniqueTempDir());
@@ -67,6 +76,21 @@ describe('typescript', function () {
   });
 
   describe('#generator', function () {
+    it('should fail on an API definition that contains circular references', async function () {
+      const oas = await import('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
+      await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+      try {
+        // eslint-disable-next-line no-new
+        new TSGenerator(oas, 'circular', './circular.json');
+        assert.fail();
+      } catch (err) {
+        expect(err.message).to.equal(
+          'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+        );
+      }
+    });
+
     it(
       'should generate typescript (by default)',
       assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts')
@@ -93,6 +117,11 @@ describe('typescript', function () {
     );
 
     it.skip('should handle a operations with a `default` response');
+
+    it(
+      'should handle an api that has discriminators and no operation ids',
+      assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby')
+    );
 
     describe('javascript generation', function () {
       it(

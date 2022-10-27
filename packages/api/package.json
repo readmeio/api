@@ -13,7 +13,8 @@
     "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
     "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts",
     "prepack": "npm run build",
-    "test": "nyc mocha \"test/**/*.test.ts\""
+    "test": "nyc mocha \"test/**/*.test.ts\"",
+    "test:smoke": "npx mocha test/cli/codegen/languages/typescript/smoketest.test.ts"
   },
   "repository": {
     "type": "git",
@@ -59,7 +60,7 @@
     "lodash.setwith": "^4.3.2",
     "lodash.startcase": "^4.4.0",
     "make-dir": "^3.1.0",
-    "oas": "^19.0.1",
+    "oas": "^19.0.2",
     "ora": "^5.4.1",
     "prettier": "^2.7.1",
     "prompts": "^2.4.2",
@@ -69,6 +70,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
+    "@jsdevtools/host-environment": "^2.1.2",
     "@readme/oas-examples": "^5.5.0",
     "@types/caseless": "^0.12.2",
     "@types/chai": "^4.3.1",
@@ -90,6 +92,7 @@
     "mocha": "^10.0.0",
     "mock-require": "^3.0.3",
     "nyc": "^15.1.0",
+    "oas-normalize": "^7.1.0",
     "sinon": "^14.0.0",
     "sinon-chai": "^3.7.0",
     "typescript": "^4.7.4",

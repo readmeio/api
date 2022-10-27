@@ -8,6 +8,5 @@
   ],
   "watch-files": ["src/**/*.ts", "test/**/*.ts"],
   "recursive": true,
-  "reporter": "spec",
-  "timeout": 200000
+  "reporter": "spec"
 }

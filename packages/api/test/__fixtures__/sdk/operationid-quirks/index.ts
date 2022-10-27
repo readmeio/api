@@ -81,6 +81,23 @@ class SDK {
   }
 
   /**
+   * This operation doesn't have an `operationId` so we should create one.
+   *
+   */
+  getNoOperationId(): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/no-operation-id', 'get');
+  }
+
+  /**
+   * This operation has no `operationId` but because path starts with an HTTP method when we
+   * generate an `operationId` that has `get` doubled.
+   *
+   */
+  getOperationPathStartsWithAnHttpMethod(): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/get-operation-path-starts-with-an-http-method', 'get');
+  }
+
+  /**
    * This operation has an `operationId` with hypens yet it should still be accessible in the
    * dynamic `api` flow.
    *

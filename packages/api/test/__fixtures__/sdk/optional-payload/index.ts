@@ -91,7 +91,7 @@ class SDK {
    *
    */
   updatePetWithForm(
-    body?: types.UpdatePetWithFormFormDataParam,
+    body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
     metadata?: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
