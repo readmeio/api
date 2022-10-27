@@ -13,7 +13,7 @@
     "prebuild": "rm -rf dist/; npm run prebuild.packageConfig",
     "prebuild.packageConfig": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts",
     "prepack": "npm run build",
-    "test": "nyc mocha \"test/**/*.test.ts\"",
+    "test": "nyc mocha $(find test -name '*.test.ts' -not -path '*/smoketest.test.ts')",
     "test:smoke": "npx mocha test/cli/codegen/languages/typescript/smoketest.test.ts"
   },
   "repository": {
@@ -60,7 +60,7 @@
     "lodash.setwith": "^4.3.2",
     "lodash.startcase": "^4.4.0",
     "make-dir": "^3.1.0",
-    "oas": "^19.0.2",
+    "oas": "^19.0.4",
     "ora": "^5.4.1",
     "prettier": "^2.7.1",
     "prompts": "^2.4.2",

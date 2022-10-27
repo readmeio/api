@@ -76,21 +76,6 @@ describe('typescript', function () {
   });
 
   describe('#generator', function () {
-    it('should fail on an API definition that contains circular references', async function () {
-      const oas = await import('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
-      await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
-
-      try {
-        // eslint-disable-next-line no-new
-        new TSGenerator(oas, 'circular', './circular.json');
-        assert.fail();
-      } catch (err) {
-        expect(err.message).to.equal(
-          'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
-        );
-      }
-    });
-
     it(
       'should generate typescript (by default)',
       assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts')
@@ -191,6 +176,44 @@ describe('typescript', function () {
           expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
           expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
         });
+      });
+    });
+
+    describe('error handling', function () {
+      it('should fail on an API definition that has no `paths`', async function () {
+        const oas = Oas.init({
+          openapi: '3.0.3',
+          info: {
+            title: 'empty oas',
+            version: '1.0.0',
+          },
+          paths: {},
+        });
+
+        const ts = new TSGenerator(oas, 'no-paths', './no-paths.json');
+        await ts
+          .generator()
+          .then(() => assert.fail())
+          .catch(err => {
+            expect(err.message).to.equal(
+              'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.'
+            );
+          });
+      });
+
+      it('should fail on an API definition that contains circular references', async function () {
+        const oas = await import('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
+        await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+        try {
+          // eslint-disable-next-line no-new
+          new TSGenerator(oas, 'circular', './circular.json');
+          assert.fail();
+        } catch (err) {
+          expect(err.message).to.equal(
+            'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+          );
+        }
       });
     });
   });

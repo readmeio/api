@@ -38,6 +38,12 @@ fetch('https://api.apis.guru/v2/list.json')
     // "type array but found type null at #/paths//vault/callback/get/security"
     // delete apis['apideck.com:vault'];
 
+    // These APIs take **forever** to process. Investigate why at some point.
+    delete apis['beezup.com'];
+
+    // These APIs have no `paths` so an SDK we generate is always going to be empty.
+    delete apis['firstinspires.org'];
+
     // These APIs have validation issues.
     delete apis['adyen.com:CheckoutService'];
     delete apis['adyen.com:MarketPayNotificationService'];
@@ -86,6 +92,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['googleapis.com:accessapproval'];
     delete apis['googleapis.com:admin'];
     delete apis['googleapis.com:adsense'];
+    delete apis['googleapis.com:appengine'];
     delete apis['googleapis.com:bigqueryreservation'];
 
     // These APIs have circular refs, which the library doesn't yet support.
@@ -177,7 +184,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['azure.com:postgresql-PrivateLinkResources'];
     delete apis['azure.com:privatedns'];
     delete apis['azure.com:recoveryservicessiterecovery-service'];
-    delete apis['azure.com:resources']
+    delete apis['azure.com:resources'];
     delete apis['azure.com:resources-deploymentScripts'];
     delete apis['azure.com:resources-management'];
     delete apis['azure.com:search'];
@@ -202,6 +209,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['bunq.com'];
     delete apis['callfire.com'];
     delete apis['canada-holidays.ca'];
+    delete apis['clickmeter.com'];
     delete apis['corrently.io'];
     delete apis['cpy.re:peertube'];
     delete apis['credas.co.uk:pi'];

@@ -15,7 +15,7 @@ import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationK
 import logger from '../../logger';
 import CodeGeneratorLanguage from '../language';
 
-import { formatter, generateTypeName, wordWrap } from './typescript/util';
+import { docblockEscape, formatter, generateTypeName, wordWrap } from './typescript/util';
 
 export type TSGeneratorOptions = {
   outputJS?: boolean;
@@ -479,9 +479,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       // what we surface the main docblock description.
       docblock.description = writer => {
         if (description) {
-          writer.writeLine(wordWrap(description));
+          writer.writeLine(docblockEscape(wordWrap(description)));
         } else if (summary) {
-          writer.writeLine(wordWrap(summary));
+          writer.writeLine(docblockEscape(wordWrap(summary)));
         }
 
         writer.newLineIfLastNot();
@@ -489,7 +489,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       };
 
       if (summary && description) {
-        docblock.tags = [{ tagName: 'summary', text: summary }];
+        docblock.tags = [{ tagName: 'summary', text: docblockEscape(wordWrap(summary)) }];
       }
     }
 
@@ -662,6 +662,10 @@ sdk.server('https://eu.api.example.com/v14');`)
       });
     });
 
+    if (!Object.keys(operations).length) {
+      throw new Error('Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.');
+    }
+
     return {
       operations,
       methods,
@@ -683,7 +687,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         // codegen'd schemas file with duplicate schemas.
         if ('x-readme-ref-name' in s) {
           const typeName = generateTypeName(s['x-readme-ref-name']);
-          this.addSchemaToExport(s, typeName, `${typeName}`);
+          this.addSchemaToExport(s, typeName, typeName);
 
           return `::convert::${typeName}` as SchemaObject;
         }
@@ -710,7 +714,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           typeName = schema.replace('::convert::', '');
         } else {
           typeName = generateTypeName(operationId, paramType, 'param');
-          this.addSchemaToExport(schema, typeName, `${operationId}.${paramType}`);
+          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.${paramType}`);
         }
 
         return {
@@ -774,7 +778,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           // Because `status` will usually be a number here we need to set the pointer for it
           // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
           // TypeScript will throw a compilation error.
-          this.addSchemaToExport(schema, typeName, `${operationId}.response['${status}']`);
+          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.response['${status}']`);
         }
 
         return {

@@ -3,6 +3,102 @@ import deburr from 'lodash.deburr';
 import startCase from 'lodash.startcase';
 import { format as prettier } from 'prettier';
 
+/**
+ * This is a mix of reserved JS words and keywords in TypeScript that might be reserved or
+ * allowable but functionally confusing (like `let any = 'buster';`)
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar}
+ */
+const RESERVED_WORDS = [
+  'abstract',
+  'any',
+  'arguments',
+  'as',
+  'async',
+  'await',
+  'boolean',
+  'break',
+  'byte',
+  'case',
+  'catch',
+  'char',
+  'class',
+  'const',
+  'continue',
+  'debugger',
+  'default',
+  'delete',
+  'do',
+  'double',
+  'else',
+  'enum',
+  'eval',
+  'export',
+  'extends',
+  'false',
+  'final',
+  'finally',
+  'float',
+  'for',
+  'from',
+  'function',
+  'get',
+  'goto',
+  'if',
+  'implements',
+  'import',
+  'interface',
+  'in',
+  'instanceof',
+  'int',
+  'let',
+  'long',
+  'native',
+  'new',
+  'null',
+  'number',
+  'of',
+  'package',
+  'private',
+  'protected',
+  'public',
+  'module',
+  'namespace',
+  'return',
+  'set',
+  'short',
+  'static',
+  'string',
+  'super',
+  'switch',
+  'synchronized',
+  'this',
+  'throw',
+  'throws',
+  'transient',
+  'true',
+  'try',
+  'type',
+  'typeof',
+  'var',
+  'void',
+  'while',
+  'with',
+  'volatile',
+  'yield',
+
+  // These aren't reserved keywords but because we maybe codegen'ing an SDK to be used in the
+  // browser it'd be very bad if we overwrote these. This obviously doesn't account for browser APIs
+  // you can access outside of the `Window` API (like `alert()`), but we can add checks for those
+  // later if we need to.
+  'frames',
+  'global',
+  'globalThis',
+  'navigator',
+  'self',
+  'window',
+];
+
 export function formatter(content: string) {
   return prettier(content, {
     parser: 'typescript',
@@ -16,6 +112,14 @@ export function formatter(content: string) {
  */
 export function wordWrap(str: string, max = 88) {
   return str.replace(new RegExp(`(?![^\\n]{1,${max}}$)([^\\n]{1,${max}})\\s`, 'g'), '$1\n');
+}
+
+/**
+ * Safely escape some string characters that may break a docblock.
+ *
+ */
+export function docblockEscape(str: string) {
+  return str.replace(/\/\*/g, '/\\*').replace(/\*\//g, '*\\/');
 }
 
 /**
@@ -68,6 +172,10 @@ export function generateTypeName(...parts: string[]) {
 
   if (!str) {
     str = startCase(camelCase(parts.join(' ')));
+  }
+
+  if (RESERVED_WORDS.includes(str.toLowerCase())) {
+    str = `$${str}`;
   }
 
   return toSafeString(str);
