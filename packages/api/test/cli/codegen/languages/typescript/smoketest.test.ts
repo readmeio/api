@@ -74,7 +74,7 @@ describe('typescript smoketest', function () {
       const oas = Oas.init(spec);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const ts = new TSGenerator(oas, './path/to/spec.json', name);
+      const ts = new TSGenerator(oas, './path/not/needed.json', name);
       const res = await ts.generator();
 
       if (APIS_WITHOUT_SCHEMAS.includes(name)) {
