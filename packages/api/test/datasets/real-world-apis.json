@@ -5650,11 +5650,6 @@
     "url": "https://api.apis.guru/v2/specs/googleapis.com/toolresults/v1beta3/openapi.json"
   },
   {
-    "name": "googleapis.com:tpu",
-    "version": "v2",
-    "url": "https://api.apis.guru/v2/specs/googleapis.com/tpu/v2/openapi.json"
-  },
-  {
     "name": "googleapis.com:transcoder",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/googleapis.com/transcoder/v1/openapi.json"

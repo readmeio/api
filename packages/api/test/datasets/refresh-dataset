@@ -125,6 +125,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['googleapis.com:servicecontrol'];
     delete apis['googleapis.com:speech'];
     delete apis['googleapis.com:tagmanager'];
+    delete apis['googleapis.com:tpu'];
     delete apis['googleapis.com:verifiedaccess'];
     delete apis['googleapis.com:vision'];
     delete apis['hetras-certification.net:booking'];
@@ -391,24 +392,4 @@ fetch('https://api.apis.guru/v2/list.json')
   })
   .then(apis => {
     fs.writeFileSync(`${__dirname}/real-world-apis.json`, JSON.stringify(apis, null, 2));
-
-    console.log(
-      '`real-world-apis.json` has been refreshed. Here are the API name letter breakdowns so you can tweak the smoketest suite:\n'
-    );
-
-    const letters = apis
-      .map(api => api.name.slice(0, 2))
-      .reduce((acc, curr) => {
-        if (acc[curr]) {
-          acc[curr] += 1;
-        } else {
-          acc[curr] = 1;
-        }
-
-        return acc;
-      }, {});
-
-    Object.entries(letters).forEach(([letter, count]) => {
-      console.log(` · ${letter}: ${count}`);
-    });
   });
