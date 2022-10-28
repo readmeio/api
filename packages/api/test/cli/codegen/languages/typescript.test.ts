@@ -86,9 +86,9 @@ describe('typescript', function () {
       assertSDKFixture('../../../__fixtures__/definitions/optional-payload.json', 'optional-payload')
     );
 
-    it.skip('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
+    it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
 
-    it.skip('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
+    it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
     // This SDK only has an `index.ts` as it has no schemas.
     it(
