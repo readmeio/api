@@ -8,7 +8,7 @@ on:
 
 jobs:
   # APIs that start with a number and go up to `ay*`.
-  smoketest:
+  "smoketest_([0-9]|a[a-y])":
     name: "([0-9]|a[a-y])"
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
@@ -23,7 +23,7 @@ jobs:
       - run: npm run test:smoke -- -- --regex="^([0-9]|a[a-y])"
 
   # APIs that start with `az` (generally just Azure APIs).
-  smoketest:
+  "smoketest_az*":
     name: "az*"
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
@@ -38,7 +38,7 @@ jobs:
       - run: npm run test:smoke -- -- --regex="^az"
 
   # APIs from B to Z except if they start with `go`.
-  smoketest:
+  "smoketest_([b-f]|g[^o]|[h-z])":
     name: "([b-f]|g[^o]|[h-z])"
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
@@ -53,7 +53,7 @@ jobs:
       - run: npm run test:smoke -- -- --regex="^([b-f]|g[^o]|[h-z])"
 
   # APIs start with `go` (generally all Google APIs).
-  smoketest:
+  "smoketest_go*":
     name: "go*"
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
