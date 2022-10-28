@@ -3970,11 +3970,6 @@
     "url": "https://api.apis.guru/v2/specs/azure.com/web-TopLevelDomains/2019-08-01/swagger.json"
   },
   {
-    "name": "azure.com:web-WebApps",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-WebApps/2019-08-01/swagger.json"
-  },
-  {
     "name": "azure.com:web-logicAppsManagementClient",
     "version": "2016-06-01",
     "url": "https://api.apis.guru/v2/specs/azure.com/web-logicAppsManagementClient/2016-06-01/swagger.json"

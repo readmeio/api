@@ -6,7 +6,6 @@
  * @link https://github.com/APIs-guru/openapi-directory
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 const fs = require('fs');
 
@@ -31,6 +30,7 @@ fetch('https://api.apis.guru/v2/list.json')
 
     // These APIs are either **huge** or take **forever** to process. Investigate why at some point.
     delete apis['azure.com:servicefabric'];
+    delete apis['azure.com:web-WebApps'];
     delete apis['beezup.com'];
     delete apis['googleapis.com:compute'];
     delete apis['loket.nl'];
