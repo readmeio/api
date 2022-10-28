@@ -1,0 +1,62 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Debugging auth quirks"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/anything": {
+      "post": {
+        "security": [
+          {
+            "oauth2": ["write:things"]
+          },
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/anything/or-and": {
+      "post": {
+        "security": [
+          {
+            "oauth2": ["write:things"]
+          },
+          {
+            "basicAuth": [],
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://example.com/oauth/dialog",
+            "scopes": {
+              "write:things": "Add things to your account"
+            }
+          }
+        }
+      }
+    }
+  }
+}

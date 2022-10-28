@@ -209,8 +209,8 @@ describe('APICore', function () {
 
   describe('#setAuth()', function () {
     it('should pass along auth in the request', async function () {
-      const user = 'username';
-      const pass = 'changeme';
+      const user = 'buster';
+      const pass = 'hunter1';
 
       const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
       fetchMock.post('https://httpbin.org/anything/basic', mockResponse.headers);
