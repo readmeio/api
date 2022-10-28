@@ -1,6 +1,6 @@
 import type { ConfigOptions } from './core';
 import type { Operation } from 'oas';
-import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import Oas from 'oas';
 
@@ -38,24 +38,6 @@ class Sdk {
     let sdk = {};
 
     /**
-     * Create dynamic accessors for every HTTP method that the OpenAPI specification supports.
-     *
-     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#fixed-fields-7}
-     * @see {@link https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#fixed-fields-7}
-     */
-    function loadMethods() {
-      return ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']
-        .map(httpVerb => {
-          return {
-            [httpVerb]: ((method: string, path: string, ...args: unknown[]) => {
-              return core.fetch(path, method as HttpMethods, ...args);
-            }).bind(null, httpVerb),
-          };
-        })
-        .reduce((prev, next) => Object.assign(prev, next));
-    }
-
-    /**
      * Create dynamic accessors for every operation with a defined operation ID. If an operation
      * does not have an operation ID it can be accessed by its `.method('/path')` accessor instead.
      *
@@ -65,14 +47,13 @@ class Sdk {
       return Object.entries(spec.getPaths())
         .map(([, operations]) => Object.values(operations))
         .reduce((prev, next) => prev.concat(next), [])
-        .filter(operation => operation.hasOperationId())
         .reduce((prev, next) => {
           // `getOperationId()` creates dynamic operation IDs when one isn't available but we need
           // to know here if we actually have one present or not. The `camelCase` option here also
           // cleans up any `operationId` that we might have into something that can be used as a
           // valid JS method.
-          const operationId = next.getOperationId({ camelCase: true });
           const originalOperationId = next.getOperationId();
+          const operationId = next.getOperationId({ camelCase: true });
 
           const op = {
             [operationId]: ((operation: Operation, ...args: unknown[]) => {
@@ -110,11 +91,7 @@ class Sdk {
 
       core.setSpec(spec);
 
-      sdk = Object.assign(sdk, {
-        ...loadMethods(),
-        ...loadOperations(spec),
-      });
-
+      sdk = Object.assign(sdk, loadOperations(spec));
       isLoaded = true;
     }
 
@@ -182,10 +159,9 @@ class Sdk {
       },
 
       /**
-       * Optionally configure various options, such as response parsing, that the SDK allows.
+       * Optionally configure various options that the SDK allows.
        *
        * @param config Object of supported SDK options and toggles.
-       * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
        */
       config: (config: ConfigOptions) => {
         core.setConfig(config);

@@ -1,6 +1,6 @@
 const sdk = require('api')('https://api.example.com/application-json.json');
 
-sdk.post('/anything', {
+sdk.postAnything({
   number: 1,
   string: 'f"oo',
   arr: [1, 2, 3],
@@ -8,5 +8,5 @@ sdk.post('/anything', {
   arr_mix: [1, 'a', {arr_mix_nested: {}}],
   boolean: false
 })
-  .then(res => console.log(res))
+  .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

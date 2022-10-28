@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core';
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
@@ -14,10 +14,9 @@ class SDK {
   }
 
   /**
-   * Optionally configure various options, such as response parsing, that the SDK allows.
+   * Optionally configure various options that the SDK allows.
    *
    * @param config Object of supported SDK options and toggles.
-   * @param config.parseResponse If responses are parsed according to its `Content-Type` header.
    */
   config(config: ConfigOptions) {
     this.core.setConfig(config);
@@ -77,430 +76,12 @@ class SDK {
    *
    * @summary Retrieve an entry from the API Registry
    */
-  get(
-    path: '/api-registry/{uuid}',
-    metadata: types.GetApiRegistryMetadataParam
-  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound>;
-  /**
-   * Get API specification metadata
-   *
-   * @summary Get metadata
-   */
-  get(
-    path: '/api-specification',
-    metadata?: types.GetApiSpecificationMetadataParam
-  ): Promise<
-    | types.GetApiSpecificationResponse200
-    | types.ErrorVersionEmpty
-    | types.GetApiSpecificationResponse401
-    | types.GetApiSpecificationResponse403
-    | types.ErrorVersionNotfound
-  >;
-  /**
-   * Returns all the roles we're hiring for at ReadMe!
-   *
-   * @summary Get open roles
-   */
-  get(path: '/apply'): Promise<types.GetOpenRolesResponse200>;
-  /**
-   * Returns all the categories for a specified version
-   *
-   * @summary Get all categories
-   */
-  get(
-    path: '/categories',
-    metadata?: types.GetCategoriesMetadataParam
-  ): Promise<types.GetCategoriesResponse200>;
-  /**
-   * Returns the category with this slug
-   *
-   * @summary Get category
-   */
-  get(
-    path: '/categories/{slug}',
-    metadata: types.GetCategoryMetadataParam
-  ): Promise<types.ErrorCategoryNotfound>;
-  /**
-   * Returns the docs and children docs within this category
-   *
-   * @summary Get docs for category
-   */
-  get(
-    path: '/categories/{slug}/docs',
-    metadata: types.GetCategoryDocsMetadataParam
-  ): Promise<types.ErrorCategoryNotfound>;
-  /**
-   * Returns a list of changelogs associated with the project API key
-   *
-   * @summary Get changelogs
-   */
-  get(
-    path: '/changelogs',
-    metadata?: types.GetChangelogsMetadataParam
-  ): Promise<types.GetChangelogsResponse200>;
-  /**
-   * Returns the changelog with this slug
-   *
-   * @summary Get changelog
-   */
-  get<T = unknown>(
-    path: '/changelogs/{slug}',
-    metadata: types.GetChangelogMetadataParam
-  ): Promise<T>;
-  /**
-   * Returns a list of custom pages associated with the project API key
-   *
-   * @summary Get custom pages
-   */
-  get(
-    path: '/custompages',
-    metadata?: types.GetCustomPagesMetadataParam
-  ): Promise<
-    | types.GetCustomPagesResponse200
-    | types.GetCustomPagesResponse401
-    | types.GetCustomPagesResponse403
-  >;
-  /**
-   * Returns the custom page with this slug
-   *
-   * @summary Get custom page
-   */
-  get(
-    path: '/custompages/{slug}',
-    metadata: types.GetCustomPageMetadataParam
-  ): Promise<
-    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
-  >;
-  /**
-   * Returns the doc with this slug
-   *
-   * @summary Get doc
-   */
-  get(
-    path: '/docs/{slug}',
-    metadata: types.GetDocMetadataParam
-  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound>;
-  /**
-   * Returns with all of the error page types for this project
-   *
-   * @summary Get errors
-   */
-  get(path: '/errors'): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403>;
-  /**
-   * Returns project data for API key
-   *
-   * @summary Get metadata about the current project
-   */
-  get(
-    path: '/'
-  ): Promise<
-    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
-  >;
-  /**
-   * Retrieve a list of versions associated with a project API key
-   *
-   * @summary Get versions
-   */
-  get(path: '/version'): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403>;
-  /**
-   * Returns the version with this version ID
-   *
-   * @summary Get version
-   */
-  get(
-    path: '/version/{versionId}',
-    metadata: types.GetVersionMetadataParam
-  ): Promise<
-    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
-  >;
-  /**
-   * Access any GET endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  get<T = unknown>(path: string, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'get', metadata);
-  }
-
-  /**
-   * Upload an API specification to ReadMe. Or, to use a newer solution see https://docs.readme.com/docs/automatically-sync-api-specification-with-github
-   *
-   * @summary Upload specification
-   */
-  post(
-    path: '/api-specification',
-    body: types.UploadApiSpecificationBodyParam,
-    metadata?: types.UploadApiSpecificationMetadataParam
-  ): Promise<
-    | types.UploadApiSpecificationResponse400
-    | types.UploadApiSpecificationResponse401
-    | types.UploadApiSpecificationResponse403
-    | types.ErrorSpecTimeout
-  >;
-  /**
-   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
-   *
-   * @summary Submit your application!
-   */
-  post<T = unknown>(path: '/apply', body: types.Apply): Promise<T>;
-  /**
-   * Create a new category inside of this project
-   *
-   * @summary Create category
-   */
-  post(
-    path: '/categories',
-    body: types.Category,
-    metadata?: types.CreateCategoryMetadataParam
-  ): Promise<types.ErrorCategoryInvalid>;
-  /**
-   * Create a new changelog inside of this project
-   *
-   * @summary Create changelog
-   */
-  post<T = unknown>(path: '/changelogs', body: types.Changelog): Promise<T>;
-  /**
-   * Create a new custom page inside of this project
-   *
-   * @summary Create custom page
-   */
-  post(
-    path: '/custompages',
-    body: types.CustomPage
-  ): Promise<
-    | types.ErrorCustompageInvalid
-    | types.CreateCustomPageResponse401
-    | types.CreateCustomPageResponse403
-  >;
-  /**
-   * Create a new doc inside of this project
-   *
-   * @summary Create doc
-   */
-  post(
-    path: '/docs',
-    body: types.Doc,
-    metadata?: types.CreateDocMetadataParam
-  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403>;
-  /**
-   * Returns all docs that match the search
-   *
-   * @summary Search docs
-   */
-  post(
-    path: '/docs/search',
-    metadata: types.SearchDocsMetadataParam
-  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403>;
-  /**
-   * Create a new version
-   *
-   * @summary Create version
-   */
-  post(
-    path: '/version',
-    body: types.Version
-  ): Promise<
-    | types.CreateVersionResponse400
-    | types.CreateVersionResponse401
-    | types.CreateVersionResponse403
-    | types.ErrorVersionForkNotfound
-  >;
-  /**
-   * Access any POST endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  post<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'post', body, metadata);
-  }
-
-  /**
-   * Update an API specification in ReadMe
-   *
-   * @summary Update specification
-   */
-  put(
-    path: '/api-specification/{id}',
-    body: types.UpdateApiSpecificationBodyParam,
-    metadata: types.UpdateApiSpecificationMetadataParam
-  ): Promise<
-    | types.UpdateApiSpecificationResponse400
-    | types.UpdateApiSpecificationResponse401
-    | types.UpdateApiSpecificationResponse403
-    | types.ErrorSpecTimeout
-  >;
-  /**
-   * Change the properties of a category.
-   *
-   * @summary Update category
-   */
-  put(
-    path: '/categories/{slug}',
-    body: types.Category,
-    metadata: types.UpdateCategoryMetadataParam
-  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound>;
-  /**
-   * Update a changelog with this slug
-   *
-   * @summary Update changelog
-   */
-  put<T = unknown>(
-    path: '/changelogs/{slug}',
-    body: types.Changelog,
-    metadata: types.UpdateChangelogMetadataParam
-  ): Promise<T>;
-  /**
-   * Update a custom page with this slug
-   *
-   * @summary Update custom page
-   */
-  put(
-    path: '/custompages/{slug}',
-    body: types.CustomPage,
-    metadata: types.UpdateCustomPageMetadataParam
-  ): Promise<
-    | types.ErrorCustompageInvalid
-    | types.UpdateCustomPageResponse401
-    | types.UpdateCustomPageResponse403
-    | types.ErrorCustompageNotfound
-  >;
-  /**
-   * Update a doc with this slug
-   *
-   * @summary Update doc
-   */
-  put(
-    path: '/docs/{slug}',
-    body: types.Doc,
-    metadata: types.UpdateDocMetadataParam
-  ): Promise<
-    | types.ErrorDocInvalid
-    | types.UpdateDocResponse401
-    | types.UpdateDocResponse403
-    | types.ErrorDocNotfound
-  >;
-  /**
-   * Update an existing version
-   *
-   * @summary Update version
-   */
-  put(
-    path: '/version/{versionId}',
-    body: types.Version,
-    metadata: types.UpdateVersionMetadataParam
-  ): Promise<
-    | types.ErrorVersionCantDemoteStable
-    | types.UpdateVersionResponse401
-    | types.UpdateVersionResponse403
-    | types.ErrorVersionNotfound
-  >;
-  /**
-   * Access any PUT endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  put<T = unknown>(path: string, body?: unknown, metadata?: Record<string, unknown>): Promise<T> {
-    return this.core.fetch(path, 'put', body, metadata);
-  }
-
-  /**
-   * Delete an API specification in ReadMe
-   *
-   * @summary Delete specification
-   */
-  delete(
-    path: '/api-specification/{id}',
-    metadata: types.DeleteApiSpecificationMetadataParam
-  ): Promise<
-    | types.ErrorSpecIdInvalid
-    | types.DeleteApiSpecificationResponse401
-    | types.DeleteApiSpecificationResponse403
-    | types.ErrorSpecNotfound
-  >;
-  /**
-   * Delete the category with this slug.
-   * >⚠️Heads Up!
-   * > This will also delete all of the docs within this category.
-   *
-   * @summary Delete category
-   */
-  delete(
-    path: '/categories/{slug}',
-    metadata: types.DeleteCategoryMetadataParam
-  ): Promise<types.ErrorCategoryNotfound>;
-  /**
-   * Delete the changelog with this slug
-   *
-   * @summary Delete changelog
-   */
-  delete<T = unknown>(
-    path: '/changelogs/{slug}',
-    metadata: types.DeleteChangelogMetadataParam
-  ): Promise<T>;
-  /**
-   * Delete the custom page with this slug
-   *
-   * @summary Delete custom page
-   */
-  delete(
-    path: '/custompages/{slug}',
-    metadata: types.DeleteCustomPageMetadataParam
-  ): Promise<
-    | types.DeleteCustomPageResponse401
-    | types.DeleteCustomPageResponse403
-    | types.ErrorCustompageNotfound
-  >;
-  /**
-   * Delete the doc with this slug
-   *
-   * @summary Delete doc
-   */
-  delete(
-    path: '/docs/{slug}',
-    metadata: types.DeleteDocMetadataParam
-  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound>;
-  /**
-   * Delete a version
-   *
-   * @summary Delete version
-   */
-  delete(
-    path: '/version/{versionId}',
-    metadata: types.DeleteVersionMetadataParam
-  ): Promise<
-    | types.ErrorVersionCantRemoveStable
-    | types.DeleteVersionResponse401
-    | types.DeleteVersionResponse403
-    | types.ErrorVersionNotfound
-  >;
-  /**
-   * Access any DELETE endpoint on your API.
-   *
-   * @param path API path to make a request against.
-   * @param body Request body payload data.
-   * @param metadata Object containing all path, query, header, and cookie parameters to supply.
-   */
-  delete<T = unknown>(
-    path: string,
-    body?: unknown,
-    metadata?: Record<string, unknown>
-  ): Promise<T> {
-    return this.core.fetch(path, 'delete', body, metadata);
-  }
-
-  /**
-   * Get an API definition file that's been uploaded to ReadMe
-   *
-   * @summary Retrieve an entry from the API Registry
-   */
   getAPIRegistry(
     metadata: types.GetApiRegistryMetadataParam
-  ): Promise<types.GetApiRegistryResponse200 | types.ErrorRegistryNotfound> {
+  ): Promise<
+    | FetchResponse<200, types.GetApiRegistryResponse200>
+    | FetchResponse<404, types.ErrorRegistryNotfound>
+  > {
     return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
   }
 
@@ -512,17 +93,18 @@ class SDK {
   getAPISpecification(
     metadata?: types.GetApiSpecificationMetadataParam
   ): Promise<
-    | types.GetApiSpecificationResponse200
-    | types.ErrorVersionEmpty
-    | types.GetApiSpecificationResponse401
-    | types.GetApiSpecificationResponse403
-    | types.ErrorVersionNotfound
+    | FetchResponse<200, types.GetApiSpecificationResponse200>
+    | FetchResponse<400, types.ErrorVersionEmpty>
+    | FetchResponse<401, types.GetApiSpecificationResponse401>
+    | FetchResponse<403, types.GetApiSpecificationResponse403>
+    | FetchResponse<404, types.ErrorVersionNotfound>
   > {
     return this.core.fetch('/api-specification', 'get', metadata);
   }
 
   /**
-   * Upload an API specification to ReadMe. Or, to use a newer solution see https://docs.readme.com/docs/automatically-sync-api-specification-with-github
+   * Upload an API specification to ReadMe. Or, to use a newer solution see
+   * https://docs.readme.com/docs/automatically-sync-api-specification-with-github
    *
    * @summary Upload specification
    */
@@ -530,10 +112,10 @@ class SDK {
     body: types.UploadApiSpecificationBodyParam,
     metadata?: types.UploadApiSpecificationMetadataParam
   ): Promise<
-    | types.UploadApiSpecificationResponse400
-    | types.UploadApiSpecificationResponse401
-    | types.UploadApiSpecificationResponse403
-    | types.ErrorSpecTimeout
+    | FetchResponse<400, types.UploadApiSpecificationResponse400>
+    | FetchResponse<401, types.UploadApiSpecificationResponse401>
+    | FetchResponse<403, types.UploadApiSpecificationResponse403>
+    | FetchResponse<408, types.ErrorSpecTimeout>
   > {
     return this.core.fetch('/api-specification', 'post', body, metadata);
   }
@@ -547,10 +129,10 @@ class SDK {
     body: types.UpdateApiSpecificationBodyParam,
     metadata: types.UpdateApiSpecificationMetadataParam
   ): Promise<
-    | types.UpdateApiSpecificationResponse400
-    | types.UpdateApiSpecificationResponse401
-    | types.UpdateApiSpecificationResponse403
-    | types.ErrorSpecTimeout
+    | FetchResponse<400, types.UpdateApiSpecificationResponse400>
+    | FetchResponse<401, types.UpdateApiSpecificationResponse401>
+    | FetchResponse<403, types.UpdateApiSpecificationResponse403>
+    | FetchResponse<408, types.ErrorSpecTimeout>
   > {
     return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
   }
@@ -563,10 +145,10 @@ class SDK {
   deleteAPISpecification(
     metadata: types.DeleteApiSpecificationMetadataParam
   ): Promise<
-    | types.ErrorSpecIdInvalid
-    | types.DeleteApiSpecificationResponse401
-    | types.DeleteApiSpecificationResponse403
-    | types.ErrorSpecNotfound
+    | FetchResponse<400, types.ErrorSpecIdInvalid>
+    | FetchResponse<401, types.DeleteApiSpecificationResponse401>
+    | FetchResponse<403, types.DeleteApiSpecificationResponse403>
+    | FetchResponse<404, types.ErrorSpecNotfound>
   > {
     return this.core.fetch('/api-specification/{id}', 'delete', metadata);
   }
@@ -576,16 +158,17 @@ class SDK {
    *
    * @summary Get open roles
    */
-  getOpenRoles(): Promise<types.GetOpenRolesResponse200> {
+  getOpenRoles(): Promise<FetchResponse<200, types.GetOpenRolesResponse200>> {
     return this.core.fetch('/apply', 'get');
   }
 
   /**
-   * This endpoint will let you apply to a job at ReadMe programatically, without having to go through our UI!
+   * This endpoint will let you apply to a job at ReadMe programatically, without having to
+   * go through our UI!
    *
    * @summary Submit your application!
    */
-  applyToReadMe<T = unknown>(body: types.Apply): Promise<T> {
+  applyToReadMe(body: types.Apply): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/apply', 'post', body);
   }
 
@@ -596,7 +179,7 @@ class SDK {
    */
   getCategories(
     metadata?: types.GetCategoriesMetadataParam
-  ): Promise<types.GetCategoriesResponse200> {
+  ): Promise<FetchResponse<200, types.GetCategoriesResponse200>> {
     return this.core.fetch('/categories', 'get', metadata);
   }
 
@@ -608,7 +191,7 @@ class SDK {
   createCategory(
     body: types.Category,
     metadata?: types.CreateCategoryMetadataParam
-  ): Promise<types.ErrorCategoryInvalid> {
+  ): Promise<FetchResponse<400, types.ErrorCategoryInvalid>> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -617,7 +200,9 @@ class SDK {
    *
    * @summary Get category
    */
-  getCategory(metadata: types.GetCategoryMetadataParam): Promise<types.ErrorCategoryNotfound> {
+  getCategory(
+    metadata: types.GetCategoryMetadataParam
+  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
     return this.core.fetch('/categories/{slug}', 'get', metadata);
   }
 
@@ -629,7 +214,9 @@ class SDK {
   updateCategory(
     body: types.Category,
     metadata: types.UpdateCategoryMetadataParam
-  ): Promise<types.ErrorCategoryInvalid | types.ErrorCategoryNotfound> {
+  ): Promise<
+    FetchResponse<400, types.ErrorCategoryInvalid> | FetchResponse<404, types.ErrorCategoryNotfound>
+  > {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -642,7 +229,7 @@ class SDK {
    */
   deleteCategory(
     metadata: types.DeleteCategoryMetadataParam
-  ): Promise<types.ErrorCategoryNotfound> {
+  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
     return this.core.fetch('/categories/{slug}', 'delete', metadata);
   }
 
@@ -653,7 +240,7 @@ class SDK {
    */
   getCategoryDocs(
     metadata: types.GetCategoryDocsMetadataParam
-  ): Promise<types.ErrorCategoryNotfound> {
+  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
     return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
   }
 
@@ -664,7 +251,7 @@ class SDK {
    */
   getChangelogs(
     metadata?: types.GetChangelogsMetadataParam
-  ): Promise<types.GetChangelogsResponse200> {
+  ): Promise<FetchResponse<200, types.GetChangelogsResponse200>> {
     return this.core.fetch('/changelogs', 'get', metadata);
   }
 
@@ -673,7 +260,7 @@ class SDK {
    *
    * @summary Create changelog
    */
-  createChangelog<T = unknown>(body: types.Changelog): Promise<T> {
+  createChangelog(body: types.Changelog): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs', 'post', body);
   }
 
@@ -682,7 +269,7 @@ class SDK {
    *
    * @summary Get changelog
    */
-  getChangelog<T = unknown>(metadata: types.GetChangelogMetadataParam): Promise<T> {
+  getChangelog(metadata: types.GetChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'get', metadata);
   }
 
@@ -691,10 +278,10 @@ class SDK {
    *
    * @summary Update changelog
    */
-  updateChangelog<T = unknown>(
+  updateChangelog(
     body: types.Changelog,
     metadata: types.UpdateChangelogMetadataParam
-  ): Promise<T> {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
   }
 
@@ -703,7 +290,9 @@ class SDK {
    *
    * @summary Delete changelog
    */
-  deleteChangelog<T = unknown>(metadata: types.DeleteChangelogMetadataParam): Promise<T> {
+  deleteChangelog(
+    metadata: types.DeleteChangelogMetadataParam
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
@@ -715,9 +304,9 @@ class SDK {
   getCustomPages(
     metadata?: types.GetCustomPagesMetadataParam
   ): Promise<
-    | types.GetCustomPagesResponse200
-    | types.GetCustomPagesResponse401
-    | types.GetCustomPagesResponse403
+    | FetchResponse<200, types.GetCustomPagesResponse200>
+    | FetchResponse<401, types.GetCustomPagesResponse401>
+    | FetchResponse<403, types.GetCustomPagesResponse403>
   > {
     return this.core.fetch('/custompages', 'get', metadata);
   }
@@ -730,9 +319,9 @@ class SDK {
   createCustomPage(
     body: types.CustomPage
   ): Promise<
-    | types.ErrorCustompageInvalid
-    | types.CreateCustomPageResponse401
-    | types.CreateCustomPageResponse403
+    | FetchResponse<400, types.ErrorCustompageInvalid>
+    | FetchResponse<401, types.CreateCustomPageResponse401>
+    | FetchResponse<403, types.CreateCustomPageResponse403>
   > {
     return this.core.fetch('/custompages', 'post', body);
   }
@@ -745,7 +334,9 @@ class SDK {
   getCustomPage(
     metadata: types.GetCustomPageMetadataParam
   ): Promise<
-    types.GetCustomPageResponse401 | types.GetCustomPageResponse403 | types.ErrorCustompageNotfound
+    | FetchResponse<401, types.GetCustomPageResponse401>
+    | FetchResponse<403, types.GetCustomPageResponse403>
+    | FetchResponse<404, types.ErrorCustompageNotfound>
   > {
     return this.core.fetch('/custompages/{slug}', 'get', metadata);
   }
@@ -759,10 +350,10 @@ class SDK {
     body: types.CustomPage,
     metadata: types.UpdateCustomPageMetadataParam
   ): Promise<
-    | types.ErrorCustompageInvalid
-    | types.UpdateCustomPageResponse401
-    | types.UpdateCustomPageResponse403
-    | types.ErrorCustompageNotfound
+    | FetchResponse<400, types.ErrorCustompageInvalid>
+    | FetchResponse<401, types.UpdateCustomPageResponse401>
+    | FetchResponse<403, types.UpdateCustomPageResponse403>
+    | FetchResponse<404, types.ErrorCustompageNotfound>
   > {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
@@ -775,9 +366,9 @@ class SDK {
   deleteCustomPage(
     metadata: types.DeleteCustomPageMetadataParam
   ): Promise<
-    | types.DeleteCustomPageResponse401
-    | types.DeleteCustomPageResponse403
-    | types.ErrorCustompageNotfound
+    | FetchResponse<401, types.DeleteCustomPageResponse401>
+    | FetchResponse<403, types.DeleteCustomPageResponse403>
+    | FetchResponse<404, types.ErrorCustompageNotfound>
   > {
     return this.core.fetch('/custompages/{slug}', 'delete', metadata);
   }
@@ -789,7 +380,11 @@ class SDK {
    */
   getDoc(
     metadata: types.GetDocMetadataParam
-  ): Promise<types.GetDocResponse401 | types.GetDocResponse403 | types.ErrorDocNotfound> {
+  ): Promise<
+    | FetchResponse<401, types.GetDocResponse401>
+    | FetchResponse<403, types.GetDocResponse403>
+    | FetchResponse<404, types.ErrorDocNotfound>
+  > {
     return this.core.fetch('/docs/{slug}', 'get', metadata);
   }
 
@@ -802,10 +397,10 @@ class SDK {
     body: types.Doc,
     metadata: types.UpdateDocMetadataParam
   ): Promise<
-    | types.ErrorDocInvalid
-    | types.UpdateDocResponse401
-    | types.UpdateDocResponse403
-    | types.ErrorDocNotfound
+    | FetchResponse<400, types.ErrorDocInvalid>
+    | FetchResponse<401, types.UpdateDocResponse401>
+    | FetchResponse<403, types.UpdateDocResponse403>
+    | FetchResponse<404, types.ErrorDocNotfound>
   > {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
@@ -817,7 +412,11 @@ class SDK {
    */
   deleteDoc(
     metadata: types.DeleteDocMetadataParam
-  ): Promise<types.DeleteDocResponse401 | types.DeleteDocResponse403 | types.ErrorDocNotfound> {
+  ): Promise<
+    | FetchResponse<401, types.DeleteDocResponse401>
+    | FetchResponse<403, types.DeleteDocResponse403>
+    | FetchResponse<404, types.ErrorDocNotfound>
+  > {
     return this.core.fetch('/docs/{slug}', 'delete', metadata);
   }
 
@@ -829,7 +428,11 @@ class SDK {
   createDoc(
     body: types.Doc,
     metadata?: types.CreateDocMetadataParam
-  ): Promise<types.ErrorDocInvalid | types.CreateDocResponse401 | types.CreateDocResponse403> {
+  ): Promise<
+    | FetchResponse<400, types.ErrorDocInvalid>
+    | FetchResponse<401, types.CreateDocResponse401>
+    | FetchResponse<403, types.CreateDocResponse403>
+  > {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -840,7 +443,10 @@ class SDK {
    */
   searchDocs(
     metadata: types.SearchDocsMetadataParam
-  ): Promise<types.SearchDocsResponse401 | types.SearchDocsResponse403> {
+  ): Promise<
+    | FetchResponse<401, types.SearchDocsResponse401>
+    | FetchResponse<403, types.SearchDocsResponse403>
+  > {
     return this.core.fetch('/docs/search', 'post', metadata);
   }
 
@@ -849,7 +455,9 @@ class SDK {
    *
    * @summary Get errors
    */
-  getErrors(): Promise<types.GetErrorsResponse401 | types.GetErrorsResponse403> {
+  getErrors(): Promise<
+    FetchResponse<401, types.GetErrorsResponse401> | FetchResponse<403, types.GetErrorsResponse403>
+  > {
     return this.core.fetch('/errors', 'get');
   }
 
@@ -859,7 +467,9 @@ class SDK {
    * @summary Get metadata about the current project
    */
   getProject(): Promise<
-    types.CondensedProjectData | types.GetProjectResponse401 | types.GetProjectResponse403
+    | FetchResponse<200, types.CondensedProjectData>
+    | FetchResponse<401, types.GetProjectResponse401>
+    | FetchResponse<403, types.GetProjectResponse403>
   > {
     return this.core.fetch('/', 'get');
   }
@@ -869,7 +479,10 @@ class SDK {
    *
    * @summary Get versions
    */
-  getVersions(): Promise<types.GetVersionsResponse401 | types.GetVersionsResponse403> {
+  getVersions(): Promise<
+    | FetchResponse<401, types.GetVersionsResponse401>
+    | FetchResponse<403, types.GetVersionsResponse403>
+  > {
     return this.core.fetch('/version', 'get');
   }
 
@@ -881,10 +494,10 @@ class SDK {
   createVersion(
     body: types.Version
   ): Promise<
-    | types.CreateVersionResponse400
-    | types.CreateVersionResponse401
-    | types.CreateVersionResponse403
-    | types.ErrorVersionForkNotfound
+    | FetchResponse<400, types.CreateVersionResponse400>
+    | FetchResponse<401, types.CreateVersionResponse401>
+    | FetchResponse<403, types.CreateVersionResponse403>
+    | FetchResponse<404, types.ErrorVersionForkNotfound>
   > {
     return this.core.fetch('/version', 'post', body);
   }
@@ -897,7 +510,9 @@ class SDK {
   getVersion(
     metadata: types.GetVersionMetadataParam
   ): Promise<
-    types.GetVersionResponse401 | types.GetVersionResponse403 | types.ErrorVersionNotfound
+    | FetchResponse<401, types.GetVersionResponse401>
+    | FetchResponse<403, types.GetVersionResponse403>
+    | FetchResponse<404, types.ErrorVersionNotfound>
   > {
     return this.core.fetch('/version/{versionId}', 'get', metadata);
   }
@@ -911,10 +526,10 @@ class SDK {
     body: types.Version,
     metadata: types.UpdateVersionMetadataParam
   ): Promise<
-    | types.ErrorVersionCantDemoteStable
-    | types.UpdateVersionResponse401
-    | types.UpdateVersionResponse403
-    | types.ErrorVersionNotfound
+    | FetchResponse<400, types.ErrorVersionCantDemoteStable>
+    | FetchResponse<401, types.UpdateVersionResponse401>
+    | FetchResponse<403, types.UpdateVersionResponse403>
+    | FetchResponse<404, types.ErrorVersionNotfound>
   > {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
@@ -927,10 +542,10 @@ class SDK {
   deleteVersion(
     metadata: types.DeleteVersionMetadataParam
   ): Promise<
-    | types.ErrorVersionCantRemoveStable
-    | types.DeleteVersionResponse401
-    | types.DeleteVersionResponse403
-    | types.ErrorVersionNotfound
+    | FetchResponse<400, types.ErrorVersionCantRemoveStable>
+    | FetchResponse<401, types.DeleteVersionResponse401>
+    | FetchResponse<403, types.DeleteVersionResponse403>
+    | FetchResponse<404, types.ErrorVersionNotfound>
   > {
     return this.core.fetch('/version/{versionId}', 'delete', metadata);
   }
