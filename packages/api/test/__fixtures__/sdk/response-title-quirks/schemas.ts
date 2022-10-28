@@ -1,4 +1,4 @@
-const getAnything = {
+const GetAnything = {
   metadata: {
     allOf: [
       {
@@ -37,4 +37,4 @@ const getAnything = {
     },
   },
 } as const;
-export { getAnything };
+export { GetAnything };

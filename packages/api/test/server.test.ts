@@ -1,4 +1,3 @@
-import serverVariables from '@readme/oas-examples/3.0/json/server-variables.json';
 import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -6,6 +5,9 @@ import uniqueTempDir from 'unique-temp-dir';
 import api from '../src';
 import Cache from '../src/cache';
 
+import loadSpec from './helpers/load-spec';
+
+let serverVariables;
 let sdk;
 const petId = 123;
 const response = {
@@ -14,8 +16,9 @@ const response = {
 };
 
 describe('#server()', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  this.beforeAll(function () {
+  before(async function () {
+    serverVariables = await loadSpec('@readme/oas-examples/3.0/json/server-variables.json');
+
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());

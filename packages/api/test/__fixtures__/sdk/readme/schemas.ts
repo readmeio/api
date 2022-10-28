@@ -130,6 +130,73 @@ const CondensedProjectData = {
   title: 'condensedProjectData',
   'x-readme-ref-name': 'condensedProjectData',
 } as const;
+const CreateCategory = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+} as const;
+const CreateCustomPage = {
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const CreateDoc = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const CreateVersion = {
+  response: {
+    '400': {
+      oneOf: [ErrorVersionEmpty, ErrorVersionDuplicate, ErrorVersionForkEmpty],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
 const CustomPage = {
   type: 'object',
   properties: {
@@ -150,6 +217,171 @@ const CustomPage = {
   required: ['title'],
   title: 'customPage',
   'x-readme-ref-name': 'customPage',
+} as const;
+const DeleteApiSpecification = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.',
+          },
+        },
+        required: ['id'],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const DeleteCategory = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            examples: ['getting-started'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
+          },
+        },
+        required: ['slug'],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+} as const;
+const DeleteChangelog = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
+          },
+        },
+        required: ['slug'],
+      },
+    ],
+  },
+} as const;
+const DeleteCustomPage = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
+          },
+        },
+        required: ['slug'],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const DeleteDoc = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            examples: ['new-features'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
+          },
+        },
+        required: ['slug'],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const DeleteVersion = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          versionId: {
+            type: 'string',
+            examples: ['v1.0.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
+          },
+        },
+        required: ['versionId'],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
 } as const;
 const Doc = {
   type: 'object',
@@ -1628,6 +1860,447 @@ const ErrorVersionNotfound = {
     },
   },
 } as const;
+const GetApiRegistry = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          uuid: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.',
+          },
+        },
+        required: ['uuid'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      type: 'object',
+      additionalProperties: true,
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetApiSpecification = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          perPage: {
+            type: 'integer',
+            default: 10,
+            minimum: 1,
+            maximum: 100,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
+          },
+          page: {
+            type: 'integer',
+            default: 1,
+            minimum: 1,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Used to specify further pages (starts at 1)',
+          },
+        },
+        required: [],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      type: 'object',
+      properties: {
+        Link: {
+          type: 'string',
+          description:
+            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
+        },
+        'x-total-count': {
+          type: 'string',
+          description:
+            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
+        },
+      },
+    },
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetCategories = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          perPage: {
+            type: 'integer',
+            default: 10,
+            minimum: 1,
+            maximum: 100,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
+          },
+          page: {
+            type: 'integer',
+            default: 1,
+            minimum: 1,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Used to specify further pages (starts at 1)',
+          },
+        },
+        required: [],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      type: 'object',
+      properties: {
+        Link: {
+          type: 'string',
+          description:
+            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
+        },
+        'x-total-count': {
+          type: 'string',
+          description:
+            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
+        },
+      },
+    },
+  },
+} as const;
+const GetCategory = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            examples: ['getting-started'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
+          },
+        },
+        required: ['slug'],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+} as const;
+const GetCategoryDocs = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            examples: ['getting-started'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
+          },
+        },
+        required: ['slug'],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+} as const;
+const GetChangelog = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
+          },
+        },
+        required: ['slug'],
+      },
+    ],
+  },
+} as const;
+const GetChangelogs = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          perPage: {
+            type: 'integer',
+            default: 10,
+            minimum: 1,
+            maximum: 100,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
+          },
+          page: {
+            type: 'integer',
+            default: 1,
+            minimum: 1,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Used to specify further pages (starts at 1)',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      type: 'object',
+      properties: {
+        Link: {
+          type: 'string',
+          description:
+            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
+        },
+        'x-total-count': {
+          type: 'string',
+          description:
+            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
+        },
+      },
+    },
+  },
+} as const;
+const GetCustomPage = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
+          },
+        },
+        required: ['slug'],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetCustomPages = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          perPage: {
+            type: 'integer',
+            default: 10,
+            minimum: 1,
+            maximum: 100,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
+          },
+          page: {
+            type: 'integer',
+            default: 1,
+            minimum: 1,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Used to specify further pages (starts at 1)',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      type: 'object',
+      properties: {
+        Link: {
+          type: 'string',
+          description:
+            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
+        },
+        'x-total-count': {
+          type: 'string',
+          description:
+            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
+        },
+      },
+    },
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetDoc = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          slug: {
+            type: 'string',
+            examples: ['new-features'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
+          },
+        },
+        required: ['slug'],
+      },
+      {
+        type: 'object',
+        properties: {
+          'x-readme-version': {
+            type: 'string',
+            examples: ['v3.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
+          },
+        },
+        required: [],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetErrors = {
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetOpenRoles = {
+  response: {
+    '200': { type: 'array', items: JobOpening, $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetProject = {
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetVersion = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          versionId: {
+            type: 'string',
+            examples: ['v1.0.0'],
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description:
+              'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
+          },
+        },
+        required: ['versionId'],
+      },
+    ],
+  },
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetVersions = {
+  response: {
+    '401': {
+      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
 const JobOpening = {
   type: 'object',
   properties: {
@@ -1665,698 +2338,7 @@ const JobOpening = {
   title: 'jobOpening',
   'x-readme-ref-name': 'jobOpening',
 } as const;
-const Version = {
-  type: 'object',
-  properties: {
-    version: { type: 'string', description: 'Semantic Version' },
-    codename: { type: 'string', description: 'Dubbed name of version' },
-    from: { type: 'string', description: 'Semantic Version to use as the base fork' },
-    is_stable: { type: 'boolean', description: 'Should this be the **main** version' },
-    is_beta: { type: 'boolean', default: true },
-    is_hidden: { type: 'boolean', description: 'Should this be publically accessible?' },
-    is_deprecated: {
-      type: 'boolean',
-      description: 'Should this be deprecated? Only allowed in PUT operations',
-    },
-  },
-  required: ['version', 'from'],
-  title: 'version',
-  'x-readme-ref-name': 'version',
-} as const;
-const createCategory = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-} as const;
-const createCustomPage = {
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const createDoc = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const createVersion = {
-  response: {
-    '400': {
-      oneOf: [ErrorVersionEmpty, ErrorVersionDuplicate, ErrorVersionForkEmpty],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const deleteAPISpecification = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page.',
-          },
-        },
-        required: ['id'],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const deleteCategory = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            examples: ['getting-started'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-          },
-        },
-        required: ['slug'],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-} as const;
-const deleteChangelog = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
-          },
-        },
-        required: ['slug'],
-      },
-    ],
-  },
-} as const;
-const deleteCustomPage = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
-          },
-        },
-        required: ['slug'],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const deleteDoc = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            examples: ['new-features'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
-          },
-        },
-        required: ['slug'],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const deleteVersion = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          versionId: {
-            type: 'string',
-            examples: ['v1.0.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
-          },
-        },
-        required: ['versionId'],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getAPIRegistry = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          uuid: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library.',
-          },
-        },
-        required: ['uuid'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      type: 'object',
-      additionalProperties: true,
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAPISpecification = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          perPage: {
-            type: 'integer',
-            default: 10,
-            minimum: 1,
-            maximum: 100,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-          },
-          page: {
-            type: 'integer',
-            default: 1,
-            minimum: 1,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Used to specify further pages (starts at 1)',
-          },
-        },
-        required: [],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      type: 'object',
-      properties: {
-        Link: {
-          type: 'string',
-          description:
-            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-        },
-        'x-total-count': {
-          type: 'string',
-          description:
-            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-        },
-      },
-    },
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getCategories = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          perPage: {
-            type: 'integer',
-            default: 10,
-            minimum: 1,
-            maximum: 100,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-          },
-          page: {
-            type: 'integer',
-            default: 1,
-            minimum: 1,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Used to specify further pages (starts at 1)',
-          },
-        },
-        required: [],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      type: 'object',
-      properties: {
-        Link: {
-          type: 'string',
-          description:
-            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-        },
-        'x-total-count': {
-          type: 'string',
-          description:
-            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-        },
-      },
-    },
-  },
-} as const;
-const getCategory = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            examples: ['getting-started'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-          },
-        },
-        required: ['slug'],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-} as const;
-const getCategoryDocs = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            examples: ['getting-started'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the category title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the category "Getting Started", enter the slug "getting-started"',
-          },
-        },
-        required: ['slug'],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-} as const;
-const getChangelog = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the changelog "Owlet Weekly Update", enter the slug "owlet-weekly-update"',
-          },
-        },
-        required: ['slug'],
-      },
-    ],
-  },
-} as const;
-const getChangelogs = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          perPage: {
-            type: 'integer',
-            default: 10,
-            minimum: 1,
-            maximum: 100,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-          },
-          page: {
-            type: 'integer',
-            default: 1,
-            minimum: 1,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Used to specify further pages (starts at 1)',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      type: 'object',
-      properties: {
-        Link: {
-          type: 'string',
-          description:
-            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-        },
-        'x-total-count': {
-          type: 'string',
-          description:
-            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-        },
-      },
-    },
-  },
-} as const;
-const getCustomPage = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the custom page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the custom page "Getting Started", enter the slug "getting-started"',
-          },
-        },
-        required: ['slug'],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getCustomPages = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          perPage: {
-            type: 'integer',
-            default: 10,
-            minimum: 1,
-            maximum: 100,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Number of items to include in pagination (up to 100, defaults to 10)',
-          },
-          page: {
-            type: 'integer',
-            default: 1,
-            minimum: 1,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Used to specify further pages (starts at 1)',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      type: 'object',
-      properties: {
-        Link: {
-          type: 'string',
-          description:
-            'Pagination information. See https://docs.readme.com/reference/pagination for more information.',
-        },
-        'x-total-count': {
-          type: 'string',
-          description:
-            'The total amount of results, ignoring pagination. See https://docs.readme.com/reference/pagination for more information about pagination.',
-        },
-      },
-    },
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getDoc = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          slug: {
-            type: 'string',
-            examples: ['new-features'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'A URL-safe representation of the doc title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the the doc "New Features", enter the slug "new-features"',
-          },
-        },
-        required: ['slug'],
-      },
-      {
-        type: 'object',
-        properties: {
-          'x-readme-version': {
-            type: 'string',
-            examples: ['v3.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/reference/version#getversions.',
-          },
-        },
-        required: [],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getErrors = {
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getOpenRoles = {
-  response: {
-    '200': { type: 'array', items: JobOpening, $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getProject = {
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getVersion = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          versionId: {
-            type: 'string',
-            examples: ['v1.0.0'],
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description:
-              'Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions).',
-          },
-        },
-        required: ['versionId'],
-      },
-    ],
-  },
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getVersions = {
-  response: {
-    '401': {
-      oneOf: [ErrorApikeyEmpty, ErrorApikeyNotfound],
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-    '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const searchDocs = {
+const SearchDocs = {
   metadata: {
     allOf: [
       {
@@ -2393,7 +2375,7 @@ const searchDocs = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
-const updateAPISpecification = {
+const UpdateApiSpecification = {
   body: {
     type: 'object',
     properties: { spec: { description: 'OpenAPI/Swagger file', type: 'string', format: 'binary' } },
@@ -2434,7 +2416,7 @@ const updateAPISpecification = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
-const updateCategory = {
+const UpdateCategory = {
   metadata: {
     allOf: [
       {
@@ -2466,7 +2448,7 @@ const updateCategory = {
     ],
   },
 } as const;
-const updateChangelog = {
+const UpdateChangelog = {
   metadata: {
     allOf: [
       {
@@ -2484,7 +2466,7 @@ const updateChangelog = {
     ],
   },
 } as const;
-const updateCustomPage = {
+const UpdateCustomPage = {
   metadata: {
     allOf: [
       {
@@ -2509,7 +2491,7 @@ const updateCustomPage = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
-const updateDoc = {
+const UpdateDoc = {
   metadata: {
     allOf: [
       {
@@ -2548,7 +2530,7 @@ const updateDoc = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
-const updateVersion = {
+const UpdateVersion = {
   metadata: {
     allOf: [
       {
@@ -2574,7 +2556,7 @@ const updateVersion = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
-const uploadAPISpecification = {
+const UploadApiSpecification = {
   body: {
     type: 'object',
     properties: { spec: { description: 'OpenAPI/Swagger file', type: 'string', format: 'binary' } },
@@ -2614,13 +2596,41 @@ const uploadAPISpecification = {
     '403': { oneOf: [ErrorApikeyMismatch], $schema: 'http://json-schema.org/draft-04/schema#' },
   },
 } as const;
+const Version = {
+  type: 'object',
+  properties: {
+    version: { type: 'string', description: 'Semantic Version' },
+    codename: { type: 'string', description: 'Dubbed name of version' },
+    from: { type: 'string', description: 'Semantic Version to use as the base fork' },
+    is_stable: { type: 'boolean', description: 'Should this be the **main** version' },
+    is_beta: { type: 'boolean', default: true },
+    is_hidden: { type: 'boolean', description: 'Should this be publically accessible?' },
+    is_deprecated: {
+      type: 'boolean',
+      description: 'Should this be deprecated? Only allowed in PUT operations',
+    },
+  },
+  required: ['version', 'from'],
+  title: 'version',
+  'x-readme-ref-name': 'version',
+} as const;
 export {
   Apply,
   BaseError,
   Category,
   Changelog,
   CondensedProjectData,
+  CreateCategory,
+  CreateCustomPage,
+  CreateDoc,
+  CreateVersion,
   CustomPage,
+  DeleteApiSpecification,
+  DeleteCategory,
+  DeleteChangelog,
+  DeleteCustomPage,
+  DeleteDoc,
+  DeleteVersion,
   Doc,
   ErrorApikeyEmpty,
   ErrorApikeyMismatch,
@@ -2657,39 +2667,29 @@ export {
   ErrorVersionForkNotfound,
   ErrorVersionInvalid,
   ErrorVersionNotfound,
+  GetApiRegistry,
+  GetApiSpecification,
+  GetCategories,
+  GetCategory,
+  GetCategoryDocs,
+  GetChangelog,
+  GetChangelogs,
+  GetCustomPage,
+  GetCustomPages,
+  GetDoc,
+  GetErrors,
+  GetOpenRoles,
+  GetProject,
+  GetVersion,
+  GetVersions,
   JobOpening,
+  SearchDocs,
+  UpdateApiSpecification,
+  UpdateCategory,
+  UpdateChangelog,
+  UpdateCustomPage,
+  UpdateDoc,
+  UpdateVersion,
+  UploadApiSpecification,
   Version,
-  createCategory,
-  createCustomPage,
-  createDoc,
-  createVersion,
-  deleteAPISpecification,
-  deleteCategory,
-  deleteChangelog,
-  deleteCustomPage,
-  deleteDoc,
-  deleteVersion,
-  getAPIRegistry,
-  getAPISpecification,
-  getCategories,
-  getCategory,
-  getCategoryDocs,
-  getChangelog,
-  getChangelogs,
-  getCustomPage,
-  getCustomPages,
-  getDoc,
-  getErrors,
-  getOpenRoles,
-  getProject,
-  getVersion,
-  getVersions,
-  searchDocs,
-  updateAPISpecification,
-  updateCategory,
-  updateChangelog,
-  updateCustomPage,
-  updateDoc,
-  updateVersion,
-  uploadAPISpecification,
 };

@@ -22,6 +22,212 @@ const Category = {
   title: 'Category',
   'x-readme-ref-name': 'Category',
 } as const;
+const CreateUsersWithArrayInput = {
+  body: { type: 'array', items: User, $schema: 'http://json-schema.org/draft-04/schema#' },
+} as const;
+const CreateUsersWithListInput = {
+  body: { type: 'array', items: User, $schema: 'http://json-schema.org/draft-04/schema#' },
+} as const;
+const DeleteOrder = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          orderId: {
+            type: 'integer',
+            format: 'int64',
+            minimum: 1,
+            maximum: 9223372036854776000,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'ID of the order that needs to be deleted',
+          },
+        },
+        required: ['orderId'],
+      },
+    ],
+  },
+} as const;
+const DeletePet = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          petId: {
+            type: 'integer',
+            format: 'int64',
+            minimum: -9223372036854776000,
+            maximum: 9223372036854776000,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Pet id to delete',
+          },
+        },
+        required: ['petId'],
+      },
+      {
+        type: 'object',
+        properties: {
+          api_key: { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' },
+        },
+        required: [],
+      },
+    ],
+  },
+} as const;
+const DeleteUser = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          username: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The name that needs to be deleted',
+          },
+        },
+        required: ['username'],
+      },
+    ],
+  },
+} as const;
+const FindPetsByStatus = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          status: {
+            type: 'array',
+            items: { type: 'string', enum: ['available', 'pending', 'sold'], default: 'available' },
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Status values that need to be considered for filter',
+          },
+        },
+        required: ['status'],
+      },
+    ],
+  },
+  response: {
+    '200': { type: 'array', items: Pet, $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const FindPetsByTags = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          tags: {
+            type: 'array',
+            items: { type: 'string' },
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'Tags to filter by',
+          },
+        },
+        required: ['tags'],
+      },
+    ],
+  },
+  response: {
+    '200': { type: 'array', items: Pet, $schema: 'http://json-schema.org/draft-04/schema#' },
+  },
+} as const;
+const GetInventory = {
+  response: {
+    '200': {
+      type: 'object',
+      additionalProperties: {
+        type: 'integer',
+        format: 'int32',
+        minimum: -2147483648,
+        maximum: 2147483647,
+      },
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetOrderById = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          orderId: {
+            type: 'integer',
+            format: 'int64',
+            minimum: 1,
+            maximum: 10,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'ID of pet that needs to be fetched',
+          },
+        },
+        required: ['orderId'],
+      },
+    ],
+  },
+} as const;
+const GetPetById = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          petId: {
+            type: 'integer',
+            format: 'int64',
+            minimum: -9223372036854776000,
+            maximum: 9223372036854776000,
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'ID of pet to return',
+          },
+        },
+        required: ['petId'],
+      },
+    ],
+  },
+} as const;
+const GetUserByName = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          username: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The name that needs to be fetched. Use user1 for testing. ',
+          },
+        },
+        required: ['username'],
+      },
+    ],
+  },
+} as const;
+const LoginUser = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          username: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The user name for login',
+          },
+          password: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The password for login in clear text',
+          },
+        },
+        required: ['username', 'password'],
+      },
+    ],
+  },
+  response: { '200': { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' } },
+} as const;
 const Order = {
   type: 'object',
   properties: {
@@ -92,239 +298,7 @@ const Tag = {
   title: 'Tag',
   'x-readme-ref-name': 'Tag',
 } as const;
-const User = {
-  type: 'object',
-  properties: {
-    id: {
-      type: 'integer',
-      format: 'int64',
-      minimum: -9223372036854776000,
-      maximum: 9223372036854776000,
-    },
-    username: { type: 'string' },
-    firstName: { type: 'string' },
-    lastName: { type: 'string' },
-    email: { type: 'string' },
-    password: { type: 'string' },
-    phone: { type: 'string' },
-    userStatus: {
-      type: 'integer',
-      format: 'int32',
-      description: 'User Status',
-      minimum: -2147483648,
-      maximum: 2147483647,
-    },
-  },
-  title: 'User',
-  'x-readme-ref-name': 'User',
-} as const;
-const createUsersWithArrayInput = {
-  body: { type: 'array', items: User, $schema: 'http://json-schema.org/draft-04/schema#' },
-} as const;
-const createUsersWithListInput = {
-  body: { type: 'array', items: User, $schema: 'http://json-schema.org/draft-04/schema#' },
-} as const;
-const deleteOrder = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          orderId: {
-            type: 'integer',
-            format: 'int64',
-            minimum: 1,
-            maximum: 9223372036854776000,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'ID of the order that needs to be deleted',
-          },
-        },
-        required: ['orderId'],
-      },
-    ],
-  },
-} as const;
-const deletePet = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          petId: {
-            type: 'integer',
-            format: 'int64',
-            minimum: -9223372036854776000,
-            maximum: 9223372036854776000,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Pet id to delete',
-          },
-        },
-        required: ['petId'],
-      },
-      {
-        type: 'object',
-        properties: {
-          api_key: { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' },
-        },
-        required: [],
-      },
-    ],
-  },
-} as const;
-const deleteUser = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          username: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The name that needs to be deleted',
-          },
-        },
-        required: ['username'],
-      },
-    ],
-  },
-} as const;
-const findPetsByStatus = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          status: {
-            type: 'array',
-            items: { type: 'string', enum: ['available', 'pending', 'sold'], default: 'available' },
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Status values that need to be considered for filter',
-          },
-        },
-        required: ['status'],
-      },
-    ],
-  },
-  response: {
-    '200': { type: 'array', items: Pet, $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const findPetsByTags = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          tags: {
-            type: 'array',
-            items: { type: 'string' },
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'Tags to filter by',
-          },
-        },
-        required: ['tags'],
-      },
-    ],
-  },
-  response: {
-    '200': { type: 'array', items: Pet, $schema: 'http://json-schema.org/draft-04/schema#' },
-  },
-} as const;
-const getInventory = {
-  response: {
-    '200': {
-      type: 'object',
-      additionalProperties: {
-        type: 'integer',
-        format: 'int32',
-        minimum: -2147483648,
-        maximum: 2147483647,
-      },
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getOrderById = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          orderId: {
-            type: 'integer',
-            format: 'int64',
-            minimum: 1,
-            maximum: 10,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'ID of pet that needs to be fetched',
-          },
-        },
-        required: ['orderId'],
-      },
-    ],
-  },
-} as const;
-const getPetById = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          petId: {
-            type: 'integer',
-            format: 'int64',
-            minimum: -9223372036854776000,
-            maximum: 9223372036854776000,
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'ID of pet to return',
-          },
-        },
-        required: ['petId'],
-      },
-    ],
-  },
-} as const;
-const getUserByName = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          username: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The name that needs to be fetched. Use user1 for testing. ',
-          },
-        },
-        required: ['username'],
-      },
-    ],
-  },
-} as const;
-const loginUser = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          username: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The user name for login',
-          },
-          password: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The password for login in clear text',
-          },
-        },
-        required: ['username', 'password'],
-      },
-    ],
-  },
-  response: { '200': { type: 'string', $schema: 'http://json-schema.org/draft-04/schema#' } },
-} as const;
-const updatePetWithForm = {
+const UpdatePetWithForm = {
   formData: {
     type: 'object',
     properties: {
@@ -352,7 +326,7 @@ const updatePetWithForm = {
     ],
   },
 } as const;
-const updateUser = {
+const UpdateUser = {
   metadata: {
     allOf: [
       {
@@ -369,7 +343,7 @@ const updateUser = {
     ],
   },
 } as const;
-const uploadFile = {
+const UploadFile = {
   body: {
     type: 'object',
     properties: {
@@ -397,26 +371,52 @@ const uploadFile = {
     ],
   },
 } as const;
+const User = {
+  type: 'object',
+  properties: {
+    id: {
+      type: 'integer',
+      format: 'int64',
+      minimum: -9223372036854776000,
+      maximum: 9223372036854776000,
+    },
+    username: { type: 'string' },
+    firstName: { type: 'string' },
+    lastName: { type: 'string' },
+    email: { type: 'string' },
+    password: { type: 'string' },
+    phone: { type: 'string' },
+    userStatus: {
+      type: 'integer',
+      format: 'int32',
+      description: 'User Status',
+      minimum: -2147483648,
+      maximum: 2147483647,
+    },
+  },
+  title: 'User',
+  'x-readme-ref-name': 'User',
+} as const;
 export {
   ApiResponse,
   Category,
+  CreateUsersWithArrayInput,
+  CreateUsersWithListInput,
+  DeleteOrder,
+  DeletePet,
+  DeleteUser,
+  FindPetsByStatus,
+  FindPetsByTags,
+  GetInventory,
+  GetOrderById,
+  GetPetById,
+  GetUserByName,
+  LoginUser,
   Order,
   Pet,
   Tag,
+  UpdatePetWithForm,
+  UpdateUser,
+  UploadFile,
   User,
-  createUsersWithArrayInput,
-  createUsersWithListInput,
-  deleteOrder,
-  deletePet,
-  deleteUser,
-  findPetsByStatus,
-  findPetsByTags,
-  getInventory,
-  getOrderById,
-  getPetById,
-  getUserByName,
-  loginUser,
-  updatePetWithForm,
-  updateUser,
-  uploadFile,
 };

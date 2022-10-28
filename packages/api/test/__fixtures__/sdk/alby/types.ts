@@ -30,44 +30,44 @@ export type CloudflareWorkerRulePatch = FromSchema<typeof schemas.CloudflareWork
 export type CloudflareWorkerRulePost = FromSchema<typeof schemas.CloudflareWorkerRulePost>;
 export type CloudflareWorkerRuleResponse = FromSchema<typeof schemas.CloudflareWorkerRuleResponse>;
 export type DeleteAppsAppIdNamespacesNamespaceIdMetadataParam = FromSchema<
-  typeof schemas.deleteAppsApp_idNamespacesNamespace_id.metadata
+  typeof schemas.DeleteAppsAppIdNamespacesNamespaceId.metadata
 >;
 export type DeleteAppsAppIdQueuesQueueIdMetadataParam = FromSchema<
-  typeof schemas.deleteAppsApp_idQueuesQueue_id.metadata
+  typeof schemas.DeleteAppsAppIdQueuesQueueId.metadata
 >;
 export type DeleteAppsAppIdRulesRuleIdMetadataParam = FromSchema<
-  typeof schemas.deleteAppsApp_idRulesRule_id.metadata
+  typeof schemas.DeleteAppsAppIdRulesRuleId.metadata
 >;
-export type DeleteAppsIdMetadataParam = FromSchema<typeof schemas.deleteAppsId.metadata>;
+export type DeleteAppsIdMetadataParam = FromSchema<typeof schemas.DeleteAppsId.metadata>;
 export type Error = FromSchema<typeof schemas.Error>;
 export type GetAccountsAccountIdAppsMetadataParam = FromSchema<
-  typeof schemas.getAccountsAccount_idApps.metadata
+  typeof schemas.GetAccountsAccountIdApps.metadata
 >;
 export type GetAccountsAccountIdAppsResponse200 = FromSchema<
-  typeof schemas.getAccountsAccount_idApps.response['200']
+  typeof schemas.GetAccountsAccountIdApps.response['200']
 >;
-export type GetAppsAppIdKeysMetadataParam = FromSchema<typeof schemas.getAppsApp_idKeys.metadata>;
+export type GetAppsAppIdKeysMetadataParam = FromSchema<typeof schemas.GetAppsAppIdKeys.metadata>;
 export type GetAppsAppIdKeysResponse200 = FromSchema<
-  typeof schemas.getAppsApp_idKeys.response['200']
+  typeof schemas.GetAppsAppIdKeys.response['200']
 >;
 export type GetAppsAppIdNamespacesMetadataParam = FromSchema<
-  typeof schemas.getAppsApp_idNamespaces.metadata
+  typeof schemas.GetAppsAppIdNamespaces.metadata
 >;
 export type GetAppsAppIdNamespacesResponse200 = FromSchema<
-  typeof schemas.getAppsApp_idNamespaces.response['200']
+  typeof schemas.GetAppsAppIdNamespaces.response['200']
 >;
 export type GetAppsAppIdQueuesMetadataParam = FromSchema<
-  typeof schemas.getAppsApp_idQueues.metadata
+  typeof schemas.GetAppsAppIdQueues.metadata
 >;
 export type GetAppsAppIdQueuesResponse200 = FromSchema<
-  typeof schemas.getAppsApp_idQueues.response['200']
+  typeof schemas.GetAppsAppIdQueues.response['200']
 >;
-export type GetAppsAppIdRulesMetadataParam = FromSchema<typeof schemas.getAppsApp_idRules.metadata>;
+export type GetAppsAppIdRulesMetadataParam = FromSchema<typeof schemas.GetAppsAppIdRules.metadata>;
 export type GetAppsAppIdRulesResponse200 = FromSchema<
-  typeof schemas.getAppsApp_idRules.response['200']
+  typeof schemas.GetAppsAppIdRules.response['200']
 >;
 export type GetAppsAppIdRulesRuleIdMetadataParam = FromSchema<
-  typeof schemas.getAppsApp_idRulesRule_id.metadata
+  typeof schemas.GetAppsAppIdRulesRuleId.metadata
 >;
 export type GoogleCloudFunctionRulePatch = FromSchema<typeof schemas.GoogleCloudFunctionRulePatch>;
 export type GoogleCloudFunctionRulePost = FromSchema<typeof schemas.GoogleCloudFunctionRulePost>;
@@ -88,32 +88,32 @@ export type NamespacePatch = FromSchema<typeof schemas.NamespacePatch>;
 export type NamespacePost = FromSchema<typeof schemas.NamespacePost>;
 export type NamespaceResponse = FromSchema<typeof schemas.NamespaceResponse>;
 export type PatchAppsAppIdKeysKeyIdMetadataParam = FromSchema<
-  typeof schemas.patchAppsApp_idKeysKey_id.metadata
+  typeof schemas.PatchAppsAppIdKeysKeyId.metadata
 >;
 export type PatchAppsAppIdNamespacesNamespaceIdMetadataParam = FromSchema<
-  typeof schemas.patchAppsApp_idNamespacesNamespace_id.metadata
+  typeof schemas.PatchAppsAppIdNamespacesNamespaceId.metadata
 >;
 export type PatchAppsAppIdRulesRuleIdMetadataParam = FromSchema<
-  typeof schemas.patchAppsApp_idRulesRule_id.metadata
+  typeof schemas.PatchAppsAppIdRulesRuleId.metadata
 >;
-export type PatchAppsIdMetadataParam = FromSchema<typeof schemas.patchAppsId.metadata>;
+export type PatchAppsIdMetadataParam = FromSchema<typeof schemas.PatchAppsId.metadata>;
 export type PostAccountsAccountIdAppsMetadataParam = FromSchema<
-  typeof schemas.postAccountsAccount_idApps.metadata
+  typeof schemas.PostAccountsAccountIdApps.metadata
 >;
 export type PostAppsAppIdKeysKeyIdRevokeMetadataParam = FromSchema<
-  typeof schemas.postAppsApp_idKeysKey_idRevoke.metadata
+  typeof schemas.PostAppsAppIdKeysKeyIdRevoke.metadata
 >;
-export type PostAppsAppIdKeysMetadataParam = FromSchema<typeof schemas.postAppsApp_idKeys.metadata>;
+export type PostAppsAppIdKeysMetadataParam = FromSchema<typeof schemas.PostAppsAppIdKeys.metadata>;
 export type PostAppsAppIdNamespacesMetadataParam = FromSchema<
-  typeof schemas.postAppsApp_idNamespaces.metadata
+  typeof schemas.PostAppsAppIdNamespaces.metadata
 >;
 export type PostAppsAppIdQueuesMetadataParam = FromSchema<
-  typeof schemas.postAppsApp_idQueues.metadata
+  typeof schemas.PostAppsAppIdQueues.metadata
 >;
 export type PostAppsAppIdRulesMetadataParam = FromSchema<
-  typeof schemas.postAppsApp_idRules.metadata
+  typeof schemas.PostAppsAppIdRules.metadata
 >;
-export type PostAppsIdPkcs12MetadataParam = FromSchema<typeof schemas.postAppsIdPkcs12.metadata>;
+export type PostAppsIdPkcs12MetadataParam = FromSchema<typeof schemas.PostAppsIdPkcs12.metadata>;
 export type Queue = FromSchema<typeof schemas.Queue>;
 export type QueueResponse = FromSchema<typeof schemas.QueueResponse>;
 export type RuleAttributes = FromSchema<typeof schemas.RuleAttributes>;

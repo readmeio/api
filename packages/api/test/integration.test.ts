@@ -1,8 +1,5 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import fileUploads from '@readme/oas-examples/3.0/json/file-uploads.json';
-import petstore from '@readme/oas-examples/3.0/json/petstore.json';
-import parametersStyle from '@readme/oas-examples/3.1/json/parameters-style.json';
 import chai, { expect } from 'chai';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
@@ -13,12 +10,20 @@ import Cache from '../src/cache';
 
 import chaiPlugins from './helpers/chai-plugins';
 import { responses as mockResponse } from './helpers/fetch-mock';
+import loadSpec from './helpers/load-spec';
 
 chai.use(chaiPlugins);
 
+let fileUploads;
+let parametersStyle;
+let petstore;
+
 describe('integration tests', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  this.beforeAll(function () {
+  before(async function () {
+    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json');
+    parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json');
+    petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore.json');
+
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
@@ -32,14 +37,11 @@ describe('integration tests', function () {
     let usptoSpec;
 
     beforeEach(async function () {
-      usptoSpec = await import('@readme/oas-examples/3.0/json/uspto.json')
-        .then(({ default: spec }) => JSON.stringify(spec))
-        .then(JSON.parse)
-        .then(spec => {
-          // eslint-disable-next-line no-param-reassign
-          spec.servers[0].url = '{scheme}://httpbin.org/anything';
-          return spec;
-        });
+      usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(spec => {
+        // eslint-disable-next-line no-param-reassign
+        spec.servers[0].url = '{scheme}://httpbin.org/anything';
+        return spec;
+      });
     });
 
     it('should support `application/x-www-form-urlencoded` requests', async function () {

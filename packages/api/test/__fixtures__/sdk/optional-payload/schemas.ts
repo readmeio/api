@@ -1,4 +1,4 @@
-const updatePetWithForm = {
+const UpdatePetWithForm = {
   formData: {
     type: 'object',
     properties: {
@@ -26,4 +26,4 @@ const updatePetWithForm = {
     ],
   },
 } as const;
-export { updatePetWithForm };
+export { UpdatePetWithForm };

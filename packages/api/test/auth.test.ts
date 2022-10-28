@@ -1,7 +1,5 @@
-/* eslint-disable mocha/no-setup-in-describe */
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import securityOas from '@readme/oas-examples/3.0/json/security.json';
 import { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -10,6 +8,7 @@ import api from '../src';
 import Cache from '../src/cache';
 
 import { responses as mockResponses } from './helpers/fetch-mock';
+import loadSpec from './helpers/load-spec';
 
 let sdk;
 
@@ -18,13 +17,14 @@ const user = 'username';
 const pass = 'changeme';
 
 describe('#auth()', function () {
-  this.beforeAll(function () {
+  before(function () {
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
   });
 
-  beforeEach(function () {
+  beforeEach(async function () {
+    const securityOas = await loadSpec('@readme/oas-examples/3.0/json/security.json');
     sdk = api(securityOas as unknown as OASDocument);
   });
 

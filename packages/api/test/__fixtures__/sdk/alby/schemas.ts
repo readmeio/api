@@ -1627,6 +1627,89 @@ const CloudflareWorkerRuleResponse = {
   title: 'cloudflare_worker_rule_response',
   'x-readme-ref-name': 'cloudflare_worker_rule_response',
 } as const;
+const DeleteAppsAppIdNamespacesNamespaceId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          namespace_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The namespace ID.',
+          },
+        },
+        required: ['app_id', 'namespace_id'],
+      },
+    ],
+  },
+} as const;
+const DeleteAppsAppIdQueuesQueueId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          queue_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The queue ID.',
+          },
+        },
+        required: ['app_id', 'queue_id'],
+      },
+    ],
+  },
+} as const;
+const DeleteAppsAppIdRulesRuleId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          rule_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The rule ID.',
+          },
+        },
+        required: ['app_id', 'rule_id'],
+      },
+    ],
+  },
+} as const;
+const DeleteAppsId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The ID of the application to be deleted.',
+          },
+        },
+        required: ['id'],
+      },
+    ],
+  },
+} as const;
 const Error = {
   additionalProperties: false,
   properties: {
@@ -1644,6 +1727,148 @@ const Error = {
   type: 'object',
   title: 'error',
   'x-readme-ref-name': 'error',
+} as const;
+const GetAccountsAccountIdApps = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          account_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The account ID for which to retrieve the associated applications.',
+          },
+        },
+        required: ['account_id'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      items: AppResponse,
+      type: 'array',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetAppsAppIdKeys = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      items: KeyResponse,
+      type: 'array',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetAppsAppIdNamespaces = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      items: NamespaceResponse,
+      type: 'array',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetAppsAppIdQueues = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      items: QueueResponse,
+      type: 'array',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetAppsAppIdRules = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+  response: {
+    '200': {
+      items: RuleResponse,
+      type: 'array',
+      $schema: 'http://json-schema.org/draft-04/schema#',
+    },
+  },
+} as const;
+const GetAppsAppIdRulesRuleId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          rule_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The rule ID.',
+          },
+        },
+        required: ['app_id', 'rule_id'],
+      },
+    ],
+  },
 } as const;
 const GoogleCloudFunctionRulePatch = {
   additionalProperties: false,
@@ -2573,6 +2798,213 @@ const NamespaceResponse = {
   title: 'namespace_response',
   'x-readme-ref-name': 'namespace_response',
 } as const;
+const PatchAppsAppIdKeysKeyId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          key_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The API key ID.',
+          },
+        },
+        required: ['app_id', 'key_id'],
+      },
+    ],
+  },
+} as const;
+const PatchAppsAppIdNamespacesNamespaceId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          namespace_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The namespace ID.',
+          },
+        },
+        required: ['app_id', 'namespace_id'],
+      },
+    ],
+  },
+} as const;
+const PatchAppsAppIdRulesRuleId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          rule_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The rule ID.',
+          },
+        },
+        required: ['app_id', 'rule_id'],
+      },
+    ],
+  },
+} as const;
+const PatchAppsId = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The ID of application to be updated.',
+          },
+        },
+        required: ['id'],
+      },
+    ],
+  },
+} as const;
+const PostAccountsAccountIdApps = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          account_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The account ID of the account in which to create the application.',
+          },
+        },
+        required: ['account_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsAppIdKeys = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsAppIdKeysKeyIdRevoke = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+          key_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The key ID.',
+          },
+        },
+        required: ['app_id', 'key_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsAppIdNamespaces = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsAppIdQueues = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsAppIdRules = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          app_id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['app_id'],
+      },
+    ],
+  },
+} as const;
+const PostAppsIdPkcs12 = {
+  metadata: {
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            $schema: 'http://json-schema.org/draft-04/schema#',
+            description: 'The application ID.',
+          },
+        },
+        required: ['id'],
+      },
+    ],
+  },
+} as const;
 const Queue = {
   additionalProperties: false,
   properties: {
@@ -3120,438 +3552,6 @@ const ZapierRuleResponse = {
   title: 'zapier_rule_response',
   'x-readme-ref-name': 'zapier_rule_response',
 } as const;
-const deleteAppsApp_idNamespacesNamespace_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          namespace_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The namespace ID.',
-          },
-        },
-        required: ['app_id', 'namespace_id'],
-      },
-    ],
-  },
-} as const;
-const deleteAppsApp_idQueuesQueue_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          queue_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The queue ID.',
-          },
-        },
-        required: ['app_id', 'queue_id'],
-      },
-    ],
-  },
-} as const;
-const deleteAppsApp_idRulesRule_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          rule_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The rule ID.',
-          },
-        },
-        required: ['app_id', 'rule_id'],
-      },
-    ],
-  },
-} as const;
-const deleteAppsId = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The ID of the application to be deleted.',
-          },
-        },
-        required: ['id'],
-      },
-    ],
-  },
-} as const;
-const getAccountsAccount_idApps = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          account_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The account ID for which to retrieve the associated applications.',
-          },
-        },
-        required: ['account_id'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      items: AppResponse,
-      type: 'array',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAppsApp_idKeys = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      items: KeyResponse,
-      type: 'array',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAppsApp_idNamespaces = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      items: NamespaceResponse,
-      type: 'array',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAppsApp_idQueues = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      items: QueueResponse,
-      type: 'array',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAppsApp_idRules = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-  response: {
-    '200': {
-      items: RuleResponse,
-      type: 'array',
-      $schema: 'http://json-schema.org/draft-04/schema#',
-    },
-  },
-} as const;
-const getAppsApp_idRulesRule_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          rule_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The rule ID.',
-          },
-        },
-        required: ['app_id', 'rule_id'],
-      },
-    ],
-  },
-} as const;
-const patchAppsApp_idKeysKey_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          key_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The API key ID.',
-          },
-        },
-        required: ['app_id', 'key_id'],
-      },
-    ],
-  },
-} as const;
-const patchAppsApp_idNamespacesNamespace_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          namespace_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The namespace ID.',
-          },
-        },
-        required: ['app_id', 'namespace_id'],
-      },
-    ],
-  },
-} as const;
-const patchAppsApp_idRulesRule_id = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          rule_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The rule ID.',
-          },
-        },
-        required: ['app_id', 'rule_id'],
-      },
-    ],
-  },
-} as const;
-const patchAppsId = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The ID of application to be updated.',
-          },
-        },
-        required: ['id'],
-      },
-    ],
-  },
-} as const;
-const postAccountsAccount_idApps = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          account_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The account ID of the account in which to create the application.',
-          },
-        },
-        required: ['account_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsApp_idKeys = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsApp_idKeysKey_idRevoke = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-          key_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The key ID.',
-          },
-        },
-        required: ['app_id', 'key_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsApp_idNamespaces = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsApp_idQueues = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsApp_idRules = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          app_id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['app_id'],
-      },
-    ],
-  },
-} as const;
-const postAppsIdPkcs12 = {
-  metadata: {
-    allOf: [
-      {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'string',
-            $schema: 'http://json-schema.org/draft-04/schema#',
-            description: 'The application ID.',
-          },
-        },
-        required: ['id'],
-      },
-    ],
-  },
-} as const;
 export {
   AmqpExternalRulePatch,
   AmqpExternalRulePost,
@@ -3581,7 +3581,17 @@ export {
   CloudflareWorkerRulePatch,
   CloudflareWorkerRulePost,
   CloudflareWorkerRuleResponse,
+  DeleteAppsAppIdNamespacesNamespaceId,
+  DeleteAppsAppIdQueuesQueueId,
+  DeleteAppsAppIdRulesRuleId,
+  DeleteAppsId,
   Error,
+  GetAccountsAccountIdApps,
+  GetAppsAppIdKeys,
+  GetAppsAppIdNamespaces,
+  GetAppsAppIdQueues,
+  GetAppsAppIdRules,
+  GetAppsAppIdRulesRuleId,
   GoogleCloudFunctionRulePatch,
   GoogleCloudFunctionRulePost,
   GoogleCloudFunctionRuleResponse,
@@ -3598,6 +3608,17 @@ export {
   NamespacePatch,
   NamespacePost,
   NamespaceResponse,
+  PatchAppsAppIdKeysKeyId,
+  PatchAppsAppIdNamespacesNamespaceId,
+  PatchAppsAppIdRulesRuleId,
+  PatchAppsId,
+  PostAccountsAccountIdApps,
+  PostAppsAppIdKeys,
+  PostAppsAppIdKeysKeyIdRevoke,
+  PostAppsAppIdNamespaces,
+  PostAppsAppIdQueues,
+  PostAppsAppIdRules,
+  PostAppsIdPkcs12,
   Queue,
   QueueResponse,
   RuleAttributes,
@@ -3610,25 +3631,4 @@ export {
   ZapierRulePatch,
   ZapierRulePost,
   ZapierRuleResponse,
-  deleteAppsApp_idNamespacesNamespace_id,
-  deleteAppsApp_idQueuesQueue_id,
-  deleteAppsApp_idRulesRule_id,
-  deleteAppsId,
-  getAccountsAccount_idApps,
-  getAppsApp_idKeys,
-  getAppsApp_idNamespaces,
-  getAppsApp_idQueues,
-  getAppsApp_idRules,
-  getAppsApp_idRulesRule_id,
-  patchAppsApp_idKeysKey_id,
-  patchAppsApp_idNamespacesNamespace_id,
-  patchAppsApp_idRulesRule_id,
-  patchAppsId,
-  postAccountsAccount_idApps,
-  postAppsApp_idKeys,
-  postAppsApp_idKeysKey_idRevoke,
-  postAppsApp_idNamespaces,
-  postAppsApp_idQueues,
-  postAppsApp_idRules,
-  postAppsIdPkcs12,
 };

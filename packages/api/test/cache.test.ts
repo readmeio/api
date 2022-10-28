@@ -3,8 +3,6 @@ import type { OASDocument } from 'oas/dist/rmoas.types';
 import fs from 'fs/promises';
 import path from 'path';
 
-import petstoreSpec from '@readme/oas-examples/3.0/json/petstore.json';
-import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -12,12 +10,18 @@ import uniqueTempDir from 'unique-temp-dir';
 import Cache from '../src/cache';
 
 import chaiPlugins from './helpers/chai-plugins';
+import loadSpec from './helpers/load-spec';
 
 chai.use(chaiPlugins);
 
+let petstoreSpec;
+let readmeSpec;
+
 describe('cache', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  this.beforeAll(function () {
+  before(async function () {
+    petstoreSpec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json');
+    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme.json');
+
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());

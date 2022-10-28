@@ -3,10 +3,10 @@ import * as schemas from './schemas';
 export declare type ApiResponse = FromSchema<typeof schemas.ApiResponse>;
 export declare type Category = FromSchema<typeof schemas.Category>;
 export declare type FindPetsByStatusMetadataParam = FromSchema<
-  typeof schemas.findPetsByStatus.metadata
+  typeof schemas.FindPetsByStatus.metadata
 >;
 export declare type FindPetsByStatusResponse200 = FromSchema<
-  typeof schemas.findPetsByStatus.response['200']
+  typeof schemas.FindPetsByStatus.response['200']
 >;
 export declare type Order = FromSchema<typeof schemas.Order>;
 export declare type Pet = FromSchema<typeof schemas.Pet>;
