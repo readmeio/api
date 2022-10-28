@@ -6,6 +6,7 @@
  * @link https://github.com/APIs-guru/openapi-directory
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 const fs = require('fs');
 
@@ -29,9 +30,12 @@ fetch('https://api.apis.guru/v2/list.json')
     });
 
     // These APIs are either **huge** or take **forever** to process. Investigate why at some point.
+    delete apis['azure.com:servicefabric'];
     delete apis['beezup.com'];
     delete apis['googleapis.com:compute'];
     delete apis['loket.nl'];
+    delete apis['mist.com'];
+    delete apis['zoom.us'];
     delete apis['zuora.com'];
 
     // These APIs have no `paths` so an SDK we generate is always going to be empty.
@@ -155,6 +159,8 @@ fetch('https://api.apis.guru/v2/list.json')
     // These APIs have circular refs, which the library doesn't yet support.
     // https://github.com/readmeio/api/issues/549
     delete apis['amazonaws.com:ce'];
+    delete apis['api.video'];
+    delete apis['api2cart.com'];
     delete apis['apideck.com:accounting'];
     delete apis['apideck.com:connector'];
     delete apis['appcenter.ms'];
@@ -277,6 +283,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['docusign.net'];
     delete apis['dracoon.team'];
     delete apis['ebay.com:commerce-taxonomy'];
+    delete apis['envoice.in'];
     delete apis['getsandbox.com'];
     delete apis['gitea.io'];
     delete apis['googleapis.com:analyticsadmin'];
@@ -384,4 +391,24 @@ fetch('https://api.apis.guru/v2/list.json')
   })
   .then(apis => {
     fs.writeFileSync(`${__dirname}/real-world-apis.json`, JSON.stringify(apis, null, 2));
+
+    console.log(
+      '`real-world-apis.json` has been refreshed. Here are the API name letter breakdowns so you can tweak the smoketest suite:\n'
+    );
+
+    const letters = apis
+      .map(api => api.name.slice(0, 2))
+      .reduce((acc, curr) => {
+        if (acc[curr]) {
+          acc[curr] += 1;
+        } else {
+          acc[curr] = 1;
+        }
+
+        return acc;
+      }, {});
+
+    Object.entries(letters).forEach(([letter, count]) => {
+      console.log(` · ${letter}: ${count}`);
+    });
   });
