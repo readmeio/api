@@ -49,7 +49,7 @@ describe('typescript smoketest', function () {
         return;
       }
 
-      it.skip(`should generate an SDK for \`${name}\``, smoketestAPI(url, name));
+      it(`should generate an SDK for \`${name}\``, smoketestAPI(url, name));
     });
 
     return;
