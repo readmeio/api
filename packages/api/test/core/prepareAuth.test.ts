@@ -89,7 +89,7 @@ describe('#prepareAuth()', function () {
         const user = 'buster';
         const pass = 'hunter1';
 
-        it('should supprot basic auth', function () {
+        it('should support basic auth', function () {
           const operation = oas.operation('/anything/basic', 'post');
           const authKeys = [user, pass];
 
