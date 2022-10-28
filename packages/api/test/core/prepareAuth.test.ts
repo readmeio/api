@@ -1,18 +1,20 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import securityMultipleOas from '@readme/oas-examples/3.0/json/security-multiple.json';
-import securityOas from '@readme/oas-examples/3.0/json/security.json';
 import { expect } from 'chai';
 import Oas from 'oas';
 
 import prepareAuth from '../../src/core/prepareAuth';
-import authQuirksOas from '../__fixtures__/definitions/auth-quirks.json';
+import loadSpec from '../helpers/load-spec';
 
-const oas = Oas.init(securityOas as unknown as OASDocument);
+let oas: Oas;
 
 describe('#prepareAuth()', function () {
+  before(async function () {
+    oas = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
+  });
+
   it('should not do anything if the operation has no auth', async function () {
-    const uspto = await import('@readme/oas-examples/3.0/json/uspto.json').then(r => r.default).then(Oas.init);
+    const uspto = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
     const operation = uspto.operation('/', 'get');
     const authKeys = ['12345'];
 
@@ -161,6 +163,14 @@ describe('#prepareAuth()', function () {
   });
 
   describe('multi auth configurations', function () {
+    let authQuirksOas;
+    let securityMultipleOas;
+
+    before(async function () {
+      authQuirksOas = await loadSpec(require.resolve('../__fixtures__/definitions/auth-quirks.json'));
+      securityMultipleOas = await loadSpec('@readme/oas-examples/3.0/json/security-multiple.json');
+    });
+
     describe('AND', function () {
       it('should throw an exception on an operation that requires two forms of auth', function () {
         const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);

@@ -3,7 +3,6 @@ import type { OASDocument } from 'oas/dist/rmoas.types';
 import fs from 'fs/promises';
 import path from 'path';
 
-import petstoreSimple from '@readme/oas-examples/3.0/json/petstore-simple.json';
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import 'isomorphic-fetch';
@@ -12,10 +11,17 @@ import uniqueTempDir from 'unique-temp-dir';
 import Storage from '../../src/cli/storage';
 import { PACKAGE_VERSION } from '../../src/packageInfo';
 import chaiPlugins from '../helpers/chai-plugins';
+import loadSpec from '../helpers/load-spec';
 
 chai.use(chaiPlugins);
 
+let petstoreSimple;
+
 describe('storage', function () {
+  before(async function () {
+    petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
+  });
+
   beforeEach(function () {
     Storage.setStorageDir(uniqueTempDir());
   });

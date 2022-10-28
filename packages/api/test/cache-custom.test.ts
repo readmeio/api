@@ -1,12 +1,13 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import uspto from '@readme/oas-examples/3.0/json/uspto.json';
 import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 
 import api from '../src';
 import Cache from '../src/cache';
+
+import loadSpec from './helpers/load-spec';
 
 describe('cache (custom directory)', function () {
   let cacheDir;
@@ -24,9 +25,13 @@ describe('cache (custom directory)', function () {
     await fs.rmdir(cacheDir, { recursive: true });
 
     Cache.setCacheDir(originalCacheDir);
+
+    fetchMock.restore();
   });
 
   it('should support supplying a custom cache directory', async function () {
+    const uspto = await loadSpec('@readme/oas-examples/3.0/json/uspto.json');
+
     // Our custom caching directory should be empty.
     expect(await fs.readdir(cacheDir)).to.have.length(0);
 

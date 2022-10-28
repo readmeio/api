@@ -1,16 +1,22 @@
 import fs from 'fs/promises';
 
-import readmeSpec from '@readme/oas-examples/3.0/json/readme.json';
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 
 import Fetcher from '../src/fetcher';
 
 import chaiPlugins from './helpers/chai-plugins';
+import loadSpec from './helpers/load-spec';
 
 chai.use(chaiPlugins);
 
+let readmeSpec;
+
 describe('fetcher', function () {
+  before(async function () {
+    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme.json');
+  });
+
   describe('#isAPIRegistryUUID', function () {
     it('should detect the shorthand `@petstore/v1.0#uuid` syntax', function () {
       expect(Fetcher.isAPIRegistryUUID('@petstore/v1.0#n6kvf10vakpemvplx')).to.be.true;

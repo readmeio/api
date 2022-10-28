@@ -1,7 +1,5 @@
-/* eslint-disable mocha/no-setup-in-describe */
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import securityOas from '@readme/oas-examples/3.0/json/security.json';
 import { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -9,8 +7,8 @@ import uniqueTempDir from 'unique-temp-dir';
 import api from '../src';
 import Cache from '../src/cache';
 
-import authQuirksOas from './__fixtures__/definitions/auth-quirks.json';
 import { responses as mockResponses } from './helpers/fetch-mock';
+import loadSpec from './helpers/load-spec';
 
 let sdk;
 
@@ -19,13 +17,14 @@ const user = 'buster';
 const pass = 'hunter1';
 
 describe('#auth()', function () {
-  this.beforeAll(function () {
+  before(function () {
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
   });
 
-  beforeEach(function () {
+  beforeEach(async function () {
+    const securityOas = await loadSpec('@readme/oas-examples/3.0/json/security.json');
     sdk = api(securityOas as unknown as OASDocument);
   });
 
@@ -207,7 +206,8 @@ describe('#auth()', function () {
   describe('quirks', function () {
     let quirks;
 
-    before(function () {
+    before(async function () {
+      const authQuirksOas = await loadSpec(require.resolve('./__fixtures__/definitions/auth-quirks.json'));
       quirks = api(authQuirksOas as unknown as OASDocument);
 
       // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the

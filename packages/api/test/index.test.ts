@@ -9,6 +9,7 @@ import api from '../src';
 import Cache from '../src/cache';
 
 import { responses as mockResponses } from './helpers/fetch-mock';
+import loadSpec from './helpers/load-spec';
 
 let petstoreSDK;
 let readmeSDK;
@@ -16,8 +17,7 @@ let operationIDQuirksSDK;
 const petstoreServerUrl = 'http://petstore.swagger.io/api';
 
 describe('api', function () {
-  // eslint-disable-next-line mocha/no-setup-in-describe
-  this.beforeAll(function () {
+  before(function () {
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
@@ -114,7 +114,7 @@ describe('api', function () {
       });
 
       it('should support an operationId that was dynamically cleaned up within `Operation.getOperationId', async function () {
-        const petstore = await import('@readme/oas-examples/3.0/json/petstore-expanded.json');
+        const petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json');
 
         // `GET /pets/{id}` in this petstore SDK has an operationID of `find pet by id` but the
         // `camelCase` option on `Operation.getOperationId()` should transform it into

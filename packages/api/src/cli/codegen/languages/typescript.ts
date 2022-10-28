@@ -15,7 +15,7 @@ import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationK
 import logger from '../../logger';
 import CodeGeneratorLanguage from '../language';
 
-import { formatter, generateTypeName, wordWrap } from './typescript/util';
+import { docblockEscape, formatter, generateTypeName, wordWrap } from './typescript/util';
 
 export type TSGeneratorOptions = {
   outputJS?: boolean;
@@ -487,9 +487,9 @@ sdk.server('https://eu.api.example.com/v14');`)
       // what we surface the main docblock description.
       docblock.description = writer => {
         if (description) {
-          writer.writeLine(wordWrap(description));
+          writer.writeLine(docblockEscape(wordWrap(description)));
         } else if (summary) {
-          writer.writeLine(wordWrap(summary));
+          writer.writeLine(docblockEscape(wordWrap(summary)));
         }
 
         writer.newLineIfLastNot();
@@ -497,7 +497,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       };
 
       if (summary && description) {
-        docblock.tags = [{ tagName: 'summary', text: summary }];
+        docblock.tags = [{ tagName: 'summary', text: docblockEscape(wordWrap(summary)) }];
       }
     }
 
@@ -622,7 +622,15 @@ sdk.server('https://eu.api.example.com/v14');`)
       // see if what the user is supplying is `metadata` or `body` content when they supply one or
       // both.
       operationIdAccessor.addParameters([
-        { ...parameters.body, hasQuestionToken: true },
+        {
+          ...parameters.body,
+          // Overloads have to be the most distilled version of the method so that's why we need to
+          // type `body` as either `body` or `metadata`. If we didn't do this, if `body` was a JSON
+          // Schema type that didn't allow `additionalProperties` then the implementation overload
+          // would throw type errors.
+          type: `${parameters.body.type} | ${parameters.metadata.type}`,
+          hasQuestionToken: true,
+        },
         { ...parameters.metadata, hasQuestionToken: true },
       ]);
     } else {
@@ -652,20 +660,19 @@ sdk.server('https://eu.api.example.com/v14');`)
           camelCase: true,
         });
 
-        const params = this.prepareParameterTypesForOperation(operation, operationId);
-        const responses = this.prepareResponseTypesForOperation(operation, operationId);
-
-        if (operation.hasOperationId()) {
-          operations[operationId] = {
-            types: {
-              params,
-              responses,
-            },
-            operation,
-          };
-        }
+        operations[operationId] = {
+          types: {
+            params: this.prepareParameterTypesForOperation(operation, operationId),
+            responses: this.prepareResponseTypesForOperation(operation, operationId),
+          },
+          operation,
+        };
       });
     });
+
+    if (!Object.keys(operations).length) {
+      throw new Error('Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.');
+    }
 
     return {
       operations,
@@ -680,6 +687,7 @@ sdk.server('https://eu.api.example.com/v14');`)
    */
   prepareParameterTypesForOperation(operation: Operation, operationId: string) {
     const schemas = operation.getParametersAsJSONSchema({
+      includeDiscriminatorMappingRefs: false,
       mergeIntoBodyAndMetadata: true,
       retainDeprecatedProperties: true,
       transformer: (s: SchemaObject) => {
@@ -687,7 +695,7 @@ sdk.server('https://eu.api.example.com/v14');`)
         // codegen'd schemas file with duplicate schemas.
         if ('x-readme-ref-name' in s) {
           const typeName = generateTypeName(s['x-readme-ref-name']);
-          this.addSchemaToExport(s, typeName, `${typeName}`);
+          this.addSchemaToExport(s, typeName, typeName);
 
           return `::convert::${typeName}` as SchemaObject;
         }
@@ -714,7 +722,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           typeName = schema.replace('::convert::', '');
         } else {
           typeName = generateTypeName(operationId, paramType, 'param');
-          this.addSchemaToExport(schema, typeName, `${operationId}.${paramType}`);
+          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.${paramType}`);
         }
 
         return {
@@ -739,6 +747,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     const schemas = responseStatusCodes
       .map(status => {
         const schema = operation.getResponseAsJSONSchema(status, {
+          includeDiscriminatorMappingRefs: false,
           transformer: (s: SchemaObject) => {
             // As our schemas are dereferenced in the `oas` library we don't want to pollute our
             // codegen'd schemas file with duplicate schemas.
@@ -777,7 +786,7 @@ sdk.server('https://eu.api.example.com/v14');`)
           // Because `status` will usually be a number here we need to set the pointer for it
           // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
           // TypeScript will throw a compilation error.
-          this.addSchemaToExport(schema, typeName, `${operationId}.response['${status}']`);
+          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.response['${status}']`);
         }
 
         return {

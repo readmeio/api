@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   linting:
@@ -19,7 +23,7 @@ jobs:
       - name: Insensitive language check for Markdown docs
         run: npm run alex
 
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,23 +31,21 @@ jobs:
           - 14
           - 16
           - 18
+          - 19
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
       # There's a bug in npm@8 where, if when using Workspaces, you to install a local package that
-      # isn't stored in  `packages/` npm will throw an exception. This affects all of our local
+      # isn't stored in `packages/` npm will throw an exception. This affects all of our local
       # codegen tests that attempt to test package installation. Hopefully there'll be a fix for
       # this at some point, but in the meantime we should run all tests with npm@7.
       #
       # https://github.com/npm/cli/issues/3847
       - name: Install npm@7
-        #if: matrix.node-version == '14'
         run: npm install -g npm@7
 
       - name: Install dependencies

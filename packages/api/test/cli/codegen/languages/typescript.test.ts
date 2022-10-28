@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
-import chai, { expect } from 'chai';
+import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import mockRequire from 'mock-require';
 import Oas from 'oas';
@@ -23,21 +23,31 @@ import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
 import Storage from '../../../../src/cli/storage';
 import chaiPlugins from '../../../helpers/chai-plugins';
 import { responses as mockResponse } from '../../../helpers/fetch-mock';
+import loadSpec from '../../../helpers/load-spec';
 
 chai.use(chaiPlugins);
 chai.use(sinonChai);
 
 function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOptions = {}) {
   return async function () {
-    const oas = await import(file).then(Oas.init);
+    const oas = await loadSpec(require.resolve(file)).then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
     const ts = new TSGenerator(oas, file, fixture, opts);
     expect(await ts.generator()).toMatchSDKFixture(fixture);
+
+    // Make sure that we can load the SDK without any TS compilation errors.
+    const sdk = await import(`../../../__fixtures__/sdk/${fixture}`).then(r => r.default);
+    expect(sdk.constructor.name).to.equal('SDK');
   };
 }
 
 describe('typescript', function () {
+  beforeEach(function () {
+    // Package installation and codegen can take a bit.
+    this.currentTest.timeout(20000);
+  });
+
   describe('#installer', function () {
     beforeEach(function () {
       Storage.setStorageDir(uniqueTempDir());
@@ -51,8 +61,7 @@ describe('typescript', function () {
       const logger = sinon.spy();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
-
-      const oas = await import(file).then(Oas.init);
+      const oas = await loadSpec(file).then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
       const storage = new Storage(file, 'petstore');
@@ -93,6 +102,11 @@ describe('typescript', function () {
     );
 
     it.skip('should handle a operations with a `default` response');
+
+    it(
+      'should handle an api that has discriminators and no operation ids',
+      assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby')
+    );
 
     describe('javascript generation', function () {
       it(
@@ -162,6 +176,44 @@ describe('typescript', function () {
           expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
           expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
         });
+      });
+    });
+
+    describe('error handling', function () {
+      it('should fail on an API definition that has no `paths`', async function () {
+        const oas = Oas.init({
+          openapi: '3.0.3',
+          info: {
+            title: 'empty oas',
+            version: '1.0.0',
+          },
+          paths: {},
+        });
+
+        const ts = new TSGenerator(oas, 'no-paths', './no-paths.json');
+        await ts
+          .generator()
+          .then(() => assert.fail())
+          .catch(err => {
+            expect(err.message).to.equal(
+              'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.'
+            );
+          });
+      });
+
+      it('should fail on an API definition that contains circular references', async function () {
+        const oas = await loadSpec('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
+        await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+
+        try {
+          // eslint-disable-next-line no-new
+          new TSGenerator(oas, 'circular', './circular.json');
+          assert.fail();
+        } catch (err) {
+          expect(err.message).to.equal(
+            'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+          );
+        }
       });
     });
   });

@@ -141,7 +141,7 @@ class SDK {
    *
    */
   updatePetWithForm(
-    body?: types.UpdatePetWithFormFormDataParam,
+    body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
     metadata?: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
@@ -175,7 +175,7 @@ class SDK {
    *
    */
   uploadFile(
-    body?: types.UploadFileBodyParam,
+    body?: types.UploadFileBodyParam | types.UploadFileMetadataParam,
     metadata?: types.UploadFileMetadataParam
   ): Promise<FetchResponse<200, types.ApiResponse>> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);

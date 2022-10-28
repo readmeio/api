@@ -5,6 +5,7 @@ import Oas from 'oas';
 
 import prepareParams from '../../src/core/prepareParams';
 import payloadExamples from '../__fixtures__/definitions/payloads.json';
+import loadSpec from '../helpers/load-spec';
 
 describe('#prepareParams', function () {
   let fileUploads: Oas;
@@ -12,18 +13,18 @@ describe('#prepareParams', function () {
   let usptoSpec: Oas;
 
   beforeEach(async function () {
-    fileUploads = await import('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
+    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
     await fileUploads.dereference();
 
-    readmeSpec = await import('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
+    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
     await readmeSpec.dereference();
 
-    usptoSpec = await import('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
+    usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
     await usptoSpec.dereference();
   });
 
   it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async function () {
-    const spec = await import('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
+    const spec = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
     await spec.dereference();
 
     const operation = spec.operation('/apiKey', 'get');
@@ -87,7 +88,7 @@ describe('#prepareParams', function () {
   });
 
   it('should ignore supplied body data if the request has no request body', async function () {
-    const spec = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    const spec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
     await spec.dereference();
 
     const operation = spec.operation('/pet/{petId}', 'get');
@@ -103,7 +104,7 @@ describe('#prepareParams', function () {
   });
 
   it('should ignore a supplied second parameter if its an empty object', async function () {
-    const spec = await import('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    const spec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
     await spec.dereference();
 
     const operation = spec.operation('/pet/findByStatus', 'get');
@@ -352,7 +353,7 @@ describe('#prepareParams', function () {
     let parameterStyle;
 
     beforeEach(async function () {
-      parameterStyle = await import('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
+      parameterStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
       await parameterStyle.dereference();
     });
 
@@ -457,7 +458,7 @@ describe('#prepareParams', function () {
 
   describe('defaults', function () {
     it('should prefill defaults for required body parameters if not supplied', async function () {
-      const oas = await import('../__fixtures__/definitions/nested-defaults.json').then(Oas.init);
+      const oas = await loadSpec('../__fixtures__/definitions/nested-defaults.json').then(Oas.init);
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');

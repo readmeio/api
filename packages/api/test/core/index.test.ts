@@ -6,6 +6,9 @@ import APICore from '../../src/core';
 import FetchError from '../../src/core/errors/fetchError';
 import chaiPlugins from '../helpers/chai-plugins';
 import { responses as mockResponse } from '../helpers/fetch-mock';
+import loadSpec from '../helpers/load-spec';
+
+chai.use(chaiPlugins);
 
 chai.use(chaiPlugins);
 
@@ -22,15 +25,19 @@ describe('APICore', function () {
   };
 
   beforeEach(async function () {
-    petstore = await import('@readme/oas-examples/3.0/json/petstore-expanded.json')
+    petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json')
       .then(Oas.init)
       .then(oas => new APICore(oas));
 
-    readme = await import('@readme/oas-examples/3.0/json/readme.json').then(Oas.init).then(oas => new APICore(oas));
+    readme = await loadSpec('@readme/oas-examples/3.0/json/readme.json')
+      .then(Oas.init)
+      .then(oas => new APICore(oas));
 
-    security = await import('@readme/oas-examples/3.0/json/security.json').then(Oas.init).then(oas => new APICore(oas));
+    security = await loadSpec('@readme/oas-examples/3.0/json/security.json')
+      .then(Oas.init)
+      .then(oas => new APICore(oas));
 
-    serverVariables = await import('@readme/oas-examples/3.0/json/server-variables.json')
+    serverVariables = await loadSpec('@readme/oas-examples/3.0/json/server-variables.json')
       .then(Oas.init)
       .then(oas => new APICore(oas));
   });
