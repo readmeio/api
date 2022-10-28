@@ -15,6 +15,10 @@ import removeUndefinedObjects from 'remove-undefined-objects';
 
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
 
+// These headers are normally only defined by the OpenAPI definition but we allow the user to
+// manually supply them in their `metadata` parameter if they wish.
+const specialHeaders = ['accept', 'authorization'];
+
 /**
  * Extract all available parameters from an operations Parameter Object into a digestable array
  * that we can use to apply to the request.
@@ -153,9 +157,30 @@ export default async function prepareParams(operation: Operation, body?: unknown
   metadata = removeUndefinedObjects(metadata);
 
   if (!jsonSchema && (body !== undefined || metadata !== undefined)) {
-    throw new Error(
-      "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
-    );
+    let throwNoParamsError = true;
+
+    // If this operation doesn't have any parameters for us to transform to JSON Schema but they've
+    // sent us either an `Accept` or `Authorization` header (or both) we should let them do that.
+    // We should, however, only do this check for the `body` parameter as if they've sent this
+    // request both `body` and `metadata` we can reject it outright as the operation won't have any
+    // body data.
+    if (body !== undefined) {
+      if (typeof body === 'object' && body !== null && !Array.isArray(body)) {
+        if (Object.keys(body).length <= 2) {
+          const bodyParams = caseless(body);
+
+          if (specialHeaders.some(header => bodyParams.has(header))) {
+            throwNoParamsError = false;
+          }
+        }
+      }
+    }
+
+    if (throwNoParamsError) {
+      throw new Error(
+        "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
+      );
+    }
   }
 
   const jsonSchemaDefaults = jsonSchema ? getJSONSchemaDefaults(jsonSchema) : {};
@@ -194,11 +219,13 @@ export default async function prepareParams(operation: Operation, body?: unknown
         }
       });
 
-      // `Accept` headers can't be defined as normal parameters but we should always allow the
-      // user to supply them.
-      if (!headerParams.has('accept')) {
-        headerParams.set('accept', '');
-      }
+      // `Accept` and `Authorization` headers can't be defined as normal parameters but we should
+      // always allow the user to supply them if they wish.
+      specialHeaders.forEach(header => {
+        if (!headerParams.has(header)) {
+          headerParams.set(header, '');
+        }
+      });
 
       const intersection = Object.keys(body).filter(value => {
         if (Object.keys(digestedParameters).includes(value)) {
@@ -354,14 +381,17 @@ export default async function prepareParams(operation: Operation, body?: unknown
       if (operation.isFormUrlEncoded()) {
         params.formData = merge(params.formData, metadata);
       } else if (typeof metadata === 'object') {
-        // If the user supplied an `accept` header themselves we should allow it through. Normally
-        // `accept` headers are automatically handled by `@readme/oas-to-har` but in the event that
-        // maybe the user wants to return XML for an API that normally returns JSON this is the
+        // If the user supplied an `accept` or `authorization` header themselves we should allow it
+        // through. Normally these headers are automatically handled by `@readme/oas-to-har` but in
+        // the event that maybe the user wants to return XML for an API that normally returns JSON
+        // or specify a custom auth header (maybe we can't handle their auth case right) this is the
         // only way with this library that they can do that.
-        const acceptHeaderParam = Object.keys(metadata).find(m => m.toLowerCase() === 'accept');
-        if (acceptHeaderParam) {
-          params.header.accept = metadata[acceptHeaderParam] as string;
-        }
+        specialHeaders.forEach(headerName => {
+          const headerParam = Object.keys(metadata).find(m => m.toLowerCase() === headerName);
+          if (headerParam) {
+            params.header[headerName] = metadata[headerParam] as string;
+          }
+        });
       } else {
         // Any other remaining unused metadata will be unused because we don't know where to place
         // it in the request.

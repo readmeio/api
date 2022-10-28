@@ -17,12 +17,14 @@ chai.use(chaiPlugins);
 let fileUploads;
 let parametersStyle;
 let petstore;
+let security;
 
 describe('integration tests', function () {
   before(async function () {
     fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json');
     parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json');
     petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore.json');
+    security = await loadSpec('@readme/oas-examples/3.0/json/security.json');
 
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
@@ -102,37 +104,93 @@ describe('integration tests', function () {
   });
 
   describe('header handling', function () {
-    it('should support supplying an `accept` header', async function () {
-      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+    describe('`authorization`', function () {
+      it('should support supplying an `authorization` header', async function () {
+        fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
 
-      const body = {
-        id: 1234,
-        name: 'buster',
-      };
+        const body = {
+          id: 1234,
+          name: 'buster',
+        };
 
-      const metadata = {
-        accept: 'text/xml',
-      };
+        const metadata = {
+          authorization: 'bearer 12345',
+        };
 
-      const { data } = await api(petstore as unknown as OASDocument).addPet(body, metadata);
-      expect(data.uri).to.equal('/v2/pet');
-      expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
-      expect(data.headers).to.have.deep.property('accept', 'text/xml');
-      expect(data.headers).to.have.a.customUserAgent;
+        const sdk = api(petstore as unknown as OASDocument);
+
+        sdk.auth('buster');
+
+        const { data } = await sdk.addPet(body, metadata);
+        expect(data.uri).to.equal('/v2/pet');
+        expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
+        expect(data.headers).to.have.deep.property('authorization', 'bearer 12345');
+        expect(data.headers).to.have.a.customUserAgent;
+      });
+
+      it('should support supplying an `authorization` header (on an operation that has no params)', async function () {
+        fetchMock.post('https://httpbin.org/anything/bearer', mockResponse.headers);
+
+        const metadata = {
+          authorization: 'bearer 12345',
+        };
+
+        const securityApi = api(security as unknown as OASDocument);
+
+        securityApi.auth('buster');
+
+        await securityApi.postAnythingBearer(metadata).then(({ data }) => {
+          // `authorization: bearer buster` should not be here because we manually supplied
+          // `authorization: bearer 12345` to the metadata.
+          expect(data).to.have.deep.property('authorization', 'bearer 12345');
+        });
+      });
     });
 
-    it('should support supplying **only** an `accept` header', async function () {
-      fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+    describe('`accept`', function () {
+      it('should support supplying an `accept` header', async function () {
+        fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
 
-      const metadata = {
-        accept: 'text/xml',
-      };
+        const body = {
+          id: 1234,
+          name: 'buster',
+        };
 
-      const { data } = await api(petstore as unknown as OASDocument).addPet(metadata);
-      expect(data.uri).to.equal('/v2/pet');
-      expect(data.requestBody).to.be.undefined;
-      expect(data.headers).to.have.deep.property('accept', 'text/xml');
-      expect(data.headers).to.have.a.customUserAgent;
+        const metadata = {
+          accept: 'text/xml',
+        };
+
+        const { data } = await api(petstore as unknown as OASDocument).addPet(body, metadata);
+        expect(data.uri).to.equal('/v2/pet');
+        expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
+        expect(data.headers).to.have.deep.property('accept', 'text/xml');
+        expect(data.headers).to.have.a.customUserAgent;
+      });
+
+      it('should support supplying **only** an `accept` header', async function () {
+        fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
+
+        const metadata = {
+          accept: 'text/xml',
+        };
+
+        const { data } = await api(petstore as unknown as OASDocument).addPet(metadata);
+        expect(data.uri).to.equal('/v2/pet');
+        expect(data.requestBody).to.be.undefined;
+        expect(data.headers).to.have.deep.property('accept', 'text/xml');
+        expect(data.headers).to.have.a.customUserAgent;
+      });
+
+      it('should support supplying an `authorization` header (on an operation that has no params)', async function () {
+        fetchMock.post('https://httpbin.org/anything/bearer', mockResponse.headers);
+
+        const metadata = {
+          accept: 'application/buster+json',
+        };
+
+        const { data } = await api(security as unknown as OASDocument).postAnythingBearer(metadata);
+        expect(data).to.have.deep.property('accept', 'application/buster+json');
+      });
     });
   });
 
