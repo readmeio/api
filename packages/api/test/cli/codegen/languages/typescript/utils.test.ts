@@ -4,7 +4,7 @@ import { docblockEscape, generateTypeName, wordWrap } from '../../../../../src/c
 
 describe('ts codegen utils', function () {
   describe('#docblockEscape', function () {
-    it('should not a safe string', function () {
+    it('should not touch a safe string', function () {
       expect(docblockEscape('This is a short sentence.')).to.equal('This is a short sentence.');
     });
 
