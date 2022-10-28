@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: "block #${{ matrix.chunk }}"
+    runs-on: ubuntu-latest
+    # if: ${{ github.actor != 'dependabot[bot]' }}
+    strategy:
+      matrix:
+        # Breaking this suite up into 15 chunks ends up running about ~120 APIs each. Doing this
+        # because this test is **slow** otherwise.
+        chunk: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:smoke -- -- --chunks=15 --chunk="${{ matrix.chunk }}"
