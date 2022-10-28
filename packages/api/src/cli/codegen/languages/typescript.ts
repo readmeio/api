@@ -296,7 +296,15 @@ export default class TSGenerator extends CodeGeneratorLanguage {
           {
             description: writer =>
               writer.writeLine(wordWrap('Optionally configure various options that the SDK allows.')),
-            tags: [{ tagName: 'param', text: 'config Object of supported SDK options and toggles.' }],
+            tags: [
+              { tagName: 'param', text: 'config Object of supported SDK options and toggles.' },
+              {
+                tagName: 'param',
+                text: wordWrap(
+                  'config.timeout Override the default `fetch` request timeout of 30 seconds. This number should be represented in milliseconds.'
+                ),
+              },
+            ],
           },
         ],
       },
