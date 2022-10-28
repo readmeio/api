@@ -70,7 +70,6 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "@jsdevtools/host-environment": "^2.1.2",
     "@readme/oas-examples": "^5.5.0",
     "@types/caseless": "^0.12.2",
     "@types/chai": "^4.3.1",

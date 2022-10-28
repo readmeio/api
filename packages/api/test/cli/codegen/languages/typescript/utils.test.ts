@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { docblockEscape, generateTypeName, wordWrap } from '../../../../../src/cli/codegen/languages/typescript/util';
 
 describe('ts codegen utils', function () {
-  describe.only('#docblockEscape', function () {
+  describe('#docblockEscape', function () {
     it('should not a safe string', function () {
       expect(docblockEscape('This is a short sentence.')).to.equal('This is a short sentence.');
     });

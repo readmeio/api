@@ -20,29 +20,26 @@ fetch('https://api.apis.guru/v2/list.json')
     return response.json();
   })
   .then(apis => {
-    // GitHub's CORS policy blocks this request
-    // delete apis['googleapis.com:adsense'];
+    Object.entries(apis).forEach(([service]) => {
+      // Every Amazon OAS is **huge** (100k+ lines) and really bog the smoketest down. They should
+      // probably be manually tested instead.
+      if (service.startsWith('amazonaws.com:')) {
+        delete apis[service];
+      }
+    });
 
-    // These APIs cause infinite loops in json-schema-ref-parser. Still investigating.
-    // https://github.com/APIDevTools/json-schema-ref-parser/issues/56
-    // delete apis['bungie.net'];
-    // delete apis['stripe.com'];
-    // delete apis['docusign.net'];
-    // delete apis['kubernetes.io'];
-    // delete apis['microsoft.com:graph'];
-
-    // hangs
-    // delete apis['presalytics.io:ooxml'];
-
-    // base security declaration in path/get operation (error message below)
-    // "type array but found type null at #/paths//vault/callback/get/security"
-    // delete apis['apideck.com:vault'];
-
-    // These APIs take **forever** to process. Investigate why at some point.
+    // These APIs are either **huge** or take **forever** to process. Investigate why at some point.
     delete apis['beezup.com'];
+    delete apis['googleapis.com:compute'];
+    delete apis['loket.nl'];
+    delete apis['zuora.com'];
 
     // These APIs have no `paths` so an SDK we generate is always going to be empty.
     delete apis['firstinspires.org'];
+    delete apis['googleapis.com:youtubeAnalytics'];
+    delete apis['ipinfodb.com'];
+    delete apis['iva-api.com'];
+    delete apis['zenoti.com'];
 
     // These APIs have validation issues.
     delete apis['adyen.com:CheckoutService'];
@@ -94,6 +91,66 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['googleapis.com:adsense'];
     delete apis['googleapis.com:appengine'];
     delete apis['googleapis.com:bigqueryreservation'];
+    delete apis['googleapis.com:cloudbilling'];
+    delete apis['googleapis.com:cloudbuild'];
+    delete apis['googleapis.com:cloudfunctions'];
+    delete apis['googleapis.com:cloudshell'];
+    delete apis['googleapis.com:container'];
+    delete apis['googleapis.com:datastore'];
+    delete apis['googleapis.com:dfareporting'];
+    delete apis['googleapis.com:displayvideo'];
+    delete apis['googleapis.com:dns'];
+    delete apis['googleapis.com:file'];
+    delete apis['googleapis.com:firebaseappcheck'];
+    delete apis['googleapis.com:firebasehosting'];
+    delete apis['googleapis.com:firestore'];
+    delete apis['googleapis.com:gameservices'];
+    delete apis['googleapis.com:genomics'];
+    delete apis['googleapis.com:healthcare'];
+    delete apis['googleapis.com:iam'];
+    delete apis['googleapis.com:identitytoolkit'];
+    delete apis['googleapis.com:jobs'];
+    delete apis['googleapis.com:managedidentities'];
+    delete apis['googleapis.com:monitoring'];
+    delete apis['googleapis.com:osconfig'];
+    delete apis['googleapis.com:policytroubleshooter'];
+    delete apis['googleapis.com:pubsub'];
+    delete apis['googleapis.com:redis'];
+    delete apis['googleapis.com:run'];
+    delete apis['googleapis.com:securitycenter'];
+    delete apis['googleapis.com:servicecontrol'];
+    delete apis['googleapis.com:speech'];
+    delete apis['googleapis.com:tagmanager'];
+    delete apis['googleapis.com:verifiedaccess'];
+    delete apis['googleapis.com:vision'];
+    delete apis['hetras-certification.net:booking'];
+    delete apis['hetras-certification.net:hotel'];
+    delete apis['icons8.com'];
+    delete apis['motaword.com'];
+    delete apis['naviplancentral.com:plan'];
+    delete apis['openapi-generator.tech'];
+    delete apis['opensuse.org:obs'];
+    delete apis['opto22.com:groov'];
+    delete apis['osisoft.com'];
+    delete apis['parliament.uk:statutoryinstruments'];
+    delete apis['parliament.uk:treaties'];
+    delete apis['personio.de:personnel'];
+    delete apis['postmarkapp.com:server'];
+    delete apis['rebilly.com'];
+    delete apis['semantria.com'];
+    delete apis['simplyrets.com'];
+    delete apis['staging-ecotaco.com'];
+    delete apis['testfire.net:altoroj'];
+    delete apis['tl-api.azurewebsites.net'];
+    delete apis['turbinelabs.io'];
+    delete apis['va.gov:confirmation'];
+    delete apis['versioneye.com'];
+    delete apis['vestorly.com'];
+    delete apis['viator.com'];
+    delete apis['wedpax.com'];
+    delete apis['whapi.com:accounts'];
+    delete apis['xero.com:xero_accounting'];
+    delete apis['zalando.com'];
 
     // These APIs have circular refs, which the library doesn't yet support.
     // https://github.com/readmeio/api/issues/549
@@ -233,14 +290,85 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['googleapis.com:chat'];
     delete apis['googleapis.com:chromepolicy'];
     delete apis['googleapis.com:civicinfo'];
+    delete apis['googleapis.com:clouddebugger'];
+    delete apis['googleapis.com:cloudsearch'];
+    delete apis['googleapis.com:content'];
 
-    Object.entries(apis).forEach(([service]) => {
-      // Every Amazon OAS is **huge** (100k+ lines) and really bog the smoketest down. They should
-      // probably be manually tested instead.
-      if (service.startsWith('amazonaws.com:')) {
-        delete apis[service];
-      }
-    });
+    delete apis['googleapis.com:datacatalog'];
+    delete apis['googleapis.com:dataflow'];
+    delete apis['googleapis.com:dialogflow'];
+    delete apis['googleapis.com:discovery'];
+    delete apis['googleapis.com:docs'];
+    delete apis['googleapis.com:documentai'];
+    delete apis['googleapis.com:firebaserules'];
+    delete apis['googleapis.com:gmail'];
+    delete apis['googleapis.com:ml'];
+    delete apis['googleapis.com:retail'];
+    delete apis['googleapis.com:script'];
+    delete apis['googleapis.com:serviceconsumermanagement'];
+    delete apis['googleapis.com:servicemanagement'];
+    delete apis['googleapis.com:servicenetworking'];
+    delete apis['googleapis.com:serviceusage'];
+    delete apis['googleapis.com:slides'];
+    delete apis['googleapis.com:spanner'];
+    delete apis['googleapis.com:trafficdirector'];
+    delete apis['googleapis.com:dataplex'];
+    delete apis['googleapis.com:beyondcorp'];
+    delete apis['googleapis.com:integrations'];
+    delete apis['googleapis.com:contentwarehouse'];
+    delete apis['id4i.de'];
+    delete apis['influxdata.com'];
+    delete apis['jellyfin.local'];
+    delete apis['jumpseller.com'];
+    delete apis['just-eat.co.uk'];
+    delete apis['keycloak.local'];
+    delete apis['kubernetes.io'];
+    delete apis['learnifier.com'];
+    delete apis['lgtm.com'];
+    delete apis['magento.com'];
+    delete apis['mercedes-benz.com:configurator'];
+    delete apis['meshery.local'];
+    delete apis['microsoft.com:cognitiveservices-AutoSuggest'];
+    delete apis['microsoft.com:cognitiveservices-ComputerVision'];
+    delete apis['microsoft.com:cognitiveservices-CustomImageSearch'];
+    delete apis['microsoft.com:cognitiveservices-CustomSearch'];
+    delete apis['microsoft.com:cognitiveservices-EntitySearch'];
+    delete apis['microsoft.com:cognitiveservices-ImageSearch'];
+    delete apis['microsoft.com:cognitiveservices-LocalSearch'];
+    delete apis['microsoft.com:cognitiveservices-NewsSearch'];
+    delete apis['microsoft.com:cognitiveservices-VideoSearch'];
+    delete apis['microsoft.com:cognitiveservices-VisualSearch'];
+    delete apis['microsoft.com:cognitiveservices-WebSearch'];
+    delete apis['microsoft.com:graph'];
+    delete apis['ndhm.gov.in:ndhm-healthid'];
+    delete apis['noosh.com'];
+    delete apis['opendatasoft.com'];
+    delete apis['opentrials.local'];
+    delete apis['ote-godaddy.com:domains'];
+    delete apis['oxforddictionaries.com'];
+    delete apis['parliament.uk:erskine-may'];
+    delete apis['parliament.uk:oralquestions'];
+    delete apis['patientview.org'];
+    delete apis['pocketsmith.com'];
+    delete apis['presalytics.io:ooxml'];
+    delete apis['quarantine.country'];
+    delete apis['redirection.io'];
+    delete apis['seldon.local:core'];
+    delete apis['seldon.local:engine'];
+    delete apis['seldon.local:wrapper'];
+    delete apis['slicebox.local'];
+    delete apis['smart-me.com'];
+    delete apis['sportsdata.io:nba-v3-scores'];
+    delete apis['sportsdata.io:nba-v3-stats'];
+    delete apis['sportsdata.io:nhl-v3-scores'];
+    delete apis['sportsdata.io:nhl-v3-stats'];
+    delete apis['squareup.com'];
+    delete apis['stripe.com'];
+    delete apis['telegram.org'];
+    delete apis['tfl.gov.uk'];
+    delete apis['truora.com'];
+    delete apis['tsapi.net'];
+    delete apis['uspto.gov:bdss'];
 
     return apis;
   })
