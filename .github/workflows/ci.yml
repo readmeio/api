@@ -58,11 +58,11 @@ jobs:
     # if: ${{ github.actor != 'dependabot[bot]' }}
     strategy:
       matrix:
-        regex:
-          - "([0-9]|a[a-y])" # Starts with a number and goes up to `ay*`
-          - "^az" # Starts with `az` (generally just Azure APIs)
-          - "^([b-f]|g[^o]|[h-z])" # Goes from B to Z except if they start with `go`
-          - "^go" # Starts with `go` (generally all Google APIs)
+        regex: []
+          # - "([0-9]|a[a-y])" # Starts with a number and goes up to `ay*`
+          # - "^az" # Starts with `az` (generally just Azure APIs)
+          # - "^([b-f]|g[^o]|[h-z])" # Goes from B to Z except if they start with `go`
+          # - "^go" # Starts with `go` (generally all Google APIs)
 
     steps:
       - uses: actions/checkout@v3
