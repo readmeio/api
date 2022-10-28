@@ -293,7 +293,6 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['googleapis.com:clouddebugger'];
     delete apis['googleapis.com:cloudsearch'];
     delete apis['googleapis.com:content'];
-
     delete apis['googleapis.com:datacatalog'];
     delete apis['googleapis.com:dataflow'];
     delete apis['googleapis.com:dialogflow'];
