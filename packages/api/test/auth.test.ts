@@ -9,13 +9,14 @@ import uniqueTempDir from 'unique-temp-dir';
 import api from '../src';
 import Cache from '../src/cache';
 
+import authQuirksOas from './__fixtures__/definitions/auth-quirks.json';
 import { responses as mockResponses } from './helpers/fetch-mock';
 
 let sdk;
 
 const apiKey = '123457890';
-const user = 'username';
-const pass = 'changeme';
+const user = 'buster';
+const pass = 'hunter1';
 
 describe('#auth()', function () {
   this.beforeAll(function () {
@@ -57,7 +58,7 @@ describe('#auth()', function () {
           .getAnythingApikey()
           .then(() => assert.fail())
           .catch(err => {
-            expect(err.message).to.match(/only a single key is needed/i);
+            expect(err.message).to.match(/only a single token is needed/i);
           });
       });
     });
@@ -79,7 +80,7 @@ describe('#auth()', function () {
           .putAnythingApikey()
           .then(() => assert.fail())
           .catch(err => {
-            expect(err.message).to.match(/only a single key is needed/i);
+            expect(err.message).to.match(/only a single token is needed/i);
           });
       });
     });
@@ -201,5 +202,41 @@ describe('#auth()', function () {
 
     sdk.auth(apiKey2);
     await sdk.getAnythingApikey().then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=67890'));
+  });
+
+  describe('quirks', function () {
+    let quirks;
+
+    before(function () {
+      quirks = api(authQuirksOas as unknown as OASDocument);
+
+      // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the
+      // quirks case we're testing is that you should be able to supply either a single OAuth2 token
+      // or a username+password and it should be able to intelligently handle both.
+      expect(authQuirksOas.paths['/anything'].post.security).to.deep.equal([
+        { oauth2: ['write:things'] },
+        { basicAuth: [] },
+      ]);
+    });
+
+    it('should support an operation that has OR auth requirements (supplying Basic Auth)', async function () {
+      const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
+
+      fetchMock.post('https://httpbin.org/anything', mockResponses.headers);
+
+      quirks.auth(user, pass);
+      await quirks.postAnything().then(({ data }) => {
+        expect(data).to.have.deep.property('authorization', authHeader);
+      });
+    });
+
+    it('should support an operation that has OR auth requirements (supplying an OAuth2 token)', async function () {
+      fetchMock.post('https://httpbin.org/anything', mockResponses.headers);
+
+      quirks.auth(apiKey);
+      await quirks.postAnything().then(({ data }) => {
+        expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+      });
+    });
   });
 });

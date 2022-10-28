@@ -34,8 +34,8 @@ describe('typescript dist verification', function () {
   });
 
   it('should be able to set an auth token', async function () {
-    const user = 'username';
-    const pass = 'changeme';
+    const user = 'buster';
+    const pass = 'hunter1';
 
     const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
     fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
