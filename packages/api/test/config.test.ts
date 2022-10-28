@@ -41,8 +41,6 @@ describe('#config()', function () {
         .catch(err => {
           expect(err.message).to.equal('The operation was aborted.');
         });
-
-      fetchMock.restore();
     });
 
     it('should override the default `fetch` timeout and return if request is quick', async function () {
@@ -53,8 +51,6 @@ describe('#config()', function () {
       await sdk.deletePet({ petId }).then(({ data }) => {
         expect(data).to.deep.equal(response);
       });
-
-      fetchMock.restore();
     });
   });
 });
