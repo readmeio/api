@@ -22,27 +22,27 @@ jobs:
   # APIs that start with a number and go up to `ay*`.
   smoketest:
     name: "([0-9]|a[a-y])"
-    needs: job1
+    needs: build
     steps:
       - run: npm run test:smoke -- -- --regex="^([0-9]|a[a-y])"
 
   # APIs that start with `az` (generally just Azure APIs).
   smoketest:
     name: "az*"
-    needs: job1
+    needs: build
     steps:
       - run: npm run test:smoke -- -- --regex="^az"
 
   # APIs from B to Z except if they start with `go`.
   smoketest:
     name: "([b-f]|g[^o]|[h-z])"
-    needs: job1
+    needs: build
     steps:
       - run: npm run test:smoke -- -- --regex="^([b-f]|g[^o]|[h-z])"
 
   # APIs start with `go` (generally all Google APIs).
   smoketest:
     name: "go*"
-    needs: job1
+    needs: build
     steps:
       - run: npm run test:smoke -- -- --regex="^go"
