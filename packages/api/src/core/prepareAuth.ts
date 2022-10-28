@@ -49,9 +49,13 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
       throw new Error('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
     }
 
+    // If we have two auth keys for Basic Auth but Basic isn't a usable security scheme (maybe it's
+    // part of an AND or auth configuration -- which we don't support) then we need to error out.
     const schemes = preparedSecurity.Basic.filter(s => usableSecuritySchemes.includes(s._key));
     if (!schemes.length) {
-      throw new Error('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+      throw new Error(
+        'Credentials for Basic Authentication were supplied but this operation requires another form of auth in that case, which this library does not yet support. This operation does, however, allow supplying a single auth token.'
+      );
     }
 
     const scheme = schemes.shift();

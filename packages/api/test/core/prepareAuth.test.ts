@@ -206,7 +206,7 @@ describe('#prepareAuth()', function () {
 
         expect(() => {
           prepareAuth(authKeys, operation);
-        }).to.throw('Multiple auth tokens were supplied for this endpoint but only a single token is needed.');
+        }).to.throw(/Credentials for Basic Authentication were supplied/);
       });
 
       it('should support supplying username+password credentials to an operation that allows OAuth 2 or Basic', function () {
