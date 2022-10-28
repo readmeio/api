@@ -1,4 +1,4 @@
-name: CI
+name: smoketest
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: "block #${{ matrix.chunk }}"
+    name: "chunk #${{ matrix.chunk }}"
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
     strategy:

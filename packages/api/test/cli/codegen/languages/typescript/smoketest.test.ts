@@ -64,7 +64,7 @@ describe('typescript smoketest', function () {
   });
 
   dataset.forEach(({ name, url }) => {
-    it.skip(`should generate an SDK for \`${name}\``, async function () {
+    it(`should generate an SDK for \`${name}\``, async function () {
       const spec = await new OASNormalize(url).validate(true).catch(err => {
         // If this fails for any reason we should know. Catching and re-throwing here for the sake
         // of test verbosity.
