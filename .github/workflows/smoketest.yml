@@ -10,7 +10,6 @@ jobs:
   test:
     name: "chunk #${{ matrix.chunk }}"
     runs-on: ubuntu-latest
-    # if: ${{ github.actor != 'dependabot[bot]' }}
     strategy:
       matrix:
         # Breaking this suite up into 15 chunks ends up running about ~120 APIs each. Doing this
