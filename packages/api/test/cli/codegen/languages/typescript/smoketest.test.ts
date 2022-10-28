@@ -5,8 +5,8 @@ import OASNormalize from 'oas-normalize';
 import TSGenerator from '../../../../../src/cli/codegen/languages/typescript';
 import realWorldAPIs from '../../../../datasets/real-world-apis.json';
 
-const MAX_APIS_TO_TEST = 1000; // 200;
-const START_AT_INDEX = 1000;
+const MAX_APIS_TO_TEST = 1; // 200;
+const START_AT_INDEX = 0;
 
 // These APIs don't have any schemas so they should only be generating an `index.ts`.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];
