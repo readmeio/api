@@ -59,7 +59,7 @@ describe('typescript smoketest', function () {
   beforeEach(function () {
     // Test timeout is huge here because CI can be slow, some API definitions are huge can take a
     // while to download + codegen.
-    this.currentTest.timeout(120000); // 2 minutes
+    this.currentTest.timeout(180000); // 3 minutes
     this.currentTest.slow(5000);
   });
 
