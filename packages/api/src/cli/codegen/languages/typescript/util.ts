@@ -25,6 +25,7 @@ const RESERVED_WORDS = [
   'class',
   'const',
   'continue',
+  'constructor',
   'debugger',
   'default',
   'delete',
