@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+on: [push]
 
 jobs:
   linting:
@@ -23,7 +19,7 @@ jobs:
       - name: Insensitive language check for Markdown docs
         run: npm run alex
 
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,9 +31,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -58,3 +52,24 @@ jobs:
 
       - name: Run tests
         run: npm test --ignore-scripts
+
+  smoketest:
+    runs-on: ubuntu-latest
+    # if: ${{ github.actor != 'dependabot[bot]' }}
+    strategy:
+      matrix:
+        regex:
+          - "([0-9]|a[a-y])" # Starts with a number and goes up to `ay*`
+          - "^az" # Starts with `az` (generally just Azure APIs)
+          - "^([b-f]|g[^o]|[h-z])" # Goes from B to Z except if they start with `go`
+          - "^go" # Starts with `go` (generally all Google APIs)
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:smoke -- -- --regex="${{ matrix.regex }}"
