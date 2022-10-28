@@ -49,9 +49,7 @@ describe('typescript smoketest', function () {
         return;
       }
 
-      it(`should generate an SDK for \`${name}\``, function () {
-        // smoketestAPI(url, name)
-      });
+      it.skip(`should generate an SDK for \`${name}\``, smoketestAPI(url, name));
     });
 
     return;

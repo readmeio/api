@@ -7,11 +7,17 @@ on:
   pull_request:
 
 jobs:
-  # APIs that start with a number and go up to `ay*`.
-  "smoketest_([0-9]|a[a-y])":
-    name: "([0-9]|a[a-y])"
+  smoketest:
     runs-on: ubuntu-latest
     # if: ${{ github.actor != 'dependabot[bot]' }}
+    strategy:
+      matrix:
+        regex:
+          - "([0-9]|a[a-y])" # Starts with a number and goes up to `ay*`
+          - "^az" # Starts with `az` (generally just Azure APIs)
+          - "^([b-f]|g[^o]|[h-z])" # Goes from B to Z except if they start with `go`
+          - "^go" # Starts with `go` (generally all Google APIs)
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -20,49 +26,4 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npm run test:smoke -- -- --regex="^([0-9]|a[a-y])"
-
-  # APIs that start with `az` (generally just Azure APIs).
-  "smoketest_az*":
-    name: "az*"
-    runs-on: ubuntu-latest
-    # if: ${{ github.actor != 'dependabot[bot]' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test:smoke -- -- --regex="^az"
-
-  # APIs from B to Z except if they start with `go`.
-  "smoketest_([b-f]|g[^o]|[h-z])":
-    name: "([b-f]|g[^o]|[h-z])"
-    runs-on: ubuntu-latest
-    # if: ${{ github.actor != 'dependabot[bot]' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test:smoke -- -- --regex="^([b-f]|g[^o]|[h-z])"
-
-  # APIs start with `go` (generally all Google APIs).
-  "smoketest_go*":
-    name: "go*"
-    runs-on: ubuntu-latest
-    # if: ${{ github.actor != 'dependabot[bot]' }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test:smoke -- -- --regex="^go"
+      - run: npm run test:smoke -- -- --regex="${{ matrix.regex }}"
