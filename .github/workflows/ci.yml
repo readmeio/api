@@ -27,6 +27,7 @@ jobs:
           - 14
           - 16
           - 18
+          - 19
 
     steps:
       - uses: actions/checkout@v3
@@ -37,13 +38,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       # There's a bug in npm@8 where, if when using Workspaces, you to install a local package that
-      # isn't stored in  `packages/` npm will throw an exception. This affects all of our local
+      # isn't stored in `packages/` npm will throw an exception. This affects all of our local
       # codegen tests that attempt to test package installation. Hopefully there'll be a fix for
       # this at some point, but in the meantime we should run all tests with npm@7.
       #
       # https://github.com/npm/cli/issues/3847
       - name: Install npm@7
-        #if: matrix.node-version == '14'
         run: npm install -g npm@7
 
       - name: Install dependencies
@@ -54,3 +54,22 @@ jobs:
 
       - name: Run tests
         run: npm test --ignore-scripts
+
+  smoketest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 16
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test:smoke
