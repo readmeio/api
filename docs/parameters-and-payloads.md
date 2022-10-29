@@ -11,10 +11,10 @@ When supplying parameters and/or request body payloads to an API request, you do
 For example, if you wanted to make a GET request:
 
 ```js
-sdk.showPetById({ petId: 1234 }).then(...)
+sdk.showPetById({ id: 1234 }).then(...)
 ```
 
-Since `petId` matches up with the `petId` path parameter, the SDK here will issue a GET request against `/pets/1234`.
+Since `id` matches up with the `id` path parameter, the SDK here will issue a GET request against `/pets/1234`.
 
 What about a POST request?
 
@@ -27,7 +27,7 @@ Since `name` here would correspond on `createPets` to request body payload, this
 What about operations that require both? Well you can mix them too!
 
 ```js
-sdk.updatePet({ name: 'Buster 2' }, { petId: 1234 }).then(...)
+sdk.updatePet({ name: 'Buster 2' }, { id: 1234 }).then(...)
 ```
 
 Since we've supplied two objects here, the SDK automatically knows that you're supplying both a `body` and `metadata`, and can make a PUT request against `/pets/1234` for you.

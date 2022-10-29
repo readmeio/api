@@ -72,7 +72,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     super(spec, specPath, identifier);
 
     this.requiredPackages = {
-      'api@beta': {
+      api: {
         reason: "Required for the `api/dist/core` library that the codegen'd SDK uses for making requests.",
         url: 'https://npm.im/api',
       },

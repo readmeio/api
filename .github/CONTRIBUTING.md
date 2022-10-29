@@ -53,8 +53,8 @@ const sdk = require('api')(
 );
 
 sdk
-  .get('/anything', { foo: ['bar', 'baz'], baz: 'abc', key: 'value' })
-  .then(res => console.log(res))
+  .getAnything({ foo: ['bar', 'baz'], baz: 'abc', key: 'value' })
+  .then(({ data }) => console.log(data))
   .catch(err => console.error(err));
 ```
 
