@@ -17,7 +17,7 @@
 - [Usage](https://api.readme.dev/docs/usage)
   - [Authentication](https://api.readme.dev/docs/authentication)
   - [Parameters and Payloads](https://api.readme.dev/docs/parameters-and-payloads)
-  - [Making requests](https://api.readme.dev/docs/http-requests)
+  - [Making requests](https://api.readme.dev/docs/making-requests)
   - [Server configurations](https://api.readme.dev/docs/server-configurations)
 - [How does it work?](https://api.readme.dev/docs/how-it-works)
 - [FAQ](https://api.readme.dev/docs/faq)
