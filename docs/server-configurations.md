@@ -11,7 +11,7 @@ sdk.server('https://{region}.api.example.com/{basePath}', {
   basePath: 'v14',
 });
 
-sdk.get('/pets').then(...)
+sdk.getPets().then(...)
 ```
 
 When your request is executed, it will be made to `https://eu.api.example.com/v14/pets`. Alternatively if you don't want to deal with URL templates, you can opt to pass a full URL in instead:

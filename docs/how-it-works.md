@@ -93,7 +93,7 @@ The `hash` within this is an `md5` of the full OpenAPI definition that we retrie
 
 If for some reason this file gets lost, or the accessor you're supplying to `api` changes for whatever reason `api` will re-retrieve the OpenAPI definition at run-time.
 
-```
+```json
 {
   "d6b93e95fa1a7efdce6d1406dc599923": {
     "hash": "cbb821db3609f8983ce1a372dadd122c",
@@ -113,7 +113,7 @@ const sdk = require('api')('https://raw.githubusercontent.com/readmeio/oas-examp
   cacheDir: './path/to/my/custom/cache/dir',
 });
 
-sdk.listPets().then(res => {
-  console.log(`My pets name is ${res[0].name}!`);
+sdk.listPets().then(({ data })) => {
+  console.log(`My pets name is ${data[0].name}!`);
 });
 ```

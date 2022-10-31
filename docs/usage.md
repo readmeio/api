@@ -23,8 +23,8 @@ Once you have your library generated and installed you can use your SDK like you
 ```js
 const petstore = require('@api/petstore');
 
-petstore.listPets().then(res => {
-  console.log(`My pets name is ${res[0].name}!`);
+petstore.listPets().then(({ data, status, headers, res }) => {
+  console.log(`My pets name is ${data[0].name}!`);
 });
 ```
 
@@ -39,8 +39,8 @@ If you don't wish to use code generation, you can load `api` and supply it an Op
 ```js
 const petstore = require('api')('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore.json');
 
-petstore.listPets().then(res => {
-  console.log(`My pets name is ${res[0].name}!`);
+petstore.listPets().then(({ data, status, headers, res }) => {
+  console.log(`My pets name is ${data[0].name}!`);
 });
 ```
 
