@@ -35,4 +35,6 @@ petstore.listPets().then(({ data }) => {
 
 If you were using the `.config({ parseResponse: false })` option, that option has been removed in favor of this new resolved data shape where we return `data`, `status`, `headers`, and `res` to you. You can see documentation on those [here](https://api.readme.dev/docs/making-requests).
 
+Additionally if you have any instances where you're using HTTP method accessors like `petstore.get('/pets')`, `api@5` longer supports these and you will need to instead to use the operation ID for the operation you're accessing instead (i.e. `petstore.getPets()`). Consult [Making Requests](https://api.readme.dev/docs/making-requests) for more details.
+
 And if you have any trouble or need help we're more than happy to give you an assist. https://github.com/readmeio/api/issues
