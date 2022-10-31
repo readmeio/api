@@ -4,7 +4,7 @@ const path = require('path');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { transcludeFile } = require('hercule/promises');
 
-// All Markdown files located at within the `docs` directory.
+// All Markdown files are located within the `docs` directory.
 const files = fs
   .readdirSync('docs', { withFileTypes: true })
   .filter(fileHandle => fileHandle.isFile())
