@@ -39,7 +39,7 @@ await petstore.deletePet({ id: petId }).catch(({ status, data }) => {
 });
 ```
 
-Or, alternatively if you'd like to check for an error other than `FetchError` you can do that too:
+Alternatively if you'd like to check for an error other than `FetchError` (i.e., an error with the SDK itself), you can do that too:
 
 ```js
 await petstore.deletePet({ id: petId }).catch(err => {
