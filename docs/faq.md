@@ -41,7 +41,7 @@ Not yet! This is something we're thinking about in the future.
 
 ### Does this support fetching OpenAPI definitions that require authentication to download?
 
-Not yet! The URL that you give the module must be publicly accessible. If it isn't you can download it to your computer or server and then use the absolute path to that file instead.
+Not yet! The URL that you give the module must be publicly accessible. If it isn't, you can download it to your computer or server and then use the absolute path to that file instead.
 
 ```sh
 $ npx api install ./path/to/downloaded.json
