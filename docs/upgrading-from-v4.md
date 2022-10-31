@@ -33,6 +33,6 @@ petstore.listPets().then(({ data }) => {
 });
 ```
 
-If you were using the `.config({ parseResponse: false })` option, that option has been removed in favor of this new resovled datashape where we return `data`, `status`, `headers`, and `res` to you. You can see documentation on those [here](https://api.readme.dev/docs/making-requests).
+If you were using the `.config({ parseResponse: false })` option, that option has been removed in favor of this new resolved data shape where we return `data`, `status`, `headers`, and `res` to you. You can see documentation on those [here](https://api.readme.dev/docs/making-requests).
 
 And if you have any trouble or need help we're more than happy to give you an assist. https://github.com/readmeio/api/issues
