@@ -54,7 +54,7 @@ await petstore.deletePet({ id: petId }).catch(err => {
 
 ## Request Timeouts
 
-By default the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) generally has a default timeout of 30 seconds. If you wish to configure this you can with the `.config()` method:
+By default, the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) generally has a default timeout of 30 seconds. If you wish to configure this, you can with the `.config()` method:
 
 ```js
 petstore.config({ timeout: 100 });
