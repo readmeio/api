@@ -3,7 +3,13 @@ title: Upgrading from v4
 category: 5d4c940cae4e610060475769
 ---
 
-If you're upgrading from v4 of `api`, welcome, a lot's changed! With the introduction of v5 `api` now offers a complete [code generation offering](https://api.readme.dev/docs/usage#code-generation), complete with full TypeScript types (generated off your OpenAPI definition) and able to export to TypeScript, CJS, and ESM compiled filesl, and it can be used in a browser. It's neat, and you should check it out. 🥺
+If you're upgrading from v4 of `api`, welcome 👋 a lot's changed! With the introduction of v5, `api` now offers a complete [code generation offering](https://api.readme.dev/docs/usage#code-generation), complete with:
+
+- Full TypeScript types (generated off your OpenAPI definition) 📖
+- Ability to export to TypeScript, CJS, and ESM compiled files 📦
+- Ability to run your SDK within a browser 🌍
+
+It's neat, and you should check it out. 🥺
 
 If you'd like to continue using the [dynamic syntax](https://api.readme.dev/docs/usage#dynamically) you will need to update how you're handling promises that are returned from API requests, but it shouldn't be too bad.
 
