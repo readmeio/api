@@ -69,7 +69,7 @@ await petstore
   });
 ```
 
-By supplying a timeout to `.config({ timeout })`, in milliseconds, `api` will automatically initialize an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) to handle timing out your request if it takes longer than you wish. Please note, however, that if you set a custom timeout the error that is thrown will be an instance of `AbortError`, **not** `FetchError`.
+By supplying a timeout to `.config({ timeout })`, in milliseconds, `api` will automatically initialize an [AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) to abort your request if it takes longer than your `timeout` value. Please note that if you set a custom timeout, the error that is thrown will be an instance of `AbortError`, **not** `FetchError`.
 
 > 📘
 >
