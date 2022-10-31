@@ -5,7 +5,7 @@ category: 62cc6ce22b8b6601da6cb12d
 
 If the API you're using doesn't have any documented [operation IDs](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#user-content-operationid), `api` will generate some for you to use.
 
-If you're using code generation these will be immediately available and to see in your generated library, however due to the nature of the [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) architecture in the dynamic version of the library this isn't the case. For these cases you can check out the documentation for the API you're using to see.
+If you're using code generation, these will be immediately available to use in your generated library. However, due to the nature of the [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) architecture in the dynamic version of the library, this isn't the case for dynamically generated libraries. For these cases, you can check out the documentation for the API you're using.
 
 > ⚠️
 >
