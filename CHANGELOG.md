@@ -1,3 +1,10 @@
+## <small>5.0.1 (2022-10-31)</small>
+
+* fix: bug where `@api/identifier` wasn't being installed properly (#557) ([20228d2](https://github.com/readmeio/api/commit/20228d2)), closes [#557](https://github.com/readmeio/api/issues/557)
+* docs: tweaks to the v4 upgrade docs ([f752c66](https://github.com/readmeio/api/commit/f752c66))
+
+
+
 ## 5.0.0 (2022-10-31)
 
 * docs: adding a callout about v5 not being out yet ([c36fdb1](https://github.com/readmeio/api/commit/c36fdb1))
