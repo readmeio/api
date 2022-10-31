@@ -30,7 +30,7 @@ Here, the data returned in the promise from `listPets` is an object containing t
 
 ## Error Handling
 
-For every response that is returned with an HTTP status code between 400 and 599 `api` will throw a custom error: `FetchError`. Identical to how responses are returned from successful requests, instances `FetchError` can be destructured to obtain the same data. For example:
+For every response that is returned with an HTTP status code between 400 and 599, `api` will throw a custom error: `FetchError`. Identical to how responses are returned from successful requests, instances of `FetchError` can be destructured to obtain the same data. For example:
 
 ```js
 await petstore.deletePet({ id: petId }).catch(({ status, data }) => {
