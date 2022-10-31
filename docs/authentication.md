@@ -14,7 +14,7 @@ petstore.listPets().then(({ data }) => {
 });
 ```
 
-With the exception of OpenID and MutualTLS it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
+With the exception of OpenID and Mutual TLS it supports all forms of authentication supported by the OpenAPI specification! Supply `.auth()` with your auth credentials and it'll magically figure out how to use it according to the API you're using. 🧙‍♀️
 
 For example:
 
