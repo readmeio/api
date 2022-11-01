@@ -19,6 +19,6 @@ jobs:
         run: npm run build-docs
 
       - name: Sync docs to ReadMe
-        uses: readmeio/rdme@7.5.0
+        uses: readmeio/rdme@8.0.0
         with:
           rdme: docs ./dist/docs --key=${{ secrets.README_API_KEY }} --version=1.0
