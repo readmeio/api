@@ -71,7 +71,7 @@ describe('typescript', function () {
       await ts.installer(storage, { logger, dryRun: true });
 
       expect(logger).to.be.calledWith('npm install --save --dry-run api json-schema-to-ts oas');
-      expect(logger).to.be.calledWith('npm install --save --dry-run'); // This is the `@api/petstore` install.
+      expect(logger).to.be.calledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
     });
   });
 
