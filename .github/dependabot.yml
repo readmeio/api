@@ -36,6 +36,9 @@ updates:
       - dependency-name: figures
         versions:
           - ">= 4"
+      - dependency-name: find-cache-dir
+        versions:
+          - ">= 4"
       - dependency-name: form-data-encoder
         versions:
           - ">= 2"
