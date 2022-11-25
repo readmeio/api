@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

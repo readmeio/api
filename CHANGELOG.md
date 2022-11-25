@@ -1,3 +1,10 @@
+## <small>5.0.2 (2022-11-25)</small>
+
+* fix: installs not actually installing the api (#562) ([909a9fd](https://github.com/readmeio/api/commit/909a9fd)), closes [#562](https://github.com/readmeio/api/issues/562)
+* chore(deps): bump readmeio/rdme from 7.5.0 to 8.0.0 (#558) ([08d3ac5](https://github.com/readmeio/api/commit/08d3ac5)), closes [#558](https://github.com/readmeio/api/issues/558)
+
+
+
 ## <small>5.0.1 (2022-10-31)</small>
 
 * fix: bug where `@api/identifier` wasn't being installed properly (#557) ([20228d2](https://github.com/readmeio/api/commit/20228d2)), closes [#557](https://github.com/readmeio/api/issues/557)
