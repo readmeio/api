@@ -1,6 +1,9 @@
 /* eslint-disable import/first */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
+import { promises as fs } from 'fs';
+import path from 'path';
+
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import mockRequire from 'mock-require';
@@ -69,6 +72,17 @@ describe('typescript', function () {
 
       const ts = new TSGenerator(oas, './openapi.json', 'petstore', { compilerTarget: 'cjs' });
       await ts.installer(storage, { logger, dryRun: true });
+
+      const pkgJson = await fs
+        .readFile(path.join(storage.getIdentifierStorageDir(), 'package.json'), 'utf-8')
+        .then(JSON.parse);
+
+      expect(pkgJson).to.deep.equal({
+        name: '@api/petstore',
+        version: '1.0.0',
+        main: './index.ts',
+        types: './index.d.ts',
+      });
 
       expect(logger).to.be.calledWith('npm install --save --dry-run api json-schema-to-ts oas');
       expect(logger).to.be.calledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
