@@ -4,12 +4,14 @@ import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, SchemaObject } from 'oas/dist/rmoas.types';
 import type { ClassDeclaration, JSDocStructure, OptionalKind, ParameterDeclarationStructure } from 'ts-morph';
+import type { PackageJson } from 'type-fest';
 
 import fs from 'fs';
 import path from 'path';
 
 import execa from 'execa';
 import setWith from 'lodash.setwith';
+import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import logger from '../../logger';
@@ -119,8 +121,17 @@ export default class TSGenerator extends CodeGeneratorLanguage {
   async installer(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    const pkg = {
+    const info = this.spec.getDefinition().info;
+    let pkgVersion = semver.coerce(info.version);
+    if (!pkgVersion) {
+      // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
+      // handle it properly so we need to fallback to something it can.
+      pkgVersion = semver.coerce('0.0.0');
+    }
+
+    const pkg: PackageJson = {
       name: `@api/${storage.identifier}`,
+      version: pkgVersion.version,
       main: `./index.${this.outputJS ? 'js' : 'ts'}`,
       types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
     };
