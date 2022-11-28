@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { transcludeFile } = require('hercule/promises');
+const readme = fs.readFileSync('README.md', 'utf-8');
 
 // All Markdown files are located within the `docs` directory.
 const files = fs
@@ -15,9 +14,12 @@ const files = fs
 fs.rmSync('dist', { force: true, recursive: true });
 fs.mkdirSync('dist/docs', { recursive: true });
 
-// Populates any partials using hercule and then writes output to `dist` folder.
 files.forEach(fileName => {
-  transcludeFile(fileName).then(({ output }) => {
-    fs.writeFileSync(`dist/${fileName}`, output, 'utf-8');
-  });
+  let output = fs.readFileSync(fileName, 'utf-8');
+
+  if (output.includes('{{README}}')) {
+    output = output.replace('{{README}}', readme);
+  }
+
+  fs.writeFileSync(`dist/${fileName}`, output, 'utf-8');
 });
