@@ -63,7 +63,7 @@
     "node-abort-controller": "^3.0.1",
     "oas": "^20.0.0",
     "ora": "^5.4.1",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.0",
     "prompts": "^2.4.2",
     "remove-undefined-objects": "^2.0.1",
     "ssri": "^10.0.0",
