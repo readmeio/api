@@ -1,3 +1,14 @@
+## <small>5.0.3 (2022-11-28)</small>
+
+* test: refreshing the unit test dataset ([4dad793](https://github.com/readmeio/api/commit/4dad793))
+* chore(deps-dev): bump husky from 8.0.1 to 8.0.2 (#568) ([113e898](https://github.com/readmeio/api/commit/113e898)), closes [#568](https://github.com/readmeio/api/issues/568)
+* chore(deps): bump readmeio/rdme from 8.0.0 to 8.1.1 (#573) ([6f96efa](https://github.com/readmeio/api/commit/6f96efa)), closes [#573](https://github.com/readmeio/api/issues/573)
+* chore(deps): bumping out of date deps (#575) ([ae55a13](https://github.com/readmeio/api/commit/ae55a13)), closes [#575](https://github.com/readmeio/api/issues/575)
+* fix: compatibility with yarn installs where `package.json` needs `version` (#574) ([0913923](https://github.com/readmeio/api/commit/0913923)), closes [#574](https://github.com/readmeio/api/issues/574)
+* ci: disabling updates to `find-cache-dir` as it's esm-only now ([e21a975](https://github.com/readmeio/api/commit/e21a975))
+
+
+
 ## <small>5.0.2 (2022-11-25)</small>
 
 * fix: installs not actually installing the api (#562) ([909a9fd](https://github.com/readmeio/api/commit/909a9fd)), closes [#562](https://github.com/readmeio/api/issues/562)
