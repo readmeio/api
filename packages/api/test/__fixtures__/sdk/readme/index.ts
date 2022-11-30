@@ -74,7 +74,7 @@ class SDK {
   }
 
   /**
-   * Get an API definition file that's been uploaded to ReadMe
+   * Get an API definition file that's been uploaded to ReadMe.
    *
    * @summary Retrieve an entry from the API Registry
    */
@@ -88,7 +88,7 @@ class SDK {
   }
 
   /**
-   * Get API specification metadata
+   * Get API specification metadata.
    *
    * @summary Get metadata
    */
@@ -106,7 +106,7 @@ class SDK {
 
   /**
    * Upload an API specification to ReadMe. Or, to use a newer solution see
-   * https://docs.readme.com/docs/automatically-sync-api-specification-with-github
+   * https://docs.readme.com/docs/automatically-sync-api-specification-with-github.
    *
    * @summary Upload specification
    */
@@ -123,7 +123,7 @@ class SDK {
   }
 
   /**
-   * Update an API specification in ReadMe
+   * Update an API specification in ReadMe.
    *
    * @summary Update specification
    */
@@ -140,7 +140,7 @@ class SDK {
   }
 
   /**
-   * Delete an API specification in ReadMe
+   * Delete an API specification in ReadMe.
    *
    * @summary Delete specification
    */
@@ -175,7 +175,7 @@ class SDK {
   }
 
   /**
-   * Returns all the categories for a specified version
+   * Returns all the categories for a specified version.
    *
    * @summary Get all categories
    */
@@ -186,7 +186,7 @@ class SDK {
   }
 
   /**
-   * Create a new category inside of this project
+   * Create a new category inside of this project.
    *
    * @summary Create category
    */
@@ -198,7 +198,7 @@ class SDK {
   }
 
   /**
-   * Returns the category with this slug
+   * Returns the category with this slug.
    *
    * @summary Get category
    */
@@ -236,7 +236,7 @@ class SDK {
   }
 
   /**
-   * Returns the docs and children docs within this category
+   * Returns the docs and children docs within this category.
    *
    * @summary Get docs for category
    */
@@ -247,7 +247,7 @@ class SDK {
   }
 
   /**
-   * Returns a list of changelogs associated with the project API key
+   * Returns a list of changelogs.
    *
    * @summary Get changelogs
    */
@@ -258,7 +258,7 @@ class SDK {
   }
 
   /**
-   * Create a new changelog inside of this project
+   * Create a new changelog entry.
    *
    * @summary Create changelog
    */
@@ -267,7 +267,7 @@ class SDK {
   }
 
   /**
-   * Returns the changelog with this slug
+   * Returns the changelog with this slug.
    *
    * @summary Get changelog
    */
@@ -276,7 +276,7 @@ class SDK {
   }
 
   /**
-   * Update a changelog with this slug
+   * Update a changelog with this slug.
    *
    * @summary Update changelog
    */
@@ -288,7 +288,7 @@ class SDK {
   }
 
   /**
-   * Delete the changelog with this slug
+   * Delete the changelog with this slug.
    *
    * @summary Delete changelog
    */
@@ -299,7 +299,7 @@ class SDK {
   }
 
   /**
-   * Returns a list of custom pages associated with the project API key
+   * Returns a list of custom pages.
    *
    * @summary Get custom pages
    */
@@ -314,7 +314,7 @@ class SDK {
   }
 
   /**
-   * Create a new custom page inside of this project
+   * Create a new custom page inside of this project.
    *
    * @summary Create custom page
    */
@@ -329,7 +329,7 @@ class SDK {
   }
 
   /**
-   * Returns the custom page with this slug
+   * Returns the custom page with this slug.
    *
    * @summary Get custom page
    */
@@ -344,7 +344,7 @@ class SDK {
   }
 
   /**
-   * Update a custom page with this slug
+   * Update a custom page with this slug.
    *
    * @summary Update custom page
    */
@@ -361,7 +361,7 @@ class SDK {
   }
 
   /**
-   * Delete the custom page with this slug
+   * Delete the custom page with this slug.
    *
    * @summary Delete custom page
    */
@@ -376,7 +376,7 @@ class SDK {
   }
 
   /**
-   * Returns the doc with this slug
+   * Returns the doc with this slug.
    *
    * @summary Get doc
    */
@@ -391,7 +391,7 @@ class SDK {
   }
 
   /**
-   * Update a doc with this slug
+   * Update a doc with this slug.
    *
    * @summary Update doc
    */
@@ -408,7 +408,7 @@ class SDK {
   }
 
   /**
-   * Delete the doc with this slug
+   * Delete the doc with this slug.
    *
    * @summary Delete doc
    */
@@ -423,7 +423,24 @@ class SDK {
   }
 
   /**
-   * Create a new doc inside of this project
+   * This is intended for use by enterprise users with staging enabled. This endpoint will
+   * return the live version of your document, whereas the standard endpoint will always
+   * return staging.
+   *
+   * @summary Get production doc
+   */
+  getProductionDoc(
+    metadata: types.GetProductionDocMetadataParam
+  ): Promise<
+    | FetchResponse<401, types.GetProductionDocResponse401>
+    | FetchResponse<403, types.GetProductionDocResponse403>
+    | FetchResponse<404, types.ErrorDocNotfound>
+  > {
+    return this.core.fetch('/docs/{slug}/production', 'get', metadata);
+  }
+
+  /**
+   * Create a new doc inside of this project.
    *
    * @summary Create doc
    */
@@ -439,7 +456,7 @@ class SDK {
   }
 
   /**
-   * Returns all docs that match the search
+   * Returns all docs that match the search.
    *
    * @summary Search docs
    */
@@ -453,7 +470,7 @@ class SDK {
   }
 
   /**
-   * Returns with all of the error page types for this project
+   * Returns with all of the error page types for this project.
    *
    * @summary Get errors
    */
@@ -464,7 +481,7 @@ class SDK {
   }
 
   /**
-   * Returns project data for API key
+   * Returns project data for the API key.
    *
    * @summary Get metadata about the current project
    */
@@ -477,7 +494,7 @@ class SDK {
   }
 
   /**
-   * Retrieve a list of versions associated with a project API key
+   * Retrieve a list of versions associated with a project API key.
    *
    * @summary Get versions
    */
@@ -489,7 +506,7 @@ class SDK {
   }
 
   /**
-   * Create a new version
+   * Create a new version.
    *
    * @summary Create version
    */
@@ -505,7 +522,7 @@ class SDK {
   }
 
   /**
-   * Returns the version with this version ID
+   * Returns the version with this version ID.
    *
    * @summary Get version
    */
@@ -520,7 +537,7 @@ class SDK {
   }
 
   /**
-   * Update an existing version
+   * Update an existing version.
    *
    * @summary Update version
    */
@@ -605,7 +622,9 @@ export type {
   ErrorDocNotfound,
   ErrorEndpointNotfound,
   ErrorInternalError,
+  ErrorProjectNeedsstaging,
   ErrorProjectNotfound,
+  ErrorRegistryInvalid,
   ErrorRegistryNotfound,
   ErrorSpecFileEmpty,
   ErrorSpecIdDuplicate,
@@ -650,6 +669,9 @@ export type {
   GetErrorsResponse401,
   GetErrorsResponse403,
   GetOpenRolesResponse200,
+  GetProductionDocMetadataParam,
+  GetProductionDocResponse401,
+  GetProductionDocResponse403,
   GetProjectResponse401,
   GetProjectResponse403,
   GetVersionMetadataParam,
