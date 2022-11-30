@@ -84,7 +84,7 @@ describe('typescript', function () {
         types: './index.d.ts',
       });
 
-      expect(logger).to.be.calledWith('npm install --save --dry-run api json-schema-to-ts oas');
+      expect(logger).to.be.calledWith('npm install --save --dry-run api json-schema-to-ts@beta oas');
       expect(logger).to.be.calledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
     });
   });

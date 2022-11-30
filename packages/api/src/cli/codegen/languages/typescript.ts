@@ -78,7 +78,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         reason: "Required for the `api/dist/core` library that the codegen'd SDK uses for making requests.",
         url: 'https://npm.im/api',
       },
-      'json-schema-to-ts': {
+      'json-schema-to-ts@beta': {
         reason: 'Required for TypeScript type handling.',
         url: 'https://npm.im/json-schema-to-ts',
       },

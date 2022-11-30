@@ -61,7 +61,9 @@ export type ErrorDocInvalid = FromSchema<typeof schemas.ErrorDocInvalid>;
 export type ErrorDocNotfound = FromSchema<typeof schemas.ErrorDocNotfound>;
 export type ErrorEndpointNotfound = FromSchema<typeof schemas.ErrorEndpointNotfound>;
 export type ErrorInternalError = FromSchema<typeof schemas.ErrorInternalError>;
+export type ErrorProjectNeedsstaging = FromSchema<typeof schemas.ErrorProjectNeedsstaging>;
 export type ErrorProjectNotfound = FromSchema<typeof schemas.ErrorProjectNotfound>;
+export type ErrorRegistryInvalid = FromSchema<typeof schemas.ErrorRegistryInvalid>;
 export type ErrorRegistryNotfound = FromSchema<typeof schemas.ErrorRegistryNotfound>;
 export type ErrorSpecFileEmpty = FromSchema<typeof schemas.ErrorSpecFileEmpty>;
 export type ErrorSpecIdDuplicate = FromSchema<typeof schemas.ErrorSpecIdDuplicate>;
@@ -114,6 +116,13 @@ export type GetDocResponse403 = FromSchema<typeof schemas.GetDoc.response['403']
 export type GetErrorsResponse401 = FromSchema<typeof schemas.GetErrors.response['401']>;
 export type GetErrorsResponse403 = FromSchema<typeof schemas.GetErrors.response['403']>;
 export type GetOpenRolesResponse200 = FromSchema<typeof schemas.GetOpenRoles.response['200']>;
+export type GetProductionDocMetadataParam = FromSchema<typeof schemas.GetProductionDoc.metadata>;
+export type GetProductionDocResponse401 = FromSchema<
+  typeof schemas.GetProductionDoc.response['401']
+>;
+export type GetProductionDocResponse403 = FromSchema<
+  typeof schemas.GetProductionDoc.response['403']
+>;
 export type GetProjectResponse401 = FromSchema<typeof schemas.GetProject.response['401']>;
 export type GetProjectResponse403 = FromSchema<typeof schemas.GetProject.response['403']>;
 export type GetVersionMetadataParam = FromSchema<typeof schemas.GetVersion.metadata>;
