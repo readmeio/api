@@ -1,3 +1,9 @@
+## <small>5.0.4 (2022-11-30)</small>
+
+* chore(deps): bumping out of date deps across all packages (#576) ([1255dd6](https://github.com/readmeio/api/commit/1255dd6)), closes [#576](https://github.com/readmeio/api/issues/576)
+
+
+
 ## <small>5.0.3 (2022-11-28)</small>
 
 * test: refreshing the unit test dataset ([4dad793](https://github.com/readmeio/api/commit/4dad793))
