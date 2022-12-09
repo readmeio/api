@@ -177,8 +177,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
        * exported individually because TS has no way right now of allowing us to do
        * `export type * from './types'` on a non-named entry.
        *
-       * Types in the main entry point are only being exported for TS ouputs as JS users won't be
-       * able to use these them and it clashes with the default SDK export present.
+       * Types in the main entry point are only being exported for TS outputs as JS users won't be
+       * able to use them and it clashes with the default SDK export present.
        *
        * @see {@link https://github.com/microsoft/TypeScript/issues/37238}
        * @see {@link https://github.com/readmeio/api/issues/588}
