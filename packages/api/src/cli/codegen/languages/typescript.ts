@@ -413,7 +413,14 @@ sdk.server('https://eu.api.example.com/v14');`)
       ],
     });
 
-    sourceFile.addExportAssignment({ isExportEquals: false, expression: 'createSDK' });
+    sourceFile.addExportAssignment({
+      // Because CJS targets have `createSDK` exported with `module.exports`, but the TS type side
+      // of things to work right we need to set this as `export =`. Thankfully `ts-morph` will
+      // handle this accordingly and still create our JS file with `module.exports` and not
+      // `export =` -- only TS types will have this export style.
+      isExportEquals: this.compilerTarget === 'cjs' && this.outputJS,
+      expression: 'createSDK'
+    });
 
     return sourceFile;
   }

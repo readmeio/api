@@ -66,4 +66,4 @@ declare class SDK {
   ): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>>;
 }
 declare const createSDK: SDK;
-export default createSDK;
+export = createSDK;
