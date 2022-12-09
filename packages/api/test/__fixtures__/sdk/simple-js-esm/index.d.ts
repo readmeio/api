@@ -67,13 +67,3 @@ declare class SDK {
 }
 declare const createSDK: SDK;
 export default createSDK;
-export type {
-  ApiResponse,
-  Category,
-  FindPetsByStatusMetadataParam,
-  FindPetsByStatusResponse200,
-  Order,
-  Pet,
-  Tag,
-  User,
-} from './types';

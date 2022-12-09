@@ -172,22 +172,29 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       this.createSchemasFile();
       this.createTypesFile();
 
-      // Export all of our available types so they can be used in SDK implementations.
-      //
-      // We're exporting all of the types individually because TS has no way right now of allowing
-      // us to do `export type * from './types'` on a non-named entry.
-      //
-      // https://github.com/microsoft/TypeScript/issues/37238
-      const types = Array.from(this.types.keys());
-      types.sort();
+      /**
+       * Export all of our available types so they can be used in SDK implementations. Types are
+       * exported individually because TS has no way right now of allowing us to do
+       * `export type * from './types'` on a non-named entry.
+       *
+       * Types in the main entry point are only being exported for TS outputs as JS users won't be
+       * able to use them and it clashes with the default SDK export present.
+       *
+       * @see {@link https://github.com/microsoft/TypeScript/issues/37238}
+       * @see {@link https://github.com/readmeio/api/issues/588}
+       */
+      if (!this.outputJS) {
+        const types = Array.from(this.types.keys());
+        types.sort();
 
-      sdkSource.addExportDeclarations([
-        {
-          isTypeOnly: true,
-          namedExports: types,
-          moduleSpecifier: './types',
-        },
-      ]);
+        sdkSource.addExportDeclarations([
+          {
+            isTypeOnly: true,
+            namedExports: types,
+            moduleSpecifier: './types',
+          },
+        ]);
+      }
     } else {
       // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
       sdkSource
@@ -406,7 +413,14 @@ sdk.server('https://eu.api.example.com/v14');`)
       ],
     });
 
-    sourceFile.addExportAssignment({ isExportEquals: false, expression: 'createSDK' });
+    sourceFile.addExportAssignment({
+      // Because CJS targets have `createSDK` exported with `module.exports`, but the TS type side
+      // of things to work right we need to set this as `export =`. Thankfully `ts-morph` will
+      // handle this accordingly and still create our JS file with `module.exports` and not
+      // `export =` -- only TS types will have this export style.
+      isExportEquals: this.compilerTarget === 'cjs' && this.outputJS,
+      expression: 'createSDK',
+    });
 
     return sourceFile;
   }
