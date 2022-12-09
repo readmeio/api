@@ -1,3 +1,14 @@
+## <small>5.0.5 (2022-12-09)</small>
+
+* fix: resolving typing issues in JS codegen (#593) ([ab97a70](https://github.com/readmeio/api/commit/ab97a70)), closes [#593](https://github.com/readmeio/api/issues/593)
+* test: updating the smoketest dataset (#594) ([bf57315](https://github.com/readmeio/api/commit/bf57315)), closes [#594](https://github.com/readmeio/api/issues/594)
+* chore(deps-dev): bump eslint from 8.28.0 to 8.29.0 (#592) ([deaa5ba](https://github.com/readmeio/api/commit/deaa5ba)), closes [#592](https://github.com/readmeio/api/issues/592)
+* chore(deps): bump readmeio/rdme from 8.1.1 to 8.2.0 (#587) ([2c6144e](https://github.com/readmeio/api/commit/2c6144e)), closes [#587](https://github.com/readmeio/api/issues/587)
+* chore(deps): bumping out of date deps (#591) ([54754da](https://github.com/readmeio/api/commit/54754da)), closes [#591](https://github.com/readmeio/api/issues/591)
+* chore(deps): use rdme@v8 ([a730908](https://github.com/readmeio/api/commit/a730908))
+
+
+
 ## <small>5.0.4 (2022-11-30)</small>
 
 * chore(deps): bumping out of date deps across all packages (#576) ([1255dd6](https://github.com/readmeio/api/commit/1255dd6)), closes [#576](https://github.com/readmeio/api/issues/576)
