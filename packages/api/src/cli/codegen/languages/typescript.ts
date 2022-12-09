@@ -19,18 +19,18 @@ import CodeGeneratorLanguage from '../language';
 
 import { docblockEscape, formatter, generateTypeName, wordWrap } from './typescript/util';
 
-export type TSGeneratorOptions = {
+export interface TSGeneratorOptions {
   outputJS?: boolean;
   compilerTarget?: 'cjs' | 'esm';
-};
+}
 
-type OperationTypeHousing = {
+interface OperationTypeHousing {
   types: {
     params?: false | Record<'body' | 'formData' | 'metadata', string>;
     responses?: Record<string, string>;
   };
   operation: Operation;
-};
+}
 
 export default class TSGenerator extends CodeGeneratorLanguage {
   project: Project;

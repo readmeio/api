@@ -24,12 +24,12 @@ export interface ConfigOptions {
   timeout?: number;
 }
 
-export type FetchResponse<status, data> = {
+export interface FetchResponse<status, data> {
   data: data;
   status: status;
   headers: Headers;
   res: Response;
-};
+}
 
 // https://stackoverflow.com/a/39495173
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
