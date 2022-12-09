@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.9.0",
-    "@readme/openapi-parser": "^2.2.0",
+    "@readme/openapi-parser": "^2.4.0",
     "@types/content-type": "^1.1.5",
     "@types/stringify-object": "^4.0.1",
     "api": "file:../api",
@@ -44,7 +44,7 @@
     "nyc": "^15.1.0",
     "sinon": "^15.0.0",
     "sinon-chai": "^3.7.0",
-    "typescript": "^4.9.3"
+    "typescript": "^4.9.4"
   },
   "prettier": "@readme/eslint-config/prettier",
   "nyc": {
