@@ -253,16 +253,16 @@ export default class Storage {
   }
 }
 
-export type Lockfile = {
+export interface Lockfile {
   /**
    * The `api.json` schema version. This will only ever change if we introduce breaking changes to
    * this store.
    */
   version: '1.0';
   apis: LockfileAPI[];
-};
+}
 
-export type LockfileAPI = {
+export interface LockfileAPI {
   /**
    * A unique identifier of the API. This'll be used to do requires on `@api/<identifier>` and also
    * where the SDK code will be located in `.api/apis/<identifier>`.
@@ -294,4 +294,4 @@ export type LockfileAPI = {
    * @example 5.0.0
    */
   installerVersion: string;
-};
+}
