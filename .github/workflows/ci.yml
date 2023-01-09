@@ -30,7 +30,7 @@ jobs:
         node-version:
           - 14
           - 16
-          # - 18
+          - 18
           # - 19
 
     steps:
