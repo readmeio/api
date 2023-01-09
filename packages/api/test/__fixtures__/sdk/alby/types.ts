@@ -44,27 +44,27 @@ export type GetAccountsAccountIdAppsMetadataParam = FromSchema<
   typeof schemas.GetAccountsAccountIdApps.metadata
 >;
 export type GetAccountsAccountIdAppsResponse200 = FromSchema<
-  typeof schemas.GetAccountsAccountIdApps.response['200']
+  (typeof schemas.GetAccountsAccountIdApps.response)['200']
 >;
 export type GetAppsAppIdKeysMetadataParam = FromSchema<typeof schemas.GetAppsAppIdKeys.metadata>;
 export type GetAppsAppIdKeysResponse200 = FromSchema<
-  typeof schemas.GetAppsAppIdKeys.response['200']
+  (typeof schemas.GetAppsAppIdKeys.response)['200']
 >;
 export type GetAppsAppIdNamespacesMetadataParam = FromSchema<
   typeof schemas.GetAppsAppIdNamespaces.metadata
 >;
 export type GetAppsAppIdNamespacesResponse200 = FromSchema<
-  typeof schemas.GetAppsAppIdNamespaces.response['200']
+  (typeof schemas.GetAppsAppIdNamespaces.response)['200']
 >;
 export type GetAppsAppIdQueuesMetadataParam = FromSchema<
   typeof schemas.GetAppsAppIdQueues.metadata
 >;
 export type GetAppsAppIdQueuesResponse200 = FromSchema<
-  typeof schemas.GetAppsAppIdQueues.response['200']
+  (typeof schemas.GetAppsAppIdQueues.response)['200']
 >;
 export type GetAppsAppIdRulesMetadataParam = FromSchema<typeof schemas.GetAppsAppIdRules.metadata>;
 export type GetAppsAppIdRulesResponse200 = FromSchema<
-  typeof schemas.GetAppsAppIdRules.response['200']
+  (typeof schemas.GetAppsAppIdRules.response)['200']
 >;
 export type GetAppsAppIdRulesRuleIdMetadataParam = FromSchema<
   typeof schemas.GetAppsAppIdRulesRuleId.metadata
