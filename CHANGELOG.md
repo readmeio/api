@@ -1,3 +1,11 @@
+## <small>5.0.6 (2023-01-09)</small>
+
+* chore: bumping out of date deps (#603) ([66cfec9](https://github.com/readmeio/api/commit/66cfec9)), closes [#603](https://github.com/readmeio/api/issues/603)
+* fix: broken badge, remove unnecessary `.svg` extension ([7c5224c](https://github.com/readmeio/api/commit/7c5224c)), closes [badges/shields#8671](https://github.com/badges/shields/issues/8671)
+* fix: failing tests (#602) ([c19a991](https://github.com/readmeio/api/commit/c19a991)), closes [#602](https://github.com/readmeio/api/issues/602)
+
+
+
 ## <small>5.0.5 (2022-12-09)</small>
 
 * fix: resolving typing issues in JS codegen (#593) ([ab97a70](https://github.com/readmeio/api/commit/ab97a70)), closes [#593](https://github.com/readmeio/api/issues/593)
