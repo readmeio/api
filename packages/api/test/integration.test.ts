@@ -62,7 +62,7 @@ describe('integration tests', function () {
       expect(data.uri).to.equal('/anything/v1/oa_citations/records');
       expect(data.requestBody).to.equal('criteria=propertyName%3Avalue');
       expect(data.headers).to.have.deep.property('content-type', 'application/x-www-form-urlencoded');
-      expect(data.headers).to.have.a.customUserAgent;
+      expect(data.headers).to.have.be.a.customUserAgent;
     });
 
     // it.skip('should send along required parameters if not supplied', async function () {

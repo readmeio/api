@@ -5,6 +5,8 @@ import path from 'path';
 import caseless from 'caseless';
 import chai from 'chai';
 
+import * as packageInfo from '../../src/packageInfo';
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Chai {
@@ -40,7 +42,7 @@ export default function chaiPlugins(_chai, utils) {
     const userAgent = this._obj['user-agent'];
 
     this.assert(
-      userAgent.match(/api \(node\)\/\d+.\d+.\d+/),
+      userAgent.match(/^api \(node\)\/(\d+.\d+(.\d+|unit-testing))$/),
       `expected "${userAgent}" to be a custom user agent`,
       `expected "${userAgent}" to not be a custom user agent`
     );
@@ -77,8 +79,16 @@ export default function chaiPlugins(_chai, utils) {
 
     // Assert that each generated file is the same as in the fixture.
     expectedFiles.forEach(file => {
-      const expected = fs.readFileSync(path.join(dir, file), 'utf8');
-      new chai.Assertion(actualFiles[file], `${file} does not match`).to.equal(expected);
+      const actual = actualFiles[file];
+
+      // We have to wrap in our current package version into the `<<useragent>>` placeholder so we
+      // don't need to worry about committing package versions into source control or trying to mock
+      // out our `packageInfo` library, potentially causing sideeffects in other tests.
+      const expected = fs
+        .readFileSync(path.join(dir, file), 'utf8')
+        .replace('<<package version>>', packageInfo.PACKAGE_VERSION);
+
+      new chai.Assertion(actual, `${file} does not match`).to.equal(expected);
     });
   });
 

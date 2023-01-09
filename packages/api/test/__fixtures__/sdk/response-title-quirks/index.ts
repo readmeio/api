@@ -10,7 +10,7 @@ class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'response-title-quirks/1.0.0 (api/5.0-unit-testing)');
+    this.core = new APICore(this.spec, 'response-title-quirks/1.0.0 (api/<<package version>>)');
   }
 
   /**
