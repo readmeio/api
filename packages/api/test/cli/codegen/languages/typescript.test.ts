@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
 import { promises as fs } from 'fs';
@@ -6,21 +5,10 @@ import path from 'path';
 
 import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
-import mockRequire from 'mock-require';
 import Oas from 'oas';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import uniqueTempDir from 'unique-temp-dir';
-
-// Because `packageInfo` is generated at build time and we're using it in tests, everytime we build
-// a new release our tests will also need to get updated because we use `PACKAGE_VERSION` in user
-// agent strings. Because nobody wants to have to fix broken tests everytime we build a new release
-// we need to overload the `packageInfo` import here with some fake data that we can then use in our
-// test snapshots.
-mockRequire('../../../../src/packageInfo', {
-  PACKAGE_NAME: 'api',
-  PACKAGE_VERSION: '5.0-unit-testing',
-});
 
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
 import Storage from '../../../../src/cli/storage';
