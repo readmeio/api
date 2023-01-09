@@ -32,7 +32,7 @@ jobs:
           - 14
           - 16
           - 18
-          # - 19 # Temporarily disabling CI on Node 19 until it gets more stable.
+          - 19 # Temporarily disabling CI on Node 19 until it gets more stable.
 
     steps:
       - uses: actions/checkout@v3
