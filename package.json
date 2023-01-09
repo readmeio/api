@@ -28,12 +28,12 @@
   ],
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
-    "@commitlint/cli": "^17.3.0",
-    "@commitlint/config-conventional": "^17.3.0",
-    "@readme/eslint-config": "^10.2.0",
+    "@commitlint/cli": "^17.4.1",
+    "@commitlint/config-conventional": "^17.4.0",
+    "@readme/eslint-config": "^10.3.2",
     "alex": "^11.0.0",
-    "eslint": "^8.28.0",
-    "husky": "^8.0.2",
+    "eslint": "^8.31.0",
+    "husky": "^8.0.3",
     "prettier": "^2.8.0"
   },
   "commitlint": {
