@@ -40,7 +40,7 @@ export default function chaiPlugins(_chai, utils) {
     const userAgent = this._obj['user-agent'];
 
     this.assert(
-      userAgent.match(/api \(node\)\/\d+.\d+.\d+/),
+      userAgent.match(/^api \(node\)\/(\d+.\d+(.\d+|unit-testing))$/),
       `expected "${userAgent}" to be a custom user agent`,
       `expected "${userAgent}" to not be a custom user agent`
     );
