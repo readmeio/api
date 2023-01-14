@@ -2,7 +2,7 @@ import type { ReadStream } from 'fs';
 import type { Operation } from 'oas';
 import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
 
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
 
@@ -81,33 +81,34 @@ function processFile(
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
 
-    return fs
-      .stat(resolvedFile)
-      .then(() => datauri(resolvedFile))
-      .then(fileMetadata => {
+    return new Promise((resolve, reject) => {
+      fs.stat(resolvedFile, async err => {
+        if (err) {
+          if (err.code === 'ENOENT') {
+            // It's less than ideal for us to handle files that don't exist like this but because
+            // `file` is a string it might actually be the full text contents of the file and not
+            // actually a path.
+            //
+            // We also can't really regex to see if `file` *looks*` like a path because one should be
+            // able to pass in a relative `owlbert.png` (instead of `./owlbert.png`) and though that
+            // doesn't *look* like a path, it is one that should still work.
+            return resolve(undefined);
+          }
+
+          return reject(err);
+        }
+
+        const fileMetadata = await datauri(resolvedFile);
         const payloadFilename = encodeURIComponent(path.basename(resolvedFile));
 
-        return {
+        return resolve({
           paramName,
           base64: fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`),
           filename: payloadFilename,
           buffer: fileMetadata.buffer,
-        };
-      })
-      .catch(err => {
-        if (err.code === 'ENOENT') {
-          // It's less than ideal for us to handle files that don't exist like this but because
-          // `file` is a string it might actually be the full text contents of the file and not
-          // actually a path.
-          //
-          // We also can't really regex to see if `file` *looks*` like a path because one should be
-          // able to pass in a relative `owlbert.png` (instead of `./owlbert.png`) and though that
-          // doesn't *look* like a path, it is one that should still work.
-          return undefined;
-        }
-
-        throw err;
+        });
       });
+    });
   } else if (file instanceof stream.Readable) {
     return getStream.buffer(file).then(buffer => {
       const filePath = file.path as string;

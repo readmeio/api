@@ -34,6 +34,15 @@
       }
     },
     {
+      "files": ["src/core/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": ["error", {
+          "name": "fs/promises",
+          "message": "Please use `fs` instead as some client frameworks don't polyfill `fs/promises`."
+        }]
+      }
+    },
+    {
       "files": ["example.js"],
       "rules": {
         "@typescript-eslint/no-var-requires": "off",
