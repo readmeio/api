@@ -43,7 +43,18 @@ const petstore = require('api')(
   'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json'
 );
 
-petstore.listPets().then(({ data })) => {
+petstore.listPets().then(({ data }) => {
+  console.log(`My pets name is ${data[0].name}!`);
+});
+```
+
+The ESM syntax is supported as well:
+
+```js
+import api from 'api';
+const petstore = api('@petstore/v1.0#tl1e4kl1cl8eg8');
+
+petstore.listPets().then(({ data }) => {
   console.log(`My pets name is ${data[0].name}!`);
 });
 ```
