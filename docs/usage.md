@@ -44,6 +44,17 @@ petstore.listPets().then(({ data, status, headers, res }) => {
 });
 ```
 
+Alternatively, you can use the ESM syntax:
+
+```js
+import api from 'api';
+const petstore = api('@petstore/v1.0#tl1e4kl1cl8eg8');
+
+petstore.listPets().then(({ data, status, headers, res }) => {
+  console.log(`My pets name is ${data[0].name}!`);
+});
+```
+
 The OpenAPI definition is automatically downloaded, cached, and transformed into a chainable [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) Promise that you can use to make API requests.
 
 > 📘
