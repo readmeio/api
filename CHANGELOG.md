@@ -1,3 +1,11 @@
+## <small>5.0.7 (2023-01-23)</small>
+
+* fix: moving off `fs/promises` to `fs` in client-side code (#605) ([1d9c87e](https://github.com/readmeio/api/commit/1d9c87e)), closes [#605](https://github.com/readmeio/api/issues/605)
+* chore: bumping deps (#607) ([21bd60a](https://github.com/readmeio/api/commit/21bd60a)), closes [#607](https://github.com/readmeio/api/issues/607)
+* Adds ESM usage instructions (#606) ([6fadba7](https://github.com/readmeio/api/commit/6fadba7)), closes [#606](https://github.com/readmeio/api/issues/606)
+
+
+
 ## <small>5.0.6 (2023-01-09)</small>
 
 * chore: bumping out of date deps (#603) ([66cfec9](https://github.com/readmeio/api/commit/66cfec9)), closes [#603](https://github.com/readmeio/api/issues/603)
