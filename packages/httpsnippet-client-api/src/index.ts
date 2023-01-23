@@ -254,7 +254,7 @@ const client: Client<APIOptions> = {
             delete metadata['content-type'];
           }
 
-          postData.params.forEach(function (param) {
+          postData.params.forEach(param => {
             if (param.fileName) {
               body[param.name] = param.fileName;
             } else {
