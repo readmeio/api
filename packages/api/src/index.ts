@@ -103,12 +103,12 @@ class Sdk {
         // returning a Promise. When that happens, chaining `sdk.auth().operationId()` will fail.
         if (['auth', 'config'].includes(method)) {
           // @todo split this up so we have better types for `auth` and `config`
-          return function (...args: any) {
+          return function authAndConfigHandler(...args: any) {
             return target[method].apply(this, args);
           };
         }
 
-        return async function (...args: unknown[]) {
+        return async function accessorHandler(...args: unknown[]) {
           if (!(method in target)) {
             // If this method doesn't exist on the proxy, have we loaded the SDK? If we have, then
             // this method isn't valid.
