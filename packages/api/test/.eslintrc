@@ -1,6 +1,7 @@
 {
   "extends": "@readme/eslint-config/testing-mocha",
   "rules": {
+    "func-names": "off",
     "global-require": "off"
   }
 }
