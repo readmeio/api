@@ -37,7 +37,7 @@
     "swagger"
   ],
   "dependencies": {
-    "@readme/oas-to-har": "^20.0.2",
+    "@readme/oas-to-har": "^20.1.1",
     "@readme/openapi-parser": "^2.4.0",
     "caseless": "^0.12.0",
     "chalk": "^4.1.2",
@@ -61,9 +61,9 @@
     "lodash.startcase": "^4.4.0",
     "make-dir": "^3.1.0",
     "node-abort-controller": "^3.1.1",
-    "oas": "^20.4.0",
+    "oas": "^20.5.0",
     "ora": "^5.4.1",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
     "prompts": "^2.4.2",
     "remove-undefined-objects": "^2.0.2",
     "semver": "^7.3.8",
@@ -97,7 +97,7 @@
     "oas-normalize": "^8.3.2",
     "sinon": "^15.0.0",
     "sinon-chai": "^3.7.0",
-    "type-fest": "^3.5.4",
+    "type-fest": "^3.6.1",
     "typescript": "^4.9.5",
     "unique-temp-dir": "^1.0.0"
   },
