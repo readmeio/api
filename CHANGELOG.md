@@ -1,3 +1,12 @@
+## <small>5.0.8 (2023-03-17)</small>
+
+* chore(deps): bump http-cache-semantics from 4.1.0 to 4.1.1 (#613) ([ebb90af](https://github.com/readmeio/api/commit/ebb90af)), closes [#613](https://github.com/readmeio/api/issues/613)
+* chore(deps): bumping out of date deps (#611) ([287a708](https://github.com/readmeio/api/commit/287a708)), closes [#611](https://github.com/readmeio/api/issues/611)
+* chore(test): refreshing the smoketest dataset ([1a457e4](https://github.com/readmeio/api/commit/1a457e4))
+* feat: add install flag to bypass prompt (#625) ([415fb8e](https://github.com/readmeio/api/commit/415fb8e)), closes [#625](https://github.com/readmeio/api/issues/625)
+
+
+
 ## <small>5.0.7 (2023-01-23)</small>
 
 * fix: moving off `fs/promises` to `fs` in client-side code (#605) ([1d9c87e](https://github.com/readmeio/api/commit/1d9c87e)), closes [#605](https://github.com/readmeio/api/issues/605)
