@@ -11,8 +11,8 @@
   },
   {
     "name": "1password.local:connect",
-    "version": "1.3.0",
-    "url": "https://api.apis.guru/v2/specs/1password.local/connect/1.3.0/openapi.json"
+    "version": "1.5.7",
+    "url": "https://api.apis.guru/v2/specs/1password.local/connect/1.5.7/openapi.json"
   },
   {
     "name": "6-dot-authentiqio.appspot.com",
@@ -41,8 +41,8 @@
   },
   {
     "name": "adobe.com:aem",
-    "version": "3.5.0-pre.0",
-    "url": "https://api.apis.guru/v2/specs/adobe.com/aem/3.5.0-pre.0/openapi.json"
+    "version": "3.7.1-pre.0",
+    "url": "https://api.apis.guru/v2/specs/adobe.com/aem/3.7.1-pre.0/openapi.json"
   },
   {
     "name": "adyen.com:AccountService",
@@ -50,19 +50,29 @@
     "url": "https://api.apis.guru/v2/specs/adyen.com/AccountService/6/openapi.json"
   },
   {
-    "name": "adyen.com:BalancePlatformService",
+    "name": "adyen.com:BalanceControlService",
     "version": "1",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformService/1/openapi.json"
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalanceControlService/1/openapi.json"
+  },
+  {
+    "name": "adyen.com:BalancePlatformService",
+    "version": "2",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformService/2/openapi.json"
   },
   {
     "name": "adyen.com:BinLookupService",
-    "version": "50",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BinLookupService/50/openapi.json"
+    "version": "54",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BinLookupService/54/openapi.json"
   },
   {
     "name": "adyen.com:CheckoutUtilityService",
     "version": "1",
     "url": "https://api.apis.guru/v2/specs/adyen.com/CheckoutUtilityService/1/openapi.json"
+  },
+  {
+    "name": "adyen.com:DataProtectionService",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/DataProtectionService/1/openapi.json"
   },
   {
     "name": "adyen.com:FundService",
@@ -75,9 +85,24 @@
     "url": "https://api.apis.guru/v2/specs/adyen.com/HopService/6/openapi.json"
   },
   {
+    "name": "adyen.com:LegalEntityService",
+    "version": "3",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/LegalEntityService/3/openapi.json"
+  },
+  {
+    "name": "adyen.com:ManagementService",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/ManagementService/1/openapi.json"
+  },
+  {
     "name": "adyen.com:NotificationConfigurationService",
     "version": "6",
     "url": "https://api.apis.guru/v2/specs/adyen.com/NotificationConfigurationService/6/openapi.json"
+  },
+  {
+    "name": "adyen.com:StoredValueService",
+    "version": "46",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/StoredValueService/46/openapi.json"
   },
   {
     "name": "adyen.com:TestCardService",
@@ -85,9 +110,14 @@
     "url": "https://api.apis.guru/v2/specs/adyen.com/TestCardService/1/openapi.json"
   },
   {
+    "name": "adyen.com:TfmAPIService",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/TfmAPIService/1/openapi.json"
+  },
+  {
     "name": "adyen.com:TransferService",
-    "version": "2",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/TransferService/2/openapi.json"
+    "version": "3",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/TransferService/3/openapi.json"
   },
   {
     "name": "afterbanks.com",
@@ -125,6 +155,161 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json"
   },
   {
+    "name": "amadeus.com:amadeus-hotel-name-autocomplete",
+    "version": "1.0.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-name-autocomplete/1.0.3/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-inspiration-search",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-inspiration-search/1.0.6/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-choice-prediction",
+    "version": "2.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-choice-prediction/2.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-delay-prediction",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-delay-prediction/1.0.6/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-most-booked-destinations",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-booked-destinations/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-busiest-traveling-period",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-busiest-traveling-period/1.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-cheapest-date-search",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-cheapest-date-search/1.0.6/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-check-in-links",
+    "version": "2.1.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-check-in-links/2.1.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-trip-purpose-prediction",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-purpose-prediction/1.1.4/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-travel-recommendations",
+    "version": "1.0.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-travel-recommendations/1.0.3/openapi.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-order-management",
+    "version": "1.9.0",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-order-management/1.9.0/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airline-code-lookup",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airline-code-lookup/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-hotel-ratings",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-ratings/1.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-on-demand-flight-status",
+    "version": "2.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-on-demand-flight-status/2.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-price-analysis",
+    "version": "1.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-price-analysis/1.0.1/openapi.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-seatmap-display",
+    "version": "1.9.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-seatmap-display/1.9.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-points-of-interest",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-points-of-interest/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-safe-place-",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-safe-place-/1.0.0/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-trip-parser",
+    "version": "3.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-parser/3.0.1/openapi.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-hotel-search",
+    "version": "3.0.8",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-search/3.0.8/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-hotel-booking",
+    "version": "1.1.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-booking/1.1.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-offers-price",
+    "version": "1.2.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-offers-price/1.2.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-tours-and-activities",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-tours-and-activities/1.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-&-city-search",
+    "version": "1.2.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-&-city-search/1.2.3/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-create-orders",
+    "version": "1.9.0",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-create-orders/1.9.0/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-availabilities-search",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-availabilities-search/1.0.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-branded-fares-upsell",
+    "version": "1.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-branded-fares-upsell/1.0.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-on-time-performance",
+    "version": "1.0.4",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-on-time-performance/1.0.4/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-nearest-relevant",
+    "version": "1.1.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-nearest-relevant/1.1.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-most-traveled-destinations",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-traveled-destinations/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-location-score",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-location-score/1.0.2/openapi.json"
+  },
+  {
     "name": "amentum.space:atmosphere",
     "version": "1.1.1",
     "url": "https://api.apis.guru/v2/specs/amentum.space/atmosphere/1.1.1/openapi.json"
@@ -146,28 +331,38 @@
   },
   {
     "name": "amentum.space:space_radiation",
-    "version": "1.1.1",
-    "url": "https://api.apis.guru/v2/specs/amentum.space/space_radiation/1.1.1/openapi.json"
+    "version": "1.1.2",
+    "url": "https://api.apis.guru/v2/specs/amentum.space/space_radiation/1.1.2/openapi.json"
   },
   {
     "name": "anchore.io",
-    "version": "0.1.19",
-    "url": "https://api.apis.guru/v2/specs/anchore.io/0.1.19/openapi.json"
+    "version": "0.1.20",
+    "url": "https://api.apis.guru/v2/specs/anchore.io/0.1.20/openapi.json"
   },
   {
     "name": "apache.org:qakka",
     "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/apache.org/qakka/v1/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/apache.org/qakka/v1/openapi.json"
+  },
+  {
+    "name": "apache.org:airflow",
+    "version": "2.5.1",
+    "url": "https://api.apis.guru/v2/specs/apache.org/airflow/2.5.1/openapi.json"
+  },
+  {
+    "name": "apache.org",
+    "version": "2.5.1",
+    "url": "https://api.apis.guru/v2/specs/apache.org/2.5.1/openapi.json"
   },
   {
     "name": "apacta.com",
-    "version": "0.0.1",
-    "url": "https://api.apis.guru/v2/specs/apacta.com/0.0.1/swagger.json"
+    "version": "0.0.42",
+    "url": "https://api.apis.guru/v2/specs/apacta.com/0.0.42/openapi.json"
   },
   {
     "name": "api.ebay.com:sell-account",
-    "version": "v1.6.3",
-    "url": "https://api.apis.guru/v2/specs/api.ebay.com/sell-account/v1.6.3/openapi.json"
+    "version": "v1.9.0",
+    "url": "https://api.apis.guru/v2/specs/api.ebay.com/sell-account/v1.9.0/openapi.json"
   },
   {
     "name": "api.ebay.com:sell-analytics",
@@ -191,8 +386,8 @@
   },
   {
     "name": "apicurio.local:registry",
-    "version": "2.1.0-SNAPSHOT",
-    "url": "https://api.apis.guru/v2/specs/apicurio.local/registry/2.1.0-SNAPSHOT/openapi.json"
+    "version": "2.4.x",
+    "url": "https://api.apis.guru/v2/specs/apicurio.local/registry/2.4.x/openapi.json"
   },
   {
     "name": "apidapp.com",
@@ -200,59 +395,24 @@
     "url": "https://api.apis.guru/v2/specs/apidapp.com/2019-02-14T164701Z/openapi.json"
   },
   {
+    "name": "apideck.com:ats",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/ats/9.1.1/openapi.json"
+  },
+  {
     "name": "apideck.com:crm",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/crm/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:lead",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/lead/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:proxy",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/proxy/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:vault",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/vault/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:file-storage",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/file-storage/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:webhook",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/webhook/8.87.0/openapi.json"
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/crm/9.1.1/openapi.json"
   },
   {
     "name": "apideck.com:customer-support",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/customer-support/8.87.0/openapi.json"
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/customer-support/9.1.1/openapi.json"
   },
   {
-    "name": "apideck.com:sms",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/sms/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:ats",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/ats/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:hris",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/hris/8.87.0/openapi.json"
-  },
-  {
-    "name": "apideck.com:pos",
-    "version": "8.87.0",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/pos/8.87.0/openapi.json"
+    "name": "apideck.com:ecommerce",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/ecommerce/9.1.1/openapi.json"
   },
   {
     "name": "apideck.com:ecosystem",
@@ -260,14 +420,54 @@
     "url": "https://api.apis.guru/v2/specs/apideck.com/ecosystem/0.0.6/openapi.json"
   },
   {
-    "name": "apideck.com:ecommerce",
-    "version": "8.85.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/ecommerce/8.85.1/openapi.json"
+    "name": "apideck.com:file-storage",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/file-storage/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:hris",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/hris/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:lead",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/lead/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:pos",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/pos/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:proxy",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/proxy/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:sms",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/sms/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:vault",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/vault/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:webhook",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/webhook/9.1.1/openapi.json"
+  },
+  {
+    "name": "apideck.com:issue-tracking",
+    "version": "9.1.1",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/issue-tracking/9.1.1/openapi.json"
   },
   {
     "name": "apigee.local:registry",
-    "version": "0.0.2",
-    "url": "https://api.apis.guru/v2/specs/apigee.local/registry/0.0.2/openapi.json"
+    "version": "0.0.1",
+    "url": "https://api.apis.guru/v2/specs/apigee.local/registry/0.0.1/openapi.json"
   },
   {
     "name": "apigee.net:marketcheck-cars",
@@ -277,12 +477,12 @@
   {
     "name": "apimatic.io",
     "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/apimatic.io/1.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/apimatic.io/1.0/openapi.json"
   },
   {
     "name": "apis.guru",
-    "version": "2.0.2",
-    "url": "https://api.apis.guru/v2/specs/apis.guru/2.0.2/swagger.json"
+    "version": "2.0.4",
+    "url": "https://api.apis.guru/v2/specs/apis.guru/2.0.4/openapi.json"
   },
   {
     "name": "apisetu.gov.in:aaharjh",
@@ -1201,8 +1401,8 @@
   },
   {
     "name": "apiz.ebay.com:sell-finances",
-    "version": "1.9.0",
-    "url": "https://api.apis.guru/v2/specs/apiz.ebay.com/sell-finances/1.9.0/openapi.json"
+    "version": "v1.15.0",
+    "url": "https://api.apis.guru/v2/specs/apiz.ebay.com/sell-finances/v1.15.0/openapi.json"
   },
   {
     "name": "apple.com:app-store-connect",
@@ -1262,7 +1462,7 @@
   {
     "name": "ato.gov.au",
     "version": "0.0.6",
-    "url": "https://api.apis.guru/v2/specs/ato.gov.au/0.0.6/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/ato.gov.au/0.0.6/openapi.json"
   },
   {
     "name": "aucklandmuseum.com",
@@ -1272,12 +1472,12 @@
   {
     "name": "authentiq.io",
     "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/authentiq.io/1.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/authentiq.io/1.0/openapi.json"
   },
   {
     "name": "autodealerdata.com",
-    "version": "0.1",
-    "url": "https://api.apis.guru/v2/specs/autodealerdata.com/0.1/openapi.json"
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/autodealerdata.com/1.0/openapi.json"
   },
   {
     "name": "aviationdata.systems",
@@ -1311,8 +1511,8 @@
   },
   {
     "name": "azure.com:advisor",
-    "version": "2020-01-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/advisor/2020-01-01/swagger.json"
+    "version": "2017-04-19",
+    "url": "https://api.apis.guru/v2/specs/azure.com/advisor/2017-04-19/swagger.json"
   },
   {
     "name": "azure.com:alertsmanagement-SmartDetectorAlertRulesApi",
@@ -1321,8 +1521,8 @@
   },
   {
     "name": "azure.com:analysisservices",
-    "version": "2017-08-01-beta",
-    "url": "https://api.apis.guru/v2/specs/azure.com/analysisservices/2017-08-01-beta/swagger.json"
+    "version": "2017-08-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/analysisservices/2017-08-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement",
@@ -1356,8 +1556,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimcaches",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimcaches/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimcaches/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimcertificates",
@@ -1366,8 +1566,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimdeployment",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimdeployment/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimdeployment/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimdiagnostics",
@@ -1381,8 +1581,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimemailtemplates",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimemailtemplates/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimemailtemplates/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimgroups",
@@ -1391,8 +1591,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimidentityprovider",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimidentityprovider/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimidentityprovider/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimissues",
@@ -1411,13 +1611,13 @@
   },
   {
     "name": "azure.com:apimanagement-apimnetworkstatus",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimnetworkstatus/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimnetworkstatus/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimnotifications",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimnotifications/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimnotifications/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimopenidconnectproviders",
@@ -1426,8 +1626,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimpolicies",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimpolicies/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimpolicies/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimpolicydescriptions",
@@ -1456,13 +1656,13 @@
   },
   {
     "name": "azure.com:apimanagement-apimquotas",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimquotas/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimquotas/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimregions",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimregions/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimregions/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimreports",
@@ -1486,8 +1686,8 @@
   },
   {
     "name": "azure.com:apimanagement-apimtenant",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimtenant/2019-12-01-preview/swagger.json"
+    "version": "2019-01-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/apimanagement-apimtenant/2019-01-01/swagger.json"
   },
   {
     "name": "azure.com:apimanagement-apimusers",
@@ -2130,11 +2330,6 @@
     "url": "https://api.apis.guru/v2/specs/azure.com/azsadmin-queueServices/2015-12-01-preview/swagger.json"
   },
   {
-    "name": "azure.com:azsadmin-quotas",
-    "version": "2019-08-08-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/azsadmin-quotas/2019-08-08-preview/swagger.json"
-  },
-  {
     "name": "azure.com:azsadmin-shares",
     "version": "2015-12-01-preview",
     "url": "https://api.apis.guru/v2/specs/azure.com/azsadmin-shares/2015-12-01-preview/swagger.json"
@@ -2211,8 +2406,8 @@
   },
   {
     "name": "azure.com:cdn",
-    "version": "2019-12-31",
-    "url": "https://api.apis.guru/v2/specs/azure.com/cdn/2019-12-31/swagger.json"
+    "version": "2019-06-15-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/cdn/2019-06-15-preview/swagger.json"
   },
   {
     "name": "azure.com:cdn-cdnwebapplicationfirewall",
@@ -2271,8 +2466,8 @@
   },
   {
     "name": "azure.com:compute",
-    "version": "2019-07-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/compute/2019-07-01/swagger.json"
+    "version": "2019-03-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/compute/2019-03-01/swagger.json"
   },
   {
     "name": "azure.com:compute-containerService",
@@ -2281,8 +2476,8 @@
   },
   {
     "name": "azure.com:compute-disk",
-    "version": "2019-07-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/compute-disk/2019-07-01/swagger.json"
+    "version": "2019-03-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/compute-disk/2019-03-01/swagger.json"
   },
   {
     "name": "azure.com:compute-gallery",
@@ -2291,8 +2486,8 @@
   },
   {
     "name": "azure.com:compute-runCommands",
-    "version": "2019-07-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/compute-runCommands/2019-07-01/swagger.json"
+    "version": "2019-03-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/compute-runCommands/2019-03-01/swagger.json"
   },
   {
     "name": "azure.com:compute-skus",
@@ -2306,8 +2501,8 @@
   },
   {
     "name": "azure.com:containerregistry",
-    "version": "2019-12-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/containerregistry/2019-12-01-preview/swagger.json"
+    "version": "2019-08-15-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/containerregistry/2019-08-15-preview/swagger.json"
   },
   {
     "name": "azure.com:containerregistry-containerregistry_build",
@@ -2341,8 +2536,8 @@
   },
   {
     "name": "azure.com:cosmos-db",
-    "version": "2019-12-12",
-    "url": "https://api.apis.guru/v2/specs/azure.com/cosmos-db/2019-12-12/swagger.json"
+    "version": "2019-08-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/cosmos-db/2019-08-01/swagger.json"
   },
   {
     "name": "azure.com:cosmos-db-privateEndpointConnection",
@@ -2401,8 +2596,8 @@
   },
   {
     "name": "azure.com:devspaces",
-    "version": "2019-04-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/devspaces/2019-04-01/swagger.json"
+    "version": "2019-01-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/devspaces/2019-01-01-preview/swagger.json"
   },
   {
     "name": "azure.com:dynamicstelemetry",
@@ -2411,8 +2606,8 @@
   },
   {
     "name": "azure.com:eventgrid-EventGrid",
-    "version": "2020-04-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/eventgrid-EventGrid/2020-04-01-preview/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/eventgrid-EventGrid/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:eventhub-EventHub",
@@ -2426,8 +2621,8 @@
   },
   {
     "name": "azure.com:frontdoor",
-    "version": "2020-01-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/frontdoor/2020-01-01/swagger.json"
+    "version": "2019-05-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/frontdoor/2019-05-01/swagger.json"
   },
   {
     "name": "azure.com:frontdoor-networkexperiment",
@@ -2516,8 +2711,8 @@
   },
   {
     "name": "azure.com:imds",
-    "version": "2019-11-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/imds/2019-11-01/swagger.json"
+    "version": "2019-08-15",
+    "url": "https://api.apis.guru/v2/specs/azure.com/imds/2019-08-15/swagger.json"
   },
   {
     "name": "azure.com:intune",
@@ -2526,13 +2721,13 @@
   },
   {
     "name": "azure.com:iotcentral",
-    "version": "preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/iotcentral/preview/swagger.json"
+    "version": "2018-09-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/iotcentral/2018-09-01/swagger.json"
   },
   {
     "name": "azure.com:iothub",
-    "version": "2019-11-04",
-    "url": "https://api.apis.guru/v2/specs/azure.com/iothub/2019-11-04/swagger.json"
+    "version": "2019-07-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/iothub/2019-07-01-preview/swagger.json"
   },
   {
     "name": "azure.com:iotspaces",
@@ -2541,13 +2736,13 @@
   },
   {
     "name": "azure.com:keyvault-providers",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/keyvault-providers/2019-09-01/swagger.json"
+    "version": "2018-02-14-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/keyvault-providers/2018-02-14-preview/swagger.json"
   },
   {
     "name": "azure.com:keyvault-secrets",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/keyvault-secrets/2019-09-01/swagger.json"
+    "version": "2018-02-14-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/keyvault-secrets/2018-02-14-preview/swagger.json"
   },
   {
     "name": "azure.com:locationbasedservices",
@@ -2581,8 +2776,8 @@
   },
   {
     "name": "azure.com:machinelearningservices-machineLearningServices",
-    "version": "2020-01-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/machinelearningservices-machineLearningServices/2020-01-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/machinelearningservices-machineLearningServices/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:machinelearningservices-modelManagement",
@@ -2601,8 +2796,8 @@
   },
   {
     "name": "azure.com:managedservices",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/managedservices/2019-09-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/managedservices/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:managementpartner-ManagementPartner",
@@ -2611,8 +2806,8 @@
   },
   {
     "name": "azure.com:maps-maps-management",
-    "version": "2020-02-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/maps-maps-management/2020-02-01-preview/swagger.json"
+    "version": "2018-05-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/maps-maps-management/2018-05-01/swagger.json"
   },
   {
     "name": "azure.com:mariadb-PerformanceRecommendations",
@@ -2811,18 +3006,18 @@
   },
   {
     "name": "azure.com:netapp",
-    "version": "2019-11-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/netapp/2019-11-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/netapp/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-applicationSecurityGroup",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-applicationSecurityGroup/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-applicationSecurityGroup/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-availableDelegations",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-availableDelegations/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-availableDelegations/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-availableServiceAliases",
@@ -2831,33 +3026,33 @@
   },
   {
     "name": "azure.com:network-azureFirewall",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-azureFirewall/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-azureFirewall/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-azureFirewallFqdnTag",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-azureFirewallFqdnTag/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-azureFirewallFqdnTag/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-bastionHost",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-bastionHost/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-bastionHost/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-checkDnsAvailability",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-checkDnsAvailability/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-checkDnsAvailability/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-ddosProtectionPlan",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-ddosProtectionPlan/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-ddosProtectionPlan/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-endpointService",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-endpointService/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-endpointService/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-expressRouteCircuit",
@@ -2871,18 +3066,18 @@
   },
   {
     "name": "azure.com:network-expressRouteGateway",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-expressRouteGateway/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-expressRouteGateway/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-expressRoutePort",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-expressRoutePort/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-expressRoutePort/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-firewallPolicy",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-firewallPolicy/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-firewallPolicy/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-ipGroups",
@@ -2891,13 +3086,13 @@
   },
   {
     "name": "azure.com:network-natGateway",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-natGateway/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-natGateway/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-networkWatcher",
-    "version": "2019-11-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-networkWatcher/2019-11-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-networkWatcher/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-networkWatcherConnectionMonitorV1",
@@ -2906,18 +3101,18 @@
   },
   {
     "name": "azure.com:network-operation",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-operation/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-operation/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-privateLinkService",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-privateLinkService/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-privateLinkService/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-publicIpPrefix",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-publicIpPrefix/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-publicIpPrefix/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-routeFilter",
@@ -2926,23 +3121,23 @@
   },
   {
     "name": "azure.com:network-serviceCommunity",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-serviceCommunity/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-serviceCommunity/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-serviceTags",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-serviceTags/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-serviceTags/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-usage",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-usage/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-usage/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-virtualNetworkGateway",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/network-virtualNetworkGateway/2019-08-01/swagger.json"
+    "version": "2019-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/network-virtualNetworkGateway/2019-07-01/swagger.json"
   },
   {
     "name": "azure.com:network-virtualRouter",
@@ -2976,8 +3171,8 @@
   },
   {
     "name": "azure.com:operationalinsights-OperationalInsights",
-    "version": "2019-08-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/operationalinsights-OperationalInsights/2019-08-01-preview/swagger.json"
+    "version": "2015-11-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/operationalinsights-OperationalInsights/2015-11-01-preview/swagger.json"
   },
   {
     "name": "azure.com:operationsmanagement-OperationsManagement",
@@ -2986,8 +3181,8 @@
   },
   {
     "name": "azure.com:peering",
-    "version": "2020-01-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/peering/2020-01-01-preview/swagger.json"
+    "version": "2019-07-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/peering/2019-07-01-preview/swagger.json"
   },
   {
     "name": "azure.com:policyinsights-policyEvents",
@@ -2996,8 +3191,8 @@
   },
   {
     "name": "azure.com:policyinsights-policyStates",
-    "version": "2019-10-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/policyinsights-policyStates/2019-10-01/swagger.json"
+    "version": "2018-07-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/policyinsights-policyStates/2018-07-01-preview/swagger.json"
   },
   {
     "name": "azure.com:policyinsights-policyTrackedResources",
@@ -3051,8 +3246,8 @@
   },
   {
     "name": "azure.com:recoveryservicesbackup-bms",
-    "version": "2019-06-15",
-    "url": "https://api.apis.guru/v2/specs/azure.com/recoveryservicesbackup-bms/2019-06-15/swagger.json"
+    "version": "2017-07-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/recoveryservicesbackup-bms/2017-07-01/swagger.json"
   },
   {
     "name": "azure.com:recoveryservicesbackup-jobs",
@@ -3071,8 +3266,8 @@
   },
   {
     "name": "azure.com:redis",
-    "version": "2019-07-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/redis/2019-07-01/swagger.json"
+    "version": "2018-03-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/redis/2018-03-01/swagger.json"
   },
   {
     "name": "azure.com:relay",
@@ -3126,8 +3321,8 @@
   },
   {
     "name": "azure.com:resources-managedapplications",
-    "version": "2019-07-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/resources-managedapplications/2019-07-01/swagger.json"
+    "version": "2018-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/resources-managedapplications/2018-06-01/swagger.json"
   },
   {
     "name": "azure.com:resources-policy",
@@ -3136,23 +3331,23 @@
   },
   {
     "name": "azure.com:resources-policyAssignments",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policyAssignments/2019-09-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policyAssignments/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:resources-policyDefinitions",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policyDefinitions/2019-09-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policyDefinitions/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:resources-policySetDefinitions",
-    "version": "2019-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policySetDefinitions/2019-09-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/resources-policySetDefinitions/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:resources-subscriptions",
-    "version": "2019-11-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/resources-subscriptions/2019-11-01/swagger.json"
+    "version": "2019-06-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/resources-subscriptions/2019-06-01/swagger.json"
   },
   {
     "name": "azure.com:scheduler",
@@ -3341,13 +3536,13 @@
   },
   {
     "name": "azure.com:servicefabric-application",
-    "version": "2019-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/servicefabric-application/2019-06-01-preview/swagger.json"
+    "version": "2019-03-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/servicefabric-application/2019-03-01-preview/swagger.json"
   },
   {
     "name": "azure.com:servicefabric-cluster",
-    "version": "2019-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/servicefabric-cluster/2019-06-01-preview/swagger.json"
+    "version": "2019-03-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/servicefabric-cluster/2019-03-01-preview/swagger.json"
   },
   {
     "name": "azure.com:servicefabricmesh",
@@ -3501,8 +3696,8 @@
   },
   {
     "name": "azure.com:sql-capabilities",
-    "version": "2018-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-capabilities/2018-06-01-preview/swagger.json"
+    "version": "2017-10-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/sql-capabilities/2017-10-01-preview/swagger.json"
   },
   {
     "name": "azure.com:sql-checkNameAvailability",
@@ -3530,11 +3725,6 @@
     "url": "https://api.apis.guru/v2/specs/azure.com/sql-databaseAutomaticTuning/2015-05-01-preview/swagger.json"
   },
   {
-    "name": "azure.com:sql-databaseSecurityAlertPolicies",
-    "version": "2014-04-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-databaseSecurityAlertPolicies/2014-04-01/swagger.json"
-  },
-  {
     "name": "azure.com:sql-databaseVulnerabilityAssessmentBaselines",
     "version": "2017-03-01-preview",
     "url": "https://api.apis.guru/v2/specs/azure.com/sql-databaseVulnerabilityAssessmentBaselines/2017-03-01-preview/swagger.json"
@@ -3551,8 +3741,8 @@
   },
   {
     "name": "azure.com:sql-databases",
-    "version": "2019-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-databases/2019-06-01-preview/swagger.json"
+    "version": "2017-10-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/sql-databases/2017-10-01-preview/swagger.json"
   },
   {
     "name": "azure.com:sql-deprecated",
@@ -3636,8 +3826,8 @@
   },
   {
     "name": "azure.com:sql-managedDatabases",
-    "version": "2019-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-managedDatabases/2019-06-01-preview/swagger.json"
+    "version": "2018-06-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/sql-managedDatabases/2018-06-01-preview/swagger.json"
   },
   {
     "name": "azure.com:sql-managedInstanceAdministrators",
@@ -3715,11 +3905,6 @@
     "url": "https://api.apis.guru/v2/specs/azure.com/sql-serverAutomaticTuning/2017-03-01-preview/swagger.json"
   },
   {
-    "name": "azure.com:sql-serverAzureADAdministrators",
-    "version": "2014-04-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-serverAzureADAdministrators/2014-04-01/swagger.json"
-  },
-  {
     "name": "azure.com:sql-serverCommunicationLinks",
     "version": "2014-04-01",
     "url": "https://api.apis.guru/v2/specs/azure.com/sql-serverCommunicationLinks/2014-04-01/swagger.json"
@@ -3746,8 +3931,8 @@
   },
   {
     "name": "azure.com:sql-servers",
-    "version": "2019-06-01-preview",
-    "url": "https://api.apis.guru/v2/specs/azure.com/sql-servers/2019-06-01-preview/swagger.json"
+    "version": "2015-05-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/sql-servers/2015-05-01-preview/swagger.json"
   },
   {
     "name": "azure.com:sql-serviceObjectives",
@@ -3811,8 +3996,8 @@
   },
   {
     "name": "azure.com:storage",
-    "version": "2019-06-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/storage/2019-06-01/swagger.json"
+    "version": "2019-04-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/storage/2019-04-01/swagger.json"
   },
   {
     "name": "azure.com:storage-DataLakeStorage",
@@ -3821,8 +4006,8 @@
   },
   {
     "name": "azure.com:storage-blob",
-    "version": "2019-06-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/storage-blob/2019-06-01/swagger.json"
+    "version": "2019-04-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/storage-blob/2019-04-01/swagger.json"
   },
   {
     "name": "azure.com:storage-managementpolicy",
@@ -3836,8 +4021,8 @@
   },
   {
     "name": "azure.com:storagesync",
-    "version": "2019-06-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/storagesync/2019-06-01/swagger.json"
+    "version": "2019-03-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/storagesync/2019-03-01/swagger.json"
   },
   {
     "name": "azure.com:storsimple8000series-storsimple",
@@ -3886,8 +4071,8 @@
   },
   {
     "name": "azure.com:subscription-subscriptions",
-    "version": "2020-01-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/subscription-subscriptions/2020-01-01/swagger.json"
+    "version": "2019-03-01-preview",
+    "url": "https://api.apis.guru/v2/specs/azure.com/subscription-subscriptions/2019-03-01-preview/swagger.json"
   },
   {
     "name": "azure.com:support",
@@ -3911,68 +4096,68 @@
   },
   {
     "name": "azure.com:web-AppServiceCertificateOrders",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServiceCertificateOrders/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServiceCertificateOrders/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-AppServiceEnvironments",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServiceEnvironments/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServiceEnvironments/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-AppServicePlans",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServicePlans/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-AppServicePlans/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-CertificateRegistrationProvider",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-CertificateRegistrationProvider/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-CertificateRegistrationProvider/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-Certificates",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-Certificates/2019-08-01/swagger.json"
+    "version": "2018-11-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-Certificates/2018-11-01/swagger.json"
   },
   {
     "name": "azure.com:web-DeletedWebApps",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-DeletedWebApps/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-DeletedWebApps/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-Diagnostics",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-Diagnostics/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-Diagnostics/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-DomainRegistrationProvider",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-DomainRegistrationProvider/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-DomainRegistrationProvider/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-Domains",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-Domains/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-Domains/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-Recommendations",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-Recommendations/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-Recommendations/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-ResourceHealthMetadata",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-ResourceHealthMetadata/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-ResourceHealthMetadata/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-ResourceProvider",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-ResourceProvider/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-ResourceProvider/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-TopLevelDomains",
-    "version": "2019-08-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/web-TopLevelDomains/2019-08-01/swagger.json"
+    "version": "2018-02-01",
+    "url": "https://api.apis.guru/v2/specs/azure.com/web-TopLevelDomains/2018-02-01/swagger.json"
   },
   {
     "name": "azure.com:web-logicAppsManagementClient",
@@ -3983,6 +4168,11 @@
     "name": "azure.com:windowsiot-WindowsIotServices",
     "version": "2019-06-01",
     "url": "https://api.apis.guru/v2/specs/azure.com/windowsiot-WindowsIotServices/2019-06-01/swagger.json"
+  },
+  {
+    "name": "balldontlie.io",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/balldontlie.io/1.0.0/openapi.json"
   },
   {
     "name": "bandsintown.com",
@@ -4156,8 +4346,8 @@
   },
   {
     "name": "circl.lu:hashlookup",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/circl.lu/hashlookup/1.0/openapi.json"
+    "version": "1.2",
+    "url": "https://api.apis.guru/v2/specs/circl.lu/hashlookup/1.2/openapi.json"
   },
   {
     "name": "circleci.com",
@@ -4166,8 +4356,8 @@
   },
   {
     "name": "circuitsandbox.net",
-    "version": "2.9.233",
-    "url": "https://api.apis.guru/v2/specs/circuitsandbox.net/2.9.233/openapi.json"
+    "version": "2.9.235",
+    "url": "https://api.apis.guru/v2/specs/circuitsandbox.net/2.9.235/openapi.json"
   },
   {
     "name": "cisco.com",
@@ -4246,8 +4436,13 @@
   },
   {
     "name": "collegefootballdata.com",
-    "version": "4.1.6",
-    "url": "https://api.apis.guru/v2/specs/collegefootballdata.com/4.1.6/openapi.json"
+    "version": "4.4.12",
+    "url": "https://api.apis.guru/v2/specs/collegefootballdata.com/4.4.12/openapi.json"
+  },
+  {
+    "name": "color.pizza",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/color.pizza/1.0.0/openapi.json"
   },
   {
     "name": "combell.com",
@@ -4261,8 +4456,8 @@
   },
   {
     "name": "conjur.local",
-    "version": "5.1.1",
-    "url": "https://api.apis.guru/v2/specs/conjur.local/5.1.1/openapi.json"
+    "version": "5.3.0",
+    "url": "https://api.apis.guru/v2/specs/conjur.local/5.3.0/openapi.json"
   },
   {
     "name": "consumerfinance.gov",
@@ -4302,7 +4497,7 @@
   {
     "name": "crossbrowsertesting.com",
     "version": "3.0.0",
-    "url": "https://api.apis.guru/v2/specs/crossbrowsertesting.com/3.0.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/crossbrowsertesting.com/3.0.0/openapi.json"
   },
   {
     "name": "crucible.local",
@@ -4405,9 +4600,24 @@
     "url": "https://api.apis.guru/v2/specs/discourse.local/latest/openapi.json"
   },
   {
+    "name": "dnd5eapi.co",
+    "version": "0.1",
+    "url": "https://api.apis.guru/v2/specs/dnd5eapi.co/0.1/openapi.json"
+  },
+  {
     "name": "docker.com:engine",
     "version": "1.33",
     "url": "https://api.apis.guru/v2/specs/docker.com/engine/1.33/openapi.json"
+  },
+  {
+    "name": "docker.com:dvp",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/docker.com/dvp/1.0.0/openapi.json"
+  },
+  {
+    "name": "docker.com:hub",
+    "version": "beta",
+    "url": "https://api.apis.guru/v2/specs/docker.com/hub/beta/openapi.json"
   },
   {
     "name": "domainsdb.info",
@@ -4446,13 +4656,13 @@
   },
   {
     "name": "ebay.com:buy-feed",
-    "version": "v1_beta.28.0",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/buy-feed/v1_beta.28.0/swagger.json"
+    "version": "v1_beta.34.0",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/buy-feed/v1_beta.34.0/openapi.json"
   },
   {
     "name": "ebay.com:buy-marketing",
-    "version": "v1_beta.1.0",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/buy-marketing/v1_beta.1.0/swagger.json"
+    "version": "v1_beta.2.0",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/buy-marketing/v1_beta.2.0/openapi.json"
   },
   {
     "name": "ebay.com:commerce-catalog",
@@ -4461,8 +4671,8 @@
   },
   {
     "name": "ebay.com:commerce-charity",
-    "version": "v1.2.0",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/commerce-charity/v1.2.0/openapi.json"
+    "version": "v1.2.1",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/commerce-charity/v1.2.1/openapi.json"
   },
   {
     "name": "ebay.com:commerce-translation",
@@ -4476,8 +4686,8 @@
   },
   {
     "name": "ebay.com:sell-account",
-    "version": "v1.6.3",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-account/v1.6.3/openapi.json"
+    "version": "v1.9.0",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-account/v1.9.0/openapi.json"
   },
   {
     "name": "ebay.com:sell-analytics",
@@ -4496,8 +4706,8 @@
   },
   {
     "name": "ebay.com:sell-fulfillment",
-    "version": "v1.19.9",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-fulfillment/v1.19.9/openapi.json"
+    "version": "v1.19.19",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-fulfillment/v1.19.19/openapi.json"
   },
   {
     "name": "ebay.com:sell-listing",
@@ -4511,13 +4721,13 @@
   },
   {
     "name": "ebay.com:sell-marketing",
-    "version": "v1.10.0",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-marketing/v1.10.0/openapi.json"
+    "version": "v1.14.0",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-marketing/v1.14.0/openapi.json"
   },
   {
     "name": "ebay.com:sell-metadata",
-    "version": "v1.4.1",
-    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-metadata/v1.4.1/openapi.json"
+    "version": "v1.6.0",
+    "url": "https://api.apis.guru/v2/specs/ebay.com/sell-metadata/v1.6.0/openapi.json"
   },
   {
     "name": "ebay.com:sell-negotiation",
@@ -4822,7 +5032,7 @@
   {
     "name": "gamesparks.net:game-details",
     "version": "v2",
-    "url": "https://api.apis.guru/v2/specs/gamesparks.net/game-details/v2/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/gamesparks.net/game-details/v2/openapi.json"
   },
   {
     "name": "geodatasource.com",
@@ -4868,6 +5078,61 @@
     "name": "gisgraphy.com",
     "version": "4.0.0",
     "url": "https://api.apis.guru/v2/specs/gisgraphy.com/4.0.0/swagger.json"
+  },
+  {
+    "name": "github.com:api.github.com.2022-11-28",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/api.github.com.2022-11-28/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghec",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghec/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghec.2022-11-28",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghec.2022-11-28/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.2",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.2/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.3",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.3/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.4",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.4/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.5",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.5/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.6",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.6/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.7",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.7/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:ghes-3.8",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/ghes-3.8/1.1.4/openapi.json"
+  },
+  {
+    "name": "github.com:github.ae",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/github.com/github.ae/1.1.4/openapi.json"
   },
   {
     "name": "gitlab.com",
@@ -4991,8 +5256,8 @@
   },
   {
     "name": "here.com:tracking",
-    "version": "2.1.58",
-    "url": "https://api.apis.guru/v2/specs/here.com/tracking/2.1.58/openapi.json"
+    "version": "2.1.191",
+    "url": "https://api.apis.guru/v2/specs/here.com/tracking/2.1.191/openapi.json"
   },
   {
     "name": "hetzner.cloud",
@@ -5090,6 +5355,11 @@
     "url": "https://api.apis.guru/v2/specs/hubapi.com/webhooks/v3/openapi.json"
   },
   {
+    "name": "hubapi.com:business units",
+    "version": "v3",
+    "url": "https://api.apis.guru/v2/specs/hubapi.com/business units/v3/openapi.json"
+  },
+  {
     "name": "hubhopper.com",
     "version": "v5",
     "url": "https://api.apis.guru/v2/specs/hubhopper.com/v5/swagger.json"
@@ -5116,8 +5386,8 @@
   },
   {
     "name": "ideal-postcodes.co.uk",
-    "version": "0.0.1",
-    "url": "https://api.apis.guru/v2/specs/ideal-postcodes.co.uk/0.0.1/openapi.json"
+    "version": "3.7.0",
+    "url": "https://api.apis.guru/v2/specs/ideal-postcodes.co.uk/3.7.0/openapi.json"
   },
   {
     "name": "idtbeyond.com",
@@ -5136,8 +5406,8 @@
   },
   {
     "name": "image-charts.com",
-    "version": "5.6.0",
-    "url": "https://api.apis.guru/v2/specs/image-charts.com/5.6.0/swagger.json"
+    "version": "6.1.19",
+    "url": "https://api.apis.guru/v2/specs/image-charts.com/6.1.19/swagger.json"
   },
   {
     "name": "import.io:data",
@@ -5191,8 +5461,8 @@
   },
   {
     "name": "intellifi.nl",
-    "version": "2.20.0",
-    "url": "https://api.apis.guru/v2/specs/intellifi.nl/2.20.0/openapi.json"
+    "version": "2.23.2+0.gfbc3926.dirty",
+    "url": "https://api.apis.guru/v2/specs/intellifi.nl/2.23.2+0.gfbc3926.dirty/openapi.json"
   },
   {
     "name": "interactivebrokers.com",
@@ -5305,6 +5575,11 @@
     "url": "https://api.apis.guru/v2/specs/ip2location.com/geolocation/1.0/openapi.json"
   },
   {
+    "name": "ip2location.io",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/ip2location.io/1.0/openapi.json"
+  },
+  {
     "name": "ip2proxy.com",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/ip2proxy.com/1.0/openapi.json"
@@ -5407,7 +5682,7 @@
   {
     "name": "letmc.com:diary",
     "version": "v3-diary",
-    "url": "https://api.apis.guru/v2/specs/letmc.com/diary/v3-diary/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/letmc.com/diary/v3-diary/openapi.json"
   },
   {
     "name": "letmc.com:free-tier",
@@ -5417,7 +5692,7 @@
   {
     "name": "letmc.com:maintenance",
     "version": "v3-maintenance",
-    "url": "https://api.apis.guru/v2/specs/letmc.com/maintenance/v3-maintenance/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/letmc.com/maintenance/v3-maintenance/openapi.json"
   },
   {
     "name": "letmc.com:reporting",
@@ -5426,8 +5701,8 @@
   },
   {
     "name": "libretranslate.local",
-    "version": "1.2",
-    "url": "https://api.apis.guru/v2/specs/libretranslate.local/1.2/openapi.json"
+    "version": "1.3.9",
+    "url": "https://api.apis.guru/v2/specs/libretranslate.local/1.3.9/openapi.json"
   },
   {
     "name": "link.fish",
@@ -5436,8 +5711,8 @@
   },
   {
     "name": "linode.com",
-    "version": "4.97.2",
-    "url": "https://api.apis.guru/v2/specs/linode.com/4.97.2/openapi.json"
+    "version": "4.145.0",
+    "url": "https://api.apis.guru/v2/specs/linode.com/4.145.0/openapi.json"
   },
   {
     "name": "linuxfoundation.org:reimbursement",
@@ -5591,8 +5866,8 @@
   },
   {
     "name": "mastodon.local",
-    "version": "1.1.1",
-    "url": "https://api.apis.guru/v2/specs/mastodon.local/1.1.1/swagger.json"
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/mastodon.local/1.0/openapi.json"
   },
   {
     "name": "math.tools",
@@ -5621,8 +5896,8 @@
   },
   {
     "name": "meraki.com",
-    "version": "1.12.0",
-    "url": "https://api.apis.guru/v2/specs/meraki.com/1.12.0/openapi.json"
+    "version": "0.0.0-streaming",
+    "url": "https://api.apis.guru/v2/specs/meraki.com/0.0.0-streaming/openapi.json"
   },
   {
     "name": "mercedes-benz.com:dealer",
@@ -5675,6 +5950,11 @@
     "url": "https://api.apis.guru/v2/specs/microsoft.com/cognitiveservices-Training/3.2/openapi.json"
   },
   {
+    "name": "microsoft.com:graph-beta",
+    "version": "1.0.1",
+    "url": "https://api.apis.guru/v2/specs/microsoft.com/graph-beta/1.0.1/openapi.json"
+  },
+  {
     "name": "moderatecontent.com",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/moderatecontent.com/1.0.0/swagger.json"
@@ -5686,8 +5966,8 @@
   },
   {
     "name": "monarchinitiative.org",
-    "version": "1.0.1",
-    "url": "https://api.apis.guru/v2/specs/monarchinitiative.org/1.0.1/openapi.json"
+    "version": "1.1.14",
+    "url": "https://api.apis.guru/v2/specs/monarchinitiative.org/1.1.14/openapi.json"
   },
   {
     "name": "moonmoonmoonmoon.com",
@@ -5716,8 +5996,8 @@
   },
   {
     "name": "namsor.com",
-    "version": "2.0.15",
-    "url": "https://api.apis.guru/v2/specs/namsor.com/2.0.15/openapi.json"
+    "version": "2.0.24",
+    "url": "https://api.apis.guru/v2/specs/namsor.com/2.0.24/openapi.json"
   },
   {
     "name": "nasa.gov:apod",
@@ -5782,7 +6062,7 @@
   {
     "name": "netatmo.net",
     "version": "1.1.5",
-    "url": "https://api.apis.guru/v2/specs/netatmo.net/1.1.5/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/netatmo.net/1.1.5/openapi.json"
   },
   {
     "name": "netboxdemo.com",
@@ -5796,13 +6076,13 @@
   },
   {
     "name": "netlify.com",
-    "version": "2.5.0",
-    "url": "https://api.apis.guru/v2/specs/netlify.com/2.5.0/swagger.json"
+    "version": "2.15.0",
+    "url": "https://api.apis.guru/v2/specs/netlify.com/2.15.0/swagger.json"
   },
   {
     "name": "neutrinoapi.net",
-    "version": "3.5.0",
-    "url": "https://api.apis.guru/v2/specs/neutrinoapi.net/3.5.0/openapi.json"
+    "version": "3.6.3",
+    "url": "https://api.apis.guru/v2/specs/neutrinoapi.net/3.6.3/openapi.json"
   },
   {
     "name": "nexmo.com:account",
@@ -5911,8 +6191,8 @@
   },
   {
     "name": "nic.at:domainfinder",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/nic.at/domainfinder/1.0.0/openapi.json"
+    "version": "1.1.0",
+    "url": "https://api.apis.guru/v2/specs/nic.at/domainfinder/1.1.0/openapi.json"
   },
   {
     "name": "nlpcloud.io",
@@ -5921,8 +6201,8 @@
   },
   {
     "name": "nordigen.com",
-    "version": "1.7",
-    "url": "https://api.apis.guru/v2/specs/nordigen.com/1.7/openapi.json"
+    "version": "2.0 (v2)",
+    "url": "https://api.apis.guru/v2/specs/nordigen.com/2.0 (v2)/openapi.json"
   },
   {
     "name": "notion.com",
@@ -6085,6 +6365,11 @@
     "url": "https://api.apis.guru/v2/specs/onsched.com/utility/v1/openapi.json"
   },
   {
+    "name": "openai.com",
+    "version": "1.2.0",
+    "url": "https://api.apis.guru/v2/specs/openai.com/1.2.0/openapi.json"
+  },
+  {
     "name": "openalpr.com",
     "version": "3.0.1",
     "url": "https://api.apis.guru/v2/specs/openalpr.com/3.0.1/swagger.json"
@@ -6166,8 +6451,8 @@
   },
   {
     "name": "openstates.org",
-    "version": "2021.08.02",
-    "url": "https://api.apis.guru/v2/specs/openstates.org/2021.08.02/openapi.json"
+    "version": "2021.11.12",
+    "url": "https://api.apis.guru/v2/specs/openstates.org/2021.11.12/openapi.json"
   },
   {
     "name": "openstf.io",
@@ -6186,8 +6471,8 @@
   },
   {
     "name": "optimade.local",
-    "version": "1.1.0",
-    "url": "https://api.apis.guru/v2/specs/optimade.local/1.1.0/openapi.json"
+    "version": "1.1.0~develop",
+    "url": "https://api.apis.guru/v2/specs/optimade.local/1.1.0~develop/openapi.json"
   },
   {
     "name": "opto22.com:pac",
@@ -6211,8 +6496,8 @@
   },
   {
     "name": "orthanc-server.com",
-    "version": "1.9.6",
-    "url": "https://api.apis.guru/v2/specs/orthanc-server.com/1.9.6/openapi.json"
+    "version": "1.11.3",
+    "url": "https://api.apis.guru/v2/specs/orthanc-server.com/1.11.3/openapi.json"
   },
   {
     "name": "osf.io",
@@ -6302,7 +6587,7 @@
   {
     "name": "parliament.uk:lordsvotes",
     "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/parliament.uk/lordsvotes/v1/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/parliament.uk/lordsvotes/v1/openapi.json"
   },
   {
     "name": "parliament.uk:members",
@@ -6351,8 +6636,8 @@
   },
   {
     "name": "payrun.io",
-    "version": "21.22.3.23",
-    "url": "https://api.apis.guru/v2/specs/payrun.io/21.22.3.23/openapi.json"
+    "version": "22.23.10.42",
+    "url": "https://api.apis.guru/v2/specs/payrun.io/22.23.10.42/openapi.json"
   },
   {
     "name": "pdfblocks.com",
@@ -6406,8 +6691,8 @@
   },
   {
     "name": "plaid.com",
-    "version": "2020-09-14_1.20.6",
-    "url": "https://api.apis.guru/v2/specs/plaid.com/2020-09-14_1.20.6/openapi.json"
+    "version": "2020-09-14_1.334.0",
+    "url": "https://api.apis.guru/v2/specs/plaid.com/2020-09-14_1.334.0/openapi.json"
   },
   {
     "name": "poemist.com",
@@ -6462,7 +6747,7 @@
   {
     "name": "prss.org",
     "version": "2.0.0",
-    "url": "https://api.apis.guru/v2/specs/prss.org/2.0.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/prss.org/2.0.0/openapi.json"
   },
   {
     "name": "ptv.vic.gov.au",
@@ -6518,6 +6803,16 @@
     "name": "rapidapi.com:language-identification",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/rapidapi.com/language-identification/1.0.0/swagger.json"
+  },
+  {
+    "name": "rapidapi.com:ecowetter",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/rapidapi.com/ecowetter/1.0.0/openapi.json"
+  },
+  {
+    "name": "rapidapi.com:spellcheckpro",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/rapidapi.com/spellcheckpro/1.0.0/openapi.json"
   },
   {
     "name": "rawg.io",
@@ -6616,13 +6911,13 @@
   },
   {
     "name": "rudder.example.local",
-    "version": "13",
-    "url": "https://api.apis.guru/v2/specs/rudder.example.local/13/openapi.json"
+    "version": "16",
+    "url": "https://api.apis.guru/v2/specs/rudder.example.local/16/openapi.json"
   },
   {
     "name": "rumble.run",
-    "version": "2.0.3",
-    "url": "https://api.apis.guru/v2/specs/rumble.run/2.0.3/openapi.json"
+    "version": "2.15.0",
+    "url": "https://api.apis.guru/v2/specs/rumble.run/2.15.0/openapi.json"
   },
   {
     "name": "runscope.com",
@@ -6642,7 +6937,7 @@
   {
     "name": "salesloft.com",
     "version": "v2",
-    "url": "https://api.apis.guru/v2/specs/salesloft.com/v2/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/salesloft.com/v2/openapi.json"
   },
   {
     "name": "schooldigger.com",
@@ -6686,8 +6981,8 @@
   },
   {
     "name": "shipengine.com",
-    "version": "1.1.202006302006",
-    "url": "https://api.apis.guru/v2/specs/shipengine.com/1.1.202006302006/openapi.json"
+    "version": "1.1.202303022103",
+    "url": "https://api.apis.guru/v2/specs/shipengine.com/1.1.202303022103/openapi.json"
   },
   {
     "name": "shipstation.com",
@@ -6711,8 +7006,8 @@
   },
   {
     "name": "shutterstock.com",
-    "version": "1.1.5",
-    "url": "https://api.apis.guru/v2/specs/shutterstock.com/1.1.5/openapi.json"
+    "version": "1.1.32",
+    "url": "https://api.apis.guru/v2/specs/shutterstock.com/1.1.32/openapi.json"
   },
   {
     "name": "signl4.com",
@@ -6776,8 +7071,8 @@
   },
   {
     "name": "spoonacular.com",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/spoonacular.com/1.0/openapi.json"
+    "version": "1.1",
+    "url": "https://api.apis.guru/v2/specs/spoonacular.com/1.1/openapi.json"
   },
   {
     "name": "sportsdata.io:cbb-v3-scores",
@@ -6936,8 +7231,13 @@
   },
   {
     "name": "spotify.com",
-    "version": "2021.8.15",
-    "url": "https://api.apis.guru/v2/specs/spotify.com/2021.8.15/openapi.json"
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/spotify.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "spotify.com:sonallux",
+    "version": "2023.2.27",
+    "url": "https://api.apis.guru/v2/specs/spotify.com/sonallux/2023.2.27/openapi.json"
   },
   {
     "name": "stackexchange.com",
@@ -6946,8 +7246,8 @@
   },
   {
     "name": "statsocial.com",
-    "version": "1.0.0.",
-    "url": "https://api.apis.guru/v2/specs/statsocial.com/1.0.0./openapi.json"
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/statsocial.com/1.0.0/openapi.json"
   },
   {
     "name": "stoplight.io",
@@ -6986,13 +7286,13 @@
   },
   {
     "name": "swagger.io:generator",
-    "version": "2.4.21",
-    "url": "https://api.apis.guru/v2/specs/swagger.io/generator/2.4.21/swagger.json"
+    "version": "2.4.30",
+    "url": "https://api.apis.guru/v2/specs/swagger.io/generator/2.4.30/swagger.json"
   },
   {
     "name": "swaggerhub.com",
-    "version": "1.0.47",
-    "url": "https://api.apis.guru/v2/specs/swaggerhub.com/1.0.47/swagger.json"
+    "version": "1.0.66",
+    "url": "https://api.apis.guru/v2/specs/swaggerhub.com/1.0.66/swagger.json"
   },
   {
     "name": "symanto.net",
@@ -7011,8 +7311,8 @@
   },
   {
     "name": "taggun.io",
-    "version": "1.5.74",
-    "url": "https://api.apis.guru/v2/specs/taggun.io/1.5.74/swagger.json"
+    "version": "1.10.9",
+    "url": "https://api.apis.guru/v2/specs/taggun.io/1.10.9/swagger.json"
   },
   {
     "name": "taxamo.com",
@@ -7041,8 +7341,8 @@
   },
   {
     "name": "thebluealliance.com",
-    "version": "3.8.0",
-    "url": "https://api.apis.guru/v2/specs/thebluealliance.com/3.8.0/openapi.json"
+    "version": "3.8.2",
+    "url": "https://api.apis.guru/v2/specs/thebluealliance.com/3.8.2/openapi.json"
   },
   {
     "name": "thenounproject.com",
@@ -7051,8 +7351,8 @@
   },
   {
     "name": "thesmsworks.co.uk",
-    "version": "1.5.0",
-    "url": "https://api.apis.guru/v2/specs/thesmsworks.co.uk/1.5.0/swagger.json"
+    "version": "1.8.0",
+    "url": "https://api.apis.guru/v2/specs/thesmsworks.co.uk/1.8.0/swagger.json"
   },
   {
     "name": "thetvdb.com",
@@ -7085,6 +7385,11 @@
     "url": "https://api.apis.guru/v2/specs/tisane.ai/1.0.0/openapi.json"
   },
   {
+    "name": "tokenmetrics.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/tokenmetrics.com/1.0.0/openapi.json"
+  },
+  {
     "name": "tomtom.com:maps",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/tomtom.com/maps/1.0.0/openapi.json"
@@ -7101,8 +7406,8 @@
   },
   {
     "name": "traccar.org",
-    "version": "4.14",
-    "url": "https://api.apis.guru/v2/specs/traccar.org/4.14/openapi.json"
+    "version": "5.6",
+    "url": "https://api.apis.guru/v2/specs/traccar.org/5.6/openapi.json"
   },
   {
     "name": "tradematic.com",
@@ -7126,8 +7431,8 @@
   },
   {
     "name": "trashnothing.com",
-    "version": "1.2",
-    "url": "https://api.apis.guru/v2/specs/trashnothing.com/1.2/openapi.json"
+    "version": "1.3",
+    "url": "https://api.apis.guru/v2/specs/trashnothing.com/1.3/openapi.json"
   },
   {
     "name": "trello.com",
@@ -7151,43 +7456,53 @@
   },
   {
     "name": "twilio.com:api",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/api/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/api/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_accounts_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_accounts_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_accounts_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_autopilot_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_autopilot_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_autopilot_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_bulkexports_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_bulkexports_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_bulkexports_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_chat_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_chat_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v2/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_chat_v3",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v3/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_content_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_content_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_conversations_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_conversations_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_conversations_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_events_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_events_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_events_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_fax_v1",
@@ -7196,188 +7511,173 @@
   },
   {
     "name": "twilio.com:twilio_flex_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_frontline_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_frontline_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_insights_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_insights_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_ip_messaging_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_ip_messaging_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_lookups_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_messaging_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_messaging_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_monitor_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_monitor_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_notify_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_notify_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_numbers_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_numbers_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_preview",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_preview/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_pricing_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_pricing_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_proxy_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_proxy_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_serverless_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_serverless_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_studio_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_studio_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_supersim_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_supersim_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_sync_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_sync_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_taskrouter_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_taskrouter_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_trunking_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trunking_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_trusthub_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trusthub_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_verify_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_verify_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_video_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_video_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_voice_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_voice_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_wireless_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_wireless_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_media_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_media_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_chat_v3",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v3/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_lookups_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_microvisor_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_microvisor_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_routes_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_routes_v2/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_oauth_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_oauth_v1/1.38.3/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_content_v1",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_content_v1/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v1/1.39.2/openapi.json"
   },
   {
     "name": "twilio.com:twilio_flex_v2",
-    "version": "1.38.3",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v2/1.38.3/openapi.json"
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_frontline_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_frontline_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_insights_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_insights_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_ip_messaging_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_ip_messaging_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_lookups_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_lookups_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_media_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_media_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_messaging_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_messaging_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_microvisor_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_microvisor_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_monitor_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_monitor_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_notify_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_notify_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_numbers_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_numbers_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_oauth_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_oauth_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_preview",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_preview/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_pricing_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_pricing_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_proxy_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_proxy_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_routes_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_routes_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_serverless_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_serverless_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_studio_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_studio_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_supersim_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_supersim_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_sync_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_sync_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_taskrouter_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_taskrouter_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_trunking_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trunking_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_trusthub_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trusthub_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_verify_v2",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_verify_v2/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_video_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_video_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_voice_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_voice_v1/1.39.2/openapi.json"
+  },
+  {
+    "name": "twilio.com:twilio_wireless_v1",
+    "version": "1.39.2",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_wireless_v1/1.39.2/openapi.json"
   },
   {
     "name": "twinehealth.com",
     "version": "v7.78.1",
-    "url": "https://api.apis.guru/v2/specs/twinehealth.com/v7.78.1/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/twinehealth.com/v7.78.1/openapi.json"
   },
   {
     "name": "twitter.com:current",
-    "version": "2.21",
-    "url": "https://api.apis.guru/v2/specs/twitter.com/current/2.21/openapi.json"
-  },
-  {
-    "name": "twitter.com:labs",
-    "version": "2.13",
-    "url": "https://api.apis.guru/v2/specs/twitter.com/labs/2.13/openapi.json"
+    "version": "2.61",
+    "url": "https://api.apis.guru/v2/specs/twitter.com/current/2.61/openapi.json"
   },
   {
     "name": "twitter.com:legacy",
@@ -7451,8 +7751,13 @@
   },
   {
     "name": "velopayments.com",
-    "version": "2.26.127",
-    "url": "https://api.apis.guru/v2/specs/velopayments.com/2.26.127/openapi.json"
+    "version": "2.34.63",
+    "url": "https://api.apis.guru/v2/specs/velopayments.com/2.34.63/openapi.json"
+  },
+  {
+    "name": "vercel.com",
+    "version": "0.0.1",
+    "url": "https://api.apis.guru/v2/specs/vercel.com/0.0.1/openapi.json"
   },
   {
     "name": "victorops.com",
@@ -7476,8 +7781,8 @@
   },
   {
     "name": "visualcrossing.com:weather",
-    "version": "4.5",
-    "url": "https://api.apis.guru/v2/specs/visualcrossing.com/weather/4.5/openapi.json"
+    "version": "4.6",
+    "url": "https://api.apis.guru/v2/specs/visualcrossing.com/weather/4.6/openapi.json"
   },
   {
     "name": "visualstudio.com",
@@ -7491,8 +7796,8 @@
   },
   {
     "name": "vocadb.net",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/vocadb.net/v1/openapi.json"
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vocadb.net/1.0/openapi.json"
   },
   {
     "name": "vonage.com:account",
@@ -7557,7 +7862,7 @@
   {
     "name": "warwick.ac.uk:enterobase",
     "version": "v2.0",
-    "url": "https://api.apis.guru/v2/specs/warwick.ac.uk/enterobase/v2.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/warwick.ac.uk/enterobase/v2.0/openapi.json"
   },
   {
     "name": "watchful.li",
@@ -7591,8 +7896,8 @@
   },
   {
     "name": "webscraping.ai",
-    "version": "2.0.4",
-    "url": "https://api.apis.guru/v2/specs/webscraping.ai/2.0.4/openapi.json"
+    "version": "2.0.7",
+    "url": "https://api.apis.guru/v2/specs/webscraping.ai/2.0.7/openapi.json"
   },
   {
     "name": "whapi.com:bets",
@@ -7661,8 +7966,8 @@
   },
   {
     "name": "wiremock.org:admin",
-    "version": "2.30.1",
-    "url": "https://api.apis.guru/v2/specs/wiremock.org/admin/2.30.1/openapi.json"
+    "version": "2.35.0",
+    "url": "https://api.apis.guru/v2/specs/wiremock.org/admin/2.35.0/openapi.json"
   },
   {
     "name": "wmata.com:bus-realtime",
@@ -7713,11 +8018,6 @@
     "name": "wso2apistore.com:transform",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/wso2apistore.com/transform/1.0.0/openapi.json"
-  },
-  {
-    "name": "xero.com",
-    "version": "2.0",
-    "url": "https://api.apis.guru/v2/specs/xero.com/2.0/swagger.json"
   },
   {
     "name": "xero.com:xero-identity",
@@ -7775,8 +8075,383 @@
     "url": "https://api.apis.guru/v2/specs/zeit.co/v2019-01-07/openapi.json"
   },
   {
+    "name": "zeno.fm",
+    "version": "0.6-99cfdac",
+    "url": "https://api.apis.guru/v2/specs/zeno.fm/0.6-99cfdac/openapi.json"
+  },
+  {
     "name": "zoomconnect.com",
     "version": "1",
     "url": "https://api.apis.guru/v2/specs/zoomconnect.com/1/swagger.json"
+  },
+  {
+    "name": "vtex.local:Catalog-API-Seller-Portal",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API-Seller-Portal/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Catalog-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Checkout-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Checkout-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Customer-Credit-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Customer-Credit-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:GiftCard-Hub-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/GiftCard-Hub-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Giftcard-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Giftcard-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Headless-CMS-API",
+    "version": "0.31.2",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Headless-CMS-API/0.31.2/openapi.json"
+  },
+  {
+    "name": "vtex.local:Intelligent-Search-API",
+    "version": "0.1.12",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Intelligent-Search-API/0.1.12/openapi.json"
+  },
+  {
+    "name": "vtex.local:License-Manager-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/License-Manager-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Logistics-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Logistics-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-APIs-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-APIs",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-Protocol",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-Protocol/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Master-Data-API-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Master-Data-API-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:MasterData-API-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/MasterData-API-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Message-Center-API",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Message-Center-API/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Orders-API-(PII-version)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API-(PII-version)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Orders-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Payments-Gateway-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Payments-Gateway-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Policies-System-API",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Policies-System-API/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Price-Simulations",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Price-Simulations/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Pricing-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Pricing-Hub",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-Hub/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Profile-System",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Profile-System/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Promotions-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Promotions-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Recurrence-(v1-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Recurrence-(v1-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Reviews-and-Ratings-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Reviews-and-Ratings-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:SKU-Bindings-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/SKU-Bindings-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Search-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Search-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Session-Manager-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Session-Manager-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Subscriptions-API-(v2)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v2)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Subscriptions-API-(v3)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v3)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:VTEX-Do-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX-Do-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:VTEX_TEMPLATE",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX_TEMPLATE/1.0.0/openapi.json"
+  },
+  {
+    "name": "simplivpn.net",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/simplivpn.net/1.0/openapi.json"
+  },
+  {
+    "name": "go-upc.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/go-upc.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "wealthreader.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/wealthreader.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "stream-io-api.com",
+    "version": "v79.19.1",
+    "url": "https://api.apis.guru/v2/specs/stream-io-api.com/v79.19.1/openapi.json"
+  },
+  {
+    "name": "mineskin.org",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/mineskin.org/1.0.0/openapi.json"
+  },
+  {
+    "name": "greip.io",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/greip.io/1.0.0/openapi.json"
+  },
+  {
+    "name": "stellastra.com",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/stellastra.com/1.0/openapi.json"
+  },
+  {
+    "name": "contentgroove.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/contentgroove.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "alertersystem.com",
+    "version": "1.6.0",
+    "url": "https://api.apis.guru/v2/specs/alertersystem.com/1.6.0/openapi.json"
+  },
+  {
+    "name": "facecheck.id",
+    "version": "v1.02",
+    "url": "https://api.apis.guru/v2/specs/facecheck.id/v1.02/openapi.json"
+  },
+  {
+    "name": "trakt.tv",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/trakt.tv/1.0.0/openapi.json"
+  },
+  {
+    "name": "groundhog-day.com",
+    "version": "1.2.1",
+    "url": "https://api.apis.guru/v2/specs/groundhog-day.com/1.2.1/openapi.json"
+  },
+  {
+    "name": "gerermesaffaires.com",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/gerermesaffaires.com/1.0.6/openapi.json"
+  },
+  {
+    "name": "increase.com",
+    "version": "0.0.1",
+    "url": "https://api.apis.guru/v2/specs/increase.com/0.0.1/openapi.json"
+  },
+  {
+    "name": "kumpeapps.com",
+    "version": "5.0.0",
+    "url": "https://api.apis.guru/v2/specs/kumpeapps.com/5.0.0/openapi.json"
+  },
+  {
+    "name": "dodo.ac",
+    "version": "1.5.0",
+    "url": "https://api.apis.guru/v2/specs/dodo.ac/1.5.0/openapi.json"
+  },
+  {
+    "name": "google.com",
+    "version": "v3",
+    "url": "https://api.apis.guru/v2/specs/google.com/v3/openapi.json"
+  },
+  {
+    "name": "doqs.dev",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/doqs.dev/1.0/openapi.json"
+  },
+  {
+    "name": "javatpoint.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/javatpoint.com/v1/openapi.json"
+  },
+  {
+    "name": "arespass.net",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/arespass.net/1.0/openapi.json"
+  },
+  {
+    "name": "svix.com",
+    "version": "1.4",
+    "url": "https://api.apis.guru/v2/specs/svix.com/1.4/openapi.json"
+  },
+  {
+    "name": "clickup.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/clickup.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "webflow.com",
+    "version": "2023-03-01T164537Z",
+    "url": "https://api.apis.guru/v2/specs/webflow.com/2023-03-01T164537Z/openapi.json"
+  },
+  {
+    "name": "meteosource.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/meteosource.com/v1/openapi.json"
+  },
+  {
+    "name": "threatjammer.com",
+    "version": "1.2.20",
+    "url": "https://api.apis.guru/v2/specs/threatjammer.com/1.2.20/openapi.json"
+  },
+  {
+    "name": "imgur.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/imgur.com/v1/openapi.json"
+  },
+  {
+    "name": "linqr.app",
+    "version": "2.0",
+    "url": "https://api.apis.guru/v2/specs/linqr.app/2.0/openapi.json"
+  },
+  {
+    "name": "json2video.com",
+    "version": "2.0.0",
+    "url": "https://api.apis.guru/v2/specs/json2video.com/2.0.0/openapi.json"
+  },
+  {
+    "name": "tcgdex.net",
+    "version": "2.0.0",
+    "url": "https://api.apis.guru/v2/specs/tcgdex.net/2.0.0/openapi.json"
+  },
+  {
+    "name": "gsmtasks.com",
+    "version": "2.4.13",
+    "url": "https://api.apis.guru/v2/specs/gsmtasks.com/2.4.13/openapi.json"
+  },
+  {
+    "name": "ljaero.com:dflight",
+    "version": "V 1.0.0",
+    "url": "https://api.apis.guru/v2/specs/ljaero.com/dflight/V 1.0.0/openapi.json"
+  },
+  {
+    "name": "ipqualityscore.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/ipqualityscore.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "xtrf.eu",
+    "version": "2.0",
+    "url": "https://api.apis.guru/v2/specs/xtrf.eu/2.0/openapi.json"
+  },
+  {
+    "name": "scideas.net:perfectpdf",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/scideas.net/perfectpdf/1.0/openapi.json"
+  },
+  {
+    "name": "scideas.net:regression",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/scideas.net/regression/1.0/openapi.json"
+  },
+  {
+    "name": "meilisearch.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/meilisearch.com/1.0.0/openapi.json"
+  },
+  {
+    "name": "vectara.io",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vectara.io/1.0.0/openapi.json"
+  },
+  {
+    "name": "bigdatacloud.net",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/bigdatacloud.net/1.0.0/openapi.json"
+  },
+  {
+    "name": "paypi.dev",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/paypi.dev/1.0.0/openapi.json"
+  },
+  {
+    "name": "unicourt.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/unicourt.com/1.0.0/openapi.json"
   }
 ]
