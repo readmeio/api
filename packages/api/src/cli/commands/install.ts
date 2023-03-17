@@ -26,8 +26,8 @@ cmd
       'ts',
     ])
   )
-  .addOption(new Option('-i, --install', 'Do not prompt to install packages'))
-  .action(async (uri: string, options: { lang: string; install?: boolean }) => {
+  .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
+  .action(async (uri: string, options: { lang: string; yes?: boolean }) => {
     let language: SupportedLanguages;
     if (options.lang) {
       language = options.lang as SupportedLanguages;
@@ -156,7 +156,7 @@ cmd
         logger(`  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason} ${pkgInfo.url}`);
       });
 
-      if (!options.install) {
+      if (!options.yes) {
         await promptTerminal({
           type: 'confirm',
           name: 'value',
