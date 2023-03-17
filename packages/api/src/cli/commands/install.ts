@@ -26,7 +26,8 @@ cmd
       'ts',
     ])
   )
-  .action(async (uri: string, options: { lang: string }) => {
+  .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
+  .action(async (uri: string, options: { lang: string; yes?: boolean }) => {
     let language: SupportedLanguages;
     if (options.lang) {
       language = options.lang as SupportedLanguages;
@@ -155,18 +156,20 @@ cmd
         logger(`  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason} ${pkgInfo.url}`);
       });
 
-      await promptTerminal({
-        type: 'confirm',
-        name: 'value',
-        message: 'OK to proceed with package installation?',
-        initial: true,
-      }).then(({ value }) => {
-        if (!value) {
-          // @todo cleanup installed files
-          logger('Installation cancelled.', true);
-          process.exit(1);
-        }
-      });
+      if (!options.yes) {
+        await promptTerminal({
+          type: 'confirm',
+          name: 'value',
+          message: 'OK to proceed with package installation?',
+          initial: true,
+        }).then(({ value }) => {
+          if (!value) {
+            // @todo cleanup installed files
+            logger('Installation cancelled.', true);
+            process.exit(1);
+          }
+        });
+      }
 
       spinner = ora('Installing required packages').start();
       try {
