@@ -55,9 +55,29 @@
     "url": "https://api.apis.guru/v2/specs/adyen.com/BalanceControlService/1/openapi.json"
   },
   {
+    "name": "adyen.com:BalancePlatformConfigurationNotification-v1",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformConfigurationNotification-v1/1/openapi.json"
+  },
+  {
+    "name": "adyen.com:BalancePlatformPaymentNotification-v1",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformPaymentNotification-v1/1/openapi.json"
+  },
+  {
+    "name": "adyen.com:BalancePlatformReportNotification-v1",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformReportNotification-v1/1/openapi.json"
+  },
+  {
     "name": "adyen.com:BalancePlatformService",
     "version": "2",
     "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformService/2/openapi.json"
+  },
+  {
+    "name": "adyen.com:BalancePlatformTransferNotification-v3",
+    "version": "3",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformTransferNotification-v3/3/openapi.json"
   },
   {
     "name": "adyen.com:BinLookupService",
@@ -88,6 +108,11 @@
     "name": "adyen.com:LegalEntityService",
     "version": "3",
     "url": "https://api.apis.guru/v2/specs/adyen.com/LegalEntityService/3/openapi.json"
+  },
+  {
+    "name": "adyen.com:ManagementNotificationService-v1",
+    "version": "1",
+    "url": "https://api.apis.guru/v2/specs/adyen.com/ManagementNotificationService-v1/1/openapi.json"
   },
   {
     "name": "adyen.com:ManagementService",
@@ -150,34 +175,44 @@
     "url": "https://api.apis.guru/v2/specs/akeneo.com/1.0.0/swagger.json"
   },
   {
+    "name": "alertersystem.com",
+    "version": "1.6.0",
+    "url": "https://api.apis.guru/v2/specs/alertersystem.com/1.6.0/openapi.json"
+  },
+  {
     "name": "amadeus.com",
     "version": "2.2.0",
     "url": "https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json"
   },
   {
-    "name": "amadeus.com:amadeus-hotel-name-autocomplete",
-    "version": "1.0.3",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-name-autocomplete/1.0.3/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-inspiration-search",
-    "version": "1.0.6",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-inspiration-search/1.0.6/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-choice-prediction",
-    "version": "2.0.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-choice-prediction/2.0.2/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-delay-prediction",
-    "version": "1.0.6",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-delay-prediction/1.0.6/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-most-booked-destinations",
+    "name": "amadeus.com:amadeus-airline-code-lookup",
     "version": "1.1.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-booked-destinations/1.1.1/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airline-code-lookup/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-&-city-search",
+    "version": "1.2.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-&-city-search/1.2.3/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-nearest-relevant",
+    "version": "1.1.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-nearest-relevant/1.1.2/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-airport-on-time-performance",
+    "version": "1.0.4",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-on-time-performance/1.0.4/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-branded-fares-upsell",
+    "version": "1.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-branded-fares-upsell/1.0.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-availabilities-search",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-availabilities-search/1.0.2/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-flight-busiest-traveling-period",
@@ -195,14 +230,39 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-check-in-links/2.1.2/swagger.json"
   },
   {
-    "name": "amadeus.com:amadeus-trip-purpose-prediction",
-    "version": "1.1.4",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-purpose-prediction/1.1.4/swagger.json"
+    "name": "amadeus.com:amadeus-flight-choice-prediction",
+    "version": "2.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-choice-prediction/2.0.2/swagger.json"
   },
   {
-    "name": "amadeus.com:amadeus-travel-recommendations",
-    "version": "1.0.3",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-travel-recommendations/1.0.3/openapi.json"
+    "name": "amadeus.com:amadeus-flight-create-orders",
+    "version": "1.9.0",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-create-orders/1.9.0/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-delay-prediction",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-delay-prediction/1.0.6/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-inspiration-search",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-inspiration-search/1.0.6/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-most-booked-destinations",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-booked-destinations/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-most-traveled-destinations",
+    "version": "1.1.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-traveled-destinations/1.1.1/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-flight-offers-price",
+    "version": "1.2.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-offers-price/1.2.2/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-flight-order-management",
@@ -210,9 +270,19 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-order-management/1.9.0/swagger.json"
   },
   {
-    "name": "amadeus.com:amadeus-airline-code-lookup",
-    "version": "1.1.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airline-code-lookup/1.1.1/swagger.json"
+    "name": "amadeus.com:amadeus-flight-price-analysis",
+    "version": "1.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-price-analysis/1.0.1/openapi.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-hotel-booking",
+    "version": "1.1.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-booking/1.1.3/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-hotel-name-autocomplete",
+    "version": "1.0.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-name-autocomplete/1.0.3/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-hotel-ratings",
@@ -220,19 +290,19 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-ratings/1.0.2/swagger.json"
   },
   {
+    "name": "amadeus.com:amadeus-hotel-search",
+    "version": "3.0.8",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-search/3.0.8/swagger.json"
+  },
+  {
+    "name": "amadeus.com:amadeus-location-score",
+    "version": "1.0.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-location-score/1.0.2/openapi.json"
+  },
+  {
     "name": "amadeus.com:amadeus-on-demand-flight-status",
     "version": "2.0.2",
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-on-demand-flight-status/2.0.2/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-price-analysis",
-    "version": "1.0.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-price-analysis/1.0.1/openapi.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-seatmap-display",
-    "version": "1.9.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-seatmap-display/1.9.2/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-points-of-interest",
@@ -245,24 +315,9 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-safe-place-/1.0.0/swagger.json"
   },
   {
-    "name": "amadeus.com:amadeus-trip-parser",
-    "version": "3.0.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-parser/3.0.1/openapi.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-hotel-search",
-    "version": "3.0.8",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-search/3.0.8/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-hotel-booking",
-    "version": "1.1.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-booking/1.1.2/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-offers-price",
-    "version": "1.2.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-offers-price/1.2.2/swagger.json"
+    "name": "amadeus.com:amadeus-seatmap-display",
+    "version": "1.9.2",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-seatmap-display/1.9.2/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-tours-and-activities",
@@ -270,44 +325,19 @@
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-tours-and-activities/1.0.2/swagger.json"
   },
   {
-    "name": "amadeus.com:amadeus-airport-&-city-search",
-    "version": "1.2.3",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-&-city-search/1.2.3/swagger.json"
+    "name": "amadeus.com:amadeus-travel-recommendations",
+    "version": "1.0.3",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-travel-recommendations/1.0.3/openapi.json"
   },
   {
-    "name": "amadeus.com:amadeus-flight-create-orders",
-    "version": "1.9.0",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-create-orders/1.9.0/swagger.json"
+    "name": "amadeus.com:amadeus-trip-parser",
+    "version": "3.0.1",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-parser/3.0.1/openapi.json"
   },
   {
-    "name": "amadeus.com:amadeus-flight-availabilities-search",
-    "version": "1.0.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-availabilities-search/1.0.2/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-branded-fares-upsell",
-    "version": "1.0.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-branded-fares-upsell/1.0.1/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-airport-on-time-performance",
-    "version": "1.0.4",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-on-time-performance/1.0.4/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-airport-nearest-relevant",
-    "version": "1.1.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-airport-nearest-relevant/1.1.2/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-flight-most-traveled-destinations",
-    "version": "1.1.1",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-flight-most-traveled-destinations/1.1.1/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-location-score",
-    "version": "1.0.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-location-score/1.0.2/openapi.json"
+    "name": "amadeus.com:amadeus-trip-purpose-prediction",
+    "version": "1.1.4",
+    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-trip-purpose-prediction/1.1.4/swagger.json"
   },
   {
     "name": "amentum.space:atmosphere",
@@ -340,9 +370,9 @@
     "url": "https://api.apis.guru/v2/specs/anchore.io/0.1.20/openapi.json"
   },
   {
-    "name": "apache.org:qakka",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/apache.org/qakka/v1/openapi.json"
+    "name": "apache.org",
+    "version": "2.5.1",
+    "url": "https://api.apis.guru/v2/specs/apache.org/2.5.1/openapi.json"
   },
   {
     "name": "apache.org:airflow",
@@ -350,9 +380,9 @@
     "url": "https://api.apis.guru/v2/specs/apache.org/airflow/2.5.1/openapi.json"
   },
   {
-    "name": "apache.org",
-    "version": "2.5.1",
-    "url": "https://api.apis.guru/v2/specs/apache.org/2.5.1/openapi.json"
+    "name": "apache.org:qakka",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/apache.org/qakka/v1/openapi.json"
   },
   {
     "name": "apacta.com",
@@ -396,23 +426,23 @@
   },
   {
     "name": "apideck.com:ats",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/ats/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/ats/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:crm",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/crm/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/crm/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:customer-support",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/customer-support/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/customer-support/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:ecommerce",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/ecommerce/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/ecommerce/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:ecosystem",
@@ -421,48 +451,48 @@
   },
   {
     "name": "apideck.com:file-storage",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/file-storage/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/file-storage/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:hris",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/hris/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:lead",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/lead/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:pos",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/pos/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:proxy",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/proxy/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:sms",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/sms/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:vault",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/vault/9.1.1/openapi.json"
-  },
-  {
-    "name": "apideck.com:webhook",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/webhook/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/hris/9.1.2/openapi.json"
   },
   {
     "name": "apideck.com:issue-tracking",
-    "version": "9.1.1",
-    "url": "https://api.apis.guru/v2/specs/apideck.com/issue-tracking/9.1.1/openapi.json"
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/issue-tracking/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:lead",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/lead/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:pos",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/pos/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:proxy",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/proxy/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:sms",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/sms/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:vault",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/vault/9.1.2/openapi.json"
+  },
+  {
+    "name": "apideck.com:webhook",
+    "version": "9.1.2",
+    "url": "https://api.apis.guru/v2/specs/apideck.com/webhook/9.1.2/openapi.json"
   },
   {
     "name": "apigee.local:registry",
@@ -1443,6 +1473,11 @@
     "name": "archive.org:wayback",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/archive.org/wayback/1.0.0/openapi.json"
+  },
+  {
+    "name": "arespass.net",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/arespass.net/1.0/openapi.json"
   },
   {
     "name": "art19.com",
@@ -4215,6 +4250,11 @@
     "url": "https://api.apis.guru/v2/specs/biapi.pro/2.0/openapi.json"
   },
   {
+    "name": "bigdatacloud.net",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/bigdatacloud.net/1.0.0/openapi.json"
+  },
+  {
     "name": "bikewise.org",
     "version": "v2",
     "url": "https://api.apis.guru/v2/specs/bikewise.org/v2/openapi.json"
@@ -4395,6 +4435,11 @@
     "url": "https://api.apis.guru/v2/specs/clever.com/1.2.0/openapi.json"
   },
   {
+    "name": "clickup.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/clickup.com/1.0.0/openapi.json"
+  },
+  {
     "name": "climate.com",
     "version": "4.0.11",
     "url": "https://api.apis.guru/v2/specs/climate.com/4.0.11/openapi.json"
@@ -4465,6 +4510,11 @@
     "url": "https://api.apis.guru/v2/specs/consumerfinance.gov/1.0/swagger.json"
   },
   {
+    "name": "contentgroove.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/contentgroove.com/1.0.0/openapi.json"
+  },
+  {
     "name": "contract-p.fit",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/contract-p.fit/1.0/openapi.json"
@@ -4473,11 +4523,6 @@
     "name": "core.ac.uk",
     "version": "2.0",
     "url": "https://api.apis.guru/v2/specs/core.ac.uk/2.0/swagger.json"
-  },
-  {
-    "name": "corona-virus-stats.herokuapp.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/corona-virus-stats.herokuapp.com/v1/openapi.json"
   },
   {
     "name": "covid19-api.com",
@@ -4605,14 +4650,14 @@
     "url": "https://api.apis.guru/v2/specs/dnd5eapi.co/0.1/openapi.json"
   },
   {
-    "name": "docker.com:engine",
-    "version": "1.33",
-    "url": "https://api.apis.guru/v2/specs/docker.com/engine/1.33/openapi.json"
-  },
-  {
     "name": "docker.com:dvp",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/docker.com/dvp/1.0.0/openapi.json"
+  },
+  {
+    "name": "docker.com:engine",
+    "version": "1.33",
+    "url": "https://api.apis.guru/v2/specs/docker.com/engine/1.33/openapi.json"
   },
   {
     "name": "docker.com:hub",
@@ -4620,9 +4665,19 @@
     "url": "https://api.apis.guru/v2/specs/docker.com/hub/beta/openapi.json"
   },
   {
+    "name": "dodo.ac",
+    "version": "1.5.0",
+    "url": "https://api.apis.guru/v2/specs/dodo.ac/1.5.0/openapi.json"
+  },
+  {
     "name": "domainsdb.info",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/domainsdb.info/1.0/openapi.json"
+  },
+  {
+    "name": "doqs.dev",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/doqs.dev/1.0/openapi.json"
   },
   {
     "name": "drchrono.com",
@@ -4860,6 +4915,11 @@
     "url": "https://api.apis.guru/v2/specs/exude-api.herokuapp.com/1.0.0/openapi.json"
   },
   {
+    "name": "facecheck.id",
+    "version": "v1.02",
+    "url": "https://api.apis.guru/v2/specs/facecheck.id/v1.02/openapi.json"
+  },
+  {
     "name": "faceidentity-beta.azurewebsites.net",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/faceidentity-beta.azurewebsites.net/1.0/swagger.json"
@@ -5045,6 +5105,11 @@
     "url": "https://api.apis.guru/v2/specs/geodesystems.com/1.0.0/openapi.json"
   },
   {
+    "name": "gerermesaffaires.com",
+    "version": "1.0.6",
+    "url": "https://api.apis.guru/v2/specs/gerermesaffaires.com/1.0.6/openapi.json"
+  },
+  {
     "name": "getgo.com:gototraining",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/getgo.com/gototraining/1.0.0/swagger.json"
@@ -5145,9 +5210,19 @@
     "url": "https://api.apis.guru/v2/specs/globalwinescore.com/8234aab51481d37a30757d925b7f4221a659427e/openapi.json"
   },
   {
+    "name": "go-upc.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/go-upc.com/1.0.0/openapi.json"
+  },
+  {
     "name": "goog.io",
     "version": "0.1.0",
     "url": "https://api.apis.guru/v2/specs/goog.io/0.1.0/openapi.json"
+  },
+  {
+    "name": "google.com",
+    "version": "v3",
+    "url": "https://api.apis.guru/v2/specs/google.com/v3/openapi.json"
   },
   {
     "name": "google.home",
@@ -5210,9 +5285,24 @@
     "url": "https://api.apis.guru/v2/specs/greenpeace.org/1.0.0/swagger.json"
   },
   {
+    "name": "greip.io",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/greip.io/1.0.0/openapi.json"
+  },
+  {
+    "name": "groundhog-day.com",
+    "version": "1.2.1",
+    "url": "https://api.apis.guru/v2/specs/groundhog-day.com/1.2.1/openapi.json"
+  },
+  {
     "name": "gsa.gov",
     "version": "0.1",
     "url": "https://api.apis.guru/v2/specs/gsa.gov/0.1/swagger.json"
+  },
+  {
+    "name": "gsmtasks.com",
+    "version": "2.4.13",
+    "url": "https://api.apis.guru/v2/specs/gsmtasks.com/2.4.13/openapi.json"
   },
   {
     "name": "hackathonwatch.com",
@@ -5315,6 +5405,11 @@
     "url": "https://api.apis.guru/v2/specs/hubapi.com/automation/v4/openapi.json"
   },
   {
+    "name": "hubapi.com:business units",
+    "version": "v3",
+    "url": "https://api.apis.guru/v2/specs/hubapi.com/business units/v3/openapi.json"
+  },
+  {
     "name": "hubapi.com:cms",
     "version": "v3",
     "url": "https://api.apis.guru/v2/specs/hubapi.com/cms/v3/openapi.json"
@@ -5355,11 +5450,6 @@
     "url": "https://api.apis.guru/v2/specs/hubapi.com/webhooks/v3/openapi.json"
   },
   {
-    "name": "hubapi.com:business units",
-    "version": "v3",
-    "url": "https://api.apis.guru/v2/specs/hubapi.com/business units/v3/openapi.json"
-  },
-  {
     "name": "hubhopper.com",
     "version": "v5",
     "url": "https://api.apis.guru/v2/specs/hubhopper.com/v5/swagger.json"
@@ -5373,6 +5463,11 @@
     "name": "i-cue.solutions",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/i-cue.solutions/v1/openapi.json"
+  },
+  {
+    "name": "ibanapi.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/ibanapi.com/1.0.0/openapi.json"
   },
   {
     "name": "ideaconsult.net:enanomapper",
@@ -5410,6 +5505,11 @@
     "url": "https://api.apis.guru/v2/specs/image-charts.com/6.1.19/swagger.json"
   },
   {
+    "name": "impala.travel:hotels",
+    "version": "1.003",
+    "url": "https://api.apis.guru/v2/specs/impala.travel/hotels/1.003/openapi.json"
+  },
+  {
     "name": "import.io:data",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/import.io/data/1.0/swagger.json"
@@ -5438,6 +5538,11 @@
     "name": "inboxroute.com",
     "version": "0.9",
     "url": "https://api.apis.guru/v2/specs/inboxroute.com/0.9/swagger.json"
+  },
+  {
+    "name": "increase.com",
+    "version": "0.0.1",
+    "url": "https://api.apis.guru/v2/specs/increase.com/0.0.1/openapi.json"
   },
   {
     "name": "infermedica.com",
@@ -5590,6 +5695,11 @@
     "url": "https://api.apis.guru/v2/specs/ip2whois.com/1.0/openapi.json"
   },
   {
+    "name": "ipqualityscore.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/ipqualityscore.com/1.0.0/openapi.json"
+  },
+  {
     "name": "iptwist.com",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/iptwist.com/1.0.0/openapi.json"
@@ -5620,6 +5730,11 @@
     "url": "https://api.apis.guru/v2/specs/izettle.com/products/1.0.0/openapi.json"
   },
   {
+    "name": "javatpoint.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/javatpoint.com/v1/openapi.json"
+  },
+  {
     "name": "jira.local",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/jira.local/1.0.0/swagger.json"
@@ -5640,14 +5755,29 @@
     "url": "https://api.apis.guru/v2/specs/journy.io/1.0.0/openapi.json"
   },
   {
+    "name": "json2video.com",
+    "version": "2.0.0",
+    "url": "https://api.apis.guru/v2/specs/json2video.com/2.0.0/openapi.json"
+  },
+  {
     "name": "keyserv.solutions",
     "version": "1.4.5",
     "url": "https://api.apis.guru/v2/specs/keyserv.solutions/1.4.5/openapi.json"
   },
   {
+    "name": "klarna.com:payments",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/klarna.com/payments/1.0.0/openapi.json"
+  },
+  {
     "name": "koomalooma.com",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/koomalooma.com/1.0/swagger.json"
+  },
+  {
+    "name": "kumpeapps.com",
+    "version": "5.0.0",
+    "url": "https://api.apis.guru/v2/specs/kumpeapps.com/5.0.0/openapi.json"
   },
   {
     "name": "lambdatest.com",
@@ -5715,6 +5845,11 @@
     "url": "https://api.apis.guru/v2/specs/linode.com/4.145.0/openapi.json"
   },
   {
+    "name": "linqr.app",
+    "version": "2.0",
+    "url": "https://api.apis.guru/v2/specs/linqr.app/2.0/openapi.json"
+  },
+  {
     "name": "linuxfoundation.org:reimbursement",
     "version": "1.0",
     "url": "https://api.apis.guru/v2/specs/linuxfoundation.org/reimbursement/1.0/swagger.json"
@@ -5723,6 +5858,11 @@
     "name": "listennotes.com",
     "version": "2.0",
     "url": "https://api.apis.guru/v2/specs/listennotes.com/2.0/openapi.json"
+  },
+  {
+    "name": "ljaero.com:dflight",
+    "version": "V 1.0.0",
+    "url": "https://api.apis.guru/v2/specs/ljaero.com/dflight/V 1.0.0/openapi.json"
   },
   {
     "name": "logoraisr.com",
@@ -5891,8 +6031,13 @@
   },
   {
     "name": "medium.com",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/medium.com/1.0/openapi.json"
+  },
+  {
+    "name": "meilisearch.com",
     "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/medium.com/1.0.0/swagger.json"
+    "url": "https://api.apis.guru/v2/specs/meilisearch.com/1.0.0/openapi.json"
   },
   {
     "name": "meraki.com",
@@ -5925,9 +6070,19 @@
     "url": "https://api.apis.guru/v2/specs/mermade.org.uk/openapi-converter/1.0.0/openapi.json"
   },
   {
+    "name": "meteosource.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/meteosource.com/v1/openapi.json"
+  },
+  {
     "name": "miataru.com",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/miataru.com/1.0.0/swagger.json"
+  },
+  {
+    "name": "microcks.local",
+    "version": "1.6.0",
+    "url": "https://api.apis.guru/v2/specs/microcks.local/1.6.0/openapi.json"
   },
   {
     "name": "microsoft.com:cognitiveservices-Ocr",
@@ -5953,6 +6108,11 @@
     "name": "microsoft.com:graph-beta",
     "version": "1.0.1",
     "url": "https://api.apis.guru/v2/specs/microsoft.com/graph-beta/1.0.1/openapi.json"
+  },
+  {
+    "name": "mineskin.org",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/mineskin.org/1.0.0/openapi.json"
   },
   {
     "name": "moderatecontent.com",
@@ -6063,6 +6223,11 @@
     "name": "netatmo.net",
     "version": "1.1.5",
     "url": "https://api.apis.guru/v2/specs/netatmo.net/1.1.5/openapi.json"
+  },
+  {
+    "name": "netbox.dev",
+    "version": "3.4",
+    "url": "https://api.apis.guru/v2/specs/netbox.dev/3.4/openapi.json"
   },
   {
     "name": "netboxdemo.com",
@@ -6555,11 +6720,6 @@
     "url": "https://api.apis.guru/v2/specs/paccurate.io/0.1.1/swagger.json"
   },
   {
-    "name": "palabras-aleatorias-public-api.herokuapp.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/palabras-aleatorias-public-api.herokuapp.com/1.0.0/openapi.json"
-  },
-  {
     "name": "pandascore.co",
     "version": "2.23.1",
     "url": "https://api.apis.guru/v2/specs/pandascore.co/2.23.1/openapi.json"
@@ -6633,6 +6793,11 @@
     "name": "payments.service.gov.uk:payments",
     "version": "1.0.3",
     "url": "https://api.apis.guru/v2/specs/payments.service.gov.uk/payments/1.0.3/swagger.json"
+  },
+  {
+    "name": "paypi.dev",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/paypi.dev/1.0.0/openapi.json"
   },
   {
     "name": "payrun.io",
@@ -6715,11 +6880,6 @@
     "url": "https://api.apis.guru/v2/specs/postmarkapp.com/account/0.9.0/swagger.json"
   },
   {
-    "name": "posty-api.herokuapp.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/posty-api.herokuapp.com/v1/swagger.json"
-  },
-  {
     "name": "powerdns.local",
     "version": "0.0.13",
     "url": "https://api.apis.guru/v2/specs/powerdns.local/0.0.13/swagger.json"
@@ -6743,6 +6903,11 @@
     "name": "probely.com",
     "version": "1.2.0",
     "url": "https://api.apis.guru/v2/specs/probely.com/1.2.0/openapi.json"
+  },
+  {
+    "name": "proxykingdom.com",
+    "version": "v1",
+    "url": "https://api.apis.guru/v2/specs/proxykingdom.com/v1/openapi.json"
   },
   {
     "name": "prss.org",
@@ -6790,6 +6955,11 @@
     "url": "https://api.apis.guru/v2/specs/rapidapi.com/dynamicdocs/1.0/openapi.json"
   },
   {
+    "name": "rapidapi.com:ecowetter",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/rapidapi.com/ecowetter/1.0.0/openapi.json"
+  },
+  {
     "name": "rapidapi.com:football-prediction",
     "version": "2",
     "url": "https://api.apis.guru/v2/specs/rapidapi.com/football-prediction/2/openapi.json"
@@ -6803,11 +6973,6 @@
     "name": "rapidapi.com:language-identification",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/rapidapi.com/language-identification/1.0.0/swagger.json"
-  },
-  {
-    "name": "rapidapi.com:ecowetter",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/rapidapi.com/ecowetter/1.0.0/openapi.json"
   },
   {
     "name": "rapidapi.com:spellcheckpro",
@@ -6945,6 +7110,16 @@
     "url": "https://api.apis.guru/v2/specs/schooldigger.com/v1/swagger.json"
   },
   {
+    "name": "scideas.net:perfectpdf",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/scideas.net/perfectpdf/1.0/openapi.json"
+  },
+  {
+    "name": "scideas.net:regression",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/scideas.net/regression/1.0/openapi.json"
+  },
+  {
     "name": "scrapewebsite.email",
     "version": "0.1",
     "url": "https://api.apis.guru/v2/specs/scrapewebsite.email/0.1/swagger.json"
@@ -7013,6 +7188,16 @@
     "name": "signl4.com",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/signl4.com/v1/openapi.json"
+  },
+  {
+    "name": "simplivpn.net",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/simplivpn.net/1.0/openapi.json"
+  },
+  {
+    "name": "sinao.app",
+    "version": "1.1.0",
+    "url": "https://api.apis.guru/v2/specs/sinao.app/1.1.0/openapi.json"
   },
   {
     "name": "skynewz-api-fortnite.herokuapp.com",
@@ -7250,6 +7435,11 @@
     "url": "https://api.apis.guru/v2/specs/statsocial.com/1.0.0/openapi.json"
   },
   {
+    "name": "stellastra.com",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/stellastra.com/1.0/openapi.json"
+  },
+  {
     "name": "stoplight.io",
     "version": "api-v1",
     "url": "https://api.apis.guru/v2/specs/stoplight.io/api-v1/openapi.json"
@@ -7263,6 +7453,11 @@
     "name": "stormglass.io",
     "version": "1.0.1",
     "url": "https://api.apis.guru/v2/specs/stormglass.io/1.0.1/swagger.json"
+  },
+  {
+    "name": "stream-io-api.com",
+    "version": "v79.19.1",
+    "url": "https://api.apis.guru/v2/specs/stream-io-api.com/v79.19.1/openapi.json"
   },
   {
     "name": "superset.apache.local:superset",
@@ -7283,6 +7478,11 @@
     "name": "surrey.ca:trafficloops",
     "version": "0.1",
     "url": "https://api.apis.guru/v2/specs/surrey.ca/trafficloops/0.1/swagger.json"
+  },
+  {
+    "name": "svix.com",
+    "version": "1.4",
+    "url": "https://api.apis.guru/v2/specs/svix.com/1.4/openapi.json"
   },
   {
     "name": "swagger.io:generator",
@@ -7325,6 +7525,11 @@
     "url": "https://api.apis.guru/v2/specs/taxrates.io/1.0.0/openapi.json"
   },
   {
+    "name": "tcgdex.net",
+    "version": "2.0.0",
+    "url": "https://api.apis.guru/v2/specs/tcgdex.net/2.0.0/openapi.json"
+  },
+  {
     "name": "telematicssdk.com",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/telematicssdk.com/1.0.0/openapi.json"
@@ -7360,6 +7565,11 @@
     "url": "https://api.apis.guru/v2/specs/thetvdb.com/3.0.0/swagger.json"
   },
   {
+    "name": "threatjammer.com",
+    "version": "1.2.20",
+    "url": "https://api.apis.guru/v2/specs/threatjammer.com/1.2.20/openapi.json"
+  },
+  {
     "name": "ticketmaster.com:commerce",
     "version": "v2",
     "url": "https://api.apis.guru/v2/specs/ticketmaster.com/commerce/v2/swagger.json"
@@ -7383,6 +7593,11 @@
     "name": "tisane.ai",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/tisane.ai/1.0.0/openapi.json"
+  },
+  {
+    "name": "tokenjay.app",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/tokenjay.app/1.0.0/openapi.json"
   },
   {
     "name": "tokenmetrics.com",
@@ -7413,6 +7628,11 @@
     "name": "tradematic.com",
     "version": "1.0.2",
     "url": "https://api.apis.guru/v2/specs/tradematic.com/1.0.2/swagger.json"
+  },
+  {
+    "name": "trakt.tv",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/trakt.tv/1.0.0/openapi.json"
   },
   {
     "name": "transavia.com",
@@ -7456,53 +7676,53 @@
   },
   {
     "name": "twilio.com:api",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/api/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/api/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_accounts_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_accounts_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_accounts_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_autopilot_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_autopilot_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_autopilot_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_bulkexports_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_bulkexports_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_bulkexports_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_chat_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_chat_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_chat_v3",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v3/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_chat_v3/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_content_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_content_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_content_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_conversations_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_conversations_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_conversations_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_events_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_events_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_events_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_fax_v1",
@@ -7511,163 +7731,163 @@
   },
   {
     "name": "twilio.com:twilio_flex_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_flex_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_flex_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_frontline_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_frontline_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_frontline_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_insights_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_insights_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_insights_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_ip_messaging_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_ip_messaging_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_ip_messaging_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_lookups_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_lookups_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_lookups_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_media_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_media_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_media_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_messaging_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_messaging_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_messaging_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_microvisor_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_microvisor_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_microvisor_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_monitor_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_monitor_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_monitor_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_notify_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_notify_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_notify_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_numbers_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_numbers_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_numbers_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_oauth_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_oauth_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_oauth_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_preview",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_preview/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_preview/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_pricing_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_pricing_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_pricing_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_proxy_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_proxy_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_proxy_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_routes_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_routes_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_routes_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_serverless_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_serverless_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_serverless_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_studio_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_studio_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_studio_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_supersim_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_supersim_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_supersim_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_sync_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_sync_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_sync_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_taskrouter_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_taskrouter_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_taskrouter_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_trunking_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trunking_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trunking_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_trusthub_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trusthub_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_trusthub_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_verify_v2",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_verify_v2/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_verify_v2/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_video_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_video_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_video_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_voice_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_voice_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_voice_v1/1.40.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_wireless_v1",
-    "version": "1.39.2",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_wireless_v1/1.39.2/openapi.json"
+    "version": "1.40.0",
+    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_wireless_v1/1.40.0/openapi.json"
   },
   {
     "name": "twinehealth.com",
@@ -7695,6 +7915,11 @@
     "url": "https://api.apis.guru/v2/specs/uebermaps.com/2.0/swagger.json"
   },
   {
+    "name": "unicourt.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/unicourt.com/1.0.0/openapi.json"
+  },
+  {
     "name": "up.com.au",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/up.com.au/v1/openapi.json"
@@ -7720,34 +7945,14 @@
     "url": "https://api.apis.guru/v2/specs/va.gov/forms/0.0.0/openapi.json"
   },
   {
-    "name": "vaccinationstatus.azurewebsites.net:athena",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vaccinationstatus.azurewebsites.net/athena/1.0/openapi.json"
-  },
-  {
-    "name": "vaccinationstatus.azurewebsites.net:brasil",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vaccinationstatus.azurewebsites.net/brasil/1.0/openapi.json"
-  },
-  {
-    "name": "vaccinationstatus.azurewebsites.net:india",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vaccinationstatus.azurewebsites.net/india/1.0/openapi.json"
-  },
-  {
-    "name": "vaccinationstatus.azurewebsites.net:paraguay",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vaccinationstatus.azurewebsites.net/paraguay/1.0/openapi.json"
-  },
-  {
-    "name": "vaccinationstatus.azurewebsites.net:peru",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vaccinationstatus.azurewebsites.net/peru/1.0/openapi.json"
-  },
-  {
     "name": "vatapi.com",
     "version": "1",
     "url": "https://api.apis.guru/v2/specs/vatapi.com/1/swagger.json"
+  },
+  {
+    "name": "vectara.io",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vectara.io/1.0.0/openapi.json"
   },
   {
     "name": "velopayments.com",
@@ -7830,9 +8035,174 @@
     "url": "https://api.apis.guru/v2/specs/voodoomfg.com/2.0.0/swagger.json"
   },
   {
-    "name": "waag.org",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/waag.org/v1/swagger.json"
+    "name": "vtex.local:Catalog-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Catalog-API-Seller-Portal",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API-Seller-Portal/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Checkout-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Checkout-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Customer-Credit-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Customer-Credit-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:GiftCard-Hub-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/GiftCard-Hub-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Giftcard-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Giftcard-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Headless-CMS-API",
+    "version": "0.31.2",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Headless-CMS-API/0.31.2/openapi.json"
+  },
+  {
+    "name": "vtex.local:Intelligent-Search-API",
+    "version": "0.1.12",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Intelligent-Search-API/0.1.12/openapi.json"
+  },
+  {
+    "name": "vtex.local:License-Manager-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/License-Manager-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Logistics-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Logistics-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-APIs",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-APIs-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Marketplace-Protocol",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-Protocol/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Master-Data-API-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Master-Data-API-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:MasterData-API-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/MasterData-API-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Message-Center-API",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Message-Center-API/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Orders-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Orders-API-(PII-version)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API-(PII-version)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Payments-Gateway-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Payments-Gateway-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Policies-System-API",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Policies-System-API/1.0.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Price-Simulations",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Price-Simulations/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Pricing-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Pricing-Hub",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-Hub/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Profile-System",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Profile-System/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Promotions-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Promotions-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Recurrence-(v1-",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Recurrence-(v1-/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Reviews-and-Ratings-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Reviews-and-Ratings-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:SKU-Bindings-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/SKU-Bindings-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Search-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Search-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Session-Manager-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Session-Manager-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Subscriptions-API-(v2)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v2)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:Subscriptions-API-(v3)",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v3)/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:VTEX-Do-API",
+    "version": "1.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX-Do-API/1.0/openapi.json"
+  },
+  {
+    "name": "vtex.local:VTEX_TEMPLATE",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX_TEMPLATE/1.0.0/openapi.json"
   },
   {
     "name": "walletobjects.googleapis.com:pay-passes",
@@ -7875,14 +8245,9 @@
     "url": "https://api.apis.guru/v2/specs/waterlinked.com/1.0.0/swagger.json"
   },
   {
-    "name": "wavecell.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/wavecell.com/v1/swagger.json"
-  },
-  {
-    "name": "wealthport.com",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/wealthport.com/1.0/swagger.json"
+    "name": "wealthreader.com",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/wealthreader.com/1.0.0/openapi.json"
   },
   {
     "name": "weatherbit.io",
@@ -7893,6 +8258,11 @@
     "name": "weber-gesamtausgabe.de",
     "version": "1.0.0",
     "url": "https://api.apis.guru/v2/specs/weber-gesamtausgabe.de/1.0.0/swagger.json"
+  },
+  {
+    "name": "webflow.com",
+    "version": "2023-03-01T164537Z",
+    "url": "https://api.apis.guru/v2/specs/webflow.com/2023-03-01T164537Z/openapi.json"
   },
   {
     "name": "webscraping.ai",
@@ -8050,6 +8420,11 @@
     "url": "https://api.apis.guru/v2/specs/xkcd.com/1.0.0/openapi.json"
   },
   {
+    "name": "xtrf.eu",
+    "version": "2.0",
+    "url": "https://api.apis.guru/v2/specs/xtrf.eu/2.0/openapi.json"
+  },
+  {
     "name": "yodlee.com",
     "version": "1.1.0",
     "url": "https://api.apis.guru/v2/specs/yodlee.com/1.1.0/openapi.json"
@@ -8060,9 +8435,9 @@
     "url": "https://api.apis.guru/v2/specs/youneedabudget.com/1.0.0/openapi.json"
   },
   {
-    "name": "yunbi.com",
-    "version": "v2",
-    "url": "https://api.apis.guru/v2/specs/yunbi.com/v2/swagger.json"
+    "name": "zapier.com:nla",
+    "version": "1.0.0",
+    "url": "https://api.apis.guru/v2/specs/zapier.com/nla/1.0.0/openapi.json"
   },
   {
     "name": "zappiti.com",
@@ -8083,375 +8458,5 @@
     "name": "zoomconnect.com",
     "version": "1",
     "url": "https://api.apis.guru/v2/specs/zoomconnect.com/1/swagger.json"
-  },
-  {
-    "name": "vtex.local:Catalog-API-Seller-Portal",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API-Seller-Portal/1.0.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Catalog-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Catalog-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Checkout-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Checkout-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Customer-Credit-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Customer-Credit-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:GiftCard-Hub-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/GiftCard-Hub-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Giftcard-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Giftcard-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Headless-CMS-API",
-    "version": "0.31.2",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Headless-CMS-API/0.31.2/openapi.json"
-  },
-  {
-    "name": "vtex.local:Intelligent-Search-API",
-    "version": "0.1.12",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Intelligent-Search-API/0.1.12/openapi.json"
-  },
-  {
-    "name": "vtex.local:License-Manager-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/License-Manager-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Logistics-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Logistics-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Marketplace-APIs-",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs-/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Marketplace-APIs",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-APIs/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Marketplace-Protocol",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Marketplace-Protocol/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Master-Data-API-",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Master-Data-API-/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:MasterData-API-",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/MasterData-API-/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Message-Center-API",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Message-Center-API/1.0.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Orders-API-(PII-version)",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API-(PII-version)/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Orders-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Orders-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Payments-Gateway-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Payments-Gateway-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Policies-System-API",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Policies-System-API/1.0.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Price-Simulations",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Price-Simulations/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Pricing-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Pricing-Hub",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Pricing-Hub/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Profile-System",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Profile-System/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Promotions-",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Promotions-/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Recurrence-(v1-",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Recurrence-(v1-/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Reviews-and-Ratings-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Reviews-and-Ratings-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:SKU-Bindings-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/SKU-Bindings-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Search-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Search-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Session-Manager-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Session-Manager-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Subscriptions-API-(v2)",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v2)/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:Subscriptions-API-(v3)",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/Subscriptions-API-(v3)/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:VTEX-Do-API",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX-Do-API/1.0/openapi.json"
-  },
-  {
-    "name": "vtex.local:VTEX_TEMPLATE",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/vtex.local/VTEX_TEMPLATE/1.0.0/openapi.json"
-  },
-  {
-    "name": "simplivpn.net",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/simplivpn.net/1.0/openapi.json"
-  },
-  {
-    "name": "go-upc.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/go-upc.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "wealthreader.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/wealthreader.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "stream-io-api.com",
-    "version": "v79.19.1",
-    "url": "https://api.apis.guru/v2/specs/stream-io-api.com/v79.19.1/openapi.json"
-  },
-  {
-    "name": "mineskin.org",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/mineskin.org/1.0.0/openapi.json"
-  },
-  {
-    "name": "greip.io",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/greip.io/1.0.0/openapi.json"
-  },
-  {
-    "name": "stellastra.com",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/stellastra.com/1.0/openapi.json"
-  },
-  {
-    "name": "contentgroove.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/contentgroove.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "alertersystem.com",
-    "version": "1.6.0",
-    "url": "https://api.apis.guru/v2/specs/alertersystem.com/1.6.0/openapi.json"
-  },
-  {
-    "name": "facecheck.id",
-    "version": "v1.02",
-    "url": "https://api.apis.guru/v2/specs/facecheck.id/v1.02/openapi.json"
-  },
-  {
-    "name": "trakt.tv",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/trakt.tv/1.0.0/openapi.json"
-  },
-  {
-    "name": "groundhog-day.com",
-    "version": "1.2.1",
-    "url": "https://api.apis.guru/v2/specs/groundhog-day.com/1.2.1/openapi.json"
-  },
-  {
-    "name": "gerermesaffaires.com",
-    "version": "1.0.6",
-    "url": "https://api.apis.guru/v2/specs/gerermesaffaires.com/1.0.6/openapi.json"
-  },
-  {
-    "name": "increase.com",
-    "version": "0.0.1",
-    "url": "https://api.apis.guru/v2/specs/increase.com/0.0.1/openapi.json"
-  },
-  {
-    "name": "kumpeapps.com",
-    "version": "5.0.0",
-    "url": "https://api.apis.guru/v2/specs/kumpeapps.com/5.0.0/openapi.json"
-  },
-  {
-    "name": "dodo.ac",
-    "version": "1.5.0",
-    "url": "https://api.apis.guru/v2/specs/dodo.ac/1.5.0/openapi.json"
-  },
-  {
-    "name": "google.com",
-    "version": "v3",
-    "url": "https://api.apis.guru/v2/specs/google.com/v3/openapi.json"
-  },
-  {
-    "name": "doqs.dev",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/doqs.dev/1.0/openapi.json"
-  },
-  {
-    "name": "javatpoint.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/javatpoint.com/v1/openapi.json"
-  },
-  {
-    "name": "arespass.net",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/arespass.net/1.0/openapi.json"
-  },
-  {
-    "name": "svix.com",
-    "version": "1.4",
-    "url": "https://api.apis.guru/v2/specs/svix.com/1.4/openapi.json"
-  },
-  {
-    "name": "clickup.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/clickup.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "webflow.com",
-    "version": "2023-03-01T164537Z",
-    "url": "https://api.apis.guru/v2/specs/webflow.com/2023-03-01T164537Z/openapi.json"
-  },
-  {
-    "name": "meteosource.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/meteosource.com/v1/openapi.json"
-  },
-  {
-    "name": "threatjammer.com",
-    "version": "1.2.20",
-    "url": "https://api.apis.guru/v2/specs/threatjammer.com/1.2.20/openapi.json"
-  },
-  {
-    "name": "imgur.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/imgur.com/v1/openapi.json"
-  },
-  {
-    "name": "linqr.app",
-    "version": "2.0",
-    "url": "https://api.apis.guru/v2/specs/linqr.app/2.0/openapi.json"
-  },
-  {
-    "name": "json2video.com",
-    "version": "2.0.0",
-    "url": "https://api.apis.guru/v2/specs/json2video.com/2.0.0/openapi.json"
-  },
-  {
-    "name": "tcgdex.net",
-    "version": "2.0.0",
-    "url": "https://api.apis.guru/v2/specs/tcgdex.net/2.0.0/openapi.json"
-  },
-  {
-    "name": "gsmtasks.com",
-    "version": "2.4.13",
-    "url": "https://api.apis.guru/v2/specs/gsmtasks.com/2.4.13/openapi.json"
-  },
-  {
-    "name": "ljaero.com:dflight",
-    "version": "V 1.0.0",
-    "url": "https://api.apis.guru/v2/specs/ljaero.com/dflight/V 1.0.0/openapi.json"
-  },
-  {
-    "name": "ipqualityscore.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/ipqualityscore.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "xtrf.eu",
-    "version": "2.0",
-    "url": "https://api.apis.guru/v2/specs/xtrf.eu/2.0/openapi.json"
-  },
-  {
-    "name": "scideas.net:perfectpdf",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/scideas.net/perfectpdf/1.0/openapi.json"
-  },
-  {
-    "name": "scideas.net:regression",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/scideas.net/regression/1.0/openapi.json"
-  },
-  {
-    "name": "meilisearch.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/meilisearch.com/1.0.0/openapi.json"
-  },
-  {
-    "name": "vectara.io",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/vectara.io/1.0.0/openapi.json"
-  },
-  {
-    "name": "bigdatacloud.net",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/bigdatacloud.net/1.0.0/openapi.json"
-  },
-  {
-    "name": "paypi.dev",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/paypi.dev/1.0.0/openapi.json"
-  },
-  {
-    "name": "unicourt.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/unicourt.com/1.0.0/openapi.json"
   }
 ]
