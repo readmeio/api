@@ -2755,11 +2755,6 @@
     "url": "https://api.apis.guru/v2/specs/azure.com/intune/2015-01-14-privatepreview/swagger.json"
   },
   {
-    "name": "azure.com:iotcentral",
-    "version": "2018-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/iotcentral/2018-09-01/swagger.json"
-  },
-  {
     "name": "azure.com:iothub",
     "version": "2019-07-01-preview",
     "url": "https://api.apis.guru/v2/specs/azure.com/iothub/2019-07-01-preview/swagger.json"
