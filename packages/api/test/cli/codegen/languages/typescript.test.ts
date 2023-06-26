@@ -48,7 +48,7 @@ describe('typescript', function () {
       Storage.reset();
     });
 
-    it.only('should install a `package.json` and the required packages', async function () {
+    it('should install a `package.json` and the required packages', async function () {
       const logger = sinon.spy();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
