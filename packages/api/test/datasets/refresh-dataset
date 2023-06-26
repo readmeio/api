@@ -54,6 +54,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['adyen.com:PaymentService'];
     delete apis['adyen.com:PayoutService'];
     delete apis['adyen.com:RecurringService'];
+    delete apis['autotask.net'];
     delete apis['avaza.com'];
     delete apis['azure.com:azsadmin-Operations'];
     delete apis['azure.com:azsadmin-RegionHealth'];

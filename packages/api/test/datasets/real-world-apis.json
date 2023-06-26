@@ -1515,11 +1515,6 @@
     "url": "https://api.apis.guru/v2/specs/autodealerdata.com/1.0/openapi.json"
   },
   {
-    "name": "autotask.net",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/autotask.net/v1/swagger.json"
-  },
-  {
     "name": "aviationdata.systems",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/aviationdata.systems/v1/swagger.json"
