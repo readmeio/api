@@ -54,6 +54,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['adyen.com:PaymentService'];
     delete apis['adyen.com:PayoutService'];
     delete apis['adyen.com:RecurringService'];
+    delete apis['autotask.net'];
     delete apis['avaza.com'];
     delete apis['azure.com:azsadmin-Operations'];
     delete apis['azure.com:azsadmin-RegionHealth'];
@@ -173,6 +174,7 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['azure.com:engagementfabric-EngagementFabric'];
     delete apis['azure.com:hardwaresecuritymodules-dedicatedhsm'];
     delete apis['azure.com:hybridcompute-HybridCompute'];
+    delete apis['azure.com:iotcentral'];
     delete apis['azure.com:keyvault'];
     delete apis['azure.com:logic'];
     delete apis['azure.com:machinelearning-webservices'];

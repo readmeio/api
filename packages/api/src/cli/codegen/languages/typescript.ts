@@ -153,12 +153,21 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
-    return execa('npm', [...npmInstall, installDir].filter(Boolean)).then(res => {
-      if (opts.dryRun) {
-        (opts.logger ? opts.logger : logger)(res.command);
-        (opts.logger ? opts.logger : logger)(res.stdout);
-      }
-    });
+    return execa('npm', [...npmInstall, installDir].filter(Boolean))
+      .then(res => {
+        if (opts.dryRun) {
+          (opts.logger ? opts.logger : logger)(res.command);
+          (opts.logger ? opts.logger : logger)(res.stdout);
+        }
+      })
+      .catch(err => {
+        if (opts.dryRun) {
+          (opts.logger ? opts.logger : logger)(err.message);
+          return;
+        }
+
+        throw err;
+      });
   }
 
   /**

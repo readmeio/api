@@ -1515,11 +1515,6 @@
     "url": "https://api.apis.guru/v2/specs/autodealerdata.com/1.0/openapi.json"
   },
   {
-    "name": "autotask.net",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/autotask.net/v1/swagger.json"
-  },
-  {
     "name": "aviationdata.systems",
     "version": "v1",
     "url": "https://api.apis.guru/v2/specs/aviationdata.systems/v1/swagger.json"
@@ -2758,11 +2753,6 @@
     "name": "azure.com:intune",
     "version": "2015-01-14-privatepreview",
     "url": "https://api.apis.guru/v2/specs/azure.com/intune/2015-01-14-privatepreview/swagger.json"
-  },
-  {
-    "name": "azure.com:iotcentral",
-    "version": "2018-09-01",
-    "url": "https://api.apis.guru/v2/specs/azure.com/iotcentral/2018-09-01/swagger.json"
   },
   {
     "name": "azure.com:iothub",
