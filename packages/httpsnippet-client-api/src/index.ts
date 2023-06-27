@@ -113,6 +113,7 @@ const client: Client<APIOptions> = {
 
     const operationSlugs = foundOperation.url.slugs;
     const operation = oas.operation(foundOperation.url.nonNormalizedPath, method);
+    const operationPathParameters = operation.getParameters().filter(param => param.in === 'path');
     const path = operation.path;
     const authData: string[] = [];
     const authSources = getAuthSources(operation);
@@ -169,7 +170,20 @@ const client: Client<APIOptions> = {
     Array.from(Object.entries(operationSlugs)).forEach(([param, value]) => {
       // The keys in `operationSlugs` will always be prefixed with a `:` in the `oas` library so
       // we can safely do this substring here without asserting this context.
-      metadata[param.substring(1)] = value;
+      const cleanedParam = param.substring(1);
+
+      // If our incoming path slug out of `oas.findOperation()` has been sanitized and is missing
+      // a hyphen, but there is a parameter in the OpenAPI definition that matches what our
+      // hyphen-less slug is then we should use that for the snippet.
+      const unsanitizedParam = operationPathParameters.find(p => {
+        return p.name.includes('-') && p.name.replace(/-/g, '') === cleanedParam ? p.name : false;
+      });
+
+      if (unsanitizedParam) {
+        metadata[unsanitizedParam.name] = value;
+      } else {
+        metadata[cleanedParam] = value;
+      }
     });
 
     if (Object.keys(headersObj).length) {
