@@ -68,7 +68,7 @@
     "remove-undefined-objects": "^2.0.2",
     "semver": "^7.3.8",
     "ssri": "^10.0.1",
-    "ts-morph": "^17.0.1",
+    "ts-morph": "^19.0.0",
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
