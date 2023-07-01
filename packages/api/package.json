@@ -59,7 +59,7 @@
     "lodash.merge": "^4.6.2",
     "lodash.setwith": "^4.3.2",
     "lodash.startcase": "^4.4.0",
-    "make-dir": "^3.1.0",
+    "make-dir": "^4.0.0",
     "node-abort-controller": "^3.1.1",
     "oas": "^20.4.0",
     "ora": "^5.4.1",
