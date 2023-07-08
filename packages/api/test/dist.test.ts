@@ -1,6 +1,5 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 
@@ -10,29 +9,29 @@ import Cache from '../src/cache';
 import { responses as mockResponses } from './helpers/fetch-mock';
 import loadSpec from './helpers/load-spec';
 
-describe('typescript dist verification', function () {
-  before(function () {
+describe('typescript dist verification', () => {
+  beforeAll(() => {
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
   });
 
-  afterEach(function () {
+  afterEach(() => {
     fetchMock.restore();
   });
 
-  it('should be able to use the transpiled dist', async function () {
+  it('should be able to use the transpiled dist', async () => {
     fetchMock.post('https://developer.uspto.gov/ds-api/oa_citations/v1/records', mockResponses.url('pathname'));
 
     const uspto = await loadSpec('@readme/oas-examples/3.0/json/uspto.json');
     const sdk = api(uspto as unknown as OASDocument);
 
     await sdk.performSearch().then(({ data }) => {
-      expect(data).to.equal('/ds-api/oa_citations/v1/records');
+      expect(data).toBe('/ds-api/oa_citations/v1/records');
     });
   });
 
-  it('should be able to set an auth token', async function () {
+  it('should be able to set an auth token', async () => {
     const user = 'buster';
     const pass = 'hunter1';
 
@@ -44,7 +43,7 @@ describe('typescript dist verification', function () {
 
     sdk.auth(user, pass);
     await sdk.postAnythingBasic().then(({ data }) => {
-      expect(data).to.have.deep.property('authorization', authHeader);
+      expect(data).toHaveProperty('authorization', authHeader);
     });
   });
 });

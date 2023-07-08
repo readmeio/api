@@ -1,6 +1,5 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 
@@ -16,25 +15,25 @@ const apiKey = '123457890';
 const user = 'buster';
 const pass = 'hunter1';
 
-describe('#auth()', function () {
-  before(function () {
+describe('#auth()', () => {
+  beforeAll(() => {
     // Set a unique cache dir so these tests won't collide with other tests and we don't need to go
     // through the trouble of mocking out the filesystem.
     Cache.setCacheDir(uniqueTempDir());
   });
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     const securityOas = await loadSpec('@readme/oas-examples/3.0/json/security.json');
     sdk = api(securityOas as unknown as OASDocument);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     fetchMock.restore();
   });
 
-  describe('API Keys', function () {
-    describe('in: query', function () {
-      it('should allow you to supply auth', async function () {
+  describe('API Keys', () => {
+    describe('in: query', () => {
+      it('should allow you to supply auth', async () => {
         fetchMock.get(
           {
             url: 'https://httpbin.org/anything/apiKey',
@@ -46,48 +45,38 @@ describe('#auth()', function () {
         sdk.auth(apiKey);
 
         await sdk.getAnythingApikey().then(({ data }) => {
-          expect(data).to.equal('/anything/apiKey?apiKey=123457890');
+          expect(data).toBe('/anything/apiKey?apiKey=123457890');
         });
       });
 
-      it('should throw if you supply multiple auth keys', async function () {
+      it('should throw if you supply multiple auth keys', async () => {
         sdk.auth(apiKey, apiKey);
 
-        await sdk
-          .getAnythingApikey()
-          .then(() => assert.fail())
-          .catch(err => {
-            expect(err.message).to.match(/only a single token is needed/i);
-          });
+        await expect(sdk.getAnythingApikey()).rejects.toThrow(/only a single token is needed/i);
       });
     });
 
-    describe('in: header', function () {
-      it('should allow you to supply auth', async function () {
+    describe('in: header', () => {
+      it('should allow you to supply auth', async () => {
         fetchMock.put('https://httpbin.org/anything/apiKey', mockResponses.headers);
 
         sdk.auth(apiKey);
         await sdk.putAnythingApikey().then(({ data }) => {
-          expect(data).to.have.deep.property('x-api-key', '123457890');
+          expect(data).toHaveProperty('x-api-key', '123457890');
         });
       });
 
-      it('should throw if you supply multiple auth keys', async function () {
+      it('should throw if you supply multiple auth keys', async () => {
         sdk.auth(apiKey, apiKey);
 
-        await sdk
-          .putAnythingApikey()
-          .then(() => assert.fail())
-          .catch(err => {
-            expect(err.message).to.match(/only a single token is needed/i);
-          });
+        await expect(sdk.putAnythingApikey()).rejects.toThrow(/only a single token is needed/i);
       });
     });
   });
 
-  describe('HTTP', function () {
-    describe('scheme: basic', function () {
-      it('should allow you to supply auth', async function () {
+  describe('HTTP', () => {
+    describe('scheme: basic', () => {
+      it('should allow you to supply auth', async () => {
         const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 
         fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
@@ -95,86 +84,76 @@ describe('#auth()', function () {
         sdk.auth(user, pass);
 
         await sdk.postAnythingBasic().then(({ data }) => {
-          expect(data).to.have.deep.property('authorization', authHeader);
+          expect(data).toHaveProperty('authorization', authHeader);
         });
       });
 
-      it('should allow you to not pass in a password', async function () {
+      it('should allow you to not pass in a password', async () => {
         fetchMock.post('https://httpbin.org/anything/basic', mockResponses.headers);
 
         sdk.auth(user);
 
         await sdk.postAnythingBasic().then(({ data }) => {
-          expect(data).to.have.deep.property('authorization', `Basic ${Buffer.from(`${user}:`).toString('base64')}`);
+          expect(data).toHaveProperty('authorization', `Basic ${Buffer.from(`${user}:`).toString('base64')}`);
         });
       });
     });
 
-    describe('scheme: bearer', function () {
-      it('should allow you to supply auth', async function () {
+    describe('scheme: bearer', () => {
+      it('should allow you to supply auth', async () => {
         fetchMock.post('https://httpbin.org/anything/bearer', mockResponses.headers);
 
         sdk.auth(apiKey);
 
         await sdk.postAnythingBearer().then(({ data }) => {
-          expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+          expect(data).toHaveProperty('authorization', `Bearer ${apiKey}`);
         });
       });
 
-      it('should throw if you pass in multiple bearer tokens', async function () {
+      it('should throw if you pass in multiple bearer tokens', async () => {
         sdk.auth(apiKey, apiKey);
-        await sdk
-          .postAnythingBearer()
-          .then(() => assert.fail())
-          .catch(err => {
-            expect(err.message).to.match(/only a single token is needed/i);
-          });
+        await expect(sdk.postAnythingBearer()).rejects.toThrow(/only a single token is needed/i);
       });
     });
   });
 
-  describe('OAuth 2', function () {
-    it('should allow you to supply auth', async function () {
+  describe('OAuth 2', () => {
+    it('should allow you to supply auth', async () => {
       fetchMock.post('https://httpbin.org/anything/oauth2', mockResponses.headers);
 
       sdk.auth(apiKey);
 
       await sdk.postAnythingOauth2().then(({ data }) => {
-        expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+        expect(data).toHaveProperty('authorization', `Bearer ${apiKey}`);
       });
     });
 
-    it('should throw if you pass in multiple bearer tokens', async function () {
+    it('should throw if you pass in multiple bearer tokens', async () => {
       sdk.auth(apiKey, apiKey);
-      await sdk
-        .postAnythingOauth2()
-        .then(() => assert.fail())
-        .catch(err => {
-          expect(err.message).to.match(/only a single token is needed/i);
-        });
+      await expect(sdk.postAnythingOauth2()).rejects.toThrow(/only a single token is needed/i);
     });
   });
 
-  it('should allow multiple calls to share an API key', async function () {
-    let calls = 0;
+  it('should allow multiple calls to share an API key', async () => {
+    const endpointCall = jest.fn();
     fetchMock.get(
       {
         url: 'https://httpbin.org/anything/apiKey',
         query: { apiKey },
       },
       () => {
-        calls += 1;
-        return { calls };
+        endpointCall();
+        return {};
       }
     );
 
     sdk.auth(apiKey);
 
-    await sdk.getAnythingApikey().then(({ data }) => expect(data.calls).to.equal(1));
-    await sdk.getAnythingApikey().then(({ data }) => expect(data.calls).to.equal(2));
+    await sdk.getAnythingApikey().then(() => expect(endpointCall).toHaveBeenCalledOnce());
+    await sdk.getAnythingApikey().then(() => expect(endpointCall).toHaveBeenCalledTimes(2));
   });
 
-  it('should allow auth to be called again to change the key', async function () {
+  it('should allow auth to be called again to change the key', async () => {
     const apiKey1 = '12345';
     const apiKey2 = '67890';
 
@@ -197,45 +176,46 @@ describe('#auth()', function () {
     );
 
     sdk.auth(apiKey1);
-    await sdk.getAnythingApikey().then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=12345'));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data).toBe('/anything/apiKey?apiKey=12345'));
 
     sdk.auth(apiKey2);
-    await sdk.getAnythingApikey().then(({ data }) => expect(data).to.equal('/anything/apiKey?apiKey=67890'));
+    await sdk.getAnythingApikey().then(({ data }) => expect(data).toBe('/anything/apiKey?apiKey=67890'));
   });
 
-  describe('quirks', function () {
+  describe('quirks', () => {
     let quirks;
 
-    before(async function () {
+    beforeAll(async () => {
       const authQuirksOas = await loadSpec(require.resolve('./__fixtures__/definitions/auth-quirks.json'));
       quirks = api(authQuirksOas as unknown as OASDocument);
 
       // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the
       // quirks case we're testing is that you should be able to supply either a single OAuth2 token
       // or a username+password and it should be able to intelligently handle both.
-      expect(authQuirksOas.paths['/anything'].post.security).to.deep.equal([
+      // eslint-disable-next-line jest/no-standalone-expect
+      expect(authQuirksOas.paths['/anything'].post.security).toStrictEqual([
         { oauth2: ['write:things'] },
         { basicAuth: [] },
       ]);
     });
 
-    it('should support an operation that has OR auth requirements (supplying Basic Auth)', async function () {
+    it('should support an operation that has OR auth requirements (supplying Basic Auth)', async () => {
       const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 
       fetchMock.post('https://httpbin.org/anything', mockResponses.headers);
 
       quirks.auth(user, pass);
       await quirks.postAnything().then(({ data }) => {
-        expect(data).to.have.deep.property('authorization', authHeader);
+        expect(data).toHaveProperty('authorization', authHeader);
       });
     });
 
-    it('should support an operation that has OR auth requirements (supplying an OAuth2 token)', async function () {
+    it('should support an operation that has OR auth requirements (supplying an OAuth2 token)', async () => {
       fetchMock.post('https://httpbin.org/anything', mockResponses.headers);
 
       quirks.auth(apiKey);
       await quirks.postAnything().then(({ data }) => {
-        expect(data).to.have.deep.property('authorization', `Bearer ${apiKey}`);
+        expect(data).toHaveProperty('authorization', `Bearer ${apiKey}`);
       });
     });
   });

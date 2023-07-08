@@ -1,8 +1,8 @@
 .api/
-.nyc_output/
+coverage/
 test/
 .eslint*
 .gitignore
-.mocharc.json
 .prettier*
+jest.config.js
 example.js

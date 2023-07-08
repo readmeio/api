@@ -1,6 +1,5 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import chai, { expect } from 'chai';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -8,19 +7,16 @@ import uniqueTempDir from 'unique-temp-dir';
 import api from '../src';
 import Cache from '../src/cache';
 
-import chaiPlugins from './helpers/chai-plugins';
 import { responses as mockResponse } from './helpers/fetch-mock';
 import loadSpec from './helpers/load-spec';
-
-chai.use(chaiPlugins);
 
 let fileUploads;
 let parametersStyle;
 let petstore;
 let security;
 
-describe('integration tests', function () {
-  before(async function () {
+describe('integration tests', () => {
+  beforeAll(async () => {
     fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json');
     parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json');
     petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore.json');
@@ -31,14 +27,14 @@ describe('integration tests', function () {
     Cache.setCacheDir(uniqueTempDir());
   });
 
-  afterEach(function () {
+  afterEach(() => {
     fetchMock.restore();
   });
 
-  describe('`application/x-www-form-urlencoded`', function () {
+  describe('`application/x-www-form-urlencoded`', () => {
     let usptoSpec;
 
-    beforeEach(async function () {
+    beforeEach(async () => {
       usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(spec => {
         // eslint-disable-next-line no-param-reassign
         spec.servers[0].url = '{scheme}://httpbin.org/anything';
@@ -46,7 +42,7 @@ describe('integration tests', function () {
       });
     });
 
-    it('should support `application/x-www-form-urlencoded` requests', async function () {
+    it('should support `application/x-www-form-urlencoded` requests', async () => {
       fetchMock.post('https://httpbin.org/anything/v1/oa_citations/records', mockResponse.all);
 
       const body = {
@@ -59,13 +55,13 @@ describe('integration tests', function () {
       };
 
       const { data } = await api(usptoSpec).performSearch(body, metadata);
-      expect(data.uri).to.equal('/anything/v1/oa_citations/records');
-      expect(data.requestBody).to.equal('criteria=propertyName%3Avalue');
-      expect(data.headers).to.have.deep.property('content-type', 'application/x-www-form-urlencoded');
-      expect(data.headers).to.have.be.a.customUserAgent;
+      expect(data.uri).toBe('/anything/v1/oa_citations/records');
+      expect(data.requestBody).toBe('criteria=propertyName%3Avalue');
+      expect(data.headers).toHaveProperty('content-type', 'application/x-www-form-urlencoded');
+      expect(data.headers).toHaveCustomUserAgent();
     });
 
-    // it.skip('should send along required parameters if not supplied', async function () {
+    // it.skip('should send along required parameters if not supplied', async () => {
     //   const metadata = {
     //     dataset: 'v1',
     //     version: 'oa_citations',
@@ -91,21 +87,21 @@ describe('integration tests', function () {
     // });
   });
 
-  it('should support `image/png` requests', async function () {
+  it('should support `image/png` requests', async () => {
     fetchMock.post('https://httpbin.org/anything/image-png', mockResponse.datauri);
 
     const file = `${__dirname}/__fixtures__/owlbert.png`;
 
     const { data } = await api(fileUploads as unknown as OASDocument).postAnythingImagePng(file);
-    expect(data.uri).to.equal('/anything/image-png');
-    expect(data.requestBody).to.equal(await datauri(file));
-    expect(data.headers).to.have.deep.property('content-type', 'image/png');
-    expect(data.headers).to.have.a.customUserAgent;
+    expect(data.uri).toBe('/anything/image-png');
+    expect(data.requestBody).toBe(await datauri(file));
+    expect(data.headers).toHaveProperty('content-type', 'image/png');
+    expect(data.headers).toHaveCustomUserAgent();
   });
 
-  describe('header handling', function () {
-    describe('`authorization`', function () {
-      it('should support supplying an `authorization` header', async function () {
+  describe('header handling', () => {
+    describe('`authorization`', () => {
+      it('should support supplying an `authorization` header', async () => {
         fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
 
         const body = {
@@ -122,13 +118,13 @@ describe('integration tests', function () {
         sdk.auth('buster');
 
         const { data } = await sdk.addPet(body, metadata);
-        expect(data.uri).to.equal('/v2/pet');
-        expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
-        expect(data.headers).to.have.deep.property('authorization', 'bearer 12345');
-        expect(data.headers).to.have.a.customUserAgent;
+        expect(data.uri).toBe('/v2/pet');
+        expect(data.requestBody).toBe('{"id":1234,"name":"buster"}');
+        expect(data.headers).toHaveProperty('authorization', 'bearer 12345');
+        expect(data.headers).toHaveCustomUserAgent();
       });
 
-      it('should support supplying an `authorization` header (on an operation that has no params)', async function () {
+      it('should support supplying an `authorization` header (on an operation that has no params)', async () => {
         fetchMock.post('https://httpbin.org/anything/bearer', mockResponse.headers);
 
         const metadata = {
@@ -142,13 +138,13 @@ describe('integration tests', function () {
         await securityApi.postAnythingBearer(metadata).then(({ data }) => {
           // `authorization: bearer buster` should not be here because we manually supplied
           // `authorization: bearer 12345` to the metadata.
-          expect(data).to.have.deep.property('authorization', 'bearer 12345');
+          expect(data).toHaveProperty('authorization', 'bearer 12345');
         });
       });
     });
 
-    describe('`accept`', function () {
-      it('should support supplying an `accept` header', async function () {
+    describe('`accept`', () => {
+      it('should support supplying an `accept` header', async () => {
         fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
 
         const body = {
@@ -161,13 +157,13 @@ describe('integration tests', function () {
         };
 
         const { data } = await api(petstore as unknown as OASDocument).addPet(body, metadata);
-        expect(data.uri).to.equal('/v2/pet');
-        expect(data.requestBody).to.equal('{"id":1234,"name":"buster"}');
-        expect(data.headers).to.have.deep.property('accept', 'text/xml');
-        expect(data.headers).to.have.a.customUserAgent;
+        expect(data.uri).toBe('/v2/pet');
+        expect(data.requestBody).toBe('{"id":1234,"name":"buster"}');
+        expect(data.headers).toHaveProperty('accept', 'text/xml');
+        expect(data.headers).toHaveCustomUserAgent();
       });
 
-      it('should support supplying **only** an `accept` header', async function () {
+      it('should support supplying **only** an `accept` header', async () => {
         fetchMock.post('http://petstore.swagger.io/v2/pet', mockResponse.all);
 
         const metadata = {
@@ -175,13 +171,13 @@ describe('integration tests', function () {
         };
 
         const { data } = await api(petstore as unknown as OASDocument).addPet(metadata);
-        expect(data.uri).to.equal('/v2/pet');
-        expect(data.requestBody).to.be.undefined;
-        expect(data.headers).to.have.deep.property('accept', 'text/xml');
-        expect(data.headers).to.have.a.customUserAgent;
+        expect(data.uri).toBe('/v2/pet');
+        expect(data.requestBody).toBeUndefined();
+        expect(data.headers).toHaveProperty('accept', 'text/xml');
+        expect(data.headers).toHaveCustomUserAgent();
       });
 
-      it('should support supplying an `authorization` header (on an operation that has no params)', async function () {
+      it('should support supplying an `authorization` header (on an operation that has no params)', async () => {
         fetchMock.post('https://httpbin.org/anything/bearer', mockResponse.headers);
 
         const metadata = {
@@ -189,13 +185,13 @@ describe('integration tests', function () {
         };
 
         const { data } = await api(security as unknown as OASDocument).postAnythingBearer(metadata);
-        expect(data).to.have.deep.property('accept', 'application/buster+json');
+        expect(data).toHaveProperty('accept', 'application/buster+json');
       });
     });
   });
 
-  describe('multipart/form-data', function () {
-    it('should support `multipart/form-data` requests', async function () {
+  describe('multipart/form-data', () => {
+    it('should support `multipart/form-data` requests', async () => {
       fetchMock.post('https://httpbin.org/anything/form-data/form', mockResponse.multipart);
 
       const body = {
@@ -208,21 +204,21 @@ describe('integration tests', function () {
       };
 
       const { data } = await api(parametersStyle as unknown as OASDocument).formData_form_nonExploded(body);
-      expect(data.uri).to.equal('/anything/form-data/form');
-      expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
+      expect(data.uri).toBe('/anything/form-data/form');
+      expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).toStrictEqual([
         '\r\nContent-Disposition: form-data; name="primitive"\r\n\r\nstring\r\n',
         '\r\nContent-Disposition: form-data; name="array"\r\n\r\nstring\r\n',
         '\r\nContent-Disposition: form-data; name="object"\r\n\r\nfoo,foo-string,bar,bar-string\r\n',
         '--\r\n\r\n',
       ]);
 
-      expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
-      expect(data.headers).to.have.deep.property('content-length', '356');
-      expect(data.headers).to.have.a.customUserAgent;
+      expect(data.headers).toHaveProperty('content-type', `multipart/form-data; boundary=${data.boundary}`);
+      expect(data.headers).toHaveProperty('content-length', '356');
+      expect(data.headers).toHaveCustomUserAgent();
     });
 
-    describe('files', function () {
-      it('should support plaintext files', async function () {
+    describe('files', () => {
+      it('should support plaintext files', async () => {
         fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
 
         const body = {
@@ -232,20 +228,20 @@ describe('integration tests', function () {
         };
 
         const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
-        expect(data.uri).to.equal('/anything/multipart-formdata');
-        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
+        expect(data.uri).toBe('/anything/multipart-formdata');
+        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).toStrictEqual([
           '\r\nContent-Disposition: form-data; name="orderId"\r\n\r\n1234\r\n',
           '\r\nContent-Disposition: form-data; name="userId"\r\n\r\n5678\r\n',
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.txt"\r\nContent-Type: text/plain\r\n\r\nHello world!\n\r\n',
           '--\r\n\r\n',
         ]);
 
-        expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
-        expect(data.headers).to.have.deep.property('content-length', '389');
-        expect(data.headers).to.have.a.customUserAgent;
+        expect(data.headers).toHaveProperty('content-type', `multipart/form-data; boundary=${data.boundary}`);
+        expect(data.headers).toHaveProperty('content-length', '389');
+        expect(data.headers).toHaveCustomUserAgent();
       });
 
-      it('should support plaintext files containing unicode characters', async function () {
+      it('should support plaintext files containing unicode characters', async () => {
         fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
 
         const body = {
@@ -253,19 +249,19 @@ describe('integration tests', function () {
         };
 
         const { data } = await api(fileUploads as unknown as OASDocument).postAnythingMultipartFormdata(body);
-        expect(data.uri).to.equal('/anything/multipart-formdata');
-        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).to.deep.equal([
+        expect(data.uri).toBe('/anything/multipart-formdata');
+        expect(data.requestBody.split(`--${data.boundary}`).filter(Boolean)).toStrictEqual([
           '\r\nContent-Disposition: form-data; name="documentFile"; filename="hello.jp.txt"\r\nContent-Type: text/plain\r\n\r\n速い茶色のキツネは怠惰な犬を飛び越えます\n\r\n',
           '--\r\n\r\n',
         ]);
 
-        expect(data.headers).to.have.deep.property('content-type', `multipart/form-data; boundary=${data.boundary}`);
-        expect(data.headers).to.have.deep.property('content-length', '251');
-        expect(data.headers).to.have.a.customUserAgent;
+        expect(data.headers).toHaveProperty('content-type', `multipart/form-data; boundary=${data.boundary}`);
+        expect(data.headers).toHaveProperty('content-length', '251');
+        expect(data.headers).toHaveCustomUserAgent();
       });
     });
 
-    // it.skip('should support `multipart/form-data` requests with an array of files', async function () {
+    // it.skip('should support `multipart/form-data` requests with an array of files', async () => {
     //   const body = [
     //     `${__dirname}/__fixtures__/owlbert.png`,
     //     `${__dirname}/__fixtures__/owlbert-shrub.png`,

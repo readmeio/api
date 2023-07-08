@@ -1,10 +1,6 @@
-import chai, { expect } from 'chai';
 import 'isomorphic-fetch';
 
 import parseResponse from '../../src/core/parseResponse';
-import chaiPlugins from '../helpers/chai-plugins';
-
-chai.use(chaiPlugins);
 
 const responseBody = JSON.stringify({
   id: 9205436248879918000,
@@ -16,8 +12,8 @@ const responseBody = JSON.stringify({
 
 let response;
 
-describe('#parseResponse', function () {
-  beforeEach(function () {
+describe('#parseResponse', () => {
+  beforeEach(() => {
     response = new Response(responseBody, {
       status: 200,
       headers: {
@@ -27,28 +23,28 @@ describe('#parseResponse', function () {
     });
   });
 
-  it('should parse `application/json` response as json', async function () {
+  it('should parse `application/json` response as json', async () => {
     const { data, status, headers, res } = await parseResponse(response);
 
-    expect(data).to.deep.equal(JSON.parse(responseBody));
-    expect(status).to.equal(200);
-    expect(headers).to.have.header('content-type', 'application/json');
-    expect(headers).to.have.header('x-custom-header', 'buster');
-    expect(res).to.be.a('Response');
+    expect(data).toStrictEqual(JSON.parse(responseBody));
+    expect(status).toBe(200);
+    expect(headers).toHaveHeader('content-type', 'application/json');
+    expect(headers).toHaveHeader('x-custom-header', 'buster');
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it('should parse `application/vnd.api+json` as json', async function () {
+  it('should parse `application/vnd.api+json` as json', async () => {
     response.headers.set('Content-Type', 'application/vnd.api+json');
     const { data, status, headers, res } = await parseResponse(response);
 
-    expect(data).to.deep.equal(JSON.parse(responseBody));
-    expect(status).to.equal(200);
-    expect(headers).to.have.header('content-type', 'application/vnd.api+json');
-    expect(headers).to.have.header('x-custom-header', 'buster');
-    expect(res).to.be.a('Response');
+    expect(data).toStrictEqual(JSON.parse(responseBody));
+    expect(status).toBe(200);
+    expect(headers).toHaveHeader('content-type', 'application/vnd.api+json');
+    expect(headers).toHaveHeader('x-custom-header', 'buster');
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it('should parse non-json response as text', async function () {
+  it('should parse non-json response as text', async () => {
     const nonJsonResponseBody = '<xml-string />';
     const nonJsonResponse = new Response('<xml-string />', {
       status: 202,
@@ -59,13 +55,13 @@ describe('#parseResponse', function () {
 
     const { data, status, headers, res } = await parseResponse(nonJsonResponse);
 
-    expect(data).to.equal(nonJsonResponseBody);
-    expect(status).to.equal(202);
-    expect(headers).to.have.header('content-type', 'application/xml');
-    expect(res).to.be.a('Response');
+    expect(data).toBe(nonJsonResponseBody);
+    expect(status).toBe(202);
+    expect(headers).toHaveHeader('content-type', 'application/xml');
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it('should not error if invalid json is returned', async function () {
+  it('should not error if invalid json is returned', async () => {
     // `JSON.parse('plain text')` will throw an exception, but if that happens we should just treat
     // the content as plain text.
     const invalidJsonResponse = new Response('plain text', {
@@ -77,13 +73,13 @@ describe('#parseResponse', function () {
 
     const { data, status, headers, res } = await parseResponse(invalidJsonResponse);
 
-    expect(data).to.equal('plain text');
-    expect(status).to.equal(404);
-    expect(headers).to.have.header('content-type', 'application/json');
-    expect(res).to.be.a('Response');
+    expect(data).toBe('plain text');
+    expect(status).toBe(404);
+    expect(headers).toHaveHeader('content-type', 'application/json');
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it('should default to JSON with wildcard content-type', async function () {
+  it('should default to JSON with wildcard content-type', async () => {
     const wildcardResponse = new Response(responseBody, {
       headers: {
         'Content-Type': '*/*',
@@ -92,13 +88,13 @@ describe('#parseResponse', function () {
 
     const { data, status, headers, res } = await parseResponse(wildcardResponse);
 
-    expect(data).to.deep.equal(JSON.parse(responseBody));
-    expect(status).to.equal(200);
-    expect(headers).to.have.header('content-type', '*/*');
-    expect(res).to.be.a('Response');
+    expect(data).toStrictEqual(JSON.parse(responseBody));
+    expect(status).toBe(200);
+    expect(headers).toHaveHeader('content-type', '*/*');
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it('should return with empty string if there is no response', async function () {
+  it('should return with empty string if there is no response', async () => {
     const emptyResponse = new Response(null, {
       status: 204,
       headers: {
@@ -108,9 +104,9 @@ describe('#parseResponse', function () {
 
     const { data, status, headers, res } = await parseResponse(emptyResponse);
 
-    expect(data).to.equal('');
-    expect(status).to.equal(204);
-    expect(headers).to.have.header('content-type', 'application/json');
-    expect(res).to.be.a('Response');
+    expect(data).toBe('');
+    expect(status).toBe(204);
+    expect(headers).toHaveHeader('content-type', 'application/json');
+    expect(res).toBeInstanceOf(Response);
   });
 });
