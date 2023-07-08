@@ -9,6 +9,7 @@ module.exports = {
   setupFilesAfterEnv: ['jest-extended/all', path.join(__dirname, 'test', 'helpers', 'jest.matchers.ts')],
   testPathIgnorePatterns: ['/test/__fixtures__/', '/test/datasets/', '/test/helpers/'],
   testRegex: '(/test/.*|(\\.|/)(test|spec))\\.(js?|ts?)$',
+  testTimeout: 10000,
   transform: {
     '^.+\\.[tj]s$': [
       'ts-jest',

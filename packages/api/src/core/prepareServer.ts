@@ -12,9 +12,6 @@ function stripTrailingSlash(url: string) {
  * With an SDK server config and an instance of OAS we should extract and prepare the server and
  * any server variables to be supplied to `@readme/oas-to-har`.
  *
- * @param spec
- * @param url
- * @param variables
  */
 export default function prepareServer(spec: Oas, url: string, variables: Record<string, string | number> = {}) {
   let serverIdx;

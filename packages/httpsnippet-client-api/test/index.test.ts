@@ -22,12 +22,12 @@ const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = readdirSync(DATASETS_DIR);
 
 export interface SnippetMock {
-  har: HarRequest;
   definition: OASDocument;
   fetch: {
     req: MockMatcher | MockOptions;
     res: Record<string, unknown>;
   };
+  har: HarRequest;
 }
 
 function getSnippetDataset(snippet): Promise<SnippetMock> {
