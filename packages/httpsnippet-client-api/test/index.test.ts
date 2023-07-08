@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable mocha/no-setup-in-describe */
 import type { HarRequest, Request } from '@readme/httpsnippet';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
 import type { MockMatcher, MockOptions } from 'fetch-mock';
@@ -13,21 +12,15 @@ import vm from 'vm';
 import { HTTPSnippet, addTargetClient } from '@readme/httpsnippet';
 import readme from '@readme/oas-examples/3.0/json/readme.json';
 import openapiParser from '@readme/openapi-parser';
-import chai, { expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import 'isomorphic-fetch';
 import rimraf from 'rimraf';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 
 import client from '../src';
-
-chai.use(sinonChai);
 
 const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = readdirSync(DATASETS_DIR);
 
-// eslint-disable-next-line mocha/no-exports
 export interface SnippetMock {
   har: HarRequest;
   definition: OASDocument;
@@ -41,11 +34,9 @@ function getSnippetDataset(snippet): Promise<SnippetMock> {
   return import(path.join(DATASETS_DIR, snippet, 'index')).then(r => r.default);
 }
 
-describe('httpsnippet-client-api', function () {
-  beforeEach(function () {
+describe('httpsnippet-client-api', () => {
+  beforeEach(() => {
     try {
-      // Mocha doesn't tear this down so if you run Mocha with `--watch` it'll be set up already
-      // throwing the error that we're ignoring below.
       addTargetClient('node', client as Client);
     } catch (err) {
       if (err.message !== 'The supplied custom target client already exists, please use a different key') {
@@ -54,9 +45,9 @@ describe('httpsnippet-client-api', function () {
     }
   });
 
-  it('should have info', function () {
-    expect(client).to.have.property('info');
-    expect(client.info).to.deep.equal({
+  it('should have info', () => {
+    expect(client).toHaveProperty('info');
+    expect(client.info).toStrictEqual({
       key: 'api',
       title: 'API',
       link: 'https://npm.im/api',
@@ -64,16 +55,16 @@ describe('httpsnippet-client-api', function () {
     });
   });
 
-  it('should error if no apiDefinitionUri was supplied', async function () {
+  it('should error if no apiDefinitionUri was supplied', async () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
     expect(() => {
       snippet.convert('node', 'api');
-    }).to.throw(/must have an `apiDefinitionUri` option supplied/);
+    }).toThrow(/must have an `apiDefinitionUri` option supplied/);
   });
 
-  it('should error if no apiDefinition was supplied', async function () {
+  it('should error if no apiDefinition was supplied', async () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
@@ -81,11 +72,11 @@ describe('httpsnippet-client-api', function () {
       snippet.convert('node', 'api', {
         apiDefinitionUri: 'https://api.example.com/openapi.json',
       });
-    }).to.throw(/must have an `apiDefinition` option supplied/);
+    }).toThrow(/must have an `apiDefinition` option supplied/);
   });
 
   // This test should fail because the url in the HAR is missing `/v1` in the path.
-  it('should error if no matching operation was found in the apiDefinition', function () {
+  it('should error if no matching operation was found in the apiDefinition', () => {
     const har = {
       httpVersion: 'HTTP/1.1',
       method: 'GET',
@@ -103,16 +94,16 @@ describe('httpsnippet-client-api', function () {
         apiDefinitionUri: 'https://api.example.com/openapi.json',
         apiDefinition: readme,
       });
-    }).to.throw(/unable to locate a matching operation/i);
+    }).toThrow(/unable to locate a matching operation/i);
   });
 
-  describe('snippets', function () {
+  describe('snippets', () => {
     SNIPPETS.forEach(snippet => {
-      describe(snippet, function () {
+      describe(`${snippet}`, () => {
         let mock: SnippetMock;
         let consoleStub;
 
-        beforeEach(async function () {
+        beforeEach(async () => {
           try {
             // Since we're doing integration testing with these snippets against the real `api`
             // library we should clear out the cache that it creates so our tests will run in a
@@ -122,7 +113,7 @@ describe('httpsnippet-client-api', function () {
             // If we couldn't delete the `api` specs cache then it probably doesn't exist yet.
           }
 
-          consoleStub = sinon.stub(console, 'log');
+          consoleStub = jest.spyOn(console, 'log').mockImplementation();
 
           mock = await getSnippetDataset(snippet);
 
@@ -132,12 +123,12 @@ describe('httpsnippet-client-api', function () {
           await openapiParser.validate(spec);
         });
 
-        afterEach(function () {
-          consoleStub.restore();
+        afterEach(() => {
+          consoleStub.mockRestore();
           fetchMock.restore();
         });
 
-        it('should generate the expected snippet', async function () {
+        it('should generate the expected snippet', async () => {
           const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
           const code = new HTTPSnippet(mock.har).convert('node', 'api', {
@@ -145,10 +136,11 @@ describe('httpsnippet-client-api', function () {
             apiDefinition: mock.definition,
           });
 
-          expect(`${code}\n`).to.equal(expected);
+          expect(`${code}\n`).toStrictEqual(expected);
         });
 
-        it('should generate a functional snippet', async function () {
+        it('should generate a functional snippet', async () => {
+          // eslint-disable-next-line jest/no-if
           if (!mock.fetch.req || !mock.fetch.res) {
             throw new Error(
               `The mock definition for ${snippet} must include required \`req\` and \`res\` expectations.`
@@ -213,7 +205,7 @@ describe('httpsnippet-client-api', function () {
             script.runInContext(context);
           });
 
-          expect(consoleStub).to.be.calledWith(`The ${snippet} request works properly!`);
+          expect(consoleStub).toHaveBeenCalledWith(`The ${snippet} request works properly!`);
         });
       });
     });
