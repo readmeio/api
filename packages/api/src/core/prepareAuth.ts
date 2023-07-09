@@ -11,8 +11,8 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
     | string
     | number
     | {
-        user: string | number;
         pass: string | number;
+        user: string | number;
       }
   > = {};
 

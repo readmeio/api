@@ -41,7 +41,6 @@ class Sdk {
      * Create dynamic accessors for every operation with a defined operation ID. If an operation
      * does not have an operation ID it can be accessed by its `.method('/path')` accessor instead.
      *
-     * @param spec
      */
     function loadOperations(spec: Oas) {
       return Object.entries(spec.getPaths())

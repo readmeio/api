@@ -1,55 +1,85 @@
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "assertSDKFixture"] }] */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import chai, { assert, expect } from 'chai';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import uniqueTempDir from 'unique-temp-dir';
 
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
 import Storage from '../../../../src/cli/storage';
-import chaiPlugins from '../../../helpers/chai-plugins';
+import * as packageInfo from '../../../../src/packageInfo';
 import { responses as mockResponse } from '../../../helpers/fetch-mock';
 import loadSpec from '../../../helpers/load-spec';
 
-chai.use(chaiPlugins);
-chai.use(sinonChai);
-
 function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOptions = {}) {
-  return async function () {
+  return async () => {
     const oas = await loadSpec(require.resolve(file)).then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
     const ts = new TSGenerator(oas, file, fixture, opts);
-    expect(await ts.generator()).toMatchSDKFixture(fixture);
+    const actualFiles = await ts.generator();
+
+    // Determine if the generated code matches what we've got in our fixture.
+    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
+
+    let expectedFiles: string[];
+    try {
+      expectedFiles = await fs.readdir(dir);
+    } catch (err) {
+      /**
+       * @todo it'd be cool if we could supply this with a `--update` arg to create the fixture dir
+       */
+      throw new Error(`No SDK fixture directory exists for "${fixture}"`);
+    }
+
+    // Assert that the files we're generating are what we're expecting in the fixture directory.
+    // We're sorting this data because  `index.d.ts` files are generated last but are first in the
+    // filesystem.
+    const sortedActualFiles = Object.keys(actualFiles);
+    sortedActualFiles.sort();
+    expect(sortedActualFiles).toStrictEqual(expectedFiles);
+
+    // Assert that each generated file is the same as in the fixture.
+    await Promise.all(
+      expectedFiles.map(filename => {
+        const actual = actualFiles[filename];
+
+        // We have to wrap in our current package version into the `<<useragent>>` placeholder so
+        // we don't need to worry about committing package versions into source control or trying
+        // to mock out our `packageInfo` library, potentially causing sideeffects in other tests.
+        return new Promise((resolve, reject) => {
+          fs.readFile(path.join(dir, filename), 'utf8')
+            .then(expected => expected.replace('<<package version>>', packageInfo.PACKAGE_VERSION))
+            .then(expected => {
+              expect(actual).toBe(expected);
+              resolve(true);
+            })
+            .catch(reject);
+        });
+      })
+    );
 
     // Make sure that we can load the SDK without any TS compilation errors.
     const sdk = await import(`../../../__fixtures__/sdk/${fixture}`).then(r => r.default);
-    expect(sdk.constructor.name).to.equal('SDK');
+    expect(sdk.constructor.name).toBe('SDK');
   };
 }
 
-describe('typescript', function () {
-  beforeEach(function () {
-    // Package installation and codegen can take a bit.
-    this.currentTest.timeout(20000);
-  });
-
-  describe('#installer', function () {
-    beforeEach(function () {
+describe('typescript', () => {
+  describe('#installer', () => {
+    beforeEach(() => {
       Storage.setStorageDir(uniqueTempDir());
     });
 
-    afterEach(function () {
+    afterEach(() => {
       Storage.reset();
     });
 
-    it('should install a `package.json` and the required packages', async function () {
-      const logger = sinon.spy();
+    it('should install a `package.json` and the required packages', async () => {
+      const logger = jest.fn();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
       const oas = await loadSpec(file).then(Oas.init);
@@ -65,14 +95,14 @@ describe('typescript', function () {
         .readFile(path.join(storage.getIdentifierStorageDir(), 'package.json'), 'utf-8')
         .then(JSON.parse);
 
-      expect(pkgJson).to.deep.equal({
+      expect(pkgJson).toStrictEqual({
         name: '@api/petstore',
         version: '1.0.0',
         main: './index.ts',
         types: './index.d.ts',
       });
 
-      expect(logger).to.be.calledWith('npm install --save --dry-run api json-schema-to-ts@beta oas');
+      expect(logger).toHaveBeenCalledWith('npm install --save --dry-run api json-schema-to-ts@beta oas');
 
       /**
        * NPM has an incredibly difficult time trying to resolve this temp dir when installing
@@ -85,10 +115,10 @@ describe('typescript', function () {
        * @fixme
        */
       // expect(logger).to.be.calledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
-    });
+    }, 20000);
   });
 
-  describe('#generator', function () {
+  describe('#generator', () => {
     it(
       'should generate typescript (by default)',
       assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts')
@@ -114,14 +144,14 @@ describe('typescript', function () {
       assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks')
     );
 
-    it.skip('should handle a operations with a `default` response');
+    it.todo('should handle a operations with a `default` response');
 
     it(
       'should handle an api that has discriminators and no operation ids',
       assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby')
     );
 
-    describe('javascript generation', function () {
+    describe('javascript generation', () => {
       it(
         'should generate a CommonJS library',
         assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-cjs', { outputJS: true })
@@ -136,64 +166,64 @@ describe('typescript', function () {
       );
     });
 
-    describe('integration', function () {
-      afterEach(function () {
+    describe('integration', () => {
+      afterEach(() => {
         fetchMock.restore();
       });
 
-      it('should be able to make an API request (TS)', async function () {
+      it('should be able to make an API request (TS)', async () => {
         const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-          expect(data).to.equal('/v2/pet/findByStatus?status=available');
-          expect(status).to.equal(200);
-          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
-          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
+          expect(data).toBe('/v2/pet/findByStatus?status=available');
+          expect(status).toBe(200);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
 
-      it('should be able to make an API request with an `accept` header`', async function () {
+      it('should be able to make an API request with an `accept` header`', async () => {
         const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
           .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
           .then(({ data, status, headers, res }) => {
-            expect(data).to.have.deep.property('accept', 'application/xml');
-            expect(status).to.equal(200);
-            expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
-            expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
+            expect(data).toHaveProperty('accept', 'application/xml');
+            expect(status).toBe(200);
+            expect(headers.constructor.name).toBe('Headers');
+            expect(res.constructor.name).toBe('Response');
           });
       });
 
-      it('should be able to make an API request (JS + CommonJS)', async function () {
+      it('should be able to make an API request (JS + CommonJS)', async () => {
         const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-          expect(data).to.equal('/v2/pet/findByStatus?status=available');
-          expect(status).to.equal(200);
-          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
-          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
+          expect(data).toBe('/v2/pet/findByStatus?status=available');
+          expect(status).toBe(200);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
 
-      it('should be able to make an API request (JS + ESM)', async function () {
+      it('should be able to make an API request (JS + ESM)', async () => {
         const sdk = await import('../../../__fixtures__/sdk/simple-js-esm').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-          expect(data).to.equal('/v2/pet/findByStatus?status=available');
-          expect(status).to.equal(200);
-          expect(headers).to.have.deep.property('constructor').to.have.deep.property('name', 'Headers');
-          expect(res).to.have.deep.property('constructor').to.have.deep.property('name', 'Response');
+          expect(data).toBe('/v2/pet/findByStatus?status=available');
+          expect(status).toBe(200);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
     });
 
-    describe('error handling', function () {
-      it('should fail on an API definition that has no `paths`', async function () {
+    describe('error handling', () => {
+      it('should fail on an API definition that has no `paths`', async () => {
         const oas = Oas.init({
           openapi: '3.0.3',
           info: {
@@ -204,29 +234,20 @@ describe('typescript', function () {
         });
 
         const ts = new TSGenerator(oas, 'no-paths', './no-paths.json');
-        await ts
-          .generator()
-          .then(() => assert.fail())
-          .catch(err => {
-            expect(err.message).to.equal(
-              'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.'
-            );
-          });
+        await expect(ts.generator()).rejects.toThrow(
+          'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.'
+        );
       });
 
-      it('should fail on an API definition that contains circular references', async function () {
+      it('should fail on an API definition that contains circular references', async () => {
         const oas = await loadSpec('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
         await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-        try {
-          // eslint-disable-next-line no-new
-          new TSGenerator(oas, 'circular', './circular.json');
-          assert.fail();
-        } catch (err) {
-          expect(err.message).to.equal(
-            'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
-          );
-        }
+        expect(() => {
+          return new TSGenerator(oas, 'circular', './circular.json');
+        }).toThrow(
+          'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+        );
       });
     });
   });

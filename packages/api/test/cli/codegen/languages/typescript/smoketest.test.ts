@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-setup-in-describe */
 /**
  * With this smoketest suite you can run SDK codegen assertions a number of different ways:
  *
@@ -16,7 +15,6 @@
  * @example <caption>Everything</caption>
  * npm run test:smoke
  */
-import { expect } from 'chai';
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 
@@ -26,7 +24,7 @@ import realWorldAPIs from '../../../../datasets/real-world-apis.json';
 // These APIs don't have any schemas so they should only be generating an `index.ts`.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];
 
-const args: { chunks?: string; chunk?: string; random?: boolean } = Object.fromEntries(
+const args: { chunk?: string; chunks?: string; random?: boolean } = Object.fromEntries(
   process.argv
     .filter(a => a.startsWith('--'))
     .map(a => {
@@ -55,16 +53,11 @@ if (args.chunks && args.chunk) {
   dataset = realWorldAPIs;
 }
 
-describe('typescript smoketest', function () {
-  beforeEach(function () {
-    // Test timeout is huge here because CI can be slow, some API definitions are huge can take a
-    // while to download + codegen.
-    this.currentTest.timeout(180000); // 3 minutes
-    this.currentTest.slow(5000);
-  });
-
+describe('typescript smoketest', () => {
   dataset.forEach(({ name, url }) => {
-    it(`should generate an SDK for \`${name}\``, async function () {
+    // The test timeout is huge on this because CI can be slow as some API definitions are huge and
+    // can take a while to download + codegen.
+    it(`should generate an SDK for \`${name}\``, async () => {
       const spec = await new OASNormalize(url).validate({ convertToLatest: true }).catch(err => {
         // If this fails for any reason we should know. Catching and re-throwing here for the sake
         // of test verbosity.
@@ -78,10 +71,10 @@ describe('typescript smoketest', function () {
       const res = await ts.generator();
 
       if (APIS_WITHOUT_SCHEMAS.includes(name)) {
-        expect(Object.keys(res)).to.deep.equal(['index.ts']);
+        expect(Object.keys(res)).toStrictEqual(['index.ts']);
       } else {
-        expect(Object.keys(res)).to.deep.equal(['index.ts', 'schemas.ts', 'types.ts']);
+        expect(Object.keys(res)).toStrictEqual(['index.ts', 'schemas.ts', 'types.ts']);
       }
-    });
+    }, 180000);
   });
 });

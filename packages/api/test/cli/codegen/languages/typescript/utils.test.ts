@@ -1,59 +1,57 @@
-import { expect } from 'chai';
-
 import { docblockEscape, generateTypeName, wordWrap } from '../../../../../src/cli/codegen/languages/typescript/util';
 
-describe('ts codegen utils', function () {
-  describe('#docblockEscape', function () {
-    it('should not touch a safe string', function () {
-      expect(docblockEscape('This is a short sentence.')).to.equal('This is a short sentence.');
+describe('ts codegen utils', () => {
+  describe('#docblockEscape', () => {
+    it('should not touch a safe string', () => {
+      expect(docblockEscape('This is a short sentence.')).toBe('This is a short sentence.');
     });
 
-    it('should escape an unsafe docblock', function () {
-      expect(docblockEscape('/* this in a docblock will break a JS file */')).to.equal(
+    it('should escape an unsafe docblock', () => {
+      expect(docblockEscape('/* this in a docblock will break a JS file */')).toBe(
         '/\\* this in a docblock will break a JS file *\\/'
       );
 
-      expect(docblockEscape('/** this in a docblock will break a JS file **/')).to.equal(
+      expect(docblockEscape('/** this in a docblock will break a JS file **/')).toBe(
         '/\\** this in a docblock will break a JS file **\\/'
       );
 
-      expect(docblockEscape('**/myfiles/some_folder**')).to.equal('**\\/myfiles/some_folder**');
+      expect(docblockEscape('**/myfiles/some_folder**')).toBe('**\\/myfiles/some_folder**');
     });
   });
 
-  describe('#generateTypeName', function () {
-    it('should generate safe names', function () {
-      expect(generateTypeName('a')).to.equal('A');
-      expect(generateTypeName('abc')).to.equal('Abc');
-      expect(generateTypeName('ABcd')).to.equal('ABcd');
-      expect(generateTypeName('$Abc_123')).to.equal('Abc123');
-      expect(generateTypeName('123_$Abc')).to.equal('$123Abc');
-      expect(generateTypeName('Abc-de-f')).to.equal('AbcDeF');
+  describe('#generateTypeName', () => {
+    it('should generate safe names', () => {
+      expect(generateTypeName('a')).toBe('A');
+      expect(generateTypeName('abc')).toBe('Abc');
+      expect(generateTypeName('ABcd')).toBe('ABcd');
+      expect(generateTypeName('$Abc_123')).toBe('Abc123');
+      expect(generateTypeName('123_$Abc')).toBe('$123Abc');
+      expect(generateTypeName('Abc-de-f')).toBe('AbcDeF');
     });
 
-    it('should generate a safe name from the string to constant work we have in codegen for $ref pointers', function () {
-      expect(generateTypeName('::convert::Pet')).to.equal('ConvertPet');
+    it('should generate a safe name from the string to constant work we have in codegen for $ref pointers', () => {
+      expect(generateTypeName('::convert::Pet')).toBe('ConvertPet');
     });
 
-    it('should sanitize reserved words', function () {
-      expect(generateTypeName('const')).to.equal('$Const');
-      expect(generateTypeName('delete')).to.equal('$Delete');
-      expect(generateTypeName('let')).to.equal('$Let');
-      expect(generateTypeName('new')).to.equal('$New');
+    it('should sanitize reserved words', () => {
+      expect(generateTypeName('const')).toBe('$Const');
+      expect(generateTypeName('delete')).toBe('$Delete');
+      expect(generateTypeName('let')).toBe('$Let');
+      expect(generateTypeName('new')).toBe('$New');
     });
   });
 
-  describe('#wordwrap', function () {
-    it('should not touch a short string', function () {
-      expect(wordWrap('This is a short sentence.')).to.equal('This is a short sentence.');
+  describe('#wordwrap', () => {
+    it('should not touch a short string', () => {
+      expect(wordWrap('This is a short sentence.')).toBe('This is a short sentence.');
     });
 
-    it('should wrap a long string', function () {
+    it('should wrap a long string', () => {
       expect(
         wordWrap(
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla feugiat ante sed porta viverra. Sed sagittis urna odio, id tempus massa facilisis non. Fusce a elit ante. Sed non velit at sapien posuere semper'
         )
-      ).to.equal(
+      ).toBe(
         [
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla feugiat ante sed porta',
           'viverra. Sed sagittis urna odio, id tempus massa facilisis non. Fusce a elit ante. Sed',

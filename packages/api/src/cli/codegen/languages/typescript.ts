@@ -20,16 +20,16 @@ import CodeGeneratorLanguage from '../language';
 import { docblockEscape, formatter, generateTypeName, wordWrap } from './typescript/util';
 
 export interface TSGeneratorOptions {
-  outputJS?: boolean;
   compilerTarget?: 'cjs' | 'esm';
+  outputJS?: boolean;
 }
 
 interface OperationTypeHousing {
+  operation: Operation;
   types: {
     params?: false | Record<'body' | 'formData' | 'metadata', string>;
     responses?: Record<string, string>;
   };
-  operation: Operation;
 }
 
 export default class TSGenerator extends CodeGeneratorLanguage {
@@ -60,7 +60,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
   usesHTTPMethodRangeInterface = false;
 
   constructor(spec: Oas, specPath: string, identifier: string, opts: TSGeneratorOptions = {}) {
-    const options: { outputJS: boolean; compilerTarget: 'cjs' | 'esm' } = {
+    const options: { compilerTarget: 'cjs' | 'esm'; outputJS: boolean } = {
       outputJS: false,
       compilerTarget: 'cjs',
       ...opts,

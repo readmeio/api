@@ -12,7 +12,6 @@ import traverse from 'json-schema-traverse';
  *
  * @todo This is a good candidate to be moved into a core `oas` library method.
  * @see {@link https://github.com/mdornseif/json-schema-default}
- * @param jsonSchemas
  */
 export default function getJSONSchemaDefaults(jsonSchemas: SchemaWrapper[]) {
   return jsonSchemas

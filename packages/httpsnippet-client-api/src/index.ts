@@ -35,7 +35,7 @@ function buildAuthSnippet(authKey: string | string[]) {
 }
 
 function getAuthSources(operation: Operation) {
-  const matchers: { header: Record<string, string>; query: string[]; cookie: string[] } = {
+  const matchers: { cookie: string[]; header: Record<string, string>; query: string[] } = {
     header: {},
     query: [],
     cookie: [],
@@ -79,8 +79,8 @@ function getAuthSources(operation: Operation) {
 export interface APIOptions {
   apiDefinition: OASDocument;
   apiDefinitionUri: string;
-  indent?: string | false;
   escapeBrackets?: boolean;
+  indent?: string | false;
 }
 
 const client: Client<APIOptions> = {

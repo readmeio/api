@@ -76,7 +76,7 @@ function merge(src: any, target: any) {
 function processFile(
   paramName: string,
   file: string | ReadStream
-): Promise<{ paramName: string; base64: string; filename: string; buffer: Buffer }> {
+): Promise<{ base64: string; buffer: Buffer; filename: string; paramName: string }> {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);

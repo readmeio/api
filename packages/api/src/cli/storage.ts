@@ -207,7 +207,6 @@ export default class Storage {
    *         ├── openapi.json
    *         └── package.json
    *
-   * @param spec
    */
   save(spec: OASDocument) {
     if (!this.identifier) {
@@ -254,12 +253,13 @@ export default class Storage {
 }
 
 export interface Lockfile {
+  apis: LockfileAPI[];
+
   /**
    * The `api.json` schema version. This will only ever change if we introduce breaking changes to
    * this store.
    */
   version: '1.0';
-  apis: LockfileAPI[];
 }
 
 export interface LockfileAPI {
@@ -272,13 +272,11 @@ export interface LockfileAPI {
   identifier: string;
 
   /**
-   * The original source that was used to generate the SDK with.
+   * The version of `api` that was used to install this SDK.
    *
-   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-   * @example ./petstore.json
-   * @example @developers/v2.0#nysezql0wwo236
+   * @example 5.0.0
    */
-  source: string;
+  installerVersion: string;
 
   /**
    * An integrity hash that will be used to determine on `npx api update` calls if the API has
@@ -289,9 +287,11 @@ export interface LockfileAPI {
   integrity: string;
 
   /**
-   * The version of `api` that was used to install this SDK.
+   * The original source that was used to generate the SDK with.
    *
-   * @example 5.0.0
+   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+   * @example ./petstore.json
+   * @example @developers/v2.0#nysezql0wwo236
    */
-  installerVersion: string;
+  source: string;
 }

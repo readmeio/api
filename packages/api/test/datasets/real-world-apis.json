@@ -4470,21 +4470,6 @@
     "url": "https://api.apis.guru/v2/specs/cnab-online.herokuapp.com/1.0.0/swagger.json"
   },
   {
-    "name": "codat.io:accounting",
-    "version": "2.1.0",
-    "url": "https://api.apis.guru/v2/specs/codat.io/accounting/2.1.0/openapi.json"
-  },
-  {
-    "name": "codat.io:assess",
-    "version": "1.0",
-    "url": "https://api.apis.guru/v2/specs/codat.io/assess/1.0/openapi.json"
-  },
-  {
-    "name": "codat.io:bank-feeds",
-    "version": "2.1.0",
-    "url": "https://api.apis.guru/v2/specs/codat.io/bank-feeds/2.1.0/openapi.json"
-  },
-  {
     "name": "codat.io:banking",
     "version": "2.1.0",
     "url": "https://api.apis.guru/v2/specs/codat.io/banking/2.1.0/openapi.json"
@@ -4528,11 +4513,6 @@
     "name": "combell.com",
     "version": "v2",
     "url": "https://api.apis.guru/v2/specs/combell.com/v2/openapi.json"
-  },
-  {
-    "name": "configcat.com",
-    "version": "v1",
-    "url": "https://api.apis.guru/v2/specs/configcat.com/v1/openapi.json"
   },
   {
     "name": "conjur.local",

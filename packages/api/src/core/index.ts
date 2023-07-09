@@ -26,9 +26,9 @@ export interface ConfigOptions {
 
 export interface FetchResponse<status, data> {
   data: data;
-  status: status;
   headers: Headers;
   res: Response;
+  status: status;
 }
 
 // https://stackoverflow.com/a/39495173

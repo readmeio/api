@@ -16,8 +16,11 @@ type CacheStore = Record<
   string,
   {
     hash: string;
-    path?: string; // Deprecated in v4.5.0 in favor of `hash`.
     original: string | OASDocument;
+    /**
+     * @deprecated Deprecated in v4.5.0 in favor of `hash`.
+     */
+    path?: string;
     title?: string;
     version?: string;
   }
