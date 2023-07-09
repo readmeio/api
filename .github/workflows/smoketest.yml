@@ -1,10 +1,8 @@
 name: smoketest
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  schedule:
+    - cron: '30 0 * * *' # every day at 12:30am UTC
 
 concurrency:
   group: ${{ github.head_ref }}
