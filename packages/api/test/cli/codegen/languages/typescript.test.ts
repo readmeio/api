@@ -178,8 +178,8 @@ describe('typescript', () => {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
-          expect(headers).toBeInstanceOf(Headers);
-          expect(res).toBeInstanceOf(Response);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
 
@@ -192,8 +192,8 @@ describe('typescript', () => {
           .then(({ data, status, headers, res }) => {
             expect(data).toHaveProperty('accept', 'application/xml');
             expect(status).toBe(200);
-            expect(headers).toBeInstanceOf(Headers);
-            expect(res).toBeInstanceOf(Response);
+            expect(headers.constructor.name).toBe('Headers');
+            expect(res.constructor.name).toBe('Response');
           });
       });
 
@@ -204,8 +204,8 @@ describe('typescript', () => {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
-          expect(headers).toBeInstanceOf(Headers);
-          expect(res).toBeInstanceOf(Response);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
 
@@ -216,8 +216,8 @@ describe('typescript', () => {
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
-          expect(headers).toBeInstanceOf(Headers);
-          expect(res).toBeInstanceOf(Response);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
         });
       });
     });

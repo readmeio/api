@@ -241,6 +241,10 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['callfire.com'];
     delete apis['canada-holidays.ca'];
     delete apis['clickmeter.com'];
+    delete apis['codat.io:accounting'];
+    delete apis['codat.io:assess'];
+    delete apis['codat.io:bank-feeds'];
+    delete apis['configcat.com'];
     delete apis['corrently.io'];
     delete apis['cpy.re:peertube'];
     delete apis['credas.co.uk:pi'];
