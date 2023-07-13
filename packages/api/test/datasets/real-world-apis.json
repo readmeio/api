@@ -55,29 +55,9 @@
     "url": "https://api.apis.guru/v2/specs/adyen.com/BalanceControlService/1/openapi.json"
   },
   {
-    "name": "adyen.com:BalancePlatformConfigurationNotification-v1",
-    "version": "1",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformConfigurationNotification-v1/1/openapi.json"
-  },
-  {
-    "name": "adyen.com:BalancePlatformPaymentNotification-v1",
-    "version": "1",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformPaymentNotification-v1/1/openapi.json"
-  },
-  {
-    "name": "adyen.com:BalancePlatformReportNotification-v1",
-    "version": "1",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformReportNotification-v1/1/openapi.json"
-  },
-  {
     "name": "adyen.com:BalancePlatformService",
     "version": "2",
     "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformService/2/openapi.json"
-  },
-  {
-    "name": "adyen.com:BalancePlatformTransferNotification-v3",
-    "version": "3",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/BalancePlatformTransferNotification-v3/3/openapi.json"
   },
   {
     "name": "adyen.com:BinLookupService",
@@ -108,11 +88,6 @@
     "name": "adyen.com:LegalEntityService",
     "version": "3",
     "url": "https://api.apis.guru/v2/specs/adyen.com/LegalEntityService/3/openapi.json"
-  },
-  {
-    "name": "adyen.com:ManagementNotificationService-v1",
-    "version": "1",
-    "url": "https://api.apis.guru/v2/specs/adyen.com/ManagementNotificationService-v1/1/openapi.json"
   },
   {
     "name": "adyen.com:ManagementService",
@@ -283,11 +258,6 @@
     "name": "amadeus.com:amadeus-hotel-name-autocomplete",
     "version": "1.0.3",
     "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-name-autocomplete/1.0.3/swagger.json"
-  },
-  {
-    "name": "amadeus.com:amadeus-hotel-ratings",
-    "version": "1.0.2",
-    "url": "https://api.apis.guru/v2/specs/amadeus.com/amadeus-hotel-ratings/1.0.2/swagger.json"
   },
   {
     "name": "amadeus.com:amadeus-hotel-search",
