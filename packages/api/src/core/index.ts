@@ -128,7 +128,12 @@ export default class APICore {
           const parsed = await parseResponse(res);
 
           if (res.status >= 400 && res.status <= 599) {
-            throw new FetchError(parsed.status, parsed.data, parsed.headers, parsed.res);
+            throw new FetchError<typeof parsed.status, typeof parsed.data>(
+              parsed.status,
+              parsed.data,
+              parsed.headers,
+              parsed.res
+            );
           }
 
           return parsed;

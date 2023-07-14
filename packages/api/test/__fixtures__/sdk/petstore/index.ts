@@ -129,17 +129,9 @@ class SDK {
     body: types.UpdatePetWithFormFormDataParam,
     metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
   updatePetWithForm(
     metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
   updatePetWithForm(
     body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
     metadata?: types.UpdatePetWithFormMetadataParam
@@ -163,17 +155,9 @@ class SDK {
     body: types.UploadFileBodyParam,
     metadata: types.UploadFileMetadataParam
   ): Promise<FetchResponse<200, types.ApiResponse>>;
-  /**
-   * Uploads an image
-   *
-   */
   uploadFile(
     metadata: types.UploadFileMetadataParam
   ): Promise<FetchResponse<200, types.ApiResponse>>;
-  /**
-   * Uploads an image
-   *
-   */
   uploadFile(
     body?: types.UploadFileBodyParam | types.UploadFileMetadataParam,
     metadata?: types.UploadFileMetadataParam

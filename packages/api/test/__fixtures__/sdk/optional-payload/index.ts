@@ -81,17 +81,9 @@ class SDK {
     body: types.UpdatePetWithFormFormDataParam,
     metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
   updatePetWithForm(
     metadata: types.UpdatePetWithFormMetadataParam
   ): Promise<FetchResponse<number, unknown>>;
-  /**
-   * Updates a pet in the store with form data
-   *
-   */
   updatePetWithForm(
     body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
     metadata?: types.UpdatePetWithFormMetadataParam
