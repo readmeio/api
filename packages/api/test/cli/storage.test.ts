@@ -53,6 +53,39 @@ describe('storage', () => {
     });
   });
 
+  describe('#isIdentifierValid', () => {
+    it('should allow an identifier that is valid', () => {
+      expect(Storage.isIdentifierValid('buster')).toBe(true);
+      expect(Storage.isIdentifierValid('buster', true)).toBe(true);
+    });
+
+    it('should throw an error for when an identifier is already being used', async () => {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, 'petstore');
+
+      expect(Storage.isInLockFile({ source })).toBe(false);
+
+      await storage.load();
+
+      expect(() => {
+        Storage.isIdentifierValid('petstore');
+      }).toThrow('"petstore" is already taken in your `.api/` directory. Please try another identifier.');
+    });
+
+    it("should throw an error when an identifier can't be used on npm", () => {
+      expect(() => {
+        Storage.isIdentifierValid('.buster');
+      }).toThrow('Identifier cannot be used for an NPM package: name cannot start with a period');
+
+      expect(() => {
+        // `true` here will try to check it as `@api/  buster`, `@api/.buster` is valid apparently!
+        Storage.isIdentifierValid('  buster', true);
+      }).toThrow('Identifier cannot be used for an NPM package: name can only contain URL-friendly characters');
+    });
+  });
+
   describe('#isInLockFile', () => {
     it('should be able to look up in the lockfile by a given source', async () => {
       fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);

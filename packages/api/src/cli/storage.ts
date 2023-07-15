@@ -5,6 +5,7 @@ import path from 'path';
 
 import makeDir from 'make-dir';
 import ssri from 'ssri';
+import validateNPMPackageName from 'validate-npm-package-name';
 
 import Fetcher from '../fetcher';
 import { PACKAGE_VERSION } from '../packageInfo';
@@ -103,6 +104,22 @@ export default class Storage {
     }
 
     return Storage.lockfile;
+  }
+
+  static isIdentifierValid(identifier: string, prefixWithAPINamespace?: boolean) {
+    // Is this identifier already in storage?
+    if (Storage.isInLockFile({ identifier })) {
+      throw new Error(`"${identifier}" is already taken in your \`.api/\` directory. Please try another identifier.`);
+    }
+
+    const isValidForNPM = validateNPMPackageName(prefixWithAPINamespace ? `@api/${identifier}` : identifier);
+    if (!isValidForNPM.validForNewPackages) {
+      // `prompts` doesn't support surfacing multiple errors in a `validate` call so we can only
+      // surface the first to the user.
+      throw new Error(`Identifier cannot be used for an NPM package: ${isValidForNPM.errors[0]}`);
+    }
+
+    return true;
   }
 
   static isInLockFile(search: { identifier?: string; source?: string }) {
