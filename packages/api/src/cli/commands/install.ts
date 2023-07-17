@@ -4,7 +4,6 @@ import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
-import validateNPMPackageName from 'validate-npm-package-name';
 
 import Fetcher from '../../fetcher';
 import codegen from '../codegen';
@@ -18,6 +17,7 @@ cmd
   .name('install')
   .description('install an API SDK into your codebase')
   .argument('<uri>', 'an API to install')
+  .option('-i, --identifier <identifier>', 'API identifier (eg. `@api/petstore`)')
   .addOption(
     new Option('-l, --lang <language>', 'SDK language').choices([
       'js', // User generally wants JS, we'll prompt if they want CJS or ESM files.
@@ -27,7 +27,7 @@ cmd
     ])
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
-  .action(async (uri: string, options: { lang: string; yes?: boolean }) => {
+  .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
     let language: SupportedLanguages;
     if (options.lang) {
       language = options.lang as SupportedLanguages;
@@ -69,7 +69,12 @@ cmd
     }
 
     let identifier;
-    if (Fetcher.isAPIRegistryUUID(uri)) {
+    if (options.identifier) {
+      // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
+      if (Storage.isIdentifierValid(options.identifier)) {
+        identifier = options.identifier;
+      }
+    } else if (Fetcher.isAPIRegistryUUID(uri)) {
       identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
     } else {
       ({ value: identifier } = await promptTerminal({
@@ -82,19 +87,11 @@ cmd
             return false;
           }
 
-          // Is this identifier already in storage?
-          if (Storage.isInLockFile({ identifier: value })) {
-            return `"${value}" is already taken in your \`.api/\` directory. Please enter another identifier.`;
+          try {
+            return Storage.isIdentifierValid(value, true);
+          } catch (err) {
+            return err.message;
           }
-
-          const isValidForNPM = validateNPMPackageName(`@api/${value}`);
-          if (!isValidForNPM.validForNewPackages) {
-            // `prompts` doesn't support surfacing multiple errors in a `validate` call so we can
-            // only surface the first to the user.
-            return isValidForNPM.errors[0];
-          }
-
-          return true;
         },
       }));
     }
