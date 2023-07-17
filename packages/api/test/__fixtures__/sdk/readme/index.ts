@@ -77,13 +77,11 @@ class SDK {
    * Get an API definition file that's been uploaded to ReadMe.
    *
    * @summary Retrieve an entry from the API Registry
+   * @throws FetchError<404, types.ErrorRegistryNotfound> The registry entry couldn't be found.
    */
   getAPIRegistry(
     metadata: types.GetApiRegistryMetadataParam
-  ): Promise<
-    | FetchResponse<200, types.GetApiRegistryResponse200>
-    | FetchResponse<404, types.ErrorRegistryNotfound>
-  > {
+  ): Promise<FetchResponse<200, types.GetApiRegistryResponse200>> {
     return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
   }
 
@@ -91,16 +89,14 @@ class SDK {
    * Get API specification metadata.
    *
    * @summary Get metadata
+   * @throws FetchError<400, types.ErrorVersionEmpty> No version was supplied.
+   * @throws FetchError<401, types.GetApiSpecificationResponse401> Unauthorized
+   * @throws FetchError<403, types.GetApiSpecificationResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
   getAPISpecification(
     metadata?: types.GetApiSpecificationMetadataParam
-  ): Promise<
-    | FetchResponse<200, types.GetApiSpecificationResponse200>
-    | FetchResponse<400, types.ErrorVersionEmpty>
-    | FetchResponse<401, types.GetApiSpecificationResponse401>
-    | FetchResponse<403, types.GetApiSpecificationResponse403>
-    | FetchResponse<404, types.ErrorVersionNotfound>
-  > {
+  ): Promise<FetchResponse<200, types.GetApiSpecificationResponse200>> {
     return this.core.fetch('/api-specification', 'get', metadata);
   }
 
@@ -109,16 +105,15 @@ class SDK {
    * https://docs.readme.com/docs/automatically-sync-api-specification-with-github.
    *
    * @summary Upload specification
+   * @throws FetchError<400, types.UploadApiSpecificationResponse400> There was a validation error during upload.
+   * @throws FetchError<401, types.UploadApiSpecificationResponse401> Unauthorized
+   * @throws FetchError<403, types.UploadApiSpecificationResponse403> Unauthorized
+   * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
    */
   uploadAPISpecification(
     body: types.UploadApiSpecificationBodyParam,
     metadata?: types.UploadApiSpecificationMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.UploadApiSpecificationResponse400>
-    | FetchResponse<401, types.UploadApiSpecificationResponse401>
-    | FetchResponse<403, types.UploadApiSpecificationResponse403>
-    | FetchResponse<408, types.ErrorSpecTimeout>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification', 'post', body, metadata);
   }
 
@@ -126,16 +121,15 @@ class SDK {
    * Update an API specification in ReadMe.
    *
    * @summary Update specification
+   * @throws FetchError<400, types.UpdateApiSpecificationResponse400> There was a validation error during upload.
+   * @throws FetchError<401, types.UpdateApiSpecificationResponse401> Unauthorized
+   * @throws FetchError<403, types.UpdateApiSpecificationResponse403> Unauthorized
+   * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
    */
   updateAPISpecification(
     body: types.UpdateApiSpecificationBodyParam,
     metadata: types.UpdateApiSpecificationMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.UpdateApiSpecificationResponse400>
-    | FetchResponse<401, types.UpdateApiSpecificationResponse401>
-    | FetchResponse<403, types.UpdateApiSpecificationResponse403>
-    | FetchResponse<408, types.ErrorSpecTimeout>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
   }
 
@@ -143,15 +137,14 @@ class SDK {
    * Delete an API specification in ReadMe.
    *
    * @summary Delete specification
+   * @throws FetchError<400, types.ErrorSpecIdInvalid> The spec ID isn't valid.
+   * @throws FetchError<401, types.DeleteApiSpecificationResponse401> Unauthorized
+   * @throws FetchError<403, types.DeleteApiSpecificationResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorSpecNotfound> The spec couldn't be found.
    */
   deleteAPISpecification(
     metadata: types.DeleteApiSpecificationMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorSpecIdInvalid>
-    | FetchResponse<401, types.DeleteApiSpecificationResponse401>
-    | FetchResponse<403, types.DeleteApiSpecificationResponse403>
-    | FetchResponse<404, types.ErrorSpecNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification/{id}', 'delete', metadata);
   }
 
@@ -189,11 +182,12 @@ class SDK {
    * Create a new category inside of this project.
    *
    * @summary Create category
+   * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
    */
   createCategory(
     body: types.Category,
     metadata?: types.CreateCategoryMetadataParam
-  ): Promise<FetchResponse<400, types.ErrorCategoryInvalid>> {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -201,10 +195,9 @@ class SDK {
    * Returns the category with this slug.
    *
    * @summary Get category
+   * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
-  getCategory(
-    metadata: types.GetCategoryMetadataParam
-  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
+  getCategory(metadata: types.GetCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'get', metadata);
   }
 
@@ -212,13 +205,13 @@ class SDK {
    * Change the properties of a category.
    *
    * @summary Update category
+   * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
+   * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
   updateCategory(
     body: types.Category,
     metadata: types.UpdateCategoryMetadataParam
-  ): Promise<
-    FetchResponse<400, types.ErrorCategoryInvalid> | FetchResponse<404, types.ErrorCategoryNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -228,10 +221,11 @@ class SDK {
    * > This will also delete all of the docs within this category.
    *
    * @summary Delete category
+   * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
   deleteCategory(
     metadata: types.DeleteCategoryMetadataParam
-  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'delete', metadata);
   }
 
@@ -239,10 +233,11 @@ class SDK {
    * Returns the docs and children docs within this category.
    *
    * @summary Get docs for category
+   * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
   getCategoryDocs(
     metadata: types.GetCategoryDocsMetadataParam
-  ): Promise<FetchResponse<404, types.ErrorCategoryNotfound>> {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
   }
 
@@ -302,14 +297,12 @@ class SDK {
    * Returns a list of custom pages.
    *
    * @summary Get custom pages
+   * @throws FetchError<401, types.GetCustomPagesResponse401> Unauthorized
+   * @throws FetchError<403, types.GetCustomPagesResponse403> Unauthorized
    */
   getCustomPages(
     metadata?: types.GetCustomPagesMetadataParam
-  ): Promise<
-    | FetchResponse<200, types.GetCustomPagesResponse200>
-    | FetchResponse<401, types.GetCustomPagesResponse401>
-    | FetchResponse<403, types.GetCustomPagesResponse403>
-  > {
+  ): Promise<FetchResponse<200, types.GetCustomPagesResponse200>> {
     return this.core.fetch('/custompages', 'get', metadata);
   }
 
@@ -317,14 +310,11 @@ class SDK {
    * Create a new custom page inside of this project.
    *
    * @summary Create custom page
+   * @throws FetchError<400, types.ErrorCustompageInvalid> The page couldn't be saved.
+   * @throws FetchError<401, types.CreateCustomPageResponse401> Unauthorized
+   * @throws FetchError<403, types.CreateCustomPageResponse403> Unauthorized
    */
-  createCustomPage(
-    body: types.CustomPage
-  ): Promise<
-    | FetchResponse<400, types.ErrorCustompageInvalid>
-    | FetchResponse<401, types.CreateCustomPageResponse401>
-    | FetchResponse<403, types.CreateCustomPageResponse403>
-  > {
+  createCustomPage(body: types.CustomPage): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages', 'post', body);
   }
 
@@ -332,14 +322,13 @@ class SDK {
    * Returns the custom page with this slug.
    *
    * @summary Get custom page
+   * @throws FetchError<401, types.GetCustomPageResponse401> Unauthorized
+   * @throws FetchError<403, types.GetCustomPageResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
   getCustomPage(
     metadata: types.GetCustomPageMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.GetCustomPageResponse401>
-    | FetchResponse<403, types.GetCustomPageResponse403>
-    | FetchResponse<404, types.ErrorCustompageNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'get', metadata);
   }
 
@@ -347,16 +336,15 @@ class SDK {
    * Update a custom page with this slug.
    *
    * @summary Update custom page
+   * @throws FetchError<400, types.ErrorCustompageInvalid> The page couldn't be saved.
+   * @throws FetchError<401, types.UpdateCustomPageResponse401> Unauthorized
+   * @throws FetchError<403, types.UpdateCustomPageResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
   updateCustomPage(
     body: types.CustomPage,
     metadata: types.UpdateCustomPageMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorCustompageInvalid>
-    | FetchResponse<401, types.UpdateCustomPageResponse401>
-    | FetchResponse<403, types.UpdateCustomPageResponse403>
-    | FetchResponse<404, types.ErrorCustompageNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
 
@@ -364,14 +352,13 @@ class SDK {
    * Delete the custom page with this slug.
    *
    * @summary Delete custom page
+   * @throws FetchError<401, types.DeleteCustomPageResponse401> Unauthorized
+   * @throws FetchError<403, types.DeleteCustomPageResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
   deleteCustomPage(
     metadata: types.DeleteCustomPageMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.DeleteCustomPageResponse401>
-    | FetchResponse<403, types.DeleteCustomPageResponse403>
-    | FetchResponse<404, types.ErrorCustompageNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'delete', metadata);
   }
 
@@ -379,14 +366,11 @@ class SDK {
    * Returns the doc with this slug.
    *
    * @summary Get doc
+   * @throws FetchError<401, types.GetDocResponse401> Unauthorized
+   * @throws FetchError<403, types.GetDocResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  getDoc(
-    metadata: types.GetDocMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.GetDocResponse401>
-    | FetchResponse<403, types.GetDocResponse403>
-    | FetchResponse<404, types.ErrorDocNotfound>
-  > {
+  getDoc(metadata: types.GetDocMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}', 'get', metadata);
   }
 
@@ -394,16 +378,15 @@ class SDK {
    * Update a doc with this slug.
    *
    * @summary Update doc
+   * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
+   * @throws FetchError<401, types.UpdateDocResponse401> Unauthorized
+   * @throws FetchError<403, types.UpdateDocResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
   updateDoc(
     body: types.Doc,
     metadata: types.UpdateDocMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorDocInvalid>
-    | FetchResponse<401, types.UpdateDocResponse401>
-    | FetchResponse<403, types.UpdateDocResponse403>
-    | FetchResponse<404, types.ErrorDocNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -411,14 +394,11 @@ class SDK {
    * Delete the doc with this slug.
    *
    * @summary Delete doc
+   * @throws FetchError<401, types.DeleteDocResponse401> Unauthorized
+   * @throws FetchError<403, types.DeleteDocResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  deleteDoc(
-    metadata: types.DeleteDocMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.DeleteDocResponse401>
-    | FetchResponse<403, types.DeleteDocResponse403>
-    | FetchResponse<404, types.ErrorDocNotfound>
-  > {
+  deleteDoc(metadata: types.DeleteDocMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}', 'delete', metadata);
   }
 
@@ -428,14 +408,13 @@ class SDK {
    * return staging.
    *
    * @summary Get production doc
+   * @throws FetchError<401, types.GetProductionDocResponse401> Unauthorized
+   * @throws FetchError<403, types.GetProductionDocResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
   getProductionDoc(
     metadata: types.GetProductionDocMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.GetProductionDocResponse401>
-    | FetchResponse<403, types.GetProductionDocResponse403>
-    | FetchResponse<404, types.ErrorDocNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}/production', 'get', metadata);
   }
 
@@ -443,15 +422,14 @@ class SDK {
    * Create a new doc inside of this project.
    *
    * @summary Create doc
+   * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
+   * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
+   * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
    */
   createDoc(
     body: types.Doc,
     metadata?: types.CreateDocMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorDocInvalid>
-    | FetchResponse<401, types.CreateDocResponse401>
-    | FetchResponse<403, types.CreateDocResponse403>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -459,13 +437,10 @@ class SDK {
    * Returns all docs that match the search.
    *
    * @summary Search docs
+   * @throws FetchError<401, types.SearchDocsResponse401> Unauthorized
+   * @throws FetchError<403, types.SearchDocsResponse403> Unauthorized
    */
-  searchDocs(
-    metadata: types.SearchDocsMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.SearchDocsResponse401>
-    | FetchResponse<403, types.SearchDocsResponse403>
-  > {
+  searchDocs(metadata: types.SearchDocsMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/search', 'post', metadata);
   }
 
@@ -473,10 +448,10 @@ class SDK {
    * Returns with all of the error page types for this project.
    *
    * @summary Get errors
+   * @throws FetchError<401, types.GetErrorsResponse401> Unauthorized
+   * @throws FetchError<403, types.GetErrorsResponse403> Unauthorized
    */
-  getErrors(): Promise<
-    FetchResponse<401, types.GetErrorsResponse401> | FetchResponse<403, types.GetErrorsResponse403>
-  > {
+  getErrors(): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/errors', 'get');
   }
 
@@ -484,12 +459,10 @@ class SDK {
    * Returns project data for the API key.
    *
    * @summary Get metadata about the current project
+   * @throws FetchError<401, types.GetProjectResponse401> Unauthorized
+   * @throws FetchError<403, types.GetProjectResponse403> Unauthorized
    */
-  getProject(): Promise<
-    | FetchResponse<200, types.CondensedProjectData>
-    | FetchResponse<401, types.GetProjectResponse401>
-    | FetchResponse<403, types.GetProjectResponse403>
-  > {
+  getProject(): Promise<FetchResponse<200, types.CondensedProjectData>> {
     return this.core.fetch('/', 'get');
   }
 
@@ -497,11 +470,10 @@ class SDK {
    * Retrieve a list of versions associated with a project API key.
    *
    * @summary Get versions
+   * @throws FetchError<401, types.GetVersionsResponse401> Unauthorized
+   * @throws FetchError<403, types.GetVersionsResponse403> Unauthorized
    */
-  getVersions(): Promise<
-    | FetchResponse<401, types.GetVersionsResponse401>
-    | FetchResponse<403, types.GetVersionsResponse403>
-  > {
+  getVersions(): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version', 'get');
   }
 
@@ -509,15 +481,12 @@ class SDK {
    * Create a new version.
    *
    * @summary Create version
+   * @throws FetchError<400, types.CreateVersionResponse400> There was a validation error during creation.
+   * @throws FetchError<401, types.CreateVersionResponse401> Unauthorized
+   * @throws FetchError<403, types.CreateVersionResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorVersionForkNotfound> The version couldn't be found.
    */
-  createVersion(
-    body: types.Version
-  ): Promise<
-    | FetchResponse<400, types.CreateVersionResponse400>
-    | FetchResponse<401, types.CreateVersionResponse401>
-    | FetchResponse<403, types.CreateVersionResponse403>
-    | FetchResponse<404, types.ErrorVersionForkNotfound>
-  > {
+  createVersion(body: types.Version): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version', 'post', body);
   }
 
@@ -525,14 +494,11 @@ class SDK {
    * Returns the version with this version ID.
    *
    * @summary Get version
+   * @throws FetchError<401, types.GetVersionResponse401> Unauthorized
+   * @throws FetchError<403, types.GetVersionResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
-  getVersion(
-    metadata: types.GetVersionMetadataParam
-  ): Promise<
-    | FetchResponse<401, types.GetVersionResponse401>
-    | FetchResponse<403, types.GetVersionResponse403>
-    | FetchResponse<404, types.ErrorVersionNotfound>
-  > {
+  getVersion(metadata: types.GetVersionMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'get', metadata);
   }
 
@@ -540,16 +506,15 @@ class SDK {
    * Update an existing version.
    *
    * @summary Update version
+   * @throws FetchError<400, types.ErrorVersionCantDemoteStable> A stable version can't be demoted.
+   * @throws FetchError<401, types.UpdateVersionResponse401> Unauthorized
+   * @throws FetchError<403, types.UpdateVersionResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
   updateVersion(
     body: types.Version,
     metadata: types.UpdateVersionMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorVersionCantDemoteStable>
-    | FetchResponse<401, types.UpdateVersionResponse401>
-    | FetchResponse<403, types.UpdateVersionResponse403>
-    | FetchResponse<404, types.ErrorVersionNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
 
@@ -557,15 +522,14 @@ class SDK {
    * Delete a version
    *
    * @summary Delete version
+   * @throws FetchError<400, types.ErrorVersionCantRemoveStable> A stable version can't be removed.
+   * @throws FetchError<401, types.DeleteVersionResponse401> Unauthorized
+   * @throws FetchError<403, types.DeleteVersionResponse403> Unauthorized
+   * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
   deleteVersion(
     metadata: types.DeleteVersionMetadataParam
-  ): Promise<
-    | FetchResponse<400, types.ErrorVersionCantRemoveStable>
-    | FetchResponse<401, types.DeleteVersionResponse401>
-    | FetchResponse<403, types.DeleteVersionResponse403>
-    | FetchResponse<404, types.ErrorVersionNotfound>
-  > {
+  ): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'delete', metadata);
   }
 }

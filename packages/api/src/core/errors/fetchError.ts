@@ -1,9 +1,9 @@
-class FetchError extends Error {
+class FetchError<Status = number, Data = unknown> extends Error {
   /** HTTP Status */
-  status: number;
+  status: Status;
 
   /** The content of the response. */
-  data: unknown;
+  data: Data;
 
   /** The Headers of the response. */
   headers: Headers;
@@ -11,7 +11,7 @@ class FetchError extends Error {
   /** The raw `Response` object. */
   res: Response;
 
-  constructor(status: number, data: unknown, headers: Headers, res: Response) {
+  constructor(status: Status, data: Data, headers: Headers, res: Response) {
     super(res.statusText);
 
     this.name = 'FetchError';

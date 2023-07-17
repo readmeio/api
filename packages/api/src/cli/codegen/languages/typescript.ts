@@ -3,7 +3,13 @@ import type { InstallerOptions } from '../language';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, SchemaObject } from 'oas/dist/rmoas.types';
-import type { ClassDeclaration, JSDocStructure, OptionalKind, ParameterDeclarationStructure } from 'ts-morph';
+import type {
+  ClassDeclaration,
+  JSDocStructure,
+  JSDocTagStructure,
+  OptionalKind,
+  ParameterDeclarationStructure,
+} from 'ts-morph';
 import type { PackageJson } from 'type-fest';
 
 import fs from 'fs';
@@ -28,7 +34,13 @@ interface OperationTypeHousing {
   operation: Operation;
   types: {
     params?: false | Record<'body' | 'formData' | 'metadata', string>;
-    responses?: Record<string, string>;
+    responses?: Record<
+      string | number,
+      {
+        description?: string;
+        type: string;
+      }
+    >;
   };
 }
 
@@ -503,6 +515,20 @@ sdk.server('https://eu.api.example.com/v14');`)
   }
 
   /**
+   * Add a new JSDoc `@tag` to an existing docblock.
+   *
+   */
+  static addTagToDocblock(docblock: OptionalKind<JSDocStructure>, tag: OptionalKind<JSDocTagStructure>) {
+    const tags = docblock.tags ?? [];
+    tags.push(tag);
+
+    return {
+      ...docblock,
+      tags,
+    };
+  }
+
+  /**
    * Create operation accessors on the SDK.
    *
    */
@@ -512,7 +538,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     paramTypes?: OperationTypeHousing['types']['params'],
     responseTypes?: OperationTypeHousing['types']['responses']
   ) {
-    const docblock: OptionalKind<JSDocStructure> = {};
+    let docblock: OptionalKind<JSDocStructure> = {};
     const summary = operation.getSummary();
     const description = operation.getDescription();
     if (summary || description) {
@@ -531,7 +557,10 @@ sdk.server('https://eu.api.example.com/v14');`)
       };
 
       if (summary && description) {
-        docblock.tags = [{ tagName: 'summary', text: docblockEscape(wordWrap(summary)) }];
+        docblock = TSGenerator.addTagToDocblock(docblock, {
+          tagName: 'summary',
+          text: docblockEscape(wordWrap(summary)),
+        });
       }
     }
 
@@ -568,8 +597,8 @@ sdk.server('https://eu.api.example.com/v14');`)
 
     let returnType = 'Promise<FetchResponse<number, unknown>>';
     if (responseTypes) {
-      returnType = `Promise<${Object.entries(responseTypes)
-        .map(([status, responseType]) => {
+      const returnTypes = Object.entries(responseTypes)
+        .map(([status, { description: responseDescription, type: responseType }]) => {
           if (status.toLowerCase() === 'default') {
             return `FetchResponse<number, ${responseType}>`;
           } else if (status.length === 3 && status.toUpperCase().endsWith('XX')) {
@@ -580,19 +609,54 @@ sdk.server('https://eu.api.example.com/v14');`)
               return `FetchResponse<number, ${responseType}>`;
             }
 
+            if (Number(statusPrefix) >= 4) {
+              docblock = TSGenerator.addTagToDocblock(docblock, {
+                tagName: 'throws',
+                text: `FetchError<${status}, ${responseType}>${
+                  responseDescription ? docblockEscape(wordWrap(` ${responseDescription}`)) : ''
+                }`,
+              });
+
+              return false;
+            }
+
             this.usesHTTPMethodRangeInterface = true;
             return `FetchResponse<HTTPMethodRange<${statusPrefix}00, ${statusPrefix}99>, ${responseType}>`;
           }
 
+          // 400 and 500 status code families are thrown as exceptions so adding them as a possible
+          // return type isn't valid.
+          if (Number(status) >= 400) {
+            docblock = TSGenerator.addTagToDocblock(docblock, {
+              tagName: 'throws',
+              text: `FetchError<${status}, ${responseType}>${
+                responseDescription ? docblockEscape(wordWrap(` ${responseDescription}`)) : ''
+              }`,
+            });
+
+            return false;
+          }
+
           return `FetchResponse<${status}, ${responseType}>`;
         })
-        .join(' | ')}>`;
+        .filter(Boolean)
+        .join(' | ');
+
+      // If all of our documented responses are for error status codes then all we can document for
+      // anything else that might happen is `unknown`.
+      returnType = `Promise<${returnTypes.length ? returnTypes : 'FetchResponse<number, unknown>'}>`;
     }
 
+    const shouldAddAltTypedOverloads = Object.keys(parameters).length === 2 && hasOptionalBody && !hasOptionalMetadata;
     const operationIdAccessor = this.sdk.addMethod({
       name: operationId,
       returnType,
-      docs: Object.keys(docblock).length ? [docblock] : null,
+
+      // If we're going to be creating typed method overloads for optional body an metadata handling
+      // we should only add a docblock to the first overload we create because IDE Intellisense will
+      // always use that and adding a docblock to all three will bloat the SDK with unused and
+      // unsurfaced method documentation.
+      docs: shouldAddAltTypedOverloads ? null : Object.keys(docblock).length ? [docblock] : null,
       statements: writer => {
         /**
          * @example return this.core.fetch('/pet/findByStatus', 'get', body, metadata);
@@ -626,10 +690,6 @@ sdk.server('https://eu.api.example.com/v14');`)
     // If we have both body and metadata parameters but only body is optional we need to create
     // a couple function overloads as Typescript doesn't let us have an optional method parameter
     // come before one that's required.
-    //
-    // None of these accessor overloads will receive a docblock because the original will have
-    // that covered.
-    const shouldAddAltTypedOverloads = Object.keys(parameters).length === 2 && hasOptionalBody && !hasOptionalMetadata;
     if (shouldAddAltTypedOverloads) {
       // Create an overload that has both `body` and `metadata` parameters as required.
       operationIdAccessor.addOverload({
@@ -645,7 +705,6 @@ sdk.server('https://eu.api.example.com/v14');`)
       operationIdAccessor.addOverload({
         parameters: [{ ...parameters.metadata }],
         returnType,
-        docs: Object.keys(docblock).length ? [docblock] : null,
       });
 
       // Create an overload that has both `body` and `metadata` parameters as optional. Even though
@@ -807,7 +866,7 @@ sdk.server('https://eu.api.example.com/v14');`)
       .reduce((prev, next) => Object.assign(prev, next));
 
     const res = Object.entries(schemas)
-      .map(([status, { schema }]) => {
+      .map(([status, { description, schema }]) => {
         let typeName;
 
         if (typeof schema === 'string' && schema.startsWith('::convert::')) {
@@ -826,7 +885,10 @@ sdk.server('https://eu.api.example.com/v14');`)
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
           // `types.d.ts`.
-          [status]: `types.${typeName}`,
+          [status]: {
+            type: `types.${typeName}`,
+            description,
+          },
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {});
