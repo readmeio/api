@@ -116,10 +116,12 @@ fetch('https://api.apis.guru/v2/list.json')
     delete apis['rebilly.com'];
     delete apis['semantria.com'];
     delete apis['simplyrets.com'];
+    delete apis['spotify.com'];
     delete apis['staging-ecotaco.com'];
     delete apis['testfire.net:altoroj'];
     delete apis['tl-api.azurewebsites.net'];
     delete apis['turbinelabs.io'];
+    delete apis['twilio.com:twilio_numbers_v1'];
     delete apis['va.gov:confirmation'];
     delete apis['versioneye.com'];
     delete apis['vestorly.com'];

@@ -7450,11 +7450,6 @@
     "url": "https://api.apis.guru/v2/specs/sportsdata.io/soccer-v3-stats/1.0/openapi.json"
   },
   {
-    "name": "spotify.com",
-    "version": "1.0.0",
-    "url": "https://api.apis.guru/v2/specs/spotify.com/1.0.0/openapi.json"
-  },
-  {
     "name": "spotify.com:sonallux",
     "version": "2023.2.27",
     "url": "https://api.apis.guru/v2/specs/spotify.com/sonallux/2023.2.27/openapi.json"
@@ -7828,11 +7823,6 @@
     "name": "twilio.com:twilio_notify_v1",
     "version": "1.42.0",
     "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_notify_v1/1.42.0/openapi.json"
-  },
-  {
-    "name": "twilio.com:twilio_numbers_v1",
-    "version": "1.42.0",
-    "url": "https://api.apis.guru/v2/specs/twilio.com/twilio_numbers_v1/1.42.0/openapi.json"
   },
   {
     "name": "twilio.com:twilio_numbers_v2",
