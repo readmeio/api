@@ -26,7 +26,7 @@ export default function getJSONSchemaDefaults(jsonSchemas: SchemaWrapper[]) {
           parentPointer: string,
           parentKeyword: string,
           parentSchema: SchemaObject,
-          indexProperty: string
+          indexProperty: string,
         ) => {
           if (!pointer.startsWith('/properties/')) {
             return;
@@ -58,7 +58,7 @@ export default function getJSONSchemaDefaults(jsonSchemas: SchemaWrapper[]) {
               }
             }
           }
-        }
+        },
       );
 
       if (!Object.keys(defaults).length) {

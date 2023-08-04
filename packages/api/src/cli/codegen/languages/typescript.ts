@@ -23,7 +23,7 @@ import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationK
 import logger from '../../logger';
 import CodeGeneratorLanguage from '../language';
 
-import { docblockEscape, formatter, generateTypeName, wordWrap } from './typescript/util';
+import { docblockEscape, generateTypeName, wordWrap } from './typescript/util';
 
 export interface TSGeneratorOptions {
   compilerTarget?: 'cjs' | 'esm';
@@ -245,7 +245,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
             return {};
           }
 
-          let code = formatter(sourceFile.text);
+          let code = sourceFile.text;
           if (file === 'index.js' && this.compilerTarget === 'cjs') {
             /**
              * There's an annoying quirk with `ts-morph` where if we're exporting a default export
@@ -271,7 +271,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     return [
       ...this.project.getSourceFiles().map(sourceFile => ({
-        [sourceFile.getBaseName()]: formatter(sourceFile.getFullText()),
+        [sourceFile.getBaseName()]: sourceFile.getFullText(),
       })),
 
       // Because we're returning the raw source files for TS generation we also need to separately
@@ -281,7 +281,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         .emitToMemory({ emitOnlyDtsFiles: true })
         .getFiles()
         .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: formatter(sourceFile.text),
+          [path.basename(sourceFile.filePath)]: sourceFile.text,
         })),
     ].reduce((prev, next) => Object.assign(prev, next));
   }
@@ -340,7 +340,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
               {
                 tagName: 'param',
                 text: wordWrap(
-                  'config.timeout Override the default `fetch` request timeout of 30 seconds. This number should be represented in milliseconds.'
+                  'config.timeout Override the default `fetch` request timeout of 30 seconds. This number should be represented in milliseconds.',
                 ),
               },
             ],
@@ -370,7 +370,7 @@ sdk.auth('username', 'password');
 sdk.auth('myBearerToken');
 
 @example <caption>API Keys</caption>
-sdk.auth('myApiKey');`)
+sdk.auth('myApiKey');`),
               ),
             tags: [
               { tagName: 'see', text: '{@link https://spec.openapis.org/oas/v3.0.3#fixed-fields-22}' },
@@ -403,7 +403,7 @@ sdk.server('https://{region}.api.example.com/{basePath}', {
 });
 
 @example <caption>Fully qualified server URL</caption>
-sdk.server('https://eu.api.example.com/v14');`)
+sdk.server('https://eu.api.example.com/v14');`),
               ),
             tags: [
               { tagName: 'param', text: 'url Server URL' },
@@ -536,7 +536,7 @@ sdk.server('https://eu.api.example.com/v14');`)
     operation: Operation,
     operationId: string,
     paramTypes?: OperationTypeHousing['types']['params'],
-    responseTypes?: OperationTypeHousing['types']['responses']
+    responseTypes?: OperationTypeHousing['types']['responses'],
   ) {
     let docblock: OptionalKind<JSDocStructure> = {};
     const summary = operation.getSummary();
@@ -676,7 +676,7 @@ sdk.server('https://eu.api.example.com/v14');`)
             }
 
             fetchStmt.write(arg.name);
-            if (totalParams > 1 && i !== totalParams) {
+            if (i !== totalParams - 1) {
               fetchStmt.write(', ');
             }
           });

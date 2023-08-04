@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/petstore.json';
@@ -94,9 +94,7 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(
-    metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
+  findPetsByStatus(metadata: types.FindPetsByStatusMetadataParam): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 
@@ -106,9 +104,7 @@ class SDK {
    *
    * @summary Finds Pets by tags
    */
-  findPetsByTags(
-    metadata: types.FindPetsByTagsMetadataParam
-  ): Promise<FetchResponse<200, types.FindPetsByTagsResponse200>> {
+  findPetsByTags(metadata: types.FindPetsByTagsMetadataParam): Promise<FetchResponse<200, types.FindPetsByTagsResponse200>> {
     return this.core.fetch('/pet/findByTags', 'get', metadata);
   }
 
@@ -125,17 +121,9 @@ class SDK {
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm(
-    body: types.UpdatePetWithFormFormDataParam,
-    metadata: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(
-    metadata: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(
-    body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
-    metadata?: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updatePetWithForm(body: types.UpdatePetWithFormFormDataParam, metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam, metadata?: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
 
@@ -151,17 +139,9 @@ class SDK {
    * Uploads an image
    *
    */
-  uploadFile(
-    body: types.UploadFileBodyParam,
-    metadata: types.UploadFileMetadataParam
-  ): Promise<FetchResponse<200, types.ApiResponse>>;
-  uploadFile(
-    metadata: types.UploadFileMetadataParam
-  ): Promise<FetchResponse<200, types.ApiResponse>>;
-  uploadFile(
-    body?: types.UploadFileBodyParam | types.UploadFileMetadataParam,
-    metadata?: types.UploadFileMetadataParam
-  ): Promise<FetchResponse<200, types.ApiResponse>> {
+  uploadFile(body: types.UploadFileBodyParam, metadata: types.UploadFileMetadataParam): Promise<FetchResponse<200, types.ApiResponse>>;
+  uploadFile(metadata: types.UploadFileMetadataParam): Promise<FetchResponse<200, types.ApiResponse>>;
+  uploadFile(body?: types.UploadFileBodyParam | types.UploadFileMetadataParam, metadata?: types.UploadFileMetadataParam): Promise<FetchResponse<200, types.ApiResponse>> {
     return this.core.fetch('/pet/{petId}/uploadImage', 'post', body, metadata);
   }
 
@@ -188,9 +168,7 @@ class SDK {
    *
    * @summary Find purchase order by ID
    */
-  getOrderById(
-    metadata: types.GetOrderByIdMetadataParam
-  ): Promise<FetchResponse<200, types.Order>> {
+  getOrderById(metadata: types.GetOrderByIdMetadataParam): Promise<FetchResponse<200, types.Order>> {
     return this.core.fetch('/store/order/{orderId}', 'get', metadata);
   }
 
@@ -217,9 +195,7 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithArrayInput(
-    body: types.CreateUsersWithArrayInputBodyParam
-  ): Promise<FetchResponse<number, unknown>> {
+  createUsersWithArrayInput(body: types.CreateUsersWithArrayInputBodyParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/user/createWithArray', 'post', body);
   }
 
@@ -227,9 +203,7 @@ class SDK {
    * Creates list of users with given input array
    *
    */
-  createUsersWithListInput(
-    body: types.CreateUsersWithListInputBodyParam
-  ): Promise<FetchResponse<number, unknown>> {
+  createUsersWithListInput(body: types.CreateUsersWithListInputBodyParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/user/createWithList', 'post', body);
   }
 
@@ -237,9 +211,7 @@ class SDK {
    * Logs user into the system
    *
    */
-  loginUser(
-    metadata: types.LoginUserMetadataParam
-  ): Promise<FetchResponse<200, types.LoginUserResponse200>> {
+  loginUser(metadata: types.LoginUserMetadataParam): Promise<FetchResponse<200, types.LoginUserResponse200>> {
     return this.core.fetch('/user/login', 'get', metadata);
   }
 
@@ -255,9 +227,7 @@ class SDK {
    * Get user by user name
    *
    */
-  getUserByName(
-    metadata: types.GetUserByNameMetadataParam
-  ): Promise<FetchResponse<200, types.User>> {
+  getUserByName(metadata: types.GetUserByNameMetadataParam): Promise<FetchResponse<200, types.User>> {
     return this.core.fetch('/user/{username}', 'get', metadata);
   }
 
@@ -266,10 +236,7 @@ class SDK {
    *
    * @summary Updated user
    */
-  updateUser(
-    body: types.User,
-    metadata: types.UpdateUserMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateUser(body: types.User, metadata: types.UpdateUserMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/user/{username}', 'put', body, metadata);
   }
 
@@ -283,36 +250,9 @@ class SDK {
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
-export type {
-  ApiResponse,
-  Category,
-  CreateUsersWithArrayInputBodyParam,
-  CreateUsersWithListInputBodyParam,
-  DeleteOrderMetadataParam,
-  DeletePetMetadataParam,
-  DeleteUserMetadataParam,
-  FindPetsByStatusMetadataParam,
-  FindPetsByStatusResponse200,
-  FindPetsByTagsMetadataParam,
-  FindPetsByTagsResponse200,
-  GetInventoryResponse200,
-  GetOrderByIdMetadataParam,
-  GetPetByIdMetadataParam,
-  GetUserByNameMetadataParam,
-  LoginUserMetadataParam,
-  LoginUserResponse200,
-  Order,
-  Pet,
-  Tag,
-  UpdatePetWithFormFormDataParam,
-  UpdatePetWithFormMetadataParam,
-  UpdateUserMetadataParam,
-  UploadFileBodyParam,
-  UploadFileMetadataParam,
-  User,
-} from './types';
+export type { ApiResponse, Category, CreateUsersWithArrayInputBodyParam, CreateUsersWithListInputBodyParam, DeleteOrderMetadataParam, DeletePetMetadataParam, DeleteUserMetadataParam, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, FindPetsByTagsMetadataParam, FindPetsByTagsResponse200, GetInventoryResponse200, GetOrderByIdMetadataParam, GetPetByIdMetadataParam, GetUserByNameMetadataParam, LoginUserMetadataParam, LoginUserResponse200, Order, Pet, Tag, UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam, UpdateUserMetadataParam, UploadFileBodyParam, UploadFileMetadataParam, User } from './types';

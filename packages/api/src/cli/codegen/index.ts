@@ -9,7 +9,7 @@ export default function codegen(
   language: SupportedLanguages,
   spec: Oas,
   specPath: string,
-  identifier: string
+  identifier: string,
 ): CodeGeneratorLanguage {
   switch (language) {
     case 'js':

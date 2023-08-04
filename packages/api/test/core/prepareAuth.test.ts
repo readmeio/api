@@ -179,7 +179,7 @@ describe('#prepareAuth()', () => {
         expect(() => {
           prepareAuth(authKeys, operation);
         }).toThrow(
-          "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support."
+          "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support.",
         );
       });
 

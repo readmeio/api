@@ -63,9 +63,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "foo"
-                ]
+                "required": ["foo"]
               }
             }
           }

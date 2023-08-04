@@ -132,7 +132,7 @@ export default class APICore {
               parsed.status,
               parsed.data,
               parsed.headers,
-              parsed.res
+              parsed.res,
             );
           }
 

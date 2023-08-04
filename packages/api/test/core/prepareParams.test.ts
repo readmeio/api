@@ -29,7 +29,7 @@ describe('#prepareParams', () => {
     const operation = spec.operation('/apiKey', 'get');
 
     await expect(prepareParams(operation, {}, {})).rejects.toThrow(
-      "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
+      "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using.",
     );
   });
 
@@ -225,7 +225,7 @@ describe('#prepareParams', () => {
       };
 
       await expect(prepareParams(operation, body)).rejects.toThrow(
-        'The data supplied for the `documentFile` request body parameter is not a file handler that we support.'
+        'The data supplied for the `documentFile` request body parameter is not a file handler that we support.',
       );
     });
 

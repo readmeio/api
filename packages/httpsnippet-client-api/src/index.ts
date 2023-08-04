@@ -107,7 +107,7 @@ const client: Client<APIOptions> = {
     const foundOperation = oas.findOperation(url, method);
     if (!foundOperation) {
       throw new Error(
-        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${url}`
+        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${url}`,
       );
     }
 

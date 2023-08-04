@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/alby.json';
@@ -81,9 +81,7 @@ class SDK {
    * @throws FetchError<404, types.Error> Account not found
    * @throws FetchError<500, types.Error> Internal server error
    */
-  getAccountsAccount_idApps(
-    metadata: types.GetAccountsAccountIdAppsMetadataParam
-  ): Promise<FetchResponse<200, types.GetAccountsAccountIdAppsResponse200>> {
+  getAccountsAccount_idApps(metadata: types.GetAccountsAccountIdAppsMetadataParam): Promise<FetchResponse<200, types.GetAccountsAccountIdAppsResponse200>> {
     return this.core.fetch('/accounts/{account_id}/apps', 'get', metadata);
   }
 
@@ -97,10 +95,7 @@ class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAccountsAccount_idApps(
-    body: types.AppPost,
-    metadata: types.PostAccountsAccountIdAppsMetadataParam
-  ): Promise<FetchResponse<201, types.AppResponse>> {
+  postAccountsAccount_idApps(body: types.AppPost, metadata: types.PostAccountsAccountIdAppsMetadataParam): Promise<FetchResponse<201, types.AppResponse>> {
     return this.core.fetch('/accounts/{account_id}/apps', 'post', body, metadata);
   }
 
@@ -113,9 +108,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  getAppsApp_idKeys(
-    metadata: types.GetAppsAppIdKeysMetadataParam
-  ): Promise<FetchResponse<200, types.GetAppsAppIdKeysResponse200>> {
+  getAppsApp_idKeys(metadata: types.GetAppsAppIdKeysMetadataParam): Promise<FetchResponse<200, types.GetAppsAppIdKeysResponse200>> {
     return this.core.fetch('/apps/{app_id}/keys', 'get', metadata);
   }
 
@@ -129,10 +122,7 @@ class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idKeys(
-    body: types.KeyPost,
-    metadata: types.PostAppsAppIdKeysMetadataParam
-  ): Promise<FetchResponse<201, types.KeyResponse>> {
+  postAppsApp_idKeys(body: types.KeyPost, metadata: types.PostAppsAppIdKeysMetadataParam): Promise<FetchResponse<201, types.KeyResponse>> {
     return this.core.fetch('/apps/{app_id}/keys', 'post', body, metadata);
   }
 
@@ -148,17 +138,9 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idKeysKey_id(
-    body: types.KeyPatch,
-    metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam
-  ): Promise<FetchResponse<200, types.KeyResponse>>;
-  patchAppsApp_idKeysKey_id(
-    metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam
-  ): Promise<FetchResponse<200, types.KeyResponse>>;
-  patchAppsApp_idKeysKey_id(
-    body?: types.KeyPatch | types.PatchAppsAppIdKeysKeyIdMetadataParam,
-    metadata?: types.PatchAppsAppIdKeysKeyIdMetadataParam
-  ): Promise<FetchResponse<200, types.KeyResponse>> {
+  patchAppsApp_idKeysKey_id(body: types.KeyPatch, metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>>;
+  patchAppsApp_idKeysKey_id(metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>>;
+  patchAppsApp_idKeysKey_id(body?: types.KeyPatch | types.PatchAppsAppIdKeysKeyIdMetadataParam, metadata?: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>> {
     return this.core.fetch('/apps/{app_id}/keys/{key_id}', 'patch', body, metadata);
   }
 
@@ -172,9 +154,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  postAppsApp_idKeysKey_idRevoke(
-    metadata: types.PostAppsAppIdKeysKeyIdRevokeMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  postAppsApp_idKeysKey_idRevoke(metadata: types.PostAppsAppIdKeysKeyIdRevokeMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/apps/{app_id}/keys/{key_id}/revoke', 'post', metadata);
   }
 
@@ -187,9 +167,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  getAppsApp_idNamespaces(
-    metadata: types.GetAppsAppIdNamespacesMetadataParam
-  ): Promise<FetchResponse<200, types.GetAppsAppIdNamespacesResponse200>> {
+  getAppsApp_idNamespaces(metadata: types.GetAppsAppIdNamespacesMetadataParam): Promise<FetchResponse<200, types.GetAppsAppIdNamespacesResponse200>> {
     return this.core.fetch('/apps/{app_id}/namespaces', 'get', metadata);
   }
 
@@ -203,10 +181,7 @@ class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idNamespaces(
-    body: types.NamespacePost,
-    metadata: types.PostAppsAppIdNamespacesMetadataParam
-  ): Promise<FetchResponse<201, types.NamespaceResponse>> {
+  postAppsApp_idNamespaces(body: types.NamespacePost, metadata: types.PostAppsAppIdNamespacesMetadataParam): Promise<FetchResponse<201, types.NamespaceResponse>> {
     return this.core.fetch('/apps/{app_id}/namespaces', 'post', body, metadata);
   }
 
@@ -219,9 +194,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  deleteAppsApp_idNamespacesNamespace_id(
-    metadata: types.DeleteAppsAppIdNamespacesNamespaceIdMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteAppsApp_idNamespacesNamespace_id(metadata: types.DeleteAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/apps/{app_id}/namespaces/{namespace_id}', 'delete', metadata);
   }
 
@@ -236,17 +209,9 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idNamespacesNamespace_id(
-    body: types.NamespacePatch,
-    metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam
-  ): Promise<FetchResponse<200, types.NamespaceResponse>>;
-  patchAppsApp_idNamespacesNamespace_id(
-    metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam
-  ): Promise<FetchResponse<200, types.NamespaceResponse>>;
-  patchAppsApp_idNamespacesNamespace_id(
-    body?: types.NamespacePatch | types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam,
-    metadata?: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam
-  ): Promise<FetchResponse<200, types.NamespaceResponse>> {
+  patchAppsApp_idNamespacesNamespace_id(body: types.NamespacePatch, metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>>;
+  patchAppsApp_idNamespacesNamespace_id(metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>>;
+  patchAppsApp_idNamespacesNamespace_id(body?: types.NamespacePatch | types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam, metadata?: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>> {
     return this.core.fetch('/apps/{app_id}/namespaces/{namespace_id}', 'patch', body, metadata);
   }
 
@@ -260,9 +225,7 @@ class SDK {
    * @throws FetchError<503, types.Error> 503 Service unavailable
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  getAppsApp_idQueues(
-    metadata: types.GetAppsAppIdQueuesMetadataParam
-  ): Promise<FetchResponse<200, types.GetAppsAppIdQueuesResponse200>> {
+  getAppsApp_idQueues(metadata: types.GetAppsAppIdQueuesMetadataParam): Promise<FetchResponse<200, types.GetAppsAppIdQueuesResponse200>> {
     return this.core.fetch('/apps/{app_id}/queues', 'get', metadata);
   }
 
@@ -277,10 +240,7 @@ class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idQueues(
-    body: types.Queue,
-    metadata: types.PostAppsAppIdQueuesMetadataParam
-  ): Promise<FetchResponse<201, types.QueueResponse>> {
+  postAppsApp_idQueues(body: types.Queue, metadata: types.PostAppsAppIdQueuesMetadataParam): Promise<FetchResponse<201, types.QueueResponse>> {
     return this.core.fetch('/apps/{app_id}/queues', 'post', body, metadata);
   }
 
@@ -295,9 +255,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<503, types.Error> 503 Service unavailable
    */
-  deleteAppsApp_idQueuesQueue_id(
-    metadata: types.DeleteAppsAppIdQueuesQueueIdMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteAppsApp_idQueuesQueue_id(metadata: types.DeleteAppsAppIdQueuesQueueIdMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/apps/{app_id}/queues/{queue_id}', 'delete', metadata);
   }
 
@@ -310,9 +268,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  getAppsApp_idRules(
-    metadata: types.GetAppsAppIdRulesMetadataParam
-  ): Promise<FetchResponse<200, types.GetAppsAppIdRulesResponse200>> {
+  getAppsApp_idRules(metadata: types.GetAppsAppIdRulesMetadataParam): Promise<FetchResponse<200, types.GetAppsAppIdRulesResponse200>> {
     return this.core.fetch('/apps/{app_id}/rules', 'get', metadata);
   }
 
@@ -327,17 +283,9 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  postAppsApp_idRules(
-    body: types.RulePost,
-    metadata: types.PostAppsAppIdRulesMetadataParam
-  ): Promise<FetchResponse<201, types.RuleResponse>>;
-  postAppsApp_idRules(
-    metadata: types.PostAppsAppIdRulesMetadataParam
-  ): Promise<FetchResponse<201, types.RuleResponse>>;
-  postAppsApp_idRules(
-    body?: types.RulePost | types.PostAppsAppIdRulesMetadataParam,
-    metadata?: types.PostAppsAppIdRulesMetadataParam
-  ): Promise<FetchResponse<201, types.RuleResponse>> {
+  postAppsApp_idRules(body: types.RulePost, metadata: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>>;
+  postAppsApp_idRules(metadata: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>>;
+  postAppsApp_idRules(body?: types.RulePost | types.PostAppsAppIdRulesMetadataParam, metadata?: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>> {
     return this.core.fetch('/apps/{app_id}/rules', 'post', body, metadata);
   }
 
@@ -349,9 +297,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  deleteAppsApp_idRulesRule_id(
-    metadata: types.DeleteAppsAppIdRulesRuleIdMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteAppsApp_idRulesRule_id(metadata: types.DeleteAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/apps/{app_id}/rules/{rule_id}', 'delete', metadata);
   }
 
@@ -365,9 +311,7 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  getAppsApp_idRulesRule_id(
-    metadata: types.GetAppsAppIdRulesRuleIdMetadataParam
-  ): Promise<FetchResponse<200, types.RuleResponse>> {
+  getAppsApp_idRulesRule_id(metadata: types.GetAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>> {
     return this.core.fetch('/apps/{app_id}/rules/{rule_id}', 'get', metadata);
   }
 
@@ -381,17 +325,9 @@ class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idRulesRule_id(
-    body: types.RulePatch,
-    metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam
-  ): Promise<FetchResponse<200, types.RuleResponse>>;
-  patchAppsApp_idRulesRule_id(
-    metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam
-  ): Promise<FetchResponse<200, types.RuleResponse>>;
-  patchAppsApp_idRulesRule_id(
-    body?: types.RulePatch | types.PatchAppsAppIdRulesRuleIdMetadataParam,
-    metadata?: types.PatchAppsAppIdRulesRuleIdMetadataParam
-  ): Promise<FetchResponse<200, types.RuleResponse>> {
+  patchAppsApp_idRulesRule_id(body: types.RulePatch, metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>>;
+  patchAppsApp_idRulesRule_id(metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>>;
+  patchAppsApp_idRulesRule_id(body?: types.RulePatch | types.PatchAppsAppIdRulesRuleIdMetadataParam, metadata?: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>> {
     return this.core.fetch('/apps/{app_id}/rules/{rule_id}', 'patch', body, metadata);
   }
 
@@ -417,17 +353,9 @@ class SDK {
    * @throws FetchError<404, types.Error> App not found
    * @throws FetchError<500, types.Error> Internal server error
    */
-  patchAppsId(
-    body: types.AppPatch,
-    metadata: types.PatchAppsIdMetadataParam
-  ): Promise<FetchResponse<200, types.AppResponse>>;
-  patchAppsId(
-    metadata: types.PatchAppsIdMetadataParam
-  ): Promise<FetchResponse<200, types.AppResponse>>;
-  patchAppsId(
-    body?: types.AppPatch | types.PatchAppsIdMetadataParam,
-    metadata?: types.PatchAppsIdMetadataParam
-  ): Promise<FetchResponse<200, types.AppResponse>> {
+  patchAppsId(body: types.AppPatch, metadata: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>>;
+  patchAppsId(metadata: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>>;
+  patchAppsId(body?: types.AppPatch | types.PatchAppsIdMetadataParam, metadata?: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
     return this.core.fetch('/apps/{id}', 'patch', body, metadata);
   }
 
@@ -440,10 +368,7 @@ class SDK {
    * @throws FetchError<404, types.Error> App not found
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsIdPkcs12(
-    body: types.AppPkcs12,
-    metadata: types.PostAppsIdPkcs12MetadataParam
-  ): Promise<FetchResponse<200, types.AppResponse>> {
+  postAppsIdPkcs12(body: types.AppPkcs12, metadata: types.PostAppsIdPkcs12MetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
     return this.core.fetch('/apps/{id}/pkcs12', 'post', body, metadata);
   }
 
@@ -458,93 +383,9 @@ class SDK {
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
-export type {
-  AmqpExternalRulePatch,
-  AmqpExternalRulePost,
-  AmqpExternalRuleResponse,
-  AmqpRulePatch,
-  AmqpRulePost,
-  AmqpRuleResponse,
-  AppPatch,
-  AppPkcs12,
-  AppPost,
-  AppResponse,
-  AwsAccessKeys,
-  AwsAccessKeysResponse,
-  AwsAssumeRole,
-  AwsKinesisRulePatch,
-  AwsKinesisRulePost,
-  AwsKinesisRuleResponse,
-  AwsLambdaRulePatch,
-  AwsLambdaRulePost,
-  AwsLambdaRuleResponse,
-  AwsSqsRulePatch,
-  AwsSqsRulePost,
-  AwsSqsRuleResponse,
-  AzureFunctionRulePatch,
-  AzureFunctionRulePost,
-  AzureFunctionRuleResponse,
-  CloudflareWorkerRulePatch,
-  CloudflareWorkerRulePost,
-  CloudflareWorkerRuleResponse,
-  DeleteAppsAppIdNamespacesNamespaceIdMetadataParam,
-  DeleteAppsAppIdQueuesQueueIdMetadataParam,
-  DeleteAppsAppIdRulesRuleIdMetadataParam,
-  DeleteAppsIdMetadataParam,
-  Error,
-  GetAccountsAccountIdAppsMetadataParam,
-  GetAccountsAccountIdAppsResponse200,
-  GetAppsAppIdKeysMetadataParam,
-  GetAppsAppIdKeysResponse200,
-  GetAppsAppIdNamespacesMetadataParam,
-  GetAppsAppIdNamespacesResponse200,
-  GetAppsAppIdQueuesMetadataParam,
-  GetAppsAppIdQueuesResponse200,
-  GetAppsAppIdRulesMetadataParam,
-  GetAppsAppIdRulesResponse200,
-  GetAppsAppIdRulesRuleIdMetadataParam,
-  GoogleCloudFunctionRulePatch,
-  GoogleCloudFunctionRulePost,
-  GoogleCloudFunctionRuleResponse,
-  HttpRulePatch,
-  HttpRulePost,
-  HttpRuleResponse,
-  IftttRulePatch,
-  IftttRulePost,
-  IftttRuleResponse,
-  KeyPatch,
-  KeyPost,
-  KeyResponse,
-  Me,
-  NamespacePatch,
-  NamespacePost,
-  NamespaceResponse,
-  PatchAppsAppIdKeysKeyIdMetadataParam,
-  PatchAppsAppIdNamespacesNamespaceIdMetadataParam,
-  PatchAppsAppIdRulesRuleIdMetadataParam,
-  PatchAppsIdMetadataParam,
-  PostAccountsAccountIdAppsMetadataParam,
-  PostAppsAppIdKeysKeyIdRevokeMetadataParam,
-  PostAppsAppIdKeysMetadataParam,
-  PostAppsAppIdNamespacesMetadataParam,
-  PostAppsAppIdQueuesMetadataParam,
-  PostAppsAppIdRulesMetadataParam,
-  PostAppsIdPkcs12MetadataParam,
-  Queue,
-  QueueResponse,
-  RuleAttributes,
-  RulePatch,
-  RulePost,
-  RuleResponse,
-  RuleSource,
-  RuleSourcePatch,
-  UnsupportedRuleResponse,
-  ZapierRulePatch,
-  ZapierRulePost,
-  ZapierRuleResponse,
-} from './types';
+export type { AmqpExternalRulePatch, AmqpExternalRulePost, AmqpExternalRuleResponse, AmqpRulePatch, AmqpRulePost, AmqpRuleResponse, AppPatch, AppPkcs12, AppPost, AppResponse, AwsAccessKeys, AwsAccessKeysResponse, AwsAssumeRole, AwsKinesisRulePatch, AwsKinesisRulePost, AwsKinesisRuleResponse, AwsLambdaRulePatch, AwsLambdaRulePost, AwsLambdaRuleResponse, AwsSqsRulePatch, AwsSqsRulePost, AwsSqsRuleResponse, AzureFunctionRulePatch, AzureFunctionRulePost, AzureFunctionRuleResponse, CloudflareWorkerRulePatch, CloudflareWorkerRulePost, CloudflareWorkerRuleResponse, DeleteAppsAppIdNamespacesNamespaceIdMetadataParam, DeleteAppsAppIdQueuesQueueIdMetadataParam, DeleteAppsAppIdRulesRuleIdMetadataParam, DeleteAppsIdMetadataParam, Error, GetAccountsAccountIdAppsMetadataParam, GetAccountsAccountIdAppsResponse200, GetAppsAppIdKeysMetadataParam, GetAppsAppIdKeysResponse200, GetAppsAppIdNamespacesMetadataParam, GetAppsAppIdNamespacesResponse200, GetAppsAppIdQueuesMetadataParam, GetAppsAppIdQueuesResponse200, GetAppsAppIdRulesMetadataParam, GetAppsAppIdRulesResponse200, GetAppsAppIdRulesRuleIdMetadataParam, GoogleCloudFunctionRulePatch, GoogleCloudFunctionRulePost, GoogleCloudFunctionRuleResponse, HttpRulePatch, HttpRulePost, HttpRuleResponse, IftttRulePatch, IftttRulePost, IftttRuleResponse, KeyPatch, KeyPost, KeyResponse, Me, NamespacePatch, NamespacePost, NamespaceResponse, PatchAppsAppIdKeysKeyIdMetadataParam, PatchAppsAppIdNamespacesNamespaceIdMetadataParam, PatchAppsAppIdRulesRuleIdMetadataParam, PatchAppsIdMetadataParam, PostAccountsAccountIdAppsMetadataParam, PostAppsAppIdKeysKeyIdRevokeMetadataParam, PostAppsAppIdKeysMetadataParam, PostAppsAppIdNamespacesMetadataParam, PostAppsAppIdQueuesMetadataParam, PostAppsAppIdRulesMetadataParam, PostAppsIdPkcs12MetadataParam, Queue, QueueResponse, RuleAttributes, RulePatch, RulePost, RuleResponse, RuleSource, RuleSourcePatch, UnsupportedRuleResponse, ZapierRulePatch, ZapierRulePost, ZapierRuleResponse } from './types';

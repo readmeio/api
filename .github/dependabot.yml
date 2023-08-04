@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly
     reviewers:
@@ -13,7 +13,7 @@ updates:
       prefix-development: chore(deps-dev)
 
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly
     open-pull-requests-limit: 10
@@ -29,25 +29,25 @@ updates:
       # ESM-only packages and we can't yet upgrade them.
       - dependency-name: chalk
         versions:
-          - ">= 5"
+          - '>= 5'
       - dependency-name: execa
         versions:
-          - ">= 6"
+          - '>= 6'
       - dependency-name: figures
         versions:
-          - ">= 4"
+          - '>= 4'
       - dependency-name: find-cache-dir
         versions:
-          - ">= 4"
+          - '>= 4'
       - dependency-name: form-data-encoder
         versions:
-          - ">= 2"
+          - '>= 2'
       - dependency-name: formdata-node
         versions:
-          - ">= 5"
+          - '>= 5'
       - dependency-name: ora
         versions:
-          - ">= 6"
+          - '>= 6'
       - dependency-name: stringify-object
         versions:
-          - ">= 4"
+          - '>= 4'

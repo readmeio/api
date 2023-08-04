@@ -9,7 +9,7 @@ import prompts from 'prompts';
  */
 export default async function promptTerminal<T extends string = string>(
   question: prompts.PromptObject<T>,
-  options?: prompts.Options
+  options?: prompts.Options,
 ) {
   const enableTerminalCursor = () => {
     process.stdout.write('\x1B[?25h');

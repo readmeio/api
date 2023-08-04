@@ -49,7 +49,7 @@ export default abstract class CodeGeneratorLanguage {
      */
     if (JSON.stringify(spec.api).includes('"$ref":"#/')) {
       throw new Error(
-        'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+        'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.',
       );
     }
   }

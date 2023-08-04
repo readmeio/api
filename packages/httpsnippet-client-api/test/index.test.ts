@@ -143,7 +143,7 @@ describe('httpsnippet-client-api', () => {
           // eslint-disable-next-line jest/no-if
           if (!mock.fetch.req || !mock.fetch.res) {
             throw new Error(
-              `The mock definition for ${snippet} must include required \`req\` and \`res\` expectations.`
+              `The mock definition for ${snippet} must include required \`req\` and \`res\` expectations.`,
             );
           }
 

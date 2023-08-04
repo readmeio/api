@@ -39,7 +39,7 @@ describe('#auth()', () => {
             url: 'https://httpbin.org/anything/apiKey',
             query: { apiKey },
           },
-          mockResponses.searchParams
+          mockResponses.searchParams,
         );
 
         sdk.auth(apiKey);
@@ -144,7 +144,7 @@ describe('#auth()', () => {
       () => {
         endpointCall();
         return {};
-      }
+      },
     );
 
     sdk.auth(apiKey);
@@ -163,7 +163,7 @@ describe('#auth()', () => {
         url: 'https://httpbin.org/anything/apiKey',
         query: { apiKey: apiKey1 },
       },
-      mockResponses.searchParams
+      mockResponses.searchParams,
     );
 
     fetchMock.get(
@@ -172,7 +172,7 @@ describe('#auth()', () => {
         url: 'https://httpbin.org/anything/apiKey',
         query: { apiKey: apiKey2 },
       },
-      mockResponses.searchParams
+      mockResponses.searchParams,
     );
 
     sdk.auth(apiKey1);

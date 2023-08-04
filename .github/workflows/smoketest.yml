@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: "chunk #${{ matrix.chunk }}"
+    name: 'chunk #${{ matrix.chunk }}'
     runs-on: ubuntu-latest
     strategy:
       matrix:

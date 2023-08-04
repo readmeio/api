@@ -34,7 +34,7 @@ const args: { chunk?: string; chunks?: string; random?: boolean } = Object.fromE
        */
       const [arg, val] = a.split('=');
       return [arg.slice(2), !val ? true : parseInt(val, 10)];
-    })
+    }),
 );
 
 let dataset;

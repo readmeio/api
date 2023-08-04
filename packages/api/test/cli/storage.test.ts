@@ -36,7 +36,7 @@ describe('storage', () => {
   describe('#generateIntegrityHash', () => {
     it('should generate an integrity hash for an API definition', () => {
       expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).toBe(
-        'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg=='
+        'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
       );
     });
   });
@@ -145,7 +145,7 @@ describe('storage', () => {
 
     it('should throw an error if neither a url or file are detected', async () => {
       await expect(new Storage('/this/is/not/a/real/path.json', 'nonexistent-path').load()).rejects.toThrow(
-        /supply a URL or a path on your filesystem/
+        /supply a URL or a path on your filesystem/,
       );
     });
 
@@ -217,7 +217,7 @@ describe('storage', () => {
           .catch(err => {
             expect(err.message).toContain('n6kvf10vakpemvplx');
             expect(err.message).toMatch(
-              /Sorry, we were unable to load an API definition from (.*). Please either supply a URL or a path on your filesystem/
+              /Sorry, we were unable to load an API definition from (.*). Please either supply a URL or a path on your filesystem/,
             );
           });
       });
@@ -250,7 +250,7 @@ describe('storage', () => {
         fetchMock.get('http://example.com/unknown.json', { status: 404 });
 
         await expect(new Storage('http://example.com/unknown.json', '404ing-url').load()).rejects.toThrow(
-          'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found'
+          'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found',
         );
       });
 
@@ -340,13 +340,13 @@ describe('storage', () => {
   describe('#save()', () => {
     it('should error if definition is a swagger file', async () => {
       await expect(
-        new Storage(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'petstore').load()
+        new Storage(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'petstore').load(),
       ).rejects.toThrow('Sorry, this module only supports OpenAPI definitions.');
     });
 
     it('should error if definition is not a valid openapi file', async () => {
       await expect(new Storage(require.resolve('../../package.json'), 'invalid').load()).rejects.toThrow(
-        "Sorry, that doesn't look like a valid OpenAPI definition."
+        "Sorry, that doesn't look like a valid OpenAPI definition.",
       );
     });
 

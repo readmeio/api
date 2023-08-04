@@ -42,13 +42,13 @@ describe('cache', () => {
     describe('ReadMe registry UUID', () => {
       it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', () => {
         expect(new Cache('@petstore/v1.0#n6kvf10vakpemvplx').uri).toBe(
-          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
+          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx',
         );
       });
 
       it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', () => {
         expect(new Cache('@petstore#n6kvf10vakpemvplx').uri).toBe(
-          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
+          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx',
         );
       });
 
@@ -107,7 +107,7 @@ describe('cache', () => {
         fetchMock.get('https://example.com/unknown.json', { status: 404 });
 
         await expect(new Cache('https://example.com/unknown.json').load()).rejects.toThrow(
-          'Unable to retrieve URL (https://example.com/unknown.json). Reason: Not Found'
+          'Unable to retrieve URL (https://example.com/unknown.json). Reason: Not Found',
         );
 
         fetchMock.restore();
@@ -173,13 +173,13 @@ describe('cache', () => {
   describe('#save()', () => {
     it('should error if definition is a swagger file', async () => {
       await expect(new Cache(require.resolve('@readme/oas-examples/2.0/json/petstore.json')).load()).rejects.toThrow(
-        'Sorry, this module only supports OpenAPI definitions.'
+        'Sorry, this module only supports OpenAPI definitions.',
       );
     });
 
     it('should error if definition is not a valid openapi file', async () => {
       await expect(new Cache(require.resolve('../package.json')).load()).rejects.toThrow(
-        "Sorry, that doesn't look like a valid OpenAPI definition."
+        "Sorry, that doesn't look like a valid OpenAPI definition.",
       );
     });
 

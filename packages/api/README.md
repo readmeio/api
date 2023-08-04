@@ -40,7 +40,7 @@ Or you can use it dynamically (though you won't have fancy TypeScript types to h
 
 ```js
 const petstore = require('api')(
-  'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json'
+  'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json',
 );
 
 petstore.listPets().then(({ data }) => {

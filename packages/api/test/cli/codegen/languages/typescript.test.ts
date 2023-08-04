@@ -59,7 +59,7 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
             })
             .catch(reject);
         });
-      })
+      }),
     );
 
     // Make sure that we can load the SDK without any TS compilation errors.
@@ -121,12 +121,12 @@ describe('typescript', () => {
   describe('#generator', () => {
     it(
       'should generate typescript (by default)',
-      assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts')
+      assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts'),
     );
 
     it(
       'should be able to generate valid TS when a body is optional but metadata isnt',
-      assertSDKFixture('../../../__fixtures__/definitions/optional-payload.json', 'optional-payload')
+      assertSDKFixture('../../../__fixtures__/definitions/optional-payload.json', 'optional-payload'),
     );
 
     it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
@@ -136,25 +136,25 @@ describe('typescript', () => {
     // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
-      assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks')
+      assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks'),
     );
 
     it(
       'should handle `title` props that start with a number',
-      assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks')
+      assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks'),
     );
 
     it.todo('should handle a operations with a `default` response');
 
     it(
       'should handle an api that has discriminators and no operation ids',
-      assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby')
+      assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby'),
     );
 
     describe('javascript generation', () => {
       it(
         'should generate a CommonJS library',
-        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-cjs', { outputJS: true })
+        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-cjs', { outputJS: true }),
       );
 
       it(
@@ -162,7 +162,7 @@ describe('typescript', () => {
         assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-esm', {
           outputJS: true,
           compilerTarget: 'esm',
-        })
+        }),
       );
     });
 
@@ -235,7 +235,7 @@ describe('typescript', () => {
 
         const ts = new TSGenerator(oas, 'no-paths', './no-paths.json');
         await expect(ts.generator()).rejects.toThrow(
-          'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.'
+          'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.',
         );
       });
 
@@ -246,7 +246,7 @@ describe('typescript', () => {
         expect(() => {
           return new TSGenerator(oas, 'circular', './circular.json');
         }).toThrow(
-          'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.'
+          'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.',
         );
       });
     });
