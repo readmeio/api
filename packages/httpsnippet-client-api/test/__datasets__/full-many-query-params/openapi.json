@@ -72,12 +72,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "foo",
-                  "foo2",
-                  "foo3",
-                  "foo4"
-                ]
+                "required": ["foo", "foo2", "foo3", "foo4"]
               }
             }
           }

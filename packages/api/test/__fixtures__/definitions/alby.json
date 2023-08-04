@@ -12,9 +12,7 @@
     "description": "Use the Control API to manage your applications, namespaces, keys, queues, rules, and more.\n\nDetailed information on using this API can be found in the Ably <a href=\"https://ably.com/documentation/control-api\">developer documentation</a>.\n\nControl API is currently in Beta.\n",
     "title": "Control API v1",
     "version": "1.0.14",
-    "x-apisguru-categories": [
-      "cloud"
-    ],
+    "x-apisguru-categories": ["cloud"],
     "x-logo": {
       "url": "https://api.apis.guru/v2/cache/logo/https_twitter.com_ablyrealtime_profile_image"
     },
@@ -94,9 +92,7 @@
           }
         ],
         "summary": "Lists apps",
-        "tags": [
-          "apps"
-        ]
+        "tags": ["apps"]
       },
       "post": {
         "description": "Creates an application with the specified properties.",
@@ -188,9 +184,7 @@
           }
         ],
         "summary": "Creates an app",
-        "tags": [
-          "apps"
-        ]
+        "tags": ["apps"]
       }
     },
     "/apps/{app_id}/keys": {
@@ -268,9 +262,7 @@
           }
         ],
         "summary": "Lists app keys",
-        "tags": [
-          "keys"
-        ]
+        "tags": ["keys"]
       },
       "post": {
         "description": "Creates an API key for the application specified.",
@@ -362,9 +354,7 @@
           }
         ],
         "summary": "Creates a key",
-        "tags": [
-          "keys"
-        ]
+        "tags": ["keys"]
       }
     },
     "/apps/{app_id}/keys/{key_id}": {
@@ -477,9 +467,7 @@
           }
         ],
         "summary": "Updates a key",
-        "tags": [
-          "keys"
-        ]
+        "tags": ["keys"]
       }
     },
     "/apps/{app_id}/keys/{key_id}/revoke": {
@@ -557,9 +545,7 @@
           }
         ],
         "summary": "Revokes a key",
-        "tags": [
-          "keys"
-        ]
+        "tags": ["keys"]
       }
     },
     "/apps/{app_id}/namespaces": {
@@ -637,9 +623,7 @@
           }
         ],
         "summary": "Lists namespaces",
-        "tags": [
-          "namespaces"
-        ]
+        "tags": ["namespaces"]
       },
       "post": {
         "description": "Creates a namespace for the specified application ID.",
@@ -731,9 +715,7 @@
           }
         ],
         "summary": "Creates a namespace",
-        "tags": [
-          "namespaces"
-        ]
+        "tags": ["namespaces"]
       }
     },
     "/apps/{app_id}/namespaces/{namespace_id}": {
@@ -811,9 +793,7 @@
           }
         ],
         "summary": "Deletes a namespace",
-        "tags": [
-          "namespaces"
-        ]
+        "tags": ["namespaces"]
       },
       "patch": {
         "description": "Updates the namespace with the specified ID, for the application with the specified application ID.",
@@ -914,9 +894,7 @@
           }
         ],
         "summary": "Updates a namespace",
-        "tags": [
-          "namespaces"
-        ]
+        "tags": ["namespaces"]
       }
     },
     "/apps/{app_id}/queues": {
@@ -1004,9 +982,7 @@
           }
         ],
         "summary": "Lists queues",
-        "tags": [
-          "queues"
-        ]
+        "tags": ["queues"]
       },
       "post": {
         "description": "Creates a queue for the application specified by application ID. The properties for the queue to be created are specified in the request body.",
@@ -1098,9 +1074,7 @@
           }
         ],
         "summary": "Creates a queue",
-        "tags": [
-          "queues"
-        ]
+        "tags": ["queues"]
       }
     },
     "/apps/{app_id}/queues/{queue_id}": {
@@ -1188,9 +1162,7 @@
           }
         ],
         "summary": "Deletes a queue",
-        "tags": [
-          "queues"
-        ]
+        "tags": ["queues"]
       }
     },
     "/apps/{app_id}/rules": {
@@ -1268,9 +1240,7 @@
           }
         ],
         "summary": "Lists Reactor rules",
-        "tags": [
-          "rules"
-        ]
+        "tags": ["rules"]
       },
       "post": {
         "description": "Creates a rule for the application with the specified application ID.",
@@ -1373,9 +1343,7 @@
           }
         ],
         "summary": "Creates a Reactor rule",
-        "tags": [
-          "rules"
-        ]
+        "tags": ["rules"]
       }
     },
     "/apps/{app_id}/rules/{rule_id}": {
@@ -1452,9 +1420,7 @@
           }
         ],
         "summary": "Deletes a Reactor rule",
-        "tags": [
-          "rules"
-        ]
+        "tags": ["rules"]
       },
       "get": {
         "description": "Returns the rule specified by the rule ID, for the application specified by application ID.",
@@ -1536,9 +1502,7 @@
           }
         ],
         "summary": "Gets a reactor rule by rule ID",
-        "tags": [
-          "rules"
-        ]
+        "tags": ["rules"]
       },
       "patch": {
         "parameters": [
@@ -1649,9 +1613,7 @@
           }
         ],
         "summary": "Updates a Reactor rule",
-        "tags": [
-          "rules"
-        ]
+        "tags": ["rules"]
       }
     },
     "/apps/{id}": {
@@ -1720,9 +1682,7 @@
           }
         ],
         "summary": "Deletes an app",
-        "tags": [
-          "apps"
-        ]
+        "tags": ["apps"]
       },
       "patch": {
         "description": "Updates the application with the specified application ID.",
@@ -1804,9 +1764,7 @@
           }
         ],
         "summary": "Updates an app",
-        "tags": [
-          "apps"
-        ]
+        "tags": ["apps"]
       }
     },
     "/apps/{id}/pkcs12": {
@@ -1890,9 +1848,7 @@
           }
         ],
         "summary": "Updates app's APNs info from a `.p12` file",
-        "tags": [
-          "apps"
-        ]
+        "tags": ["apps"]
       }
     },
     "/me": {
@@ -1935,9 +1891,7 @@
           }
         ],
         "summary": "Get token details",
-        "tags": [
-          "tokens"
-        ]
+        "tags": ["tokens"]
       }
     }
   },
@@ -1948,17 +1902,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP external (using Firehose). See the <a href=\"https://ably.com/documentation/general/firehose\">Ably documentation</a> for further information.",
-            "enum": [
-              "amqp/external"
-            ],
+            "enum": ["amqp/external"],
             "type": "string"
           },
           "source": {
@@ -1966,10 +1916,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2031,17 +1978,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP external (using Firehose). See the <a href=\"https://ably.com/documentation/general/firehose\">documentation</a> for further information.",
-            "enum": [
-              "amqp/external"
-            ],
+            "enum": ["amqp/external"],
             "type": "string"
           },
           "source": {
@@ -2095,21 +2038,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url",
-              "routingKey",
-              "mandatoryRoute",
-              "persistentMessages"
-            ],
+            "required": ["url", "routingKey", "mandatoryRoute", "persistentMessages"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "amqp_external_rule_response": {
@@ -2141,17 +2074,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP external (using Firehose). See the <a href=\"https://ably.com/documentation/general/firehose\">Ably documentation</a> for further information.",
-            "enum": [
-              "amqp/external"
-            ],
+            "enum": ["amqp/external"],
             "type": "string"
           },
           "source": {
@@ -2159,10 +2088,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2214,12 +2140,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url",
-              "routingKey",
-              "mandatoryRoute",
-              "persistentMessages"
-            ],
+            "required": ["url", "routingKey", "mandatoryRoute", "persistentMessages"],
             "type": "object"
           },
           "version": {
@@ -2227,12 +2148,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "amqp_rule_patch": {
@@ -2240,17 +2156,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "amqp"
-            ],
+            "enum": ["amqp"],
             "type": "string"
           },
           "source": {
@@ -2258,10 +2170,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2307,17 +2216,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "amqp"
-            ],
+            "enum": ["amqp"],
             "type": "string"
           },
           "source": {
@@ -2325,10 +2230,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2364,18 +2266,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "queueId"
-            ],
+            "required": ["queueId"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "amqp_rule_response": {
@@ -2407,17 +2302,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AMQP. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "amqp"
-            ],
+            "enum": ["amqp"],
             "type": "string"
           },
           "source": {
@@ -2425,10 +2316,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2464,9 +2352,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "queueId"
-            ],
+            "required": ["queueId"],
             "type": "object"
           },
           "version": {
@@ -2474,12 +2360,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "app_patch": {
@@ -2513,10 +2394,7 @@
           },
           "status": {
             "description": "The status of the application. Can be `enabled` or `disabled`. Enabled means available to accept inbound connections and all services are available.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2542,10 +2420,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "p12File",
-          "p12Pass"
-        ],
+        "required": ["p12File", "p12Pass"],
         "type": "object"
       },
       "app_post": {
@@ -2579,10 +2454,7 @@
           },
           "status": {
             "description": "The status of the application. Can be `enabled` or `disabled`. Enabled means available to accept inbound connections and all services are available.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2593,9 +2465,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object"
       },
       "app_response": {
@@ -2629,10 +2499,7 @@
           },
           "status": {
             "description": "The application status. Disabled applications will not accept new connections and will return an error to all clients.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2654,9 +2521,7 @@
           },
           "authenticationMode": {
             "description": "Authentication method is using AWS credentials (AWS key ID and secret key).",
-            "enum": [
-              "credentials"
-            ],
+            "enum": ["credentials"],
             "type": "string"
           },
           "secretAccessKey": {
@@ -2664,10 +2529,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "accessKeyId",
-          "secretAccessKey"
-        ],
+        "required": ["accessKeyId", "secretAccessKey"],
         "type": "object"
       },
       "aws_access_keys_response": {
@@ -2679,9 +2541,7 @@
           },
           "authenticationMode": {
             "description": "Authentication method is using AWS credentials (AWS key ID and secret key).",
-            "enum": [
-              "credentials"
-            ],
+            "enum": ["credentials"],
             "type": "string"
           }
         },
@@ -2696,15 +2556,11 @@
           },
           "authenticationMode": {
             "description": "Authentication method is using the ARN of an assumable role. See this <a href=\"https://knowledge.ably.com/authentication-for-reactor-rules-for-aws-reactor-events-for-lambda-functions-reactor-firehose-for-aws-sqs-and-kinesis\">Ably knowledge base article</a> for details.",
-            "enum": [
-              "assumeRole"
-            ],
+            "enum": ["assumeRole"],
             "type": "string"
           }
         },
-        "required": [
-          "assumeRoleArn"
-        ],
+        "required": ["assumeRoleArn"],
         "type": "object"
       },
       "aws_kinesis_rule_patch": {
@@ -2712,17 +2568,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Kinesis. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/kinesis"
-            ],
+            "enum": ["aws/kinesis"],
             "type": "string"
           },
           "source": {
@@ -2730,10 +2582,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2764,9 +2613,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "partitionKey": {
@@ -2793,17 +2640,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Kinesis. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/kinesis"
-            ],
+            "enum": ["aws/kinesis"],
             "type": "string"
           },
           "source": {
@@ -2811,10 +2654,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2845,9 +2685,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "partitionKey": {
@@ -2864,22 +2702,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "streamName",
-              "partitionKey",
-              "authentication",
-              "format"
-            ],
+            "required": ["region", "streamName", "partitionKey", "authentication", "format"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_kinesis_rule_response": {
@@ -2911,17 +2738,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Kinesis. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/kinesis"
-            ],
+            "enum": ["aws/kinesis"],
             "type": "string"
           },
           "source": {
@@ -2929,10 +2752,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -2963,9 +2783,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "partitionKey": {
@@ -2982,13 +2800,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "streamName",
-              "partitionKey",
-              "authentication",
-              "format"
-            ],
+            "required": ["region", "streamName", "partitionKey", "authentication", "format"],
             "type": "object"
           },
           "version": {
@@ -2996,12 +2808,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_lambda_rule_patch": {
@@ -3009,17 +2816,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Lambda. See the <a href=\"https://ably.com/integrations\">Ably documentation</a> for further information.",
-            "enum": [
-              "aws/lambda"
-            ],
+            "enum": ["aws/lambda"],
             "type": "string"
           },
           "source": {
@@ -3027,10 +2830,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3069,20 +2869,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "functionName",
-              "authentication"
-            ],
+            "required": ["region", "functionName", "authentication"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_lambda_rule_post": {
@@ -3090,17 +2881,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Lambda. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/lambda"
-            ],
+            "enum": ["aws/lambda"],
             "type": "string"
           },
           "source": {
@@ -3108,10 +2895,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3150,20 +2934,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "functionName",
-              "authentication"
-            ],
+            "required": ["region", "functionName", "authentication"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_lambda_rule_response": {
@@ -3195,17 +2970,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS Lambda. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/lambda"
-            ],
+            "enum": ["aws/lambda"],
             "type": "string"
           },
           "source": {
@@ -3213,10 +2984,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3258,11 +3026,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "functionName",
-              "authentication"
-            ],
+            "required": ["region", "functionName", "authentication"],
             "type": "object"
           },
           "version": {
@@ -3270,12 +3034,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_sqs_rule_patch": {
@@ -3283,17 +3042,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS SQS. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/sqs"
-            ],
+            "enum": ["aws/sqs"],
             "type": "string"
           },
           "source": {
@@ -3301,10 +3056,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3360,17 +3112,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS SQS. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/sqs"
-            ],
+            "enum": ["aws/sqs"],
             "type": "string"
           },
           "source": {
@@ -3378,10 +3126,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3427,21 +3172,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "awsAccountId",
-              "queueName",
-              "authentication"
-            ],
+            "required": ["region", "awsAccountId", "queueName", "authentication"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "aws_sqs_rule_response": {
@@ -3473,17 +3208,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case AWS SQS. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "aws/sqs"
-            ],
+            "enum": ["aws/sqs"],
             "type": "string"
           },
           "source": {
@@ -3491,10 +3222,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3540,12 +3268,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "awsAccountId",
-              "queueName",
-              "authentication"
-            ],
+            "required": ["region", "awsAccountId", "queueName", "authentication"],
             "type": "object"
           },
           "version": {
@@ -3553,12 +3276,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "azure_function_rule_patch": {
@@ -3566,18 +3284,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Microsoft Azure Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/azure-function"
-            ],
+            "enum": ["http/azure-function"],
             "type": "string"
           },
           "source": {
@@ -3585,10 +3298,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3611,9 +3321,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "headers": {
@@ -3649,18 +3357,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Microsoft Azure Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/azure-function"
-            ],
+            "enum": ["http/azure-function"],
             "type": "string"
           },
           "source": {
@@ -3668,10 +3371,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3694,9 +3394,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "headers": {
@@ -3722,19 +3420,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "azureAppId",
-              "azureFunctionName"
-            ],
+            "required": ["azureAppId", "azureFunctionName"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "azure_function_rule_response": {
@@ -3766,18 +3456,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Microsoft Azure Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/azure-function"
-            ],
+            "enum": ["http/azure-function"],
             "type": "string"
           },
           "source": {
@@ -3785,10 +3470,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3811,9 +3493,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "headers": {
@@ -3839,10 +3519,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "azureAppId",
-              "azureFunctionName"
-            ],
+            "required": ["azureAppId", "azureFunctionName"],
             "type": "object"
           },
           "version": {
@@ -3850,12 +3527,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "cloudflare_worker_rule_patch": {
@@ -3863,18 +3535,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Cloudflare Worker. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/cloudflare-worker"
-            ],
+            "enum": ["http/cloudflare-worker"],
             "type": "string"
           },
           "source": {
@@ -3882,10 +3549,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3928,18 +3592,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Cloudflare Worker. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/cloudflare-worker"
-            ],
+            "enum": ["http/cloudflare-worker"],
             "type": "string"
           },
           "source": {
@@ -3947,10 +3606,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -3983,18 +3639,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url"
-            ],
+            "required": ["url"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "cloudflare_worker_rule_response": {
@@ -4026,18 +3675,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Cloudflare Worker. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/cloudflare-worker"
-            ],
+            "enum": ["http/cloudflare-worker"],
             "example": "http/cloudflare-worker",
             "type": "string"
           },
@@ -4046,10 +3690,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4082,9 +3723,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url"
-            ],
+            "required": ["url"],
             "type": "object"
           },
           "version": {
@@ -4092,12 +3731,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "error": {
@@ -4125,12 +3759,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "message",
-          "code",
-          "statusCode",
-          "href"
-        ],
+        "required": ["message", "code", "statusCode", "href"],
         "type": "object"
       },
       "google_cloud_function_rule_patch": {
@@ -4138,18 +3767,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Google Cloud Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/google-cloud-function"
-            ],
+            "enum": ["http/google-cloud-function"],
             "type": "string"
           },
           "source": {
@@ -4157,10 +3781,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4174,9 +3795,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "functionName": {
@@ -4225,18 +3844,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Google Cloud Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/google-cloud-function"
-            ],
+            "enum": ["http/google-cloud-function"],
             "type": "string"
           },
           "source": {
@@ -4252,9 +3866,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "functionName": {
@@ -4293,20 +3905,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "projectId",
-              "functionName"
-            ],
+            "required": ["region", "projectId", "functionName"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "google_cloud_function_rule_response": {
@@ -4338,18 +3941,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Google Cloud Function. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/google-cloud-function"
-            ],
+            "enum": ["http/google-cloud-function"],
             "type": "string"
           },
           "source": {
@@ -4357,10 +3955,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4374,9 +3969,7 @@
               },
               "format": {
                 "description": "JSON provides a text-based encoding.",
-                "enum": [
-                  "json"
-                ],
+                "enum": ["json"],
                 "type": "string"
               },
               "functionName": {
@@ -4415,11 +4008,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "region",
-              "projectId",
-              "functionName"
-            ],
+            "required": ["region", "projectId", "functionName"],
             "type": "object"
           },
           "version": {
@@ -4427,12 +4016,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "http_rule_patch": {
@@ -4440,18 +4024,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http"
-            ],
+            "enum": ["http"],
             "type": "string"
           },
           "source": {
@@ -4459,10 +4038,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4476,10 +4052,7 @@
               },
               "format": {
                 "description": "JSON provides a simpler text-based encoding, whereas MsgPack provides a more efficient binary encoding.",
-                "enum": [
-                  "json",
-                  "msgpack"
-                ],
+                "enum": ["json", "msgpack"],
                 "type": "string"
               },
               "headers": {
@@ -4518,18 +4091,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http"
-            ],
+            "enum": ["http"],
             "type": "string"
           },
           "source": {
@@ -4537,10 +4105,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4554,10 +4119,7 @@
               },
               "format": {
                 "description": "JSON provides a simpler text-based encoding, whereas MsgPack provides a more efficient binary encoding.",
-                "enum": [
-                  "json",
-                  "msgpack"
-                ],
+                "enum": ["json", "msgpack"],
                 "type": "string"
               },
               "headers": {
@@ -4587,19 +4149,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url",
-              "format"
-            ],
+            "required": ["url", "format"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "http_rule_response": {
@@ -4631,18 +4185,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http"
-            ],
+            "enum": ["http"],
             "type": "string"
           },
           "source": {
@@ -4650,10 +4199,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4667,10 +4213,7 @@
               },
               "format": {
                 "description": "JSON provides a simpler text-based encoding, whereas MsgPack provides a more efficient binary encoding.",
-                "enum": [
-                  "json",
-                  "msgpack"
-                ],
+                "enum": ["json", "msgpack"],
                 "type": "string"
               },
               "headers": {
@@ -4699,10 +4242,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url",
-              "format"
-            ],
+            "required": ["url", "format"],
             "type": "object"
           },
           "version": {
@@ -4710,28 +4250,19 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "ifttt_rule_patch": {
         "x-requestMode": {
           "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-          "enum": [
-            "single"
-          ],
+          "enum": ["single"],
           "example": "single",
           "type": "string"
         },
         "x-ruleType": {
           "description": "The type of rule. In this case IFTTT. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-          "enum": [
-            "http/ifttt"
-          ],
+          "enum": ["http/ifttt"],
           "type": "string"
         },
         "x-source": {
@@ -4755,17 +4286,13 @@
         "properties": {
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case IFTTT. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/ifttt"
-            ],
+            "enum": ["http/ifttt"],
             "type": "string"
           },
           "source": {
@@ -4773,10 +4300,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4790,19 +4314,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "webhookKey",
-              "eventName"
-            ],
+            "required": ["webhookKey", "eventName"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "ifttt_rule_response": {
@@ -4834,17 +4350,13 @@
           },
           "requestMode": {
             "description": "Single request mode sends each event separately to the endpoint specified by the rule. You can read more about single request mode events in the <a href=\"https://ably.com/documentation/general/events#batching\">Ably documentation</a>.",
-            "enum": [
-              "single"
-            ],
+            "enum": ["single"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case IFTTT. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/ifttt"
-            ],
+            "enum": ["http/ifttt"],
             "type": "string"
           },
           "source": {
@@ -4852,10 +4364,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -4869,10 +4378,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "webhookKey",
-              "eventName"
-            ],
+            "required": ["webhookKey", "eventName"],
             "type": "object"
           },
           "version": {
@@ -4880,12 +4386,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "key_patch": {
@@ -4948,11 +4449,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "name",
-          "channels",
-          "capabilities"
-        ],
+        "required": ["name", "channels", "capabilities"],
         "type": "object"
       },
       "key_response": {
@@ -5025,10 +4522,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "id",
-              "name"
-            ],
+            "required": ["id", "name"],
             "type": "object"
           },
           "token": {
@@ -5064,11 +4558,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "id",
-              "name",
-              "capabilities"
-            ],
+            "required": ["id", "name", "capabilities"],
             "type": "object"
           },
           "user": {
@@ -5084,10 +4574,7 @@
                 "type": "integer"
               }
             },
-            "required": [
-              "id",
-              "email"
-            ],
+            "required": ["id", "email"],
             "type": "object"
           }
         },
@@ -5168,9 +4655,7 @@
             "type": "boolean"
           }
         },
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "type": "object"
       },
       "namespace_response": {
@@ -5248,12 +4733,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "name",
-          "ttl",
-          "maxLength",
-          "region"
-        ],
+        "required": ["name", "ttl", "maxLength", "region"],
         "type": "object"
       },
       "queue_response": {
@@ -5415,10 +4895,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -5601,20 +5078,12 @@
           },
           "type": {
             "description": "The type `channel.message` delivers all messages published on a channel. The type `channel.presence` delivers all enter, update and leave events for members present on a channel. The type `channel.lifecycle` events for this rule type are currently not supported. Get in touch (https://ably.com/contact) if you need this feature. The type `channel.occupancy` delivers all occupancy events for the channel.",
-            "enum": [
-              "channel.message",
-              "channel.presence",
-              "channel.lifecycle",
-              "channel.occupancy"
-            ],
+            "enum": ["channel.message", "channel.presence", "channel.lifecycle", "channel.occupancy"],
             "example": "channel.message",
             "type": "string"
           }
         },
-        "required": [
-          "channelFilter",
-          "type"
-        ],
+        "required": ["channelFilter", "type"],
         "type": "object"
       },
       "rule_source_patch": {
@@ -5626,12 +5095,7 @@
           },
           "type": {
             "description": "The type `channel.message` delivers all messages published on a channel. The type `channel.presence` delivers all enter, update and leave events for members present on a channel. The type `channel.lifecycle` events for this rule type are currently not supported. Get in touch (https://ably.com/contact) if you need this feature. The type `channel.occupancy` delivers all occupancy events for the channel.",
-            "enum": [
-              "channel.message",
-              "channel.presence",
-              "channel.lifecycle",
-              "channel.occupancy"
-            ],
+            "enum": ["channel.message", "channel.presence", "channel.lifecycle", "channel.occupancy"],
             "type": "string"
           }
         },
@@ -5666,18 +5130,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "This rule type is currently unsupported.",
-            "enum": [
-              "unsupported"
-            ],
+            "enum": ["unsupported"],
             "type": "string"
           },
           "source": {
@@ -5685,10 +5144,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -5699,9 +5155,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url"
-            ],
+            "required": ["url"],
             "type": "object"
           },
           "version": {
@@ -5709,12 +5163,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "zapier_rule_patch": {
@@ -5722,18 +5171,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Zapier. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/zapier"
-            ],
+            "enum": ["http/zapier"],
             "type": "string"
           },
           "source": {
@@ -5741,10 +5185,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -5787,18 +5228,13 @@
         "properties": {
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Zapier. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/zapier"
-            ],
+            "enum": ["http/zapier"],
             "type": "string"
           },
           "source": {
@@ -5806,10 +5242,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -5842,18 +5275,11 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url"
-            ],
+            "required": ["url"],
             "type": "object"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       },
       "zapier_rule_response": {
@@ -5885,18 +5311,13 @@
           },
           "requestMode": {
             "description": "This is Single Request mode or Batch Request mode. Single Request mode sends each event separately to the endpoint specified by the rule. Batch Request mode rolls up multiple events into the same request. You can read more about the difference between single and batched events in the Ably <a href=\"https://ably.com/documentation/general/events#batching\">documentation</a>.",
-            "enum": [
-              "single",
-              "batch"
-            ],
+            "enum": ["single", "batch"],
             "example": "single",
             "type": "string"
           },
           "ruleType": {
             "description": "The type of rule. In this case Zapier. See the <a href=\"https://ably.com/integrations\">documentation</a> for further information.",
-            "enum": [
-              "http/zapier"
-            ],
+            "enum": ["http/zapier"],
             "type": "string"
           },
           "source": {
@@ -5904,10 +5325,7 @@
           },
           "status": {
             "description": "The status of the rule. Rules can be enabled or disabled.",
-            "enum": [
-              "enabled",
-              "disabled"
-            ],
+            "enum": ["enabled", "disabled"],
             "example": "enabled",
             "type": "string"
           },
@@ -5940,9 +5358,7 @@
                 "type": "string"
               }
             },
-            "required": [
-              "url"
-            ],
+            "required": ["url"],
             "type": "object"
           },
           "version": {
@@ -5950,12 +5366,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "ruleType",
-          "requestMode",
-          "source",
-          "target"
-        ],
+        "required": ["ruleType", "requestMode", "source", "target"],
         "type": "object"
       }
     },
