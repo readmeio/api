@@ -1,4 +1,4 @@
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/operationid-quirks.json';
@@ -109,7 +109,7 @@ class SDK {
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;

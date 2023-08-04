@@ -676,7 +676,7 @@ sdk.server('https://eu.api.example.com/v14');`),
             }
 
             fetchStmt.write(arg.name);
-            if (totalParams > 1 && i !== totalParams) {
+            if (i !== totalParams - 1) {
               fetchStmt.write(', ');
             }
           });

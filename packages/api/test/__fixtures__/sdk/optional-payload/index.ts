@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/optional-payload.json';
@@ -77,24 +77,16 @@ class SDK {
    * Updates a pet in the store with form data
    *
    */
-  updatePetWithForm(
-    body: types.UpdatePetWithFormFormDataParam,
-    metadata: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(
-    metadata: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(
-    body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam,
-    metadata?: types.UpdatePetWithFormMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updatePetWithForm(body: types.UpdatePetWithFormFormDataParam, metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam, metadata?: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
 export type { UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam } from './types';

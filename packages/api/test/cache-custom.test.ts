@@ -21,7 +21,7 @@ describe('cache (custom directory)', () => {
   });
 
   afterEach(async () => {
-    await fs.rmdir(cacheDir, { recursive: true });
+    await fs.rm(cacheDir, { recursive: true });
 
     Cache.setCacheDir(originalCacheDir);
 

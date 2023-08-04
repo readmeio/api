@@ -73,16 +73,14 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  getAnything(
-    metadata: types.GetAnythingMetadataParam
-  ): Promise<FetchResponse<HTTPMethodRange<200, 299>, types.GetAnythingResponse2XX>> {
+  getAnything(metadata: types.GetAnythingMetadataParam): Promise<FetchResponse<HTTPMethodRange<200, 299>, types.GetAnythingResponse2XX>> {
     return this.core.fetch('/anything', 'get', metadata);
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
 export type { GetAnythingMetadataParam, GetAnythingResponse2XX } from './types';

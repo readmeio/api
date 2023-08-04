@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
@@ -79,9 +79,7 @@ class SDK {
    * @summary Retrieve an entry from the API Registry
    * @throws FetchError<404, types.ErrorRegistryNotfound> The registry entry couldn't be found.
    */
-  getAPIRegistry(
-    metadata: types.GetApiRegistryMetadataParam
-  ): Promise<FetchResponse<200, types.GetApiRegistryResponse200>> {
+  getAPIRegistry(metadata: types.GetApiRegistryMetadataParam): Promise<FetchResponse<200, types.GetApiRegistryResponse200>> {
     return this.core.fetch('/api-registry/{uuid}', 'get', metadata);
   }
 
@@ -94,9 +92,7 @@ class SDK {
    * @throws FetchError<403, types.GetApiSpecificationResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
-  getAPISpecification(
-    metadata?: types.GetApiSpecificationMetadataParam
-  ): Promise<FetchResponse<200, types.GetApiSpecificationResponse200>> {
+  getAPISpecification(metadata?: types.GetApiSpecificationMetadataParam): Promise<FetchResponse<200, types.GetApiSpecificationResponse200>> {
     return this.core.fetch('/api-specification', 'get', metadata);
   }
 
@@ -110,10 +106,7 @@ class SDK {
    * @throws FetchError<403, types.UploadApiSpecificationResponse403> Unauthorized
    * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
    */
-  uploadAPISpecification(
-    body: types.UploadApiSpecificationBodyParam,
-    metadata?: types.UploadApiSpecificationMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  uploadAPISpecification(body: types.UploadApiSpecificationBodyParam, metadata?: types.UploadApiSpecificationMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification', 'post', body, metadata);
   }
 
@@ -126,10 +119,7 @@ class SDK {
    * @throws FetchError<403, types.UpdateApiSpecificationResponse403> Unauthorized
    * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
    */
-  updateAPISpecification(
-    body: types.UpdateApiSpecificationBodyParam,
-    metadata: types.UpdateApiSpecificationMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateAPISpecification(body: types.UpdateApiSpecificationBodyParam, metadata: types.UpdateApiSpecificationMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification/{id}', 'put', body, metadata);
   }
 
@@ -142,9 +132,7 @@ class SDK {
    * @throws FetchError<403, types.DeleteApiSpecificationResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorSpecNotfound> The spec couldn't be found.
    */
-  deleteAPISpecification(
-    metadata: types.DeleteApiSpecificationMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteAPISpecification(metadata: types.DeleteApiSpecificationMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/api-specification/{id}', 'delete', metadata);
   }
 
@@ -172,9 +160,7 @@ class SDK {
    *
    * @summary Get all categories
    */
-  getCategories(
-    metadata?: types.GetCategoriesMetadataParam
-  ): Promise<FetchResponse<200, types.GetCategoriesResponse200>> {
+  getCategories(metadata?: types.GetCategoriesMetadataParam): Promise<FetchResponse<200, types.GetCategoriesResponse200>> {
     return this.core.fetch('/categories', 'get', metadata);
   }
 
@@ -184,10 +170,7 @@ class SDK {
    * @summary Create category
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
    */
-  createCategory(
-    body: types.Category,
-    metadata?: types.CreateCategoryMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  createCategory(body: types.Category, metadata?: types.CreateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -208,10 +191,7 @@ class SDK {
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
-  updateCategory(
-    body: types.Category,
-    metadata: types.UpdateCategoryMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateCategory(body: types.Category, metadata: types.UpdateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -223,9 +203,7 @@ class SDK {
    * @summary Delete category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
-  deleteCategory(
-    metadata: types.DeleteCategoryMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteCategory(metadata: types.DeleteCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'delete', metadata);
   }
 
@@ -235,9 +213,7 @@ class SDK {
    * @summary Get docs for category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
-  getCategoryDocs(
-    metadata: types.GetCategoryDocsMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  getCategoryDocs(metadata: types.GetCategoryDocsMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}/docs', 'get', metadata);
   }
 
@@ -246,9 +222,7 @@ class SDK {
    *
    * @summary Get changelogs
    */
-  getChangelogs(
-    metadata?: types.GetChangelogsMetadataParam
-  ): Promise<FetchResponse<200, types.GetChangelogsResponse200>> {
+  getChangelogs(metadata?: types.GetChangelogsMetadataParam): Promise<FetchResponse<200, types.GetChangelogsResponse200>> {
     return this.core.fetch('/changelogs', 'get', metadata);
   }
 
@@ -275,10 +249,7 @@ class SDK {
    *
    * @summary Update changelog
    */
-  updateChangelog(
-    body: types.Changelog,
-    metadata: types.UpdateChangelogMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateChangelog(body: types.Changelog, metadata: types.UpdateChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
   }
 
@@ -287,9 +258,7 @@ class SDK {
    *
    * @summary Delete changelog
    */
-  deleteChangelog(
-    metadata: types.DeleteChangelogMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteChangelog(metadata: types.DeleteChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'delete', metadata);
   }
 
@@ -300,9 +269,7 @@ class SDK {
    * @throws FetchError<401, types.GetCustomPagesResponse401> Unauthorized
    * @throws FetchError<403, types.GetCustomPagesResponse403> Unauthorized
    */
-  getCustomPages(
-    metadata?: types.GetCustomPagesMetadataParam
-  ): Promise<FetchResponse<200, types.GetCustomPagesResponse200>> {
+  getCustomPages(metadata?: types.GetCustomPagesMetadataParam): Promise<FetchResponse<200, types.GetCustomPagesResponse200>> {
     return this.core.fetch('/custompages', 'get', metadata);
   }
 
@@ -326,9 +293,7 @@ class SDK {
    * @throws FetchError<403, types.GetCustomPageResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
-  getCustomPage(
-    metadata: types.GetCustomPageMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  getCustomPage(metadata: types.GetCustomPageMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'get', metadata);
   }
 
@@ -341,10 +306,7 @@ class SDK {
    * @throws FetchError<403, types.UpdateCustomPageResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
-  updateCustomPage(
-    body: types.CustomPage,
-    metadata: types.UpdateCustomPageMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateCustomPage(body: types.CustomPage, metadata: types.UpdateCustomPageMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
 
@@ -356,9 +318,7 @@ class SDK {
    * @throws FetchError<403, types.DeleteCustomPageResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
-  deleteCustomPage(
-    metadata: types.DeleteCustomPageMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteCustomPage(metadata: types.DeleteCustomPageMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'delete', metadata);
   }
 
@@ -383,10 +343,7 @@ class SDK {
    * @throws FetchError<403, types.UpdateDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  updateDoc(
-    body: types.Doc,
-    metadata: types.UpdateDocMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateDoc(body: types.Doc, metadata: types.UpdateDocMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -412,9 +369,7 @@ class SDK {
    * @throws FetchError<403, types.GetProductionDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  getProductionDoc(
-    metadata: types.GetProductionDocMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  getProductionDoc(metadata: types.GetProductionDocMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs/{slug}/production', 'get', metadata);
   }
 
@@ -426,10 +381,7 @@ class SDK {
    * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
    * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
    */
-  createDoc(
-    body: types.Doc,
-    metadata?: types.CreateDocMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  createDoc(body: types.Doc, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -511,10 +463,7 @@ class SDK {
    * @throws FetchError<403, types.UpdateVersionResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
-  updateVersion(
-    body: types.Version,
-    metadata: types.UpdateVersionMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  updateVersion(body: types.Version, metadata: types.UpdateVersionMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
 
@@ -527,146 +476,14 @@ class SDK {
    * @throws FetchError<403, types.DeleteVersionResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
-  deleteVersion(
-    metadata: types.DeleteVersionMetadataParam
-  ): Promise<FetchResponse<number, unknown>> {
+  deleteVersion(metadata: types.DeleteVersionMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'delete', metadata);
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
-export type {
-  Apply,
-  BaseError,
-  Category,
-  Changelog,
-  CondensedProjectData,
-  CreateCategoryMetadataParam,
-  CreateCustomPageResponse401,
-  CreateCustomPageResponse403,
-  CreateDocMetadataParam,
-  CreateDocResponse401,
-  CreateDocResponse403,
-  CreateVersionResponse400,
-  CreateVersionResponse401,
-  CreateVersionResponse403,
-  CustomPage,
-  DeleteApiSpecificationMetadataParam,
-  DeleteApiSpecificationResponse401,
-  DeleteApiSpecificationResponse403,
-  DeleteCategoryMetadataParam,
-  DeleteChangelogMetadataParam,
-  DeleteCustomPageMetadataParam,
-  DeleteCustomPageResponse401,
-  DeleteCustomPageResponse403,
-  DeleteDocMetadataParam,
-  DeleteDocResponse401,
-  DeleteDocResponse403,
-  DeleteVersionMetadataParam,
-  DeleteVersionResponse401,
-  DeleteVersionResponse403,
-  Doc,
-  ErrorApikeyEmpty,
-  ErrorApikeyMismatch,
-  ErrorApikeyNotfound,
-  ErrorApplyInvalidEmail,
-  ErrorApplyInvalidJob,
-  ErrorApplyInvalidName,
-  ErrorCategoryInvalid,
-  ErrorCategoryNotfound,
-  ErrorChangelogInvalid,
-  ErrorChangelogNotfound,
-  ErrorCustompageInvalid,
-  ErrorCustompageNotfound,
-  ErrorDocInvalid,
-  ErrorDocNotfound,
-  ErrorEndpointNotfound,
-  ErrorInternalError,
-  ErrorProjectNeedsstaging,
-  ErrorProjectNotfound,
-  ErrorRegistryInvalid,
-  ErrorRegistryNotfound,
-  ErrorSpecFileEmpty,
-  ErrorSpecIdDuplicate,
-  ErrorSpecIdInvalid,
-  ErrorSpecInvalid,
-  ErrorSpecInvalidSchema,
-  ErrorSpecNotfound,
-  ErrorSpecTimeout,
-  ErrorSpecVersionNotfound,
-  ErrorUnexpectedError,
-  ErrorVersionCantDemoteStable,
-  ErrorVersionCantRemoveStable,
-  ErrorVersionDuplicate,
-  ErrorVersionEmpty,
-  ErrorVersionForkEmpty,
-  ErrorVersionForkNotfound,
-  ErrorVersionInvalid,
-  ErrorVersionNotfound,
-  GetApiRegistryMetadataParam,
-  GetApiRegistryResponse200,
-  GetApiSpecificationMetadataParam,
-  GetApiSpecificationResponse200,
-  GetApiSpecificationResponse401,
-  GetApiSpecificationResponse403,
-  GetCategoriesMetadataParam,
-  GetCategoriesResponse200,
-  GetCategoryDocsMetadataParam,
-  GetCategoryMetadataParam,
-  GetChangelogMetadataParam,
-  GetChangelogsMetadataParam,
-  GetChangelogsResponse200,
-  GetCustomPageMetadataParam,
-  GetCustomPageResponse401,
-  GetCustomPageResponse403,
-  GetCustomPagesMetadataParam,
-  GetCustomPagesResponse200,
-  GetCustomPagesResponse401,
-  GetCustomPagesResponse403,
-  GetDocMetadataParam,
-  GetDocResponse401,
-  GetDocResponse403,
-  GetErrorsResponse401,
-  GetErrorsResponse403,
-  GetOpenRolesResponse200,
-  GetProductionDocMetadataParam,
-  GetProductionDocResponse401,
-  GetProductionDocResponse403,
-  GetProjectResponse401,
-  GetProjectResponse403,
-  GetVersionMetadataParam,
-  GetVersionResponse401,
-  GetVersionResponse403,
-  GetVersionsResponse401,
-  GetVersionsResponse403,
-  JobOpening,
-  SearchDocsMetadataParam,
-  SearchDocsResponse401,
-  SearchDocsResponse403,
-  UpdateApiSpecificationBodyParam,
-  UpdateApiSpecificationMetadataParam,
-  UpdateApiSpecificationResponse400,
-  UpdateApiSpecificationResponse401,
-  UpdateApiSpecificationResponse403,
-  UpdateCategoryMetadataParam,
-  UpdateChangelogMetadataParam,
-  UpdateCustomPageMetadataParam,
-  UpdateCustomPageResponse401,
-  UpdateCustomPageResponse403,
-  UpdateDocMetadataParam,
-  UpdateDocResponse401,
-  UpdateDocResponse403,
-  UpdateVersionMetadataParam,
-  UpdateVersionResponse401,
-  UpdateVersionResponse403,
-  UploadApiSpecificationBodyParam,
-  UploadApiSpecificationMetadataParam,
-  UploadApiSpecificationResponse400,
-  UploadApiSpecificationResponse401,
-  UploadApiSpecificationResponse403,
-  Version,
-} from './types';
+export type { Apply, BaseError, Category, Changelog, CondensedProjectData, CreateCategoryMetadataParam, CreateCustomPageResponse401, CreateCustomPageResponse403, CreateDocMetadataParam, CreateDocResponse401, CreateDocResponse403, CreateVersionResponse400, CreateVersionResponse401, CreateVersionResponse403, CustomPage, DeleteApiSpecificationMetadataParam, DeleteApiSpecificationResponse401, DeleteApiSpecificationResponse403, DeleteCategoryMetadataParam, DeleteChangelogMetadataParam, DeleteCustomPageMetadataParam, DeleteCustomPageResponse401, DeleteCustomPageResponse403, DeleteDocMetadataParam, DeleteDocResponse401, DeleteDocResponse403, DeleteVersionMetadataParam, DeleteVersionResponse401, DeleteVersionResponse403, Doc, ErrorApikeyEmpty, ErrorApikeyMismatch, ErrorApikeyNotfound, ErrorApplyInvalidEmail, ErrorApplyInvalidJob, ErrorApplyInvalidName, ErrorCategoryInvalid, ErrorCategoryNotfound, ErrorChangelogInvalid, ErrorChangelogNotfound, ErrorCustompageInvalid, ErrorCustompageNotfound, ErrorDocInvalid, ErrorDocNotfound, ErrorEndpointNotfound, ErrorInternalError, ErrorProjectNeedsstaging, ErrorProjectNotfound, ErrorRegistryInvalid, ErrorRegistryNotfound, ErrorSpecFileEmpty, ErrorSpecIdDuplicate, ErrorSpecIdInvalid, ErrorSpecInvalid, ErrorSpecInvalidSchema, ErrorSpecNotfound, ErrorSpecTimeout, ErrorSpecVersionNotfound, ErrorUnexpectedError, ErrorVersionCantDemoteStable, ErrorVersionCantRemoveStable, ErrorVersionDuplicate, ErrorVersionEmpty, ErrorVersionForkEmpty, ErrorVersionForkNotfound, ErrorVersionInvalid, ErrorVersionNotfound, GetApiRegistryMetadataParam, GetApiRegistryResponse200, GetApiSpecificationMetadataParam, GetApiSpecificationResponse200, GetApiSpecificationResponse401, GetApiSpecificationResponse403, GetCategoriesMetadataParam, GetCategoriesResponse200, GetCategoryDocsMetadataParam, GetCategoryMetadataParam, GetChangelogMetadataParam, GetChangelogsMetadataParam, GetChangelogsResponse200, GetCustomPageMetadataParam, GetCustomPageResponse401, GetCustomPageResponse403, GetCustomPagesMetadataParam, GetCustomPagesResponse200, GetCustomPagesResponse401, GetCustomPagesResponse403, GetDocMetadataParam, GetDocResponse401, GetDocResponse403, GetErrorsResponse401, GetErrorsResponse403, GetOpenRolesResponse200, GetProductionDocMetadataParam, GetProductionDocResponse401, GetProductionDocResponse403, GetProjectResponse401, GetProjectResponse403, GetVersionMetadataParam, GetVersionResponse401, GetVersionResponse403, GetVersionsResponse401, GetVersionsResponse403, JobOpening, SearchDocsMetadataParam, SearchDocsResponse401, SearchDocsResponse403, UpdateApiSpecificationBodyParam, UpdateApiSpecificationMetadataParam, UpdateApiSpecificationResponse400, UpdateApiSpecificationResponse401, UpdateApiSpecificationResponse403, UpdateCategoryMetadataParam, UpdateChangelogMetadataParam, UpdateCustomPageMetadataParam, UpdateCustomPageResponse401, UpdateCustomPageResponse403, UpdateDocMetadataParam, UpdateDocResponse401, UpdateDocResponse403, UpdateVersionMetadataParam, UpdateVersionResponse401, UpdateVersionResponse403, UploadApiSpecificationBodyParam, UploadApiSpecificationMetadataParam, UploadApiSpecificationResponse400, UploadApiSpecificationResponse401, UploadApiSpecificationResponse403, Version } from './types';

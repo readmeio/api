@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core';
+import type { ConfigOptions, FetchResponse } from 'api/dist/core'
 import Oas from 'oas';
 import APICore from 'api/dist/core';
 import definition from '../../../__fixtures__/definitions/simple.json';
@@ -78,25 +78,14 @@ class SDK {
    *
    * @summary Finds Pets by status
    */
-  findPetsByStatus(
-    metadata: types.FindPetsByStatusMetadataParam
-  ): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
+  findPetsByStatus(metadata: types.FindPetsByStatusMetadataParam): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
     return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
 
-const createSDK = (() => {
-  return new SDK();
-})();
+const createSDK = (() => { return new SDK(); })()
+;
+
 export default createSDK;
 
-export type {
-  ApiResponse,
-  Category,
-  FindPetsByStatusMetadataParam,
-  FindPetsByStatusResponse200,
-  Order,
-  Pet,
-  Tag,
-  User,
-} from './types';
+export type { ApiResponse, Category, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, Order, Pet, Tag, User } from './types';
