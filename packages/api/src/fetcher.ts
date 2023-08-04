@@ -14,7 +14,6 @@ export default class Fetcher {
    * @example @petstore/v1.0#n6kvf10vakpemvplx
    * @example @petstore#n6kvf10vakpemvplx
    */
-  // eslint-disable-next-line unicorn/no-unsafe-regex
   static registryUUIDRegex = /^@(?<project>[a-zA-Z0-9-_]+)(\/?(?<version>.+))?#(?<uuid>[a-z0-9]+)$/;
 
   constructor(uri: string | OASDocument) {
@@ -59,7 +58,7 @@ export default class Fetcher {
   async load() {
     if (typeof this.uri !== 'string') {
       throw new TypeError(
-        "Something disastrous occurred and a non-string URI was supplied to the Fetcher library. This shouldn't have happened!"
+        "Something disastrous occurred and a non-string URI was supplied to the Fetcher library. This shouldn't have happened!",
       );
     }
 
@@ -103,7 +102,7 @@ export default class Fetcher {
 
     if (!fs.existsSync(file)) {
       throw new Error(
-        `Sorry, we were unable to load an API definition from ${file}. Please either supply a URL or a path on your filesystem.`
+        `Sorry, we were unable to load an API definition from ${file}. Please either supply a URL or a path on your filesystem.`,
       );
     }
 

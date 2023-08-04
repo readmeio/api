@@ -24,7 +24,7 @@ cmd
       'js-cjs',
       'js-esm',
       'ts',
-    ])
+    ]),
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
   .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
@@ -188,7 +188,7 @@ cmd
 Examples:
   $ api install @developers/v2.0#nysezql0wwo236
   $ api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-  $ api install ./petstore.json`
+  $ api install ./petstore.json`,
   );
 
 export default cmd;

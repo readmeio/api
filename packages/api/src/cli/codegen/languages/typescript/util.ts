@@ -1,7 +1,6 @@
 import camelCase from 'lodash.camelcase';
 import deburr from 'lodash.deburr';
 import startCase from 'lodash.startcase';
-import { format as prettier } from 'prettier';
 
 /**
  * This is a mix of reserved JS words and keywords in TypeScript that might be reserved or
@@ -99,14 +98,6 @@ const RESERVED_WORDS = [
   'self',
   'window',
 ];
-
-export function formatter(content: string) {
-  return prettier(content, {
-    parser: 'typescript',
-    printWidth: 100,
-    singleQuote: true,
-  });
-}
 
 /**
  * @see {@link https://www.30secondsofcode.org/js/s/word-wrap}

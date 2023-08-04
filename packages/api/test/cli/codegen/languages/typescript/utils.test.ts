@@ -8,11 +8,11 @@ describe('ts codegen utils', () => {
 
     it('should escape an unsafe docblock', () => {
       expect(docblockEscape('/* this in a docblock will break a JS file */')).toBe(
-        '/\\* this in a docblock will break a JS file *\\/'
+        '/\\* this in a docblock will break a JS file *\\/',
       );
 
       expect(docblockEscape('/** this in a docblock will break a JS file **/')).toBe(
-        '/\\** this in a docblock will break a JS file **\\/'
+        '/\\** this in a docblock will break a JS file **\\/',
       );
 
       expect(docblockEscape('**/myfiles/some_folder**')).toBe('**\\/myfiles/some_folder**');
@@ -49,14 +49,14 @@ describe('ts codegen utils', () => {
     it('should wrap a long string', () => {
       expect(
         wordWrap(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla feugiat ante sed porta viverra. Sed sagittis urna odio, id tempus massa facilisis non. Fusce a elit ante. Sed non velit at sapien posuere semper'
-        )
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla feugiat ante sed porta viverra. Sed sagittis urna odio, id tempus massa facilisis non. Fusce a elit ante. Sed non velit at sapien posuere semper',
+        ),
       ).toBe(
         [
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla feugiat ante sed porta',
           'viverra. Sed sagittis urna odio, id tempus massa facilisis non. Fusce a elit ante. Sed',
           'non velit at sapien posuere semper',
-        ].join('\n')
+        ].join('\n'),
       );
     });
   });

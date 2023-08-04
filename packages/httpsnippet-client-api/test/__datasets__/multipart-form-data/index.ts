@@ -43,7 +43,7 @@ const mock: SnippetMock = {
         const body = await streamToString(opts.body);
 
         return /--form-data-boundary-(.*)\r\nContent-Disposition: form-data; name="foo"\r\n\r\nbar\r\n--form-data-boundary-(.*)--\r\n\r\n/.test(
-          body
+          body,
         );
       },
     },

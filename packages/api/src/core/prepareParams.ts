@@ -32,7 +32,7 @@ function digestParameters(parameters: ParameterObject[]): Record<string, Paramet
       throw new Error("The OpenAPI document for this operation wasn't dereferenced before processing.");
     } else if (param.name in prev) {
       throw new Error(
-        `The operation you are using has the same parameter, ${param.name}, spread across multiple entry points. We unfortunately can't handle this right now.`
+        `The operation you are using has the same parameter, ${param.name}, spread across multiple entry points. We unfortunately can't handle this right now.`,
       );
     }
 
@@ -54,7 +54,7 @@ function isObject(thing: any) {
 }
 
 function isPrimitive(obj: any) {
-  return typeof obj === null || typeof obj === 'number' || typeof obj === 'string';
+  return obj === null || typeof obj === 'number' || typeof obj === 'string';
 }
 
 function merge(src: any, target: any) {
@@ -75,7 +75,7 @@ function merge(src: any, target: any) {
  */
 function processFile(
   paramName: string,
-  file: string | ReadStream
+  file: string | ReadStream,
 ): Promise<{ base64: string; buffer: Buffer; filename: string; paramName: string }> {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
@@ -129,8 +129,8 @@ function processFile(
     new TypeError(
       paramName
         ? `The data supplied for the \`${paramName}\` request body parameter is not a file handler that we support.`
-        : 'The data supplied for the request body payload is not a file handler that we support.'
-    )
+        : 'The data supplied for the request body payload is not a file handler that we support.',
+    ),
   );
 }
 
@@ -179,7 +179,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
 
     if (throwNoParamsError) {
       throw new Error(
-        "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using."
+        "You supplied metadata and/or body data for this operation but it doesn't have any documented parameters or request payloads. If you think this is an error please contact support for the API you're using.",
       );
     }
   }

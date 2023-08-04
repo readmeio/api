@@ -6,6 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
     "prepack": "npm run build",
     "test": "jest --coverage"

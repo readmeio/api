@@ -44,7 +44,7 @@ describe('fetcher', () => {
   describe('#isGitHubBlobURL', () => {
     it('should detect GitHub blob URLs', () => {
       expect(Fetcher.isGitHubBlobURL('https://github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json')).toBe(
-        true
+        true,
       );
     });
 
@@ -54,7 +54,7 @@ describe('fetcher', () => {
 
     it("shouldn't detect raw GitHub URLs as a blob URL", () => {
       expect(
-        Fetcher.isGitHubBlobURL('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json')
+        Fetcher.isGitHubBlobURL('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json'),
       ).toBe(false);
     });
   });
@@ -104,13 +104,13 @@ describe('fetcher', () => {
     describe('GitHub URLs', () => {
       it('should resolve a GitHub blob URL to its accessible raw counterpart', () => {
         expect(new Fetcher('https://github.com/readmeio/oas-examples/blob/main/3.1/json/petstore.json').uri).toBe(
-          'https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json'
+          'https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json',
         );
       });
 
       it('should leave an already raw GitHub URL alone', () => {
         expect(
-          new Fetcher('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json').uri
+          new Fetcher('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json').uri,
         ).toBe('https://raw.githubusercontent.com/readmeio/oas-examples/main/3.1/json/petstore.json');
       });
     });
@@ -118,13 +118,13 @@ describe('fetcher', () => {
     describe('ReadMe registry UUID', () => {
       it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', () => {
         expect(new Fetcher('@petstore/v1.0#n6kvf10vakpemvplx').uri).toBe(
-          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
+          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx',
         );
       });
 
       it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', () => {
         expect(new Fetcher('@petstore#n6kvf10vakpemvplx').uri).toBe(
-          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx'
+          'https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx',
         );
       });
 
@@ -175,7 +175,7 @@ describe('fetcher', () => {
         fetchMock.get('http://example.com/unknown.json', { status: 404 });
 
         await expect(new Fetcher('http://example.com/unknown.json').load()).rejects.toThrow(
-          'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found'
+          'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found',
         );
 
         fetchMock.restore();

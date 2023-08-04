@@ -6,7 +6,8 @@
     "build": "npx lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
     "clean": "npx lerna clean",
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint . --ext .js,.ts; npm run lint:types",
+    "lint:types": "npm run lint:types --if-present --workspaces",
     "prepare": "husky install",
     "prettier": "prettier --list-different \"./**/**.{js,ts,md}\"",
     "prettier:write": "prettier --list-different --write \"./**/**.{js,ts,md}\"",
@@ -30,11 +31,11 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
-    "@readme/eslint-config": "^10.6.2",
+    "@readme/eslint-config": "^11.0.1",
     "alex": "^11.0.0",
     "eslint": "^8.44.0",
     "husky": "^8.0.3",
-    "prettier": "^2.8.0"
+    "prettier": "^3.0.1"
   },
   "commitlint": {
     "extends": [

@@ -49,7 +49,7 @@ Say you have the following snippet:
 
 ```js
 const sdk = require('api')(
-  'https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/__datasets__/query/openapi.json'
+  'https://raw.githubusercontent.com/readmeio/api/main/packages/httpsnippet-client-api/test/__datasets__/query/openapi.json',
 );
 
 sdk
@@ -112,7 +112,7 @@ module.exports = {
       const body = await streamToString(opts.body);
 
       return /--form-data-boundary-(.*)\r\nContent-Disposition: form-data; name="foo"; filename="hello.txt"\r\nContent-Type: text\/plain\r\n\r\nHello world!\n\r\n--form-data-boundary-(.*)--\r\n\r\n/.test(
-        body
+        body,
       );
     },
   },

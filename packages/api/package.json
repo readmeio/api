@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "debug:bin": "node -r ts-node/register src/bin.ts",
+    "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
     "prepack": "npm run build",
     "test": "jest --coverage $(find test -name '*.test.ts' -not -path '*/smoketest.test.ts')",
@@ -63,7 +64,6 @@
     "node-abort-controller": "^3.1.1",
     "oas": "^20.4.0",
     "ora": "^5.4.1",
-    "prettier": "^2.8.3",
     "prompts": "^2.4.2",
     "remove-undefined-objects": "^2.0.2",
     "semver": "^7.3.8",

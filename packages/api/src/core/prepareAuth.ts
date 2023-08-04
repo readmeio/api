@@ -26,7 +26,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
   // Does this operation require multiple forms of auth?
   if (security.every(s => Object.keys(s).length > 1)) {
     throw new Error(
-      "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support."
+      "Sorry, this operation currently requires multiple forms of authentication which this library doesn't yet support.",
     );
   }
 
@@ -54,7 +54,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
     const schemes = preparedSecurity.Basic.filter(s => usableSecuritySchemes.includes(s._key));
     if (!schemes.length) {
       throw new Error(
-        'Credentials for Basic Authentication were supplied but this operation requires another form of auth in that case, which this library does not yet support. This operation does, however, allow supplying a single auth token.'
+        'Credentials for Basic Authentication were supplied but this operation requires another form of auth in that case, which this library does not yet support. This operation does, however, allow supplying a single auth token.',
       );
     }
 
@@ -101,7 +101,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
 
     default:
       throw new Error(
-        `Sorry, this API currently uses a security scheme, ${scheme.type}, which this library doesn't yet support.`
+        `Sorry, this API currently uses a security scheme, ${scheme.type}, which this library doesn't yet support.`,
       );
   }
 
