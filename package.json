@@ -6,7 +6,7 @@
     "build": "npx lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
     "clean": "npx lerna clean",
-    "lint": "eslint . --ext .js,.ts; npm run lint:types",
+    "lint": "eslint . --ext .js,.ts; npm run lint:types; npm run prettier",
     "lint:types": "npm run lint:types --if-present --workspaces",
     "prepare": "husky install",
     "prettier": "prettier --list-different \"./**/**.{js,ts,md}\"",
