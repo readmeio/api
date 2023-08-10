@@ -17,6 +17,7 @@
  */
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
+import { describe, it, expect } from 'vitest';
 
 import TSGenerator from '../../../../../src/cli/codegen/languages/typescript';
 import realWorldAPIs from '../../../../datasets/real-world-apis.json';
@@ -54,6 +55,7 @@ if (args.chunks && args.chunk) {
 }
 
 describe('typescript smoketest', () => {
+  // eslint-disable-next-line vitest/require-hook
   dataset.forEach(({ name, url }) => {
     // The test timeout is huge on this because CI can be slow as some API definitions are huge and
     // can take a while to download + codegen.

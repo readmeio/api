@@ -1,6 +1,7 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import Oas from 'oas';
+import { describe, beforeAll, it, expect } from 'vitest';
 
 import prepareAuth from '../../src/core/prepareAuth';
 import loadSpec from '../helpers/load-spec';

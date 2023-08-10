@@ -5,6 +5,7 @@ import path from 'path';
 
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeAll, it, expect } from 'vitest';
 
 import Cache from '../src/cache';
 

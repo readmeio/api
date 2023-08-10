@@ -1,4 +1,5 @@
 import Oas from 'oas';
+import { describe, it, expect } from 'vitest';
 
 import getJSONSchemaDefaults from '../../src/core/getJSONSchemaDefaults';
 import loadSpec from '../helpers/load-spec';

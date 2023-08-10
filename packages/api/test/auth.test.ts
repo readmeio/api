@@ -2,6 +2,7 @@ import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeAll, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import api from '../src';
 import Cache from '../src/cache';
@@ -31,7 +32,7 @@ describe('#auth()', () => {
     fetchMock.restore();
   });
 
-  describe('API Keys', () => {
+  describe('API keys', () => {
     describe('in: query', () => {
       it('should allow you to supply auth', async () => {
         fetchMock.get(
@@ -135,7 +136,7 @@ describe('#auth()', () => {
   });
 
   it('should allow multiple calls to share an API key', async () => {
-    const endpointCall = jest.fn();
+    const endpointCall = vi.fn();
     fetchMock.get(
       {
         url: 'https://httpbin.org/anything/apiKey',
@@ -149,7 +150,7 @@ describe('#auth()', () => {
 
     sdk.auth(apiKey);
 
-    await sdk.getAnythingApikey().then(() => expect(endpointCall).toHaveBeenCalledOnce());
+    await sdk.getAnythingApikey().then(() => expect(endpointCall).toHaveBeenCalledTimes(1));
     await sdk.getAnythingApikey().then(() => expect(endpointCall).toHaveBeenCalledTimes(2));
   });
 
@@ -192,7 +193,7 @@ describe('#auth()', () => {
       // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the
       // quirks case we're testing is that you should be able to supply either a single OAuth2 token
       // or a username+password and it should be able to intelligently handle both.
-      // eslint-disable-next-line jest/no-standalone-expect
+      // eslint-disable-next-line vitest/no-standalone-expect
       expect(authQuirksOas.paths['/anything'].post.security).toStrictEqual([
         { oauth2: ['write:things'] },
         { basicAuth: [] },

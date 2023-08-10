@@ -4,6 +4,7 @@ import assert from 'assert';
 
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeAll, beforeEach, afterEach, it, expect, expectTypeOf } from 'vitest';
 
 import pkg from '../package.json';
 import api from '../src';
@@ -86,7 +87,7 @@ describe('api', () => {
   describe('#accessors', () => {
     it('should have a function for each http method', () => {
       ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'].forEach(method => {
-        expect(petstoreSDK[method]).toBeFunction();
+        expectTypeOf(petstoreSDK[method]).toBeFunction();
       });
     });
 
@@ -121,7 +122,7 @@ describe('api', () => {
         // `camelCase` option on `Operation.getOperationId()` should transform it into
         // `findPetById`.
         expect(petstore.paths['/pets/{id}'].get.operationId).toBe('find pet by id');
-        expect(petstoreSDK.findPetById).toBeFunction();
+        expectTypeOf(petstoreSDK.findPetById).toBeFunction();
       });
 
       it('should work for other methods', async () => {

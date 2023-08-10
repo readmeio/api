@@ -1,3 +1,1 @@
-import 'jest-extended';
-
-import './helpers/jest.matchers';
+import './helpers/vitest.matchers';

@@ -7,6 +7,7 @@ import path from 'path';
 import fetchMock from 'fetch-mock';
 import 'isomorphic-fetch';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
 import Storage from '../../src/cli/storage';
 import { PACKAGE_VERSION } from '../../src/packageInfo';

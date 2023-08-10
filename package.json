@@ -34,6 +34,7 @@
     "@readme/eslint-config": "^11.0.1",
     "alex": "^11.0.0",
     "eslint": "^8.44.0",
+    "eslint-plugin-vitest": "^0.2.8",
     "husky": "^8.0.3",
     "prettier": "^3.0.1"
   },
