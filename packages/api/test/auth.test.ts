@@ -184,16 +184,18 @@ describe('#auth()', () => {
   });
 
   describe('quirks', () => {
+    let authQuirksOas;
     let quirks;
 
     beforeAll(async () => {
-      const authQuirksOas = await loadSpec(require.resolve('./__fixtures__/definitions/auth-quirks.json'));
+      authQuirksOas = await loadSpec(require.resolve('./__fixtures__/definitions/auth-quirks.json'));
       quirks = api(authQuirksOas as unknown as OASDocument);
+    });
 
-      // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the
-      // quirks case we're testing is that you should be able to supply either a single OAuth2 token
-      // or a username+password and it should be able to intelligently handle both.
-      // eslint-disable-next-line vitest/no-standalone-expect
+    // Because the `POST /anything` operation allows either an OAuth2 token or Basic Auth the
+    // quirks case we're testing is that you should be able to supply either a single OAuth2 token
+    // or a username+password and it should be able to intelligently handle both.
+    it('should have an expected security setting definition for this quirks case', () => {
       expect(authQuirksOas.paths['/anything'].post.security).toStrictEqual([
         { oauth2: ['write:things'] },
         { basicAuth: [] },
