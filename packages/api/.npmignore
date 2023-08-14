@@ -4,5 +4,5 @@ test/
 .eslint*
 .gitignore
 .prettier*
-vitest.*
+vitest*
 example.js
