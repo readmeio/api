@@ -13,8 +13,8 @@
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
     "prepack": "npm run build",
-    "test": "vitest run --coverage",
-    "test:smoke": "vitest run --config=vitest-smoketest.config.ts ",
+    "test": "vitest --coverage",
+    "test:smoke": "vitest --config=vitest-smoketest.config.ts ",
     "version": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts"
   },
   "repository": {
