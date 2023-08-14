@@ -52,7 +52,6 @@ expect.extend({
   },
 
   toHaveCustomUserAgent(headers: string[]) {
-    // const { printReceived } = this.utils;
     const userAgent = headers['user-agent'];
     const pass = userAgent.match(/^api \(node\)\/(\d+.\d+(.\d+|unit-testing))$/);
 
