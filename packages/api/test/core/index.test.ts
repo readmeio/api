@@ -2,6 +2,7 @@ import assert from 'assert';
 
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import APICore from '../../src/core';
 import FetchError from '../../src/core/errors/fetchError';

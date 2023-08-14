@@ -1,10 +1,12 @@
 import os from 'os';
 
+import { describe, it, expect, vi } from 'vitest';
+
 import Cache from '../src/cache';
 
-jest.mock('find-cache-dir', () => {
-  return () => undefined;
-});
+vi.mock('find-cache-dir', () => ({
+  default: () => undefined,
+}));
 
 describe('cache (temp dir handling)', () => {
   // Since this test is mocking out the `find-cache-dir` module for a single test, it needs to be

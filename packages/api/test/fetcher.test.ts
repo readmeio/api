@@ -2,6 +2,7 @@ import assert from 'assert';
 import fs from 'fs/promises';
 
 import fetchMock from 'fetch-mock';
+import { describe, beforeAll, it, expect } from 'vitest';
 
 import Fetcher from '../src/fetcher';
 

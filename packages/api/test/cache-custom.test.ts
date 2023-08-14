@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 import fetchMock from 'fetch-mock';
+import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import api from '../src';
 import Cache from '../src/cache';

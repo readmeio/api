@@ -4,5 +4,5 @@ test/
 .eslint*
 .gitignore
 .prettier*
-jest.config.js
+vitest*
 example.js

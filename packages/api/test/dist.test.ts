@@ -2,6 +2,7 @@ import type { OASDocument } from 'oas/dist/rmoas.types';
 
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeAll, afterEach, it, expect } from 'vitest';
 
 import api from '../dist';
 import Cache from '../src/cache';

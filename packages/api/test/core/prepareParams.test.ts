@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 import Oas from 'oas';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 import prepareParams from '../../src/core/prepareParams';
 import payloadExamples from '../__fixtures__/definitions/payloads.json';

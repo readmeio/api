@@ -1,4 +1,3 @@
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "assertSDKFixture"] }] */
 import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
 
 import { promises as fs } from 'fs';
@@ -7,6 +6,7 @@ import path from 'path';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
+import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
 import Storage from '../../../../src/cli/storage';
@@ -79,7 +79,7 @@ describe('typescript', () => {
     });
 
     it('should install a `package.json` and the required packages', async () => {
-      const logger = jest.fn();
+      const logger = vi.fn();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
       const oas = await loadSpec(file).then(Oas.init);

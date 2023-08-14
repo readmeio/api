@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { docblockEscape, generateTypeName, wordWrap } from '../../../../../src/cli/codegen/languages/typescript/util';
 
 describe('ts codegen utils', () => {

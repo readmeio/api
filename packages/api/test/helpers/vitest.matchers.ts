@@ -1,6 +1,7 @@
 import type { ParameterObject } from 'oas/dist/rmoas.types';
 
 import caseless from 'caseless';
+import { expect } from 'vitest';
 
 interface CustomMatchers<R = unknown> {
   /**
@@ -29,15 +30,13 @@ interface CustomMatchers<R = unknown> {
   toHaveHeader(header: string, expected: RegExp | (string | number)[] | string): R;
 }
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> extends CustomMatchers<R> {}
-  }
+declare module 'vitest' {
+  interface Assertion<T = any> extends CustomMatchers<T> {}
+  interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
 
 expect.extend({
-  toBeDereferenced(this: jest.MatcherUtils, spec: ParameterObject[]) {
+  toBeDereferenced(spec: ParameterObject[]) {
     const pass = !spec.filter(obj => '$ref' in obj).length;
     if (!pass) {
       return {
@@ -52,39 +51,37 @@ expect.extend({
     };
   },
 
-  toHaveCustomUserAgent(this: jest.MatcherUtils, headers: string[]) {
-    const { printReceived } = this.utils;
+  toHaveCustomUserAgent(headers: string[]) {
     const userAgent = headers['user-agent'];
     const pass = userAgent.match(/^api \(node\)\/(\d+.\d+(.\d+|unit-testing))$/);
 
     if (!pass) {
       return {
-        message: () => `expected a custom \`user-agent\` header to be present.\n\n${printReceived(userAgent)}`,
+        message: () => `expected a custom \`user-agent\` header to be present.\n\nreceived: ${userAgent}`,
         pass: false,
       };
     }
 
     return {
-      message: () => `expected a custom \`user-agent\` header to not be present\n\n${printReceived(userAgent)}`,
+      message: () => `expected a custom \`user-agent\` header to not be present\n\nreceived: ${userAgent}`,
       pass: true,
     };
   },
 
-  toHaveHeader(this: jest.MatcherUtils, obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
-    const { printReceived } = this.utils;
+  toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
     const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
 
     // Header value should match a given regex.
     if (expected instanceof RegExp) {
       if (!expected.test(headers.get(header))) {
         return {
-          message: () => `expected header to match ${expected.source}\n\n${printReceived(header)}`,
+          message: () => `expected header to match ${expected.source}\n\nreceived: ${header}`,
           pass: false,
         };
       }
 
       return {
-        message: () => `expected header to not match ${expected.source}\n\n${printReceived(header)}`,
+        message: () => `expected header to not match ${expected.source}\n\nreceived: ${header}`,
         pass: true,
       };
     }
@@ -93,13 +90,13 @@ expect.extend({
     if (Array.isArray(expected)) {
       if (!expected.some(h => h === headers.get(header))) {
         return {
-          message: () => `expected header to be one of the following: ${expected}\n\n${printReceived(header)}`,
+          message: () => `expected header to be one of the following: ${expected}\n\nreceived: ${header}`,
           pass: false,
         };
       }
 
       return {
-        message: () => `expected header to not be one of the following: ${expected}\n\n${printReceived(header)}`,
+        message: () => `expected header to not be one of the following: ${expected}\n\nreceived: ${header}`,
         pass: true,
       };
     }
@@ -107,13 +104,13 @@ expect.extend({
     // Header value should match a given value.
     if (headers.get(header) !== expected) {
       return {
-        message: () => `expected header to be ${expected}\n\n${printReceived(header)}`,
+        message: () => `expected header to be ${expected}\n\nreceived: ${header}`,
         pass: false,
       };
     }
 
     return {
-      message: () => `expected header not to be ${expected}\n\n${printReceived(header)}`,
+      message: () => `expected header not to be ${expected}\n\nreceived: ${header}`,
       pass: true,
     };
   },
