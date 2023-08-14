@@ -89,7 +89,7 @@
     "@vitest/coverage-v8": "^0.34.1",
     "fetch-mock": "^9.11.0",
     "oas-normalize": "^8.3.2",
-    "type-fest": "^3.5.4",
+    "type-fest": "^4.2.0",
     "typescript": "^4.9.5",
     "unique-temp-dir": "^1.0.0",
     "vitest": "^0.34.1"
