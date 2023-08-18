@@ -5,8 +5,10 @@ import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
 
 import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';
 import contentType from 'content-type';
-import Oas from 'oas';
+import Oas, { utils } from 'oas';
 import stringifyObject from 'stringify-object';
+
+const { matchesMimeType } = utils;
 
 // This should really be an exported type in `oas`.
 type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';
@@ -224,10 +226,9 @@ const client: Client<APIOptions> = {
             return;
           }
         } else if (headerLower === 'accept') {
-          // If the `Accept` header here is not the default or first `Accept` header for the
-          // operations' request body then we should add it otherwise we can let the SDK handle it
-          // itself.
-          if (headers[header] === operation.getContentType()) {
+          // If the `Accept` header here is JSON-like header then we can remove it from the code
+          // snippet because `api` natively supports and prioritizes JSON over any other mime type.
+          if (matchesMimeType.json(headers[header] as string)) {
             delete headers[header];
             return;
           }
