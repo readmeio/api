@@ -332,6 +332,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
       if (typeof metadata === 'object' && !isEmpty(metadata)) {
         if (paramName in metadata) {
           value = metadata[paramName];
+          metadataHeaderParam = paramName;
         } else if (param.in === 'header') {
           // Headers are sent case-insensitive so we need to make sure that we're properly
           // matching them when detecting what our incoming payload looks like.
