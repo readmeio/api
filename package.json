@@ -36,6 +36,7 @@
     "alex": "^11.0.0",
     "eslint": "^8.44.0",
     "husky": "^8.0.3",
+    "lerna": "^7.1.5",
     "prettier": "^3.0.1"
   },
   "commitlint": {
