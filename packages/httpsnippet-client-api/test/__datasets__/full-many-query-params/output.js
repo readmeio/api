@@ -10,8 +10,7 @@ sdk.postAnything({
   baz: 'abc',
   key: 'value',
   'bar-cookie': 'baz',
-  'foo-cookie': 'bar',
-  accept: 'application/json'
+  'foo-cookie': 'bar'
 })
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

@@ -332,6 +332,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
       if (typeof metadata === 'object' && !isEmpty(metadata)) {
         if (paramName in metadata) {
           value = metadata[paramName];
+          metadataHeaderParam = paramName;
         } else if (param.in === 'header') {
           // Headers are sent case-insensitive so we need to make sure that we're properly
           // matching them when detecting what our incoming payload looks like.
@@ -379,9 +380,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
     // If there's any leftover metadata that hasn't been moved into form data for this request we
     // need to move it or else it'll get tossed.
     if (!isEmpty(metadata)) {
-      if (operation.isFormUrlEncoded()) {
-        params.formData = merge(params.formData, metadata);
-      } else if (typeof metadata === 'object') {
+      if (typeof metadata === 'object') {
         // If the user supplied an `accept` or `authorization` header themselves we should allow it
         // through. Normally these headers are automatically handled by `@readme/oas-to-har` but in
         // the event that maybe the user wants to return XML for an API that normally returns JSON
@@ -391,8 +390,14 @@ export default async function prepareParams(operation: Operation, body?: unknown
           const headerParam = Object.keys(metadata).find(m => m.toLowerCase() === headerName);
           if (headerParam) {
             params.header[headerName] = metadata[headerParam] as string;
+            // eslint-disable-next-line no-param-reassign
+            delete metadata[headerParam];
           }
         });
+      }
+
+      if (operation.isFormUrlEncoded()) {
+        params.formData = merge(params.formData, metadata);
       } else {
         // Any other remaining unused metadata will be unused because we don't know where to place
         // it in the request.

@@ -1,0 +1,104 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Core",
+    "description": "All included utility endpoints for Basiq partners",
+    "version": "3.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://au-api.basiq.io/"
+    }
+  ],
+  "paths": {
+    "/token": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Generate an auth token",
+        "description": "Use this endpoint to retrieve a token that will be passed as authorization header for Basiq API",
+        "operationId": "postToken",
+        "parameters": [
+          {
+            "name": "basiq-version",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "scope": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "client_access": {
+                  "summary": "For all client side requests",
+                  "value": {
+                    "scope": "CLIENT_ACCESS",
+                    "userId": "6dd30ce4-d4ba-11ec-9d64-0242ac120002"
+                  }
+                },
+                "server_access": {
+                  "summary": "For all server side requests",
+                  "value": {
+                    "scope": "SERVER_ACCESS"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "x-default": "Basic NjMxMjNmMWMtZjYxMy00ZjMyLWFiYzUtYzBhZDdhYTY2YmU1OjQ3NWYwMzhkLTBlZmItNGM1ZS1iMzQ0LTAzMzYxOTkyYTRlMw=="
+      },
+      "services_token": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    },
+    {
+      "services_token": []
+    }
+  ],
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true,
+    "samples-enabled": true,
+    "samples-languages": ["curl", "node", "ruby", "javascript", "python"]
+  }
+}

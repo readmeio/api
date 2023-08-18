@@ -69,7 +69,7 @@ const mock: SnippetMock = {
         cookie: 'bar-cookie=baz; foo-cookie=bar',
       },
       functionMatcher: (url, opts) => {
-        return opts.body === 'foo=bar&accept=application%2Fjson';
+        return opts.body === 'foo=bar';
       },
     },
     res: {

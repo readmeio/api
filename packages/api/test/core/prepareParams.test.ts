@@ -379,6 +379,41 @@ describe('#prepareParams', () => {
       });
     });
 
+    describe('quirks', () => {
+      it('should not send special headers in body payloads', async () => {
+        const basiq = await import('../__fixtures__/definitions/basiq.json').then(Oas.init);
+        await basiq.dereference();
+
+        const operation = basiq.operation('/token', 'post');
+
+        await expect(
+          prepareParams(operation, { scope: 'SERVER_ACCESS' }, { accept: 'application/json', 'BASIQ-version': '3.0' }),
+        ).resolves.toStrictEqual({
+          formData: {
+            scope: 'SERVER_ACCESS',
+          },
+          header: {
+            accept: 'application/json',
+            'basiq-version': '3.0',
+          },
+        });
+      });
+
+      it('should not duplicate a supplied header parameter if that header casing matches the spec', async () => {
+        const basiq = await import('../__fixtures__/definitions/basiq.json').then(Oas.init);
+        await basiq.dereference();
+
+        const operation = basiq.operation('/token', 'post');
+
+        await expect(
+          prepareParams(operation, { scope: 'scope', userId: 'userid' }, { 'basiq-version': '3.0' }),
+        ).resolves.toStrictEqual({
+          formData: { scope: 'scope', userId: 'userid' },
+          header: { 'basiq-version': '3.0' },
+        });
+      });
+    });
+
     describe('`accept` header overrides', () => {
       it('should support supplying an `accept` header parameter', async () => {
         const operation = parameterStyle.operation('/anything/headers', 'get');
