@@ -16,7 +16,7 @@
     "pretest": "npm run build",
     "test": "npx lerna run test --stream",
     "test:smoke": "npm run test:smoke --workspace=packages/api",
-    "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "__version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
