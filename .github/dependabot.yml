@@ -22,7 +22,7 @@ updates:
     labels:
       - dependencies
     groups:
-      minor-developent-deps:
+      minor-development-deps:
         dependency-type: 'development'
         update-types:
           - minor
