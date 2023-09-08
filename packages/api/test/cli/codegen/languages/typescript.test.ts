@@ -102,7 +102,7 @@ describe('typescript', () => {
         types: './index.d.ts',
       });
 
-      expect(logger).toHaveBeenCalledWith('npm install --save --dry-run api json-schema-to-ts@beta oas');
+      expect(logger).toHaveBeenCalledWith('npm install --save --dry-run api json-schema-to-ts oas');
 
       /**
        * NPM has an incredibly difficult time trying to resolve this temp dir when installing
