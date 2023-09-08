@@ -270,7 +270,7 @@ describe('storage', () => {
         expect(storage.getFromLockfile()).toStrictEqual({
           identifier: 'readme-yaml',
           source: 'http://example.com/readme.yaml',
-          integrity: 'sha512-UFZZJXO5wbz/bx6qLgZOMih0Qxd78fRRCjaSV1uSjOzpmV5AGWPXte508GMCQOYOEENESqtgpTyHAkzC1lJWWQ==',
+          integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -290,7 +290,7 @@ describe('storage', () => {
         expect(storage.getFromLockfile()).toStrictEqual({
           identifier: 'readme',
           source: file,
-          integrity: 'sha512-UFZZJXO5wbz/bx6qLgZOMih0Qxd78fRRCjaSV1uSjOzpmV5AGWPXte508GMCQOYOEENESqtgpTyHAkzC1lJWWQ==',
+          integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -331,7 +331,7 @@ describe('storage', () => {
         expect(storage.getFromLockfile()).toStrictEqual({
           identifier: 'readme-yaml',
           source: file,
-          integrity: 'sha512-UFZZJXO5wbz/bx6qLgZOMih0Qxd78fRRCjaSV1uSjOzpmV5AGWPXte508GMCQOYOEENESqtgpTyHAkzC1lJWWQ==',
+          integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
         });
       });

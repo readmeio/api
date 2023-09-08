@@ -66,12 +66,12 @@ describe('cache', () => {
 
         await expect(cacheStore.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '2.0.0',
-          title: 'API Endpoints',
+          version: '4.355.0',
+          title: 'ReadMe API 🦉',
           contact: {
-            email: 'support@readme.io',
             name: 'API Support',
-            url: 'https://docs.readme.com/docs/contact-support',
+            url: 'https://docs.readme.com/main/docs/need-more-support',
+            email: 'support@readme.io',
           },
         });
 
@@ -90,12 +90,12 @@ describe('cache', () => {
 
         await expect(cacheStore.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '2.0.0',
-          title: 'API Endpoints',
+          version: '4.355.0',
+          title: 'ReadMe API 🦉',
           contact: {
-            email: 'support@readme.io',
             name: 'API Support',
-            url: 'https://docs.readme.com/docs/contact-support',
+            url: 'https://docs.readme.com/main/docs/need-more-support',
+            email: 'support@readme.io',
           },
         });
 
