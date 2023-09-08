@@ -45,7 +45,7 @@
     "commander": "^11.0.0",
     "datauri": "^4.1.0",
     "execa": "^5.1.1",
-    "fetch-har": "^8.1.5",
+    "fetch-har": "^9.0.0",
     "figures": "^3.2.0",
     "find-cache-dir": "^3.3.1",
     "form-data-encoder": "^1.7.2",
