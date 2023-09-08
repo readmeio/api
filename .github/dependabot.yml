@@ -54,6 +54,9 @@ updates:
       - dependency-name: formdata-node
         versions:
           - '>= 5'
+      - dependency-name: get-stream
+        versions:
+          - '>= 7'
       - dependency-name: ora
         versions:
           - '>= 6'
