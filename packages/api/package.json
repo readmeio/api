@@ -42,7 +42,7 @@
     "@readme/openapi-parser": "^2.4.0",
     "caseless": "^0.12.0",
     "chalk": "^4.1.2",
-    "commander": "^10.0.0",
+    "commander": "^11.0.0",
     "datauri": "^4.1.0",
     "execa": "^5.1.1",
     "fetch-har": "^8.1.5",
