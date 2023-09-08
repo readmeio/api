@@ -33,7 +33,7 @@ updates:
     ignore:
       # The following are packages that we're ignoring updates from because they've moved to being
       # ESM-only packages and we can't yet upgrade them.
-      - dependency-name: "@types/find-cache-dir"
+      - dependency-name: '@types/find-cache-dir'
         versions:
           - '>= 4'
       - dependency-name: chalk
