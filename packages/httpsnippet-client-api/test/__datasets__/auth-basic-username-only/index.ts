@@ -25,12 +25,12 @@ const mock: SnippetMock = {
       { name: 'perPage', value: '10' },
       { name: 'page', value: '1' },
     ],
-    url: 'https://dash.readme.io/api/v1/api-specification',
+    url: 'https://dash.readme.com/api/v1/api-specification',
   },
   definition: definition as OASDocument,
   fetch: {
     req: {
-      url: 'https://dash.readme.io/api/v1/api-specificatio',
+      url: 'https://dash.readme.com/api/v1/api-specificatio',
       method: 'get',
       query: {
         perPage: 10,

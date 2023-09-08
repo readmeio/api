@@ -97,7 +97,7 @@ If for some reason this file gets lost, or the accessor you're supplying to `api
 {
   "d6b93e95fa1a7efdce6d1406dc599923": {
     "hash": "cbb821db3609f8983ce1a372dadd122c",
-    "original": "https://dash.readme.io/api/v1/api-registry/nysezql0wwo236",
+    "original": "https://dash.readme.com/api/v1/api-registry/nysezql0wwo236",
     "title": "API Endpoints",
     "version": "2.0.0"
   }

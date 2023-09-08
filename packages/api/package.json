@@ -72,7 +72,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "@readme/oas-examples": "^5.9.0",
+    "@readme/oas-examples": "^5.12.0",
     "@types/caseless": "^0.12.2",
     "@types/find-cache-dir": "^3.2.1",
     "@types/js-yaml": "^4.0.5",

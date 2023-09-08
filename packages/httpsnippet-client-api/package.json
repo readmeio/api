@@ -33,7 +33,7 @@
     "oas": "^20.0.0"
   },
   "devDependencies": {
-    "@readme/oas-examples": "^5.9.0",
+    "@readme/oas-examples": "^5.12.0",
     "@readme/openapi-parser": "^2.4.0",
     "@types/content-type": "^1.1.5",
     "@types/stringify-object": "^4.0.2",

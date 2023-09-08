@@ -4,7 +4,7 @@ import definition from '../../../__fixtures__/definitions/simple.json';
 class SDK {
     constructor() {
         this.spec = Oas.init(definition);
-        this.core = new APICore(this.spec, 'simple-js-esm/1.0.0 (api/6.1.0)');
+        this.core = new APICore(this.spec, 'simple-js-esm/1.0.0 (api/<<package version>>)');
     }
     /**
      * Optionally configure various options that the SDK allows.

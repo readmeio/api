@@ -10,7 +10,7 @@ class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'readme/2.0.0 (api/<<package version>>)');
+    this.core = new APICore(this.spec, 'readme/4.355.0 (api/<<package version>>)');
   }
 
   /**
@@ -98,7 +98,7 @@ class SDK {
 
   /**
    * Upload an API specification to ReadMe. Or, to use a newer solution see
-   * https://docs.readme.com/docs/automatically-sync-api-specification-with-github.
+   * https://docs.readme.com/main/docs/rdme.
    *
    * @summary Upload specification
    * @throws FetchError<400, types.UploadApiSpecificationResponse400> There was a validation error during upload.
@@ -330,7 +330,7 @@ class SDK {
    * @throws FetchError<403, types.GetDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  getDoc(metadata: types.GetDocMetadataParam): Promise<FetchResponse<number, unknown>> {
+  getDoc(metadata: types.GetDocMetadataParam): Promise<FetchResponse<200, types.DocSchemaResponse>> {
     return this.core.fetch('/docs/{slug}', 'get', metadata);
   }
 
@@ -343,7 +343,7 @@ class SDK {
    * @throws FetchError<403, types.UpdateDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  updateDoc(body: types.Doc, metadata: types.UpdateDocMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateDoc(body: types.DocSchemaPut, metadata: types.UpdateDocMetadataParam): Promise<FetchResponse<200, types.DocSchemaResponse>> {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -369,7 +369,7 @@ class SDK {
    * @throws FetchError<403, types.GetProductionDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  getProductionDoc(metadata: types.GetProductionDocMetadataParam): Promise<FetchResponse<number, unknown>> {
+  getProductionDoc(metadata: types.GetProductionDocMetadataParam): Promise<FetchResponse<200, types.DocSchemaResponse>> {
     return this.core.fetch('/docs/{slug}/production', 'get', metadata);
   }
 
@@ -381,7 +381,7 @@ class SDK {
    * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
    * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
    */
-  createDoc(body: types.Doc, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<number, unknown>> {
+  createDoc(body: types.DocSchemaPost, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<201, types.DocSchemaResponse>> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -397,17 +397,6 @@ class SDK {
   }
 
   /**
-   * Returns with all of the error page types for this project.
-   *
-   * @summary Get errors
-   * @throws FetchError<401, types.GetErrorsResponse401> Unauthorized
-   * @throws FetchError<403, types.GetErrorsResponse403> Unauthorized
-   */
-  getErrors(): Promise<FetchResponse<number, unknown>> {
-    return this.core.fetch('/errors', 'get');
-  }
-
-  /**
    * Returns project data for the API key.
    *
    * @summary Get metadata about the current project
@@ -416,6 +405,15 @@ class SDK {
    */
   getProject(): Promise<FetchResponse<200, types.CondensedProjectData>> {
     return this.core.fetch('/', 'get');
+  }
+
+  /**
+   * Returns a copy of our OpenAPI Definition.
+   *
+   * @summary Get our OpenAPI Definition
+   */
+  getAPISchema(): Promise<FetchResponse<200, types.GetApiSchemaResponse200>> {
+    return this.core.fetch('/schema', 'get');
   }
 
   /**
@@ -486,4 +484,4 @@ const createSDK = (() => { return new SDK(); })()
 
 export default createSDK;
 
-export type { Apply, BaseError, Category, Changelog, CondensedProjectData, CreateCategoryMetadataParam, CreateCustomPageResponse401, CreateCustomPageResponse403, CreateDocMetadataParam, CreateDocResponse401, CreateDocResponse403, CreateVersionResponse400, CreateVersionResponse401, CreateVersionResponse403, CustomPage, DeleteApiSpecificationMetadataParam, DeleteApiSpecificationResponse401, DeleteApiSpecificationResponse403, DeleteCategoryMetadataParam, DeleteChangelogMetadataParam, DeleteCustomPageMetadataParam, DeleteCustomPageResponse401, DeleteCustomPageResponse403, DeleteDocMetadataParam, DeleteDocResponse401, DeleteDocResponse403, DeleteVersionMetadataParam, DeleteVersionResponse401, DeleteVersionResponse403, Doc, ErrorApikeyEmpty, ErrorApikeyMismatch, ErrorApikeyNotfound, ErrorApplyInvalidEmail, ErrorApplyInvalidJob, ErrorApplyInvalidName, ErrorCategoryInvalid, ErrorCategoryNotfound, ErrorChangelogInvalid, ErrorChangelogNotfound, ErrorCustompageInvalid, ErrorCustompageNotfound, ErrorDocInvalid, ErrorDocNotfound, ErrorEndpointNotfound, ErrorInternalError, ErrorProjectNeedsstaging, ErrorProjectNotfound, ErrorRegistryInvalid, ErrorRegistryNotfound, ErrorSpecFileEmpty, ErrorSpecIdDuplicate, ErrorSpecIdInvalid, ErrorSpecInvalid, ErrorSpecInvalidSchema, ErrorSpecNotfound, ErrorSpecTimeout, ErrorSpecVersionNotfound, ErrorUnexpectedError, ErrorVersionCantDemoteStable, ErrorVersionCantRemoveStable, ErrorVersionDuplicate, ErrorVersionEmpty, ErrorVersionForkEmpty, ErrorVersionForkNotfound, ErrorVersionInvalid, ErrorVersionNotfound, GetApiRegistryMetadataParam, GetApiRegistryResponse200, GetApiSpecificationMetadataParam, GetApiSpecificationResponse200, GetApiSpecificationResponse401, GetApiSpecificationResponse403, GetCategoriesMetadataParam, GetCategoriesResponse200, GetCategoryDocsMetadataParam, GetCategoryMetadataParam, GetChangelogMetadataParam, GetChangelogsMetadataParam, GetChangelogsResponse200, GetCustomPageMetadataParam, GetCustomPageResponse401, GetCustomPageResponse403, GetCustomPagesMetadataParam, GetCustomPagesResponse200, GetCustomPagesResponse401, GetCustomPagesResponse403, GetDocMetadataParam, GetDocResponse401, GetDocResponse403, GetErrorsResponse401, GetErrorsResponse403, GetOpenRolesResponse200, GetProductionDocMetadataParam, GetProductionDocResponse401, GetProductionDocResponse403, GetProjectResponse401, GetProjectResponse403, GetVersionMetadataParam, GetVersionResponse401, GetVersionResponse403, GetVersionsResponse401, GetVersionsResponse403, JobOpening, SearchDocsMetadataParam, SearchDocsResponse401, SearchDocsResponse403, UpdateApiSpecificationBodyParam, UpdateApiSpecificationMetadataParam, UpdateApiSpecificationResponse400, UpdateApiSpecificationResponse401, UpdateApiSpecificationResponse403, UpdateCategoryMetadataParam, UpdateChangelogMetadataParam, UpdateCustomPageMetadataParam, UpdateCustomPageResponse401, UpdateCustomPageResponse403, UpdateDocMetadataParam, UpdateDocResponse401, UpdateDocResponse403, UpdateVersionMetadataParam, UpdateVersionResponse401, UpdateVersionResponse403, UploadApiSpecificationBodyParam, UploadApiSpecificationMetadataParam, UploadApiSpecificationResponse400, UploadApiSpecificationResponse401, UploadApiSpecificationResponse403, Version } from './types';
+export type { Apply, BaseError, Category, Changelog, CondensedProjectData, CreateCategoryMetadataParam, CreateCustomPageResponse401, CreateCustomPageResponse403, CreateDocMetadataParam, CreateDocResponse401, CreateDocResponse403, CreateVersionResponse400, CreateVersionResponse401, CreateVersionResponse403, CustomPage, DeleteApiSpecificationMetadataParam, DeleteApiSpecificationResponse401, DeleteApiSpecificationResponse403, DeleteCategoryMetadataParam, DeleteChangelogMetadataParam, DeleteCustomPageMetadataParam, DeleteCustomPageResponse401, DeleteCustomPageResponse403, DeleteDocMetadataParam, DeleteDocResponse401, DeleteDocResponse403, DeleteVersionMetadataParam, DeleteVersionResponse401, DeleteVersionResponse403, DocSchemaPost, DocSchemaPut, DocSchemaResponse, ErrorApikeyEmpty, ErrorApikeyMismatch, ErrorApikeyNotfound, ErrorApplyInvalidEmail, ErrorApplyInvalidJob, ErrorApplyInvalidName, ErrorCategoryInvalid, ErrorCategoryNotfound, ErrorChangelogInvalid, ErrorChangelogNotfound, ErrorCustompageInvalid, ErrorCustompageNotfound, ErrorDocInvalid, ErrorDocNotfound, ErrorEndpointNotfound, ErrorInternalError, ErrorProjectNeedsstaging, ErrorProjectNotfound, ErrorRateLimited, ErrorRegistryInvalid, ErrorRegistryNotfound, ErrorSpecFileEmpty, ErrorSpecIdDuplicate, ErrorSpecIdInvalid, ErrorSpecInvalid, ErrorSpecInvalidSchema, ErrorSpecNotfound, ErrorSpecTimeout, ErrorSpecVersionNotfound, ErrorUnexpectedError, ErrorVersionCantDemoteStable, ErrorVersionCantRemoveStable, ErrorVersionDuplicate, ErrorVersionEmpty, ErrorVersionForkEmpty, ErrorVersionForkNotfound, ErrorVersionInvalid, ErrorVersionNotfound, GetApiRegistryMetadataParam, GetApiRegistryResponse200, GetApiSchemaResponse200, GetApiSpecificationMetadataParam, GetApiSpecificationResponse200, GetApiSpecificationResponse401, GetApiSpecificationResponse403, GetCategoriesMetadataParam, GetCategoriesResponse200, GetCategoryDocsMetadataParam, GetCategoryMetadataParam, GetChangelogMetadataParam, GetChangelogsMetadataParam, GetChangelogsResponse200, GetCustomPageMetadataParam, GetCustomPageResponse401, GetCustomPageResponse403, GetCustomPagesMetadataParam, GetCustomPagesResponse200, GetCustomPagesResponse401, GetCustomPagesResponse403, GetDocMetadataParam, GetDocResponse401, GetDocResponse403, GetOpenRolesResponse200, GetProductionDocMetadataParam, GetProductionDocResponse401, GetProductionDocResponse403, GetProjectResponse401, GetProjectResponse403, GetVersionMetadataParam, GetVersionResponse401, GetVersionResponse403, GetVersionsResponse401, GetVersionsResponse403, JobOpening, SearchDocsMetadataParam, SearchDocsResponse401, SearchDocsResponse403, UpdateApiSpecificationBodyParam, UpdateApiSpecificationMetadataParam, UpdateApiSpecificationResponse400, UpdateApiSpecificationResponse401, UpdateApiSpecificationResponse403, UpdateCategoryMetadataParam, UpdateChangelogMetadataParam, UpdateCustomPageMetadataParam, UpdateCustomPageResponse401, UpdateCustomPageResponse403, UpdateDocMetadataParam, UpdateDocResponse401, UpdateDocResponse403, UpdateVersionMetadataParam, UpdateVersionResponse401, UpdateVersionResponse403, UploadApiSpecificationBodyParam, UploadApiSpecificationMetadataParam, UploadApiSpecificationResponse400, UploadApiSpecificationResponse401, UploadApiSpecificationResponse403, Version } from './types';
