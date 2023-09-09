@@ -5,8 +5,10 @@
     "declaration": true,
     "esModuleInterop": true,
     "lib": ["dom", "es2020"],
+    "moduleResolution": "Bundler",
     "noImplicitAny": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "target": "ES2020"
   },
   "include": ["./src/**/*"]
 }

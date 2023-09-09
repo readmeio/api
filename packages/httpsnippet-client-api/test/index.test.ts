@@ -1,8 +1,8 @@
 /* eslint-disable global-require */
 import type { HarRequest, Request } from '@readme/httpsnippet';
-import type { Client } from '@readme/httpsnippet/dist/targets/targets';
+import type { Client } from '@readme/httpsnippet/targets';
 import type { MockMatcher, MockOptions } from 'fetch-mock';
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import { readdirSync } from 'fs';
 import fs from 'fs/promises';
