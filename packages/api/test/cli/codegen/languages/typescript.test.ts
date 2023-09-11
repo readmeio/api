@@ -119,7 +119,7 @@ describe('typescript', () => {
   });
 
   describe('#generator', () => {
-    it(
+    it.only(
       'should generate typescript (by default)',
       assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts'),
     );

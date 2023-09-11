@@ -1,6 +1,6 @@
 import type { ConfigOptions } from './core';
 import type { Operation } from 'oas';
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import Oas from 'oas';
 
@@ -195,9 +195,6 @@ class Sdk {
   }
 }
 
-// Why `export` vs `export default`? If we leave this as `export` then TS will transpile it into
-// a `module.exports` export so that when folks load this they don't need to load it as
-// `require('api').default`.
-export = (uri: string | OASDocument, opts: SDKOptions = {}) => {
+export default function api(uri: string | OASDocument, opts: SDKOptions = {}) {
   return new Sdk(uri, opts).load();
-};
+}

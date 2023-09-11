@@ -1,6 +1,6 @@
 import type { ReadStream } from 'fs';
 import type { Operation } from 'oas';
-import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
+import type { ParameterObject, SchemaObject } from 'oas/rmoas.types';
 
 import fs from 'fs';
 import path from 'path';

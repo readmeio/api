@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import Oas from 'oas';
 import { describe, beforeAll, it, expect } from 'vitest';
