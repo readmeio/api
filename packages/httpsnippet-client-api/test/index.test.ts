@@ -13,7 +13,6 @@ import { HTTPSnippet, addTargetClient } from '@readme/httpsnippet';
 import readme from '@readme/oas-examples/3.0/json/readme.json';
 import openapiParser from '@readme/openapi-parser';
 import fetchMock from 'fetch-mock';
-import 'isomorphic-fetch';
 import rimraf from 'rimraf';
 import { describe, afterEach, beforeEach, expect, it, vi } from 'vitest';
 
