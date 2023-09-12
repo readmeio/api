@@ -80,16 +80,8 @@ describe('fetcher', () => {
         .load()
         .then(() => assert.fail())
         .catch(err => {
-          // The native `fetch` implementation in Node 18 returns a different error, with the new
-          // `Error.cause` data, so we should make sure that we're catching that case instead of
-          // the `node-fetch` error message.
-          const isNode18 = Number(process.versions.node.split('.')[0]) >= 18;
-          if (isNode18) {
-            expect(err.message).toBe('fetch failed');
-            expect(err.cause.message).toBe('unknown scheme');
-          } else {
-            expect(err.message).toBe('Only HTTP(S) protocols are supported');
-          }
+          expect(err.message).toBe('fetch failed');
+          expect(err.cause.message).toBe('unknown scheme');
         });
     });
 

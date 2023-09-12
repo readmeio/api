@@ -1,7 +1,7 @@
 import type { SnippetMock } from '../../index.test';
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import { streamToString } from '../../helpers/fetch-mock';
+import formDataToString from 'formdata-to-string';
 
 import definition from './openapi.json';
 
@@ -35,16 +35,22 @@ const mock: SnippetMock = {
     req: {
       url: 'https://httpbin.org/anything',
       method: 'POST',
-      /* headers: { // `fetch-mock` doesn't support regex matching on headers
-        'content-type': /multipart\/form-data; boundary=form-data-boundary-(.*)/,
-      }, */
       // @ts-expect-error Types don't reflect it but `fetch-mock` supports async function matchers.
-      functionMatcher: async (url, opts) => {
-        const body = await streamToString(opts.body);
+      functionMatcher: async (url, { body }: { body: FormData }) => {
+        const content = await formDataToString(body);
 
-        return /--form-data-boundary-(.*)\r\nContent-Disposition: form-data; name="foo"\r\n\r\nbar\r\n--form-data-boundary-(.*)--\r\n\r\n/.test(
-          body,
-        );
+        // A fun thing about `fetch-mock` and these undocumented async matchers is that it doesn't
+        // look at what you're returning so we could return `false` here and it would think that
+        // the request was matched. Very cool.
+        if (
+          !/------formdata-undici-(.*)\r\nContent-Disposition: form-data; name="foo"\r\n\r\nbar\r\n------formdata-undici-(.*)--/.test(
+            content,
+          )
+        ) {
+          throw new Error('The FormData payload does not match what was expected.');
+        }
+
+        return true;
       },
     },
     res: {

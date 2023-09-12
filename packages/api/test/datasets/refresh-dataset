@@ -7,9 +7,8 @@
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-param-reassign */
+/* eslint-disable vitest/require-hook */
 const fs = require('fs');
-
-require('isomorphic-fetch');
 
 fetch('https://api.apis.guru/v2/list.json')
   .then(response => {

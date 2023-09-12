@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 
 import OpenAPIParser from '@readme/openapi-parser';
-import 'isomorphic-fetch';
 import yaml from 'js-yaml';
 
 export default class Fetcher {
