@@ -2,8 +2,6 @@
   "name": "api",
   "version": "6.1.1",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "bin": {
     "api": "./bin/api"
   },
@@ -47,7 +45,6 @@
     "execa": "^5.1.1",
     "fetch-har": "^10.0.0",
     "figures": "^3.2.0",
-    "find-cache-dir": "^3.3.1",
     "get-stream": "^6.0.1",
     "js-yaml": "^4.1.0",
     "json-schema-to-ts": "^2.9.2",
@@ -70,7 +67,6 @@
   "devDependencies": {
     "@readme/oas-examples": "^5.12.0",
     "@types/caseless": "^0.12.3",
-    "@types/find-cache-dir": "^3.2.1",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash.camelcase": "^4.3.7",
     "@types/lodash.deburr": "^4.1.7",
