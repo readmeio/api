@@ -24,21 +24,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything',
-      method: 'post',
-      headers: {
-        'content-type': 'text/plain',
-      },
-      functionMatcher: (url, opts) => {
-        return opts.body === 'Hello World';
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

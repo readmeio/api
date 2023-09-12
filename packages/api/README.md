@@ -36,18 +36,6 @@ petstore.listPets().then(({ data }) => {
 });
 ```
 
-Or you can use it dynamically (though you won't have fancy TypeScript types to help you out!):
-
-```js
-const petstore = require('api')(
-  'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json',
-);
-
-petstore.listPets().then(({ data }) => {
-  console.log(`My pets name is ${data[0].name}!`);
-});
-```
-
 The ESM syntax is supported as well:
 
 ```js

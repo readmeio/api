@@ -31,20 +31,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything?key=value',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything',
-      method: 'GET',
-      query: {
-        key: 'value',
-        foo: ['bar', 'baz'],
-        baz: 'abc',
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

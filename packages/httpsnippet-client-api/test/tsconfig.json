@@ -2,9 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noImplicitAny": false,
-    "module": "Node16",
-    "resolveJsonModule": true,
-    "target": "ES2022"
+    "resolveJsonModule": true
   },
   "include": ["../src/**/*", "*.ts", "**/*"],
   "exclude": ["__fixtures__/sdk/"]

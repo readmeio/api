@@ -5,8 +5,8 @@ import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 
-import Fetcher from '../../fetcher';
 import codegen from '../codegen';
+import Fetcher from '../fetcher';
 import promptTerminal from '../lib/prompt';
 import logger from '../logger';
 import Storage from '../storage';

@@ -32,22 +32,6 @@ const mock: SnippetMock = {
     url: 'http://petstore.swagger.io/v2/pet/findByStatus',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'http://petstore.swagger.io/v2/pet/findByStatus',
-      method: 'GET',
-      query: {
-        status: 'available',
-      },
-      headers: {
-        accept: 'application/xml',
-        authorization: 'Bearer 123',
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

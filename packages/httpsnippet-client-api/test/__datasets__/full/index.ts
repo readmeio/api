@@ -55,27 +55,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything?key=value',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything',
-      method: 'post',
-      query: {
-        key: 'value',
-        foo: ['bar', 'baz'],
-        baz: 'abc',
-      },
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        cookie: 'bar-cookie=baz; foo-cookie=bar',
-      },
-      functionMatcher: (url, opts) => {
-        return opts.body === 'foo=bar';
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;
