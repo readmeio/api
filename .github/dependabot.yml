@@ -48,12 +48,6 @@ updates:
       - dependency-name: find-cache-dir
         versions:
           - '>= 4'
-      - dependency-name: form-data-encoder
-        versions:
-          - '>= 2'
-      - dependency-name: formdata-node
-        versions:
-          - '>= 5'
       - dependency-name: get-stream
         versions:
           - '>= 7'

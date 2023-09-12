@@ -1,4 +1,3 @@
-import 'isomorphic-fetch';
 import { describe, beforeEach, it, expect } from 'vitest';
 
 import parseResponse from '../../src/core/parseResponse';
