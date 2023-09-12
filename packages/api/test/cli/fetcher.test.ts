@@ -4,9 +4,8 @@ import fs from 'fs/promises';
 import fetchMock from 'fetch-mock';
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import Fetcher from '../src/fetcher';
-
-import loadSpec from './helpers/load-spec';
+import Fetcher from '../../src/cli/fetcher';
+import loadSpec from '../helpers/load-spec';
 
 let readmeSpec;
 

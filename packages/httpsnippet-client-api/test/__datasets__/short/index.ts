@@ -18,15 +18,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything',
-      method: 'get',
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

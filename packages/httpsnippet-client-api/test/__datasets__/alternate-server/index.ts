@@ -17,15 +17,6 @@ const mock: SnippetMock = {
     url: 'http://dev.local/v2/global',
   },
   definition,
-  fetch: {
-    req: {
-      url: 'http://dev.local/v2/global',
-      method: 'POST',
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

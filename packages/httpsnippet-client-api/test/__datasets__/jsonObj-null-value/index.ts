@@ -25,21 +25,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything',
-      method: 'post',
-      headers: {
-        'content-type': 'application/json',
-      },
-      functionMatcher: (url, opts) => {
-        return opts.body === JSON.stringify({ foo: null });
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

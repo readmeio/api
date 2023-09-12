@@ -7,8 +7,9 @@ import makeDir from 'make-dir';
 import ssri from 'ssri';
 import validateNPMPackageName from 'validate-npm-package-name';
 
-import Fetcher from '../fetcher';
 import { PACKAGE_VERSION } from '../packageInfo';
+
+import Fetcher from './fetcher';
 
 export default class Storage {
   static dir: string;

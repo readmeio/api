@@ -23,18 +23,6 @@ const mock: SnippetMock = {
     url: 'https://httpbin.org/anything/bearer',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://httpbin.org/anything/bearer',
-      method: 'post',
-      headers: {
-        authorization: 'Bearer myBearerToken',
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;

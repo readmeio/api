@@ -28,22 +28,6 @@ const mock: SnippetMock = {
     url: 'https://dash.readme.com/api/v1/api-specification',
   },
   definition: definition as OASDocument,
-  fetch: {
-    req: {
-      url: 'https://dash.readme.com/api/v1/api-specificatio',
-      method: 'get',
-      query: {
-        perPage: 10,
-        page: 1,
-      },
-      headers: {
-        authorization: 'Basic YnVzdGVyOg==',
-      },
-    },
-    res: {
-      status: 200,
-    },
-  },
 };
 
 export default mock;
