@@ -4,7 +4,7 @@
     "noImplicitAny": false,
     "module": "Node16",
     "resolveJsonModule": true,
-    "target": "ES2015"
+    "target": "ES2022"
   },
   "include": ["../src/**/*", "*.ts", "**/*"],
   "exclude": ["__fixtures__/sdk/"]
