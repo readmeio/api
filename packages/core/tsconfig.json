@@ -4,9 +4,10 @@
     "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
-    "lib": ["DOM", "ES2020"],
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "noImplicitAny": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "strict": false
   },
   "include": ["./src/**/*"]
 }

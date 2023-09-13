@@ -1,14 +1,14 @@
 import assert from 'assert';
 
+import { responses as mockResponse } from '@api/test-utils/src/fetch-mock';
+import loadSpec from '@api/test-utils/src/load-spec';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
-import APICore from '../../src/core';
-import FetchError from '../../src/core/errors/fetchError';
-import { responses as mockResponse } from '../helpers/fetch-mock';
-import loadSpec from '../helpers/load-spec';
+import APICore from '../src';
+import FetchError from '../src/errors/fetchError';
 
 describe('APICore', () => {
   let fileUploads: APICore;
@@ -88,11 +88,13 @@ describe('APICore', () => {
           .fetch('/pets/{id}', 'delete', undefined, { id: petId })
           .then(() => assert.fail())
           .catch(err => {
+            /* eslint-disable vitest/no-conditional-expect */
             expect(err).toBeInstanceOf(FetchError);
             expect(err.status).toBe(404);
             expect(err.data).toBe('Could not find that pet.');
             expect(err.headers).toHaveHeader('content-type', /text\/plain/);
             expect(err.res.constructor.name).toBe('Response');
+            /* eslint-enable vitest/no-conditional-expect */
           });
       });
     });
@@ -238,7 +240,7 @@ describe('APICore', () => {
         it('should support `image/png` requests', async () => {
           fetchMock.post('https://httpbin.org/anything/image-png', mockResponse.datauri);
 
-          const file = `${__dirname}/../__fixtures__/owlbert.png`;
+          const file = require.resolve('@api/test-utils/src/fixtures/owlbert.png');
 
           const { data } = await fileUploads.fetch('/anything/image-png', 'post', file);
 
@@ -260,6 +262,7 @@ describe('APICore', () => {
           };
 
           const { data } = await parametersStyle.fetch('/anything/form-data/form', 'post', body);
+
           expect(data.uri).toBe('/anything/form-data/form');
           expect(data.requestBody.split(`${data.boundary}`).filter(Boolean)).toStrictEqual([
             '\r\nContent-Disposition: form-data; name="primitive"\r\n\r\nstring\r\n',
@@ -276,7 +279,7 @@ describe('APICore', () => {
             const body = {
               orderId: 1234,
               userId: 5678,
-              documentFile: `${__dirname}/../__fixtures__/hello.txt`,
+              documentFile: require.resolve('@api/test-utils/src/fixtures/hello.txt'),
             };
 
             const { data } = await fileUploads.fetch('/anything/multipart-formdata', 'post', body);
@@ -293,7 +296,7 @@ describe('APICore', () => {
             fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
 
             const body = {
-              documentFile: `${__dirname}/../__fixtures__/hello.jp.txt`,
+              documentFile: require.resolve('@api/test-utils/src/fixtures/hello.jp.txt'),
             };
 
             const { data } = await fileUploads.fetch('/anything/multipart-formdata', 'post', body);

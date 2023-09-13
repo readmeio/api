@@ -6,11 +6,11 @@ import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
 
 import FetchError from './errors/fetchError';
-import getJSONSchemaDefaults from './getJSONSchemaDefaults';
-import parseResponse from './parseResponse';
-import prepareAuth from './prepareAuth';
-import prepareParams from './prepareParams';
-import prepareServer from './prepareServer';
+import getJSONSchemaDefaults from './lib/getJSONSchemaDefaults';
+import parseResponse from './lib/parseResponse';
+import prepareAuth from './lib/prepareAuth';
+import prepareParams from './lib/prepareParams';
+import prepareServer from './lib/prepareServer';
 
 export interface ConfigOptions {
   /**
@@ -104,12 +104,12 @@ export default class APICore {
       // @ts-expect-error `this.auth` typing is off. FIXME
       const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
 
-      let timeoutSignal: any;
+      let timeoutSignal: NodeJS.Timeout;
       const init: RequestInit = {};
       if (this.config.timeout) {
         const controller = new AbortController();
         timeoutSignal = setTimeout(() => controller.abort(), this.config.timeout);
-        init.signal = controller.signal as any;
+        init.signal = controller.signal;
       }
 
       return fetchHar(har as any, {

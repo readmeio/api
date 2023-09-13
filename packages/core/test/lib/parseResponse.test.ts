@@ -1,6 +1,6 @@
 import { describe, beforeEach, it, expect } from 'vitest';
 
-import parseResponse from '../../src/core/parseResponse';
+import parseResponse from '../../src/lib/parseResponse';
 
 const responseBody = JSON.stringify({
   id: 9205436248879918000,

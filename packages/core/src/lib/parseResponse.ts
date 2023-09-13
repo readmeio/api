@@ -8,7 +8,7 @@ export default async function getResponseBody(response: Response) {
 
   const responseBody = await response.text();
 
-  let data = responseBody;
+  let data: any = responseBody;
   if (isJSON) {
     try {
       data = JSON.parse(responseBody);

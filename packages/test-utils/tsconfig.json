@@ -4,9 +4,8 @@
     "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
-    "lib": ["DOM", "ES2020"],
-    "noImplicitAny": true,
-    "outDir": "dist/"
+    "noEmit": true,
+    "noImplicitAny": true
   },
   "include": ["./src/**/*"]
 }
