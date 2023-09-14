@@ -12,5 +12,5 @@ The magic behind <code>api</code> 🧙
 </p>
 
 <p align="center">
-Checkout <a href="https://api.readme.dev">api.readme.dev</a> for more details.
+Check out <a href="https://api.readme.dev">api.readme.dev</a> for more details.
 </p>
