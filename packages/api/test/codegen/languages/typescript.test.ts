@@ -1,4 +1,4 @@
-import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/typescript';
+import type { TSGeneratorOptions } from '../../../src/codegen/languages/typescript';
 
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -10,9 +10,9 @@ import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
-import Storage from '../../../../src/cli/storage';
-import * as packageInfo from '../../../../src/packageInfo';
+import TSGenerator from '../../../src/codegen/languages/typescript';
+import * as packageInfo from '../../../src/packageInfo';
+import Storage from '../../../src/storage';
 
 function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOptions = {}) {
   return async () => {
@@ -23,7 +23,7 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
     const actualFiles = await ts.generator();
 
     // Determine if the generated code matches what we've got in our fixture.
-    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
+    const dir = path.resolve(path.join(__dirname, '..', '..', '__fixtures__', 'sdk', fixture));
 
     let expectedFiles: string[];
     try {
@@ -63,7 +63,7 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
     );
 
     // Make sure that we can load the SDK without any TS compilation errors.
-    const sdk = await import(`../../../__fixtures__/sdk/${fixture}`).then(r => r.default);
+    const sdk = await import(`../../__fixtures__/sdk/${fixture}`).then(r => r.default);
     expect(sdk.constructor.name).toBe('SDK');
   };
 }
@@ -172,7 +172,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request (TS)', async () => {
-        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        const sdk = await import('../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -184,7 +184,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request with an `accept` header`', async () => {
-        const sdk = await import('../../../__fixtures__/sdk/simple-ts').then(r => r.default);
+        const sdk = await import('../../__fixtures__/sdk/simple-ts').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
@@ -198,7 +198,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request (JS + CommonJS)', async () => {
-        const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
+        const sdk = await import('../../__fixtures__/sdk/simple-js-cjs').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -210,7 +210,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request (JS + ESM)', async () => {
-        const sdk = await import('../../../__fixtures__/sdk/simple-js-esm').then(r => r.default);
+        const sdk = await import('../../__fixtures__/sdk/simple-js-esm').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {

@@ -9,8 +9,8 @@ import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
-import Storage from '../../src/cli/storage';
-import { PACKAGE_VERSION } from '../../src/packageInfo';
+import { PACKAGE_VERSION } from '../src/packageInfo';
+import Storage from '../src/storage';
 
 let petstoreSimple;
 
@@ -287,7 +287,7 @@ describe('storage', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const file = '../api/test/__fixtures__/oas.json';
+        const file = '../test-utils/definitions/simple.json';
         const storage = new Storage(file, 'relative-path');
 
         expect(storage.isInLockfile()).toBe(false);
@@ -297,14 +297,13 @@ describe('storage', () => {
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getAPIDefinition().info).toStrictEqual({
           version: '1.0.0',
-          title: 'Single Path',
-          description: 'This is a slimmed down single path version of the Petstore definition.',
+          title: 'Swagger Petstore',
         });
 
         expect(storage.getFromLockfile()).toStrictEqual({
           identifier: 'relative-path',
           source: file,
-          integrity: 'sha512-Qi5BB9mfzkRqHe0rMvjRmKunNJ21zILF0e4KzYKi2hMw+zLfi2idmmn0lAngdRwqYdGIKTXUWhJNn0i3iDqUUg==',
+          integrity: 'sha512-Ey83iRY4tY7JCCUI03eqfNb8YsxKlBdLILXcLDBbxZ1a2X/YfTspCTA8mLp6aaG9gRSyNMhI1hmtSlduWZw8RA==',
           installerVersion: PACKAGE_VERSION,
         });
       });
@@ -337,7 +336,7 @@ describe('storage', () => {
     });
 
     it('should error if definition is not a valid openapi file', async () => {
-      await expect(new Storage(require.resolve('../../package.json'), 'invalid').load()).rejects.toThrow(
+      await expect(new Storage(require.resolve('../package.json'), 'invalid').load()).rejects.toThrow(
         "Sorry, that doesn't look like a valid OpenAPI definition.",
       );
     });
