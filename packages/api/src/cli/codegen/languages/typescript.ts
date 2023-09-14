@@ -567,10 +567,10 @@ sdk.server('https://eu.api.example.com/v14');`),
 
     let hasOptionalBody = false;
     let hasOptionalMetadata = false;
-    const parameters: {
-      body?: OptionalKind<ParameterDeclarationStructure>;
-      metadata?: OptionalKind<ParameterDeclarationStructure>;
-    } = {};
+    const parameters = {} as {
+      body: OptionalKind<ParameterDeclarationStructure>;
+      metadata: OptionalKind<ParameterDeclarationStructure>;
+    };
 
     if (paramTypes) {
       // If an operation has a request body payload it will only ever have `body` or `formData`,
