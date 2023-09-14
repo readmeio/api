@@ -4,7 +4,7 @@ import assert from 'assert';
 import fs from 'fs/promises';
 import path from 'path';
 
-import loadSpec from '@api/test-utils/src/load-spec';
+import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';

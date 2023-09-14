@@ -1,7 +1,7 @@
 import assert from 'assert';
 
-import { responses as mockResponse } from '@api/test-utils/src/fetch-mock';
-import loadSpec from '@api/test-utils/src/load-spec';
+import { responses as mockResponse } from '@api/test-utils/fetch-mock';
+import loadSpec from '@api/test-utils/load-spec';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
@@ -240,7 +240,7 @@ describe('APICore', () => {
         it('should support `image/png` requests', async () => {
           fetchMock.post('https://httpbin.org/anything/image-png', mockResponse.datauri);
 
-          const file = require.resolve('@api/test-utils/src/fixtures/owlbert.png');
+          const file = require.resolve('@api/test-utils/fixtures/owlbert.png');
 
           const { data } = await fileUploads.fetch('/anything/image-png', 'post', file);
 
@@ -279,7 +279,7 @@ describe('APICore', () => {
             const body = {
               orderId: 1234,
               userId: 5678,
-              documentFile: require.resolve('@api/test-utils/src/fixtures/hello.txt'),
+              documentFile: require.resolve('@api/test-utils/fixtures/hello.txt'),
             };
 
             const { data } = await fileUploads.fetch('/anything/multipart-formdata', 'post', body);
@@ -296,7 +296,7 @@ describe('APICore', () => {
             fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
 
             const body = {
-              documentFile: require.resolve('@api/test-utils/src/fixtures/hello.jp.txt'),
+              documentFile: require.resolve('@api/test-utils/fixtures/hello.jp.txt'),
             };
 
             const { data } = await fileUploads.fetch('/anything/multipart-formdata', 'post', body);

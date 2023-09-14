@@ -1,6 +1,6 @@
 import Oas from 'oas';
 import APICore from '@api/core';
-import definition from '@api/test-utils/src/fixtures/definitions/simple.json';
+import definition from '@api/test-utils/definitions/simple.json';
 class SDK {
     constructor() {
         this.spec = Oas.init(definition);

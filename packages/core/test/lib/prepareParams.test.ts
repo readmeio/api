@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import payloadExamples from '@api/test-utils/src/fixtures/definitions/payloads.json';
-import loadSpec from '@api/test-utils/src/load-spec';
+import payloadExamples from '@api/test-utils/definitions/payloads.json';
+import loadSpec from '@api/test-utils/load-spec';
 import Oas from 'oas';
 import { describe, beforeEach, it, expect } from 'vitest';
 
@@ -165,7 +165,7 @@ describe('#prepareParams', () => {
     describe('image/png', () => {
       it('should support a file path payload', async () => {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = require.resolve('@api/test-utils/src/fixtures/owlbert.png');
+        const body = require.resolve('@api/test-utils/fixtures/owlbert.png');
 
         const res = await prepareParams(operation, body);
         expect(res.body).toContain('data:image/png;name=owlbert.png;base64,');
@@ -174,7 +174,7 @@ describe('#prepareParams', () => {
 
       it('should support a file stream payload', async () => {
         const operation = fileUploads.operation('/anything/image-png', 'post');
-        const body = fs.createReadStream(require.resolve('@api/test-utils/src/fixtures/owlbert.png'));
+        const body = fs.createReadStream(require.resolve('@api/test-utils/fixtures/owlbert.png'));
 
         const res = await prepareParams(operation, body);
         expect(res.body).toContain('data:image/png;name=owlbert.png;base64,');
@@ -197,7 +197,7 @@ describe('#prepareParams', () => {
       it('should handle when the file path is relative', async () => {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: require.resolve('@api/test-utils/src/fixtures/owlbert.png'),
+          documentFile: require.resolve('@api/test-utils/fixtures/owlbert.png'),
         };
 
         const res = await prepareParams(operation, body);
@@ -208,7 +208,7 @@ describe('#prepareParams', () => {
       it('should handle a multipart body when a property is a file stream', async () => {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: fs.createReadStream(require.resolve('@api/test-utils/src/fixtures/owlbert.png')),
+          documentFile: fs.createReadStream(require.resolve('@api/test-utils/fixtures/owlbert.png')),
         };
 
         const res = await prepareParams(operation, body);
@@ -381,7 +381,7 @@ describe('#prepareParams', () => {
 
     describe('quirks', () => {
       it('should not send special headers in body payloads', async () => {
-        const basiq = await import('@api/test-utils/src/fixtures/definitions/basiq.json').then(Oas.init);
+        const basiq = await import('@api/test-utils/definitions/basiq.json').then(Oas.init);
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');
@@ -400,7 +400,7 @@ describe('#prepareParams', () => {
       });
 
       it('should not duplicate a supplied header parameter if that header casing matches the spec', async () => {
-        const basiq = await import('@api/test-utils/src/fixtures/definitions/basiq.json').then(Oas.init);
+        const basiq = await import('@api/test-utils/definitions/basiq.json').then(Oas.init);
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');
@@ -482,7 +482,7 @@ describe('#prepareParams', () => {
 
   describe('defaults', () => {
     it('should prefill defaults for required body parameters if not supplied', async () => {
-      const oas = await loadSpec('@api/test-utils/src/fixtures/definitions/nested-defaults.json').then(Oas.init);
+      const oas = await loadSpec('@api/test-utils/definitions/nested-defaults.json').then(Oas.init);
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');

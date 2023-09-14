@@ -1,7 +1,7 @@
 import type { ConfigOptions, FetchResponse } from '@api/core'
 import Oas from 'oas';
 import APICore from '@api/core';
-import definition from '@api/test-utils/src/fixtures/definitions/operationid-quirks.json';
+import definition from '@api/test-utils/definitions/operationid-quirks.json';
 
 class SDK {
   spec: Oas;

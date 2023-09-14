@@ -1,4 +1,4 @@
-import loadSpec from '@api/test-utils/src/load-spec';
+import loadSpec from '@api/test-utils/load-spec';
 import Oas from 'oas';
 import { describe, it, expect } from 'vitest';
 
@@ -24,7 +24,7 @@ describe('#getJSONSchemaDefaults()', () => {
   });
 
   it('should be able to handle nested objects', async () => {
-    const oas = await loadSpec('@api/test-utils/src/fixtures/definitions/nested-defaults.json').then(Oas.init);
+    const oas = await loadSpec('@api/test-utils/definitions/nested-defaults.json').then(Oas.init);
     await oas.dereference();
 
     const operation = oas.operation('/pet', 'post');

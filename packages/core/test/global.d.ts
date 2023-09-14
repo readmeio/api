@@ -1,1 +1,1 @@
-import '@api/test-utils/src/vitest.matchers';
+import '@api/test-utils/vitest.matchers';

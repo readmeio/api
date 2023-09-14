@@ -15,4 +15,4 @@ packages/httpsnippet-client-api/dist/
 packages/httpsnippet-client-api/test/__datasets__/**/output.js
 
 # test-utils
-packages/test-utils/src/fixtures/
+packages/test-utils/fixtures/
