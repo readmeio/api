@@ -1,17 +1,12 @@
 !.alexrc.js
 
+packages/**/coverage/
+packages/**/dist/
+
 # api
-packages/api/coverage/
-packages/api/dist/
 packages/api/test/__fixtures__/sdk/
 
-# core
-packages/core/coverage/
-packages/core/dist/
-
 # httpsnippet-client-api
-packages/httpsnippet-client-api/coverage/
-packages/httpsnippet-client-api/dist/
 packages/httpsnippet-client-api/test/__datasets__/**/output.js
 
 # test-utils
