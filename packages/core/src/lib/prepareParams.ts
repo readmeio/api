@@ -74,9 +74,9 @@ function merge(src: any, target: any) {
  *
  */
 function processFile(
-  paramName: string,
+  paramName: string | undefined,
   file: string | ReadStream,
-): Promise<{ base64: string; buffer: Buffer; filename: string; paramName: string }> {
+): Promise<{ base64?: string; buffer?: Buffer; filename: string; paramName?: string } | undefined> {
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
@@ -103,7 +103,7 @@ function processFile(
 
         return resolve({
           paramName,
-          base64: fileMetadata.content.replace(';base64', `;name=${payloadFilename};base64`),
+          base64: fileMetadata?.content?.replace(';base64', `;name=${payloadFilename};base64`),
           filename: payloadFilename,
           buffer: fileMetadata.buffer,
         });
@@ -118,7 +118,7 @@ function processFile(
 
       return {
         paramName,
-        base64: base64.replace(';base64', `;name=${payloadFilename};base64`),
+        base64: base64?.replace(';base64', `;name=${payloadFilename};base64`),
         filename: payloadFilename,
         buffer,
       };
@@ -228,7 +228,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
         }
       });
 
-      const intersection = Object.keys(body).filter(value => {
+      const intersection = Object.keys(body as NonNullable<unknown>).filter(value => {
         if (Object.keys(digestedParameters).includes(value)) {
           return true;
         } else if (headerParams.has(value)) {
@@ -238,10 +238,10 @@ export default async function prepareParams(operation: Operation, body?: unknown
         return false;
       }).length;
 
-      if (intersection && intersection / Object.keys(body).length > 0.25) {
+      // If more than 25% of the body intersects with the parameters that we've got on hand, then
+      // we should treat it as a metadata object and organize into parameters.
+      if (intersection && intersection / Object.keys(body as NonNullable<unknown>).length > 0.25) {
         /* eslint-disable no-param-reassign */
-        // If more than 25% of the body intersects with the parameters that we've got on hand,
-        // then we should treat it as a metadata object and organize into parameters.
         metadataIntersected = true;
         metadata = merge(params.body, body) as Record<string, unknown>;
         body = undefined;
@@ -304,7 +304,9 @@ export default async function prepareParams(operation: Operation, body?: unknown
               params.body = fileMetadata.base64;
             }
 
-            params.files[fileMetadata.filename] = fileMetadata.buffer;
+            if (fileMetadata.buffer && params?.files) {
+              params.files[fileMetadata.filename] = fileMetadata.buffer;
+            }
           });
         });
     }
@@ -336,7 +338,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
         } else if (param.in === 'header') {
           // Headers are sent case-insensitive so we need to make sure that we're properly
           // matching them when detecting what our incoming payload looks like.
-          metadataHeaderParam = Object.keys(metadata).find(k => k.toLowerCase() === paramName.toLowerCase());
+          metadataHeaderParam = Object.keys(metadata).find(k => k.toLowerCase() === paramName.toLowerCase()) || '';
           value = metadata[metadataHeaderParam];
         }
       }
@@ -348,20 +350,20 @@ export default async function prepareParams(operation: Operation, body?: unknown
       /* eslint-disable no-param-reassign */
       switch (param.in) {
         case 'path':
-          params.path[paramName] = value;
-          delete metadata[paramName];
+          (params.path as NonNullable<typeof params.path>)[paramName] = value;
+          if (metadata?.[paramName]) delete metadata[paramName];
           break;
         case 'query':
-          params.query[paramName] = value;
-          delete metadata[paramName];
+          (params.query as NonNullable<typeof params.query>)[paramName] = value;
+          if (metadata?.[paramName]) delete metadata[paramName];
           break;
         case 'header':
-          params.header[paramName.toLowerCase()] = value;
-          delete metadata[metadataHeaderParam];
+          (params.header as NonNullable<typeof params.header>)[paramName.toLowerCase()] = value;
+          if (metadataHeaderParam && metadata?.[metadataHeaderParam]) delete metadata[metadataHeaderParam];
           break;
         case 'cookie':
-          params.cookie[paramName] = value;
-          delete metadata[paramName];
+          (params.cookie as NonNullable<typeof params.cookie>)[paramName] = value;
+          if (metadata?.[paramName]) delete metadata[paramName];
           break;
         default: // no-op
       }
@@ -387,11 +389,17 @@ export default async function prepareParams(operation: Operation, body?: unknown
         // or specify a custom auth header (maybe we can't handle their auth case right) this is the
         // only way with this library that they can do that.
         specialHeaders.forEach(headerName => {
-          const headerParam = Object.keys(metadata).find(m => m.toLowerCase() === headerName);
+          const headerParam = Object.keys(metadata || {}).find(m => m.toLowerCase() === headerName);
           if (headerParam) {
-            params.header[headerName] = metadata[headerParam] as string;
-            // eslint-disable-next-line no-param-reassign
-            delete metadata[headerParam];
+            // this if-statement below is a typeguard
+            if (typeof metadata === 'object') {
+              // this if-statement below is a typeguard
+              if (typeof params.header === 'object') {
+                params.header[headerName] = metadata[headerParam] as string;
+              }
+              // eslint-disable-next-line no-param-reassign
+              delete metadata[headerParam];
+            }
           }
         });
       }
@@ -405,7 +413,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
     }
   }
 
-  ['body', 'cookie', 'files', 'formData', 'header', 'path', 'query'].forEach((type: keyof typeof params) => {
+  (['body', 'cookie', 'files', 'formData', 'header', 'path', 'query'] as const).forEach((type: keyof typeof params) => {
     if (type in params && isEmpty(params[type])) {
       delete params[type];
     }

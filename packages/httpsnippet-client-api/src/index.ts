@@ -10,9 +10,6 @@ import stringifyObject from 'stringify-object';
 
 const { matchesMimeType } = utils;
 
-// This should really be an exported type in `oas`.
-type SecurityType = 'Basic' | 'Bearer' | 'Query' | 'Header' | 'Cookie' | 'OAuth2' | 'http' | 'apiKey';
-
 function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
@@ -47,9 +44,8 @@ function getAuthSources(operation: Operation) {
     return matchers;
   }
 
-  const security = operation.prepareSecurity();
-  Object.keys(security).forEach((id: SecurityType) => {
-    security[id].forEach(scheme => {
+  Object.entries(operation.prepareSecurity()).forEach(([, schemes]) => {
+    schemes.forEach(scheme => {
       if (scheme.type === 'http') {
         if (scheme.scheme === 'basic') {
           matchers.header.authorization = 'Basic';
@@ -95,7 +91,7 @@ const client: Client<APIOptions> = {
   convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
       ...options,
-    };
+    } as APIOptions;
 
     if (!('apiDefinitionUri' in opts)) {
       throw new Error('This HTTP Snippet client must have an `apiDefinitionUri` option supplied to it.');

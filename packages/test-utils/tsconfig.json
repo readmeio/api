@@ -5,7 +5,8 @@
     "declaration": true,
     "esModuleInterop": true,
     "noEmit": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "strict": true
   },
   "include": ["./**/*"]
 }

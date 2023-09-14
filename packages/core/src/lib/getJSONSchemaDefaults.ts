@@ -23,16 +23,16 @@ export default function getJSONSchemaDefaults(jsonSchemas: SchemaWrapper[]) {
           schema: SchemaObject,
           pointer: string,
           rootSchema: SchemaObject,
-          parentPointer: string,
-          parentKeyword: string,
-          parentSchema: SchemaObject,
-          indexProperty: string,
+          parentPointer?: string,
+          parentKeyword?: string,
+          parentSchema?: SchemaObject,
+          indexProperty?: string | number,
         ) => {
           if (!pointer.startsWith('/properties/')) {
             return;
           }
 
-          if (Array.isArray(parentSchema?.required) && parentSchema.required.includes(indexProperty)) {
+          if (Array.isArray(parentSchema?.required) && parentSchema?.required.includes(String(indexProperty))) {
             if (schema.type === 'object' && indexProperty) {
               defaults[indexProperty] = {};
             }

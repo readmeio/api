@@ -22,7 +22,7 @@ export default class Storage {
    */
   source: string;
 
-  identifier: string;
+  identifier!: string;
 
   fetcher: Fetcher;
 
@@ -32,7 +32,9 @@ export default class Storage {
     this.fetcher = new Fetcher(source);
 
     this.source = source;
-    this.identifier = identifier;
+    if (identifier) {
+      this.identifier = identifier;
+    }
 
     // This should default to false so we have awareness if we've looked at the lockfile yet.
     Storage.lockfile = false;
@@ -117,7 +119,9 @@ export default class Storage {
     if (!isValidForNPM.validForNewPackages) {
       // `prompts` doesn't support surfacing multiple errors in a `validate` call so we can only
       // surface the first to the user.
-      throw new Error(`Identifier cannot be used for an NPM package: ${isValidForNPM.errors[0]}`);
+      throw new Error(
+        `Identifier cannot be used for an NPM package: ${isValidForNPM?.errors?.[0] || '[error unavailable]'}`,
+      );
     }
 
     return true;
