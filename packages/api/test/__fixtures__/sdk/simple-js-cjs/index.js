@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var oas_1 = __importDefault(require("oas"));
-var core_1 = __importDefault(require("api/dist/core"));
-var simple_json_1 = __importDefault(require("../../../__fixtures__/definitions/simple.json"));
+var core_1 = __importDefault(require("@api/core"));
+var simple_json_1 = __importDefault(require("@api/test-utils/definitions/simple.json"));
 var SDK = /** @class */ (function () {
     function SDK() {
         this.spec = oas_1.default.init(simple_json_1.default);

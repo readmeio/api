@@ -3,6 +3,8 @@ import type { TSGeneratorOptions } from '../../../../src/cli/codegen/languages/t
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { responses as mockResponse } from '@api/test-utils/fetch-mock';
+import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
@@ -11,8 +13,6 @@ import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 import TSGenerator from '../../../../src/cli/codegen/languages/typescript';
 import Storage from '../../../../src/cli/storage';
 import * as packageInfo from '../../../../src/packageInfo';
-import { responses as mockResponse } from '../../../helpers/fetch-mock';
-import loadSpec from '../../../helpers/load-spec';
 
 function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOptions = {}) {
   return async () => {
@@ -121,12 +121,12 @@ describe('typescript', () => {
   describe('#generator', () => {
     it(
       'should generate typescript (by default)',
-      assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-ts'),
+      assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple-ts'),
     );
 
     it(
       'should be able to generate valid TS when a body is optional but metadata isnt',
-      assertSDKFixture('../../../__fixtures__/definitions/optional-payload.json', 'optional-payload'),
+      assertSDKFixture('@api/test-utils/definitions/optional-payload.json', 'optional-payload'),
     );
 
     it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
@@ -136,30 +136,30 @@ describe('typescript', () => {
     // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
-      assertSDKFixture('../../../__fixtures__/definitions/operationid-quirks.json', 'operationid-quirks'),
+      assertSDKFixture('@api/test-utils/definitions/operationid-quirks.json', 'operationid-quirks'),
     );
 
     it(
       'should handle `title` props that start with a number',
-      assertSDKFixture('../../../__fixtures__/definitions/response-title-quirks.json', 'response-title-quirks'),
+      assertSDKFixture('@api/test-utils/definitions/response-title-quirks.json', 'response-title-quirks'),
     );
 
     it.todo('should handle a operations with a `default` response');
 
     it(
       'should handle an api that has discriminators and no operation ids',
-      assertSDKFixture('../../../__fixtures__/definitions/alby.json', 'alby'),
+      assertSDKFixture('@api/test-utils/definitions/alby.json', 'alby'),
     );
 
     describe('javascript generation', () => {
       it(
         'should generate a CommonJS library',
-        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-cjs', { outputJS: true }),
+        assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple-js-cjs', { outputJS: true }),
       );
 
       it(
         'should generate am ESM library',
-        assertSDKFixture('../../../__fixtures__/definitions/simple.json', 'simple-js-esm', {
+        assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple-js-esm', {
           outputJS: true,
           compilerTarget: 'esm',
         }),

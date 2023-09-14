@@ -15,12 +15,12 @@
  * @example <caption>Everything</caption>
  * npm run test:smoke
  */
+import realWorldAPIs from '@api/test-utils/datasets/real-world-apis.json';
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 import { describe, it, expect } from 'vitest';
 
 import TSGenerator from '../../../../../src/cli/codegen/languages/typescript';
-import realWorldAPIs from '../../../../datasets/real-world-apis.json';
 
 // These APIs don't have any schemas so they should only be generating an `index.ts`.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];

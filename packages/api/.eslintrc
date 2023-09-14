@@ -1,11 +1,4 @@
 {
-  "globals": {
-    "fetch": true,
-    "Response": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 2020
-  },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off" // @todo fix these eventually
   },
@@ -15,15 +8,6 @@
       "rules": {
         "import/extensions": "off",
         "import/no-unresolved": "off"
-      }
-    },
-    {
-      "files": ["src/core/**/*.ts"],
-      "rules": {
-        "no-restricted-imports": ["error", {
-          "name": "fs/promises",
-          "message": "Please use `fs` instead as some client frameworks don't polyfill `fs/promises`."
-        }]
       }
     },
     {

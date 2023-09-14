@@ -11,7 +11,7 @@ export default defineConfig({
       '**/helpers/**',
       '**/smoketest.test.ts',
     ],
-    setupFiles: ['./test/helpers/vitest.matchers.ts'],
+    setupFiles: ['@api/test-utils/vitest.matchers.ts'],
     testTimeout: 20000,
   },
 });

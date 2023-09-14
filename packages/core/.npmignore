@@ -1,0 +1,7 @@
+.api/
+coverage/
+test/
+.eslint*
+.gitignore
+.prettier*
+vitest*

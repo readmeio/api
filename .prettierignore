@@ -1,17 +1,11 @@
 CHANGELOG.md
+packages/**/coverage/
+packages/**/dist/
 
-# api subpackage
+# api
 packages/api/.api/
-packages/api/coverage/
-packages/api/.eslint*
-packages/api/.gitignore
-packages/api/.prettier*
-packages/api/CHANGELOG.md
-packages/api/dist/
 packages/api/example.js
 packages/api/test/__fixtures__/sdk/
 
-# httpsnippet-client-api subpackage
-packages/httpsnippet-client-api/coverage/
-packages/httpsnippet-client-api/dist/
+# httpsnippet-client-api
 packages/httpsnippet-client-api/test/__datasets__/**/output.js

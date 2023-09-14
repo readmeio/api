@@ -1,11 +1,11 @@
 import assert from 'assert';
 import fs from 'fs/promises';
 
+import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';
 import { describe, beforeAll, it, expect } from 'vitest';
 
 import Fetcher from '../../src/cli/fetcher';
-import loadSpec from '../helpers/load-spec';
 
 let readmeSpec;
 

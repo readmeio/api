@@ -10,11 +10,6 @@ interface CustomMatchers<R = unknown> {
   toBeDereferenced(): R;
 
   /**
-   * Assert that a Response headers object has a custom API-identifying `User Agent` header.
-   */
-  toHaveCustomUserAgent(): R;
-
-  /**
    * Determine if a given `Headers` object has a given header matching a specific value.
    *
    * @example <caption>should match a value</caption>
@@ -31,6 +26,7 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   interface Assertion<T = any> extends CustomMatchers<T> {}
   interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
@@ -51,25 +47,14 @@ expect.extend({
     };
   },
 
-  toHaveCustomUserAgent(headers: string[]) {
-    const userAgent = headers['user-agent'];
-    const pass = userAgent.match(/^api \(node\)\/(\d+.\d+(.\d+|unit-testing))$/);
-
-    if (!pass) {
-      return {
-        message: () => `expected a custom \`user-agent\` header to be present.\n\nreceived: ${userAgent}`,
-        pass: false,
-      };
-    }
-
-    return {
-      message: () => `expected a custom \`user-agent\` header to not be present\n\nreceived: ${userAgent}`,
-      pass: true,
-    };
-  },
-
   toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
-    const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
+    const headers = caseless(
+      Object.fromEntries(
+        // @ts-expect-error Despite the Node typings saying otherwise `Headers.entries()` exists.
+        // https://developer.mozilla.org/en-US/docs/Web/API/Headers/entries
+        Array.from(obj.entries()),
+      ),
+    );
 
     // Header value should match a given regex.
     if (expected instanceof RegExp) {

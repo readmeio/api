@@ -11,7 +11,7 @@ export const response = {
 };
 
 export const responses = {
-  all: (url, opts) => {
+  all: (url: string, opts: RequestInit) => {
     return {
       uri: new URL(url).pathname,
       headers: Object.fromEntries(opts.headers as unknown as []),
@@ -19,7 +19,7 @@ export const responses = {
     };
   },
 
-  datauri: (url, opts) => {
+  datauri: (url: string, opts: RequestInit) => {
     const buffer = Buffer.from(opts.body as string, 'hex');
     const parser = new DatauriParser();
 
@@ -30,21 +30,21 @@ export const responses = {
     };
   },
 
-  delay: (res, delay) => {
+  delay: (res: string | Record<string, unknown>, delay: number) => {
     return new Promise(resolve => {
       setTimeout(() => resolve(res), delay);
     });
   },
 
-  headers: (url, opts) => {
+  headers: (url: string, opts: RequestInit) => {
     // `opts.headers` returns a `HeadersList` object instead of `Headers` as the typing suggests so
     // we need to convert it to an array before converting it to an object.
     return Object.fromEntries(opts.headers as unknown as []);
   },
 
-  multipart: async (url, opts) => {
-    const headers = objectifyHeaders(opts.headers);
-    const payload = await formDataToString(opts.body);
+  multipart: async (url: string, opts: RequestInit) => {
+    const headers = objectifyHeaders(opts.headers as unknown as []);
+    const payload = await formDataToString(opts.body as FormData);
 
     return {
       uri: new URL(url).pathname,
@@ -54,12 +54,12 @@ export const responses = {
     };
   },
 
-  real: res => {
+  real: (res: string | Record<string, unknown>) => {
     return () => res;
   },
 
   requestBody: () => {
-    return (url, opts) => {
+    return (url: string, opts: RequestInit) => {
       return {
         uri: new URL(url).pathname,
         requestBody: JSON.parse(opts.body as string),
@@ -67,13 +67,13 @@ export const responses = {
     };
   },
 
-  searchParams: url => {
+  searchParams: (url: string) => {
     const res = new URL(url);
     return `${res.pathname}${res.search}`;
   },
 
   url: (prop: keyof URL) => {
-    return url => {
+    return (url: string) => {
       return new URL(url)[prop];
     };
   },

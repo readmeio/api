@@ -4,7 +4,7 @@
     "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
-    "lib": ["dom", "dom.iterable", "es2020"],
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "noImplicitAny": true,
     "outDir": "dist/"
   },
