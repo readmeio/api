@@ -6,7 +6,9 @@
     "esModuleInterop": true,
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "noImplicitAny": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "strict": true,
+    "useUnknownInCatchVariables": false
   },
   "include": ["./src/**/*"]
 }

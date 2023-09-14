@@ -51,7 +51,7 @@ export default class Fetcher {
       return undefined;
     }
 
-    return matches.groups.project;
+    return matches.groups?.project;
   }
 
   async load() {

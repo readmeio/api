@@ -25,11 +25,12 @@ export default abstract class CodeGeneratorLanguage {
 
   userAgent: string;
 
-  requiredPackages: Record<string, { reason: string; url: string }>;
+  requiredPackages!: Record<string, { reason: string; url: string }>;
 
   constructor(spec: Oas, specPath: string, identifier: string) {
     this.spec = spec;
     this.specPath = specPath;
+    this.identifier = identifier;
 
     // User agents should be contextual to the spec in question and the version of `api` that was
     // used to generate the SDK. For example, this'll look like `petstore/1.0.0 (api/4.2.0)` for

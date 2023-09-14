@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import type { Operation } from 'oas';
+import type { KeyedSecuritySchemeObject } from 'oas/dist/rmoas.types';
 
 export default function prepareAuth(authKey: (number | string)[], operation: Operation) {
   if (authKey.length === 0) {
@@ -58,7 +59,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
       );
     }
 
-    const scheme = schemes.shift();
+    const scheme = schemes.shift() as KeyedSecuritySchemeObject;
     preparedAuth[scheme._key] = {
       user: authKey[0],
       pass: authKey.length === 2 ? authKey[1] : '',
@@ -76,7 +77,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
     .map(([, ps]) => ps.filter(s => usableScheme === s._key))
     .reduce((prev, next) => prev.concat(next), []);
 
-  const scheme = schemes.shift();
+  const scheme = schemes.shift() as KeyedSecuritySchemeObject;
   switch (scheme.type) {
     case 'http':
       if (scheme.scheme === 'basic') {

@@ -37,24 +37,24 @@ export type HTTPMethodRange<F extends number, T extends number> = Exclude<Enumer
 export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepareServer };
 
 export default class APICore {
-  spec: Oas;
+  spec!: Oas;
 
   private auth: (number | string)[] = [];
 
   private server:
     | false
     | {
-        url?: string;
+        url: string;
         variables?: Record<string, string | number>;
       } = false;
 
   private config: ConfigOptions = {};
 
-  private userAgent: string;
+  private userAgent!: string;
 
   constructor(spec?: Oas, userAgent?: string) {
-    this.spec = spec;
-    this.userAgent = userAgent;
+    if (spec) this.spec = spec;
+    if (userAgent) this.userAgent = userAgent;
   }
 
   setSpec(spec: Oas) {

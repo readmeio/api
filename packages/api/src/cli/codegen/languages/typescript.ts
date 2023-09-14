@@ -3,6 +3,7 @@ import type { InstallerOptions } from '../language';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods, SchemaObject } from 'oas/dist/rmoas.types';
+import type { SemVer } from 'semver';
 import type {
   ClassDeclaration,
   JSDocStructure,
@@ -53,9 +54,9 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   types: Map<string, string>;
 
-  files: Record<string, string>;
+  files?: Record<string, string>;
 
-  sdk: ClassDeclaration;
+  sdk!: ClassDeclaration;
 
   schemas: Record<
     string,
@@ -138,7 +139,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     if (!pkgVersion) {
       // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
       // handle it properly so we need to fallback to something it can.
-      pkgVersion = semver.coerce('0.0.0');
+      pkgVersion = semver.coerce('0.0.0') as SemVer;
     }
 
     const pkg: PackageJson = {
@@ -221,7 +222,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText() === "import type * as types from './types';")
-        .remove();
+        ?.remove();
     }
 
     // If this SDK doesn't use the `HTTPMethodRange` interface for handling `2XX` response status
@@ -230,7 +231,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
-        .replaceWithText("import type { ConfigOptions, FetchResponse } from '@api/core'");
+        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@api/core'");
     }
 
     if (this.outputJS) {
@@ -656,7 +657,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       // we should only add a docblock to the first overload we create because IDE Intellisense will
       // always use that and adding a docblock to all three will bloat the SDK with unused and
       // unsurfaced method documentation.
-      docs: shouldAddAltTypedOverloads ? null : Object.keys(docblock).length ? [docblock] : null,
+      docs: shouldAddAltTypedOverloads ? undefined : Object.keys(docblock).length ? [docblock] : undefined,
       statements: writer => {
         /**
          * @example return this.core.fetch('/pet/findByStatus', 'get', body, metadata);
@@ -698,7 +699,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           { ...parameters.metadata, hasQuestionToken: false },
         ],
         returnType,
-        docs: Object.keys(docblock).length ? [docblock] : null,
+        docs: Object.keys(docblock).length ? [docblock] : undefined,
       });
 
       // Create an overload that just has a single `metadata` parameter.
@@ -739,13 +740,13 @@ sdk.server('https://eu.api.example.com/v14');`),
    */
   loadOperationsAndMethods() {
     const operations: Record</* operationId */ string, OperationTypeHousing> = {};
-    const methods = new Set();
+    const methods = new Set<HttpMethods>();
 
     // Prepare all of the schemas that we need to process for every operation within this API
     // definition.
     Object.entries(this.spec.getPaths()).forEach(([, ops]) => {
-      Object.entries(ops).forEach(([method, operation]: [HttpMethods, Operation]) => {
-        methods.add(method);
+      Object.entries(ops).forEach(([method, operation]: [string, Operation]) => {
+        methods.add(method as HttpMethods);
 
         const operationId = operation.getOperationId({
           // This `camelCase` option will clean up any weird characters that might be present in
@@ -786,7 +787,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       transformer: (s: SchemaObject) => {
         // As our schemas are dereferenced in the `oas` library we don't want to pollute our
         // codegen'd schemas file with duplicate schemas.
-        if ('x-readme-ref-name' in s) {
+        if ('x-readme-ref-name' in s && typeof s['x-readme-ref-name'] !== 'undefined') {
           const typeName = generateTypeName(s['x-readme-ref-name']);
           this.addSchemaToExport(s, typeName, typeName);
 
@@ -844,7 +845,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           transformer: (s: SchemaObject) => {
             // As our schemas are dereferenced in the `oas` library we don't want to pollute our
             // codegen'd schemas file with duplicate schemas.
-            if ('x-readme-ref-name' in s) {
+            if ('x-readme-ref-name' in s && typeof s['x-readme-ref-name'] !== 'undefined') {
               const typeName = generateTypeName(s['x-readme-ref-name']);
               this.addSchemaToExport(s, typeName, `${typeName}`);
 
