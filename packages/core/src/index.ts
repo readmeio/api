@@ -20,11 +20,11 @@ export interface ConfigOptions {
   timeout?: number;
 }
 
-export interface FetchResponse<status, data> {
-  data: data;
+export interface FetchResponse<HTTPStatus, Data> {
+  data: Data;
   headers: Headers;
   res: Response;
-  status: status;
+  status: HTTPStatus;
 }
 
 // https://stackoverflow.com/a/39495173
@@ -81,13 +81,22 @@ export default class APICore {
     return this;
   }
 
-  async fetch(path: string, method: HttpMethods, body?: unknown, metadata?: Record<string, unknown>) {
+  async fetch<HTTPStatus extends number = number>(
+    path: string,
+    method: HttpMethods,
+    body?: unknown,
+    metadata?: Record<string, unknown>,
+  ) {
     const operation = this.spec.operation(path, method);
 
-    return this.fetchOperation(operation, body, metadata);
+    return this.fetchOperation<HTTPStatus>(operation, body, metadata);
   }
 
-  async fetchOperation(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
+  async fetchOperation<HTTPStatus extends number = number>(
+    operation: Operation,
+    body?: unknown,
+    metadata?: Record<string, unknown>,
+  ) {
     return prepareParams(operation, body, metadata).then(params => {
       const data = { ...params };
 
@@ -118,7 +127,7 @@ export default class APICore {
         userAgent: this.userAgent,
       })
         .then(async (res: Response) => {
-          const parsed = await parseResponse(res);
+          const parsed = await parseResponse<HTTPStatus>(res);
 
           if (res.status >= 400 && res.status <= 599) {
             throw new FetchError<typeof parsed.status, typeof parsed.data>(

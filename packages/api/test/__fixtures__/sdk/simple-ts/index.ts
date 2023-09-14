@@ -1,8 +1,8 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from 'api/dist/core'
+import type { ConfigOptions, FetchResponse } from '@api/core'
 import Oas from 'oas';
-import APICore from 'api/dist/core';
-import definition from '../../../__fixtures__/definitions/simple.json';
+import APICore from '@api/core';
+import definition from '@api/test-utils/src/fixtures/definitions/simple.json';
 
 class SDK {
   spec: Oas;
@@ -88,4 +88,4 @@ const createSDK = (() => { return new SDK(); })()
 
 export default createSDK;
 
-export type { ApiResponse, Category, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, Order, Pet, Tag, User } from './types';
+export type { Category, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, Pet, Tag } from './types';

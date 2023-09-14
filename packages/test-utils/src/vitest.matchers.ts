@@ -10,11 +10,6 @@ interface CustomMatchers<R = unknown> {
   toBeDereferenced(): R;
 
   /**
-   * Assert that a Response headers object has a custom API-identifying `User Agent` header.
-   */
-  toHaveCustomUserAgent(): R;
-
-  /**
    * Determine if a given `Headers` object has a given header matching a specific value.
    *
    * @example <caption>should match a value</caption>

@@ -2,7 +2,7 @@ import { utils } from 'oas';
 
 const { matchesMimeType } = utils;
 
-export default async function getResponseBody(response: Response) {
+export default async function parseResponse<HTTPStatus extends number = number>(response: Response) {
   const contentType = response.headers.get('Content-Type');
   const isJSON = contentType && (matchesMimeType.json(contentType) || matchesMimeType.wildcard(contentType));
 
@@ -19,7 +19,7 @@ export default async function getResponseBody(response: Response) {
 
   return {
     data,
-    status: response.status,
+    status: response.status as HTTPStatus,
     headers: response.headers,
     res: response,
   };
