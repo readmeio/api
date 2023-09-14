@@ -42,7 +42,7 @@ function digestParameters(parameters: ParameterObject[]): Record<string, Paramet
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
 function isEmpty(obj: any) {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length && obj !== null;
+  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
 function isObject(thing: any) {
