@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 
-import commands from './cli/commands';
+import commands from './commands';
 import * as pkg from './packageInfo';
 
 (async () => {

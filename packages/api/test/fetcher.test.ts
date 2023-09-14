@@ -5,7 +5,7 @@ import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import Fetcher from '../../src/cli/fetcher';
+import Fetcher from '../src/fetcher';
 
 let readmeSpec;
 
@@ -200,16 +200,15 @@ describe('fetcher', () => {
         const fetcher = new Fetcher(require.resolve('@readme/oas-examples/3.0/json/readme.json'));
 
         const res = await fetcher.load();
-        expect(res.paths['/api-specification'].get.parameters).toBeDereferenced();
+        expect(res.paths?.['/api-specification']?.get?.parameters).toBeDereferenced();
       });
 
       it('should be able to handle a relative path', async () => {
-        const fetcher = new Fetcher('../api/test/__fixtures__/oas.json');
+        const fetcher = new Fetcher('../test-utils/definitions/simple.json');
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
-          title: 'Single Path',
-          description: 'This is a slimmed down single path version of the Petstore definition.',
+          title: 'Swagger Petstore',
         });
       });
 
@@ -218,7 +217,7 @@ describe('fetcher', () => {
         const fetcher = new Fetcher(file);
 
         const res = await fetcher.load();
-        expect(res.paths['/api-specification'].get.parameters).toBeDereferenced();
+        expect(res.paths?.['/api-specification']?.get?.parameters).toBeDereferenced();
       });
     });
   });
