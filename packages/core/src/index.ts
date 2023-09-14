@@ -1,3 +1,4 @@
+import type { Har } from 'har-format';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
 import type { HttpMethods } from 'oas/dist/rmoas.types';
@@ -121,7 +122,7 @@ export default class APICore {
         init.signal = controller.signal;
       }
 
-      return fetchHar(har as any, {
+      return fetchHar(har as Har, {
         files: data.files || {},
         init,
         userAgent: this.userAgent,

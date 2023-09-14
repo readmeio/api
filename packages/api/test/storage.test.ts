@@ -1,8 +1,8 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import assert from 'assert';
-import fs from 'fs/promises';
-import path from 'path';
+import assert from 'node:assert';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';

@@ -13,8 +13,8 @@ import type {
 } from 'ts-morph';
 import type { PackageJson } from 'type-fest';
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import execa from 'execa';
 import setWith from 'lodash.setwith';
@@ -62,12 +62,12 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     string,
     // Operation-level type
     | {
-        body?: any;
-        metadata?: any;
-        response?: Record<string, any>;
+        body?: unknown;
+        metadata?: unknown;
+        response?: Record<string, unknown>;
       }
     // Wholesale collection of `$ref` pointer types
-    | Record<string, any>
+    | Record<string, unknown>
   >;
 
   usesHTTPMethodRangeInterface = false;
@@ -807,7 +807,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       .reduce((prev, next) => Object.assign(prev, next));
 
     return Object.entries(res)
-      .map(([paramType, schema]: [string, string | unknown]) => {
+      .map(([paramType, schema]: [string, string | SchemaObject]) => {
         let typeName;
 
         if (typeof schema === 'string' && schema.startsWith('::convert::')) {
@@ -816,7 +816,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           typeName = schema.replace('::convert::', '');
         } else {
           typeName = generateTypeName(operationId, paramType, 'param');
-          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.${paramType}`);
+          this.addSchemaToExport(schema as SchemaObject, typeName, `${generateTypeName(operationId)}.${paramType}`);
         }
 
         return {
@@ -901,7 +901,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    * Add a given schema into our schema dataset that we'll be be exporting as types.
    *
    */
-  addSchemaToExport(schema: any, typeName: string, pointer: string) {
+  addSchemaToExport(schema: SchemaObject, typeName: string, pointer: string) {
     if (this.types.has(typeName)) {
       return;
     }

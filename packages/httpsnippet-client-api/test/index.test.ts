@@ -2,9 +2,9 @@ import type { HarRequest, Request } from '@readme/httpsnippet';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import { readdirSync } from 'fs';
-import fs from 'fs/promises';
-import path from 'path';
+import { readdirSync } from 'node:fs';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import { HTTPSnippet, addTargetClient } from '@readme/httpsnippet';
 import readme from '@readme/oas-examples/3.0/json/readme.json';

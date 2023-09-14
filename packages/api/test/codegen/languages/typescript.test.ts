@@ -1,7 +1,7 @@
 import type { TSGeneratorOptions } from '../../../src/codegen/languages/typescript';
 
-import { promises as fs } from 'fs';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import { responses as mockResponse } from '@api/test-utils/fetch-mock';
 import loadSpec from '@api/test-utils/load-spec';

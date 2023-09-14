@@ -1,7 +1,7 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import makeDir from 'make-dir';
 import ssri from 'ssri';
