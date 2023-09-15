@@ -123,7 +123,7 @@ export function docblockEscape(str: string) {
  * @license MIT
  * @see {@link https://github.com/bcherny/json-schema-to-typescript}
  */
-export function toSafeString(str: string) {
+function toSafeString(str: string) {
   // identifiers in javaScript/ts:
   // First character: a-zA-Z | _ | $
   // Rest: a-zA-Z | _ | $ | 0-9

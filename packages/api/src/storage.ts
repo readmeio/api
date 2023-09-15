@@ -273,7 +273,7 @@ export default class Storage {
   }
 }
 
-export interface Lockfile {
+interface Lockfile {
   apis: LockfileAPI[];
 
   /**
@@ -283,7 +283,7 @@ export interface Lockfile {
   version: '1.0';
 }
 
-export interface LockfileAPI {
+interface LockfileAPI {
   /**
    * A unique identifier of the API. This'll be used to do requires on `@api/<identifier>` and also
    * where the SDK code will be located in `.api/apis/<identifier>`.

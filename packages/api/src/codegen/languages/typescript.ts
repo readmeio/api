@@ -54,8 +54,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   types: Map<string, string>;
 
-  files?: Record<string, string>;
-
   sdk!: ClassDeclaration;
 
   schemas: Record<
