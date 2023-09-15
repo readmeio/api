@@ -12,7 +12,6 @@ const config: KnipConfig = {
     'ts-node', // this is loaded via `typescript`
   ],
   workspaces: {
-    // 'packages/*': {},
     'packages/test-utils': {
       entry: ['fetch-mock.ts'],
     },
