@@ -8,6 +8,7 @@ export default async function parseResponse<HTTPStatus extends number = number>(
 
   const responseBody = await response.text();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let data: any = responseBody;
   if (isJSON) {
     try {

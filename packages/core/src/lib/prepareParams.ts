@@ -1,10 +1,10 @@
-import type { ReadStream } from 'fs';
+import type { ReadStream } from 'node:fs';
 import type { Operation } from 'oas';
 import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
 
-import fs from 'fs';
-import path from 'path';
-import stream from 'stream';
+import fs from 'node:fs';
+import path from 'node:path';
+import stream from 'node:stream';
 
 import caseless from 'caseless';
 import DatauriParser from 'datauri/parser';
@@ -41,11 +41,12 @@ function digestParameters(parameters: ParameterObject[]): Record<string, Paramet
 }
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isEmpty(obj: any) {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
-function isObject(thing: any) {
+function isObject(thing: unknown) {
   if (thing instanceof stream.Readable) {
     return false;
   }
@@ -53,11 +54,11 @@ function isObject(thing: any) {
   return typeof thing === 'object' && thing !== null && !Array.isArray(thing);
 }
 
-function isPrimitive(obj: any) {
+function isPrimitive(obj: unknown) {
   return obj === null || typeof obj === 'number' || typeof obj === 'string';
 }
 
-function merge(src: any, target: any) {
+function merge(src: unknown, target: unknown) {
   if (Array.isArray(target)) {
     // @todo we need to add support for merging array defaults with array body/metadata arguments
     return target;
@@ -187,9 +188,11 @@ export default async function prepareParams(operation: Operation, body?: unknown
   const jsonSchemaDefaults = jsonSchema ? getJSONSchemaDefaults(jsonSchema) : {};
 
   const params: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: any;
     cookie?: Record<string, string | number | boolean>;
     files?: Record<string, Buffer>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData?: any;
     header?: Record<string, string | number | boolean>;
     path?: Record<string, string | number | boolean>;
@@ -329,6 +332,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
     if (!('query' in params)) params.query = {};
 
     Object.entries(digestedParameters).forEach(([paramName, param]) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let value: any;
       let metadataHeaderParam;
       if (typeof metadata === 'object' && !isEmpty(metadata)) {

@@ -1,7 +1,4 @@
 {
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off" // @todo fix these eventually
-  },
   "overrides": [
     {
       "files": ["bin/api"],

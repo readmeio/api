@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 import payloadExamples from '@api/test-utils/definitions/payloads.json';
 import loadSpec from '@api/test-utils/load-spec';
@@ -169,7 +169,7 @@ describe('#prepareParams', () => {
 
         const res = await prepareParams(operation, body);
         expect(res.body).toContain('data:image/png;name=owlbert.png;base64,');
-        expect(res.files['owlbert.png']).toBeInstanceOf(Buffer);
+        expect(res.files?.['owlbert.png']).toBeInstanceOf(Buffer);
       });
 
       it('should support a file stream payload', async () => {
@@ -178,7 +178,7 @@ describe('#prepareParams', () => {
 
         const res = await prepareParams(operation, body);
         expect(res.body).toContain('data:image/png;name=owlbert.png;base64,');
-        expect(res.files['owlbert.png']).toBeInstanceOf(Buffer);
+        expect(res.files?.['owlbert.png']).toBeInstanceOf(Buffer);
       });
     });
 
@@ -191,7 +191,7 @@ describe('#prepareParams', () => {
 
         const res = await prepareParams(operation, body);
         expect(res.body.documentFile).toContain('data:application/json;name=readme.json;base64,');
-        expect(res.files['readme.json']).toBeInstanceOf(Buffer);
+        expect(res.files?.['readme.json']).toBeInstanceOf(Buffer);
       });
 
       it('should handle when the file path is relative', async () => {
@@ -202,7 +202,7 @@ describe('#prepareParams', () => {
 
         const res = await prepareParams(operation, body);
         expect(res.body.documentFile).toContain('data:image/png;name=owlbert.png;base64,');
-        expect(res.files['owlbert.png']).toBeInstanceOf(Buffer);
+        expect(res.files?.['owlbert.png']).toBeInstanceOf(Buffer);
       });
 
       it('should handle a multipart body when a property is a file stream', async () => {
@@ -213,7 +213,7 @@ describe('#prepareParams', () => {
 
         const res = await prepareParams(operation, body);
         expect(res.body.documentFile).toContain('data:image/png;name=owlbert.png;base64,');
-        expect(res.files['owlbert.png']).toBeInstanceOf(Buffer);
+        expect(res.files?.['owlbert.png']).toBeInstanceOf(Buffer);
       });
     });
   });

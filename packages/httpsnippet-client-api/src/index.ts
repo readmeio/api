@@ -10,6 +10,7 @@ import stringifyObject from 'stringify-object';
 
 const { matchesMimeType } = utils;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
@@ -241,6 +242,7 @@ const client: Client<APIOptions> = {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let body: any;
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':

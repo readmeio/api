@@ -1,7 +1,7 @@
 import type { OASDocument } from 'oas/dist/rmoas.types';
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import OpenAPIParser from '@readme/openapi-parser';
 import yaml from 'js-yaml';
@@ -114,7 +114,7 @@ export default class Fetcher {
     });
   }
 
-  static validate(json: any) {
+  static validate(json: OASDocument) {
     if (json.swagger) {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }

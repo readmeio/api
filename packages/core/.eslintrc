@@ -1,7 +1,5 @@
 {
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off", // @todo fix these eventually
-
     "no-restricted-imports": [
       "error",
       {
