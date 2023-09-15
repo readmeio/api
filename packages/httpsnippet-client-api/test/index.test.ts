@@ -9,7 +9,6 @@ import path from 'node:path';
 import { HTTPSnippet, addTargetClient } from '@readme/httpsnippet';
 import readme from '@readme/oas-examples/3.0/json/readme.json';
 import openapiParser from '@readme/openapi-parser';
-import rimraf from 'rimraf';
 import { describe, afterEach, beforeEach, expect, it, vi } from 'vitest';
 
 import client from '../src';
@@ -95,15 +94,6 @@ describe('httpsnippet-client-api', () => {
       let consoleStub;
 
       beforeEach(async () => {
-        try {
-          // Since we're doing integration testing with these snippets against the real `api`
-          // library we should clear out the cache that it creates so our tests will run in a
-          // cleanroom environment.
-          rimraf.sync(path.join(__dirname, '../node_modules/.cache/api'));
-        } catch (err) {
-          // If we couldn't delete the `api` specs cache then it probably doesn't exist yet.
-        }
-
         consoleStub = vi.spyOn(console, 'log').mockImplementation(() => {});
 
         mock = await getSnippetDataset(snippet);
