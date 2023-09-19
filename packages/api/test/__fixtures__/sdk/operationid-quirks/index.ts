@@ -1,6 +1,6 @@
-import type { ConfigOptions, FetchResponse } from 'api.core';
+import type { ConfigOptions, FetchResponse } from '@readme/api-core';
 import Oas from 'oas';
-import APICore from 'api.core';
+import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/operationid-quirks.json';
 
 class SDK {

@@ -1,5 +1,5 @@
 import Oas from 'oas';
-import APICore from 'api.core';
+import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/simple.json';
 class SDK {
     constructor() {
