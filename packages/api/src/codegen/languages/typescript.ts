@@ -143,8 +143,14 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     const pkg: PackageJson = {
       name: `@api/${storage.identifier}`,
       version: pkgVersion.version,
-      main: `./index.${this.outputJS ? 'js' : 'ts'}`,
-      types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
+      main: './dist/index.js',
+      types: './dist/index.d.ts',
+      exports: {
+        '.': {
+          import: './dist/index.mjs',
+          require: './dist/index.js',
+        },
+      },
     };
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
