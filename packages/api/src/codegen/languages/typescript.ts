@@ -155,6 +155,33 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
 
+    // create a tsconfig.json file so tsup plays nicely
+    // it's working with the following attributes so we can probably remove the commented out ones
+    fs.writeFileSync(
+      path.join(installDir, 'tsconfig.json'),
+      JSON.stringify(
+        {
+          compilerOptions: {
+            // allowJs: true,
+            // baseUrl: './src/',
+            declaration: true,
+            esModuleInterop: true,
+            lib: ['ES2020'],
+            module: 'ESNext',
+            moduleResolution: 'bundler',
+            // noImplicitAny: true,
+            // outDir: './dist',
+            resolveJsonModule: true,
+            // skipLibCheck: true,
+            strict: true,
+            target: 'ES2020',
+          },
+        },
+        null,
+        2,
+      ),
+    );
+
     const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
     // This will install packages required for the SDK within its installed directory in `.apis/`.
