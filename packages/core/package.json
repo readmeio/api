@@ -1,6 +1,6 @@
 {
-  "name": "@api/core",
-  "version": "1.0.0",
+  "name": "api.core",
+  "version": "0.0.1",
   "description": "The magic behind `api` 🧙",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
