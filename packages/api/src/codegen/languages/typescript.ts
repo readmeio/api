@@ -86,7 +86,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     this.requiredPackages = {
       api: {
-        reason: "Required for the `api.core` library that the codegen'd SDK uses for making requests.",
+        reason: "Required for the `@readme/api-core` library that the codegen'd SDK uses for making requests.",
         url: 'https://npm.im/api',
       },
       'json-schema-to-ts': {
@@ -94,7 +94,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         url: 'https://npm.im/json-schema-to-ts',
       },
       oas: {
-        reason: 'Used within `api.core` and is also loaded for TypeScript types.',
+        reason: 'Used within `@readme/api-core` and is also loaded for TypeScript types.',
         url: 'https://npm.im/oas',
       },
     };
@@ -229,7 +229,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
-        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from 'api.core';");
+        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core';");
     }
 
     if (this.outputJS) {
@@ -300,10 +300,10 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       {
         // `HTTPMethodRange` will be conditionally removed later if it ends up not being used.
         defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
-        moduleSpecifier: 'api.core',
+        moduleSpecifier: '@readme/api-core',
       },
       { defaultImport: 'Oas', moduleSpecifier: 'oas' },
-      { defaultImport: 'APICore', moduleSpecifier: 'api.core' },
+      { defaultImport: 'APICore', moduleSpecifier: '@readme/api-core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
     ]);
 
@@ -710,7 +710,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       // our `metadata` parameter is actually required for this operation this is the only way we're
       // able to have an optional `body` parameter be present before `metadata`.
       //
-      // Thankfully our core fetch work in `api.core` is able to do the proper determination to
+      // Thankfully our core fetch work in `@readme/api-core` is able to do the proper determination to
       // see if what the user is supplying is `metadata` or `body` content when they supply one or
       // both.
       operationIdAccessor.addParameters([

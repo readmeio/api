@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var oas_1 = __importDefault(require("oas"));
-var api_core_1 = __importDefault(require("api.core"));
+var api_core_1 = __importDefault(require("@readme/api-core"));
 var simple_json_1 = __importDefault(require("@api/test-utils/definitions/simple.json"));
 var SDK = /** @class */ (function () {
     function SDK() {

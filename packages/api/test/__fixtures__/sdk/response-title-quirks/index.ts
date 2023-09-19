@@ -1,7 +1,7 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse, HTTPMethodRange } from 'api.core';
+import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-core';
 import Oas from 'oas';
-import APICore from 'api.core';
+import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/response-title-quirks.json';
 
 class SDK {
