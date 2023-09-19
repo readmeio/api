@@ -1,3 +1,9 @@
+## 7.0.0-alpha.1 (2023-09-19)
+
+* fix: try renaming core pkg to `@readme/api-core` (#732) ([43c55a1](https://github.com/readmeio/api/commit/43c55a1)), closes [#732](https://github.com/readmeio/api/issues/732)
+
+
+
 ## 7.0.0-alpha.0 (2023-09-19)
 
 * revert: restore lerna.json changes ([066563e](https://github.com/readmeio/api/commit/066563e))
