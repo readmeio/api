@@ -11,7 +11,8 @@ import type {
   OptionalKind,
   ParameterDeclarationStructure,
 } from 'ts-morph';
-import type { PackageJson } from 'type-fest';
+import type { Options } from 'tsup';
+import type { JsonObject, PackageJson } from 'type-fest';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -140,6 +141,30 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       pkgVersion = semver.coerce('0.0.0') as SemVer;
     }
 
+    /**
+     * notes on this tsup approach:
+     * - it currently works in both CJS and ESM, but some tweaks are needed
+     * - i like tsup since we can just use `index.ts` as the entrypoint and tsup will magically unpeel
+     *   and re-bundle all the layers for us and correctly set the file extensions for cjs vs. esm
+     * - we keep seeing `.default` errors when trying to load in `oas` properly, we should bump `oas` to the latest
+     * - the types for CJS slightly mismatch the actual code. in other words, types only show up if we
+     *   load in `sdk.default.method()`, but the actual code is `sdk.method()`
+     */
+    const tsup: Options = {
+      // cjsInterop: true,
+      clean: true,
+      dts: true,
+      entry: ['index.ts'],
+      // TODO: figure this out
+      // external: ['@readme/api-core'],
+      format: ['esm', 'cjs'],
+      minify: false,
+      shims: true,
+      sourcemap: true,
+      splitting: true,
+      treeshake: true,
+    };
+
     const pkg: PackageJson = {
       name: `@api/${storage.identifier}`,
       version: pkgVersion.version,
@@ -151,6 +176,8 @@ export default class TSGenerator extends CodeGeneratorLanguage {
           require: './dist/index.js',
         },
       },
+      // definining the tsup config in here is easier than creating several new files
+      tsup: tsup as JsonObject,
     };
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
@@ -194,10 +221,20 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       }
     });
 
+    // this installs the dev-deps needed for tsup to function
+    await execa('npm', ['install', '--save-dev', 'tsup', 'typescript'], {
+      cwd: installDir,
+    }).then(res => {
+      if (opts.dryRun) {
+        (opts.logger ? opts.logger : logger)(res.command);
+        (opts.logger ? opts.logger : logger)(res.stdout);
+      }
+    });
+
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
-    return execa('npm', [...npmInstall, installDir].filter(Boolean))
+    await execa('npm', [...npmInstall, installDir].filter(Boolean))
       .then(res => {
         if (opts.dryRun) {
           (opts.logger ? opts.logger : logger)(res.command);
@@ -212,6 +249,13 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
         throw err;
       });
+
+    // this runs the tsup command
+    await execa('npx', ['tsup'], {
+      cwd: installDir,
+    }).then(res => {
+      console.log('res:', res);
+    });
   }
 
   /**
