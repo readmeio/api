@@ -1,3 +1,27 @@
+## 7.0.0-alpha.0 (2023-09-19)
+
+* revert: restore lerna.json changes ([066563e](https://github.com/readmeio/api/commit/066563e))
+* refactor: rename `@api/core` to `api.core` (#731) ([7169c64](https://github.com/readmeio/api/commit/7169c64)), closes [#731](https://github.com/readmeio/api/issues/731)
+* refactor(api): cleaning up the api directory now that core is split out (#728) ([ef4e95c](https://github.com/readmeio/api/commit/ef4e95c)), closes [#728](https://github.com/readmeio/api/issues/728)
+* refactor(core): moving the core library into an isolated package (#725) ([189b8c5](https://github.com/readmeio/api/commit/189b8c5)), closes [#725](https://github.com/readmeio/api/issues/725)
+* refactor(ts): strict mode (#696) ([3529992](https://github.com/readmeio/api/commit/3529992)), closes [#696](https://github.com/readmeio/api/issues/696)
+* ci: disabling get-stream updates because its esm-only now ([6a6a290](https://github.com/readmeio/api/commit/6a6a290))
+* ci: knip (#730) ([be87af5](https://github.com/readmeio/api/commit/be87af5)), closes [#730](https://github.com/readmeio/api/issues/730)
+* ci(dependabot): setting up a group to reduce dependabot noise ([0421f43](https://github.com/readmeio/api/commit/0421f43))
+* feat: deprecating the dynamic `api` entrypoint (#723) ([437f6e4](https://github.com/readmeio/api/commit/437f6e4)), closes [#723](https://github.com/readmeio/api/issues/723)
+* feat: drop support for node 16 and move to require native fetch (#722) ([709c54b](https://github.com/readmeio/api/commit/709c54b)), closes [#722](https://github.com/readmeio/api/issues/722)
+* feat: moving node imports over to using the node: prefix (#729) ([8810603](https://github.com/readmeio/api/commit/8810603)), closes [#729](https://github.com/readmeio/api/issues/729)
+* docs: bumping the license years ([499b891](https://github.com/readmeio/api/commit/499b891))
+* chore: bringing back changelog updating ([d673575](https://github.com/readmeio/api/commit/d673575))
+* chore(deps-dev): bump the minor-development-deps group with 1 update (#720) ([5809cd9](https://github.com/readmeio/api/commit/5809cd9)), closes [#720](https://github.com/readmeio/api/issues/720)
+* chore(deps): bump actions/checkout from 3 to 4 (#712) ([ac529fa](https://github.com/readmeio/api/commit/ac529fa)), closes [#712](https://github.com/readmeio/api/issues/712)
+* chore(deps): bump commander from 10.0.0 to 11.0.0 (#703) ([48575cb](https://github.com/readmeio/api/commit/48575cb)), closes [#703](https://github.com/readmeio/api/issues/703)
+* chore(deps): bump json-schema-to-ts from 2.6.2-beta.0 to 2.9.2 (#718) ([f252451](https://github.com/readmeio/api/commit/f252451)), closes [#718](https://github.com/readmeio/api/issues/718)
+* chore(deps): bumping out of date deps (#711) ([cdeb4ba](https://github.com/readmeio/api/commit/cdeb4ba)), closes [#711](https://github.com/readmeio/api/issues/711)
+* chore(deps): upgrading to typescript 5 (#719) ([fd1fade](https://github.com/readmeio/api/commit/fd1fade)), closes [#719](https://github.com/readmeio/api/issues/719)
+
+
+
 ## 6.1.0 (2023-07-17)
 
 * fix(codegen): don't surface error responses as method return types (#674) ([cea1e7f](https://github.com/readmeio/api/commit/cea1e7f)), closes [#674](https://github.com/readmeio/api/issues/674)
