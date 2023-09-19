@@ -85,9 +85,9 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     super(spec, specPath, identifier);
 
     this.requiredPackages = {
-      api: {
+      '@readme/api-core': {
         reason: "Required for the `@readme/api-core` library that the codegen'd SDK uses for making requests.",
-        url: 'https://npm.im/api',
+        url: 'https://npm.im/@readme/api-core',
       },
       'json-schema-to-ts': {
         reason: 'Required for TypeScript type handling.',
