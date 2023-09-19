@@ -57,7 +57,7 @@
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
-    "@api/core": "file:../core",
+    "api.core": "file:../core",
     "@api/test-utils": "file:../test-utils",
     "@readme/oas-examples": "^5.12.0",
     "@types/js-yaml": "^4.0.5",

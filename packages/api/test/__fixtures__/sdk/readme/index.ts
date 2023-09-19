@@ -1,7 +1,7 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from '@api/core'
+import type { ConfigOptions, FetchResponse } from 'api.core';
 import Oas from 'oas';
-import APICore from '@api/core';
+import APICore from 'api.core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
 
 class SDK {
