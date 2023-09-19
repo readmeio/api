@@ -229,7 +229,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
-        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from 'api.core'");
+        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from 'api.core';");
     }
 
     if (this.outputJS) {
