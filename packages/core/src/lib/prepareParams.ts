@@ -1,19 +1,19 @@
 import type { ReadStream } from 'node:fs';
 import type { Operation } from 'oas';
-import type { ParameterObject, SchemaObject } from 'oas/dist/rmoas.types';
+import type { ParameterObject, SchemaObject } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
 import path from 'node:path';
 import stream from 'node:stream';
 
 import caseless from 'caseless';
-import DatauriParser from 'datauri/parser';
-import datauri from 'datauri/sync';
+import DatauriParser from 'datauri/parser.js';
+import datauri from 'datauri/sync.js';
 import getStream from 'get-stream';
 import lodashMerge from 'lodash.merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
 
-import getJSONSchemaDefaults from './getJSONSchemaDefaults';
+import getJSONSchemaDefaults from './getJSONSchemaDefaults.js';
 
 // These headers are normally only defined by the OpenAPI definition but we allow the user to
 // manually supply them in their `metadata` parameter if they wish.

@@ -5,7 +5,7 @@ import loadSpec from '@api/test-utils/load-spec';
 import Oas from 'oas';
 import { describe, beforeEach, it, expect } from 'vitest';
 
-import prepareParams from '../../src/lib/prepareParams';
+import prepareParams from '../../src/lib/prepareParams.js';
 
 describe('#prepareParams', () => {
   let fileUploads: Oas;

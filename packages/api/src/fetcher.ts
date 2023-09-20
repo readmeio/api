@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
 import path from 'node:path';

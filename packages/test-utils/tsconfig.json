@@ -1,12 +1,8 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": "./src",
-    "declaration": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "noImplicitAny": true,
-    "strict": true
+    "lib": ["DOM", "ES2023"],
+    "noEmit": true
   },
   "include": ["./**/*"]
 }

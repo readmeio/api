@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    // per [this guide](https://www.totaltypescript.com/tsconfig-cheat-sheet#building-for-a-library-in-a-monorepo),
+    // the following flags are recommended for monorepos.
+    "composite": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}

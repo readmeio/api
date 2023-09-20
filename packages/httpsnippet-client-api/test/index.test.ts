@@ -1,6 +1,6 @@
 import type { HarRequest, Request } from '@readme/httpsnippet';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import { readdirSync } from 'node:fs';
 import fs from 'node:fs/promises';

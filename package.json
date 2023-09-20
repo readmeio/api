@@ -32,7 +32,8 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.7.0",
-    "@readme/eslint-config": "^12.2.1",
+    "@readme/eslint-config": "^13.0.1",
+    "@tsconfig/node18": "^18.2.2",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.48.0",

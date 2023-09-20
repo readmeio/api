@@ -5,7 +5,7 @@ import loadSpec from '@api/test-utils/load-spec';
 import fetchMock from 'fetch-mock';
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import Fetcher from '../src/fetcher';
+import Fetcher from '../src/fetcher.js';
 
 let readmeSpec;
 

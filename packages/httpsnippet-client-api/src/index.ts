@@ -1,7 +1,7 @@
 import type { ReducedHelperObject } from '@readme/httpsnippet/dist/helpers/reducer';
 import type { Client } from '@readme/httpsnippet/dist/targets/targets';
 import type { Operation } from 'oas';
-import type { HttpMethods, OASDocument } from 'oas/dist/rmoas.types';
+import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
 import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';
 import contentType from 'content-type';

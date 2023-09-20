@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -7,8 +7,8 @@ import makeDir from 'make-dir';
 import ssri from 'ssri';
 import validateNPMPackageName from 'validate-npm-package-name';
 
-import Fetcher from './fetcher';
-import { PACKAGE_VERSION } from './packageInfo';
+import Fetcher from './fetcher.js';
+import { PACKAGE_VERSION } from './packageInfo.js';
 
 export default class Storage {
   static dir: string;

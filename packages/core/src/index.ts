@@ -1,17 +1,17 @@
 import type { Har } from 'har-format';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods } from 'oas/dist/rmoas.types';
+import type { HttpMethods } from 'oas/rmoas.types';
 
 import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
 
-import FetchError from './errors/fetchError';
-import getJSONSchemaDefaults from './lib/getJSONSchemaDefaults';
-import parseResponse from './lib/parseResponse';
-import prepareAuth from './lib/prepareAuth';
-import prepareParams from './lib/prepareParams';
-import prepareServer from './lib/prepareServer';
+import FetchError from './errors/fetchError.js';
+import getJSONSchemaDefaults from './lib/getJSONSchemaDefaults.js';
+import parseResponse from './lib/parseResponse.js';
+import prepareAuth from './lib/prepareAuth.js';
+import prepareParams from './lib/prepareParams.js';
+import prepareServer from './lib/prepareServer.js';
 
 export interface ConfigOptions {
   /**
@@ -122,6 +122,7 @@ export default class APICore {
         init.signal = controller.signal;
       }
 
+      // @ts-expect-error the call signature doesn't align with the type. FIXME
       return fetchHar(har as Har, {
         files: data.files || {},
         init,

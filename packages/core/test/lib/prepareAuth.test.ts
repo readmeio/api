@@ -1,10 +1,10 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import loadSpec from '@api/test-utils/load-spec';
 import Oas from 'oas';
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import prepareAuth from '../../src/lib/prepareAuth';
+import prepareAuth from '../../src/lib/prepareAuth.js';
 
 let oas: Oas;
 

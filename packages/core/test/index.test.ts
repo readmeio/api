@@ -7,8 +7,8 @@ import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
-import APICore from '../src';
-import FetchError from '../src/errors/fetchError';
+import FetchError from '../src/errors/fetchError.js';
+import APICore from '../src/index.js';
 
 describe('APICore', () => {
   let fileUploads: APICore;
