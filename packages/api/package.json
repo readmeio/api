@@ -3,7 +3,7 @@
   "version": "7.0.0-alpha.1",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "bin": {
-    "api": "./bin/api"
+    "api": "./bin/api.js"
   },
   "scripts": {
     "build": "tsc",
