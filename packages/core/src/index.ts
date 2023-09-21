@@ -1,7 +1,7 @@
 import type { Har } from 'har-format';
 import type Oas from 'oas';
 import type { Operation } from 'oas';
-import type { HttpMethods } from 'oas/dist/rmoas.types';
+import type { HttpMethods } from 'oas/rmoas.types';
 
 import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';

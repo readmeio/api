@@ -1,4 +1,4 @@
-import type { ParameterObject } from 'oas/dist/rmoas.types';
+import type { ParameterObject } from 'oas/rmoas.types';
 
 import caseless from 'caseless';
 import { expect } from 'vitest';
@@ -48,13 +48,7 @@ expect.extend({
   },
 
   toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
-    const headers = caseless(
-      Object.fromEntries(
-        // @ts-expect-error Despite the Node typings saying otherwise `Headers.entries()` exists.
-        // https://developer.mozilla.org/en-US/docs/Web/API/Headers/entries
-        Array.from(obj.entries()),
-      ),
-    );
+    const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
 
     // Header value should match a given regex.
     if (expected instanceof RegExp) {
