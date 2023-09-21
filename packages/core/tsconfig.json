@@ -5,8 +5,10 @@
     "declaration": true,
     "esModuleInterop": true,
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "NodeNext",
     "noImplicitAny": true,
     "outDir": "dist/",
+    "skipLibCheck": true,
     "strict": true
   },
   "include": ["./src/**/*"]

@@ -4,8 +4,10 @@
     "baseUrl": "./src",
     "declaration": true,
     "esModuleInterop": true,
+    "module": "NodeNext",
     "noEmit": true,
     "noImplicitAny": true,
+    "skipLibCheck": true,
     "strict": true
   },
   "include": ["./**/*"]

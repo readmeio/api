@@ -1,5 +1,5 @@
 import type { SnippetMock } from '../../index.test';
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import definition from './openapi.json';
 

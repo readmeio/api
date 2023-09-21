@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/dist/rmoas.types';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
