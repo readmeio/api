@@ -51,3 +51,6 @@ updates:
       - dependency-name: stringify-object
         versions:
           - '>= 4'
+      - dependency-name: '@types/stringify-object'
+        versions:
+          - '>= 4'

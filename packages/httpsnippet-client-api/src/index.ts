@@ -1,9 +1,9 @@
-import type { ReducedHelperObject } from '@readme/httpsnippet/dist/helpers/reducer';
-import type { Client } from '@readme/httpsnippet/dist/targets/targets';
+import type { ReducedHelperObject } from '@readme/httpsnippet/helpers/reducer';
+import type { Client } from '@readme/httpsnippet/targets';
 import type { Operation } from 'oas';
 import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
-import { CodeBuilder } from '@readme/httpsnippet/dist/helpers/code-builder';
+import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
 import contentType from 'content-type';
 import Oas, { utils } from 'oas';
 import stringifyObject from 'stringify-object';
