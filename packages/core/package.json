@@ -26,7 +26,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^20.1.1",
+    "@readme/oas-to-har": "^23.0.4",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^10.0.0",
