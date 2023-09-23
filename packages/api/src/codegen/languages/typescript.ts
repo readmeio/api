@@ -151,7 +151,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
      *   load in `sdk.default.method()`, but the actual code is `sdk.method()`
      */
     const tsup: Options = {
-      // cjsInterop: true,
+      cjsInterop: true,
       clean: true,
       dts: true,
       entry: ['index.ts'],
@@ -162,14 +162,15 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       shims: true,
       sourcemap: true,
       splitting: true,
-      treeshake: true,
+      // treeshake: true,
     };
 
     const pkg: PackageJson = {
       name: `@api/${storage.identifier}`,
       version: pkgVersion.version,
-      main: './dist/index.js',
-      types: './dist/index.d.ts',
+      main: 'dist/index.js',
+      types: 'dist/index.d.ts',
+      module: 'dist/index.mts',
       exports: {
         '.': {
           import: './dist/index.mjs',
@@ -280,18 +281,18 @@ export default class TSGenerator extends CodeGeneratorLanguage {
        * @see {@link https://github.com/microsoft/TypeScript/issues/37238}
        * @see {@link https://github.com/readmeio/api/issues/588}
        */
-      if (!this.outputJS) {
-        const types = Array.from(this.types.keys());
-        types.sort();
+      // if (!this.outputJS) {
+      //   const types = Array.from(this.types.keys());
+      //   types.sort();
 
-        sdkSource.addExportDeclarations([
-          {
-            isTypeOnly: true,
-            namedExports: types,
-            moduleSpecifier: './types',
-          },
-        ]);
-      }
+      //   sdkSource.addExportDeclarations([
+      //     {
+      //       isTypeOnly: true,
+      //       namedExports: types,
+      //       moduleSpecifier: './types',
+      //     },
+      //   ]);
+      // }
     } else {
       // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
       sdkSource
