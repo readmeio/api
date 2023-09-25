@@ -1,14 +1,13 @@
 import type { ReducedHelperObject } from '@readme/httpsnippet/helpers/reducer';
 import type { Client } from '@readme/httpsnippet/targets';
-import type { Operation } from 'oas';
+import type Operation from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
 import contentType from 'content-type';
-import Oas, { utils } from 'oas';
+import Oas from 'oas';
+import { matchesMimeType } from 'oas/utils';
 import stringifyObject from 'stringify-object';
-
-const { matchesMimeType } = utils;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function stringify(obj: any, opts = {}) {

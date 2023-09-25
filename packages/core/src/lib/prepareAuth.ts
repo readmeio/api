@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import type { Operation } from 'oas';
+import type Operation from 'oas/operation';
 import type { KeyedSecuritySchemeObject } from 'oas/rmoas.types';
 
 export default function prepareAuth(authKey: (number | string)[], operation: Operation) {
