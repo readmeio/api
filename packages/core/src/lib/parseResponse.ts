@@ -1,4 +1,6 @@
-import { matchesMimeType } from 'oas/utils';
+import { utils } from 'oas';
+
+const { matchesMimeType } = utils;
 
 export default async function parseResponse<HTTPStatus extends number = number>(response: Response) {
   const contentType = response.headers.get('Content-Type');
