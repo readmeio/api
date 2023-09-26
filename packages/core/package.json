@@ -1,6 +1,6 @@
 {
   "name": "@readme/api-core",
-  "version": "7.0.0-alpha.1",
+  "version": "7.0.0-alpha.2",
   "description": "The magic behind `api` 🧙",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -34,7 +34,7 @@
     "get-stream": "^6.0.1",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^21.1.1",
+    "oas": "^22.0.0",
     "remove-undefined-objects": "^4.0.2"
   },
   "devDependencies": {

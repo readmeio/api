@@ -1,3 +1,13 @@
+## 7.0.0-alpha.2 (2023-09-26)
+
+* chore(deps-dev): bump oas-normalize from 8.4.1 to 10.1.0 (#726) ([5a947b9](https://github.com/readmeio/api/commit/5a947b9)), closes [#726](https://github.com/readmeio/api/issues/726)
+* chore(deps): bump (#735) ([ee1b44d](https://github.com/readmeio/api/commit/ee1b44d)), closes [#735](https://github.com/readmeio/api/issues/735)
+* chore(deps): bump (#742) ([cbdf9cd](https://github.com/readmeio/api/commit/cbdf9cd)), closes [#742](https://github.com/readmeio/api/issues/742)
+* chore(deps): bump @readme/oas-to-har from 20.1.1 to 23.0.8 (#741) ([8d4f32d](https://github.com/readmeio/api/commit/8d4f32d)), closes [#741](https://github.com/readmeio/api/issues/741)
+* chore(deps): bump `oas` + friends (#743) ([69ebbee](https://github.com/readmeio/api/commit/69ebbee)), closes [#743](https://github.com/readmeio/api/issues/743)
+
+
+
 ## 7.0.0-alpha.1 (2023-09-19)
 
 * fix: try renaming core pkg to `@readme/api-core` (#732) ([43c55a1](https://github.com/readmeio/api/commit/43c55a1)), closes [#732](https://github.com/readmeio/api/issues/732)
