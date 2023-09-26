@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "7.0.0-alpha.0",
+  "version": "7.0.0-alpha.2",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "@readme/httpsnippet": ">=4",
-    "oas": "^21.1.1"
+    "oas": "^22.0.0"
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.12.0",

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@api/test-utils",
-  "version": "7.0.0-alpha.0",
+  "version": "7.0.0-alpha.2",
   "scripts": {
     "lint:types": "tsc --noEmit"
   },
@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",
-    "oas": "^21.1.1",
+    "oas": "^22.0.0",
     "typescript": "^5.2.2"
   },
   "prettier": "@readme/eslint-config/prettier"
