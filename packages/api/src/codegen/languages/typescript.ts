@@ -1,7 +1,7 @@
 import type Storage from '../../storage';
 import type { InstallerOptions } from '../language';
 import type Oas from 'oas';
-import type { Operation } from 'oas';
+import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
 import type { SemVer } from 'semver';
 import type {

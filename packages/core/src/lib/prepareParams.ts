@@ -1,5 +1,5 @@
 import type { ReadStream } from 'node:fs';
-import type { Operation } from 'oas';
+import type Operation from 'oas/operation';
 import type { ParameterObject, SchemaObject } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
