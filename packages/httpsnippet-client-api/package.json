@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "7.0.0-alpha.0",
+  "version": "7.0.0-alpha.2",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

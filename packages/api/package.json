@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "7.0.0-alpha.1",
+  "version": "7.0.0-alpha.2",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "bin": {
     "api": "./bin/api"
