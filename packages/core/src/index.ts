@@ -122,7 +122,6 @@ export default class APICore {
         init.signal = controller.signal;
       }
 
-      // @ts-expect-error the call signature doesn't align with the type. FIXME
       return fetchHar(har as Har, {
         files: data.files || {},
         init,
