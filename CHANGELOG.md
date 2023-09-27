@@ -1,3 +1,10 @@
+## 7.0.0-alpha.3 (2023-09-27)
+
+* chore(deps): bump fetch-har (#745) ([d7a5d0c](https://github.com/readmeio/api/commit/d7a5d0c)), closes [#745](https://github.com/readmeio/api/issues/745)
+* chore(deps): npm up (#744) ([dc23621](https://github.com/readmeio/api/commit/dc23621)), closes [#744](https://github.com/readmeio/api/issues/744)
+
+
+
 ## 7.0.0-alpha.2 (2023-09-26)
 
 * chore(deps-dev): bump oas-normalize from 8.4.1 to 10.1.0 (#726) ([5a947b9](https://github.com/readmeio/api/commit/5a947b9)), closes [#726](https://github.com/readmeio/api/issues/726)
