@@ -3,7 +3,6 @@ import type { OASDocument } from 'oas/rmoas.types';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import makeDir from 'make-dir';
 import ssri from 'ssri';
 import validateNPMPackageName from 'validate-npm-package-name';
 
@@ -59,7 +58,7 @@ export default class Storage {
 
     Storage.dir = makeDir.sync(path.join(process.cwd(), '.api'));
 
-    makeDir.sync(Storage.getAPIsDir());
+    fs.mkdirSync(Storage.getAPIsDir(), { recursive: true });
   }
 
   /**
