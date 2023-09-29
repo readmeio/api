@@ -143,11 +143,41 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     const pkg: PackageJson = {
       name: `@api/${storage.identifier}`,
       version: pkgVersion.version,
-      main: `./index.${this.outputJS ? 'js' : 'ts'}`,
-      types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
+      type: 'module',
+      // main: `./index.${this.outputJS ? 'js' : 'ts'}`,
+      // types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
+      files: ['dist'],
+      scripts: {
+        prepare: 'tshy',
+      },
     };
 
     fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
+
+    // fs.writeFileSync(
+    //   path.join(installDir, 'tsconfig.json'),
+    //   JSON.stringify(
+    //     {
+    //       compilerOptions: {
+    //         // allowJs: true,
+    //         // baseUrl: './src/',
+    //         declaration: true,
+    //         esModuleInterop: true,
+    //         lib: ['ES2020'],
+    //         module: 'ESNext',
+    //         moduleResolution: 'bundler',
+    //         // noImplicitAny: true,
+    //         // outDir: './dist',
+    //         resolveJsonModule: true,
+    //         skipLibCheck: true,
+    //         strict: true,
+    //         target: 'ES2020',
+    //       },
+    //     },
+    //     null,
+    //     2,
+    //   ),
+    // );
 
     const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
@@ -161,10 +191,19 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       }
     });
 
+    await execa('npm', ['install', '--save-dev', 'tshy'], {
+      cwd: installDir,
+    }).then(res => {
+      if (opts.dryRun) {
+        (opts.logger ? opts.logger : logger)(res.command);
+        (opts.logger ? opts.logger : logger)(res.stdout);
+      }
+    });
+
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
-    return execa('npm', [...npmInstall, installDir].filter(Boolean))
+    await execa('npm', [...npmInstall, installDir].filter(Boolean))
       .then(res => {
         if (opts.dryRun) {
           (opts.logger ? opts.logger : logger)(res.command);
@@ -179,6 +218,12 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
         throw err;
       });
+
+    await execa('npx', ['tshy'], {
+      cwd: installDir,
+    }).then(res => {
+      console.log('res:', res);
+    });
   }
 
   /**
@@ -211,7 +256,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
           {
             isTypeOnly: true,
             namedExports: types,
-            moduleSpecifier: './types',
+            moduleSpecifier: './types.js',
           },
         ]);
       }
@@ -270,7 +315,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     return [
       ...this.project.getSourceFiles().map(sourceFile => ({
-        [sourceFile.getBaseName()]: sourceFile.getFullText(),
+        [path.join('src', sourceFile.getBaseName())]: sourceFile.getFullText(),
       })),
 
       // Because we're returning the raw source files for TS generation we also need to separately
@@ -296,7 +341,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
     sourceFile.addImportDeclarations([
       // This import will be automatically removed later if the SDK ends up not having any types.
-      { defaultImport: 'type * as types', moduleSpecifier: './types' },
+      { defaultImport: 'type * as types', moduleSpecifier: './types.js' },
       {
         // `HTTPMethodRange` will be conditionally removed later if it ends up not being used.
         defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
@@ -503,7 +548,7 @@ sdk.server('https://eu.api.example.com/v14');`),
 
     sourceFile.addImportDeclarations([
       { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
-      { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
+      { defaultImport: '* as schemas', moduleSpecifier: './schemas.js' },
     ]);
 
     Array.from(new Map(Array.from(this.types.entries()).sort())).forEach(([typeName, typeExpression]) => {

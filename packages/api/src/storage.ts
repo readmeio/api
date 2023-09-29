@@ -254,6 +254,7 @@ export default class Storage {
       // and eventually its codegen'd SDK.
       if (!fs.existsSync(identifierStorageDir)) {
         fs.mkdirSync(identifierStorageDir, { recursive: true });
+        fs.mkdirSync(path.join(identifierStorageDir, 'src'), { recursive: true });
       }
 
       (Storage.lockfile as Lockfile).apis.push({
@@ -263,7 +264,7 @@ export default class Storage {
         installerVersion: PACKAGE_VERSION,
       } as LockfileAPI);
 
-      fs.writeFileSync(path.join(identifierStorageDir, 'openapi.json'), saved);
+      fs.writeFileSync(path.join(identifierStorageDir, 'src', 'openapi.json'), saved);
       fs.writeFileSync(Storage.getLockfilePath(), JSON.stringify(Storage.lockfile, null, 2));
     } else {
       // Is this the same spec that we already have? Should we update it? // @todo

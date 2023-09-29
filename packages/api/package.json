@@ -55,6 +55,7 @@
     "semver": "^7.3.8",
     "ssri": "^10.0.1",
     "ts-morph": "^17.0.1",
+    "tshy": "^1.2.2",
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
