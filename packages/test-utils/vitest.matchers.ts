@@ -48,6 +48,7 @@ expect.extend({
   },
 
   toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
+    // @ts-expect-error `Headers.entries()` exists despite what the types here suggest.
     const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
 
     // Header value should match a given regex.
