@@ -33,6 +33,20 @@ describe('storage', () => {
     fetchMock.restore();
   });
 
+  describe('#setStorageDir', () => {
+    it('should create and set a storage dir if one is neither supplied or already exists', async () => {
+      Storage.dir = '';
+
+      Storage.setStorageDir();
+
+      expect(Storage.dir).toContain('/.api');
+      expect(Storage.getAPIsDir()).toContain('/.api/api');
+
+      await expect(fs.stat(Storage.dir)).resolves.toHaveProperty('uid');
+      await expect(fs.stat(Storage.getAPIsDir())).resolves.toHaveProperty('uid');
+    });
+  });
+
   describe('#generateIntegrityHash', () => {
     it('should generate an integrity hash for an API definition', () => {
       expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).toBe(
