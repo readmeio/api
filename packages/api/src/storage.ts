@@ -56,8 +56,9 @@ export default class Storage {
       return;
     }
 
-    Storage.dir = fs.mkdirSync(path.join(process.cwd(), '.api'), { recursive: true }) as string;
+    Storage.dir = path.join(process.cwd(), '.api');
 
+    fs.mkdirSync(Storage.dir, { recursive: true });
     fs.mkdirSync(Storage.getAPIsDir(), { recursive: true });
   }
 
