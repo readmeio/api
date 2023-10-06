@@ -29,7 +29,7 @@
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": ">=4",
+    "@readme/httpsnippet": ">=7",
     "oas": "^22.0.0"
   },
   "devDependencies": {
