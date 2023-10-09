@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "alex": "alex .",
+    "attw": "npx lerna run attw --stream",
     "build": "lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
     "clean": "lerna clean",

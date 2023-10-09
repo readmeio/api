@@ -6,6 +6,7 @@
   "types": "dist/src/index.d.ts",
   "type": "module",
   "scripts": {
+    "attw": "attw --pack --format table-flipped",
     "build": "tsc",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
@@ -27,14 +28,14 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^23.0.8",
+    "@readme/oas-to-har": "^23.0.12",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
     "get-stream": "^6.0.1",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^22.0.0",
+    "oas": "^23.0.0",
     "remove-undefined-objects": "^4.0.2"
   },
   "devDependencies": {

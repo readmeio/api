@@ -3,8 +3,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
-    "outDir": "dist/",
-    "useUnknownInCatchVariables": false
+    "outDir": "dist/"
   },
   "include": ["./src/**/*"]
 }

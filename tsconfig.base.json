@@ -4,6 +4,8 @@
     "allowJs": true,
     "baseUrl": "./src",
     "declaration": true,
+    "useUnknownInCatchVariables": false,
+
     // per [this guide](https://www.totaltypescript.com/tsconfig-cheat-sheet#building-for-a-library-in-a-monorepo),
     // the following flags are recommended for monorepos.
     "composite": true,
