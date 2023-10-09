@@ -7,11 +7,7 @@ import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
 
 import FetchError from './errors/fetchError.js';
-import getJSONSchemaDefaults from './lib/getJSONSchemaDefaults.js';
-import parseResponse from './lib/parseResponse.js';
-import prepareAuth from './lib/prepareAuth.js';
-import prepareParams from './lib/prepareParams.js';
-import prepareServer from './lib/prepareServer.js';
+import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib/index.js';
 
 export interface ConfigOptions {
   /**
@@ -34,8 +30,6 @@ type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] exte
   : Enumerate<N, [...Acc, Acc['length']]>;
 
 export type HTTPMethodRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;
-
-export { getJSONSchemaDefaults, parseResponse, prepareAuth, prepareParams, prepareServer };
 
 export default class APICore {
   spec!: Oas;

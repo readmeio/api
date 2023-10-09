@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
+import { loadSpec } from '@api/test-utils';
 import payloadExamples from '@api/test-utils/definitions/payloads.json';
-import loadSpec from '@api/test-utils/load-spec';
 import Oas from 'oas';
 import { describe, beforeEach, it, expect } from 'vitest';
 
@@ -381,7 +381,7 @@ describe('#prepareParams', () => {
 
     describe('quirks', () => {
       it('should not send special headers in body payloads', async () => {
-        const basiq = await import('@api/test-utils/definitions/basiq.json').then(Oas.init);
+        const basiq = await loadSpec('@api/test-utils/definitions/basiq.json').then(Oas.init);
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');
@@ -400,7 +400,7 @@ describe('#prepareParams', () => {
       });
 
       it('should not duplicate a supplied header parameter if that header casing matches the spec', async () => {
-        const basiq = await import('@api/test-utils/definitions/basiq.json').then(Oas.init);
+        const basiq = await loadSpec('@api/test-utils/definitions/basiq.json').then(Oas.init);
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');

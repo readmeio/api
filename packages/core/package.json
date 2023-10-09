@@ -2,12 +2,25 @@
   "name": "@readme/api-core",
   "version": "7.0.0-alpha.3",
   "description": "The magic behind `api` 🧙",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "sideEffects": false,
   "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./errors/fetchError": {
+      "require": "./dist/errors/fetchError.cjs",
+      "import": "./dist/errors/fetchError.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.cts",
   "scripts": {
     "attw": "attw --pack --format table-flipped",
-    "build": "tsc",
+    "build": "tsup",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
     "prepack": "npm run build",
@@ -15,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/readmeio/api.git",
+    "url": "git+https://github.com/readmeio/api.git",
     "directory": "packages/core"
   },
   "homepage": "https://api.readme.dev",

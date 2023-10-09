@@ -1,6 +1,6 @@
 import type { OASDocument } from 'oas/rmoas.types';
 
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
 import { describe, beforeAll, it, expect } from 'vitest';
 
@@ -167,7 +167,7 @@ describe('#prepareAuth()', () => {
     let securityMultipleOas;
 
     beforeAll(async () => {
-      authQuirksOas = await loadSpec(require.resolve('@api/test-utils/definitions/auth-quirks.json'));
+      authQuirksOas = await loadSpec('@api/test-utils/definitions/auth-quirks.json');
       securityMultipleOas = await loadSpec('@readme/oas-examples/3.0/json/security-multiple.json');
     });
 

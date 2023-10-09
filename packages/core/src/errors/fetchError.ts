@@ -1,4 +1,4 @@
-class FetchError<Status = number, Data = unknown> extends Error {
+export default class FetchError<Status = number, Data = unknown> extends Error {
   /** HTTP Status */
   status: Status;
 
@@ -27,5 +27,3 @@ class FetchError<Status = number, Data = unknown> extends Error {
     Object.setPrototypeOf(this, FetchError.prototype);
   }
 }
-
-export default FetchError;

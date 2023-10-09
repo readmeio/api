@@ -1,4 +1,4 @@
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
 import { describe, it, expect } from 'vitest';
 

@@ -1,7 +1,6 @@
 import assert from 'node:assert';
 
-import { responses as mockResponse } from '@api/test-utils/fetch-mock';
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';

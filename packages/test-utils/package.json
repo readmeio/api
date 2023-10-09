@@ -2,6 +2,15 @@
   "private": true,
   "name": "@api/test-utils",
   "version": "7.0.0-alpha.2",
+  "//": "The `./` export below is a wildcard for everything in the package. VSCode doesn't like the syntax but NPM allows it so please leave it alone.",
+  "exports": {
+    ".": "./index.ts",
+    "./vitest.matchers": "./vitest.matchers.ts",
+    "./": "./",
+    "./fixtures/hello.txt": "./fixtures/hello.txt",
+    "./fixtures/hello.jp.txt": "./fixtures/hello.jp.txt",
+    "./fixtures/owlbert.png": "./fixtures/owlbert.png"
+  },
   "scripts": {
     "lint:types": "tsc --noEmit"
   },
