@@ -42,7 +42,8 @@
     "husky": "^8.0.3",
     "knip": "^2.24.1",
     "lerna": "^7.2.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0"
   },
   "commitlint": {
     "extends": [

@@ -74,7 +74,7 @@ function getAuthSources(operation: Operation) {
   return matchers;
 }
 
-export interface APIOptions {
+interface APIOptions {
   apiDefinition: OASDocument;
   apiDefinitionUri: string;
   escapeBrackets?: boolean;
@@ -87,6 +87,7 @@ const client: Client<APIOptions> = {
     title: 'API',
     link: 'https://npm.im/api',
     description: 'Automatic SDK generation from an OpenAPI definition.',
+    extname: '.js',
   },
   convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
