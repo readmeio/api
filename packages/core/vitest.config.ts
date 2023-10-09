@@ -3,6 +3,6 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    setupFiles: ['@api/test-utils/vitest.matchers'],
+    setupFiles: ['../test-utils/vitest.matchers.ts'],
   },
 });
