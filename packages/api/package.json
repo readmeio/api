@@ -2,12 +2,13 @@
   "name": "api",
   "version": "7.0.0-alpha.3",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
+  "type": "module",
   "bin": {
-    "api": "./bin/api.js"
+    "api": "bin/api.js"
   },
   "scripts": {
     "attw": "attw --pack --format table-flipped",
-    "build": "tsc",
+    "build": "tsup",
     "debug:bin": "node -r ts-node/register src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
@@ -21,7 +22,6 @@
     "url": "https://github.com/readmeio/api.git",
     "directory": "packages/api"
   },
-  "type": "module",
   "homepage": "https://api.readme.dev",
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"

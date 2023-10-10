@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
 
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec } from '@api/test-utils';
 import fetchMock from 'fetch-mock';
 import { describe, beforeAll, it, expect } from 'vitest';
 

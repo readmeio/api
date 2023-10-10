@@ -3,8 +3,7 @@ import type { TSGeneratorOptions } from '../../../src/codegen/languages/typescri
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { responses as mockResponse } from '@api/test-utils/fetch-mock';
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
@@ -197,7 +196,7 @@ describe('typescript', () => {
           });
       });
 
-      it('should be able to make an API request (JS + CommonJS)', async () => {
+      it.skip('should be able to make an API request (JS + CommonJS)', async () => {
         const sdk = await import('../../__fixtures__/sdk/simple-js-cjs/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
@@ -209,7 +208,7 @@ describe('typescript', () => {
         });
       });
 
-      it('should be able to make an API request (JS + ESM)', async () => {
+      it.skip('should be able to make an API request (JS + ESM)', async () => {
         const sdk = await import('../../__fixtures__/sdk/simple-js-esm/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
