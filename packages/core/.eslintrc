@@ -1,5 +1,4 @@
 {
-  "extends": ["@readme/eslint-config/esm"],
   "rules": {
     "no-restricted-imports": [
       "error",

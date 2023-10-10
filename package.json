@@ -1,6 +1,7 @@
 {
   "name": "api-monorepo",
   "private": true,
+  "type": "module",
   "scripts": {
     "alex": "alex .",
     "attw": "npx lerna run attw --stream",
