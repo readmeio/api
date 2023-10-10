@@ -2,8 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noImplicitAny": false,
-    "resolveJsonModule": true,
-    "rootDir": ".."
+    "resolveJsonModule": true
   },
   "include": ["../src/**/*", "*.ts", "**/*"]
 }
