@@ -196,6 +196,13 @@ describe('typescript', () => {
           });
       });
 
+      /**
+       * This test is impossible to run now because its a `.js` file that's loading ESM code. The
+       * CJS SDK we're generating here should have a `.cjs` extension but we're going to overhaul
+       * this entire codegen process with `tsup` so this test is being skipped for now.
+       *
+       * @see {@link https://github.com/readmeio/api/pull/734}
+       */
       it.skip('should be able to make an API request (JS + CommonJS)', async () => {
         const sdk = await import('../../__fixtures__/sdk/simple-js-cjs/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
@@ -208,7 +215,7 @@ describe('typescript', () => {
         });
       });
 
-      it.skip('should be able to make an API request (JS + ESM)', async () => {
+      it('should be able to make an API request (JS + ESM)', async () => {
         const sdk = await import('../../__fixtures__/sdk/simple-js-esm/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
