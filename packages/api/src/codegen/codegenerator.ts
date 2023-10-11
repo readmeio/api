@@ -16,7 +16,7 @@ export interface InstallerOptions {
   logger?: (msg: string) => void;
 }
 
-export default abstract class CodeGeneratorLanguage {
+export default abstract class CodeGenerator {
   spec: Oas;
 
   specPath: string;
@@ -55,9 +55,9 @@ export default abstract class CodeGeneratorLanguage {
     }
   }
 
-  abstract generator(): Promise<Record<string, string>>;
+  abstract compile(): Promise<Record<string, string>>;
 
-  abstract installer(storage: Storage, opts?: InstallerOptions): Promise<void>;
+  abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
 
   hasRequiredPackages() {
     return Boolean(Object.keys(this.requiredPackages));
