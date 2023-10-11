@@ -1,4 +1,4 @@
-import type { TSGeneratorOptions } from '../../../src/codegen/languages/typescript.js';
+import type { TSGeneratorOptions } from '../../../../src/codegen/languages/typescript/index.js';
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -9,9 +9,9 @@ import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import TSGenerator from '../../../src/codegen/languages/typescript.js';
-import * as packageInfo from '../../../src/packageInfo.js';
-import Storage from '../../../src/storage.js';
+import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
+import * as packageInfo from '../../../../src/packageInfo.js';
+import Storage from '../../../../src/storage.js';
 
 function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOptions = {}) {
   return async () => {
@@ -19,10 +19,10 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
     const ts = new TSGenerator(oas, file, fixture, opts);
-    const actualFiles = await ts.generator();
+    const actualFiles = await ts.compile();
 
     // Determine if the generated code matches what we've got in our fixture.
-    const dir = path.resolve(path.join(__dirname, '..', '..', '__fixtures__', 'sdk', fixture));
+    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
 
     let expectedFiles: string[];
     try {
@@ -62,7 +62,7 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
     );
 
     // Make sure that we can load the SDK without any TS compilation errors.
-    const sdk = await import(`../../__fixtures__/sdk/${fixture}`).then(r => r.default);
+    const sdk = await import(`../../../__fixtures__/sdk/${fixture}`).then(r => r.default);
     expect(sdk.constructor.name).toBe('SDK');
   };
 }
@@ -88,7 +88,7 @@ describe('typescript', () => {
       await storage.load();
 
       const ts = new TSGenerator(oas, './openapi.json', 'petstore', { compilerTarget: 'cjs' });
-      await ts.installer(storage, { logger, dryRun: true });
+      await ts.install(storage, { logger, dryRun: true });
 
       const pkgJson = await fs
         .readFile(path.join(storage.getIdentifierStorageDir(), 'package.json'), 'utf-8')
@@ -171,7 +171,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request (TS)', async () => {
-        const sdk = await import('../../__fixtures__/sdk/simple-ts/index.js').then(r => r.default);
+        const sdk = await import('../../../__fixtures__/sdk/simple-ts/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -183,7 +183,7 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request with an `accept` header`', async () => {
-        const sdk = await import('../../__fixtures__/sdk/simple-ts/index.js').then(r => r.default);
+        const sdk = await import('../../../__fixtures__/sdk/simple-ts/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
@@ -203,20 +203,20 @@ describe('typescript', () => {
        *
        * @see {@link https://github.com/readmeio/api/pull/734}
        */
-      it.skip('should be able to make an API request (JS + CommonJS)', async () => {
-        const sdk = await import('../../__fixtures__/sdk/simple-js-cjs/index.js').then(r => r.default);
-        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
+      // it.skip('should be able to make an API request (JS + CommonJS)', async () => {
+      //   const sdk = await import('../../../__fixtures__/sdk/simple-js-cjs/index.js').then(r => r.default);
+      //   fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-        await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-          expect(data).toBe('/v2/pet/findByStatus?status=available');
-          expect(status).toBe(200);
-          expect(headers.constructor.name).toBe('Headers');
-          expect(res.constructor.name).toBe('Response');
-        });
-      });
+      //   await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
+      //     expect(data).toBe('/v2/pet/findByStatus?status=available');
+      //     expect(status).toBe(200);
+      //     expect(headers.constructor.name).toBe('Headers');
+      //     expect(res.constructor.name).toBe('Response');
+      //   });
+      // });
 
       it('should be able to make an API request (JS + ESM)', async () => {
-        const sdk = await import('../../__fixtures__/sdk/simple-js-esm/index.js').then(r => r.default);
+        const sdk = await import('../../../__fixtures__/sdk/simple-js-esm/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
@@ -240,7 +240,7 @@ describe('typescript', () => {
         });
 
         const ts = new TSGenerator(oas, 'no-paths', './no-paths.json');
-        await expect(ts.generator()).rejects.toThrow(
+        await expect(ts.compile()).rejects.toThrow(
           'Sorry, this OpenAPI definition does not have any operation paths to generate an SDK for.',
         );
       });

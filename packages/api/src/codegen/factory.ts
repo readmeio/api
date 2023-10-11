@@ -1,16 +1,16 @@
-import type CodeGeneratorLanguage from './language.js';
+import type CodeGenerator from './codegenerator.js';
 import type Oas from 'oas';
 
-import TSGenerator from './languages/typescript.js';
+import TSGenerator from './languages/typescript/index.js';
 
 export type SupportedLanguages = 'js' | 'js-cjs' | 'js-esm' | 'ts';
 
-export default function codegen(
+export default function codegenFactory(
   language: SupportedLanguages,
   spec: Oas,
   specPath: string,
   identifier: string,
-): CodeGeneratorLanguage {
+): CodeGenerator {
   switch (language) {
     case 'js':
       throw new TypeError('An export format of CommonJS or ECMAScript is required for JavaScript compilation.');
