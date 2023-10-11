@@ -1,5 +1,5 @@
-import type Storage from '../../storage.js';
-import type { InstallerOptions } from '../language.js';
+import type Storage from '../../../storage.js';
+import type { InstallerOptions } from '../../codegenerator.js';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
@@ -11,9 +11,9 @@ import type {
   OptionalKind,
   ParameterDeclarationStructure,
 } from 'ts-morph';
-import type { PackageJson } from 'type-fest';
+import type { Options } from 'tsup';
+import type { JsonObject, PackageJson } from 'type-fest';
 
-import fs from 'node:fs';
 import path from 'node:path';
 
 import execa from 'execa';
@@ -21,15 +21,10 @@ import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
-import logger from '../../logger.js';
-import CodeGeneratorLanguage from '../language.js';
+import logger from '../../../logger.js';
+import CodeGenerator from '../../codegenerator.js';
 
-import { docblockEscape, generateTypeName, wordWrap } from './typescript/util.js';
-
-export interface TSGeneratorOptions {
-  compilerTarget?: 'cjs' | 'esm';
-  outputJS?: boolean;
-}
+import { docblockEscape, generateTypeName, wordWrap } from './util.js';
 
 interface OperationTypeHousing {
   operation: Operation;
@@ -45,12 +40,8 @@ interface OperationTypeHousing {
   };
 }
 
-export default class TSGenerator extends CodeGeneratorLanguage {
+export default class TSGenerator extends CodeGenerator {
   project: Project;
-
-  outputJS: boolean;
-
-  compilerTarget: 'cjs' | 'esm';
 
   types: Map<string, string>;
 
@@ -70,23 +61,12 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
   usesHTTPMethodRangeInterface = false;
 
-  constructor(spec: Oas, specPath: string, identifier: string, opts: TSGeneratorOptions = {}) {
-    const options: { compilerTarget: 'cjs' | 'esm'; outputJS: boolean } = {
-      outputJS: false,
-      compilerTarget: 'cjs',
-      ...opts,
-    };
-
-    if (!options.outputJS) {
-      // TypeScript compilation will always target towards ESM-like imports and exports.
-      options.compilerTarget = 'esm';
-    }
-
+  constructor(spec: Oas, specPath: string, identifier: string) {
     super(spec, specPath, identifier);
 
     this.requiredPackages = {
-      api: {
-        reason: "Required for the `@readme/api-core` library that the codegen'd SDK uses for making requests.",
+      '@readme/api-core': {
+        reason: "The core magic of your codegen'd SDK and is what is used for making requests.",
         url: 'https://npm.im/api',
       },
       'json-schema-to-ts': {
@@ -100,6 +80,7 @@ export default class TSGenerator extends CodeGeneratorLanguage {
     };
 
     this.project = new Project({
+      useInMemoryFileSystem: true,
       manipulationSettings: {
         indentationText: IndentationText.TwoSpaces,
         quoteKind: QuoteKind.Single,
@@ -107,64 +88,27 @@ export default class TSGenerator extends CodeGeneratorLanguage {
       compilerOptions: {
         // If we're exporting a TypeScript SDK then we don't need to pollute the codegen directory
         // with unnecessary declaration `.d.ts` files.
-        declaration: options.outputJS,
+        declaration: false, // options.outputJS,
         outDir: 'dist',
         resolveJsonModule: true,
-        target: options.compilerTarget === 'cjs' ? ScriptTarget.ES5 : ScriptTarget.ES2020,
-
-        // If we're compiling to a CJS target then we need to include this compiler option
-        // otherwise TS will attempt to load our `openapi.json` import with a `.default` property
-        // which doesn't exist. `esModuleInterop` wraps imports in a small `__importDefault`
-        // function that does some determination to see if the module has a default export or not.
-        //
-        // Basically without this option CJS code will fail.
-        ...(options.compilerTarget === 'cjs' ? { esModuleInterop: true } : {}),
+        target: ScriptTarget.ES2020,
       },
     });
-
-    this.compilerTarget = options.compilerTarget;
-    this.outputJS = options.outputJS;
 
     this.types = new Map();
     this.schemas = {};
   }
 
-  async installer(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
+  // eslint-disable-next-line class-methods-use-this
+  async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    const info = this.spec.getDefinition().info;
-    let pkgVersion = semver.coerce(info.version);
-    if (!pkgVersion) {
-      // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
-      // handle it properly so we need to fallback to something it can.
-      pkgVersion = semver.coerce('0.0.0') as SemVer;
-    }
-
-    const pkg: PackageJson = {
-      name: `@api/${storage.identifier}`,
-      version: pkgVersion.version,
-      main: `./index.${this.outputJS ? 'js' : 'ts'}`,
-      types: './index.d.ts', // Types are always present regardless if you're getting compiled JS.
-    };
-
-    fs.writeFileSync(path.join(installDir, 'package.json'), JSON.stringify(pkg, null, 2));
-
     const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-
-    // This will install packages required for the SDK within its installed directory in `.apis/`.
-    await execa('npm', [...npmInstall, ...Object.keys(this.requiredPackages)].filter(Boolean), {
-      cwd: installDir,
-    }).then(res => {
-      if (opts.dryRun) {
-        (opts.logger ? opts.logger : logger)(res.command);
-        (opts.logger ? opts.logger : logger)(res.stdout);
-      }
-    });
 
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
-    return execa('npm', [...npmInstall, installDir].filter(Boolean))
+    await execa('npm', [...npmInstall, installDir].filter(Boolean))
       .then(res => {
         if (opts.dryRun) {
           (opts.logger ? opts.logger : logger)(res.command);
@@ -179,42 +123,42 @@ export default class TSGenerator extends CodeGeneratorLanguage {
 
         throw err;
       });
+
+    // // this runs the tsup command
+    // await execa('npx', ['tsup', '--config', pkgJSONFile, '--out-dir', installDir]).then(res => {
+    //   console.log('res:', res);
+    // });
+
+    // await execa('ls', {
+    //   cwd: installDir,
+    // }).then(res => {
+    //   console.log('res:', res);
+    // });
   }
 
   /**
    * Compile the current OpenAPI definition into a TypeScript library.
    *
    */
-  async generator() {
+  async compile() {
     const sdkSource = this.createSourceFile();
+
+    this.createPackageJSON();
 
     if (Object.keys(this.schemas).length) {
       this.createSchemasFile();
       this.createTypesFile();
 
-      /**
-       * Export all of our available types so they can be used in SDK implementations. Types are
-       * exported individually because TS has no way right now of allowing us to do
-       * `export type * from './types'` on a non-named entry.
-       *
-       * Types in the main entry point are only being exported for TS outputs as JS users won't be
-       * able to use them and it clashes with the default SDK export present.
-       *
-       * @see {@link https://github.com/microsoft/TypeScript/issues/37238}
-       * @see {@link https://github.com/readmeio/api/issues/588}
-       */
-      if (!this.outputJS) {
-        const types = Array.from(this.types.keys());
-        types.sort();
+      const types = Array.from(this.types.keys());
+      types.sort();
 
-        sdkSource.addExportDeclarations([
-          {
-            isTypeOnly: true,
-            namedExports: types,
-            moduleSpecifier: './types',
-          },
-        ]);
-      }
+      sdkSource.addExportDeclarations([
+        {
+          isTypeOnly: true,
+          namedExports: types,
+          moduleSpecifier: './types',
+        },
+      ]);
     } else {
       // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
       sdkSource
@@ -230,42 +174,6 @@ export default class TSGenerator extends CodeGeneratorLanguage {
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
         ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core';");
-    }
-
-    if (this.outputJS) {
-      return this.project
-        .emitToMemory()
-        .getFiles()
-        .map(sourceFile => {
-          const file = path.basename(sourceFile.filePath);
-          if (file === 'schemas.js' || file === 'types.js') {
-            // If we're generating a JS SDK then we don't need to generate these two files as the
-            // user will have `.d.ts` files for them instead.
-            return {};
-          }
-
-          let code = sourceFile.text;
-          if (file === 'index.js' && this.compilerTarget === 'cjs') {
-            /**
-             * There's an annoying quirk with `ts-morph` where if we're exporting a default export
-             * to a CJS environment, it'll export it as `exports.default`. Because we don't want
-             * folks in these environments to have to load their SDKs with
-             * `require('@api/sdk').default` we're overriding that here to change it to being the
-             * module exports.
-             *
-             * `ts-morph` unfortunately doesn't give us any options for programatically doing this
-             * so we need to resort to modifying the emitted JS code.
-             */
-            code = code
-              .replace(/Object\.defineProperty\(exports, '__esModule', { value: true }\);\n/, '')
-              .replace('exports.default = createSDK;', 'module.exports = createSDK;');
-          }
-
-          return {
-            [file]: code,
-          };
-        })
-        .reduce((prev, next) => Object.assign(prev, next));
     }
 
     return [
@@ -438,9 +346,63 @@ sdk.server('https://eu.api.example.com/v14');`),
       // of things to work right we need to set this as `export =`. Thankfully `ts-morph` will
       // handle this accordingly and still create our JS file with `module.exports` and not
       // `export =` -- only TS types will have this export style.
-      isExportEquals: this.compilerTarget === 'cjs' && this.outputJS,
+      isExportEquals: false, // this.compilerTarget === 'cjs' && this.outputJS,
       expression: 'createSDK',
     });
+
+    return sourceFile;
+  }
+
+  /**
+   * Create the `package.json` file that will ultimatey make this SDK available to use.
+   *
+   */
+  createPackageJSON() {
+    const sourceFile = this.project.createSourceFile('package.json', '');
+
+    const info = this.spec.getDefinition().info;
+    let pkgVersion = semver.coerce(info.version);
+    if (!pkgVersion) {
+      // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
+      // handle it properly so we need to fallback to something it can.
+      pkgVersion = semver.coerce('0.0.0') as SemVer;
+    }
+
+    const tsupOptions: Options = {
+      cjsInterop: true,
+      clean: true,
+      dts: true,
+      entry: ['index.ts'],
+      // TODO: figure this out
+      // external: ['@readme/api-core'],
+      format: ['esm', 'cjs'],
+      minify: false,
+      shims: true,
+      sourcemap: true,
+      splitting: true,
+    };
+
+    const dependencies = Object.keys(this.requiredPackages)
+      .map(dep => ({ [dep]: 'latest' }))
+      .reduce((prev, next) => Object.assign(prev, next));
+
+    const pkg: PackageJson = {
+      name: `@api/${this.identifier}`,
+      version: pkgVersion.version,
+      main: './dist/index.js',
+      types: './dist/index.d.ts',
+      module: './dist/index.mts',
+      exports: {
+        '.': {
+          import: './dist/index.mjs',
+          require: './dist/index.js',
+        },
+      },
+      dependencies,
+      tsup: tsupOptions as JsonObject,
+    };
+
+    sourceFile.addStatements(JSON.stringify(pkg, null, 2));
 
     return sourceFile;
   }

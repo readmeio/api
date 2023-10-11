@@ -9,7 +9,7 @@
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
-    "debug:bin": "node -r ts-node/register src/bin.ts",
+    "debug:bin": "ts-node --esm src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
     "prepack": "npm run build",
@@ -55,6 +55,7 @@
     "semver": "^7.3.8",
     "ssri": "^10.0.1",
     "ts-morph": "^17.0.1",
+    "tsup": "^7.2.0",
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {

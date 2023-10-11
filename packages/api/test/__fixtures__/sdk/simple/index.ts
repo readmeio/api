@@ -10,7 +10,7 @@ class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'simple-ts/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(this.spec, 'simple/1.0.0 (api/<<package version>>)');
   }
 
   /**
