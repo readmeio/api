@@ -2,11 +2,10 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
-    "baseUrl": "./src",
+    "baseUrl": "src/",
     "declaration": true,
     "declarationMap": true,
-    "useUnknownInCatchVariables": false,
-    "rootDir": ".",
-    "sourceMap": true
+    "sourceMap": true,
+    "useUnknownInCatchVariables": false
   }
 }

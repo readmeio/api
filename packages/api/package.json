@@ -8,7 +8,7 @@
   },
   "scripts": {
     "attw": "attw --pack --format table-flipped",
-    "build": "tsup",
+    "build": "tsc",
     "debug:bin": "node -r ts-node/register src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
