@@ -3,7 +3,7 @@ import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 
-import codegen, { SupportedLanguages } from '../codegen/index.js';
+import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
@@ -95,7 +95,7 @@ cmd
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();
-    const generator = codegen(language, oas, './openapi.json', identifier);
+    const generator = codegenFactory(language, oas, './openapi.json', identifier);
     const sdkSource = await generator
       .compile()
       .then(res => {

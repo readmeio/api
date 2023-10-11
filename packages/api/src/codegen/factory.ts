@@ -1,13 +1,13 @@
 import type CodeGenerator from './codegenerator.js';
 import type Oas from 'oas';
 
-import TSGenerator from './targets/typescript/index.js';
+import TSGenerator from './languages/typescript/index.js';
 
 export enum SupportedLanguages {
   JS = 'js',
 }
 
-export default function codegen(
+export default function codegenFactory(
   language: SupportedLanguages,
   spec: Oas,
   specPath: string,

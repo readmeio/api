@@ -197,7 +197,7 @@ export default class TSGenerator extends CodeGenerator {
    * Create our main SDK source file.
    *
    */
-  createSourceFile() {
+  private createSourceFile() {
     const { operations } = this.loadOperationsAndMethods();
 
     const sourceFile = this.project.createSourceFile('index.ts', '');
@@ -412,7 +412,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    * infrastructure sources its data from. Without this there are no types.
    *
    */
-  createSchemasFile() {
+  private createSchemasFile() {
     const sourceFile = this.project.createSourceFile('schemas.ts', '');
 
     const sortedSchemas = new Map(Array.from(Object.entries(this.schemas)).sort());
@@ -460,7 +460,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    *
    * @see {@link https://npm.im/json-schema-to-ts}
    */
-  createTypesFile() {
+  private createTypesFile() {
     const sourceFile = this.project.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
@@ -476,24 +476,10 @@ sdk.server('https://eu.api.example.com/v14');`),
   }
 
   /**
-   * Add a new JSDoc `@tag` to an existing docblock.
-   *
-   */
-  static addTagToDocblock(docblock: OptionalKind<JSDocStructure>, tag: OptionalKind<JSDocTagStructure>) {
-    const tags = docblock.tags ?? [];
-    tags.push(tag);
-
-    return {
-      ...docblock,
-      tags,
-    };
-  }
-
-  /**
    * Create operation accessors on the SDK.
    *
    */
-  createOperationAccessor(
+  private createOperationAccessor(
     operation: Operation,
     operationId: string,
     paramTypes?: OperationTypeHousing['types']['params'],
@@ -518,7 +504,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       };
 
       if (summary && description) {
-        docblock = TSGenerator.addTagToDocblock(docblock, {
+        docblock = TSGenerator.#addTagToDocblock(docblock, {
           tagName: 'summary',
           text: docblockEscape(wordWrap(summary)),
         });
@@ -571,7 +557,7 @@ sdk.server('https://eu.api.example.com/v14');`),
             }
 
             if (Number(statusPrefix) >= 4) {
-              docblock = TSGenerator.addTagToDocblock(docblock, {
+              docblock = TSGenerator.#addTagToDocblock(docblock, {
                 tagName: 'throws',
                 text: `FetchError<${status}, ${responseType}>${
                   responseDescription ? docblockEscape(wordWrap(` ${responseDescription}`)) : ''
@@ -588,7 +574,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           // 400 and 500 status code families are thrown as exceptions so adding them as a possible
           // return type isn't valid.
           if (Number(status) >= 400) {
-            docblock = TSGenerator.addTagToDocblock(docblock, {
+            docblock = TSGenerator.#addTagToDocblock(docblock, {
               tagName: 'throws',
               text: `FetchError<${status}, ${responseType}>${
                 responseDescription ? docblockEscape(wordWrap(` ${responseDescription}`)) : ''
@@ -698,7 +684,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    * along with every HTTP method that's in use.
    *
    */
-  loadOperationsAndMethods() {
+  private loadOperationsAndMethods() {
     const operations: Record</* operationId */ string, OperationTypeHousing> = {};
     const methods = new Set<HttpMethods>();
 
@@ -739,7 +725,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    * usable TypeScript types.
    *
    */
-  prepareParameterTypesForOperation(operation: Operation, operationId: string) {
+  private prepareParameterTypesForOperation(operation: Operation, operationId: string) {
     const schemas = operation.getParametersAsJSONSchema({
       includeDiscriminatorMappingRefs: false,
       mergeIntoBodyAndMetadata: true,
@@ -792,7 +778,7 @@ sdk.server('https://eu.api.example.com/v14');`),
    * Compile the response schemas for an API operation into usable TypeScript types.
    *
    */
-  prepareResponseTypesForOperation(operation: Operation, operationId: string) {
+  private prepareResponseTypesForOperation(operation: Operation, operationId: string) {
     const responseStatusCodes = operation.getResponseStatusCodes();
     if (!responseStatusCodes.length) {
       return undefined;
@@ -861,12 +847,26 @@ sdk.server('https://eu.api.example.com/v14');`),
    * Add a given schema into our schema dataset that we'll be be exporting as types.
    *
    */
-  addSchemaToExport(schema: SchemaObject, typeName: string, pointer: string) {
+  private addSchemaToExport(schema: SchemaObject, typeName: string, pointer: string) {
     if (this.types.has(typeName)) {
       return;
     }
 
     setWith(this.schemas, pointer, schema, Object);
     this.types.set(typeName, `FromSchema<typeof schemas.${pointer}>`);
+  }
+
+  /**
+   * Add a new JSDoc `@tag` to an existing docblock.
+   *
+   */
+  static #addTagToDocblock(docblock: OptionalKind<JSDocStructure>, tag: OptionalKind<JSDocTagStructure>) {
+    const tags = docblock.tags ?? [];
+    tags.push(tag);
+
+    return {
+      ...docblock,
+      tags,
+    };
   }
 }

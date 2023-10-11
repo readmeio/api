@@ -11,7 +11,7 @@ import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
-import TSGenerator from '../../../../src/codegen/targets/typescript/index.js';
+import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
 
