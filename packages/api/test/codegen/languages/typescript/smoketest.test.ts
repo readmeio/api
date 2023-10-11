@@ -20,7 +20,7 @@ import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 import { describe, it, expect } from 'vitest';
 
-import TSGenerator from '../../../../src/codegen/languages/typescript';
+import TSGenerator from '../../../../src/codegen/languages/typescript.js';
 
 // These APIs don't have any schemas so they should only be generating an `index.ts`.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];

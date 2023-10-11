@@ -4,13 +4,13 @@ import assert from 'node:assert';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec } from '@api/test-utils';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
-import { PACKAGE_VERSION } from '../src/packageInfo';
-import Storage from '../src/storage';
+import { PACKAGE_VERSION } from '../src/packageInfo.js';
+import Storage from '../src/storage.js';
 
 let petstoreSimple;
 

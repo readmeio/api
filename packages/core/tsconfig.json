@@ -1,15 +1,8 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": "./src",
-    "declaration": true,
-    "esModuleInterop": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
-    "module": "NodeNext",
-    "noImplicitAny": true,
-    "outDir": "dist/",
-    "skipLibCheck": true,
-    "strict": true
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "outDir": "dist/"
   },
   "include": ["./src/**/*"]
 }

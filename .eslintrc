@@ -1,9 +1,6 @@
 {
-  "extends": ["@readme/eslint-config", "@readme/eslint-config/typescript"],
+  "extends": ["@readme/eslint-config", "@readme/eslint-config/esm", "@readme/eslint-config/typescript"],
   "root": true,
-  "rules": {
-    "unicorn/prefer-node-protocol": "error"
-  },
   "overrides": [
     {
       "files": ["bin/**"],

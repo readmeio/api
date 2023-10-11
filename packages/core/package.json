@@ -2,10 +2,25 @@
   "name": "@readme/api-core",
   "version": "7.0.0-alpha.3",
   "description": "The magic behind `api` 🧙",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./errors/fetchError": {
+      "require": "./dist/errors/fetchError.cjs",
+      "import": "./dist/errors/fetchError.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.cts",
   "scripts": {
-    "build": "tsc",
+    "attw": "attw --pack --format table-flipped",
+    "build": "tsup",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
     "prepack": "npm run build",
@@ -13,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/readmeio/api.git",
+    "url": "git+https://github.com/readmeio/api.git",
     "directory": "packages/core"
   },
   "homepage": "https://api.readme.dev",
@@ -26,15 +41,15 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^23.0.8",
+    "@readme/oas-to-har": "^23.0.12",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
     "get-stream": "^6.0.1",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^22.0.0",
-    "remove-undefined-objects": "^3.0.0"
+    "oas": "^23.0.0",
+    "remove-undefined-objects": "^4.0.2"
   },
   "devDependencies": {
     "@api/test-utils": "file:../test-utils",

@@ -1,7 +1,7 @@
-import type CodeGeneratorLanguage from './language';
+import type CodeGeneratorLanguage from './language.js';
 import type Oas from 'oas';
 
-import TSGenerator from './languages/typescript';
+import TSGenerator from './languages/typescript.js';
 
 export type SupportedLanguages = 'js' | 'js-cjs' | 'js-esm' | 'ts';
 

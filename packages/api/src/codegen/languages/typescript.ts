@@ -1,5 +1,5 @@
-import type Storage from '../../storage';
-import type { InstallerOptions } from '../language';
+import type Storage from '../../storage.js';
+import type { InstallerOptions } from '../language.js';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
@@ -21,10 +21,10 @@ import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
-import logger from '../../logger';
-import CodeGeneratorLanguage from '../language';
+import logger from '../../logger.js';
+import CodeGeneratorLanguage from '../language.js';
 
-import { docblockEscape, generateTypeName, wordWrap } from './typescript/util';
+import { docblockEscape, generateTypeName, wordWrap } from './typescript/util.js';
 
 export interface TSGeneratorOptions {
   compilerTarget?: 'cjs' | 'esm';

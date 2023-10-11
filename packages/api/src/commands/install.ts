@@ -1,15 +1,15 @@
-import type { SupportedLanguages } from '../codegen';
+import type { SupportedLanguages } from '../codegen/index.js';
 
 import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 
-import codegen from '../codegen';
-import Fetcher from '../fetcher';
-import promptTerminal from '../lib/prompt';
-import logger from '../logger';
-import Storage from '../storage';
+import codegen from '../codegen/index.js';
+import Fetcher from '../fetcher.js';
+import promptTerminal from '../lib/prompt.js';
+import logger from '../logger.js';
+import Storage from '../storage.js';
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
 const cmd = new Command();

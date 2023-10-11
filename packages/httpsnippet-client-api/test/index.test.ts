@@ -1,5 +1,5 @@
 import type { HarRequest, Request } from '@readme/httpsnippet';
-import type { Client } from '@readme/httpsnippet/dist/targets/targets';
+import type { Client } from '@readme/httpsnippet/targets';
 import type { OASDocument } from 'oas/rmoas.types';
 
 import { readdirSync } from 'node:fs';
@@ -11,7 +11,7 @@ import readme from '@readme/oas-examples/3.0/json/readme.json';
 import openapiParser from '@readme/openapi-parser';
 import { describe, afterEach, beforeEach, expect, it, vi } from 'vitest';
 
-import client from '../src';
+import client from '../src/index.js';
 
 const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = readdirSync(DATASETS_DIR);
@@ -43,6 +43,7 @@ describe('httpsnippet-client-api', () => {
       title: 'API',
       link: 'https://npm.im/api',
       description: 'Automatic SDK generation from an OpenAPI definition.',
+      extname: '.js',
     });
   });
 
@@ -50,24 +51,22 @@ describe('httpsnippet-client-api', () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
-    expect(() => {
-      snippet.convert('node', 'api');
-    }).toThrow(/must have an `apiDefinitionUri` option supplied/);
+    await expect(snippet.convert('node', 'api')).rejects.toThrow(/must have an `apiDefinitionUri` option supplied/);
   });
 
   it('should error if no apiDefinition was supplied', async () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
-    expect(() => {
+    await expect(
       snippet.convert('node', 'api', {
         apiDefinitionUri: 'https://api.example.com/openapi.json',
-      });
-    }).toThrow(/must have an `apiDefinition` option supplied/);
+      }),
+    ).rejects.toThrow(/must have an `apiDefinition` option supplied/);
   });
 
   // This test should fail because the url in the HAR is missing `/v1` in the path.
-  it('should error if no matching operation was found in the apiDefinition', () => {
+  it('should error if no matching operation was found in the apiDefinition', async () => {
     const har = {
       httpVersion: 'HTTP/1.1',
       method: 'GET',
@@ -80,12 +79,12 @@ describe('httpsnippet-client-api', () => {
 
     const snippet = new HTTPSnippet(har as Request);
 
-    expect(() => {
+    await expect(
       snippet.convert('node', 'api', {
         apiDefinitionUri: 'https://api.example.com/openapi.json',
         apiDefinition: readme,
-      });
-    }).toThrow(/unable to locate a matching operation/i);
+      }),
+    ).rejects.toThrow(/unable to locate a matching operation/i);
   });
 
   describe('snippets', () => {
@@ -111,7 +110,7 @@ describe('httpsnippet-client-api', () => {
       it('should generate the expected snippet', async () => {
         const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
-        const code = new HTTPSnippet(mock.har).convert('node', 'api', {
+        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
           apiDefinitionUri: `https://api.example.com/${snippet}.json`,
           apiDefinition: mock.definition,
         });

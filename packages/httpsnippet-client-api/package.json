@@ -2,10 +2,21 @@
   "name": "httpsnippet-client-api",
   "version": "7.0.0-alpha.2",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.cts",
   "scripts": {
-    "build": "tsc",
+    "attw": "attw --pack --format table-flipped",
+    "build": "tsup",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
     "prepack": "npm run build",
@@ -29,8 +40,8 @@
     "stringify-object": "^3.3.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": ">=4",
-    "oas": "^22.0.0"
+    "@readme/httpsnippet": ">=8",
+    "oas": "^23.0.0"
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.12.0",

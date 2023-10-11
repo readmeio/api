@@ -1,8 +1,8 @@
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
 import { describe, it, expect } from 'vitest';
 
-import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults';
+import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults.js';
 
 describe('#getJSONSchemaDefaults()', () => {
   it('should get defaults off an operation', async () => {

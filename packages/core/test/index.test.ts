@@ -1,14 +1,13 @@
 import assert from 'node:assert';
 
-import { responses as mockResponse } from '@api/test-utils/fetch-mock';
-import loadSpec from '@api/test-utils/load-spec';
+import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
-import APICore from '../src';
-import FetchError from '../src/errors/fetchError';
+import FetchError from '../src/errors/fetchError.js';
+import APICore from '../src/index.js';
 
 describe('APICore', () => {
   let fileUploads: APICore;

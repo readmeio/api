@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 
-import commands from './commands';
-import * as pkg from './packageInfo';
+import commands from './commands/index.js';
+import * as pkg from './packageInfo.js';
 
 (async () => {
   const program = new Command();

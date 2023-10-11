@@ -1,4 +1,5 @@
-import type { SnippetMock } from '../../index.test';
+import type { SnippetMock } from '../../index.test.js';
+import type { OASDocument } from 'oas/rmoas.types';
 
 import definition from '@readme/oas-examples/3.0/json/server-variables.json';
 
@@ -16,7 +17,7 @@ const mock: SnippetMock = {
     queryString: [],
     url: 'http://dev.local/v2/global',
   },
-  definition,
+  definition: definition as OASDocument,
 };
 
 export default mock;
