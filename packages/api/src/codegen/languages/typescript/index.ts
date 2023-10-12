@@ -40,6 +40,20 @@ interface OperationTypeHousing {
   };
 }
 
+/**
+ * This is the conversion prefix that we add to all `$ref` pointers we find in generated JSON
+ * Schema.
+ *
+ * Because the pointer name is a string we want to have it reference the schema constant we're
+ * adding into the codegen'd schema file. As there's no way, not even using `eval()` in this case,
+ * to convert a string to a constant we're prefixing them with this so we can later remove it and
+ * rewrite the value to a literal. eg. `'Pet'` becomes `Pet`.
+ *
+ * And because our TypeScript type name generator properly ignores `:`, this is safe to prepend to
+ * all generated type names.
+ */
+const REF_PLACEHOLDER_REGEX = /"::convert::([a-zA-Z_$\\d]*)"/g;
+
 export default class TSGenerator extends CodeGenerator {
   project: Project;
 
@@ -180,9 +194,18 @@ export default class TSGenerator extends CodeGenerator {
     }
 
     return [
-      ...this.project.getSourceFiles().map(sourceFile => ({
-        [sourceFile.getBaseName()]: sourceFile.getFullText(),
-      })),
+      ...this.project.getSourceFiles().map(sourceFile => {
+        // `getFilePath` will always return a string that contains a preceeding directory separator
+        // however when we're creating these codegen'd files that may cause us to create that file
+        // in the root directory (because it's preceeded by a `/`). We don't want that to happen so
+        // we're slicing off that first character.
+        let filePath = sourceFile.getFilePath().toString();
+        filePath = filePath.substring(1);
+
+        return {
+          [filePath]: sourceFile.getFullText(),
+        };
+      }),
 
       // Because we're returning the raw source files for TS generation we also need to separately
       // emit out our declaration files so we can put those into a separate file in the installed
@@ -417,31 +440,43 @@ sdk.server('https://eu.api.example.com/v14');`),
    */
   private createSchemasFile() {
     const sourceFile = this.project.createSourceFile('schemas.ts', '');
+    const schemasDir = this.project.createDirectory('schemas');
 
     const sortedSchemas = new Map(Array.from(Object.entries(this.schemas)).sort());
 
     Array.from(sortedSchemas).forEach(([schemaName, schema]) => {
-      sourceFile.addVariableStatement({
+      const schemaFile = schemasDir.createSourceFile(`${schemaName}.ts`);
+
+      // Because we're chunking our schemas into a `schemas/` directory we need to add imports
+      // for these schemas into our main `schemas.ts` file.`
+      sourceFile.addImportDeclaration({
+        defaultImport: schemaName,
+        moduleSpecifier: `./schemas/${schemaName}`,
+      });
+
+      let str = JSON.stringify(schema);
+      const referencedSchemas = str.match(REF_PLACEHOLDER_REGEX)?.map(s => s.replace(REF_PLACEHOLDER_REGEX, '$1'));
+      if (referencedSchemas) {
+        referencedSchemas.forEach(ref => {
+          // Because this schema is referenced from another file we need to create an `import`
+          // declaration for it.
+          schemaFile.addImportDeclaration({
+            defaultImport: ref,
+            moduleSpecifier: `./${ref}`,
+          });
+        });
+      }
+
+      // Load the schema into the schema file within the `schemas/` directory.
+      schemaFile.addVariableStatement({
         declarationKind: VariableDeclarationKind.Const,
         declarations: [
           {
             name: schemaName,
             initializer: writer => {
-              /**
-               * This is the conversion prefix that we add to all `$ref` pointers we find in
-               * generated JSON Schema.
-               *
-               * Because the pointer name is a string we want to have it reference the schema
-               * constant we're adding into the codegen'd schema file. As there's no way, not even
-               * using `eval()` in this case, to convert a string to a constant we're prefixing
-               * them with this so we can later remove it and rewrite the value to a literal.
-               * eg. `'Pet'` becomes `Pet`.
-               *
-               * And because our TypeScript type name generator properly ignores `:`, this is safe
-               * to prepend to all generated type names.
-               */
-              let str = JSON.stringify(schema);
-              str = str.replace(/"::convert::([a-zA-Z_$\\d]*)"/g, '$1');
+              // We can't have `::convert::<schemaName>` variables within these schema files so we
+              // need to clean them up.
+              str = str.replace(REF_PLACEHOLDER_REGEX, '$1');
 
               writer.writeLine(`${str} as const`);
               return writer;
@@ -449,8 +484,11 @@ sdk.server('https://eu.api.example.com/v14');`),
           },
         ],
       });
+
+      schemaFile.addStatements(`export default ${schemaName}`);
     });
 
+    // Export all of our schemas from inside the main `schemas.ts` file.
     sourceFile.addStatements(`export { ${Array.from(sortedSchemas.keys()).join(', ')} }`);
 
     return sourceFile;
