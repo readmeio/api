@@ -123,7 +123,7 @@ describe('typescript', () => {
   });
 
   describe('#generator', () => {
-    it.only(
+    it(
       'should generate typescript (by default)',
       assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple-ts'),
     );
