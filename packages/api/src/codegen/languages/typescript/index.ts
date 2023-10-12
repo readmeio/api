@@ -94,16 +94,16 @@ export default class TSGenerator extends CodeGenerator {
     };
 
     this.project = new Project({
-      useInMemoryFileSystem: true,
-      manipulationSettings: {
-        indentationText: IndentationText.TwoSpaces,
-        quoteKind: QuoteKind.Single,
-      },
       compilerOptions: {
         outDir: 'dist',
         resolveJsonModule: true,
         target: ScriptTarget.ES2022,
       },
+      manipulationSettings: {
+        indentationText: IndentationText.TwoSpaces,
+        quoteKind: QuoteKind.Single,
+      },
+      useInMemoryFileSystem: true,
     });
 
     this.types = new Map();
@@ -457,6 +457,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       let str = JSON.stringify(schema);
       const referencedSchemas = str.match(REF_PLACEHOLDER_REGEX)?.map(s => s.replace(REF_PLACEHOLDER_REGEX, '$1'));
       if (referencedSchemas) {
+        referencedSchemas.sort();
         referencedSchemas.forEach(ref => {
           // Because this schema is referenced from another file we need to create an `import`
           // declaration for it.

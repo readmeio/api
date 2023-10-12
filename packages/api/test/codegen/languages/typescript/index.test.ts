@@ -37,11 +37,11 @@ function assertCompiledSDKFixture(file: string, fixture: string) {
         return files.filter(f => f !== 'schemas');
       })
       .catch(() => {
-      /**
-       * @todo it'd be cool if we could supply this with a `--update` arg to create the fixture dir
-       */
-      throw new Error(`No SDK fixture directory exists for "${fixture}"`);
-    });
+        /**
+         * @todo it'd be cool if we could supply this with a `--update` arg to create the fixture dir
+         */
+        throw new Error(`No SDK fixture directory exists for "${fixture}"`);
+      });
 
     // Assert that the files we're generating are what we're expecting in the fixture directory.
     const sortedActualFiles = Object.keys(actualFiles);
