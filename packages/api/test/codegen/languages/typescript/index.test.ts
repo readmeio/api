@@ -23,20 +23,25 @@ function assertSDKFixture(file: string, fixture: string, opts: TSGeneratorOption
 
     // Determine if the generated code matches what we've got in our fixture.
     const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
+    const expectedFiles = await fs
+      .readdir(dir, { recursive: true })
+      .then(files => {
+        files.sort();
 
-    let expectedFiles: string[];
-    try {
-      expectedFiles = await fs.readdir(dir);
-    } catch (err) {
-      /**
-       * @todo it'd be cool if we could supply this with a `--update` arg to create the fixture dir
-       */
-      throw new Error(`No SDK fixture directory exists for "${fixture}"`);
-    }
+        // The `schemas` directory comes back to us from `fs.readdir` but because we're doing a
+        // recursive lookup on that we also get `schemas/<schemaName>`. We only care about the
+        // schema file itself, not the general directory, so we need to exclude this from our list
+        // of expected files.
+        return files.filter(f => f !== 'schemas');
+      })
+      .catch(() => {
+        /**
+         * @todo it'd be cool if we could supply this with a `--update` arg to create the fixture dir
+         */
+        throw new Error(`No SDK fixture directory exists for "${fixture}"`);
+      });
 
     // Assert that the files we're generating are what we're expecting in the fixture directory.
-    // We're sorting this data because  `index.d.ts` files are generated last but are first in the
-    // filesystem.
     const sortedActualFiles = Object.keys(actualFiles);
     sortedActualFiles.sort();
     expect(sortedActualFiles).toStrictEqual(expectedFiles);
