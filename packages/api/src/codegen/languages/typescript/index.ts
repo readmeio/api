@@ -86,12 +86,9 @@ export default class TSGenerator extends CodeGenerator {
         quoteKind: QuoteKind.Single,
       },
       compilerOptions: {
-        // If we're exporting a TypeScript SDK then we don't need to pollute the codegen directory
-        // with unnecessary declaration `.d.ts` files.
-        declaration: false, // options.outputJS,
         outDir: 'dist',
         resolveJsonModule: true,
-        target: ScriptTarget.ES2020,
+        target: ScriptTarget.ES2022,
       },
     });
 
@@ -124,7 +121,13 @@ export default class TSGenerator extends CodeGenerator {
         throw err;
       });
 
-    // // this runs the tsup command
+    // This will compile our TS code into JS for use in CJS and ESM environments.
+    // await execa('npx', ['tsup'], {
+    //   cwd: installDir,
+    // }).then(res => {
+    //   console.log('res:', res);
+    // });
+
     // await execa('npx', ['tsup', '--config', pkgJSONFile, '--out-dir', installDir]).then(res => {
     //   console.log('res:', res);
     // });
@@ -333,7 +336,7 @@ sdk.server('https://eu.api.example.com/v14');`),
         {
           name: 'createSDK',
           initializer: writer => {
-            // `ts-morph` doesn't have any way to cleanly create an IFEE.
+            // `ts-morph` doesn't have any way to cleanly create an IIFE.
             writer.writeLine('(() => { return new SDK(); })()');
             return writer;
           },
@@ -342,11 +345,11 @@ sdk.server('https://eu.api.example.com/v14');`),
     });
 
     sourceFile.addExportAssignment({
-      // Because CJS targets have `createSDK` exported with `module.exports`, but the TS type side
-      // of things to work right we need to set this as `export =`. Thankfully `ts-morph` will
-      // handle this accordingly and still create our JS file with `module.exports` and not
-      // `export =` -- only TS types will have this export style.
-      isExportEquals: false, // this.compilerTarget === 'cjs' && this.outputJS,
+      // Because we're exporting `createSDK` as an IIFE constant we need to have it exported as
+      // `export default createSDK`. `addExportAssignment` by default wants it exported as
+      // `export = createSDK`, which will throw TS errors because we may also be exporting types in
+      // the `./types.ts` file.
+      isExportEquals: false,
       expression: 'createSDK',
     });
 
