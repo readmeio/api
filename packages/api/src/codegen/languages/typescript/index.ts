@@ -6,13 +6,14 @@ import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
 import type { SemVer } from 'semver';
 import type {
   ClassDeclaration,
+  Directory,
   JSDocStructure,
   JSDocTagStructure,
   OptionalKind,
   ParameterDeclarationStructure,
 } from 'ts-morph';
 import type { Options } from 'tsup';
-import type { JsonObject, PackageJson } from 'type-fest';
+import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
 
@@ -52,6 +53,7 @@ interface OperationTypeHousing {
  * And because our TypeScript type name generator properly ignores `:`, this is safe to prepend to
  * all generated type names.
  */
+const REF_PLACEHOLDER = '::convert::';
 const REF_PLACEHOLDER_REGEX = /"::convert::([a-zA-Z_$\\d]*)"/g;
 
 export default class TSGenerator extends CodeGenerator {
@@ -135,13 +137,6 @@ export default class TSGenerator extends CodeGenerator {
         throw err;
       });
 
-    // This will compile our TS code into JS for use in CJS and ESM environments.
-    // await execa('npx', ['tsup'], {
-    //   cwd: installDir,
-    // }).then(res => {
-    //   console.log('res:', res);
-    // });
-
     // await execa('npx', ['tsup', '--config', pkgJSONFile, '--out-dir', installDir]).then(res => {
     //   console.log('res:', res);
     // });
@@ -153,18 +148,46 @@ export default class TSGenerator extends CodeGenerator {
     // });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
+    const installDir = storage.getIdentifierStorageDir();
+
+    // This will compile our TS code into JS for use in CJS and ESM environments.
+    await execa('npx', ['tsup'], {
+      cwd: installDir,
+    })
+      .then(res => {
+        console.log(res.command);
+        // if (opts.dryRun) {
+        //   (opts.logger ? opts.logger : logger)(res.command);
+        //   (opts.logger ? opts.logger : logger)(res.stdout);
+        // }
+      })
+      .catch(err => {
+        console.log(err.message);
+        // if (opts.dryRun) {
+        //   (opts.logger ? opts.logger : logger)(err.message);
+        //   return;
+        // }
+
+        throw err;
+      });
+  }
+
   /**
-   * Compile the current OpenAPI definition into a TypeScript library.
+   * Generate the current OpenAPI definition into a TypeScript library.
    *
    */
-  async compile() {
-    const sdkSource = this.createSourceFile();
+  async generate() {
+    const srcDirectory = this.project.createDirectory('src');
+    const sdkSource = this.createSDKSource(srcDirectory);
 
     this.createPackageJSON();
+    this.createTSConfig();
 
     if (Object.keys(this.schemas).length) {
-      this.createSchemasFile();
-      this.createTypesFile();
+      this.createSchemasFile(srcDirectory);
+      this.createTypesFile(srcDirectory);
 
       const types = Array.from(this.types.keys());
       types.sort();
@@ -223,10 +246,10 @@ export default class TSGenerator extends CodeGenerator {
    * Create our main SDK source file.
    *
    */
-  private createSourceFile() {
+  private createSDKSource(sourceDirectory: Directory) {
     const { operations } = this.loadOperationsAndMethods();
 
-    const sourceFile = this.project.createSourceFile('index.ts', '');
+    const sourceFile = sourceDirectory.createSourceFile('index.ts', '');
 
     sourceFile.addImportDeclarations([
       // This import will be automatically removed later if the SDK ends up not having any types.
@@ -380,7 +403,30 @@ sdk.server('https://eu.api.example.com/v14');`),
   }
 
   /**
-   * Create the `package.json` file that will ultimatey make this SDK available to use.
+   * Create the `tsconfig.json` file that will allow this SDK to be compiled for use.
+   *
+   */
+  createTSConfig() {
+    const sourceFile = this.project.createSourceFile('tsconfig.json', '');
+
+    const config: TsConfigJson = {
+      compilerOptions: {
+        checkJs: true,
+        esModuleInterop: true,
+        module: 'NodeNext',
+        resolveJsonModule: true,
+      },
+      include: ['./src/**/*'],
+      exclude: ['dist'],
+    };
+
+    sourceFile.addStatements(JSON.stringify(config, null, 2));
+
+    return sourceFile;
+  }
+
+  /**
+   * Create the `package.json` file that will ultimately make this SDK available to use.
    *
    */
   createPackageJSON() {
@@ -398,7 +444,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       cjsInterop: true,
       clean: true,
       dts: true,
-      entry: ['index.ts'],
+      entry: ['./src/index.ts'],
       // TODO: figure this out
       // external: ['@readme/api-core'],
       format: ['esm', 'cjs'],
@@ -438,9 +484,9 @@ sdk.server('https://eu.api.example.com/v14');`),
    * infrastructure sources its data from. Without this there are no types.
    *
    */
-  private createSchemasFile() {
-    const sourceFile = this.project.createSourceFile('schemas.ts', '');
-    const schemasDir = this.project.createDirectory('schemas');
+  private createSchemasFile(sourceDirectory: Directory) {
+    const sourceFile = sourceDirectory.createSourceFile('schemas.ts', '');
+    const schemasDir = sourceDirectory.createDirectory('schemas');
 
     const sortedSchemas = new Map(Array.from(Object.entries(this.schemas)).sort());
 
@@ -502,8 +548,8 @@ sdk.server('https://eu.api.example.com/v14');`),
    *
    * @see {@link https://npm.im/json-schema-to-ts}
    */
-  private createTypesFile() {
-    const sourceFile = this.project.createSourceFile('types.ts', '');
+  private createTypesFile(sourceDirectory: Directory) {
+    const sourceFile = sourceDirectory.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
       { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
@@ -779,7 +825,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           const typeName = generateTypeName(s['x-readme-ref-name']);
           this.addSchemaToExport(s, typeName, typeName);
 
-          return `::convert::${typeName}` as SchemaObject;
+          return `${REF_PLACEHOLDER}${typeName}` as SchemaObject;
         }
 
         return s;
@@ -798,10 +844,10 @@ sdk.server('https://eu.api.example.com/v14');`),
       .map(([paramType, schema]: [string, string | SchemaObject]) => {
         let typeName;
 
-        if (typeof schema === 'string' && schema.startsWith('::convert::')) {
+        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
           // If this schema is a string and has our conversion prefix then we've already created
           // a type for it.
-          typeName = schema.replace('::convert::', '');
+          typeName = schema.replace(REF_PLACEHOLDER, '');
         } else {
           typeName = generateTypeName(operationId, paramType, 'param');
           this.addSchemaToExport(schema as SchemaObject, typeName, `${generateTypeName(operationId)}.${paramType}`);
@@ -837,7 +883,7 @@ sdk.server('https://eu.api.example.com/v14');`),
               const typeName = generateTypeName(s['x-readme-ref-name']);
               this.addSchemaToExport(s, typeName, `${typeName}`);
 
-              return `::convert::${typeName}` as SchemaObject;
+              return `${REF_PLACEHOLDER}${typeName}` as SchemaObject;
             }
 
             return s;
@@ -858,10 +904,10 @@ sdk.server('https://eu.api.example.com/v14');`),
       .map(([status, { description, schema }]) => {
         let typeName;
 
-        if (typeof schema === 'string' && schema.startsWith('::convert::')) {
+        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
           // If this schema is a string and has our conversion prefix then we've already created
           // a type for it.
-          typeName = schema.replace('::convert::', '');
+          typeName = schema.replace(REF_PLACEHOLDER, '');
         } else {
           typeName = generateTypeName(operationId, 'response', status);
 

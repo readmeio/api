@@ -55,7 +55,7 @@ export default abstract class CodeGenerator {
     }
   }
 
-  abstract compile(): Promise<Record<string, string>>;
+  abstract generate(): Promise<Record<string, string>>;
 
   abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
 

@@ -97,7 +97,7 @@ cmd
     spinner = ora('Generating your SDK').start();
     const generator = codegenFactory(language, oas, './openapi.json', identifier);
     const sdkSource = await generator
-      .compile()
+      .generate()
       .then(res => {
         spinner.succeed(spinner.text);
         return res;
