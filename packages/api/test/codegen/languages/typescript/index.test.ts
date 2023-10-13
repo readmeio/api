@@ -100,8 +100,40 @@ describe('typescript', () => {
 
       await ts.install(storage, { logger, dryRun: true });
 
-      const { stdout } = await execa('ls', ['-R'], { cwd: storage.getIdentifierStorageDir() });
-      expect(stdout).toMatchSnapshot();
+      const { stdout } = await execa('ls', ['-R1'], { cwd: storage.getIdentifierStorageDir() });
+      expect(stdout).toStrictEqual(
+        [
+          'index.ts',
+          'openapi.json',
+          'package.json',
+          'schemas',
+          'schemas.ts',
+          'types.ts',
+          '',
+          './schemas:',
+          'ApiResponse.ts',
+          'Category.ts',
+          'CreateUsersWithArrayInput.ts',
+          'CreateUsersWithListInput.ts',
+          'DeleteOrder.ts',
+          'DeletePet.ts',
+          'DeleteUser.ts',
+          'FindPetsByStatus.ts',
+          'FindPetsByTags.ts',
+          'GetInventory.ts',
+          'GetOrderById.ts',
+          'GetPetById.ts',
+          'GetUserByName.ts',
+          'LoginUser.ts',
+          'Order.ts',
+          'Pet.ts',
+          'Tag.ts',
+          'UpdatePetWithForm.ts',
+          'UpdateUser.ts',
+          'UploadFile.ts',
+          'User.ts',
+        ].join('\n'),
+      );
 
       /**
        * NPM has an incredibly difficult time trying to resolve this temp dir when installing
