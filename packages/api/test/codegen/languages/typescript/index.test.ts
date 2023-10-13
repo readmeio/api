@@ -100,11 +100,8 @@ describe('typescript', () => {
 
       await ts.install(storage, { logger, dryRun: true });
 
-      await execa('ls', {
-        cwd: storage.getIdentifierStorageDir(),
-      }).then(({ stdout }) => {
-        expect(stdout).toBe(['index.ts', 'openapi.json', 'package.json', 'schemas.ts', 'types.ts'].join('\n'));
-      });
+      const { stdout } = await execa('ls', ['-R'], { cwd: storage.getIdentifierStorageDir() });
+      expect(stdout).toMatchSnapshot();
 
       /**
        * NPM has an incredibly difficult time trying to resolve this temp dir when installing
