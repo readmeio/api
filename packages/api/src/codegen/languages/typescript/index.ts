@@ -84,14 +84,17 @@ export default class TSGenerator extends CodeGenerator {
       '@readme/api-core': {
         reason: "The core magic of your codegen'd SDK and is what is used for making requests.",
         url: 'https://npm.im/api',
+        version: '^7.0.0',
       },
       'json-schema-to-ts': {
         reason: 'Required for TypeScript type handling.',
         url: 'https://npm.im/json-schema-to-ts',
+        version: '^2.9.2',
       },
       oas: {
         reason: 'Used within `@readme/api-core` and is also loaded for TypeScript types.',
         url: 'https://npm.im/oas',
+        version: '^23.0.0',
       },
     };
 
@@ -454,8 +457,8 @@ sdk.server('https://eu.api.example.com/v14');`),
       splitting: true,
     };
 
-    const dependencies = Object.keys(this.requiredPackages)
-      .map(dep => ({ [dep]: 'latest' }))
+    const dependencies = Object.entries(this.requiredPackages)
+      .map(([dep, { version }]) => ({ [dep]: version }))
       .reduce((prev, next) => Object.assign(prev, next));
 
     const pkg: PackageJson = {

@@ -25,7 +25,14 @@ export default abstract class CodeGenerator {
 
   userAgent: string;
 
-  requiredPackages!: Record<string, { reason: string; url: string }>;
+  requiredPackages!: Record<
+    string,
+    {
+      reason: string;
+      url: string;
+      version: string;
+    }
+  >;
 
   constructor(spec: Oas, specPath: string, identifier: string) {
     this.spec = spec;
