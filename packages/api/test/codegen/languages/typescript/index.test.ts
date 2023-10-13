@@ -1,12 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import {
-  loadSpec,
-  // responses as mockResponse
-} from '@api/test-utils';
+import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import execa from 'execa';
-// import fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -15,7 +12,7 @@ import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
 
-function assertCompiledSDKFixture(file: string, fixture: string) {
+function assertSDKFixture(file: string, fixture: string) {
   return async () => {
     const oas = await loadSpec(require.resolve(file)).then(Oas.init);
     await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
@@ -120,115 +117,68 @@ describe('typescript', () => {
   });
 
   describe('#compile', () => {
-    it('should generate an sdk', assertCompiledSDKFixture('@api/test-utils/definitions/simple.json', 'simple'));
+    it('should generate an sdk', assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple'));
 
     it(
       'should be able to generate valid TS when a body is optional but metadata isnt',
-      assertCompiledSDKFixture('@api/test-utils/definitions/optional-payload.json', 'optional-payload'),
+      assertSDKFixture('@api/test-utils/definitions/optional-payload.json', 'optional-payload'),
     );
 
-    it(
-      'should work against the petstore',
-      assertCompiledSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'),
-    );
+    it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
 
-    it('should work against our OAS', assertCompiledSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
+    it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
     // This SDK only has an `index.ts` as it has no schemas.
     it(
       'should handle some quirky `operationId` cases',
-      assertCompiledSDKFixture('@api/test-utils/definitions/operationid-quirks.json', 'operationid-quirks'),
+      assertSDKFixture('@api/test-utils/definitions/operationid-quirks.json', 'operationid-quirks'),
     );
 
     it(
       'should handle `title` props that start with a number',
-      assertCompiledSDKFixture('@api/test-utils/definitions/response-title-quirks.json', 'response-title-quirks'),
+      assertSDKFixture('@api/test-utils/definitions/response-title-quirks.json', 'response-title-quirks'),
     );
 
     it.todo('should handle a operations with a `default` response');
 
     it(
       'should handle an api that has discriminators and no operation ids',
-      assertCompiledSDKFixture('@api/test-utils/definitions/alby.json', 'alby'),
+      assertSDKFixture('@api/test-utils/definitions/alby.json', 'alby'),
     );
 
-    // describe('javascript generation', () => {
-    //   it(
-    //     'should generate a CommonJS library',
-    //     assertCompiledSDKFixture('@api/test-utils/definitions/simple.json', 'simple-js-cjs', { outputJS: true }),
-    //   );
+    describe('integration', () => {
+      afterEach(() => {
+        fetchMock.restore();
+      });
 
-    //   it(
-    //     'should generate am ESM library',
-    //     assertCompiledSDKFixture('@api/test-utils/definitions/simple.json', 'simple-js-esm', {
-    //       outputJS: true,
-    //       compilerTarget: 'esm',
-    //     }),
-    //   );
-    // });
+      it('should be able to make an API request', async () => {
+        // eslint-disable-next-line import/no-relative-packages
+        const sdk = await import('../../../__fixtures__/sdk/simple/index.js').then(r => r.default);
+        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-    // describe('integration', () => {
-    //   afterEach(() => {
-    //     fetchMock.restore();
-    //   });
+        await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
+          expect(data).toBe('/v2/pet/findByStatus?status=available');
+          expect(status).toBe(200);
+          expect(headers.constructor.name).toBe('Headers');
+          expect(res.constructor.name).toBe('Response');
+        });
+      });
 
-    //   it('should be able to make an API request', async () => {
-    //     // const sdk = await import('../../../__fixtures__/sdk/simple/index.js').then(r => r.default);
-    //     fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
+      it('should be able to make an API request with an `accept` header`', async () => {
+        // eslint-disable-next-line import/no-relative-packages
+        const sdk = await import('../../../__fixtures__/sdk/simple/index.js').then(r => r.default);
+        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
-    //     await sdk2.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-    //       expect(data).toBe('/v2/pet/findByStatus?status=available');
-    //       expect(status).toBe(200);
-    //       expect(headers.constructor.name).toBe('Headers');
-    //       expect(res.constructor.name).toBe('Response');
-    //     });
-    //   });
-
-    //   // it('should be able to make an API request with an `accept` header`', async () => {
-    //   //   const sdk = await import('../../__fixtures__/sdk/simple-ts/index.js').then(r => r.default);
-    //   //   fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
-
-    //   //   await sdk
-    //   //     .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
-    //   //     .then(({ data, status, headers, res }) => {
-    //   //       expect(data).toHaveProperty('accept', 'application/xml');
-    //   //       expect(status).toBe(200);
-    //   //       expect(headers.constructor.name).toBe('Headers');
-    //   //       expect(res.constructor.name).toBe('Response');
-    //   //     });
-    //   // });
-
-    //   // /**
-    //   //  * This test is impossible to run now because its a `.js` file that's loading ESM code. The
-    //   //  * CJS SDK we're generating here should have a `.cjs` extension but we're going to overhaul
-    //   //  * this entire codegen process with `tsup` so this test is being skipped for now.
-    //   //  *
-    //   //  * @see {@link https://github.com/readmeio/api/pull/734}
-    //   //  */
-    //   // it.skip('should be able to make an API request (JS + CommonJS)', async () => {
-    //   //   const sdk = await import('../../__fixtures__/sdk/simple-js-cjs/index.js').then(r => r.default);
-    //   //   fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
-
-    //   //   await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-    //   //     expect(data).toBe('/v2/pet/findByStatus?status=available');
-    //   //     expect(status).toBe(200);
-    //   //     expect(headers.constructor.name).toBe('Headers');
-    //   //     expect(res.constructor.name).toBe('Response');
-    //   //   });
-    //   // });
-
-    //   // it('should be able to make an API request (JS + ESM)', async () => {
-    //   //   const sdk = await import('../../__fixtures__/sdk/simple-js-esm/index.js').then(r => r.default);
-    //   //   fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
-
-    //   //   await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
-    //   //     expect(data).toBe('/v2/pet/findByStatus?status=available');
-    //   //     expect(status).toBe(200);
-    //   //     expect(headers.constructor.name).toBe('Headers');
-    //   //     expect(res.constructor.name).toBe('Response');
-    //   //   });
-    //   // });
-    // });
+        await sdk
+          .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
+          .then(({ data, status, headers, res }) => {
+            expect(data).toHaveProperty('accept', 'application/xml');
+            expect(status).toBe(200);
+            expect(headers.constructor.name).toBe('Headers');
+            expect(res.constructor.name).toBe('Response');
+          });
+      });
+    });
 
     describe('error handling', () => {
       it('should fail on an API definition that has no `paths`', async () => {
