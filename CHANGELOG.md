@@ -1,3 +1,20 @@
+## 7.0.0-alpha.6 (2023-10-16)
+
+* feat: migrate `api` and `core` to ESM (#733) ([f65bc79](https://github.com/readmeio/api/commit/f65bc79)), closes [#733](https://github.com/readmeio/api/issues/733)
+* feat(api): proper esm support and codegen overhauls (#754) ([e739d30](https://github.com/readmeio/api/commit/e739d30)), closes [#754](https://github.com/readmeio/api/issues/754) [#759](https://github.com/readmeio/api/issues/759)
+* feat(codegen): required devDeps are now listed in `package.json` (#761) ([a217ac5](https://github.com/readmeio/api/commit/a217ac5)), closes [#761](https://github.com/readmeio/api/issues/761)
+* refactor: remove `make-dir` as a dep (#746) ([ab41a72](https://github.com/readmeio/api/commit/ab41a72)), closes [#746](https://github.com/readmeio/api/issues/746)
+* refactor(api): minor refactors to how some internal language classes are used (#755) ([518736d](https://github.com/readmeio/api/commit/518736d)), closes [#755](https://github.com/readmeio/api/issues/755)
+* refactor(core): removing `oas` as a dependency on codegen'd SDKs (#760) ([4a06601](https://github.com/readmeio/api/commit/4a06601)), closes [#760](https://github.com/readmeio/api/issues/760)
+* chore(deps-dev): bump @babel/traverse from 7.23.0 to 7.23.2 (#758) ([a9618e5](https://github.com/readmeio/api/commit/a9618e5)), closes [#758](https://github.com/readmeio/api/issues/758)
+* chore(deps-dev): bump the minor-development-deps group with 4 updates (#750) ([5259bb7](https://github.com/readmeio/api/commit/5259bb7)), closes [#750](https://github.com/readmeio/api/issues/750)
+* chore(deps): bump undici from 5.25.2 to 5.26.3 (#757) ([f9a882b](https://github.com/readmeio/api/commit/f9a882b)), closes [#757](https://github.com/readmeio/api/issues/757)
+* chore(deps): bump vitest from 0.34.5 to 0.34.6 (#751) ([ef4b36c](https://github.com/readmeio/api/commit/ef4b36c)), closes [#751](https://github.com/readmeio/api/issues/751)
+* fix(api): nestling generated schemas into a new `schemas/` directory (#756) ([ec74118](https://github.com/readmeio/api/commit/ec74118)), closes [#756](https://github.com/readmeio/api/issues/756)
+* fix(api): storage dir not being set properly (#753) ([fa31dd4](https://github.com/readmeio/api/commit/fa31dd4)), closes [#753](https://github.com/readmeio/api/issues/753)
+
+
+
 ## 7.0.0-alpha.5 (2023-10-16)
 
 * fix: bringing back some tests ([d33e655](https://github.com/readmeio/api/commit/d33e655))
