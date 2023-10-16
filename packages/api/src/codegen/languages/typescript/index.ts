@@ -458,8 +458,6 @@ sdk.server('https://eu.api.example.com/v14');`),
         // they're available to use.
         hasTypes ? './src/types.ts' : '',
       ].filter(Boolean),
-      // TODO: figure this out
-      // external: ['@readme/api-core'],
       format: ['esm', 'cjs'],
       minify: false,
       shims: true,
