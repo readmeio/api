@@ -157,16 +157,6 @@ export default class TSGenerator extends CodeGenerator {
 
         throw err;
       });
-
-    // await execa('npx', ['tsup', '--config', pkgJSONFile, '--out-dir', installDir]).then(res => {
-    //   console.log('res:', res);
-    // });
-
-    // await execa('ls', {
-    //   cwd: installDir,
-    // }).then(res => {
-    //   console.log('res:', res);
-    // });
   }
 
   /**
