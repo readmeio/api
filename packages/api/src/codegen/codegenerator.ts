@@ -66,6 +66,8 @@ export default abstract class CodeGenerator {
 
   abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
 
+  abstract compile(storage: Storage, opts?: InstallerOptions): Promise<void>;
+
   hasRequiredPackages() {
     return Boolean(Object.keys(this.requiredPackages));
   }

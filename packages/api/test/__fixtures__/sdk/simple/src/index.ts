@@ -87,5 +87,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { Category, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, Pet, Tag } from './types';

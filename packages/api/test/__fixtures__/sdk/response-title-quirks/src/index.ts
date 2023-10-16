@@ -82,5 +82,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { GetAnythingMetadataParam, GetAnythingResponse2XX } from './types';

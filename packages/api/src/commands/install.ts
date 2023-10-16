@@ -95,7 +95,7 @@ cmd
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();
-    const generator = codegenFactory(language, oas, './openapi.json', identifier);
+    const generator = codegenFactory(language, oas, '../openapi.json', identifier);
     const sdkSource = await generator
       .generate()
       .then(res => {
@@ -153,6 +153,17 @@ cmd
         logger(err.message, true);
         process.exit(1);
       }
+    }
+
+    spinner = ora('Compiling your SDK').start();
+    try {
+      await generator.compile(storage);
+      spinner.succeed(spinner.text);
+    } catch (err) {
+      // @todo cleanup installed files
+      spinner.fail(spinner.text);
+      logger(err.message, true);
+      process.exit(1);
     }
 
     logger('🚀 All done!');

@@ -88,5 +88,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam } from './types';

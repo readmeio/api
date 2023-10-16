@@ -8,10 +8,14 @@
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./types": {
+      "import": "./dist/types.d.mts",
+      "require": "./dist/types.d.ts"
     }
   },
   "dependencies": {
-    "@readme/api-core": "^7.0.0",
+    "@readme/api-core": "file:../../../../../core",
     "json-schema-to-ts": "^2.9.2",
     "oas": "^23.0.0"
   },
@@ -20,7 +24,8 @@
     "clean": true,
     "dts": true,
     "entry": [
-      "./src/index.ts"
+      "./src/index.ts",
+      "./src/types.ts"
     ],
     "format": [
       "esm",

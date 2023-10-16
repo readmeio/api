@@ -84,7 +84,14 @@ export default class TSGenerator extends CodeGenerator {
       '@readme/api-core': {
         reason: "The core magic of your codegen'd SDK and is what is used for making requests.",
         url: 'https://npm.im/api',
-        version: '^7.0.0',
+        version:
+          // When running unit tests we're installing `@readme/api-core` but because that package
+          // source lives in this repository NPM will throw a gnarly "Cannot set properties of null
+          // (setting 'dev')" workspace error message because we're creating a funky circular
+          // dependency.
+          process.env.NODE_ENV === 'test'
+            ? `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
+            : '^7.0.0',
       },
       'json-schema-to-ts': {
         reason: 'Required for TypeScript type handling.',
@@ -132,6 +139,17 @@ export default class TSGenerator extends CodeGenerator {
         }
       })
       .catch(err => {
+        // If `npm install` throws this error it always happens **after** our dependencies have been
+        // installed and is an annoying quirk that sometimes occurs when installing a package within
+        // our workspace as we're creating a circular dependency on `@readme/api-core`.
+        if (
+          process.env.NODE_ENV === 'test' &&
+          err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
+        ) {
+          (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
+          return;
+        }
+
         if (opts.dryRun) {
           (opts.logger ? opts.logger : logger)(err.message);
           return;
@@ -151,27 +169,28 @@ export default class TSGenerator extends CodeGenerator {
     // });
   }
 
+  /**
+   * Compile the TS code we generated into JS for use in CJS and ESM environments.
+   *
+   */
   // eslint-disable-next-line class-methods-use-this
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    // This will compile our TS code into JS for use in CJS and ESM environments.
     await execa('npx', ['tsup'], {
       cwd: installDir,
     })
       .then(res => {
-        console.log(res.command);
-        // if (opts.dryRun) {
-        //   (opts.logger ? opts.logger : logger)(res.command);
-        //   (opts.logger ? opts.logger : logger)(res.stdout);
-        // }
+        if (opts.dryRun) {
+          (opts.logger ? opts.logger : logger)(res.command);
+          (opts.logger ? opts.logger : logger)(res.stdout);
+        }
       })
       .catch(err => {
-        console.log(err.message);
-        // if (opts.dryRun) {
-        //   (opts.logger ? opts.logger : logger)(err.message);
-        //   return;
-        // }
+        if (opts.dryRun) {
+          (opts.logger ? opts.logger : logger)(err.message);
+          return;
+        }
 
         throw err;
       });
@@ -191,17 +210,6 @@ export default class TSGenerator extends CodeGenerator {
     if (Object.keys(this.schemas).length) {
       this.createSchemasFile(srcDirectory);
       this.createTypesFile(srcDirectory);
-
-      const types = Array.from(this.types.keys());
-      types.sort();
-
-      sdkSource.addExportDeclarations([
-        {
-          isTypeOnly: true,
-          namedExports: types,
-          moduleSpecifier: './types',
-        },
-      ]);
     } else {
       // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
       sdkSource
@@ -435,6 +443,8 @@ sdk.server('https://eu.api.example.com/v14');`),
   createPackageJSON() {
     const sourceFile = this.project.createSourceFile('package.json', '');
 
+    const hasTypes = !!Object.keys(this.schemas).length;
+
     const info = this.spec.getDefinition().info;
     let pkgVersion = semver.coerce(info.version);
     if (!pkgVersion) {
@@ -447,7 +457,12 @@ sdk.server('https://eu.api.example.com/v14');`),
       cjsInterop: true,
       clean: true,
       dts: true,
-      entry: ['./src/index.ts'],
+      entry: [
+        './src/index.ts',
+        // If this SDK has schemas and generated types then we should also export those too so
+        // they're available to use.
+        hasTypes ? './src/types.ts' : '',
+      ].filter(Boolean),
       // TODO: figure this out
       // external: ['@readme/api-core'],
       format: ['esm', 'cjs'],
@@ -472,6 +487,14 @@ sdk.server('https://eu.api.example.com/v14');`),
           import: './dist/index.mjs',
           require: './dist/index.js',
         },
+        ...(hasTypes
+          ? {
+              './types': {
+                import: './dist/types.d.mts',
+                require: './dist/types.d.ts',
+              },
+            }
+          : {}),
       },
       dependencies,
       tsup: tsupOptions as JsonObject,

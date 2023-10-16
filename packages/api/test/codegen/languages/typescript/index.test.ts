@@ -78,7 +78,7 @@ describe('typescript', () => {
       Storage.reset();
     });
 
-    it('should install the required package', async () => {
+    it('should install the required packages', async () => {
       const logger = vi.fn();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
@@ -88,7 +88,7 @@ describe('typescript', () => {
       const storage = new Storage(file, 'petstore');
       await storage.load();
 
-      const ts = new TSGenerator(oas, './openapi.json', 'petstore');
+      const ts = new TSGenerator(oas, '../openapi.json', 'petstore');
       const source = await ts.generate();
       await storage.saveSourceFiles(source);
 
