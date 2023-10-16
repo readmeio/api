@@ -1,16 +1,13 @@
 import type * as types from './types';
 import type { ConfigOptions, FetchResponse } from '@readme/api-core';
-import Oas from 'oas';
 import APICore from '@readme/api-core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
 
 class SDK {
-  spec: Oas;
   core: APICore;
 
   constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'readme/4.355.0 (api/<<package version>>)');
+    this.core = new APICore(definition, 'readme/4.355.0 (api/<<package version>>)');
   }
 
   /**

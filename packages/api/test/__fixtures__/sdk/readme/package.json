@@ -16,8 +16,7 @@
   },
   "dependencies": {
     "@readme/api-core": "file:../../../../../core",
-    "json-schema-to-ts": "^2.9.2",
-    "oas": "^23.0.0"
+    "json-schema-to-ts": "^2.9.2"
   },
   "tsup": {
     "cjsInterop": true,

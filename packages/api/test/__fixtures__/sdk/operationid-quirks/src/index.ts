@@ -1,15 +1,12 @@
 import type { ConfigOptions, FetchResponse } from '@readme/api-core';
-import Oas from 'oas';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/operationid-quirks.json';
 
 class SDK {
-  spec: Oas;
   core: APICore;
 
   constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'operationid-quirks/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(definition, 'operationid-quirks/1.0.0 (api/<<package version>>)');
   }
 
   /**

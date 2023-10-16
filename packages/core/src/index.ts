@@ -1,10 +1,10 @@
 import type { Har } from 'har-format';
-import type Oas from 'oas';
 import type Operation from 'oas/operation';
-import type { HttpMethods } from 'oas/rmoas.types';
+import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
 import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
+import Oas from 'oas';
 
 import FetchError from './errors/fetchError.js';
 import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib/index.js';
@@ -47,8 +47,8 @@ export default class APICore {
 
   private userAgent!: string;
 
-  constructor(spec?: Oas, userAgent?: string) {
-    if (spec) this.spec = spec;
+  constructor(definition?: Record<string, unknown> | OASDocument, userAgent?: string) {
+    if (definition) this.spec = Oas.init(definition);
     if (userAgent) this.userAgent = userAgent;
   }
 

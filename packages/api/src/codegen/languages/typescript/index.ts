@@ -99,11 +99,6 @@ export default class TSGenerator extends CodeGenerator {
         url: 'https://npm.im/json-schema-to-ts',
         version: '^2.9.2',
       },
-      oas: {
-        reason: 'Used within `@readme/api-core` and is also loaded for TypeScript types.',
-        url: 'https://npm.im/oas',
-        version: '^23.0.0',
-      },
     };
 
     this.project = new Project({
@@ -265,7 +260,6 @@ export default class TSGenerator extends CodeGenerator {
         defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
         moduleSpecifier: '@readme/api-core',
       },
-      { defaultImport: 'Oas', moduleSpecifier: 'oas' },
       { defaultImport: 'APICore', moduleSpecifier: '@readme/api-core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
     ]);
@@ -273,16 +267,12 @@ export default class TSGenerator extends CodeGenerator {
     // @todo add TOS, License, info.* to a docblock at the top of the SDK.
     this.sdk = sourceFile.addClass({
       name: 'SDK',
-      properties: [
-        { name: 'spec', type: 'Oas' },
-        { name: 'core', type: 'APICore' },
-      ],
+      properties: [{ name: 'core', type: 'APICore' }],
     });
 
     this.sdk.addConstructor({
       statements: writer => {
-        writer.writeLine('this.spec = Oas.init(definition);');
-        writer.write('this.core = new APICore(this.spec, ').quote(this.userAgent).write(');');
+        writer.write('this.core = new APICore(definition, ').quote(this.userAgent).write(');');
         return writer;
       },
     });
