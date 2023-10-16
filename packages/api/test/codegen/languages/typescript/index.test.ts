@@ -143,7 +143,10 @@ describe('typescript', () => {
       assertSDKFixture('@api/test-utils/definitions/response-title-quirks.json', 'response-title-quirks'),
     );
 
-    it.todo('should handle a operations with a `default` response');
+    it(
+      'should work against a very large API definition that has `default` responses',
+      assertSDKFixture('@readme/oas-examples/3.0/json/star-trek.json', 'star-trek'),
+    );
 
     it(
       'should handle an api that has discriminators and no operation ids',
