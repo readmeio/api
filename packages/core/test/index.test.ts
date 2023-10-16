@@ -3,7 +3,6 @@ import assert from 'node:assert';
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import datauri from 'datauri';
 import fetchMock from 'fetch-mock';
-import Oas from 'oas';
 import { describe, beforeEach, afterEach, it, expect } from 'vitest';
 
 import FetchError from '../src/errors/fetchError.js';
@@ -24,29 +23,21 @@ describe('APICore', () => {
   };
 
   beforeEach(async () => {
-    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json').then(spec => new APICore(spec));
 
-    parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(
+      spec => new APICore(spec),
+    );
 
-    petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json').then(spec => new APICore(spec));
 
-    readme = await loadSpec('@readme/oas-examples/3.0/json/readme.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    readme = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(spec => new APICore(spec));
 
-    security = await loadSpec('@readme/oas-examples/3.0/json/security.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    security = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(spec => new APICore(spec));
 
-    serverVariables = await loadSpec('@readme/oas-examples/3.0/json/server-variables.json')
-      .then(Oas.init)
-      .then(oas => new APICore(oas));
+    serverVariables = await loadSpec('@readme/oas-examples/3.0/json/server-variables.json').then(
+      spec => new APICore(spec),
+    );
   });
 
   afterEach(() => {
@@ -139,26 +130,24 @@ describe('APICore', () => {
         let queryEncoding: APICore;
 
         beforeEach(() => {
-          queryEncoding = new APICore(
-            Oas.init({
-              servers: [{ url: 'https://httpbin.org/' }],
-              paths: {
-                '/anything': {
-                  get: {
-                    operationId: 'getAnything',
-                    parameters: [
-                      { name: 'stringPound', in: 'query', schema: { type: 'string' } },
-                      { name: 'stringPound2', in: 'query', schema: { type: 'string' } },
-                      { name: 'stringHash', in: 'query', schema: { type: 'string' } },
-                      { name: 'stringArray', in: 'query', schema: { type: 'string' } },
-                      { name: 'stringWeird', in: 'query', schema: { type: 'string' } },
-                      { name: 'array', in: 'query', schema: { type: 'array', items: { type: 'string' } } },
-                    ],
-                  },
+          queryEncoding = new APICore({
+            servers: [{ url: 'https://httpbin.org/' }],
+            paths: {
+              '/anything': {
+                get: {
+                  operationId: 'getAnything',
+                  parameters: [
+                    { name: 'stringPound', in: 'query', schema: { type: 'string' } },
+                    { name: 'stringPound2', in: 'query', schema: { type: 'string' } },
+                    { name: 'stringHash', in: 'query', schema: { type: 'string' } },
+                    { name: 'stringArray', in: 'query', schema: { type: 'string' } },
+                    { name: 'stringWeird', in: 'query', schema: { type: 'string' } },
+                    { name: 'array', in: 'query', schema: { type: 'array', items: { type: 'string' } } },
+                  ],
                 },
               },
-            }),
-          );
+            },
+          });
         });
 
         it('should encode query parameters', async () => {
@@ -214,8 +203,7 @@ describe('APICore', () => {
               spec.servers[0].url = '{scheme}://httpbin.org/anything';
               return spec;
             })
-            .then(Oas.init)
-            .then(oas => new APICore(oas));
+            .then(spec => new APICore(spec));
 
           fetchMock.post('https://httpbin.org/anything/v1/oa_citations/records', mockResponse.all);
 
@@ -372,9 +360,7 @@ describe('APICore', () => {
       let petstoreTimeout: APICore;
 
       beforeEach(async () => {
-        petstoreTimeout = await loadSpec('@readme/oas-examples/3.0/json/petstore.json')
-          .then(Oas.init)
-          .then(oas => new APICore(oas));
+        petstoreTimeout = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(spec => new APICore(spec));
       });
 
       afterEach(() => {

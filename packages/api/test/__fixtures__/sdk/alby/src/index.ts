@@ -1,16 +1,13 @@
 import type * as types from './types';
 import type { ConfigOptions, FetchResponse } from '@readme/api-core';
-import Oas from 'oas';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/alby.json';
 
 class SDK {
-  spec: Oas;
   core: APICore;
 
   constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'alby/1.0.14 (api/<<package version>>)');
+    this.core = new APICore(definition, 'alby/1.0.14 (api/<<package version>>)');
   }
 
   /**

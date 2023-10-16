@@ -1,16 +1,13 @@
 import type * as types from './types';
 import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-core';
-import Oas from 'oas';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/response-title-quirks.json';
 
 class SDK {
-  spec: Oas;
   core: APICore;
 
   constructor() {
-    this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'response-title-quirks/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(definition, 'response-title-quirks/1.0.0 (api/<<package version>>)');
   }
 
   /**
