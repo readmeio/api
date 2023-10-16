@@ -38,6 +38,7 @@
     "swagger"
   ],
   "dependencies": {
+    "@readme/api-core": "file:../core",
     "@readme/openapi-parser": "^2.4.0",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
@@ -60,7 +61,6 @@
   },
   "devDependencies": {
     "@api/test-utils": "file:../test-utils",
-    "@readme/api-core": "file:../core",
     "@readme/oas-examples": "^5.12.0",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash.camelcase": "^4.3.7",

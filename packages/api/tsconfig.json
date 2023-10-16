@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "esModuleInterop": true,
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
-    "outDir": "dist/"
+    "module": "NodeNext",
+    "outDir": "dist/",
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*"]
 }
