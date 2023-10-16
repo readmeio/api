@@ -194,6 +194,15 @@ export default class Storage {
       Object.entries(files).forEach(([fileName, contents]) => {
         const sourceFilePath = path.join(this.getIdentifierStorageDir(), fileName);
 
+        // If this file is stored in a subdirectory then we need to create it.
+        if (path.dirname(fileName) !== '.') {
+          const dir = path.dirname(fileName);
+          const dirPath = path.join(this.getIdentifierStorageDir(), dir);
+          if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath);
+          }
+        }
+
         fs.writeFileSync(sourceFilePath, contents);
 
         savedSource.push(sourceFilePath);

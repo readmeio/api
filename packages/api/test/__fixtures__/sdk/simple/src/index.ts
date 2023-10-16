@@ -2,7 +2,7 @@ import type * as types from './types';
 import type { ConfigOptions, FetchResponse } from '@readme/api-core';
 import Oas from 'oas';
 import APICore from '@readme/api-core';
-import definition from '@api/test-utils/definitions/optional-payload.json';
+import definition from '@api/test-utils/definitions/simple.json';
 
 class SDK {
   spec: Oas;
@@ -10,7 +10,7 @@ class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'optional-payload/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(this.spec, 'simple/1.0.0 (api/<<package version>>)');
   }
 
   /**
@@ -74,13 +74,12 @@ class SDK {
   }
 
   /**
-   * Updates a pet in the store with form data
+   * Multiple status values can be provided with comma separated strings
    *
+   * @summary Finds Pets by status
    */
-  updatePetWithForm(body: types.UpdatePetWithFormFormDataParam, metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
-  updatePetWithForm(body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam, metadata?: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>> {
-    return this.core.fetch('/pet/{petId}', 'post', body, metadata);
+  findPetsByStatus(metadata: types.FindPetsByStatusMetadataParam): Promise<FetchResponse<200, types.FindPetsByStatusResponse200>> {
+    return this.core.fetch('/pet/findByStatus', 'get', metadata);
   }
 }
 
@@ -88,5 +87,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam } from './types';

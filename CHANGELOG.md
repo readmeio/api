@@ -1,3 +1,28 @@
+## 7.0.0-alpha.5 (2023-10-16)
+
+* fix: bringing back some tests ([d33e655](https://github.com/readmeio/api/commit/d33e655))
+* fix: broken test ([9ade11b](https://github.com/readmeio/api/commit/9ade11b))
+* fix: cjs compatibility with our `types` file being exported in `index` ([330a3a1](https://github.com/readmeio/api/commit/330a3a1))
+* fix: compatibility with node 20 on `npm run debug:bin` ([9fd0370](https://github.com/readmeio/api/commit/9fd0370))
+* fix: flaky test in ci ([8e11923](https://github.com/readmeio/api/commit/8e11923))
+* fix: overhauling schemas to now be stored in a `schemas/` directory ([6463a02](https://github.com/readmeio/api/commit/6463a02))
+* fix: pinning installed sdk dependencies to known working versions ([d4e5d5a](https://github.com/readmeio/api/commit/d4e5d5a))
+* fix: removing some dead code ([488041e](https://github.com/readmeio/api/commit/488041e))
+* fix: storage system didn't properly create subdirectories ([654194e](https://github.com/readmeio/api/commit/654194e))
+* fix(api): nestling generated schemas into a new `schemas/` directory (#756) ([ec74118](https://github.com/readmeio/api/commit/ec74118)), closes [#756](https://github.com/readmeio/api/issues/756)
+* fix(api): storage dir not being set properly (#753) ([fa31dd4](https://github.com/readmeio/api/commit/fa31dd4)), closes [#753](https://github.com/readmeio/api/issues/753)
+* feat: migrate `api` and `core` to ESM (#733) ([f65bc79](https://github.com/readmeio/api/commit/f65bc79)), closes [#733](https://github.com/readmeio/api/issues/733)
+* feat: refactoring codegen'd sdks to be placed into a `src/` directory ([7d7b4cc](https://github.com/readmeio/api/commit/7d7b4cc))
+* feat(api): wip of proper esm support and codegen overhauls ([8e5558d](https://github.com/readmeio/api/commit/8e5558d))
+* chore(deps-dev): bump the minor-development-deps group with 4 updates (#750) ([5259bb7](https://github.com/readmeio/api/commit/5259bb7)), closes [#750](https://github.com/readmeio/api/issues/750)
+* chore(deps): bump vitest from 0.34.5 to 0.34.6 (#751) ([ef4b36c](https://github.com/readmeio/api/commit/ef4b36c)), closes [#751](https://github.com/readmeio/api/issues/751)
+* chore(deps): bumping ts-morph ([e2e1259](https://github.com/readmeio/api/commit/e2e1259))
+* docs: documenting why we're exporting `createSDK` the way we are ([84872e6](https://github.com/readmeio/api/commit/84872e6))
+* refactor: remove `make-dir` as a dep (#746) ([ab41a72](https://github.com/readmeio/api/commit/ab41a72)), closes [#746](https://github.com/readmeio/api/issues/746)
+* refactor(api): minor refactors to how some internal language classes are used (#755) ([518736d](https://github.com/readmeio/api/commit/518736d)), closes [#755](https://github.com/readmeio/api/issues/755)
+
+
+
 ## 7.0.0-alpha.3 (2023-09-27)
 
 * chore(deps): bump fetch-har (#745) ([d7a5d0c](https://github.com/readmeio/api/commit/d7a5d0c)), closes [#745](https://github.com/readmeio/api/issues/745)

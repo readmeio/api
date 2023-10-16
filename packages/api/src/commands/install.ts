@@ -1,11 +1,9 @@
-import type { SupportedLanguages } from '../codegen/factory.js';
-
 import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 
-import codegenFactory from '../codegen/factory.js';
+import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
@@ -19,12 +17,7 @@ cmd
   .argument('<uri>', 'an API to install')
   .option('-i, --identifier <identifier>', 'API identifier (eg. `@api/petstore`)')
   .addOption(
-    new Option('-l, --lang <language>', 'SDK language').choices([
-      'js', // User generally wants JS, we'll prompt if they want CJS or ESM files.
-      'js-cjs',
-      'js-esm',
-      'ts',
-    ]),
+    new Option('-l, --lang <language>', 'SDK language').default(SupportedLanguages.JS).choices([SupportedLanguages.JS]),
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
   .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
@@ -36,26 +29,8 @@ cmd
         type: 'select',
         name: 'value',
         message: 'What language would you like to generate an SDK for?',
-        choices: [
-          { title: 'TypeScript', value: 'ts' },
-          { title: 'JavaScript', value: 'js' },
-        ],
+        choices: [{ title: 'JavaScript', value: SupportedLanguages.JS }],
         initial: 1,
-      }));
-    }
-
-    // Because our TS generation outputs raw TS source files we don't need to worry about CJS/ESM.
-    if (language === 'js') {
-      ({ value: language } = await promptTerminal({
-        type: 'select',
-        name: 'value',
-        message: 'How are your project imports and exports structured?',
-        choices: [
-          { title: 'CommonJS', description: 'require/exports', value: 'cjs' },
-          { title: 'ECMAScript Modules', description: 'import/export', value: 'esm' },
-        ],
-        initial: 0,
-        format: sel => (sel === 'cjs' ? 'js-cjs' : 'js-esm'),
       }));
     }
 
@@ -120,9 +95,9 @@ cmd
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();
-    const generator = codegenFactory(language, oas, './openapi.json', identifier);
+    const generator = codegenFactory(language, oas, '../openapi.json', identifier);
     const sdkSource = await generator
-      .compile()
+      .generate()
       .then(res => {
         spinner.succeed(spinner.text);
         return res;
@@ -178,6 +153,17 @@ cmd
         logger(err.message, true);
         process.exit(1);
       }
+    }
+
+    spinner = ora('Compiling your SDK').start();
+    try {
+      await generator.compile(storage);
+      spinner.succeed(spinner.text);
+    } catch (err) {
+      // @todo cleanup installed files
+      spinner.fail(spinner.text);
+      logger(err.message, true);
+      process.exit(1);
     }
 
     logger('🚀 All done!');

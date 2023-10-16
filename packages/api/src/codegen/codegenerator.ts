@@ -25,7 +25,14 @@ export default abstract class CodeGenerator {
 
   userAgent: string;
 
-  requiredPackages!: Record<string, { reason: string; url: string }>;
+  requiredPackages!: Record<
+    string,
+    {
+      reason: string;
+      url: string;
+      version: string;
+    }
+  >;
 
   constructor(spec: Oas, specPath: string, identifier: string) {
     this.spec = spec;
@@ -55,9 +62,11 @@ export default abstract class CodeGenerator {
     }
   }
 
-  abstract compile(): Promise<Record<string, string>>;
+  abstract generate(): Promise<Record<string, string>>;
 
   abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
+
+  abstract compile(storage: Storage, opts?: InstallerOptions): Promise<void>;
 
   hasRequiredPackages() {
     return Boolean(Object.keys(this.requiredPackages));

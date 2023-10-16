@@ -1,8 +1,8 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-core';
+import type { ConfigOptions, FetchResponse } from '@readme/api-core';
 import Oas from 'oas';
 import APICore from '@readme/api-core';
-import definition from '@api/test-utils/definitions/response-title-quirks.json';
+import definition from '@api/test-utils/definitions/optional-payload.json';
 
 class SDK {
   spec: Oas;
@@ -10,7 +10,7 @@ class SDK {
 
   constructor() {
     this.spec = Oas.init(definition);
-    this.core = new APICore(this.spec, 'response-title-quirks/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(this.spec, 'optional-payload/1.0.0 (api/<<package version>>)');
   }
 
   /**
@@ -73,8 +73,14 @@ class SDK {
     this.core.setServer(url, variables);
   }
 
-  getAnything(metadata: types.GetAnythingMetadataParam): Promise<FetchResponse<HTTPMethodRange<200, 299>, types.GetAnythingResponse2XX>> {
-    return this.core.fetch('/anything', 'get', metadata);
+  /**
+   * Updates a pet in the store with form data
+   *
+   */
+  updatePetWithForm(body: types.UpdatePetWithFormFormDataParam, metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(metadata: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>>;
+  updatePetWithForm(body?: types.UpdatePetWithFormFormDataParam | types.UpdatePetWithFormMetadataParam, metadata?: types.UpdatePetWithFormMetadataParam): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/pet/{petId}', 'post', body, metadata);
   }
 }
 
@@ -82,5 +88,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { GetAnythingMetadataParam, GetAnythingResponse2XX } from './types';

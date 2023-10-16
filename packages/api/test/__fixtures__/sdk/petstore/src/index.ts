@@ -254,5 +254,3 @@ const createSDK = (() => { return new SDK(); })()
 ;
 
 export default createSDK;
-
-export type { ApiResponse, Category, CreateUsersWithArrayInputBodyParam, CreateUsersWithListInputBodyParam, DeleteOrderMetadataParam, DeletePetMetadataParam, DeleteUserMetadataParam, FindPetsByStatusMetadataParam, FindPetsByStatusResponse200, FindPetsByTagsMetadataParam, FindPetsByTagsResponse200, GetInventoryResponse200, GetOrderByIdMetadataParam, GetPetByIdMetadataParam, GetUserByNameMetadataParam, LoginUserMetadataParam, LoginUserResponse200, Order, Pet, Tag, UpdatePetWithFormFormDataParam, UpdatePetWithFormMetadataParam, UpdateUserMetadataParam, UploadFileBodyParam, UploadFileMetadataParam, User } from './types';
