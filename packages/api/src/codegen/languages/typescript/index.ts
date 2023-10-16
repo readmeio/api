@@ -417,13 +417,10 @@ sdk.server('https://eu.api.example.com/v14');`),
 
     const config: TsConfigJson = {
       compilerOptions: {
-        checkJs: true,
-        esModuleInterop: true,
         module: 'NodeNext',
         resolveJsonModule: true,
       },
       include: ['./src/**/*'],
-      exclude: ['dist'],
     };
 
     sourceFile.addStatements(JSON.stringify(config, null, 2));

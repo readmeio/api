@@ -1,14 +1,9 @@
 {
   "compilerOptions": {
-    "checkJs": true,
-    "esModuleInterop": true,
     "module": "NodeNext",
     "resolveJsonModule": true
   },
   "include": [
     "./src/**/*"
-  ],
-  "exclude": [
-    "dist"
   ]
 }
