@@ -153,7 +153,7 @@ describe('typescript', () => {
         const sdk = await import('../../../__fixtures__/sdk/simple/src/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
-        // @ts-expect error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
+        // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
@@ -168,7 +168,7 @@ describe('typescript', () => {
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
-          // @ts-expect error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
+          // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
           .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
           .then(({ data, status, headers, res }) => {
             expect(data).toHaveProperty('accept', 'application/xml');
