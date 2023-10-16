@@ -10,9 +10,19 @@
       "require": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "tsup"
+  },
   "dependencies": {
     "@readme/api-core": "file:../../../../../core",
     "json-schema-to-ts": "^2.9.2"
+  },
+  "devDependencies": {
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
   },
   "tsup": {
     "cjsInterop": true,
