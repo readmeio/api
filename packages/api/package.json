@@ -9,7 +9,7 @@
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
-    "debug:bin": "ts-node --esm src/bin.ts",
+    "debug:bin": "node --loader ts-node/esm src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/; npm run version",
     "prepack": "npm run build",
