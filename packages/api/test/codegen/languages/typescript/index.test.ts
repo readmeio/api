@@ -168,8 +168,7 @@ describe('typescript', () => {
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
           .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
           .then(({ data, status, headers, res }) => {
             expect(data).toHaveProperty('accept', 'application/xml');
