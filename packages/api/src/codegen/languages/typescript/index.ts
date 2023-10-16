@@ -168,6 +168,10 @@ export default class TSGenerator extends CodeGenerator {
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
+    await execa('npm', ['install', 'tsup', 'typescript', '-D'], {
+      cwd: installDir,
+    });
+
     await execa('npx', ['tsup'], {
       cwd: installDir,
     })
