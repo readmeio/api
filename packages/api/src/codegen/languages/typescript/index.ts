@@ -17,7 +17,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
 
-import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
+import { version as corePkgVersion } from '@readme/api-core/package.json' assert { type: 'json' };
 import execa from 'execa';
 import setWith from 'lodash.setwith';
 import semver from 'semver';
@@ -92,7 +92,7 @@ export default class TSGenerator extends CodeGenerator {
           // dependency.
           process.env.NODE_ENV === 'test'
             ? `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
-            : corePkg.version,
+            : corePkgVersion,
       },
       'json-schema-to-ts': {
         reason: 'Required for TypeScript type handling.',
