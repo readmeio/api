@@ -125,7 +125,12 @@ cmd
     if (generator.hasRequiredPackages()) {
       logger(`${figures.warning} This generator requires some packages to be installed alongside it:`);
       Object.entries(generator.requiredPackages).forEach(([pkg, pkgInfo]) => {
-        logger(`  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason} ${pkgInfo.url}`);
+        let msg = `  ${figures.pointerSmall} ${pkg}: ${pkgInfo.reason}`;
+        if (pkgInfo.url) {
+          msg += ` ${pkgInfo.url}`;
+        }
+
+        logger(msg);
       });
 
       if (!options.yes) {

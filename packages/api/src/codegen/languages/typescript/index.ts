@@ -83,6 +83,7 @@ export default class TSGenerator extends CodeGenerator {
 
     this.requiredPackages = {
       '@readme/api-core': {
+        dependencyType: 'production',
         reason: "The core magic of your codegen'd SDK and is what is used for making requests.",
         url: 'https://npm.im/api',
         version:
@@ -95,9 +96,21 @@ export default class TSGenerator extends CodeGenerator {
             : corePkg.version,
       },
       'json-schema-to-ts': {
+        dependencyType: 'production',
         reason: 'Required for TypeScript type handling.',
         url: 'https://npm.im/json-schema-to-ts',
         version: '^2.9.2',
+      },
+      tsup: {
+        dependencyType: 'development',
+        reason: "Used for compiling your codegen'd SDK into code that can be used in JS environments.",
+        url: 'https://tsup.egoist.dev/',
+        version: '^7.2.0',
+      },
+      typescript: {
+        dependencyType: 'development',
+        reason: 'Required for `tsup`.',
+        version: '^5.2.2',
       },
     };
 
@@ -162,10 +175,6 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
-
-    await execa('npm', ['install', 'tsup', 'typescript', '-D'], {
-      cwd: installDir,
-    });
 
     await execa('npx', ['tsup'], {
       cwd: installDir,
@@ -453,7 +462,11 @@ sdk.server('https://eu.api.example.com/v14');`),
     };
 
     const dependencies = Object.entries(this.requiredPackages)
-      .map(([dep, { version }]) => ({ [dep]: version }))
+      .map(([dep, { dependencyType, version }]) => (dependencyType === 'production' ? { [dep]: version } : {}))
+      .reduce((prev, next) => Object.assign(prev, next));
+
+    const devDependencies = Object.entries(this.requiredPackages)
+      .map(([dep, { dependencyType, version }]) => (dependencyType === 'development' ? { [dep]: version } : {}))
       .reduce((prev, next) => Object.assign(prev, next));
 
     const pkg: PackageJson = {
@@ -476,7 +489,12 @@ sdk.server('https://eu.api.example.com/v14');`),
             }
           : {}),
       },
+      files: ['dist'],
+      scripts: {
+        prepare: 'tsup',
+      },
       dependencies,
+      devDependencies,
       tsup: tsupOptions as JsonObject,
     };
 
