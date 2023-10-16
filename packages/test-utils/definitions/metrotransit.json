@@ -1,0 +1,263 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "NexTrip API",
+    "description": "API for creating Metro Transit real-time departure information display (beta, subject to change)",
+    "version": "2"
+  },
+  "servers": [{ "url": "https://svc.metrotransit.org" }],
+  "paths": {
+    "/nextrip/agencies": {
+      "get": {
+        "tags": ["NexTrip"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Agency" } } }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/routes": {
+      "get": {
+        "tags": ["NexTrip"],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Route" } } }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/directions/{route_id}": {
+      "get": {
+        "tags": ["NexTrip"],
+        "parameters": [{ "name": "route_id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Direction" } }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/stops/{route_id}/{direction_id}": {
+      "get": {
+        "tags": ["NexTrip"],
+        "parameters": [
+          { "name": "route_id", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "direction_id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Place" } } }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/{stop_id}": {
+      "get": {
+        "tags": ["NexTrip"],
+        "parameters": [
+          { "name": "stop_id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NexTripResult" } } }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/{route_id}/{direction_id}/{place_code}": {
+      "get": {
+        "tags": ["NexTrip"],
+        "parameters": [
+          { "name": "route_id", "in": "path", "required": true, "schema": { "type": "string" } },
+          {
+            "name": "direction_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          { "name": "place_code", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NexTripResult" } } }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/nextrip/vehicles/{route_id}": {
+      "get": {
+        "tags": ["NexTrip"],
+        "parameters": [{ "name": "route_id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Vehicle" } } }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProblemDetails" } } }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Agency": {
+        "type": "object",
+        "properties": {
+          "agency_id": { "type": "integer", "format": "int32" },
+          "agency_name": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "AlertMessage": {
+        "type": "object",
+        "properties": { "stop_closed": { "type": "boolean" }, "alert_text": { "type": "string", "nullable": true } },
+        "additionalProperties": false
+      },
+      "Departure": {
+        "type": "object",
+        "properties": {
+          "actual": { "type": "boolean" },
+          "trip_id": { "type": "string", "nullable": true },
+          "stop_id": { "type": "integer", "format": "int32" },
+          "departure_text": { "type": "string", "nullable": true },
+          "departure_time": { "type": "integer", "format": "int64" },
+          "description": { "type": "string", "nullable": true },
+          "gate": { "type": "string", "nullable": true },
+          "route_id": { "type": "string", "nullable": true },
+          "route_short_name": { "type": "string", "nullable": true },
+          "direction_id": { "type": "integer", "format": "int32" },
+          "direction_text": { "type": "string", "nullable": true },
+          "terminal": { "type": "string", "nullable": true },
+          "schedule_relationship": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "Direction": {
+        "type": "object",
+        "properties": {
+          "direction_id": { "type": "integer", "format": "int32" },
+          "direction_name": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "NexTripResult": {
+        "type": "object",
+        "properties": {
+          "stops": { "type": "array", "items": { "$ref": "#/components/schemas/Stop" }, "nullable": true },
+          "alerts": { "type": "array", "items": { "$ref": "#/components/schemas/AlertMessage" }, "nullable": true },
+          "departures": { "type": "array", "items": { "$ref": "#/components/schemas/Departure" }, "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "Place": {
+        "type": "object",
+        "properties": {
+          "place_code": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "nullable": true },
+          "title": { "type": "string", "nullable": true },
+          "status": { "type": "integer", "format": "int32", "nullable": true },
+          "detail": { "type": "string", "nullable": true },
+          "instance": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": {}
+      },
+      "Route": {
+        "type": "object",
+        "properties": {
+          "route_id": { "type": "string", "nullable": true },
+          "agency_id": { "type": "integer", "format": "int32" },
+          "route_label": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "Stop": {
+        "type": "object",
+        "properties": {
+          "stop_id": { "type": "integer", "format": "int32" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "description": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "Vehicle": {
+        "type": "object",
+        "properties": {
+          "trip_id": { "type": "string", "nullable": true },
+          "direction_id": { "type": "integer", "format": "int32" },
+          "direction": { "type": "string", "nullable": true },
+          "location_time": { "type": "integer", "format": "int64" },
+          "route_id": { "type": "string", "nullable": true },
+          "terminal": { "type": "string", "nullable": true },
+          "latitude": { "type": "number", "format": "float" },
+          "longitude": { "type": "number", "format": "float" },
+          "bearing": { "type": "number", "format": "float" },
+          "odometer": { "type": "number", "format": "double" },
+          "speed": { "type": "number", "format": "float" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true, "samples-enabled": true }
+}

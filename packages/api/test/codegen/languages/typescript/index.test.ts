@@ -31,7 +31,9 @@ function assertSDKFixture(file: string, fixture: string) {
         // recursive lookup on that we also get `src/schemas/<schemaName>`. We only care about the
         // schema files themselves, not the general directory, so we need to exclude this from our
         // list of expected files.
-        return files.filter(f => !['src', 'src/schemas'].includes(f));
+        //
+        // And if there happens to be a `dist/` directory in the SDK directory we can ignore it too.
+        return files.filter(f => !['src', 'src/schemas'].includes(f) && !f.startsWith('dist'));
       })
       .catch(() => {
         /**
@@ -122,6 +124,11 @@ describe('typescript', () => {
     );
 
     it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
+
+    it(
+      'should work against metrotransit',
+      assertSDKFixture('@api/test-utils/definitions/metrotransit.json', 'metrotransit'),
+    );
 
     it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
