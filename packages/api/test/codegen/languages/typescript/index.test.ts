@@ -21,7 +21,7 @@ function assertSDKFixture(file: string, fixture: string) {
     const actualFiles = await ts.generate();
 
     // Determine if the generated code matches what we've got in our fixture.
-    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
+    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '..', '..', 'test-utils', 'sdks', fixture));
     const expectedFiles = await fs
       .readdir(dir, { recursive: true })
       .then(files => {
@@ -157,7 +157,7 @@ describe('typescript', () => {
 
       it('should be able to make an API request', async () => {
         // eslint-disable-next-line import/no-relative-packages
-        const sdk = await import('../../../__fixtures__/sdk/simple/src/index.js').then(r => r.default);
+        const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
@@ -171,7 +171,7 @@ describe('typescript', () => {
 
       it('should be able to make an API request with an `accept` header`', async () => {
         // eslint-disable-next-line import/no-relative-packages
-        const sdk = await import('../../../__fixtures__/sdk/simple/src/index.js').then(r => r.default);
+        const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk
