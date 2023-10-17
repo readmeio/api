@@ -95,12 +95,6 @@ export default class TSGenerator extends CodeGenerator {
             ? `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
             : corePkg.version,
       },
-      'json-schema-to-ts': {
-        dependencyType: 'production',
-        reason: 'Required for TypeScript type handling.',
-        url: 'https://npm.im/json-schema-to-ts',
-        version: '^2.9.2',
-      },
       tsup: {
         dependencyType: 'development',
         reason: "Used for compiling your codegen'd SDK into code that can be used in JS environments.",
@@ -581,7 +575,7 @@ sdk.server('https://eu.api.example.com/v14');`),
     const sourceFile = sourceDirectory.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
-      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/lib' },
       { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
     ]);
 
