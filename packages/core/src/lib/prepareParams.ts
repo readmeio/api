@@ -9,7 +9,7 @@ import stream from 'node:stream';
 import caseless from 'caseless';
 import DatauriParser from 'datauri/parser.js';
 import datauri from 'datauri/sync.js';
-import getStream from 'get-stream';
+import { getStreamAsBuffer } from 'get-stream';
 import lodashMerge from 'lodash.merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
 
@@ -111,7 +111,7 @@ function processFile(
       });
     });
   } else if (file instanceof stream.Readable) {
-    return getStream.buffer(file).then(buffer => {
+    return getStreamAsBuffer(file).then(buffer => {
       const filePath = file.path as string;
       const parser = new DatauriParser();
       const base64 = parser.format(filePath, buffer).content;

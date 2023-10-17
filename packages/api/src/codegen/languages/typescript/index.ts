@@ -18,7 +18,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
-import execa from 'execa';
+import { execa } from 'execa';
 import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
@@ -92,7 +92,8 @@ export default class TSGenerator extends CodeGenerator {
           // (setting 'dev')" workspace error message because we're creating a funky circular
           // dependency.
           process.env.NODE_ENV === 'test'
-            ? `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
+            ? // eslint-disable-next-line unicorn/prefer-module
+              `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
             : corePkg.version,
       },
       tsup: {
