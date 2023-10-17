@@ -3,11 +3,9 @@
 packages/**/coverage/
 packages/**/dist/
 
-# api
-packages/api/test/__fixtures__/sdk/
-
 # httpsnippet-client-api
 packages/httpsnippet-client-api/test/__datasets__/**/output.js
 
 # test-utils
 packages/test-utils/fixtures/
+packages/test-utils/sdks
