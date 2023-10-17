@@ -418,6 +418,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       compilerOptions: {
         module: 'NodeNext',
         resolveJsonModule: true,
+        strict: true,
       },
       include: ['./src/**/*'],
     };
