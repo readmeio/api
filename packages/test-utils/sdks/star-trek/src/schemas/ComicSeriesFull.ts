@@ -1,5 +1,4 @@
 import ComicSeriesBase from './ComicSeriesBase';
-import ComicSeriesBase from './ComicSeriesBase';
 import ComicsBase from './ComicsBase';
 import CompanyBase from './CompanyBase';
 

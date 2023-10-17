@@ -1,5 +1,4 @@
 import CompanyBase from './CompanyBase';
-import CompanyBase from './CompanyBase';
 import EpisodeBase from './EpisodeBase';
 import SeasonBase from './SeasonBase';
 

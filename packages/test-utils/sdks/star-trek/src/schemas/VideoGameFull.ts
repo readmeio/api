@@ -1,5 +1,4 @@
 import CompanyBase from './CompanyBase';
-import CompanyBase from './CompanyBase';
 import ContentRating from './ContentRating';
 import Genre from './Genre';
 import Platform from './Platform';

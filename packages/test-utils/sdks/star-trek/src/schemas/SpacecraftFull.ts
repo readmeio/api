@@ -1,5 +1,4 @@
 import OrganizationBase from './OrganizationBase';
-import OrganizationBase from './OrganizationBase';
 import SpacecraftClassBase from './SpacecraftClassBase';
 import SpacecraftType from './SpacecraftType';
 

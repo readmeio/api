@@ -1,6 +1,4 @@
 import OrganizationBase from './OrganizationBase';
-import OrganizationBase from './OrganizationBase';
-import OrganizationBase from './OrganizationBase';
 import SpacecraftBase from './SpacecraftBase';
 import SpacecraftType from './SpacecraftType';
 import SpeciesHeader from './SpeciesHeader';

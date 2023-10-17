@@ -1,6 +1,4 @@
 import ContentLanguage from './ContentLanguage';
-import ContentLanguage from './ContentLanguage';
-import ContentLanguage from './ContentLanguage';
 import ContentRating from './ContentRating';
 import Reference from './Reference';
 import SeasonBase from './SeasonBase';
