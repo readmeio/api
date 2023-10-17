@@ -10,6 +10,6 @@ export default defineConfig((options: Options) => ({
   ...options,
   ...config,
 
-  entry: ['src/errors/fetchError.ts', 'src/index.ts'],
+  entry: ['src/errors/fetchError.ts', 'src/lib/index.ts', 'src/index.ts'],
   silent: !options.watch,
 }));

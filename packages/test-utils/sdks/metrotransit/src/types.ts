@@ -1,4 +1,4 @@
-import type { FromSchema } from 'json-schema-to-ts';
+import type { FromSchema } from '@readme/api-core/lib';
 import * as schemas from './schemas';
 
 export type Agency = FromSchema<typeof schemas.Agency>;
