@@ -10,8 +10,6 @@ import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
 import Storage from '../storage.js';
 
-import { confirmProposedIdentifier, promptForIdentifier } from './prompts/index.js';
-
 // @todo log logs to `.api/.logs` and have `.logs` ignored
 const cmd = new Command();
 cmd
@@ -75,18 +73,25 @@ cmd
       }
     } else if (Fetcher.isAPIRegistryUUID(uri)) {
       identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
-    } else if (oas.api?.info?.title) {
-      identifier = uslug(oas.api.info.title, { lower: true });
-
-      // let useInfoAsIdentifier;
-      const { value: confirmation } = await confirmProposedIdentifier(oas.api.info.title, identifier);
-      if (!confirmation) {
-        // If they don't like what we picked from the spec info doc then let's have them tell us
-        // what they want.
-        ({ value: identifier } = await promptForIdentifier(false));
-      }
     } else {
-      ({ value: identifier } = await promptForIdentifier());
+      ({ value: identifier } = await promptTerminal({
+        type: 'text',
+        name: 'value',
+        initial: oas.api?.info?.title ? uslug(oas.api.info.title, { lower: true }) : undefined,
+        message:
+          'What would you like to identify this API as? This will be how you use the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
+        validate: value => {
+          if (!value) {
+            return false;
+          }
+
+          try {
+            return Storage.isIdentifierValid(value, true);
+          } catch (err) {
+            return err.message;
+          }
+        },
+      }));
     }
 
     if (!identifier) {
