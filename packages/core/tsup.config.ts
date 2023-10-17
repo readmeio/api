@@ -1,6 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies, node/no-extraneous-import */
 import type { Options } from 'tsup';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'tsup';
 
 // eslint-disable-next-line import/no-relative-packages

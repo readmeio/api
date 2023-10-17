@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
-import execa from 'execa';
+import { execa } from 'execa';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
