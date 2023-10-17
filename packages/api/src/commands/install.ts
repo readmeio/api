@@ -2,12 +2,15 @@ import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
+import uslug from 'uslug';
 
 import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
 import Storage from '../storage.js';
+
+import { confirmProposedIdentifier, promptForIdentifier } from './prompts/index.js';
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
 const cmd = new Command();
@@ -43,44 +46,11 @@ cmd
       // logger(`It looks like you already have this API installed. Would you like to update it?`);
     }
 
-    let identifier;
-    if (options.identifier) {
-      // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
-      if (Storage.isIdentifierValid(options.identifier)) {
-        identifier = options.identifier;
-      }
-    } else if (Fetcher.isAPIRegistryUUID(uri)) {
-      identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
-    } else {
-      ({ value: identifier } = await promptTerminal({
-        type: 'text',
-        name: 'value',
-        message:
-          'What would you like to identify this API as? This will be how you import the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
-        validate: value => {
-          if (!value) {
-            return false;
-          }
-
-          try {
-            return Storage.isIdentifierValid(value, true);
-          } catch (err) {
-            return err.message;
-          }
-        },
-      }));
-    }
-
-    if (!identifier) {
-      logger('You must tell us what you would like to identify this API as in order to install it.', true);
-      process.exit(1);
-    }
-
     let spinner = ora('Fetching your API').start();
-    const storage = new Storage(uri, identifier);
+    const storage = new Storage(uri);
 
     const oas = await storage
-      .load()
+      .load(false)
       .then(res => {
         spinner.succeed(spinner.text);
         return res;
@@ -92,6 +62,38 @@ cmd
         logger(err.message, true);
         process.exit(1);
       });
+
+    let identifier;
+    if (options.identifier) {
+      // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
+      if (Storage.isIdentifierValid(options.identifier)) {
+        identifier = options.identifier;
+      }
+    } else if (Fetcher.isAPIRegistryUUID(uri)) {
+      identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
+    } else if (oas.api?.info?.title) {
+      identifier = uslug(oas.api.info.title, { lower: true });
+
+      // let useInfoAsIdentifier;
+      const { value: confirmation } = await confirmProposedIdentifier(oas.api.info.title, identifier);
+      if (!confirmation) {
+        // If they don't like what we picked from the spec info doc then let's have them tell us
+        // what they want.
+        ({ value: identifier } = await promptForIdentifier(false));
+      }
+    } else {
+      ({ value: identifier } = await promptForIdentifier());
+    }
+
+    if (!identifier) {
+      logger('You must tell us what you would like to identify this API as in order to install it.', true);
+      process.exit(1);
+    }
+
+    // Now that we've got an identifier we can save their spec and generate the directory structure
+    // for their SDK.
+    storage.setIdentifier(identifier);
+    await storage.save(oas.api);
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();

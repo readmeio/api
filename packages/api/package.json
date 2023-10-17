@@ -56,6 +56,7 @@
     "semver": "^7.3.8",
     "ssri": "^10.0.1",
     "ts-morph": "^20.0.0",
+    "uslug": "^1.0.4",
     "validate-npm-package-name": "^5.0.0"
   },
   "devDependencies": {
@@ -69,6 +70,7 @@
     "@types/prompts": "^2.4.4",
     "@types/semver": "^7.5.1",
     "@types/ssri": "^7.1.1",
+    "@types/uslug": "^1.0.2",
     "@types/validate-npm-package-name": "^4.0.0",
     "@vitest/coverage-v8": "^0.34.4",
     "fetch-mock": "^9.11.0",
