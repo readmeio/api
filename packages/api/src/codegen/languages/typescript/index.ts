@@ -525,9 +525,14 @@ sdk.server('https://eu.api.example.com/v14');`),
       });
 
       let str = JSON.stringify(schema);
-      const referencedSchemas = str.match(REF_PLACEHOLDER_REGEX)?.map(s => s.replace(REF_PLACEHOLDER_REGEX, '$1'));
+      let referencedSchemas = str.match(REF_PLACEHOLDER_REGEX)?.map(s => s.replace(REF_PLACEHOLDER_REGEX, '$1'));
       if (referencedSchemas) {
         referencedSchemas.sort();
+
+        // Remove any duplicates so we don't add the same import multiple times into this schema
+        // file.
+        referencedSchemas = Array.from(new Set(referencedSchemas));
+
         referencedSchemas.forEach(ref => {
           // Because this schema is referenced from another file we need to create an `import`
           // declaration for it.

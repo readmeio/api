@@ -56,6 +56,10 @@ cmd
         return res;
       })
       .then(Oas.init)
+      .then(async spec => {
+        await spec.dereference({ preserveRefAsJSONSchemaTitle: true });
+        return spec;
+      })
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
