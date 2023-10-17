@@ -13,6 +13,10 @@
       "require": "./dist/errors/fetchError.cjs",
       "import": "./dist/errors/fetchError.js"
     },
+    "./lib": {
+      "require": "./dist/lib/index.cjs",
+      "import": "./dist/lib/index.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "dist/index.cjs",
@@ -46,6 +50,7 @@
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
     "get-stream": "^8.0.1",
+    "json-schema-to-ts": "^2.9.2",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
     "oas": "^23.0.0",
