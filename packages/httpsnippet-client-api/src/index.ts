@@ -274,9 +274,14 @@ const client: Client<APIOptions> = {
         }
 
         // If we haven't used our header anywhere else, or we've deleted it from the payload
-        // because it'll be handled internally by `api` then we should add the lowercased version
-        // of our header into the generated code snippet.
-        requestHeaders[headerLower] = headers[header];
+        // because it'll be handled internally by `api` then we should add it into our code snippet.
+        if (['accept', 'content-type'].includes(headerLower)) {
+          requestHeaders[headerLower] = headers[header];
+        } else {
+          // Non-reserved headers retain their casing because we want to generate a snippet that
+          // matches the TS types that are created during codegeneration.
+          requestHeaders[header] = headers[header];
+        }
       });
 
       if (Object.keys(requestHeaders).length > 0) {

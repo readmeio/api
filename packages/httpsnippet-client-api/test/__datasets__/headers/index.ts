@@ -17,8 +17,12 @@ const mock: SnippetMock = {
         value: 'Bar',
       },
       {
-        name: 'X-Bar',
+        name: 'x-bar',
         value: 'foo',
+      },
+      {
+        name: 'reqKey',
+        value: 'baz',
       },
     ],
     headersSize: 0,
