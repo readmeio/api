@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/operationid-with-underscores.json');
+import sdk from '@api/operationid-with-underscores';
 
 sdk.anything_Operation()
   .then(({ data }) => console.log(data))

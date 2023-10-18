@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/jsonObj-null-value.json');
+import sdk from '@api/jsonObj-null-value';
 
 sdk.postAnything({foo: null})
   .then(({ data }) => console.log(data))

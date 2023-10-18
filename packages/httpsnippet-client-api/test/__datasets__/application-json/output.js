@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/application-json.json');
+import sdk from '@api/application-json';
 
 sdk.postAnything({
   number: 1,

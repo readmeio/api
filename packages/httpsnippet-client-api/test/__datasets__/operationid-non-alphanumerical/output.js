@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/operationid-non-alphanumerical.json');
+import sdk from '@api/operationid-non-alphanumerical';
 
 sdk.auth('123');
 sdk.findPetsByStatus({status: 'available'})

@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/multipart-form-data-no-params.json');
+import sdk from '@api/multipart-form-data-no-params';
 
 sdk.postAnything()
   .then(({ data }) => console.log(data))

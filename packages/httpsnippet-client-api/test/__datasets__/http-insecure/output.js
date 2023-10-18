@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/http-insecure.json');
+import sdk from '@api/http-insecure';
 
 sdk.getAnything()
   .then(({ data }) => console.log(data))

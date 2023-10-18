@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/headers.json');
+import sdk from '@api/headers';
 
 sdk.getAnything({'x-foo': 'Bar', 'x-bar': 'foo'})
   .then(({ data }) => console.log(data))

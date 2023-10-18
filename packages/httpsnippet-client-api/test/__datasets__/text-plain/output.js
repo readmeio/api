@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/text-plain.json');
+import sdk from '@api/text-plain';
 
 sdk.postAnything('Hello World')
   .then(({ data }) => console.log(data))

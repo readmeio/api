@@ -10,6 +10,8 @@ export default class Fetcher {
   uri: string | OASDocument;
 
   /**
+   * @note This regex also exists in `httpsnippet-client-api`.
+   *
    * @example @petstore/v1.0#n6kvf10vakpemvplx
    * @example @petstore#n6kvf10vakpemvplx
    */
@@ -45,6 +47,9 @@ export default class Fetcher {
     return /\/\/github.com\/[-_a-zA-Z0-9]+\/[-_a-zA-Z0-9]+\/blob\/(.*).(yaml|json|yml)/.test(uri);
   }
 
+  /**
+   * @note This function also exists in `httpsnippet-client-api`.
+   */
   static getProjectPrefixFromRegistryUUID(uri: string) {
     const matches = uri.match(Fetcher.registryUUIDRegex);
     if (!matches) {

@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/auth-basic-full.json');
+import sdk from '@api/auth-basic-full';
 
 sdk.auth('buster', 'pug');
 sdk.getAPISpecification({perPage: '10', page: '1'})

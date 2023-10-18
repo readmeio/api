@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/jsonObj-multiline.json');
+import sdk from '@api/jsonObj-multiline';
 
 sdk.postAnything({foo: 'bar'})
   .then(({ data }) => console.log(data))

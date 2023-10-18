@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/auth-apikey-header.json');
+import sdk from '@api/auth-apikey-header';
 
 sdk.auth('a5a220e');
 sdk.putAnythingApikey()

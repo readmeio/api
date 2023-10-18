@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/issue-128.json');
+import sdk from '@api/issue-128';
 
 sdk.auth('authKey\'With\'Apostrophes');
 sdk.getItem()
