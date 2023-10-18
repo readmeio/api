@@ -44,7 +44,7 @@ cmd
       // logger(`It looks like you already have this API installed. Would you like to update it?`);
     }
 
-    let spinner = ora('Fetching your API').start();
+    let spinner = ora('Fetching your API definition').start();
     const storage = new Storage(uri);
 
     const oas = await storage
