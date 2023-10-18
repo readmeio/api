@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/issue-78-operationid.json');
+import sdk from '@api/issue-78-operationid';
 
 sdk.getOrder({orderId: '1234'})
   .then(({ data }) => console.log(data))

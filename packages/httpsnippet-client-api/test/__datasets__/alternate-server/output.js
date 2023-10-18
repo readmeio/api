@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/alternate-server.json');
+import sdk from '@api/alternate-server';
 
 sdk.server('http://dev.local/v2');
 sdk.postGlobal()

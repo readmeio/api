@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/application-form-encoded.json');
+import sdk from '@api/application-form-encoded';
 
 sdk.postAnything({foo: 'bar', hello: 'world'})
   .then(({ data }) => console.log(data))

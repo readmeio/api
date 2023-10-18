@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/short.json');
+import sdk from '@api/short';
 
 sdk.getAnything()
   .then(({ data }) => console.log(data))
