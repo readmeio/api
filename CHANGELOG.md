@@ -1,3 +1,14 @@
+## 7.0.0-beta.0 (2023-10-18)
+
+* fix(cli): specs not being dereferenced when installed + fixture refactors (#762) ([9cdf6c5](https://github.com/readmeio/api/commit/9cdf6c5)), closes [#762](https://github.com/readmeio/api/issues/762)
+* fix(httpsnippet-client-api): retain casing for non-reserved headers (#768) ([c60c95f](https://github.com/readmeio/api/commit/c60c95f)), closes [#768](https://github.com/readmeio/api/issues/768)
+* feat(cli): prompting the user to use `info.title` for their installed SDK (#763) ([e93078e](https://github.com/readmeio/api/commit/e93078e)), closes [#763](https://github.com/readmeio/api/issues/763)
+* feat(core): moving `json-schema-to-ts` directly into the `core` package (#764) ([dcd5134](https://github.com/readmeio/api/commit/dcd5134)), closes [#764](https://github.com/readmeio/api/issues/764)
+* feat(snippet): updates for v7 compatibility + custom variable support (#767) ([a7daafc](https://github.com/readmeio/api/commit/a7daafc)), closes [#767](https://github.com/readmeio/api/issues/767)
+* chore(deps): bumping all out of date dependencies (#765) ([5aaa49a](https://github.com/readmeio/api/commit/5aaa49a)), closes [#765](https://github.com/readmeio/api/issues/765)
+
+
+
 ## 7.0.0-alpha.6 (2023-10-16)
 
 * feat: migrate `api` and `core` to ESM (#733) ([f65bc79](https://github.com/readmeio/api/commit/f65bc79)), closes [#733](https://github.com/readmeio/api/issues/733)
