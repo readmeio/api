@@ -410,7 +410,9 @@ sdk.server('https://eu.api.example.com/v14');`),
 
     const config: TsConfigJson = {
       compilerOptions: {
-        module: 'NodeNext',
+        esModuleInterop: true,
+        module: 'ESNext',
+        moduleResolution: 'Bundler',
         resolveJsonModule: true,
         strict: true,
       },
