@@ -81,7 +81,6 @@ class SDK {
   }
 }
 
-const createSDK = (() => { return new SDK(); })()
-;
+const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;
