@@ -34,7 +34,7 @@ cmd
       logger(`installer version: ${chalk.grey(api.installerVersion)}`);
       logger(`created at: ${chalk.grey(api.createdAt)}`);
       if (api.updatedAt) {
-        logger(`updated at: ${chalk.grey(api.createdAt)}`);
+        logger(`updated at: ${chalk.grey(api.updatedAt)}`);
       }
     });
   });
