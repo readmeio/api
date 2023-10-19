@@ -231,7 +231,7 @@ export default class TSGenerator extends CodeGenerator {
         filePath = filePath.substring(1);
 
         /**
-         * It's not Prettier-level of nice but  `ts-morph` offers a method of using the TS
+         * It's not Prettier-level of nice but `ts-morph` offers a method of using the TS
          * formatter for formatting code which we can use to make our generated SDK not look like
          * total garbage.
          *
