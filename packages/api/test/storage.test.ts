@@ -5,10 +5,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { loadSpec } from '@api/test-utils';
+import Ajv from 'ajv';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
+import lockfileSchema from '../schema.json' assert { type: 'json' };
 import { PACKAGE_VERSION } from '../src/packageInfo.js';
 import Storage from '../src/storage.js';
 
@@ -97,6 +99,28 @@ describe('storage', () => {
         // `true` here will try to check it as `@api/  buster`, `@api/.buster` is valid apparently!
         Storage.isIdentifierValid('  buster', true);
       }).toThrow('Identifier cannot be used for an NPM package: name can only contain URL-friendly characters');
+    });
+  });
+
+  describe('#getLockfile', () => {
+    it('should retrieve a lockfiles that match our schema', async () => {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+
+      // `ajv` has funky types in ESM environments. https://github.com/ajv-validator/ajv/issues/2047
+      // eslint-disable-next-line new-cap
+      const ajv = new Ajv.default();
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, 'petstore');
+
+      let valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(valid).toBe(true);
+
+      // After loading the petstore into storage the lockfile should have also been updated and
+      // still be valid.
+      await storage.load();
+
+      valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(valid).toBe(true);
     });
   });
 
