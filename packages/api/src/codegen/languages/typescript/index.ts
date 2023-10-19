@@ -230,20 +230,19 @@ export default class TSGenerator extends CodeGenerator {
         let filePath = sourceFile.getFilePath().toString();
         filePath = filePath.substring(1);
 
+        /**
+         * It's not Prettier-level of nice but  `ts-morph` offers a method of using the TS
+         * formatter for formatting code which we can use to make our generated SDK not look like
+         * total garbage.
+         *
+         * @see {@link https://ts-morph.com/manipulation/formatting}
+         */
+        sourceFile.formatText();
+
         return {
           [filePath]: sourceFile.getFullText(),
         };
       }),
-
-      // Because we're returning the raw source files for TS generation we also need to separately
-      // emit out our declaration files so we can put those into a separate file in the installed
-      // SDK directory.
-      ...this.project
-        .emitToMemory({ emitOnlyDtsFiles: true })
-        .getFiles()
-        .map(sourceFile => ({
-          [path.basename(sourceFile.filePath)]: sourceFile.text,
-        })),
     ].reduce((prev, next) => Object.assign(prev, next));
   }
 
@@ -383,7 +382,7 @@ sdk.server('https://eu.api.example.com/v14');`),
           name: 'createSDK',
           initializer: writer => {
             // `ts-morph` doesn't have any way to cleanly create an IIFE.
-            writer.writeLine('(() => { return new SDK(); })()');
+            writer.write('(() => { return new SDK(); })()');
             return writer;
           },
         },
@@ -519,7 +518,9 @@ sdk.server('https://eu.api.example.com/v14');`),
         moduleSpecifier: `./schemas/${schemaName}`,
       });
 
-      let str = JSON.stringify(schema);
+      // Though we aren't using Prettier to make these generated SDKs look amazing we should at
+      // least make the schema files we generate not look like completely unreadable garbage.
+      let str = JSON.stringify(schema, null, 2);
       let referencedSchemas = str.match(REF_PLACEHOLDER_REGEX)?.map(s => s.replace(REF_PLACEHOLDER_REGEX, '$1'));
       if (referencedSchemas) {
         referencedSchemas.sort();
@@ -549,7 +550,7 @@ sdk.server('https://eu.api.example.com/v14');`),
               // need to clean them up.
               str = str.replace(REF_PLACEHOLDER_REGEX, '$1');
 
-              writer.writeLine(`${str} as const`);
+              writer.write(`${str} as const`);
               return writer;
             },
           },

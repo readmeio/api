@@ -51,14 +51,22 @@ function assertSDKFixture(file: string, fixture: string) {
     await Promise.all(
       expectedFiles.map(filename => {
         const actual = actualFiles[filename];
+        const expectedFilePath = path.join(dir, filename);
 
         // We have to wrap in our current package version into the `<<useragent>>` placeholder so
         // we don't need to worry about committing package versions into source control or trying
         // to mock out our `packageInfo` library, potentially causing sideeffects in other tests.
         return fs
-          .readFile(path.join(dir, filename), 'utf8')
+          .readFile(expectedFilePath, 'utf8')
           .then(expected => expected.replace('<<package version>>', packageInfo.PACKAGE_VERSION))
-          .then(expected => {
+          .then(async expected => {
+            if (actual !== expected && process.env.UPDATE_FIXTURES) {
+              // eslint-disable-next-line no-console
+              console.info('[sdk fixture updated]', expectedFilePath);
+              await fs.writeFile(expectedFilePath, actual.replace(packageInfo.PACKAGE_VERSION, '<<package version>>'));
+              return;
+            }
+
             expect(actual).toBe(expected);
           });
       }),
