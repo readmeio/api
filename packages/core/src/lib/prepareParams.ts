@@ -9,6 +9,8 @@ import stream from 'node:stream';
 import caseless from 'caseless';
 import DatauriParser from 'datauri/parser.js';
 import datauri from 'datauri/sync.js';
+// `get-stream` is included in our bundle, see `tsup.config.ts`
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { getStreamAsBuffer } from 'get-stream';
 import lodashMerge from 'lodash.merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
