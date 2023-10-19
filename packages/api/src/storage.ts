@@ -3,6 +3,7 @@ import type { OASDocument } from 'oas/rmoas.types';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import semver from 'semver';
 import ssri from 'ssri';
 import validateNPMPackageName from 'validate-npm-package-name';
 
@@ -79,7 +80,10 @@ export default class Storage {
   }
 
   static getDefaultLockfile(): Lockfile {
+    const majorVersion = semver.parse(PACKAGE_VERSION)?.major || 'latest';
+
     return {
+      $schema: `https://unpkg.com/api@${majorVersion}/schema.json`,
       version: '1.0',
       apis: [],
     };
@@ -288,7 +292,15 @@ export default class Storage {
   }
 }
 
+/**
+ * @see schema.json
+ */
 interface Lockfile {
+  $schema: string;
+
+  /**
+   * The list of installed APIs.
+   */
   apis: LockfileAPI[];
 
   /**
@@ -298,9 +310,12 @@ interface Lockfile {
   version: '1.0';
 }
 
+/**
+ * @see schema.json
+ */
 interface LockfileAPI {
   /**
-   * A unique identifier of the API. This'll be used to do requires on `@api/<identifier>` and also
+   * A unique identifier of the API. This'll be used to do imports on `@api/<identifier>` and also
    * where the SDK code will be located in `.api/apis/<identifier>`.
    *
    * @example petstore
