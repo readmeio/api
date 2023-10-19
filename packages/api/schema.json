@@ -8,7 +8,6 @@
     "apis": {
       "type": "array",
       "description": "The list of installed APIs",
-      "minItems": 1,
       "items": {
         "$ref": "#/definitions/api"
       }
@@ -51,6 +50,5 @@
         }
       }
     }
-  },
-  "unevaluatedProperties": false
+  }
 }
