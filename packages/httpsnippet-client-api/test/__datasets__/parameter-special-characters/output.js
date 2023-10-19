@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/parameter-special-characters.json');
+import sdk from '@api/parameter-special-characters';
 
 sdk.getAppIdNumInstalls_reportV5({'app-id': '1234', num: '5678'})
   .then(({ data }) => console.log(data))

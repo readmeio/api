@@ -2,6 +2,7 @@ import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
+import uslug from 'uslug';
 
 import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
@@ -43,6 +44,27 @@ cmd
       // logger(`It looks like you already have this API installed. Would you like to update it?`);
     }
 
+    let spinner = ora('Fetching your API definition').start();
+    const storage = new Storage(uri);
+
+    const oas = await storage
+      .load(false)
+      .then(res => {
+        spinner.succeed(spinner.text);
+        return res;
+      })
+      .then(Oas.init)
+      .then(async spec => {
+        await spec.dereference({ preserveRefAsJSONSchemaTitle: true });
+        return spec;
+      })
+      .catch(err => {
+        // @todo cleanup installed files
+        spinner.fail(spinner.text);
+        logger(err.message, true);
+        process.exit(1);
+      });
+
     let identifier;
     if (options.identifier) {
       // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
@@ -55,8 +77,9 @@ cmd
       ({ value: identifier } = await promptTerminal({
         type: 'text',
         name: 'value',
+        initial: oas.api?.info?.title ? uslug(oas.api.info.title, { lower: true }) : undefined,
         message:
-          'What would you like to identify this API as? This will be how you import the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
+          'What would you like to identify this API as? This will be how you use the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
         validate: value => {
           if (!value) {
             return false;
@@ -76,22 +99,10 @@ cmd
       process.exit(1);
     }
 
-    let spinner = ora('Fetching your API').start();
-    const storage = new Storage(uri, identifier);
-
-    const oas = await storage
-      .load()
-      .then(res => {
-        spinner.succeed(spinner.text);
-        return res;
-      })
-      .then(Oas.init)
-      .catch(err => {
-        // @todo cleanup installed files
-        spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
-      });
+    // Now that we've got an identifier we can save their spec and generate the directory structure
+    // for their SDK.
+    storage.setIdentifier(identifier);
+    await storage.save(oas.api);
 
     // @todo look for a prettier config and if we find one ask them if we should use it
     spinner = ora('Generating your SDK').start();

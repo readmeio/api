@@ -26,6 +26,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "reqKey",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "default": "1"
+            }
           }
         ],
         "responses": {

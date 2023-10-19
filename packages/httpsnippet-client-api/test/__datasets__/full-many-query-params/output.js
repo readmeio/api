@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/full-many-query-params.json');
+import sdk from '@api/full-many-query-params';
 
 sdk.postAnything({
   foo: 'bar',

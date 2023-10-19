@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/full.json');
+import sdk from '@api/full';
 
 sdk.postAnything({foo: 'bar'}, {
   foo: ['bar', 'baz'],

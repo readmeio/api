@@ -212,8 +212,14 @@ export default class Storage {
     });
   }
 
-  async load() {
-    return this.fetcher.load().then(async spec => this.save(spec));
+  async load(shouldSave: boolean = true) {
+    return this.fetcher.load().then(async spec => {
+      if (shouldSave) {
+        return this.save(spec);
+      }
+
+      return spec;
+    });
   }
 
   /**

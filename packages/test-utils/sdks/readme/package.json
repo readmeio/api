@@ -1,0 +1,47 @@
+{
+  "name": "@api/readme",
+  "version": "4.355.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./types": {
+      "import": "./dist/types.d.mts",
+      "require": "./dist/types.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "tsup"
+  },
+  "dependencies": {
+    "@readme/api-core": "file:../../../../../core"
+  },
+  "devDependencies": {
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "tsup": {
+    "cjsInterop": true,
+    "clean": true,
+    "dts": true,
+    "entry": [
+      "./src/index.ts",
+      "./src/types.ts"
+    ],
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "minify": false,
+    "shims": true,
+    "sourcemap": true,
+    "splitting": true
+  }
+}

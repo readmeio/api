@@ -4,5 +4,6 @@
     "lib": ["DOM", "ES2023"],
     "noEmit": true
   },
-  "include": ["./**/*"]
+  "include": ["./**/*"],
+  "exclude": ["./sdks/**/*"]
 }

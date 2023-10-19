@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/petstore.json');
+import sdk from '@api/petstore';
 
 sdk.auth('123');
 sdk.findPetsByStatus({status: 'available', accept: 'application/xml'})

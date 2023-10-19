@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/auth-bearer.json');
+import sdk from '@api/auth-bearer';
 
 sdk.auth('myBearerToken');
 sdk.postAnythingBearer()

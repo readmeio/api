@@ -9,6 +9,26 @@ import Oas from 'oas';
 import { matchesMimeType } from 'oas/utils';
 import stringifyObject from 'stringify-object';
 
+/**
+ * @note This regex also exists in `api/fetcher`.
+ *
+ * @example @petstore/v1.0#n6kvf10vakpemvplx
+ * @example @petstore#n6kvf10vakpemvplx
+ */
+const registryUUIDRegex = /^@(?<project>[a-zA-Z0-9-_]+)(\/?(?<version>.+))?#(?<uuid>[a-z0-9]+)$/;
+
+/**
+ * @note This function also exists in `api/fetcher`.
+ */
+function getProjectPrefixFromRegistryUUID(uri: string) {
+  const matches = uri.match(registryUUIDRegex);
+  if (!matches) {
+    return undefined;
+  }
+
+  return matches.groups?.project;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
@@ -76,8 +96,20 @@ function getAuthSources(operation: Operation) {
 
 interface APIOptions {
   apiDefinition: OASDocument;
+  /**
+   * The URI that is used to download this API definition from `npx api install`.
+   *
+   * @example @developers/v2.0#17273l2glm9fq4l5
+   */
   apiDefinitionUri: string;
   escapeBrackets?: boolean;
+  /**
+   * The string to identify this SDK as. This is used in the `import sdk from '@api/<identifier>'`
+   * sample as well as the the variable name we attach the SDK to.
+   *
+   * @example developers
+   */
+  identifier?: string;
   indent?: string | false;
 }
 
@@ -110,6 +142,16 @@ const client: Client<APIOptions> = {
       );
     }
 
+    let sdkPackageName;
+    let sdkVariable;
+    if (opts.identifier) {
+      sdkPackageName = opts.identifier;
+      sdkVariable = opts.identifier;
+    } else {
+      sdkPackageName = getProjectPrefixFromRegistryUUID(opts.apiDefinitionUri);
+      sdkVariable = 'sdk';
+    }
+
     const operationSlugs = foundOperation.url.slugs;
     const operation = oas.operation(foundOperation.url.nonNormalizedPath, method);
     const operationPathParameters = operation.getParameters().filter(param => param.in === 'path');
@@ -119,7 +161,7 @@ const client: Client<APIOptions> = {
 
     const { blank, push, join } = new CodeBuilder({ indent: opts.indent || '  ' });
 
-    push(`const sdk = require('api')('${opts.apiDefinitionUri}');`);
+    push(`import ${sdkVariable} from '@api/${sdkPackageName}';`);
     blank();
 
     // If we have multiple servers configured and our source URL differs from the stock URL that we
@@ -232,9 +274,14 @@ const client: Client<APIOptions> = {
         }
 
         // If we haven't used our header anywhere else, or we've deleted it from the payload
-        // because it'll be handled internally by `api` then we should add the lowercased version
-        // of our header into the generated code snippet.
-        requestHeaders[headerLower] = headers[header];
+        // because it'll be handled internally by `api` then we should add it into our code snippet.
+        if (['accept', 'content-type'].includes(headerLower)) {
+          requestHeaders[headerLower] = headers[header];
+        } else {
+          // Non-reserved headers retain their casing because we want to generate a snippet that
+          // matches the TS types that are created during codegeneration.
+          requestHeaders[header] = headers[header];
+        }
       });
 
       if (Object.keys(requestHeaders).length > 0) {
@@ -306,7 +353,7 @@ const client: Client<APIOptions> = {
       push(configData.join('\n'));
     }
 
-    push(`sdk.${accessor}(${args.join(', ')})`);
+    push(`${sdkVariable}.${accessor}(${args.join(', ')})`);
     push('.then(({ data }) => console.log(data))', 1);
     push('.catch(err => console.error(err));', 1);
 

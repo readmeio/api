@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
-import execa from 'execa';
+import { execa } from 'execa';
 import fetchMock from 'fetch-mock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
@@ -21,7 +21,7 @@ function assertSDKFixture(file: string, fixture: string) {
     const actualFiles = await ts.generate();
 
     // Determine if the generated code matches what we've got in our fixture.
-    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '__fixtures__', 'sdk', fixture));
+    const dir = path.resolve(path.join(__dirname, '..', '..', '..', '..', '..', 'test-utils', 'sdks', fixture));
     const expectedFiles = await fs
       .readdir(dir, { recursive: true })
       .then(files => {
@@ -31,7 +31,9 @@ function assertSDKFixture(file: string, fixture: string) {
         // recursive lookup on that we also get `src/schemas/<schemaName>`. We only care about the
         // schema files themselves, not the general directory, so we need to exclude this from our
         // list of expected files.
-        return files.filter(f => !['src', 'src/schemas'].includes(f));
+        //
+        // And if there happens to be a `dist/` directory in the SDK directory we can ignore it too.
+        return files.filter(f => !['src', 'src/schemas'].includes(f) && !f.startsWith('dist'));
       })
       .catch(() => {
         /**
@@ -49,14 +51,22 @@ function assertSDKFixture(file: string, fixture: string) {
     await Promise.all(
       expectedFiles.map(filename => {
         const actual = actualFiles[filename];
+        const expectedFilePath = path.join(dir, filename);
 
         // We have to wrap in our current package version into the `<<useragent>>` placeholder so
         // we don't need to worry about committing package versions into source control or trying
         // to mock out our `packageInfo` library, potentially causing sideeffects in other tests.
         return fs
-          .readFile(path.join(dir, filename), 'utf8')
+          .readFile(expectedFilePath, 'utf8')
           .then(expected => expected.replace('<<package version>>', packageInfo.PACKAGE_VERSION))
-          .then(expected => {
+          .then(async expected => {
+            if (actual !== expected && process.env.UPDATE_FIXTURES) {
+              // eslint-disable-next-line no-console
+              console.info('[sdk fixture updated]', expectedFilePath);
+              await fs.writeFile(expectedFilePath, actual.replace(packageInfo.PACKAGE_VERSION, '<<package version>>'));
+              return;
+            }
+
             expect(actual).toBe(expected);
           });
       }),
@@ -123,6 +133,11 @@ describe('typescript', () => {
 
     it('should work against the petstore', assertSDKFixture('@readme/oas-examples/3.0/json/petstore.json', 'petstore'));
 
+    it(
+      'should work against metrotransit',
+      assertSDKFixture('@api/test-utils/definitions/metrotransit.json', 'metrotransit'),
+    );
+
     it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
 
     // This SDK only has an `index.ts` as it has no schemas.
@@ -136,7 +151,10 @@ describe('typescript', () => {
       assertSDKFixture('@api/test-utils/definitions/response-title-quirks.json', 'response-title-quirks'),
     );
 
-    it.todo('should handle a operations with a `default` response');
+    it(
+      'should work against a very large API definition that has `default` responses',
+      assertSDKFixture('@readme/oas-examples/3.0/json/star-trek.json', 'star-trek'),
+    );
 
     it(
       'should handle an api that has discriminators and no operation ids',
@@ -150,7 +168,7 @@ describe('typescript', () => {
 
       it('should be able to make an API request', async () => {
         // eslint-disable-next-line import/no-relative-packages
-        const sdk = await import('../../../__fixtures__/sdk/simple/src/index.js').then(r => r.default);
+        const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
 
         // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
@@ -164,7 +182,7 @@ describe('typescript', () => {
 
       it('should be able to make an API request with an `accept` header`', async () => {
         // eslint-disable-next-line import/no-relative-packages
-        const sdk = await import('../../../__fixtures__/sdk/simple/src/index.js').then(r => r.default);
+        const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
 
         await sdk

@@ -4,6 +4,5 @@
     "noImplicitAny": false,
     "resolveJsonModule": true
   },
-  "include": ["../src/**/*", "*.ts", "**/*"],
-  "exclude": ["__fixtures__/sdk/"]
+  "include": ["../src/**/*", "*.ts", "**/*"]
 }

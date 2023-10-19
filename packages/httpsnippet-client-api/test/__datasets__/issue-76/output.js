@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/issue-76.json');
+import sdk from '@api/issue-76';
 
 sdk.auth('a5a220e');
 sdk.getPetFindbystatus({status: 'available'})

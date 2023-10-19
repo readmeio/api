@@ -1,4 +1,4 @@
-const sdk = require('api')('https://api.example.com/auth-apikey-cookie.json');
+import sdk from '@api/auth-apikey-cookie';
 
 sdk.auth('buster');
 sdk.postAnythingApikey()

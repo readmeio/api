@@ -1,0 +1,23 @@
+import type { FromSchema } from '@readme/api-core/lib';
+import * as schemas from './schemas';
+
+export type Agency = FromSchema<typeof schemas.Agency>;
+export type AlertMessage = FromSchema<typeof schemas.AlertMessage>;
+export type Departure = FromSchema<typeof schemas.Departure>;
+export type Direction = FromSchema<typeof schemas.Direction>;
+export type GetNextripAgenciesResponse200 = FromSchema<typeof schemas.GetNextripAgencies.response['200']>;
+export type GetNextripDirectionsRouteIdMetadataParam = FromSchema<typeof schemas.GetNextripDirectionsRouteId.metadata>;
+export type GetNextripDirectionsRouteIdResponse200 = FromSchema<typeof schemas.GetNextripDirectionsRouteId.response['200']>;
+export type GetNextripRouteIdDirectionIdPlaceCodeMetadataParam = FromSchema<typeof schemas.GetNextripRouteIdDirectionIdPlaceCode.metadata>;
+export type GetNextripRoutesResponse200 = FromSchema<typeof schemas.GetNextripRoutes.response['200']>;
+export type GetNextripStopIdMetadataParam = FromSchema<typeof schemas.GetNextripStopId.metadata>;
+export type GetNextripStopsRouteIdDirectionIdMetadataParam = FromSchema<typeof schemas.GetNextripStopsRouteIdDirectionId.metadata>;
+export type GetNextripStopsRouteIdDirectionIdResponse200 = FromSchema<typeof schemas.GetNextripStopsRouteIdDirectionId.response['200']>;
+export type GetNextripVehiclesRouteIdMetadataParam = FromSchema<typeof schemas.GetNextripVehiclesRouteId.metadata>;
+export type GetNextripVehiclesRouteIdResponse200 = FromSchema<typeof schemas.GetNextripVehiclesRouteId.response['200']>;
+export type NexTripResult = FromSchema<typeof schemas.NexTripResult>;
+export type Place = FromSchema<typeof schemas.Place>;
+export type ProblemDetails = FromSchema<typeof schemas.ProblemDetails>;
+export type Route = FromSchema<typeof schemas.Route>;
+export type Stop = FromSchema<typeof schemas.Stop>;
+export type Vehicle = FromSchema<typeof schemas.Vehicle>;
