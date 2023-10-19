@@ -3,18 +3,18 @@
   "title": "api storage lockfile",
   "description": "See https://api.readme.dev/docs",
   "type": "object",
-  "required": ["apis", "version"],
+  "required": ["apis"],
+  "additionalProperties": false,
   "properties": {
+    "$schema": {
+      "type": "string"
+    },
     "apis": {
       "type": "array",
       "description": "The list of installed APIs",
       "items": {
         "$ref": "#/definitions/api"
       }
-    },
-    "version": {
-      "type": "string",
-      "description": "The current `api.json` schema version."
     }
   },
   "definitions": {

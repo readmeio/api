@@ -18,26 +18,41 @@ import Storage from '../src/storage.js';
 let petstoreSimple;
 
 describe('storage', () => {
+  let resetStorage;
+
   beforeAll(async () => {
     petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
   });
 
   beforeEach(() => {
+    resetStorage = true;
     Storage.setStorageDir(uniqueTempDir());
   });
 
   afterEach(async () => {
-    await Storage.reset().catch(() => {
-      // We can do our best to try to clean up after ourselves here but if removing any of the
-      // storage directories fails it's likely because the OS already cleaned them up, in which
-      // case we shouldn't fail these tests.
-    });
+    if (resetStorage) {
+      await Storage.reset().catch(() => {
+        // We can do our best to try to clean up after ourselves here but if removing any of the
+        // storage directories fails it's likely because the OS already cleaned them up, in which
+        // case we shouldn't fail these tests.
+      });
+    }
 
     fetchMock.restore();
   });
 
   describe('#setStorageDir', () => {
+    /**
+     * Because we're testing the case where we want to set a storage directory if we don't have
+     * one this test has an annoying quirk where if there exists an `.api/` directory in
+     * `packages/api` the `Storage.reset()` call after this test finishes will blow it away and
+     * delete any generated SDK that was in there. Because the `fs.mkdirSync` calls that
+     * `setStorageDir()` invoke don't throw errors if that directory already exists we can safely
+     * just ignore those calls.
+     */
     it('should create and set a storage dir if one is neither supplied or already exists', async () => {
+      resetStorage = false;
+
       Storage.dir = '';
 
       Storage.setStorageDir();
@@ -116,6 +131,7 @@ describe('storage', () => {
       const storage = new Storage(source, 'petstore');
 
       let valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(ajv.errors).toBeNull();
       expect(valid).toBe(true);
 
       // After loading the petstore into storage the lockfile should have also been updated and

@@ -84,7 +84,6 @@ export default class Storage {
 
     return {
       $schema: `https://unpkg.com/api@${majorVersion}/schema.json`,
-      version: '1.0',
       apis: [],
     };
   }
@@ -298,18 +297,15 @@ export default class Storage {
  * @see schema.json
  */
 interface Lockfile {
+  /**
+   * @since `Lockfile.version: 2.0`
+   */
   $schema: string;
 
   /**
    * The list of installed APIs.
    */
   apis: LockfileAPI[];
-
-  /**
-   * The `api.json` schema version. This will only ever change if we introduce breaking changes to
-   * this store.
-   */
-  version: '1.0';
 }
 
 /**
@@ -319,6 +315,7 @@ interface LockfileAPI {
   /**
    * The date that this SDK was installed.
    *
+   * @since 7.0
    * @example 2023-10-19T20:35:39.268Z
    */
   createdAt: string;
@@ -349,6 +346,7 @@ interface LockfileAPI {
   /**
    * Was this SDK installed as a private, unpublished, package to the filesystem?
    *
+   * @since 7.0
    */
   private?: boolean;
 
@@ -364,6 +362,7 @@ interface LockfileAPI {
   /**
    * The date that this SDK was last rebuilt or updated.
    *
+   * @since 7.0
    * @example 2023-10-19T20:35:39.268Z
    */
   updatedAt?: string;
