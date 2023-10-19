@@ -41,8 +41,8 @@
     "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.51.0",
     "husky": "^8.0.3",
-    "knip": "^2.34.0",
-    "lerna": "^7.4.0",
+    "knip": "^2.35.0",
+    "lerna": "^7.4.1",
     "prettier": "^3.0.3",
     "tsup": "^7.2.0"
   },
