@@ -32,7 +32,7 @@ cmd
 
       logger(`source: ${chalk.grey(api.source)}`);
       logger(`installer version: ${chalk.grey(api.installerVersion)}`);
-      logger(`created at: ${chalk.grey(api.createdAt)}`);
+      logger(`created at: ${chalk.grey(api.createdAt || 'n/a')}`);
       if (api.updatedAt) {
         logger(`updated at: ${chalk.grey(api.updatedAt)}`);
       }
