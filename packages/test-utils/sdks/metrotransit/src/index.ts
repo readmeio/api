@@ -7,7 +7,7 @@ class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'metrotransit/2 (api/7.0.0-alpha.6)');
+    this.core = new APICore(definition, 'metrotransit/2 (api/<<package version>>)');
   }
 
   /**
