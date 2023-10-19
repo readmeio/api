@@ -124,6 +124,14 @@ describe('typescript', () => {
   });
 
   describe('#compile', () => {
+    beforeEach(() => {
+      vi.setSystemTime(new Date('2023'));
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('should generate an sdk', assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple'));
 
     it(
