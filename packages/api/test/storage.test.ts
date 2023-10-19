@@ -6,6 +6,7 @@ import path from 'node:path';
 
 import { loadSpec } from '@api/test-utils';
 import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
@@ -109,6 +110,8 @@ describe('storage', () => {
       // `ajv` has funky types in ESM environments. https://github.com/ajv-validator/ajv/issues/2047
       // eslint-disable-next-line new-cap
       const ajv = new Ajv.default();
+      addFormats.default(ajv);
+
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, 'petstore');
 
@@ -120,6 +123,7 @@ describe('storage', () => {
       await storage.load();
 
       valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(ajv.errors).toBeNull();
       expect(valid).toBe(true);
     });
   });
@@ -136,10 +140,12 @@ describe('storage', () => {
       await storage.load();
 
       expect(Storage.isInLockFile({ source })).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        createdAt: expect.any(String),
       });
     });
 
@@ -154,10 +160,12 @@ describe('storage', () => {
       await storage.load();
 
       expect(Storage.isInLockFile({ identifier: 'petstore' })).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        createdAt: expect.any(String),
       });
     });
   });
@@ -195,10 +203,12 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: '@petstore/v1.0#n6kvf10vakpemvplx',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
 
@@ -229,10 +239,12 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: '@petstore#n6kvf10vakpemvplx',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
 
@@ -269,10 +281,12 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: 'http://example.com/readme.json',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
 
@@ -297,10 +311,12 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme-yaml',
           source: 'http://example.com/readme.yaml',
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
     });
@@ -317,10 +333,12 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme',
           source: file,
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
 
@@ -339,10 +357,12 @@ describe('storage', () => {
         });
 
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'relative-path',
           source: file,
           integrity: 'sha512-Ey83iRY4tY7JCCUI03eqfNb8YsxKlBdLILXcLDBbxZ1a2X/YfTspCTA8mLp6aaG9gRSyNMhI1hmtSlduWZw8RA==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
 
@@ -357,10 +377,12 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme-yaml',
           source: file,
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          createdAt: expect.any(String),
         });
       });
     });
@@ -389,10 +411,12 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'petstore-simple',
         source: file,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        createdAt: expect.any(String),
       });
     });
 
@@ -406,10 +430,12 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'circular',
         source: file,
         integrity: 'sha512-bxLv3OTzVucsauZih1VCprHQ7/e0iB/yzeuWdp1E1iq8o3MOYFAig+aMUkTqD71BNf/1/6B7NTkyjJXfrXgumA==',
         installerVersion: PACKAGE_VERSION,
+        createdAt: expect.any(String),
       });
     });
 
@@ -423,10 +449,12 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source: file,
         integrity: 'sha512-P1xkfSiktRFJUZdN90JslLk8FOecNZFypZOnDqh/Xcgw69iiO17dHXwaV6ENqnYGwxd1t4hwXpaXq/4V5AY3NQ==',
         installerVersion: PACKAGE_VERSION,
+        createdAt: expect.any(String),
       });
     });
   });

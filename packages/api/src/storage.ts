@@ -276,10 +276,12 @@ export default class Storage {
       }
 
       (Storage.lockfile as Lockfile).apis.push({
+        private: true,
         identifier: this.identifier,
         source: this.source,
         integrity: Storage.generateIntegrityHash(spec),
         installerVersion: PACKAGE_VERSION,
+        createdAt: new Date().toISOString(),
       } as LockfileAPI);
 
       fs.writeFileSync(path.join(identifierStorageDir, 'openapi.json'), saved);
@@ -315,6 +317,13 @@ interface Lockfile {
  */
 interface LockfileAPI {
   /**
+   * The date that this SDK was installed.
+   *
+   * @example 2023-10-19T20:35:39.268Z
+   */
+  createdAt: string;
+
+  /**
    * A unique identifier of the API. This'll be used to do imports on `@api/<identifier>` and also
    * where the SDK code will be located in `.api/apis/<identifier>`.
    *
@@ -338,6 +347,12 @@ interface LockfileAPI {
   integrity: string;
 
   /**
+   * Was this SDK installed as a private, unpublished, package to the filesystem?
+   *
+   */
+  private?: boolean;
+
+  /**
    * The original source that was used to generate the SDK with.
    *
    * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
@@ -345,4 +360,11 @@ interface LockfileAPI {
    * @example @developers/v2.0#nysezql0wwo236
    */
   source: string;
+
+  /**
+   * The date that this SDK was last rebuilt or updated.
+   *
+   * @example 2023-10-19T20:35:39.268Z
+   */
+  updatedAt?: string;
 }
