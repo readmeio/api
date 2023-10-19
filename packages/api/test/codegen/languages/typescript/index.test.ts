@@ -45,7 +45,23 @@ function assertSDKFixture(file: string, fixture: string) {
     // Assert that the files we're generating are what we're expecting in the fixture directory.
     const sortedActualFiles = Object.keys(actualFiles);
     sortedActualFiles.sort();
-    expect(sortedActualFiles).toStrictEqual(expectedFiles);
+
+    // creates new files if they don't exist
+    if (sortedActualFiles.length > expectedFiles.length && process.env.UPDATE_FIXTURES) {
+      await Promise.all(
+        sortedActualFiles.map(actualFileName => {
+          if (!expectedFiles.includes(actualFileName)) {
+            const actualFilePath = path.join(dir, actualFileName);
+            // eslint-disable-next-line no-console
+            console.info('[creating sdk fixture]', actualFilePath);
+            return fs.writeFile(actualFilePath, actualFiles[actualFileName]);
+          }
+          return true;
+        }),
+      );
+    } else {
+      expect(sortedActualFiles).toStrictEqual(expectedFiles);
+    }
 
     // Assert that each generated file is the same as in the fixture.
     await Promise.all(
