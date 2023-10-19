@@ -16,7 +16,7 @@ cmd
     const lockfile = Storage.getLockfile();
 
     if (!lockfile.apis.length) {
-      logger('😔 You do not have any API SDKs installed.');
+      logger('😔 You do not have any SDKs installed.');
       return;
     }
 
