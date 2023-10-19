@@ -31,6 +31,10 @@
   "engines": {
     "node": ">=18"
   },
+  "files": [
+    "dist",
+    "schema.json"
+  ],
   "keywords": [
     "api",
     "openapi",
