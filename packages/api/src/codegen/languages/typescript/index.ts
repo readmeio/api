@@ -483,7 +483,7 @@ sdk.server('https://eu.api.example.com/v14');`),
             }
           : {}),
       },
-      files: ['dist'],
+      files: ['dist', 'openapi.json'],
       scripts: {
         prepare: 'tsup',
       },
