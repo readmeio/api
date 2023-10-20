@@ -4,11 +4,17 @@
  */
 import fs from 'node:fs';
 
+// eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-import
+import prettier from 'prettier';
+
 import pkg from '../package.json' assert { type: 'json' };
 import { lockfileSchema } from '../src/lockfileSchema.js';
 
-function run() {
-  fs.writeFileSync('./schema.json', JSON.stringify(lockfileSchema, null, 2));
+async function run() {
+  // use prettier to format schema file
+  const prettierConfig = await prettier.resolveConfig(process.cwd());
+  const formattedSchema = await prettier.format(JSON.stringify(lockfileSchema), { parser: 'json', ...prettierConfig });
+  fs.writeFileSync('./schema.json', formattedSchema);
 
   const packageInfo = `
 // This file is automatically updated by the build script.
