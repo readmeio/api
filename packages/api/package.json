@@ -9,13 +9,14 @@
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
+    "build:versionedfiles": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm bin/buildVersionedFiles.ts",
     "debug:bin": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm src/bin.ts",
     "lint:types": "tsc --noEmit",
-    "prebuild": "rm -rf dist/ && npm run version",
+    "prebuild": "rm -rf dist/ && npm run build:versionedfiles",
     "prepack": "npm run build",
     "test": "vitest run --coverage",
     "test:smoke": "vitest --config=vitest-smoketest.config.ts",
-    "version": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts"
+    "version": "npm run build:versionedfiles && git add schema.json src/packageInfo.ts"
   },
   "repository": {
     "type": "git",

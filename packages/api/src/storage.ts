@@ -1,3 +1,5 @@
+import type { SupportedLanguage } from './codegen/factory.js';
+import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
 import type { OASDocument } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
@@ -31,7 +33,7 @@ export default class Storage {
   /**
    * The language that this SDK was generated for.
    */
-  private language!: SupportedLanguages;
+  private language!: SupportedLanguage;
 
   /**
    * The identifier that this was installed as.
@@ -40,7 +42,7 @@ export default class Storage {
    */
   identifier!: string;
 
-  constructor(source: string, language?: SupportedLanguages, identifier?: string) {
+  constructor(source: string, language?: SupportedLanguage, identifier?: string) {
     Storage.setStorageDir();
 
     this.fetcher = new Fetcher(source);
@@ -168,7 +170,7 @@ export default class Storage {
     return res === undefined ? false : res;
   }
 
-  setLanguage(language?: SupportedLanguages) {
+  setLanguage(language?: SupportedLanguage) {
     // `language` wasn't always present in the lockfile so if we don't have one we should default
     // to JS.
     if (!language) {
@@ -358,84 +360,4 @@ export default class Storage {
 
     fs.writeFileSync(Storage.getLockfilePath(), JSON.stringify(Storage.lockfile, null, 2));
   }
-}
-
-/**
- * @see schema.json
- */
-export interface Lockfile {
-  /** @since 7.0.0 */
-  $schema: string;
-
-  /**
-   * The list of installed APIs.
-   */
-  apis: LockfileAPI[];
-}
-
-/**
- * @see schema.json
- */
-export interface LockfileAPI {
-  /**
-   * The date that this SDK was installed.
-   *
-   * @since 7.0.0
-   * @example 2023-10-19T20:35:39.268Z
-   */
-  createdAt: string;
-
-  /**
-   * A unique identifier of the API. This'll be used to do imports on `@api/<identifier>` and also
-   * where the SDK code will be located in `.api/apis/<identifier>`.
-   *
-   * @example petstore
-   */
-  identifier: string;
-
-  /**
-   * The version of `api` that was used to install this SDK.
-   *
-   * @example 5.0.0
-   */
-  installerVersion: string;
-
-  /**
-   * An integrity hash that will be used to determine on `npx api update` calls if the API has
-   * changed since the SDK was last generated.
-   *
-   * @example sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==
-   */
-  integrity: string;
-
-  /**
-   * The language that this SDK was generated for.
-   *
-   * @since 7.0.0
-   */
-  language: SupportedLanguages;
-
-  /**
-   * Was this SDK installed as a private, unpublished, package to the filesystem?
-   *
-   * @since 7.0.0
-   */
-  private?: boolean;
-
-  /**
-   * The original source that was used to generate the SDK with.
-   *
-   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-   * @example ./petstore.json
-   * @example @developers/v2.0#nysezql0wwo236
-   */
-  source: string;
-
-  /**
-   * The date that this SDK was last rebuilt or updated.
-   *
-   * @since 7.0.0
-   * @example 2023-10-19T20:35:39.268Z
-   */
-  updatedAt?: string;
 }

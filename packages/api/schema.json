@@ -6,16 +6,8 @@
   "required": ["apis"],
   "additionalProperties": false,
   "properties": {
-    "$schema": {
-      "type": "string"
-    },
-    "apis": {
-      "type": "array",
-      "description": "The list of installed APIs",
-      "items": {
-        "$ref": "#/definitions/api"
-      }
-    }
+    "$schema": { "type": "string" },
+    "apis": { "type": "array", "description": "The list of installed APIs", "items": { "$ref": "#/definitions/api" } }
   },
   "definitions": {
     "api": {
@@ -70,7 +62,8 @@
           "description": "The date that this SDK was last rebuilt or updated.",
           "examples": ["2023-10-19T20:35:39.268Z"]
         }
-      }
+      },
+      "additionalProperties": false
     }
   }
 }
