@@ -22,17 +22,16 @@ The `.api/` directory is where the CLI installation process stores all of its in
 
 ```
 .api/
-├── api.json               // The `package-lock.json` equivalent that records
-|                          // metadata about the installed SDKs.
+├── api.json               // The `package-lock.json` equivalent that records metadata about the
+|                          // installed SDKs.
 └── apis/
     ├── hoot/
     ├── readme/
-    │   ├── dist/          // The compiled source for your SDK. For JS,
-    |   |                  // we offer a single SDK that's compatible with both ESM and CJS.
+    │   ├── dist/          // The compiled source for your SDK. For JS, we offer a single SDK that's
+    |   |                  // compatible with both ESM and CJS.
     │   ├── src/           // The raw source for your SDK.
-    │   |   |── schemas/   // If your SDK has documented parameters or responses
-    |   |   |              // this is a directory containing those as
-    |   |   |              // represented in JSON Schema. These schemas power
+    │   |   |── schemas/   // If your SDK has documented parameters or responses this is a directory
+    |   |   |              // containing those as represented in JSON Schema. These schemas power
     |   |   |              // your SDK and the `types.ts` file.
     │   |   |── index.ts
     │   |   |── schemas.ts
