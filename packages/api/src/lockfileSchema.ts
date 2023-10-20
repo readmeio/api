@@ -1,5 +1,7 @@
 import type { FromSchema } from '@readme/api-core/lib';
 
+import { SupportedLanguages } from './codegen/factory.js';
+
 const lockfileApiSchema = {
   type: 'object',
   required: ['createdAt', 'identifier', 'installerVersion', 'integrity'],
@@ -30,8 +32,8 @@ const lockfileApiSchema = {
     language: {
       type: 'string',
       description: 'The language that this SDK was generated for.',
-      default: 'js',
-      enum: ['js'],
+      default: SupportedLanguages.JS,
+      enum: Object.values(SupportedLanguages),
     },
     private: {
       type: 'boolean',
