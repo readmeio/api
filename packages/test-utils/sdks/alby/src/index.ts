@@ -1,5 +1,5 @@
 import type * as types from './types';
-import type { ConfigOptions, FetchResponse } from '@readme/api-core';
+import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/alby.json';
 

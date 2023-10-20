@@ -236,7 +236,7 @@ export default class TSGenerator extends CodeGenerator {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
-        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core';");
+        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';");
     }
 
     return [
