@@ -10,7 +10,7 @@ export const SupportedLanguages = {
 
 type ObjectValues<T> = T[keyof T];
 
-export type SupportedLanguageType = ObjectValues<typeof SupportedLanguages>;
+export type SupportedLanguage = ObjectValues<typeof SupportedLanguages>;
 
 export interface InstallerOptions {
   /**
@@ -26,7 +26,7 @@ export interface InstallerOptions {
 }
 
 export function codegenFactory(
-  language: SupportedLanguageType,
+  language: SupportedLanguage,
   spec: Oas,
   specPath: string,
   identifier: string,
@@ -41,7 +41,7 @@ export function codegenFactory(
 }
 
 export function uninstallerFactory(
-  language: SupportedLanguageType,
+  language: SupportedLanguage,
   storage: Storage,
   opts: InstallerOptions = {},
 ): Promise<void> {

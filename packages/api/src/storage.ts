@@ -1,4 +1,4 @@
-import type { SupportedLanguageType } from './codegen/factory.js';
+import type { SupportedLanguage } from './codegen/factory.js';
 import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
 import type { OASDocument } from 'oas/rmoas.types';
 
@@ -33,7 +33,7 @@ export default class Storage {
   /**
    * The language that this SDK was generated for.
    */
-  private language!: SupportedLanguageType;
+  private language!: SupportedLanguage;
 
   /**
    * The identifier that this was installed as.
@@ -42,7 +42,7 @@ export default class Storage {
    */
   identifier!: string;
 
-  constructor(source: string, language?: SupportedLanguageType, identifier?: string) {
+  constructor(source: string, language?: SupportedLanguage, identifier?: string) {
     Storage.setStorageDir();
 
     this.fetcher = new Fetcher(source);
@@ -170,7 +170,7 @@ export default class Storage {
     return res === undefined ? false : res;
   }
 
-  setLanguage(language?: SupportedLanguageType) {
+  setLanguage(language?: SupportedLanguage) {
     // `language` wasn't always present in the lockfile so if we don't have one we should default
     // to JS.
     if (!language) {

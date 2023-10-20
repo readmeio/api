@@ -1,4 +1,4 @@
-import type { SupportedLanguageType } from '../codegen/factory.js';
+import type { SupportedLanguage } from '../codegen/factory.js';
 
 import { Command, Option } from 'commander';
 import figures from 'figures';
@@ -24,9 +24,9 @@ cmd
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
   .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
-    let language: SupportedLanguageType;
+    let language: SupportedLanguage;
     if (options.lang) {
-      language = options.lang as SupportedLanguageType;
+      language = options.lang as SupportedLanguage;
     } else {
       ({ value: language } = await promptTerminal({
         type: 'select',
