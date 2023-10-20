@@ -56,7 +56,7 @@ export default abstract class CodeGenerator {
   abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
 
   /**
-   * It would be better if this were an abstract fnction but TS/JS doesn't have support for that so
+   * It would be better if this were an abstract function but TS/JS doesn't have support for that so
    * we instead have to rely on throwing a `TypeError` if it's not been implemented instead of a
    * build-time error.
    *

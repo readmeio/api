@@ -24,6 +24,18 @@ export interface InstallerOptions {
    */
   logger?: (msg: string) => void;
 }
+export interface InstallerOptions {
+  /**
+   * Will initiate a dry run install process. Used for simulating installations within a unit test.
+   */
+  dryRun?: boolean;
+
+  /**
+   * Used for stubbing out the logger that we use within the installation process so it can be
+   * easily introspected without having to mock out `console.*`.
+   */
+  logger?: (msg: string) => void;
+}
 
 export function codegenFactory(
   language: SupportedLanguageType,
