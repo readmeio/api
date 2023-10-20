@@ -27,8 +27,8 @@ The `.api/` directory is where the CLI installation process stores all of its in
 └── apis/
     ├── hoot/
     ├── readme/
-    │   ├── dist/          // The compiled source for your SDK. For JS languages
-    |   |                  // we offer CJS and ESM compatible builds.
+    │   ├── dist/          // The compiled source for your SDK. For JS,
+    |   |                  // we offer a single SDK that's compatible with both ESM and CJS.
     │   ├── src/           // The raw source for your SDK.
     │   |   |── schemas/   // If your SDK has documented parameters or responses
     |   |   |              // this is a directory containing those as
