@@ -15,7 +15,7 @@
     "prepack": "npm run build",
     "test": "vitest run --coverage",
     "test:smoke": "vitest --config=vitest-smoketest.config.ts ",
-    "version": "node -p \"'// This file is automatically updated by the build script.\\nexport const PACKAGE_NAME = \\'' + require('./package.json').name + '\\';\\nexport const PACKAGE_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/packageInfo.ts; git add src/packageInfo.ts"
+    "version": "npx ts-node --esm bin/version.ts && git add schema.json src/packageInfo.ts"
   },
   "repository": {
     "type": "git",
