@@ -11,31 +11,6 @@ import { SupportedLanguages } from './codegen/factory.js';
 import Fetcher from './fetcher.js';
 import { PACKAGE_VERSION } from './packageInfo.js';
 
-/**
- * @example <caption>Storage directory structure</caption>
- * .api/
- * ├── api.json               // The `package-lock.json` equivalent that records everything that's
- * |                          // installed, when it was installed, what language was generated,
- * |                          // what the original source was, and what version of `api` was used.
- * └── apis/
- *     ├── hoot/
- *     ├── readme/
- *     │   ├── dist/          // The compiled source for your SDK. For JS languages we offer CJS
- *     |   |                  // and ESM compatible builds.
- *     │   ├── src/           // The raw source for your SDK.
- *     │   |   |── schemas/   // If your SDK has documented parameters or responses this is a
- *     |   |   |              // directory containing those as represented in JSON Schema. These
- *     |   |   |              // schemas power your SDK and the `types.ts` file.
- *     │   |   |── index.ts
- *     │   |   |── schemas.ts
- *     │   |   └── types.ts
- *     │   |── openapi.json
- *     │   |── package.json
- *     │   |── README.md
- *     │   └── tsconfig.json
- *     └── petstore/
- *
- */
 export default class Storage {
   static dir: string;
 
@@ -311,6 +286,7 @@ export default class Storage {
    * This does not create or save the source code for this SDK, that work happens within the
    * code generation system.
    *
+   * @see {@link https://api.readme.dev/docs/how-it-works#api-directory}
    */
   save(spec: OASDocument) {
     if (!this.identifier) {
