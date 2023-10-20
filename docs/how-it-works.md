@@ -54,8 +54,8 @@ The `api.json` file within `.api/` is where the CLI keeps track of everything th
   "apis": [
     {
       "private": true,
-      "identifier": "developers",
-      "source": "@developers/v2.0#nysezql0wwo236",
+      "identifier": "petstore",
+      "source": "@petstore/v1.0#tl1e4kl1cl8eg8",
       "integrity": "sha512-lQeYVerukls0IYy3Ys9J6Hri9nucH2zBZk6ehO1EI9a/0K3p/egoIw/Yz9A93KtB1KUUArjGK6ebqsZkHFxguA==",
       "installerVersion": "7.0.0",
       "language": "js",
