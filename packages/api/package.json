@@ -9,7 +9,7 @@
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
-    "build:versionedfiles": "npx ts-node --esm bin/buildVersionedFiles.ts",
+    "build:versionedfiles": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm bin/buildVersionedFiles.ts",
     "debug:bin": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/ && npm run build:versionedfiles",
