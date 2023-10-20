@@ -23,10 +23,10 @@ cmd
     new Option('-l, --lang <language>', 'SDK language').default(SupportedLanguages.JS).choices([SupportedLanguages.JS]),
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
-  .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
+  .action(async (uri: string, options: { identifier?: string; lang: SupportedLanguage; yes?: boolean }) => {
     let language: SupportedLanguage;
     if (options.lang) {
-      language = options.lang as SupportedLanguage;
+      language = options.lang;
     } else {
       ({ value: language } = await promptTerminal({
         type: 'select',
