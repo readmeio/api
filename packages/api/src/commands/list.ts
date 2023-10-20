@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { Command } from 'commander';
 
+import { SupportedLanguages } from '../codegen/factory.js';
 import logger from '../logger.js';
 import Storage from '../storage.js';
 
@@ -14,7 +15,6 @@ cmd
     Storage.setStorageDir();
 
     const lockfile = Storage.getLockfile();
-
     if (!lockfile.apis.length) {
       logger('😔 You do not have any SDKs installed.');
       return;
@@ -30,6 +30,7 @@ cmd
         logger(`package name (${chalk.red('private')}): ${chalk.grey(`@api/${api.identifier}`)}`);
       }
 
+      logger(`language: ${chalk.grey(api.language || SupportedLanguages.JS)}`);
       logger(`source: ${chalk.grey(api.source)}`);
       logger(`installer version: ${chalk.grey(api.installerVersion)}`);
       logger(`created at: ${chalk.grey(api.createdAt || 'n/a')}`);
