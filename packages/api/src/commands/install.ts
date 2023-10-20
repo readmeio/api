@@ -4,7 +4,7 @@ import Oas from 'oas';
 import ora from 'ora';
 import uslug from 'uslug';
 
-import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
+import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
@@ -45,7 +45,7 @@ cmd
     }
 
     let spinner = ora('Fetching your API definition').start();
-    const storage = new Storage(uri);
+    const storage = new Storage(uri, language);
 
     const oas = await storage
       .load(false)
@@ -188,9 +188,9 @@ cmd
     'after',
     `
 Examples:
-  $ api install @developers/v2.0#nysezql0wwo236
-  $ api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-  $ api install ./petstore.json`,
+  $ npx api install @developers/v2.0#nysezql0wwo236
+  $ npx api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+  $ npx api install ./petstore.json`,
   );
 
 export default cmd;

@@ -1,20 +1,8 @@
+import type { InstallerOptions } from './factory.js';
 import type Storage from '../storage.js';
 import type Oas from 'oas';
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from '../packageInfo.js';
-
-export interface InstallerOptions {
-  /**
-   * Will initiate a dry run install process. Used for simulating installations within a unit test.
-   */
-  dryRun?: boolean;
-
-  /**
-   * Used for stubbing out the logger that we use within the installation process so it can be
-   * easily introspected without having to mock out `console.*`.
-   */
-  logger?: (msg: string) => void;
-}
 
 export default abstract class CodeGenerator {
   spec: Oas;
@@ -66,6 +54,18 @@ export default abstract class CodeGenerator {
   abstract generate(): Promise<Record<string, string>>;
 
   abstract install(storage: Storage, opts?: InstallerOptions): Promise<void>;
+
+  /**
+   * It would be better if this were an abstract function but TS/JS doesn't have support for that so
+   * we instead have to rely on throwing a `TypeError` if it's not been implemented instead of a
+   * build-time error.
+   *
+   * @see {@link https://github.com/microsoft/TypeScript/issues/34516}
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  static async uninstall(storage: Storage, opts?: InstallerOptions): Promise<void> {
+    throw new TypeError('The uninstallation step for this language has not been implemented');
+  }
 
   abstract compile(storage: Storage, opts?: InstallerOptions): Promise<void>;
 

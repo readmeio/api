@@ -45,6 +45,12 @@
             "sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug=="
           ]
         },
+        "language": {
+          "type": "string",
+          "description": "The language that this SDK was generated for.",
+          "default": "js",
+          "enum": ["js"]
+        },
         "private": {
           "type": "boolean",
           "description": "Was this SDK installed as a private, unpublished, package to the filesystem?"

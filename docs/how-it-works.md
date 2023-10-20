@@ -22,23 +22,25 @@ The `.api/` directory is where the CLI installation process stores all of its in
 
 ```
 .api/
-├── api.json             // The `package-lock.json` equivalent that records
-|                        // everything that's installed, when it was installed,
-|                        // what the original source was, and what version of
-|                        // `api` was used.
+├── api.json               // The `package-lock.json` equivalent that records metadata about the
+|                          // installed SDKs.
 └── apis/
+    ├── hoot/
     ├── readme/
-    |   ├── node_modules/
-    │   ├── index.js
-    │   ├── index.d.ts   // All types for the SDK, ready to use in your IDE.
+    │   ├── dist/          // The compiled source for your SDK. For JS, we offer a single SDK that's
+    |   |                  // fully typed and compatible with both ESM and CJS.
+    │   ├── src/           // The raw source for your SDK.
+    │   |   |── schemas/   // If your SDK has documented parameters or responses this is a directory
+    |   |   |              // containing those as represented in JSON Schema. These schemas power
+    |   |   |              // your SDK and the `types.ts` file.
+    │   |   |── index.ts
+    │   |   |── schemas.ts
+    │   |   └── types.ts
     │   |── openapi.json
-    │   └── package.json
+    │   |── package.json
+    │   |── README.md
+    │   └── tsconfig.json
     └── petstore/
-        ├── node_modules/
-        ├── index.ts
-        ├── index.d.ts
-        ├── openapi.json
-        └── package.json
 ```
 
 #### `api.json`
@@ -47,13 +49,16 @@ The `api.json` file within `.api/` is where the CLI keeps track of everything th
 
 ```json
 {
-  "version": "1.0",
+  "$schema": "https://unpkg.com/api@7/schema.json",
   "apis": [
     {
-      "identifier": "developers",
-      "source": "@developers/v2.0#nysezql0wwo236",
+      "private": true,
+      "identifier": "petstore",
+      "source": "@petstore/v1.0#tl1e4kl1cl8eg8",
       "integrity": "sha512-lQeYVerukls0IYy3Ys9J6Hri9nucH2zBZk6ehO1EI9a/0K3p/egoIw/Yz9A93KtB1KUUArjGK6ebqsZkHFxguA==",
-      "installerVersion": "5.0.0-beta.0"
+      "installerVersion": "7.0.0",
+      "language": "js",
+      "createdAt": "2023-10-19T23:13:04.939Z"
     }
   ]
 }

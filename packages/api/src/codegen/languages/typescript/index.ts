@@ -1,4 +1,4 @@
-import type { InstallerOptions } from '../../codegenerator.js';
+import type { InstallerOptions } from '../../factory.js';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
@@ -136,7 +136,7 @@ export default class TSGenerator extends CodeGenerator {
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
-    await execa('npm', [...npmInstall, installDir].filter(Boolean))
+    return execa('npm', [...npmInstall, installDir].filter(Boolean))
       .then(res => {
         if (opts.dryRun) {
           (opts.logger ? opts.logger : logger)(res.command);
@@ -160,6 +160,22 @@ export default class TSGenerator extends CodeGenerator {
           return;
         }
 
+        throw err;
+      });
+  }
+
+  static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
+    const pkgName = storage.getPackageName() as string;
+
+    const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    return execa('npm', args)
+      .then(res => {
+        if (opts.dryRun) {
+          (opts.logger ? opts.logger : logger)(res.command);
+          (opts.logger ? opts.logger : logger)(res.stdout);
+        }
+      })
+      .catch(err => {
         throw err;
       });
   }
