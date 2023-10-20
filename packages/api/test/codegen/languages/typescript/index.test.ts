@@ -95,6 +95,14 @@ function assertSDKFixture(file: string, fixture: string) {
 }
 
 describe('typescript', () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date('2023'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('#install', () => {
     beforeEach(() => {
       Storage.setStorageDir(uniqueTempDir());
@@ -140,14 +148,6 @@ describe('typescript', () => {
   });
 
   describe('#compile', () => {
-    beforeEach(() => {
-      vi.setSystemTime(new Date('2023'));
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
     it('should generate an sdk', assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple'));
 
     it(
