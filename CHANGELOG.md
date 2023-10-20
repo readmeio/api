@@ -1,3 +1,20 @@
+## 7.0.0-beta.1 (2023-10-20)
+
+* fix: add caret to package.json dep (#779) ([305d3ca](https://github.com/readmeio/api/commit/305d3ca)), closes [#779](https://github.com/readmeio/api/issues/779)
+* fix(api): updating some test fixtures with the proper package version ([df9cadc](https://github.com/readmeio/api/commit/df9cadc))
+* fix(cjs): include get-stream directly in bundle (#770) ([20727ab](https://github.com/readmeio/api/commit/20727ab)), closes [#770](https://github.com/readmeio/api/issues/770)
+* refactor(lockfile): consolidate TS and JSON schema type definitions (#777) ([eb76200](https://github.com/readmeio/api/commit/eb76200)), closes [#777](https://github.com/readmeio/api/issues/777)
+* feat: add a placeholder `README` file in codegen'd directory (#774) ([3bbb7a8](https://github.com/readmeio/api/commit/3bbb7a8)), closes [#774](https://github.com/readmeio/api/issues/774) [/github.com/readmeio/api/pull/774#discussion_r1366528451](https://github.com//github.com/readmeio/api/pull/774/issues/discussion_r1366528451)
+* feat(api): adding a `$schema` property to generated `api.json` lockfiles (#773) ([e2b1df9](https://github.com/readmeio/api/commit/e2b1df9)), closes [#773](https://github.com/readmeio/api/issues/773)
+* feat(api): addition of a new uninstall command (#776) ([e44461a](https://github.com/readmeio/api/commit/e44461a)), closes [#776](https://github.com/readmeio/api/issues/776)
+* feat(api): codegen'd sdks now look a little bit nicer (#769) ([046b029](https://github.com/readmeio/api/commit/046b029)), closes [#769](https://github.com/readmeio/api/issues/769)
+* feat(api): creation of a new `list` command (#775) ([a8b9891](https://github.com/readmeio/api/commit/a8b9891)), closes [#775](https://github.com/readmeio/api/issues/775)
+* feat(api): exposing `openapi.json` to codegen'd `package.json` files (#771) ([98315cf](https://github.com/readmeio/api/commit/98315cf)), closes [#771](https://github.com/readmeio/api/issues/771)
+* ci: cleanup (#778) ([65d36e2](https://github.com/readmeio/api/commit/65d36e2)), closes [#778](https://github.com/readmeio/api/issues/778)
+* chore(deps-dev): bumping out of date dev deps ([433b0d1](https://github.com/readmeio/api/commit/433b0d1))
+
+
+
 ## 7.0.0-beta.0 (2023-10-18)
 
 * fix(cli): specs not being dereferenced when installed + fixture refactors (#762) ([9cdf6c5](https://github.com/readmeio/api/commit/9cdf6c5)), closes [#762](https://github.com/readmeio/api/issues/762)

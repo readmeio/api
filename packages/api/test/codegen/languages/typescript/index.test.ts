@@ -8,6 +8,7 @@ import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
+import { SupportedLanguages } from '../../../../src/codegen/factory.js';
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
@@ -45,7 +46,23 @@ function assertSDKFixture(file: string, fixture: string) {
     // Assert that the files we're generating are what we're expecting in the fixture directory.
     const sortedActualFiles = Object.keys(actualFiles);
     sortedActualFiles.sort();
-    expect(sortedActualFiles).toStrictEqual(expectedFiles);
+
+    // creates new files if they don't exist
+    if (sortedActualFiles.length > expectedFiles.length && process.env.UPDATE_FIXTURES) {
+      await Promise.all(
+        sortedActualFiles.map(actualFileName => {
+          if (!expectedFiles.includes(actualFileName)) {
+            const actualFilePath = path.join(dir, actualFileName);
+            // eslint-disable-next-line no-console
+            console.info('[creating sdk fixture]', actualFilePath);
+            return fs.writeFile(actualFilePath, actualFiles[actualFileName]);
+          }
+          return true;
+        }),
+      );
+    } else {
+      expect(sortedActualFiles).toStrictEqual(expectedFiles);
+    }
 
     // Assert that each generated file is the same as in the fixture.
     await Promise.all(
@@ -79,6 +96,14 @@ function assertSDKFixture(file: string, fixture: string) {
 }
 
 describe('typescript', () => {
+  beforeEach(() => {
+    vi.setSystemTime(new Date('2023'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('#install', () => {
     beforeEach(() => {
       Storage.setStorageDir(uniqueTempDir());
@@ -95,7 +120,7 @@ describe('typescript', () => {
       const oas = await loadSpec(file).then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const storage = new Storage(file, 'petstore');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore');
       await storage.load();
 
       const ts = new TSGenerator(oas, '../openapi.json', 'petstore');

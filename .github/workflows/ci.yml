@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run lint
-      - name: Prettier formatting check for Markdown docs
+      - name: Prettier formatting check
         run: npm run prettier
       - name: Insensitive language check for Markdown docs
         run: npm run alex
@@ -36,16 +36,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
-      # There's a bug in npm@8 where, if when using Workspaces, you to install a local package that
-      # isn't stored in `packages/` npm will throw an exception. This affects all of our local
-      # codegen tests that attempt to test package installation. Because Node 14 still ships with
-      # npm@6 and Node 16 with npm@7 we should always run tests with npm@9 as this issue no longer
-      # exists there.
-      #
-      # https://github.com/npm/cli/issues/3847
-      - name: Install npm@9
-        run: npm install -g npm@9
 
       - name: Install dependencies
         run: npm ci

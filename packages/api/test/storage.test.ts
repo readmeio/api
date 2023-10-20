@@ -5,36 +5,55 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { loadSpec } from '@api/test-utils';
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
+import lockfileSchema from '../schema.json' assert { type: 'json' };
+import { SupportedLanguages } from '../src/codegen/factory.js';
 import { PACKAGE_VERSION } from '../src/packageInfo.js';
 import Storage from '../src/storage.js';
 
 let petstoreSimple;
 
 describe('storage', () => {
+  let resetStorage;
+
   beforeAll(async () => {
     petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
   });
 
   beforeEach(() => {
+    resetStorage = true;
     Storage.setStorageDir(uniqueTempDir());
   });
 
   afterEach(async () => {
-    await Storage.reset().catch(() => {
-      // We can do our best to try to clean up after ourselves here but if removing any of the
-      // storage directories fails it's likely because the OS already cleaned them up, in which
-      // case we shouldn't fail these tests.
-    });
+    if (resetStorage) {
+      await Storage.reset().catch(() => {
+        // We can do our best to try to clean up after ourselves here but if removing any of the
+        // storage directories fails it's likely because the OS already cleaned them up, in which
+        // case we shouldn't fail these tests.
+      });
+    }
 
     fetchMock.restore();
   });
 
   describe('#setStorageDir', () => {
+    /**
+     * Because we're testing the case where we want to set a storage directory if we don't have
+     * one this test has an annoying quirk where if there exists an `.api/` directory in
+     * `packages/api` the `Storage.reset()` call after this test finishes will blow it away and
+     * delete any generated SDK that was in there. Because the `fs.mkdirSync` calls that
+     * `setStorageDir()` invoke don't throw errors if that directory already exists we can safely
+     * just ignore those calls.
+     */
     it('should create and set a storage dir if one is neither supplied or already exists', async () => {
+      resetStorage = false;
+
       Storage.dir = '';
 
       Storage.setStorageDir();
@@ -77,7 +96,7 @@ describe('storage', () => {
       fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
-      const storage = new Storage(source, 'petstore');
+      const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
 
       expect(Storage.isInLockFile({ source })).toBe(false);
 
@@ -100,22 +119,72 @@ describe('storage', () => {
     });
   });
 
+  describe('#getLockfile', () => {
+    it('should retrieve a lockfiles that match our schema', async () => {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+
+      // `ajv` has funky types in ESM environments. https://github.com/ajv-validator/ajv/issues/2047
+      // eslint-disable-next-line new-cap
+      const ajv = new Ajv.default();
+      addFormats.default(ajv);
+
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
+
+      let valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(ajv.errors).toBeNull();
+      expect(valid).toBe(true);
+
+      // After loading the petstore into storage the lockfile should have also been updated and
+      // still be valid.
+      await storage.load();
+
+      valid = ajv.validate(lockfileSchema, Storage.getLockfile());
+      expect(ajv.errors).toBeNull();
+      expect(valid).toBe(true);
+    });
+  });
+
+  describe('#getFromLockfile (static)', () => {
+    it('should retrieve an entry in the lockfile if it exists', async () => {
+      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+
+      const source = '@petstore/v1.0#n6kvf10vakpemvplx';
+      const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
+
+      await storage.load();
+
+      expect(Storage.getFromLockfile('petstore')).toStrictEqual({
+        private: true,
+        identifier: 'petstore',
+        source,
+        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
+      });
+    });
+  });
+
   describe('#isInLockFile', () => {
     it('should be able to look up in the lockfile by a given source', async () => {
       fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
-      const storage = new Storage(source, 'petstore');
+      const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
 
       expect(Storage.isInLockFile({ source })).toBe(false);
 
       await storage.load();
 
       expect(Storage.isInLockFile({ source })).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
       });
     });
 
@@ -123,24 +192,27 @@ describe('storage', () => {
       fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
-      const storage = new Storage(source, 'petstore');
+      const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
 
       expect(Storage.isInLockFile({ identifier: 'petstore' })).toBe(false);
 
       await storage.load();
 
       expect(Storage.isInLockFile({ identifier: 'petstore' })).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
       });
     });
   });
 
   describe('#load', () => {
     it('should throw an error when a non-HTTP(S) url is supplied', async () => {
-      await new Storage('htt://example.com/openapi.json', 'invalid-url')
+      await new Storage('htt://example.com/openapi.json', SupportedLanguages.JS, 'invalid-url')
         .load()
         .then(() => assert.fail())
         .catch(err => {
@@ -150,16 +222,16 @@ describe('storage', () => {
     });
 
     it('should throw an error if neither a url or file are detected', async () => {
-      await expect(new Storage('/this/is/not/a/real/path.json', 'nonexistent-path').load()).rejects.toThrow(
-        /supply a URL or a path on your filesystem/,
-      );
+      await expect(
+        new Storage('/this/is/not/a/real/path.json', SupportedLanguages.JS, 'nonexistent-path').load(),
+      ).rejects.toThrow(/supply a URL or a path on your filesystem/);
     });
 
     describe('ReadMe registry UUID', () => {
       it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', async () => {
         fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
-        const storage = new Storage('@petstore/v1.0#n6kvf10vakpemvplx', 'petstore');
+        const storage = new Storage('@petstore/v1.0#n6kvf10vakpemvplx', SupportedLanguages.JS, 'petstore');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -171,17 +243,20 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: '@petstore/v1.0#n6kvf10vakpemvplx',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
 
       it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', async () => {
         fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
 
-        const storage = new Storage('@petstore#n6kvf10vakpemvplx', 'petstore');
+        const storage = new Storage('@petstore#n6kvf10vakpemvplx', SupportedLanguages.JS, 'petstore');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -205,15 +280,18 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: '@petstore#n6kvf10vakpemvplx',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
 
       it("shouldn't try to resolve improperly formatted shorthand accessors to the ReadMe API", async () => {
-        const storage = new Storage('n6kvf10vakpemvplx', 'petstore');
+        const storage = new Storage('n6kvf10vakpemvplx', SupportedLanguages.JS, 'petstore');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -233,7 +311,7 @@ describe('storage', () => {
       it('should be able to load a definition', async () => {
         fetchMock.get('http://example.com/readme.json', petstoreSimple);
 
-        const storage = new Storage('http://example.com/readme.json', 'petstore');
+        const storage = new Storage('http://example.com/readme.json', SupportedLanguages.JS, 'petstore');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -245,26 +323,29 @@ describe('storage', () => {
 
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'petstore',
           source: 'http://example.com/readme.json',
           integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
 
       it('should error if the url cannot be reached', async () => {
         fetchMock.get('http://example.com/unknown.json', { status: 404 });
 
-        await expect(new Storage('http://example.com/unknown.json', '404ing-url').load()).rejects.toThrow(
-          'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found',
-        );
+        await expect(
+          new Storage('http://example.com/unknown.json', SupportedLanguages.JS, '404ing-url').load(),
+        ).rejects.toThrow('Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found');
       });
 
       it('should convert yaml to json', async () => {
         const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
         fetchMock.get('http://example.com/readme.yaml', spec);
 
-        const storage = new Storage('http://example.com/readme.yaml', 'readme-yaml');
+        const storage = new Storage('http://example.com/readme.yaml', SupportedLanguages.JS, 'readme-yaml');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -273,10 +354,13 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme-yaml',
           source: 'http://example.com/readme.yaml',
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
     });
@@ -284,7 +368,7 @@ describe('storage', () => {
     describe('file', () => {
       it('should be able to load a definition', async () => {
         const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
-        const storage = new Storage(file, 'readme');
+        const storage = new Storage(file, SupportedLanguages.JS, 'readme');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -293,16 +377,19 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme',
           source: file,
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
 
       it('should be able to handle a relative path', async () => {
         const file = '../test-utils/definitions/simple.json';
-        const storage = new Storage(file, 'relative-path');
+        const storage = new Storage(file, SupportedLanguages.JS, 'relative-path');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -315,16 +402,19 @@ describe('storage', () => {
         });
 
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'relative-path',
           source: file,
           integrity: 'sha512-Ey83iRY4tY7JCCUI03eqfNb8YsxKlBdLILXcLDBbxZ1a2X/YfTspCTA8mLp6aaG9gRSyNMhI1hmtSlduWZw8RA==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
 
       it('should convert yaml to json', async () => {
         const file = require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml');
-        const storage = new Storage(file, 'readme-yaml');
+        const storage = new Storage(file, SupportedLanguages.JS, 'readme-yaml');
 
         expect(storage.isInLockfile()).toBe(false);
 
@@ -333,31 +423,52 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().paths['/api-specification'].get.parameters).toBeDereferenced();
         expect(storage.isInLockfile()).toBe(true);
         expect(storage.getFromLockfile()).toStrictEqual({
+          private: true,
           identifier: 'readme-yaml',
           source: file,
           integrity: 'sha512-rcaq4j4BzMyR9n3kLRTDLbOg37QdNywj2e3whoK/J/6PNlHrLATvysfJVHq+kMBf+gkukUwxayCwbN0wZj8ysg==',
           installerVersion: PACKAGE_VERSION,
+          language: 'js',
+          createdAt: expect.any(String),
         });
       });
+    });
+  });
+
+  describe('#remove', () => {
+    it('should remove an SDK', async () => {
+      const file = require.resolve('@readme/oas-examples/3.0/json/petstore-simple.json');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore-simple');
+      await storage.load();
+
+      expect(storage.isInLockfile()).toBe(true);
+
+      await storage.remove();
+
+      expect(storage.isInLockfile()).toBe(false);
     });
   });
 
   describe('#save()', () => {
     it('should error if definition is a swagger file', async () => {
       await expect(
-        new Storage(require.resolve('@readme/oas-examples/2.0/json/petstore.json'), 'petstore').load(),
+        new Storage(
+          require.resolve('@readme/oas-examples/2.0/json/petstore.json'),
+          SupportedLanguages.JS,
+          'petstore',
+        ).load(),
       ).rejects.toThrow('Sorry, this module only supports OpenAPI definitions.');
     });
 
     it('should error if definition is not a valid openapi file', async () => {
-      await expect(new Storage(require.resolve('../package.json'), 'invalid').load()).rejects.toThrow(
-        "Sorry, that doesn't look like a valid OpenAPI definition.",
-      );
+      await expect(
+        new Storage(require.resolve('../package.json'), SupportedLanguages.JS, 'invalid').load(),
+      ).rejects.toThrow("Sorry, that doesn't look like a valid OpenAPI definition.");
     });
 
     it('should save a new SDK', async () => {
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore-simple.json');
-      const storage = new Storage(file, 'petstore-simple');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore-simple');
 
       expect(storage.isInLockfile()).toBe(false);
 
@@ -365,16 +476,19 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'petstore-simple',
         source: file,
         integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
         installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
       });
     });
 
     it('should be able to cache a definition that contains a circular reference', async () => {
       const file = require.resolve('@readme/oas-examples/3.0/json/circular.json');
-      const storage = new Storage(file, 'circular');
+      const storage = new Storage(file, SupportedLanguages.JS, 'circular');
 
       expect(storage.isInLockfile()).toBe(false);
 
@@ -382,16 +496,19 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'circular',
         source: file,
         integrity: 'sha512-bxLv3OTzVucsauZih1VCprHQ7/e0iB/yzeuWdp1E1iq8o3MOYFAig+aMUkTqD71BNf/1/6B7NTkyjJXfrXgumA==',
         installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
       });
     });
 
     it('should be able to load and cache an OpenAPI 3.1 definition', async () => {
       const file = require.resolve('@readme/oas-examples/3.1/json/petstore.json');
-      const storage = new Storage(file, 'petstore');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore');
 
       expect(storage.isInLockfile()).toBe(false);
 
@@ -399,10 +516,13 @@ describe('storage', () => {
 
       expect(storage.isInLockfile()).toBe(true);
       expect(storage.getFromLockfile()).toStrictEqual({
+        private: true,
         identifier: 'petstore',
         source: file,
         integrity: 'sha512-P1xkfSiktRFJUZdN90JslLk8FOecNZFypZOnDqh/Xcgw69iiO17dHXwaV6ENqnYGwxd1t4hwXpaXq/4V5AY3NQ==',
         installerVersion: PACKAGE_VERSION,
+        language: 'js',
+        createdAt: expect.any(String),
       });
     });
   });
@@ -410,7 +530,7 @@ describe('storage', () => {
   describe('#saveSourceFiles()', () => {
     it('should save source files into the storage identifiers directory', async () => {
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore-simple.json');
-      const storage = new Storage(file, 'petstore-simple');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore-simple');
 
       expect(storage.isInLockfile()).toBe(false);
 
@@ -427,7 +547,7 @@ describe('storage', () => {
   describe('#getAPIDefinition', () => {
     it('should load a API definition out of storage', async () => {
       const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
-      const storage = new Storage(file, 'readme');
+      const storage = new Storage(file, SupportedLanguages.JS, 'readme');
       await storage.load();
 
       const spec = storage.getAPIDefinition();
@@ -439,7 +559,7 @@ describe('storage', () => {
 
     it('should error if the file is not saved', () => {
       const file = require.resolve('@readme/oas-examples/3.0/json/security.json');
-      const storage = new Storage(file, 'security');
+      const storage = new Storage(file, SupportedLanguages.JS, 'security');
 
       expect(() => {
         return storage.getAPIDefinition();

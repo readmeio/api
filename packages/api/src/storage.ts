@@ -1,11 +1,15 @@
+import type { SupportedLanguage } from './codegen/factory.js';
+import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
 import type { OASDocument } from 'oas/rmoas.types';
 
 import fs from 'node:fs';
 import path from 'node:path';
 
+import semver from 'semver';
 import ssri from 'ssri';
 import validateNPMPackageName from 'validate-npm-package-name';
 
+import { SupportedLanguages } from './codegen/factory.js';
 import Fetcher from './fetcher.js';
 import { PACKAGE_VERSION } from './packageInfo.js';
 
@@ -14,25 +18,38 @@ export default class Storage {
 
   static lockfile: false | Lockfile;
 
+  fetcher: Fetcher;
+
   /**
    * This is the original source that the file came from (relative/absolute file path, URL, ReadMe
    * registry UUID, etc.).
+   *
+   * @example  @developers/v2.0#nysezql0wwo236
+   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+   * @example ./petstore.json
    */
   source: string;
 
+  /**
+   * The language that this SDK was generated for.
+   */
+  private language!: SupportedLanguage;
+
+  /**
+   * The identifier that this was installed as.
+   *
+   * @example petstore
+   */
   identifier!: string;
 
-  fetcher: Fetcher;
-
-  constructor(source: string, identifier?: string) {
+  constructor(source: string, language?: SupportedLanguage, identifier?: string) {
     Storage.setStorageDir();
 
     this.fetcher = new Fetcher(source);
 
     this.source = source;
-    if (identifier) {
-      this.identifier = identifier;
-    }
+    if (language) this.language = language;
+    if (identifier) this.identifier = identifier;
 
     // This should default to false so we have awareness if we've looked at the lockfile yet.
     Storage.lockfile = false;
@@ -79,8 +96,10 @@ export default class Storage {
   }
 
   static getDefaultLockfile(): Lockfile {
+    const majorVersion = semver.parse(PACKAGE_VERSION)?.major || 'latest';
+
     return {
-      version: '1.0',
+      $schema: `https://unpkg.com/api@${majorVersion}/schema.json`,
       apis: [],
     };
   }
@@ -151,6 +170,17 @@ export default class Storage {
     return res === undefined ? false : res;
   }
 
+  setLanguage(language?: SupportedLanguage) {
+    // `language` wasn't always present in the lockfile so if we don't have one we should default
+    // to JS.
+    if (!language) {
+      this.language = SupportedLanguages.JS;
+      return;
+    }
+
+    this.language = language;
+  }
+
   setIdentifier(identifier: string) {
     this.identifier = identifier;
   }
@@ -164,10 +194,37 @@ export default class Storage {
 
   /**
    * Retrieve the lockfile record for the current spec + identifier if it exists in the lockfile.
+   *
    */
   getFromLockfile() {
     const lockfile = Storage.getLockfile();
     return lockfile.apis.find(a => a.identifier === this.identifier);
+  }
+
+  /**
+   * Retrieve the lockfile record, if it exists, for a given identifier.
+   *
+   */
+  static getFromLockfile(identifier: string) {
+    const lockfile = Storage.getLockfile();
+    return lockfile.apis.find(a => a.identifier === identifier);
+  }
+
+  getSDKLanguage() {
+    const entry = this.getFromLockfile();
+
+    // We may not have `language` in the lockfile for old users but we default to JS so we can
+    // safely return that if this isn't present.
+    return entry?.language || SupportedLanguages.JS;
+  }
+
+  getPackageName() {
+    const entry = this.getFromLockfile();
+    if (entry?.private) {
+      return `@api/${entry.identifier}`;
+    }
+
+    return undefined;
   }
 
   getIdentifierStorageDir() {
@@ -178,8 +235,12 @@ export default class Storage {
     return path.join(Storage.getAPIsDir(), this.identifier);
   }
 
+  getAPIDefinitionPath() {
+    return path.join(this.getIdentifierStorageDir(), 'openapi.json');
+  }
+
   getAPIDefinition() {
-    const file = fs.readFileSync(path.join(this.getIdentifierStorageDir(), 'openapi.json'), 'utf8');
+    const file = fs.readFileSync(this.getAPIDefinitionPath(), 'utf8');
 
     return JSON.parse(file);
   }
@@ -223,30 +284,17 @@ export default class Storage {
   }
 
   /**
-   * @example <caption>Storage directory structure</caption>
-   * .api/
-   * ├── api.json             // The `package-lock.json` equivalent that records everything that's
-   * |                        // installed, when it was installed, what the original source was,
-   * |                        // and what version of `api` was used.
-   * └── apis/
-   *     ├── readme/
-   *     |   ├── node_modules/
-   *     │   ├── index.js     // We may offer the option to export a raw TS file for folks who want
-   *     |   |                // that, but for now it'll be a compiled JS file.
-   *     │   ├── index.d.ts   // All types for their SDK, ready to use in an IDE.
-   *     │   |── openapi.json
-   *     │   └── package.json
-   *     └── petstore/
-   *         ├── node_modules/
-   *         ├── index.js
-   *         ├── index.d.ts
-   *         ├── openapi.json
-   *         └── package.json
+   * Initialize a directory in the storage system for this identifier and add it into the lockfile.
+   * This does not create or save the source code for this SDK, that work happens within the
+   * code generation system.
    *
+   * @see {@link https://api.readme.dev/docs/how-it-works#api-directory}
    */
   save(spec: OASDocument) {
     if (!this.identifier) {
       throw new TypeError('An identifier must be set before saving the API definition into storage.');
+    } else if (!this.language) {
+      throw new TypeError('A language must be set before saving the API definition into storage.');
     }
 
     // Create our main `.api/` directory.
@@ -272,10 +320,13 @@ export default class Storage {
       }
 
       (Storage.lockfile as Lockfile).apis.push({
+        private: true,
         identifier: this.identifier,
         source: this.source,
         integrity: Storage.generateIntegrityHash(spec),
         installerVersion: PACKAGE_VERSION,
+        language: this.language,
+        createdAt: new Date().toISOString(),
       } as LockfileAPI);
 
       fs.writeFileSync(path.join(identifierStorageDir, 'openapi.json'), saved);
@@ -286,48 +337,27 @@ export default class Storage {
 
     return spec;
   }
-}
-
-interface Lockfile {
-  apis: LockfileAPI[];
 
   /**
-   * The `api.json` schema version. This will only ever change if we introduce breaking changes to
-   * this store.
-   */
-  version: '1.0';
-}
-
-interface LockfileAPI {
-  /**
-   * A unique identifier of the API. This'll be used to do requires on `@api/<identifier>` and also
-   * where the SDK code will be located in `.api/apis/<identifier>`.
+   * Delete the stored source code for the given identifier and purge it from the lockfile.
    *
-   * @example petstore
    */
-  identifier: string;
+  async remove() {
+    // Delete the codegen'd SDK source code.
+    const identifierDir = this.getIdentifierStorageDir();
+    await fs.promises.rm(identifierDir, { recursive: true }).catch(() => {
+      // If the identifier directory doesn't exist for some reason we can continue on and remove it
+      // from the lockfile because some sort of corruption happened.
+    });
 
-  /**
-   * The version of `api` that was used to install this SDK.
-   *
-   * @example 5.0.0
-   */
-  installerVersion: string;
+    // Remove the SDK from the lockfile.
+    const lockfile = Storage.lockfile as Lockfile;
+    const idx = lockfile.apis.findIndex(api => api.identifier === this.identifier);
 
-  /**
-   * An integrity hash that will be used to determine on `npx api update` calls if the API has
-   * changed since the SDK was last generated.
-   *
-   * @example sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug==
-   */
-  integrity: string;
+    lockfile.apis.splice(idx, 1);
 
-  /**
-   * The original source that was used to generate the SDK with.
-   *
-   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-   * @example ./petstore.json
-   * @example @developers/v2.0#nysezql0wwo236
-   */
-  source: string;
+    Storage.lockfile = lockfile;
+
+    fs.writeFileSync(Storage.getLockfilePath(), JSON.stringify(Storage.lockfile, null, 2));
+  }
 }

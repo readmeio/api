@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "api storage lockfile",
+  "description": "See https://api.readme.dev/docs",
+  "type": "object",
+  "required": ["apis"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "apis": { "type": "array", "description": "The list of installed APIs", "items": { "$ref": "#/definitions/api" } }
+  },
+  "definitions": {
+    "api": {
+      "type": "object",
+      "required": ["createdAt", "identifier", "installerVersion", "integrity"],
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date that this SDK was installed.",
+          "examples": ["2023-10-19T20:35:39.268Z"]
+        },
+        "identifier": {
+          "type": "string",
+          "description": "A unique identifier of the API. This'll be used to do imports on `@api/<identifier>` and also where the SDK code will be located in `.api/apis/<identifier>`",
+          "examples": ["petstore"]
+        },
+        "installerVersion": {
+          "type": "string",
+          "description": "The version of `api` that was used to install this SDK.",
+          "examples": ["7.0.0"]
+        },
+        "integrity": {
+          "type": "string",
+          "description": "An integrity hash that will be used to determine on `npx api update` calls if the API has changed since the SDK was last generated.",
+          "examples": [
+            "sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg=="
+          ]
+        },
+        "language": {
+          "type": "string",
+          "description": "The language that this SDK was generated for.",
+          "default": "js",
+          "enum": ["js"]
+        },
+        "private": {
+          "type": "boolean",
+          "description": "Was this SDK installed as a private, unpublished, package to the filesystem?"
+        },
+        "source": {
+          "type": "string",
+          "description": "The original source that was used to generate the SDK with.",
+          "examples": [
+            "https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json",
+            "./petstore.json",
+            "@developers/v2.0#nysezql0wwo236"
+          ]
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date that this SDK was last rebuilt or updated.",
+          "examples": ["2023-10-19T20:35:39.268Z"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

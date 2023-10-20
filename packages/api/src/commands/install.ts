@@ -1,10 +1,12 @@
+import type { SupportedLanguage } from '../codegen/factory.js';
+
 import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 import uslug from 'uslug';
 
-import codegenFactory, { SupportedLanguages } from '../codegen/factory.js';
+import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger from '../logger.js';
@@ -21,10 +23,10 @@ cmd
     new Option('-l, --lang <language>', 'SDK language').default(SupportedLanguages.JS).choices([SupportedLanguages.JS]),
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
-  .action(async (uri: string, options: { identifier?: string; lang: string; yes?: boolean }) => {
-    let language: SupportedLanguages;
+  .action(async (uri: string, options: { identifier?: string; lang: SupportedLanguage; yes?: boolean }) => {
+    let language: SupportedLanguage;
     if (options.lang) {
-      language = options.lang as SupportedLanguages;
+      language = options.lang;
     } else {
       ({ value: language } = await promptTerminal({
         type: 'select',
@@ -45,7 +47,7 @@ cmd
     }
 
     let spinner = ora('Fetching your API definition').start();
-    const storage = new Storage(uri);
+    const storage = new Storage(uri, language);
 
     const oas = await storage
       .load(false)
@@ -188,9 +190,9 @@ cmd
     'after',
     `
 Examples:
-  $ api install @developers/v2.0#nysezql0wwo236
-  $ api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
-  $ api install ./petstore.json`,
+  $ npx api install @developers/v2.0#nysezql0wwo236
+  $ npx api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+  $ npx api install ./petstore.json`,
   );
 
 export default cmd;
