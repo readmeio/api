@@ -4,9 +4,14 @@ import type Oas from 'oas';
 
 import TSGenerator from './languages/typescript/index.js';
 
-export enum SupportedLanguages {
-  JS = 'js',
-}
+export const SupportedLanguages = {
+  JS: 'js',
+} as const;
+
+type ObjectValues<T> = T[keyof T];
+
+export type SupportedLanguageType = ObjectValues<typeof SupportedLanguages>;
+
 export interface InstallerOptions {
   /**
    * Will initiate a dry run install process. Used for simulating installations within a unit test.
@@ -21,7 +26,7 @@ export interface InstallerOptions {
 }
 
 export function codegenFactory(
-  language: SupportedLanguages,
+  language: SupportedLanguageType,
   spec: Oas,
   specPath: string,
   identifier: string,
@@ -36,7 +41,7 @@ export function codegenFactory(
 }
 
 export function uninstallerFactory(
-  language: SupportedLanguages,
+  language: SupportedLanguageType,
   storage: Storage,
   opts: InstallerOptions = {},
 ): Promise<void> {
