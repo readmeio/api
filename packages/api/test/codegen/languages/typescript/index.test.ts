@@ -8,6 +8,7 @@ import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
+import { SupportedLanguages } from '../../../../src/codegen/factory.js';
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
@@ -95,7 +96,7 @@ describe('typescript', () => {
       const oas = await loadSpec(file).then(Oas.init);
       await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
-      const storage = new Storage(file, 'petstore');
+      const storage = new Storage(file, SupportedLanguages.JS, 'petstore');
       await storage.load();
 
       const ts = new TSGenerator(oas, '../openapi.json', 'petstore');
