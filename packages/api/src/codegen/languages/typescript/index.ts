@@ -95,7 +95,7 @@ export default class TSGenerator extends CodeGenerator {
           process.env.NODE_ENV === 'test'
             ? // eslint-disable-next-line unicorn/prefer-module
               `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
-            : corePkg.version,
+            : `^${corePkg.version}`,
       },
       tsup: {
         dependencyType: 'development',
