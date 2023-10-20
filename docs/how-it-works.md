@@ -23,9 +23,7 @@ The `.api/` directory is where the CLI installation process stores all of its in
 ```
 .api/
 ├── api.json               // The `package-lock.json` equivalent that records
-|                          // everything that's installed, when it was installed,
-|                          // what language was generated, what the original
-|                          // source was, and what version of `api` was used.
+|                          // metadata about the installed SDKs.
 └── apis/
     ├── hoot/
     ├── readme/
