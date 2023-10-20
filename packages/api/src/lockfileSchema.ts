@@ -25,7 +25,7 @@ const lockfileApiSchema = {
       type: 'string',
       description:
         'An integrity hash that will be used to determine on `npx api update` calls if the API has changed since the SDK was last generated.',
-      examples: ['sha512-ld+djZk8uRWmzXC+JYla1PTBScg0NjP/8x9vOOKRW+DuJ3NNMRjrpfbY7T77Jgnc87dZZsU49robbQfYe3ukug=='],
+      examples: ['sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg=='],
     },
     language: {
       type: 'string',
