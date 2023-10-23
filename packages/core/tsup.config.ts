@@ -10,7 +10,7 @@ export default defineConfig((options: Options) => ({
   ...options,
   ...config,
 
-  entry: ['src/errors/fetchError.ts', 'src/lib/index.ts', 'src/index.ts'],
+  entry: ['src/errors/fetchError.ts', 'src/lib/index.ts', 'src/index.ts', 'src/types.ts'],
   noExternal: [
     // `get-stream` is ESM-only and we need to build for CommonJS,
     // so including it here means that its (tree-shaken!) source code

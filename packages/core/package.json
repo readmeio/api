@@ -17,6 +17,10 @@
       "require": "./dist/lib/index.cjs",
       "import": "./dist/lib/index.js"
     },
+    "./types": {
+      "require": "./dist/types.d.cjs",
+      "import": "./dist/types.d.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "dist/index.cjs",
