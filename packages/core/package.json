@@ -18,8 +18,8 @@
       "import": "./dist/lib/index.js"
     },
     "./types": {
-      "require": "./dist/types.d.cts",
-      "import": "./dist/types.d.ts"
+      "require": "./dist/types.d.cjs",
+      "import": "./dist/types.d.js"
     },
     "./package.json": "./package.json"
   },
