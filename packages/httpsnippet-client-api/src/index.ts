@@ -4,9 +4,11 @@ import type Operation from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
+import camelCase from 'camelcase';
 import contentType from 'content-type';
 import Oas from 'oas';
 import { matchesMimeType } from 'oas/utils';
+import { isReservedOrBuiltinsLC } from 'reserved2';
 import stringifyObject from 'stringify-object';
 
 /**
@@ -146,7 +148,13 @@ const client: Client<APIOptions> = {
     let sdkVariable: string;
     if (opts.identifier) {
       sdkPackageName = opts.identifier;
-      sdkVariable = opts.identifier;
+
+      sdkVariable = camelCase(opts.identifier);
+      if (isReservedOrBuiltinsLC(sdkVariable)) {
+        // If this identifier is a reserved JS word then we should prefix it with an underscore so
+        // this snippet can be valid code.
+        sdkVariable = `_${sdkVariable}`;
+      }
     } else {
       sdkPackageName = getProjectPrefixFromRegistryUUID(opts.apiDefinitionUri);
       sdkVariable = 'sdk';

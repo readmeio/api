@@ -112,21 +112,40 @@ describe('httpsnippet-client-api', () => {
       });
     });
 
-    it('should support custom SDK variable names', async () => {
-      const mock = await getSnippetDataset('petstore');
+    describe('custom variable names', () => {
+      it('should support custom SDK variable names', async () => {
+        const mock = await getSnippetDataset('petstore');
 
-      const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
-        apiDefinitionUri: '@developers/v2.0#17273l2glm9fq4l5',
-        identifier: 'developers',
-        apiDefinition: mock.definition,
-      });
+        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
+          apiDefinitionUri: '@developers/v2.0#17273l2glm9fq4l5',
+          identifier: 'developers',
+          apiDefinition: mock.definition,
+        });
 
-      expect(code).toStrictEqual(`import developers from '@api/developers';
+        expect(code).toStrictEqual(`import developers from '@api/developers';
 
 developers.auth('123');
 developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));`);
+      });
+
+      it('should make an unsafe variable name safe', async () => {
+        const mock = await getSnippetDataset('petstore');
+
+        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
+          apiDefinitionUri: '@metro-transit/v2.0#17273l2glm9fq4l5',
+          identifier: 'metro-transit',
+          apiDefinition: mock.definition,
+        });
+
+        expect(code).toStrictEqual(`import metroTransit from '@api/metro-transit';
+
+metroTransit.auth('123');
+metroTransit.findPetsByStatus({status: 'available', accept: 'application/xml'})
+  .then(({ data }) => console.log(data))
+  .catch(err => console.error(err));`);
+      });
     });
   });
 });
