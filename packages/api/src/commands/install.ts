@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from '../codegen/factory.js';
 
+import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import figures from 'figures';
 import Oas from 'oas';
@@ -9,8 +10,74 @@ import uslug from 'uslug';
 import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
+import { buildCodeSnippetForOperation, getSuggestedOperation } from '../lib/suggestedOperations.js';
 import logger from '../logger.js';
 import Storage from '../storage.js';
+
+interface Options {
+  identifier?: string;
+  lang: SupportedLanguage;
+  yes?: boolean;
+}
+
+async function getLanguage(options: Options) {
+  let language: SupportedLanguage;
+  if (options.lang) {
+    language = options.lang;
+  } else {
+    ({ value: language } = await promptTerminal({
+      type: 'select',
+      name: 'value',
+      message: 'What language would you like to generate an SDK for?',
+      choices: [{ title: 'JavaScript', value: SupportedLanguages.JS }],
+      initial: 1,
+    }));
+  }
+
+  return language;
+}
+
+async function getIdentifier(oas: Oas, uri: string, options: Options) {
+  let identifier;
+  if (options.identifier) {
+    // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
+    if (Storage.isIdentifierValid(options.identifier)) {
+      identifier = options.identifier;
+    }
+  } else if (Fetcher.isAPIRegistryUUID(uri)) {
+    identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
+  } else {
+    ({ value: identifier } = await promptTerminal({
+      type: 'text',
+      name: 'value',
+      initial: oas.api?.info?.title ? uslug(oas.api.info.title, { lower: true }) : undefined,
+      message:
+        'What would you like to identify this API as? This will be how you use the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
+      validate: value => {
+        if (!value) {
+          return false;
+        }
+
+        try {
+          return Storage.isIdentifierValid(value, true);
+        } catch (err) {
+          return err.message;
+        }
+      },
+    }));
+  }
+
+  return identifier;
+}
+
+async function getExampleCodeSnippet(oas: Oas, identifier: string) {
+  const operation = getSuggestedOperation(oas);
+  if (!operation) {
+    return false;
+  }
+
+  return buildCodeSnippetForOperation(oas, operation, { identifier });
+}
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
 const cmd = new Command();
@@ -23,19 +90,8 @@ cmd
     new Option('-l, --lang <language>', 'SDK language').default(SupportedLanguages.JS).choices([SupportedLanguages.JS]),
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
-  .action(async (uri: string, options: { identifier?: string; lang: SupportedLanguage; yes?: boolean }) => {
-    let language: SupportedLanguage;
-    if (options.lang) {
-      language = options.lang;
-    } else {
-      ({ value: language } = await promptTerminal({
-        type: 'select',
-        name: 'value',
-        message: 'What language would you like to generate an SDK for?',
-        choices: [{ title: 'JavaScript', value: SupportedLanguages.JS }],
-        initial: 1,
-      }));
-    }
+  .action(async (uri: string, options: Options) => {
+    const language = await getLanguage(options);
 
     // @todo let them know that we're going to be creating a `.api/ directory
     // @todo detect if they have a gitigore and .npmignore and if .api woudl be ignored by that
@@ -67,35 +123,7 @@ cmd
         process.exit(1);
       });
 
-    let identifier;
-    if (options.identifier) {
-      // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
-      if (Storage.isIdentifierValid(options.identifier)) {
-        identifier = options.identifier;
-      }
-    } else if (Fetcher.isAPIRegistryUUID(uri)) {
-      identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
-    } else {
-      ({ value: identifier } = await promptTerminal({
-        type: 'text',
-        name: 'value',
-        initial: oas.api?.info?.title ? uslug(oas.api.info.title, { lower: true }) : undefined,
-        message:
-          'What would you like to identify this API as? This will be how you use the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
-        validate: value => {
-          if (!value) {
-            return false;
-          }
-
-          try {
-            return Storage.isIdentifierValid(value, true);
-          } catch (err) {
-            return err.message;
-          }
-        },
-      }));
-    }
-
+    const identifier = await getIdentifier(oas, uri, options);
     if (!identifier) {
       logger('You must tell us what you would like to identify this API as in order to install it.', true);
       process.exit(1);
@@ -184,7 +212,20 @@ cmd
       process.exit(1);
     }
 
-    logger('🚀 All done!');
+    logger('');
+    logger(
+      `🚀 All done! Your SDK is now available to use locally via the ${chalk.yellow(
+        storage.getPackageName(),
+      )} package.`,
+    );
+
+    const exampleSnippet = await getExampleCodeSnippet(oas, identifier);
+    if (exampleSnippet) {
+      logger('');
+      logger("Here's an example code snippet you can try out:");
+      logger('');
+      logger(chalk.green(exampleSnippet));
+    }
   })
   .addHelpText(
     'after',
