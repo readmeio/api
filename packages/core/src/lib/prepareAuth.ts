@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import type { AuthForHAR } from '@readme/oas-to-har/lib/types';
 import type Operation from 'oas/operation';
 import type { KeyedSecuritySchemeObject } from 'oas/rmoas.types';
 
@@ -7,15 +8,7 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
     return {};
   }
 
-  const preparedAuth: Record<
-    string,
-    | string
-    | number
-    | {
-        pass: string | number;
-        user: string | number;
-      }
-  > = {};
+  const preparedAuth: AuthForHAR = {};
 
   const security = operation.getSecurity();
   if (security.length === 0) {
@@ -61,8 +54,8 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
 
     const scheme = schemes.shift() as KeyedSecuritySchemeObject;
     preparedAuth[scheme._key] = {
-      user: authKey[0],
-      pass: authKey.length === 2 ? authKey[1] : '',
+      user: String(authKey[0]),
+      pass: authKey.length === 2 ? String(authKey[1]) : '',
     };
 
     return preparedAuth;
@@ -82,8 +75,8 @@ export default function prepareAuth(authKey: (number | string)[], operation: Ope
     case 'http':
       if (scheme.scheme === 'basic') {
         preparedAuth[scheme._key] = {
-          user: authKey[0],
-          pass: authKey.length === 2 ? authKey[1] : '',
+          user: String(authKey[0]),
+          pass: authKey.length === 2 ? String(authKey[1]) : '',
         };
       } else if (scheme.scheme === 'bearer') {
         preparedAuth[scheme._key] = authKey[0];

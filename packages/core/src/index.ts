@@ -1,4 +1,5 @@
 import type { ConfigOptions } from './types.js';
+import type { AuthForHAR, DataForHAR } from '@readme/oas-to-har/lib/types';
 import type { Har } from 'har-format';
 import type Operation from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
@@ -66,6 +67,15 @@ export default class APICore {
     return this.fetchOperation<HTTPStatus>(operation, body, metadata);
   }
 
+  /**
+   * Retrieve a HAR for a given HTTP request.
+   *
+   * @internal
+   */
+  getHARForRequest(operation: Operation, data: DataForHAR, auth: AuthForHAR) {
+    return oasToHar(this.spec, operation, data, auth);
+  }
+
   async fetchOperation<HTTPStatus extends number = number>(
     operation: Operation,
     body?: unknown,
@@ -84,8 +94,7 @@ export default class APICore {
         }
       }
 
-      // @ts-expect-error `this.auth` typing is off. FIXME
-      const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
+      const har = this.getHARForRequest(operation, data, prepareAuth(this.auth, operation));
 
       let timeoutSignal: NodeJS.Timeout;
       const init: RequestInit = {};

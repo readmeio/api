@@ -2,7 +2,7 @@ import type { AuthForHAR } from '@readme/oas-to-har/lib/types';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 
-import oasToHar from '@readme/oas-to-har';
+import APICore from '@readme/api-core';
 import client from 'httpsnippet-client-api';
 import { Webhook } from 'oas/operation';
 
@@ -55,8 +55,19 @@ export function getSuggestedOperation(oas: Oas) {
  * Generate an example code snippet for a given (suggested) operation. We'll show this to users
  * post-codegeneration so they can see how to use the SDK we created for them.
  *
+ * We're intentionally using `httpsnippet-client-api` and not `@readme/oas-to-snippet` here,
+ * which would handle HAR and snippet generation, because don't need the entire `oas-to-snippet`
+ * and `@readme/httpsnippet` libraries for what we're doing here.
+ *
+ * All we want to do is generate a very simple code example for `api` snippets and as we're
+ * controlling which kinds of endpoints we're generating these for the HAR dataset we're working
+ * with is a mostly fully known object.
+ *
  */
 export async function buildCodeSnippetForOperation(oas: Oas, operation: Operation, opts: { identifier: string }) {
+  const core = new APICore();
+  core.setSpec(oas);
+
   // If this endpoint has authentication on it then we should try to flesh out some placeholder
   // values in the `.auth()` SDK method for them so they can see how to use auth.
   let auth: AuthForHAR = {};
@@ -80,12 +91,7 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
     auth = oas.getAuth(auth) as AuthForHAR;
   }
 
-  // We're pulling in `@reamde/oas-to-har` and `httpsnippet-client-api` here instead of using
-  // `@readme/oas-to-snippet`, which would handle both, because we don't need the entire
-  // `oas-to-snippet` for what we're doing here. All we want to do is generate a very simple code
-  // example for `api` snippets and because we're controlling which kinds of endpoints we're
-  // generating this for the HAR dataset we're working with here is mostly a fully known object.
-  const har = oasToHar(oas, operation, undefined, auth)?.log?.entries?.[0]?.request;
+  const har = core.getHARForRequest(operation, {}, auth)?.log?.entries?.[0]?.request;
   if (!har) {
     return false;
   }
