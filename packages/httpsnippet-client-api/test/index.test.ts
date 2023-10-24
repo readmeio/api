@@ -113,7 +113,7 @@ describe('httpsnippet-client-api', () => {
     });
 
     it('should support custom SDK variable names', async () => {
-      const mock = await getSnippetDataset('short');
+      const mock = await getSnippetDataset('petstore');
 
       const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
         apiDefinitionUri: '@developers/v2.0#17273l2glm9fq4l5',
@@ -123,7 +123,8 @@ describe('httpsnippet-client-api', () => {
 
       expect(code).toStrictEqual(`import developers from '@api/developers';
 
-developers.getAnything()
+developers.auth('123');
+developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));`);
     });

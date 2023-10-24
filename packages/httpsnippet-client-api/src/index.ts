@@ -34,7 +34,7 @@ function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
 
-function buildAuthSnippet(authKey: string | string[]) {
+function buildAuthSnippet(sdkVariable: string, authKey: string | string[]) {
   // Auth key will be an array for Basic auth cases.
   if (Array.isArray(authKey)) {
     const auth: string[] = [];
@@ -47,10 +47,10 @@ function buildAuthSnippet(authKey: string | string[]) {
       auth.push(`'${token.replace(/'/g, "\\'")}'`);
     });
 
-    return `sdk.auth(${auth.join(', ')});`;
+    return `${sdkVariable}.auth(${auth.join(', ')});`;
   }
 
-  return `sdk.auth('${authKey.replace(/'/g, "\\'")}');`;
+  return `${sdkVariable}.auth('${authKey.replace(/'/g, "\\'")}');`;
 }
 
 function getAuthSources(operation: Operation) {
@@ -143,7 +143,7 @@ const client: Client<APIOptions> = {
     }
 
     let sdkPackageName;
-    let sdkVariable;
+    let sdkVariable: string;
     if (opts.identifier) {
       sdkPackageName = opts.identifier;
       sdkVariable = opts.identifier;
@@ -183,7 +183,7 @@ const client: Client<APIOptions> = {
     let metadata: Record<string, string | string[]> = {};
     Object.keys(queryObj).forEach(param => {
       if (authSources.query.includes(param)) {
-        authData.push(buildAuthSnippet(queryObj[param]));
+        authData.push(buildAuthSnippet(sdkVariable, queryObj[param]));
 
         // If this query param is part of an auth source then we don't want it doubled up in the
         // snippet.
@@ -195,7 +195,7 @@ const client: Client<APIOptions> = {
 
     Object.keys(cookiesObj).forEach(cookie => {
       if (authSources.cookie.includes(cookie)) {
-        authData.push(buildAuthSnippet(cookiesObj[cookie]));
+        authData.push(buildAuthSnippet(sdkVariable, cookiesObj[cookie]));
 
         // If this cookie is part of an auth source then we don't want it doubled up.
         return;
@@ -241,7 +241,7 @@ const client: Client<APIOptions> = {
           // into our auth data so we can build up an `.auth()` snippet for the SDK.
           const authScheme = authSources.header[headerLower];
           if (authScheme === '*') {
-            authData.push(buildAuthSnippet(headers[header]));
+            authData.push(buildAuthSnippet(sdkVariable, headers[header]));
           } else {
             // @ts-expect-error `headers[header]` is typed improperly in HTTPSnippet.
             let authKey = headers[header].replace(`${authSources.header[headerLower]} `, '');
@@ -250,7 +250,7 @@ const client: Client<APIOptions> = {
               authKey = authKey.split(':');
             }
 
-            authData.push(buildAuthSnippet(authKey));
+            authData.push(buildAuthSnippet(sdkVariable, authKey));
           }
 
           delete headers[header];
