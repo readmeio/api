@@ -42,7 +42,7 @@
     "stringify-object": "^5.0.0"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": ">=8",
+    "@readme/httpsnippet": ">=8.1.2",
     "oas": "^23.0.0"
   },
   "devDependencies": {
