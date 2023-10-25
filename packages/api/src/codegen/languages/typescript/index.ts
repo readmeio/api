@@ -523,6 +523,7 @@ dist/
       },
       files: ['dist', 'openapi.json'],
       scripts: {
+        lint: 'tsc --noEmit',
         prepare: 'tsup',
       },
       dependencies,
