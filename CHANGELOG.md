@@ -1,3 +1,14 @@
+## 7.0.0-beta.3 (2023-10-25)
+
+* fix(core): refactoring  `FromSchema` out of core (#787) ([41cacf3](https://github.com/readmeio/api/commit/41cacf3)), closes [#787](https://github.com/readmeio/api/issues/787)
+* feat: tsconfig, gitignore, npm script enhancements (#782) ([cd9e22c](https://github.com/readmeio/api/commit/cd9e22c)), closes [#782](https://github.com/readmeio/api/issues/782)
+* feat(api): creating LICENSE files and and SDK headings (#786) ([521683a](https://github.com/readmeio/api/commit/521683a)), closes [#786](https://github.com/readmeio/api/issues/786)
+* feat(api): improvements to the installation screen (#783) ([3280f1f](https://github.com/readmeio/api/commit/3280f1f)), closes [#783](https://github.com/readmeio/api/issues/783)
+* refactor(api): refactor core to handle HAR generation for code snippets (#785) ([13a70ae](https://github.com/readmeio/api/commit/13a70ae)), closes [#785](https://github.com/readmeio/api/issues/785)
+* ci(api): fixing our smoketest suite (#784) ([2fba159](https://github.com/readmeio/api/commit/2fba159)), closes [#784](https://github.com/readmeio/api/issues/784)
+
+
+
 ## 7.0.0-beta.2 (2023-10-23)
 
 * fix(core): funky type issues with the main export exporting multiple things (#781) ([9ad8bc2](https://github.com/readmeio/api/commit/9ad8bc2)), closes [#781](https://github.com/readmeio/api/issues/781)
