@@ -399,13 +399,17 @@ describe('storage', () => {
         expect(storage.getAPIDefinition().info).toStrictEqual({
           version: '1.0.0',
           title: 'Swagger Petstore',
+          contact: {
+            email: 'support@example.com',
+            name: 'API Support',
+          },
         });
 
         expect(storage.getFromLockfile()).toStrictEqual({
           private: true,
           identifier: 'relative-path',
           source: file,
-          integrity: 'sha512-Ey83iRY4tY7JCCUI03eqfNb8YsxKlBdLILXcLDBbxZ1a2X/YfTspCTA8mLp6aaG9gRSyNMhI1hmtSlduWZw8RA==',
+          integrity: 'sha512-1ujT5h3aKSIscrFSJaOHkLBCRrMCXIOLRrhwOt6PnVmzTvT63SAGqc/K7SE4hOxWNBgoHaYjD0YMC4RRUBKWUw==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),

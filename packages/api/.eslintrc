@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "camelcase": [
+      "error",
+      {
+        "allow": ["OpenAPIV3_1"]
+      }
+    ]
+  }
+}

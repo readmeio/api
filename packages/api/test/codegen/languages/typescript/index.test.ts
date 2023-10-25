@@ -97,22 +97,16 @@ function assertSDKFixture(file: string, fixture: string) {
 
 describe('typescript', () => {
   beforeEach(() => {
-    vi.setSystemTime(new Date('2023'));
+    vi.setSystemTime(new Date('2023-10-25'));
+    Storage.setStorageDir(uniqueTempDir());
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    Storage.reset();
   });
 
   describe('#install', () => {
-    beforeEach(() => {
-      Storage.setStorageDir(uniqueTempDir());
-    });
-
-    afterEach(() => {
-      Storage.reset();
-    });
-
     it('should install the required packages', async () => {
       const logger = vi.fn();
 

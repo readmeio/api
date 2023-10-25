@@ -1031,6 +1031,10 @@ class SDK {
   }
 }
 
+/**
+ * STAPI
+ *
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

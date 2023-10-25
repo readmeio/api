@@ -209,6 +209,10 @@ describe('fetcher', () => {
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
           title: 'Swagger Petstore',
+          contact: {
+            name: 'API Support',
+            email: 'support@example.com',
+          },
         });
       });
 

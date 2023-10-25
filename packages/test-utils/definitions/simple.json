@@ -2,7 +2,11 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Swagger Petstore"
+    "title": "Swagger Petstore",
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    }
   },
   "servers": [
     {
