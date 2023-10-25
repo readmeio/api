@@ -7,10 +7,10 @@
  *    while!
  *
  * @example <caption>Random sampling</caption>
- * npm run test:smoke -- --random
+ * SMOKETEST_RANDOM=on npm run test:smoke
  *
  * @example <caption>Chunk-based</caption>
- * npm run test:smoke -- --chunks=15 --chunk=10
+ * SMOKETEST_CHUNKS=15 SMOKETEST_CHUNK=10 npm run test:smoke
  *
  * @example <caption>Everything</caption>
  * npm run test:smoke
@@ -25,18 +25,15 @@ import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 // These APIs don't have any schemas so they should only be generating an `index.ts`.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];
 
-const args: { chunk?: string; chunks?: string; random?: boolean } = Object.fromEntries(
-  process.argv
-    .filter(a => a.startsWith('--'))
-    .map(a => {
-      /**
-       * @example `--chunks=15 --chunk=2` → `{ chunks: '15', chunk: '2' }`
-       * @example `--random` → `{ random: true }`
-       */
-      const [arg, val] = a.split('=');
-      return [arg.slice(2), !val ? true : parseInt(val, 10)];
-    }),
-);
+/**
+ * @example `SMOKETEST_CHUNKS=15 SMOKETEST_CHUNK=2` → `{ chunks: '15', chunk: '2' }`
+ * @example `SMOKETEST_RANDOM=on` → `{ random: true }`
+ */
+const args: { chunk?: string; chunks?: string; random?: boolean } = {
+  chunk: process.env.SMOKETEST_CHUNK,
+  chunks: process.env.SMOKETEST_CHUNKS,
+  random: !!process.env.SMOKETEST_RANDOM,
+};
 
 let dataset;
 const datasetTotal = realWorldAPIs.length;

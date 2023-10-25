@@ -1,6 +1,6 @@
 {
   "name": "@readme/api-core",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.2",
   "description": "The magic behind `api` 🧙",
   "sideEffects": false,
   "type": "module",
@@ -16,6 +16,10 @@
     "./lib": {
       "require": "./dist/lib/index.cjs",
       "import": "./dist/lib/index.js"
+    },
+    "./types": {
+      "require": "./dist/types.d.cjs",
+      "import": "./dist/types.d.js"
     },
     "./package.json": "./package.json"
   },

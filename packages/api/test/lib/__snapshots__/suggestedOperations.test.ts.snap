@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`#buildCodeSnippetForOperation > should construct a code snippet for a given operation 1`] = `
+"import petstore from '@api/petstore';
+
+petstore.auth('token');
+petstore.findPetsByStatus()
+  .then(({ data }) => console.log(data))
+  .catch(err => console.error(err));"
+`;

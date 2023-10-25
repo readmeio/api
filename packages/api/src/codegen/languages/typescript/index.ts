@@ -236,7 +236,7 @@ export default class TSGenerator extends CodeGenerator {
       sdkSource
         .getImportDeclarations()
         .find(id => id.getText().includes('HTTPMethodRange'))
-        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core';");
+        ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';");
     }
 
     return [
@@ -279,7 +279,7 @@ export default class TSGenerator extends CodeGenerator {
       {
         // `HTTPMethodRange` will be conditionally removed later if it ends up not being used.
         defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
-        moduleSpecifier: '@readme/api-core',
+        moduleSpecifier: '@readme/api-core/types',
       },
       { defaultImport: 'APICore', moduleSpecifier: '@readme/api-core' },
       { defaultImport: 'definition', moduleSpecifier: this.specPath },

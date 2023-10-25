@@ -1,3 +1,9 @@
+## 7.0.0-beta.2 (2023-10-23)
+
+* fix(core): funky type issues with the main export exporting multiple things (#781) ([9ad8bc2](https://github.com/readmeio/api/commit/9ad8bc2)), closes [#781](https://github.com/readmeio/api/issues/781)
+
+
+
 ## 7.0.0-beta.1 (2023-10-20)
 
 * fix: add caret to package.json dep (#779) ([305d3ca](https://github.com/readmeio/api/commit/305d3ca)), closes [#779](https://github.com/readmeio/api/issues/779)

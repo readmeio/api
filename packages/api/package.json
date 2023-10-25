@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.2",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "type": "module",
   "bin": {
@@ -49,6 +49,7 @@
     "commander": "^11.1.0",
     "execa": "^8.0.1",
     "figures": "^5.0.0",
+    "httpsnippet-client-api": "file:../httpsnippet-client-api",
     "js-yaml": "^4.1.0",
     "lodash.camelcase": "^4.3.0",
     "lodash.deburr": "^4.1.0",

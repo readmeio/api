@@ -22,4 +22,7 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npm run test:smoke -- -- --chunks=15 --chunk="${{ matrix.chunk }}"
+      - run: npm run test:smoke
+        env:
+          SMOKETEST_CHUNKS: 10
+          SMOKETEST_CHUNK: '${{ matrix.chunk }}'

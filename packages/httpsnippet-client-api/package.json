@@ -36,7 +36,9 @@
     "node": ">=18"
   },
   "dependencies": {
+    "camelcase": "^8.0.0",
     "content-type": "^1.0.5",
+    "reserved2": "^0.1.5",
     "stringify-object": "^5.0.0"
   },
   "peerDependencies": {
