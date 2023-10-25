@@ -1,4 +1,4 @@
-import type { FromSchema } from '@readme/api-core/lib';
+import type { FromSchema } from '@readme/api-core/types';
 import * as schemas from './schemas';
 
 export type Apply = FromSchema<typeof schemas.Apply>;

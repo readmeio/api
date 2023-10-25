@@ -1,3 +1,5 @@
+export type { FromSchema } from 'json-schema-to-ts';
+
 export interface ConfigOptions {
   /**
    * Override the default `fetch` request timeout of 30 seconds. This number should be represented
