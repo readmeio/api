@@ -19,7 +19,7 @@ import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
-import { findLicense, getLicense } from 'license';
+import { getLicense } from 'license';
 import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
@@ -504,6 +504,7 @@ sdk.server('https://eu.api.example.com/v14');`),
             }
           : {}),
       },
+      license: this.spdxLicense ?? '',
       files: ['dist', 'openapi.json'],
       scripts: {
         prepare: 'tsup',
@@ -512,6 +513,10 @@ sdk.server('https://eu.api.example.com/v14');`),
       devDependencies,
       tsup: tsupOptions as JsonObject,
     };
+
+    if (!this.spdxLicense) {
+      delete pkg.license;
+    }
 
     sourceFile.addStatements(JSON.stringify(pkg, null, 2));
 
@@ -588,36 +593,21 @@ Generated at ${createdAt}
       });
     }
 
-    if (infoObject?.license?.name || infoObject?.license?.identifier) {
-      let spdxLicense;
-      if (infoObject?.license?.identifier) {
-        spdxLicense = infoObject?.license?.identifier;
-      } else {
-        // Though `name` is required by the OpenAPI specification but most people seem to use `name`
-        // instead `identifier` for their licensing identifier so if they've done this we should
-        // try to make the license name recognizable by the `license` package. For example this'll
-        // change "Apache 2.0" to the SPDX-recognized "Apache-2.0".
-        spdxLicense = infoObject?.license?.name.replace(/ /g, '-');
-      }
+    if (this.spdxLicense) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'license',
+        text: this.spdxLicense,
+      });
 
-      // If the license they've got has too many matches we shouldn't try to pick a license because
-      // we'll run the risk of licensing it under a license they didn't intend.
-      if (findLicense(spdxLicense).length === 1) {
+      if (infoObject?.license?.url) {
         docblock = TSGenerator.#addTagToDocblock(docblock, {
-          tagName: 'license',
-          text: spdxLicense,
+          tagName: 'see',
+          text: `{@link ${infoObject.license.url}}`,
         });
-
-        if (infoObject?.license?.url) {
-          docblock = TSGenerator.#addTagToDocblock(docblock, {
-            tagName: 'see',
-            text: `{@link ${infoObject.license.url}}`,
-          });
-        }
-
-        // We should add a LICENSE file to their SDK too.
-        this.project.createSourceFile('LICENSE', getLicense(spdxLicense));
       }
+
+      // We should add a LICENSE file to their SDK too.
+      this.project.createSourceFile('LICENSE', getLicense(this.spdxLicense));
     }
 
     if (Object.keys(docblock).length) {
