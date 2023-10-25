@@ -1,4 +1,4 @@
-import type { FromSchema } from '@readme/api-core/types';
+import type { FromSchema } from 'json-schema-to-ts';
 
 import { SupportedLanguages } from './codegen/factory.js';
 

@@ -51,6 +51,7 @@
     "figures": "^5.0.0",
     "httpsnippet-client-api": "file:../httpsnippet-client-api",
     "js-yaml": "^4.1.0",
+    "json-schema-to-ts": "^2.9.2",
     "license": "^1.0.3",
     "lodash.camelcase": "^4.3.0",
     "lodash.deburr": "^4.1.0",

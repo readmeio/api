@@ -106,6 +106,12 @@ export default class TSGenerator extends CodeGenerator {
         url: 'https://tsup.egoist.dev/',
         version: '^7.2.0',
       },
+      'json-schema-to-ts': {
+        dependencyType: 'production',
+        reason: 'Required for TypeScript type handling.',
+        url: 'https://npm.im/json-schema-to-ts',
+        version: '^2.9.2',
+      },
       typescript: {
         dependencyType: 'development',
         reason: 'Required for `tsup`.',
@@ -753,7 +759,7 @@ Generated at ${createdAt}
     const sourceFile = sourceDirectory.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
-      { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/types' },
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
       { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
     ]);
 

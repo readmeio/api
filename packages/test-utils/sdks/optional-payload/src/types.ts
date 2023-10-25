@@ -1,4 +1,4 @@
-import type { FromSchema } from '@readme/api-core/types';
+import type { FromSchema } from 'json-schema-to-ts';
 import * as schemas from './schemas';
 
 export type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.UpdatePetWithForm.formData>;
