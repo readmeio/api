@@ -140,7 +140,7 @@ export default class TSGenerator extends CodeGenerator {
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    const npmInstall = ['install', '--save', '--ignore-scripts', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
