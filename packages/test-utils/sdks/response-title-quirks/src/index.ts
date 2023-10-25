@@ -3,10 +3,6 @@ import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/response-title-quirks.json';
 
-/**
- * Testing an OAS that has response `title` props that start with a number
- *
- */
 class SDK {
   core: APICore;
 
@@ -79,6 +75,10 @@ class SDK {
   }
 }
 
+/**
+ * Testing an OAS that has response `title` props that start with a number
+ *
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

@@ -18,6 +18,8 @@ export default abstract class CodeGenerator {
 
   spdxLicense?: string;
 
+  apiContact: { name?: string; url?: string } = {};
+
   requiredPackages!: Record<
     string,
     {
@@ -72,6 +74,16 @@ export default abstract class CodeGenerator {
       // we'll run the risk of licensing it under a license they didn't intend.
       if (findLicense(spdxLicense).length === 1) {
         this.spdxLicense = spdxLicense;
+      }
+    }
+
+    if (infoObject?.contact) {
+      if (infoObject.contact?.name && infoObject.contact?.email) {
+        this.apiContact.name = `${infoObject.contact.name} <${infoObject.contact.email}>`;
+      }
+
+      if (infoObject.contact?.url) {
+        this.apiContact.url = infoObject.contact.url;
       }
     }
   }

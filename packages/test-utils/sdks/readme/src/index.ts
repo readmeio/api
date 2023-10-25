@@ -3,12 +3,6 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
 
-/**
- * ReadMe API 🦉
- *
- * Create beautiful product and API documentation with our developer friendly platform.
- *
- */
 class SDK {
   core: APICore;
 
@@ -482,6 +476,14 @@ class SDK {
   }
 }
 
+/**
+ * ReadMe API 🦉
+ *
+ * Create beautiful product and API documentation with our developer friendly platform.
+ *
+ * @author API Support <support@readme.io>
+ * @see {@link https://docs.readme.com/main/docs/need-more-support}
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

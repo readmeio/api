@@ -11,6 +11,7 @@ import type {
   JSDocTagStructure,
   OptionalKind,
   ParameterDeclarationStructure,
+  SourceFile,
 } from 'ts-morph';
 import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
@@ -292,8 +293,6 @@ export default class TSGenerator extends CodeGenerator {
       properties: [{ name: 'core', type: 'APICore' }],
     });
 
-    this.createSDKHeading();
-
     this.sdk.addConstructor({
       statements: writer => {
         writer.write('this.core = new APICore(definition, ').quote(this.userAgent).write(');');
@@ -395,9 +394,108 @@ sdk.server('https://eu.api.example.com/v14');`),
       this.createOperationAccessor(data.operation, operationId, data.types.params, data.types.responses);
     });
 
-    // Export our SDK into the source file.
+    this.createSDKExport(sourceFile);
+
+    return sourceFile;
+  }
+
+  /**
+   * Create an IIFE export of our SDK in the SDK source file so users can do
+   * `import sdk from '<package>'` and have a ready-to-go instance of their SDK -- eliminating them
+   * having to create an instance with `new SDK()`.
+   *
+   * This will also fill our a JSDoc heading on the IIFE we're creating based on various pieces of
+   * data that may be present in the OpenAPI definition `info` object.
+   *
+   * Additionally if a license in `info.license` is recognized by the SPDX we'll also create a
+   * `LICENSE` file in for their generated SDK. We're only supporting SPDX-recognized licenses for
+   * this because we otherwise have no idea what the license represents and we should be extremely
+   * cautious around assuming intent with software licensing.
+   *
+   * @see {@link https://spdx.org/licenses/}
+   */
+  createSDKExport(sourceFile: SourceFile) {
+    let docblock: OptionalKind<JSDocStructure> = {};
+
+    // The OpenAPI 3.1 `info` object added some properties that aren't available in 3.0 but 3.1
+    // still contains everything that was available in 3.0 so to allow us to not have to do gross
+    // `as OpenAPIV3_1.InfoObject` typing everywhere we're just assuming that we have 3.1 object
+    // here.
+    const infoObject = this.spec.api.info as OpenAPIV3_1.InfoObject;
+    if (infoObject?.title || infoObject?.description) {
+      docblock.description = writer => {
+        if (infoObject.title) {
+          writer.writeLine(docblockEscape(wordWrap(infoObject.title)));
+        }
+
+        if (infoObject.description) {
+          writer.conditionalNewLine(!!infoObject.title);
+          writer.writeLine(docblockEscape(wordWrap(infoObject.description)));
+        }
+
+        writer.newLineIfLastNot();
+        return writer;
+      };
+    }
+
+    if (this.apiContact.name) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'author',
+        text: this.apiContact.name,
+      });
+    }
+
+    if (this.apiContact.url) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'see',
+        text: `{@link ${this.apiContact.url}}`,
+      });
+    }
+
+    if (infoObject?.termsOfService) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'see',
+        text: `{@link ${infoObject.termsOfService} Terms of Service}`,
+      });
+    }
+
+    if (this.spdxLicense) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'license',
+        text: this.spdxLicense,
+      });
+
+      // Some licenses like `Apache-2.0` have the year as `[yyyy]` but the `license` package only
+      // supports templating on `<templatekey>` so we need to fix this ourselves.
+      // https://github.com/Ovyerus/license/issues/12
+      const year = new Date().getFullYear().toString();
+      const license = getLicense(this.spdxLicense, {
+        year,
+        // `license` doesn't support empty strings so we need to fake it here
+        author: this.apiContact.name ?? ' ',
+      }).replace('yyyy', year);
+
+      this.project.createSourceFile('LICENSE', license);
+    } else if (infoObject?.license) {
+      // If they have a license but it's not recognized by the SPDX we should still surface it.
+      if (infoObject?.license?.name) {
+        docblock = TSGenerator.#addTagToDocblock(docblock, {
+          tagName: 'license',
+          text: infoObject.license.name,
+        });
+      }
+
+      if (infoObject.license?.url) {
+        docblock = TSGenerator.#addTagToDocblock(docblock, {
+          tagName: 'see',
+          text: `{@link ${infoObject.license.url}}`,
+        });
+      }
+    }
+
     sourceFile.addVariableStatement({
       declarationKind: VariableDeclarationKind.Const,
+      docs: Object.keys(docblock).length ? [docblock] : [],
       declarations: [
         {
           name: 'createSDK',
@@ -550,69 +648,6 @@ Generated at ${createdAt}
     const sourceFile = this.project.createSourceFile('README.md', file);
 
     return sourceFile;
-  }
-
-  /**
-   * Fill out a JSDoc heading on the SDK we're creating based on various pieces of data that may be
-   * present in the OpenAPI definition `info` object.
-   *
-   * Additionally if a license in `info.license` is recognized by the SPDX we'll also create a
-   * `LICENSE` file in for their generated SDK. We're only supporting SPDX-recognized licenses for
-   * this because we otherwise have no idea what the license represents.
-   *
-   * @see {@link https://spdx.org/licenses/}
-   */
-  private createSDKHeading() {
-    let docblock: OptionalKind<JSDocStructure> = {};
-
-    // The OpenAPI 3.1 `info` object added some properties that aren't available in 3.0 but 3.1
-    // still contains everything that was available in 3.0 so to allow us to not have to do gross
-    // `as OpenAPIV3_1.InfoObject` typing everywhere we're just assuming that we have 3.1 object
-    // here.
-    const infoObject = this.spec.api.info as OpenAPIV3_1.InfoObject;
-    if (infoObject?.title || infoObject?.description) {
-      docblock.description = writer => {
-        if (infoObject.title) {
-          writer.writeLine(docblockEscape(wordWrap(infoObject.title)));
-        }
-
-        if (infoObject.description) {
-          writer.conditionalNewLine(!!infoObject.title);
-          writer.writeLine(docblockEscape(wordWrap(infoObject.description)));
-        }
-
-        writer.newLineIfLastNot();
-        return writer;
-      };
-    }
-
-    if (infoObject?.termsOfService) {
-      docblock = TSGenerator.#addTagToDocblock(docblock, {
-        tagName: 'see',
-        text: `{@link ${infoObject.termsOfService} Terms of Service}`,
-      });
-    }
-
-    if (this.spdxLicense) {
-      docblock = TSGenerator.#addTagToDocblock(docblock, {
-        tagName: 'license',
-        text: this.spdxLicense,
-      });
-
-      if (infoObject?.license?.url) {
-        docblock = TSGenerator.#addTagToDocblock(docblock, {
-          tagName: 'see',
-          text: `{@link ${infoObject.license.url}}`,
-        });
-      }
-
-      // We should add a LICENSE file to their SDK too.
-      this.project.createSourceFile('LICENSE', getLicense(this.spdxLicense));
-    }
-
-    if (Object.keys(docblock).length) {
-      this.sdk.addJsDoc(docblock);
-    }
   }
 
   /**

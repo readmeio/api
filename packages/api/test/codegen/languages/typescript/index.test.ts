@@ -97,7 +97,7 @@ function assertSDKFixture(file: string, fixture: string) {
 
 describe('typescript', () => {
   beforeEach(() => {
-    vi.setSystemTime(new Date('2023'));
+    vi.setSystemTime(new Date('2023-10-25'));
     Storage.setStorageDir(uniqueTempDir());
   });
 

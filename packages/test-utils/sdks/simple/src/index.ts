@@ -3,10 +3,6 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/simple.json';
 
-/**
- * Swagger Petstore
- *
- */
 class SDK {
   core: APICore;
 
@@ -84,6 +80,11 @@ class SDK {
   }
 }
 
+/**
+ * Swagger Petstore
+ *
+ * @author API Support <support@example.com>
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

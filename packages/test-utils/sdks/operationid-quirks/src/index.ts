@@ -2,10 +2,6 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/operationid-quirks.json';
 
-/**
- * Quirky `operationID` cases
- *
- */
 class SDK {
   core: APICore;
 
@@ -110,6 +106,10 @@ class SDK {
   }
 }
 
+/**
+ * Quirky `operationID` cases
+ *
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

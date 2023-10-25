@@ -3,10 +3,6 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@readme/oas-examples/3.0/json/star-trek.json';
 
-/**
- * STAPI
- *
- */
 class SDK {
   core: APICore;
 
@@ -1035,6 +1031,10 @@ class SDK {
   }
 }
 
+/**
+ * STAPI
+ *
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;
