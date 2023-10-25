@@ -9,6 +9,6 @@ Add SDK setup information and usage examples here so your users get started in a
 Here's some additional info about the generated SDK:
 
 `api` version: <<package version>>
-Generated at 2023-01-01T00:00:00.000Z
+Generated at 2023-10-25T00:00:00.000Z
 
 --->

@@ -80,6 +80,11 @@ class SDK {
   }
 }
 
+/**
+ * Swagger Petstore
+ *
+ * @author API Support <support@example.com>
+ */
 const createSDK = (() => { return new SDK(); })();
 
 export default createSDK;

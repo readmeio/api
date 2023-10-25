@@ -1,6 +1,9 @@
 import type { InstallerOptions } from './factory.js';
 import type Storage from '../storage.js';
 import type Oas from 'oas';
+import type { OpenAPIV3_1 } from 'openapi-types';
+
+import { findLicense } from 'license';
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from '../packageInfo.js';
 
@@ -12,6 +15,10 @@ export default abstract class CodeGenerator {
   identifier: string;
 
   userAgent: string;
+
+  spdxLicense?: string;
+
+  apiContact: { name?: string; url?: string } = {};
 
   requiredPackages!: Record<
     string,
@@ -48,6 +55,42 @@ export default abstract class CodeGenerator {
       throw new Error(
         'Sorry, this library does not yet support generating an SDK for an OpenAPI definition that contains circular references.',
       );
+    }
+
+    const infoObject = this.spec.api.info as OpenAPIV3_1.InfoObject;
+    if (infoObject?.license?.name || infoObject?.license?.identifier) {
+      let spdxLicense;
+      if (infoObject?.license?.identifier) {
+        spdxLicense = infoObject?.license?.identifier;
+      } else {
+        // Though `name` is required by the OpenAPI specification but most people seem to use `name`
+        // instead `identifier` for their licensing identifier so if they've done this we should
+        // try to make the license name recognizable by the `license` package. For example this'll
+        // change "Apache 2.0" to the SPDX-recognized "Apache-2.0".
+        spdxLicense = infoObject?.license?.name.replace(/ /g, '-');
+      }
+
+      // If the license they've got has too many matches we shouldn't try to pick a license because
+      // we'll run the risk of licensing it under a license they didn't intend.
+      if (findLicense(spdxLicense).length === 1) {
+        this.spdxLicense = spdxLicense;
+      }
+    }
+
+    if (infoObject?.contact) {
+      if (infoObject.contact?.name || infoObject.contact?.email) {
+        if (infoObject.contact?.name && infoObject.contact?.email) {
+          this.apiContact.name = `${infoObject.contact.name} <${infoObject.contact.email}>`;
+        } else {
+          this.apiContact.name = infoObject.contact.email
+            ? `<${infoObject.contact.email}>`
+            : infoObject.contact.name ?? undefined;
+        }
+      }
+
+      if (infoObject.contact?.url) {
+        this.apiContact.url = infoObject.contact.url;
+      }
     }
   }
 
