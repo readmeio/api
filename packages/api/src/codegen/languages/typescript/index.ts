@@ -215,6 +215,7 @@ export default class TSGenerator extends CodeGenerator {
     const srcDirectory = this.project.createDirectory('src');
     const sdkSource = this.createSDKSource(srcDirectory);
 
+    this.createGitIgnore();
     this.createPackageJSON();
     this.createTSConfig();
     this.createREADME();
@@ -415,6 +416,22 @@ sdk.server('https://eu.api.example.com/v14');`),
       isExportEquals: false,
       expression: 'createSDK',
     });
+
+    return sourceFile;
+  }
+
+  /**
+   * Creates a `.gitignore` file to prevent the `dist/` directory from being tracked.
+   *
+   */
+  createGitIgnore() {
+    const file = `# This file prevents the \`dist/\` directory from being tracked via git.
+# This is recommended since the \`prepare\` npm script automatically
+# regenerates the contents of the \`dist/\` directory as needed.
+dist/
+`;
+
+    const sourceFile = this.project.createSourceFile('.gitignore', file);
 
     return sourceFile;
   }
