@@ -473,7 +473,9 @@ sdk.server('https://eu.api.example.com/v14');`),
         year,
         // `license` doesn't support empty strings so we need to fake it here
         author: this.apiContact.name ?? ' ',
-      }).replace('yyyy', year);
+      })
+        .replace(/<yyyy>/g, year)
+        .replace(/\[yyyy\]/g, year);
 
       this.project.createSourceFile('LICENSE', license);
     } else if (infoObject?.license) {

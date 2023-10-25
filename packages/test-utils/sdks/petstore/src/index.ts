@@ -255,6 +255,7 @@ class SDK {
  * #swagger](http://swagger.io/irc/).  For this sample, you can use the api key
  * `special-key` to test the authorization filters.
  *
+ * @author <apiteam@swagger.io>
  * @see {@link http://swagger.io/terms/ Terms of Service}
  * @license Apache-2.0
  */

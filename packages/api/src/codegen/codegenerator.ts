@@ -78,8 +78,14 @@ export default abstract class CodeGenerator {
     }
 
     if (infoObject?.contact) {
-      if (infoObject.contact?.name && infoObject.contact?.email) {
-        this.apiContact.name = `${infoObject.contact.name} <${infoObject.contact.email}>`;
+      if (infoObject.contact?.name || infoObject.contact?.email) {
+        if (infoObject.contact?.name && infoObject.contact?.email) {
+          this.apiContact.name = `${infoObject.contact.name} <${infoObject.contact.email}>`;
+        } else {
+          this.apiContact.name = infoObject.contact.email
+            ? `<${infoObject.contact.email}>`
+            : infoObject.contact.name ?? undefined;
+        }
       }
 
       if (infoObject.contact?.url) {
