@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "resolveJsonModule": true
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "strict": true
   },
   "include": [
     "./src/**/*"

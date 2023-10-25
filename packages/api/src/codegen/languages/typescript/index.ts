@@ -218,6 +218,7 @@ export default class TSGenerator extends CodeGenerator {
     const srcDirectory = this.project.createDirectory('src');
     const sdkSource = this.createSDKSource(srcDirectory);
 
+    this.createGitIgnore();
     this.createPackageJSON();
     this.createTSConfig();
     this.createREADME();
@@ -523,6 +524,22 @@ sdk.server('https://eu.api.example.com/v14');`),
   }
 
   /**
+   * Creates a `.gitignore` file to prevent the `dist/` directory from being tracked.
+   *
+   */
+  createGitIgnore() {
+    const file = `# This file prevents the \`dist/\` directory from being tracked via git.
+# This is recommended since the \`prepare\` npm script automatically
+# regenerates the contents of the \`dist/\` directory as needed.
+dist/
+`;
+
+    const sourceFile = this.project.createSourceFile('.gitignore', file);
+
+    return sourceFile;
+  }
+
+  /**
    * Create the `tsconfig.json` file that will allow this SDK to be compiled for use.
    *
    */
@@ -531,8 +548,11 @@ sdk.server('https://eu.api.example.com/v14');`),
 
     const config: TsConfigJson = {
       compilerOptions: {
-        module: 'NodeNext',
+        esModuleInterop: true,
+        module: 'ESNext',
+        moduleResolution: 'Bundler',
         resolveJsonModule: true,
+        strict: true,
       },
       include: ['./src/**/*'],
     };
@@ -607,6 +627,7 @@ sdk.server('https://eu.api.example.com/v14');`),
       license: this.spdxLicense ?? '',
       files: ['dist', 'openapi.json'],
       scripts: {
+        lint: 'tsc --noEmit',
         prepare: 'tsup',
       },
       dependencies,

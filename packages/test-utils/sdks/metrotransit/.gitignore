@@ -1,0 +1,4 @@
+# This file prevents the `dist/` directory from being tracked via git.
+# This is recommended since the `prepare` npm script automatically
+# regenerates the contents of the `dist/` directory as needed.
+dist/
