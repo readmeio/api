@@ -2,6 +2,7 @@ import type { InstallerOptions } from '../../factory.js';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import type { SemVer } from 'semver';
 import type {
   ClassDeclaration,
@@ -18,6 +19,7 @@ import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
+import { findLicense, getLicense } from 'license';
 import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
@@ -285,11 +287,12 @@ export default class TSGenerator extends CodeGenerator {
       { defaultImport: 'definition', moduleSpecifier: this.specPath },
     ]);
 
-    // @todo add TOS, License, info.* to a docblock at the top of the SDK.
     this.sdk = sourceFile.addClass({
       name: 'SDK',
       properties: [{ name: 'core', type: 'APICore' }],
     });
+
+    this.createSDKHeading();
 
     this.sdk.addConstructor({
       statements: writer => {
@@ -542,6 +545,84 @@ Generated at ${createdAt}
     const sourceFile = this.project.createSourceFile('README.md', file);
 
     return sourceFile;
+  }
+
+  /**
+   * Fill out a JSDoc heading on the SDK we're creating based on various pieces of data that may be
+   * present in the OpenAPI definition `info` object.
+   *
+   * Additionally if a license in `info.license` is recognized by the SPDX we'll also create a
+   * `LICENSE` file in for their generated SDK. We're only supporting SPDX-recognized licenses for
+   * this because we otherwise have no idea what the license represents.
+   *
+   * @see {@link https://spdx.org/licenses/}
+   */
+  private createSDKHeading() {
+    let docblock: OptionalKind<JSDocStructure> = {};
+
+    // The OpenAPI 3.1 `info` object added some properties that aren't available in 3.0 but 3.1
+    // still contains everything that was available in 3.0 so to allow us to not have to do gross
+    // `as OpenAPIV3_1.InfoObject` typing everywhere we're just assuming that we have 3.1 object
+    // here.
+    const infoObject = this.spec.api.info as OpenAPIV3_1.InfoObject;
+    if (infoObject?.title || infoObject?.description) {
+      docblock.description = writer => {
+        if (infoObject.title) {
+          writer.writeLine(docblockEscape(wordWrap(infoObject.title)));
+        }
+
+        if (infoObject.description) {
+          writer.conditionalNewLine(!!infoObject.title);
+          writer.writeLine(docblockEscape(wordWrap(infoObject.description)));
+        }
+
+        writer.newLineIfLastNot();
+        return writer;
+      };
+    }
+
+    if (infoObject?.termsOfService) {
+      docblock = TSGenerator.#addTagToDocblock(docblock, {
+        tagName: 'see',
+        text: `{@link ${infoObject.termsOfService} Terms of Service}`,
+      });
+    }
+
+    if (infoObject?.license?.name || infoObject?.license?.identifier) {
+      let spdxLicense;
+      if (infoObject?.license?.identifier) {
+        spdxLicense = infoObject?.license?.identifier;
+      } else {
+        // Though `name` is required by the OpenAPI specification but most people seem to use `name`
+        // instead `identifier` for their licensing identifier so if they've done this we should
+        // try to make the license name recognizable by the `license` package. For example this'll
+        // change "Apache 2.0" to the SPDX-recognized "Apache-2.0".
+        spdxLicense = infoObject?.license?.name.replace(/ /g, '-');
+      }
+
+      // If the license they've got has too many matches we shouldn't try to pick a license because
+      // we'll run the risk of licensing it under a license they didn't intend.
+      if (findLicense(spdxLicense).length === 1) {
+        docblock = TSGenerator.#addTagToDocblock(docblock, {
+          tagName: 'license',
+          text: spdxLicense,
+        });
+
+        if (infoObject?.license?.url) {
+          docblock = TSGenerator.#addTagToDocblock(docblock, {
+            tagName: 'see',
+            text: `{@link ${infoObject.license.url}}`,
+          });
+        }
+
+        // We should add a LICENSE file to their SDK too.
+        this.project.createSourceFile('LICENSE', getLicense(spdxLicense));
+      }
+    }
+
+    if (Object.keys(docblock).length) {
+      this.sdk.addJsDoc(docblock);
+    }
   }
 
   /**

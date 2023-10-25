@@ -83,15 +83,24 @@ export default class Storage {
    * Reset the state of the entire storage system.
    *
    * This will completely destroy the contents of the `.api/` directory!
+   *
+   * @internal
    */
   static async reset() {
+    const noop = () => {
+      // If any of these file and directory removals fail we don't need to throw any errors because
+      // this method is only used internally in unit tests.
+    };
+
     if (Storage.getLockfilePath()) {
-      await fs.promises.writeFile(Storage.getLockfilePath(), JSON.stringify(Storage.getDefaultLockfile(), null, 2));
+      await fs.promises
+        .writeFile(Storage.getLockfilePath(), JSON.stringify(Storage.getDefaultLockfile(), null, 2))
+        .catch(noop);
     }
 
     if (Storage.getAPIsDir()) {
-      await fs.promises.rm(Storage.getAPIsDir(), { recursive: true });
-      await fs.promises.mkdir(Storage.getAPIsDir(), { recursive: true });
+      await fs.promises.rm(Storage.getAPIsDir(), { recursive: true }).catch(noop);
+      await fs.promises.mkdir(Storage.getAPIsDir(), { recursive: true }).catch(noop);
     }
   }
 

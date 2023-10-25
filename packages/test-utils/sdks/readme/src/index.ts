@@ -3,6 +3,12 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@readme/oas-examples/3.0/json/readme.json';
 
+/**
+ * ReadMe API 🦉
+ *
+ * Create beautiful product and API documentation with our developer friendly platform.
+ *
+ */
 class SDK {
   core: APICore;
 

@@ -3,6 +3,13 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/metrotransit.json';
 
+/**
+ * NexTrip API
+ *
+ * API for creating Metro Transit real-time departure information display (beta, subject to
+ * change)
+ *
+ */
 class SDK {
   core: APICore;
 

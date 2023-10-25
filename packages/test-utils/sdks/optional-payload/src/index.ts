@@ -3,6 +3,10 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/optional-payload.json';
 
+/**
+ * Example API with a requestBody payload that's optional.
+ *
+ */
 class SDK {
   core: APICore;
 
