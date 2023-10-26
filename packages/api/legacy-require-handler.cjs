@@ -24,5 +24,6 @@ You can read more about this in our docs: TKTK
 
 Try running this command to get started:
 
-npx api@latest install ${input}`);
+npx api@latest install ${input}
+`);
 };
