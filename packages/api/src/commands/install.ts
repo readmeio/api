@@ -2,6 +2,7 @@ import type { SupportedLanguage } from '../codegen/factory.js';
 
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
+import { emphasize } from 'emphasize';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
@@ -224,7 +225,8 @@ cmd
       logger('');
       logger("Here's an example code snippet you can try out:");
       logger('');
-      logger(chalk.green(exampleSnippet));
+      logger(emphasize.highlight(language, exampleSnippet).value);
+      logger('');
     }
   })
   .addHelpText(
