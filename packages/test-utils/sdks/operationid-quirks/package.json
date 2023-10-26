@@ -15,8 +15,7 @@
     "openapi.json"
   ],
   "scripts": {
-    "lint": "tsc --noEmit",
-    "prepare": "tsup"
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@readme/api-core": "file:../../../../../core",
