@@ -223,11 +223,11 @@ cmd
     const exampleSnippet = await getExampleCodeSnippet(oas, identifier);
     if (exampleSnippet) {
       logger('');
-      logger("Here's an example code snippet you can try out:");
+      logger(chalk.bold("👇 Here's an example code snippet you can try out 👇"));
       logger('');
       logger(emphasize.highlight(language, exampleSnippet).value);
-      logger('');
     }
+    logger('');
   })
   .addHelpText(
     'after',
