@@ -1,4 +1,5 @@
 import type { InstallerOptions } from '../../factory.js';
+import type { ExecaReturnValue } from 'execa';
 import type Oas from 'oas';
 import type Operation from 'oas/operation';
 import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
@@ -60,6 +61,22 @@ interface OperationTypeHousing {
  */
 const REF_PLACEHOLDER = '::convert::';
 const REF_PLACEHOLDER_REGEX = /"::convert::([a-zA-Z_$\\d]*)"/g;
+
+function handleExecSuccess(res: ExecaReturnValue<string>, opts: InstallerOptions = {}) {
+  if (opts.dryRun) {
+    (opts.logger ? opts.logger : logger)(res.command);
+    (opts.logger ? opts.logger : logger)(res.stdout);
+  }
+}
+
+function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
+  if (opts.dryRun) {
+    (opts.logger ? opts.logger : logger)(err.message);
+    return;
+  }
+
+  throw err;
+}
 
 export default class TSGenerator extends CodeGenerator {
   project: Project;
@@ -140,18 +157,13 @@ export default class TSGenerator extends CodeGenerator {
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    const npmInstall = ['install', '--save', '--ignore-scripts', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    const npmInstall = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
     // `require('@api/<sdk identifier>)`.
     return execa('npm', [...npmInstall, installDir].filter(Boolean))
-      .then(res => {
-        if (opts.dryRun) {
-          (opts.logger ? opts.logger : logger)(res.command);
-          (opts.logger ? opts.logger : logger)(res.stdout);
-        }
-      })
+      .then(res => handleExecSuccess(res, opts))
       .catch(err => {
         // If `npm install` throws this error it always happens **after** our dependencies have been
         // installed and is an annoying quirk that sometimes occurs when installing a package within
@@ -164,12 +176,7 @@ export default class TSGenerator extends CodeGenerator {
           return;
         }
 
-        if (opts.dryRun) {
-          (opts.logger ? opts.logger : logger)(err.message);
-          return;
-        }
-
-        throw err;
+        handleExecFailure(err, opts);
       });
   }
 
@@ -178,15 +185,8 @@ export default class TSGenerator extends CodeGenerator {
 
     const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
     return execa('npm', args)
-      .then(res => {
-        if (opts.dryRun) {
-          (opts.logger ? opts.logger : logger)(res.command);
-          (opts.logger ? opts.logger : logger)(res.stdout);
-        }
-      })
-      .catch(err => {
-        throw err;
-      });
+      .then(res => handleExecSuccess(res, opts))
+      .catch(err => handleExecFailure(err, opts));
   }
 
   /**
@@ -197,23 +197,15 @@ export default class TSGenerator extends CodeGenerator {
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
 
-    await execa('npx', ['tsup'], {
+    await execa('npm', ['pkg', 'set', 'scripts.prepare=tsup'])
+      .then(res => handleExecSuccess(res, opts))
+      .catch(err => handleExecFailure(err, opts));
+
+    await execa('npm', ['run', 'prepare'], {
       cwd: installDir,
     })
-      .then(res => {
-        if (opts.dryRun) {
-          (opts.logger ? opts.logger : logger)(res.command);
-          (opts.logger ? opts.logger : logger)(res.stdout);
-        }
-      })
-      .catch(err => {
-        if (opts.dryRun) {
-          (opts.logger ? opts.logger : logger)(err.message);
-          return;
-        }
-
-        throw err;
-      });
+      .then(res => handleExecSuccess(res, opts))
+      .catch(err => handleExecFailure(err, opts));
   }
 
   /**
@@ -634,7 +626,6 @@ dist/
       files: ['dist', 'openapi.json'],
       scripts: {
         lint: 'tsc --noEmit',
-        prepare: 'tsup',
       },
       dependencies,
       devDependencies,
