@@ -3,7 +3,7 @@ import type Oas from 'oas';
 import type Operation from 'oas/operation';
 
 import APICore from '@readme/api-core';
-import client from 'httpsnippet-client-api';
+import apiSnippetPlugin from 'httpsnippet-client-api';
 import { Webhook } from 'oas/operation';
 
 /**
@@ -96,7 +96,7 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
     return false;
   }
 
-  const snippet = client.convert(
+  const snippet = apiSnippetPlugin.client.convert(
     {
       ...har,
       cookiesObj: har.cookies.reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {}),
@@ -114,9 +114,11 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
       uriObj: {} as never,
     },
     {
-      apiDefinition: oas.getDefinition(),
-      apiDefinitionUri: opts.identifier,
-      identifier: opts.identifier,
+      api: {
+        definition: oas.getDefinition(),
+        identifier: opts.identifier,
+        registryURI: opts.identifier,
+      },
     },
   );
 

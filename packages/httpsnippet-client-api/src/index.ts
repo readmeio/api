@@ -1,5 +1,5 @@
 import type { ReducedHelperObject } from '@readme/httpsnippet/helpers/reducer';
-import type { Client } from '@readme/httpsnippet/targets';
+import type { Client, ClientPlugin } from '@readme/httpsnippet/targets';
 import type Operation from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
 
@@ -97,21 +97,25 @@ function getAuthSources(operation: Operation) {
 }
 
 interface APIOptions {
-  apiDefinition: OASDocument;
-  /**
-   * The URI that is used to download this API definition from `npx api install`.
-   *
-   * @example @developers/v2.0#17273l2glm9fq4l5
-   */
-  apiDefinitionUri: string;
+  api: {
+    definition: OASDocument;
+
+    /**
+     * The string to identify this SDK as. This is used in the `import sdk from '<identifier>'`
+     * sample as well as the the variable name we attach the SDK to.
+     *
+     * @example `@api/developers`
+     */
+    identifier?: string;
+
+    /**
+     * The URI that is used to download this API definition from `npx api install`.
+     *
+     * @example `@developers/v2.0#17273l2glm9fq4l5`
+     */
+    registryURI: string;
+  };
   escapeBrackets?: boolean;
-  /**
-   * The string to identify this SDK as. This is used in the `import sdk from '@api/<identifier>'`
-   * sample as well as the the variable name we attach the SDK to.
-   *
-   * @example developers
-   */
-  identifier?: string;
   indent?: string | false;
 }
 
@@ -122,41 +126,44 @@ const client: Client<APIOptions> = {
     link: 'https://npm.im/api',
     description: 'Automatic SDK generation from an OpenAPI definition.',
     extname: '.js',
+    installation: 'npx api install {packageName}',
   },
   convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
       ...options,
     } as APIOptions;
 
-    if (!('apiDefinitionUri' in opts)) {
-      throw new Error('This HTTP Snippet client must have an `apiDefinitionUri` option supplied to it.');
-    } else if (!('apiDefinition' in opts)) {
-      throw new Error('This HTTP Snippet client must have an `apiDefinition` option supplied to it.');
+    if (!opts?.api) {
+      throw new Error('This HTTPSnippet client must have an `api` config supplied to it.');
+    } else if (!opts?.api?.definition) {
+      throw new Error('This HTTPSnippet client must have an `api.definition` option supplied to it.');
+    } else if (!opts?.api?.registryURI) {
+      throw new Error('This HTTPSnippet client must have an `api.registryURI` option supplied to it.');
     }
 
     const method = source.method.toLowerCase() as HttpMethods;
-    const oas = new Oas(opts.apiDefinition);
+    const oas = new Oas(opts.api.definition);
     const apiDefinition = oas.getDefinition();
     const foundOperation = oas.findOperation(url, method);
     if (!foundOperation) {
       throw new Error(
-        `Unable to locate a matching operation in the supplied \`apiDefinition\` for: ${source.method} ${url}`,
+        `Unable to locate a matching operation in the supplied \`api.definition\` for: ${source.method} ${url}`,
       );
     }
 
     let sdkPackageName;
     let sdkVariable: string;
-    if (opts.identifier) {
-      sdkPackageName = opts.identifier;
+    if (opts.api.identifier) {
+      sdkPackageName = opts.api.identifier;
 
-      sdkVariable = camelCase(opts.identifier);
+      sdkVariable = camelCase(opts.api.identifier);
       if (isReservedOrBuiltinsLC(sdkVariable)) {
         // If this identifier is a reserved JS word then we should prefix it with an underscore so
         // this snippet can be valid code.
         sdkVariable = `_${sdkVariable}`;
       }
     } else {
-      sdkPackageName = getProjectPrefixFromRegistryUUID(opts.apiDefinitionUri);
+      sdkPackageName = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
       sdkVariable = 'sdk';
     }
 
@@ -369,4 +376,9 @@ const client: Client<APIOptions> = {
   },
 };
 
-export default client;
+const plugin: ClientPlugin<APIOptions> = {
+  target: 'node',
+  client,
+};
+
+export default plugin;
