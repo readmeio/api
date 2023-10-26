@@ -6,6 +6,7 @@
   "bin": {
     "api": "bin/api.js"
   },
+  "main": "legacy-require-handler.cjs",
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
