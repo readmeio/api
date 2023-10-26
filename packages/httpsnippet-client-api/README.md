@@ -15,10 +15,10 @@ npm install --save httpsnippet-client-api
 ## Usage
 
 ```js
-import { HTTPSnippet, addTargetClient } from 'httpsnippet';
-import client = require('httpsnippet-client-api');
+import { HTTPSnippet, addClientPlugin } from 'httpsnippet';
+import apiClientPlugin from 'httpsnippet-client-api';
 
-addTargetClient('node', client);
+addClientPlugin('node', apiClientPlugin);
 
 const har = {
   "log": {
@@ -42,10 +42,12 @@ const har = {
 }
 
 const snippet = new HTTPSnippet(har);
-const code = snippet.convert('node', 'api', {
-  apiDefinitionUri: 'https://api.example.com/openapi.json'
-  apiDefinition: {
-    /* an OpenAPI definition object */
+const code = await snippet.convert('node', 'api', {
+  api: {
+    definition: {
+      /* an OpenAPI definition object */
+    }
+    registryURI: '@example/v2.0#17273l2glm9fq4l5'
   }
 });
 
@@ -55,10 +57,34 @@ console.log(code);
 Results in the following:
 
 ```js
-const sdk = require('api')('https://api.example.com/openapi.json');
+import sdk from '@api/example';
 
 sdk.auth('a5a220e');
 sdk
+  .put('/apiKey')
+  .then(({ data }}) => console.log(data))
+  .catch(err => console.error(err));
+```
+
+We also support supplying a shorter `identifier` option that will take over the imported package and the variable that is created.
+
+```js
+const code = await snippet.convert('node', 'api', {
+  api: {
+    definition: {
+      /* an OpenAPI definition object */
+    }
+    identifier: 'example',
+    registryURI: '@example/v2.0#17273l2glm9fq4l5'
+  }
+});
+```
+
+```js
+import example from 'example';
+
+example.auth('a5a220e');
+example
   .put('/apiKey')
   .then(({ data }}) => console.log(data))
   .catch(err => console.error(err));
