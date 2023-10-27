@@ -12,7 +12,8 @@
     "./types": {
       "import": "./dist/types.d.mts",
       "require": "./dist/types.d.ts"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "license": "Apache-2.0",
   "files": [
