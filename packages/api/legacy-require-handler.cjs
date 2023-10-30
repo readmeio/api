@@ -1,3 +1,4 @@
+// @ts-check
 /* eslint-disable import/no-commonjs */
 
 /**
