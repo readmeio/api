@@ -55,6 +55,22 @@ export default class Storage {
     Storage.lockfile = false;
   }
 
+  static initForIdentifier(identifier: string) {
+    // We don't know if we have `identifier` in the storage system yet, we just need to preload the
+    // system so we can access lockfiles.
+    const storage = new Storage('', SupportedLanguages.JS, identifier);
+
+    const entry = Storage.getFromLockfile(identifier);
+    if (!entry) {
+      throw new Error(`${identifier} does not exist in the lockfile.`);
+    }
+
+    storage.setLanguage(entry?.language);
+    storage.setIdentifier(identifier);
+
+    return storage;
+  }
+
   static getLockfilePath() {
     return path.join(Storage.dir, 'api.json');
   }
