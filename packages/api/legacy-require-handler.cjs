@@ -16,6 +16,12 @@
  * @param {unknown} input
  */
 module.exports = function legacyHandler(input) {
+  let identifier = 'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json';
+
+  if (typeof input === 'string') {
+    identifier = input;
+  }
+
   throw new Error(`Oops! You're attempting to use a legacy usage pattern that no longer exists.
 
 You can read more about this in our docs: TKTK
@@ -24,6 +30,6 @@ You can read more about this in our docs: TKTK
 
 Try running this command to get started:
 
-npx api@latest install ${input}
+npx api@latest install ${identifier}
 `);
 };
