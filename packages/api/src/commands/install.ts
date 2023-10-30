@@ -120,14 +120,12 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     const identifier = await getIdentifier(oas, uri, options);
     if (!identifier) {
-      logger('You must tell us what you would like to identify this API as in order to install it.', true);
-      process.exit(1);
+      throw new Error('You must tell us what you would like to identify this API as in order to install it.');
     }
 
     // Now that we've got an identifier we can save their spec and generate the directory structure
@@ -147,8 +145,7 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     spinner = ora({ text: 'Saving your SDK into your codebase', ...oraOptions() }).start();
@@ -160,8 +157,7 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     if (generator.hasRequiredPackages()) {
@@ -184,8 +180,7 @@ cmd
         }).then(({ value }) => {
           if (!value) {
             // @todo cleanup installed files
-            logger('Installation cancelled.', true);
-            process.exit(1);
+            throw new Error('Installation cancelled.');
           }
         });
       }
@@ -197,8 +192,7 @@ cmd
       } catch (err) {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       }
     }
 
@@ -209,8 +203,7 @@ cmd
     } catch (err) {
       // @todo cleanup installed files
       spinner.fail(spinner.text);
-      logger(err.message, true);
-      process.exit(1);
+      throw err;
     }
 
     logger('');
