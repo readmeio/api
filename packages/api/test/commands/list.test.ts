@@ -1,6 +1,7 @@
 import type { SpyInstance } from 'vitest';
 
 import { loadSpec } from '@api/test-utils';
+import { CommanderError } from 'commander';
 import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
@@ -10,6 +11,8 @@ import installCmd from '../../src/commands/list.js';
 import Storage from '../../src/storage.js';
 
 const baseCommand = ['api', 'list'];
+
+const cmdError = (msg: string) => new CommanderError(0, '', msg);
 
 describe('install command', () => {
   let stdout: string[];
@@ -59,5 +62,11 @@ describe('install command', () => {
     await expect(installCmd.parseAsync([...baseCommand])).resolves.toBeDefined();
 
     expect(getCommandOutput()).toMatchSnapshot();
+  });
+
+  it('should print help screen', async () => {
+    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(cmdError('(outputHelp)'));
+
+    expect(stdout.join('\n')).toMatchSnapshot();
   });
 });

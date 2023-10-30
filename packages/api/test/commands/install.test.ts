@@ -9,9 +9,9 @@ import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/install.js';
 import Storage from '../../src/storage.js';
 
-const cmdError = (msg: string) => new CommanderError(0, '', msg);
-
 const baseCommand = ['api', 'install'];
+
+const cmdError = (msg: string) => new CommanderError(0, '', msg);
 
 describe('install command', () => {
   let stdout: string[];
@@ -66,6 +66,12 @@ describe('install command', () => {
     return expect(
       installCmd.parseAsync([...baseCommand, '../test-utils/definitions/simple.json']),
     ).rejects.toStrictEqual(new Error('Installation cancelled.'));
+  });
+
+  it('should print help screen', async () => {
+    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(cmdError('(outputHelp)'));
+
+    expect(stdout.join('\n')).toMatchSnapshot();
   });
 
   it.todo('should surface generation errors');

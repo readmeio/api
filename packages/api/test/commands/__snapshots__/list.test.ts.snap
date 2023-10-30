@@ -13,3 +13,13 @@ installer version: [90m7.0.0-beta.3[39m
 
 created at: [90m2023-10-25T00:00:00.000Z[39m"
 `;
+
+exports[`install command > should print help screen 1`] = `
+"Usage: list|ls [options]
+
+list any installed API SDKs
+
+Options:
+  -h, --help  display help for command
+"
+`;

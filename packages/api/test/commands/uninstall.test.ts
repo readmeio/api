@@ -7,9 +7,9 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 import installCmd from '../../src/commands/uninstall.js';
 import Storage from '../../src/storage.js';
 
-const cmdError = (msg: string) => new CommanderError(0, '', msg);
-
 const baseCommand = ['api', 'uninstall'];
+
+const cmdError = (msg: string) => new CommanderError(0, '', msg);
 
 describe('install command', () => {
   let stdout: string[];
@@ -45,6 +45,12 @@ describe('install command', () => {
         'You do not appear to have non-existent-identifier installed. You can run `npx api list` to see what SDKs are present.',
       ),
     );
+  });
+
+  it('should print help screen', async () => {
+    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(cmdError('(outputHelp)'));
+
+    expect(stdout.join('\n')).toMatchSnapshot();
   });
 
   it.todo('should successfully uninstall SDK');
