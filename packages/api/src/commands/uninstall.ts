@@ -6,7 +6,7 @@ import ora from 'ora';
 
 import { SupportedLanguages, uninstallerFactory } from '../codegen/factory.js';
 import promptTerminal from '../lib/prompt.js';
-import logger from '../logger.js';
+import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
 interface Options {
@@ -50,7 +50,7 @@ cmd
       });
     }
 
-    let spinner = ora(`Uninstalling ${chalk.grey(identifier)}`).start();
+    let spinner = ora({ text: `Uninstalling ${chalk.grey(identifier)}`, ...oraOptions() }).start();
 
     // If we have a known package name for this then we can uninstall it from within cooresponding
     // package manager.
@@ -67,7 +67,7 @@ cmd
         });
     }
 
-    spinner = ora(`Removing ${chalk.grey(directory)}`).start();
+    spinner = ora({ text: `Removing ${chalk.grey(directory)}`, ...oraOptions() }).start();
     await storage
       .remove()
       .then(() => {
