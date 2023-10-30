@@ -10,10 +10,12 @@
   "scripts": {
     "attw": "attw --pack --format table-flipped",
     "build": "tsc",
+    "build:legacy-handler": "tsc legacy-require-handler.cjs --checkJs --declaration --emitDeclarationOnly",
     "build:versioned-files": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm bin/buildVersionedFiles.ts",
     "debug:bin": "NODE_OPTIONS=--no-warnings node --loader ts-node/esm src/bin.ts",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/ && npm run build:versioned-files",
+    "postbuild": "npm run build:legacy-handler",
     "prepack": "npm run build",
     "test": "vitest run --coverage",
     "test:smoke": "vitest --config=vitest-smoketest.config.ts",
