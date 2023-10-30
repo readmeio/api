@@ -5,9 +5,9 @@ import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
+import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/install.js';
 import Storage from '../../src/storage.js';
-import { SupportedLanguages } from '../../src/codegen/factory.js';
 
 const cmdError = (msg: string) => new CommanderError(0, '', msg);
 
