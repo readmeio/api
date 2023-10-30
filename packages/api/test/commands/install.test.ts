@@ -21,12 +21,14 @@ describe('install command', () => {
   beforeEach(() => {
     stdout = [];
     stderr = [];
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
     installCmd.exitOverride();
     installCmd.configureOutput({
       writeOut: str => stdout.push(str),
       writeErr: str => stderr.push(str),
     });
+
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     Storage.setStorageDir(uniqueTempDir());
   });
 
