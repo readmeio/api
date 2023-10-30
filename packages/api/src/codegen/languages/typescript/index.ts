@@ -621,6 +621,7 @@ dist/
               },
             }
           : {}),
+        './package.json': './package.json',
       },
       license: this.spdxLicense ?? '',
       files: ['dist', 'openapi.json'],
