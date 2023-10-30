@@ -26,11 +26,9 @@ cmd
 
     const entry = Storage.getFromLockfile(identifier);
     if (!entry) {
-      logger(
+      throw new Error(
         `You do not appear to have ${identifier} installed. You can run \`npx api list\` to see what SDKs are present.`,
-        true,
       );
-      process.exit(1);
     }
 
     storage.setLanguage(entry?.language);
@@ -47,7 +45,7 @@ cmd
         initial: true,
       }).then(({ value }) => {
         if (!value) {
-          process.exit(1);
+          throw new Error('Uninstallation cancelled.');
         }
       });
     }
@@ -65,8 +63,7 @@ cmd
         })
         .catch(err => {
           spinner.fail(spinner.text);
-          logger(err.message, true);
-          process.exit(1);
+          throw err;
         });
     }
 
@@ -78,8 +75,7 @@ cmd
       })
       .catch(err => {
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     logger('🚀 All done!');
