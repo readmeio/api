@@ -73,4 +73,5 @@ describe('install command', () => {
   it.todo('should surface package installation errors');
   it.todo('should surface compilation errors');
   it.todo('should successfully generate SDK');
+  it.todo('should successfully bypass all prompts with --yes option');
 });
