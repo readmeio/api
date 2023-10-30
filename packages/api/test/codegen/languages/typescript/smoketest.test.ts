@@ -18,11 +18,13 @@
 import realWorldAPIs from '@api/test-utils/datasets/real-world-apis.json';
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
-import { describe, it, expect } from 'vitest';
+import uniqueTempDir from 'unique-temp-dir';
+import { beforeEach, afterEach, describe, it, expect } from 'vitest';
 
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
+import Storage from '../../../../src/storage.js';
 
-// These APIs don't have any schemas so they should only be generating an `index.ts`.
+// These APIs don't have any schemas so they should not be generating a `schemas/` directory.
 const APIS_WITHOUT_SCHEMAS = ['poemist.com'];
 
 /**
@@ -52,6 +54,14 @@ if (args.chunks && args.chunk) {
 }
 
 describe('typescript smoketest', () => {
+  beforeEach(() => {
+    Storage.setStorageDir(uniqueTempDir());
+  });
+
+  afterEach(() => {
+    Storage.reset();
+  });
+
   // eslint-disable-next-line vitest/require-hook
   dataset.forEach(({ name, url }) => {
     // The test timeout is huge on this because CI can be slow as some API definitions are huge and
@@ -69,10 +79,19 @@ describe('typescript smoketest', () => {
       const ts = new TSGenerator(oas, './path/not/needed.json', name);
       const res = await ts.generate();
 
+      const files = Object.keys(res);
+
+      expect(files).toContain('.gitignore');
+      expect(files).toContain('package.json');
+      expect(files).toContain('README.md');
+      expect(files).toContain('tsconfig.json');
+      expect(files).toContain('src/index.ts');
+      expect(files).toContain('src/types.ts');
+
       if (APIS_WITHOUT_SCHEMAS.includes(name)) {
-        expect(Object.keys(res)).toStrictEqual(['index.ts']);
+        expect(files).not.toContain('src/schemas.ts');
       } else {
-        expect(Object.keys(res)).toStrictEqual(['index.ts', 'schemas.ts', 'types.ts']);
+        expect(files).toContain('src/schemas.ts');
       }
     }, 180000);
   });
