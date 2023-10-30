@@ -35,6 +35,7 @@
   },
   "files": [
     "dist",
+    "legacy-require-handler.**",
     "schema.json"
   ],
   "keywords": [
