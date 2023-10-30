@@ -7,6 +7,7 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import installCmd from '../../src/commands/install.js';
 import Storage from '../../src/storage.js';
+import { SupportedLanguages } from '../../src/codegen/factory.js';
 
 const cmdError = (msg: string) => new CommanderError(0, '', msg);
 
@@ -47,7 +48,9 @@ describe('install command', () => {
   });
 
   it('should accept valid lang parameter but error out if invalid uri is passed', () => {
-    return expect(installCmd.parseAsync([...baseCommand, 'petstore.json', '--lang', 'js'])).rejects.toThrow(
+    return expect(
+      installCmd.parseAsync([...baseCommand, 'petstore.json', '--lang', SupportedLanguages.JS]),
+    ).rejects.toThrow(
       /Sorry, we were unable to load an API definition from .*petstore.json. Please either supply a URL or a path on your filesystem./,
     );
   });
