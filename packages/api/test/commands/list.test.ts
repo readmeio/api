@@ -40,6 +40,7 @@ describe('install command', () => {
 
   afterEach(() => {
     consoleLogSpy.mockRestore();
+    fetchMock.restore();
     Storage.reset();
     vi.useRealTimers();
   });
