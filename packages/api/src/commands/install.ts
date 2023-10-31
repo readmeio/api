@@ -6,6 +6,7 @@ import { emphasize } from 'emphasize';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
+import prompts from 'prompts';
 import uslug from 'uslug';
 
 import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
@@ -21,36 +22,26 @@ interface Options {
   yes?: boolean;
 }
 
-async function getLanguage(options: Options) {
-  let language: SupportedLanguage;
-  if (options.lang) {
-    language = options.lang;
-  } else {
-    ({ value: language } = await promptTerminal({
-      type: 'select',
-      name: 'value',
-      message: 'What language would you like to generate an SDK for?',
-      choices: [{ title: 'JavaScript', value: SupportedLanguages.JS }],
-      initial: 1,
-    }));
-  }
+async function getLanguage() {
+  const { lang }: { lang: SupportedLanguage } = await promptTerminal({
+    type: 'select',
+    name: 'lang',
+    message: 'What language would you like to generate an SDK for?',
+    choices: [{ title: 'JavaScript', value: SupportedLanguages.JS }],
+    initial: 1,
+  });
 
-  return language;
+  return lang;
 }
 
-async function getIdentifier(oas: Oas, uri: string, options: Options) {
+async function getIdentifier(oas: Oas, uri: string) {
   let identifier;
-  if (options.identifier) {
-    // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
-    if (Storage.isIdentifierValid(options.identifier)) {
-      identifier = options.identifier;
-    }
-  } else if (Fetcher.isAPIRegistryUUID(uri)) {
+  if (Fetcher.isAPIRegistryUUID(uri)) {
     identifier = Fetcher.getProjectPrefixFromRegistryUUID(uri);
   } else {
-    ({ value: identifier } = await promptTerminal({
+    ({ identifier } = await promptTerminal({
       type: 'text',
-      name: 'value',
+      name: 'identifier',
       initial: oas.api?.info?.title ? uslug(oas.api.info.title, { lower: true }) : undefined,
       message:
         'What would you like to identify this API as? This will be how you use the SDK. (e.g. entering `petstore` would result in `@api/petstore`)',
@@ -92,7 +83,9 @@ cmd
   )
   .addOption(new Option('-y, --yes', 'Automatically answer "yes" to any prompts printed'))
   .action(async (uri: string, options: Options) => {
-    const language = await getLanguage(options);
+    prompts.override(options);
+
+    const language = await getLanguage();
 
     // @todo let them know that we're going to be creating a `.api/ directory
     // @todo detect if they have a gitigore and .npmignore and if .api woudl be ignored by that
@@ -123,7 +116,7 @@ cmd
         throw err;
       });
 
-    const identifier = await getIdentifier(oas, uri, options);
+    const identifier = await getIdentifier(oas, uri);
     if (!identifier) {
       throw new Error('You must tell us what you would like to identify this API as in order to install it.');
     }
@@ -171,19 +164,17 @@ cmd
         logger(msg);
       });
 
-      if (!options.yes) {
-        await promptTerminal({
-          type: 'confirm',
-          name: 'value',
-          message: 'OK to proceed with package installation?',
-          initial: true,
-        }).then(({ value }) => {
-          if (!value) {
-            // @todo cleanup installed files
-            throw new Error('Installation cancelled.');
-          }
-        });
-      }
+      await promptTerminal({
+        type: 'confirm',
+        name: 'yes',
+        message: 'OK to proceed with package installation?',
+        initial: true,
+      }).then(({ yes }) => {
+        if (!yes) {
+          // @todo cleanup installed files
+          throw new Error('Installation cancelled.');
+        }
+      });
 
       spinner = ora({ text: 'Installing required packages', ...oraOptions() }).start();
       try {
