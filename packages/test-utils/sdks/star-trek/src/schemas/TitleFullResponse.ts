@@ -1,4 +1,4 @@
-import TitleFull from './TitleFull';
+import TitleFull from './TitleFull.js';
 
 const TitleFullResponse = {
   "type": "object",

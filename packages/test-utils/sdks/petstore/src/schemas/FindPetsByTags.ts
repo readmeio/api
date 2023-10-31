@@ -1,4 +1,4 @@
-import Pet from './Pet';
+import Pet from './Pet.js';
 
 const FindPetsByTags = {
   "metadata": {

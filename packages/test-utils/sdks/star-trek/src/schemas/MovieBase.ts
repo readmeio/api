@@ -1,4 +1,4 @@
-import StaffHeader from './StaffHeader';
+import StaffHeader from './StaffHeader.js';
 
 const MovieBase = {
   "type": "object",

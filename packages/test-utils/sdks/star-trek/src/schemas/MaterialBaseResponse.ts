@@ -1,6 +1,6 @@
-import MaterialBase from './MaterialBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import MaterialBase from './MaterialBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const MaterialBaseResponse = {
   "type": "object",

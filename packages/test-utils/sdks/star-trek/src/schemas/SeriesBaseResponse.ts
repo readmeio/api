@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import SeriesBase from './SeriesBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import SeriesBase from './SeriesBase.js';
 
 const SeriesBaseResponse = {
   "type": "object",

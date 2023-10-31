@@ -1,5 +1,5 @@
-import EpisodeBase from './EpisodeBase';
-import SeriesBase from './SeriesBase';
+import EpisodeBase from './EpisodeBase.js';
+import SeriesBase from './SeriesBase.js';
 
 const SeasonFull = {
   "type": "object",

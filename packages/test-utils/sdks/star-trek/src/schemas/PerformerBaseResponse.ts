@@ -1,6 +1,6 @@
-import PerformerBase from './PerformerBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import PerformerBase from './PerformerBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const PerformerBaseResponse = {
   "type": "object",

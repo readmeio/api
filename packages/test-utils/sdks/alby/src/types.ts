@@ -1,5 +1,5 @@
 import type { FromSchema } from 'json-schema-to-ts';
-import * as schemas from './schemas';
+import * as schemas from './schemas.js';
 
 export type AmqpExternalRulePatch = FromSchema<typeof schemas.AmqpExternalRulePatch>;
 export type AmqpExternalRulePost = FromSchema<typeof schemas.AmqpExternalRulePost>;

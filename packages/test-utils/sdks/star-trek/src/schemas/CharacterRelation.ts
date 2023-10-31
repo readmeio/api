@@ -1,4 +1,4 @@
-import CharacterHeader from './CharacterHeader';
+import CharacterHeader from './CharacterHeader.js';
 
 const CharacterRelation = {
   "type": "object",

@@ -1,4 +1,4 @@
-import SeasonFull from './SeasonFull';
+import SeasonFull from './SeasonFull.js';
 
 const SeasonFullResponse = {
   "type": "object",

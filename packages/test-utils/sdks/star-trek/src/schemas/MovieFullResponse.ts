@@ -1,4 +1,4 @@
-import MovieFull from './MovieFull';
+import MovieFull from './MovieFull.js';
 
 const MovieFullResponse = {
   "type": "object",

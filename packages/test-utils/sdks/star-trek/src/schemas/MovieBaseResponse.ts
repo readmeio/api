@@ -1,6 +1,6 @@
-import MovieBase from './MovieBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import MovieBase from './MovieBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const MovieBaseResponse = {
   "type": "object",

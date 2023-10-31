@@ -1,4 +1,4 @@
-import CharacterBase from './CharacterBase';
+import CharacterBase from './CharacterBase.js';
 
 const OrganizationFull = {
   "type": "object",

@@ -1,7 +1,7 @@
-import OrganizationBase from './OrganizationBase';
-import SpacecraftBase from './SpacecraftBase';
-import SpacecraftType from './SpacecraftType';
-import SpeciesHeader from './SpeciesHeader';
+import OrganizationBase from './OrganizationBase.js';
+import SpacecraftBase from './SpacecraftBase.js';
+import SpacecraftType from './SpacecraftType.js';
+import SpeciesHeader from './SpeciesHeader.js';
 
 const SpacecraftClassFull = {
   "type": "object",

@@ -1,4 +1,4 @@
-import NamespaceResponse from './NamespaceResponse';
+import NamespaceResponse from './NamespaceResponse.js';
 
 const GetAppsAppIdNamespaces = {
   "metadata": {

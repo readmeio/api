@@ -1,4 +1,4 @@
-import ResponseSortClause from './ResponseSortClause';
+import ResponseSortClause from './ResponseSortClause.js';
 
 const ResponseSort = {
   "type": "object",

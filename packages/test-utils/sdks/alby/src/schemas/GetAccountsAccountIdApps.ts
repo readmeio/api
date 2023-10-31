@@ -1,4 +1,4 @@
-import AppResponse from './AppResponse';
+import AppResponse from './AppResponse.js';
 
 const GetAccountsAccountIdApps = {
   "metadata": {

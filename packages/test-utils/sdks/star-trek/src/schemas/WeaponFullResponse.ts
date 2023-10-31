@@ -1,4 +1,4 @@
-import WeaponFull from './WeaponFull';
+import WeaponFull from './WeaponFull.js';
 
 const WeaponFullResponse = {
   "type": "object",

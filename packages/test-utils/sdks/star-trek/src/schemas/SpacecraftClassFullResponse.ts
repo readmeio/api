@@ -1,4 +1,4 @@
-import SpacecraftClassFull from './SpacecraftClassFull';
+import SpacecraftClassFull from './SpacecraftClassFull.js';
 
 const SpacecraftClassFullResponse = {
   "type": "object",

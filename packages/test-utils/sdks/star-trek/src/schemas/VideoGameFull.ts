@@ -1,8 +1,8 @@
-import CompanyBase from './CompanyBase';
-import ContentRating from './ContentRating';
-import Genre from './Genre';
-import Platform from './Platform';
-import Reference from './Reference';
+import CompanyBase from './CompanyBase.js';
+import ContentRating from './ContentRating.js';
+import Genre from './Genre.js';
+import Platform from './Platform.js';
+import Reference from './Reference.js';
 
 const VideoGameFull = {
   "type": "object",

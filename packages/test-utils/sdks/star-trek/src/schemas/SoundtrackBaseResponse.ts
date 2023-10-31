@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import SoundtrackBase from './SoundtrackBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import SoundtrackBase from './SoundtrackBase.js';
 
 const SoundtrackBaseResponse = {
   "type": "object",

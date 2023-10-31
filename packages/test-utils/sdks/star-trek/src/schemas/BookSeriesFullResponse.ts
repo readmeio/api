@@ -1,4 +1,4 @@
-import BookSeriesFull from './BookSeriesFull';
+import BookSeriesFull from './BookSeriesFull.js';
 
 const BookSeriesFullResponse = {
   "type": "object",

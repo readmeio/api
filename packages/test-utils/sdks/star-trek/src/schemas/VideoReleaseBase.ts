@@ -1,6 +1,6 @@
-import SeasonHeader from './SeasonHeader';
-import SeriesHeader from './SeriesHeader';
-import VideoReleaseFormat from './VideoReleaseFormat';
+import SeasonHeader from './SeasonHeader.js';
+import SeriesHeader from './SeriesHeader.js';
+import VideoReleaseFormat from './VideoReleaseFormat.js';
 
 const VideoReleaseBase = {
   "type": "object",

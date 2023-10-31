@@ -1,10 +1,10 @@
-import ErrorApikeyEmpty from './ErrorApikeyEmpty';
-import ErrorApikeyMismatch from './ErrorApikeyMismatch';
-import ErrorApikeyNotfound from './ErrorApikeyNotfound';
-import ErrorSpecFileEmpty from './ErrorSpecFileEmpty';
-import ErrorSpecInvalid from './ErrorSpecInvalid';
-import ErrorSpecInvalidSchema from './ErrorSpecInvalidSchema';
-import ErrorSpecVersionNotfound from './ErrorSpecVersionNotfound';
+import ErrorApikeyEmpty from './ErrorApikeyEmpty.js';
+import ErrorApikeyMismatch from './ErrorApikeyMismatch.js';
+import ErrorApikeyNotfound from './ErrorApikeyNotfound.js';
+import ErrorSpecFileEmpty from './ErrorSpecFileEmpty.js';
+import ErrorSpecInvalid from './ErrorSpecInvalid.js';
+import ErrorSpecInvalidSchema from './ErrorSpecInvalidSchema.js';
+import ErrorSpecVersionNotfound from './ErrorSpecVersionNotfound.js';
 
 const UploadApiSpecification = {
   "body": {

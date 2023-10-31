@@ -1,4 +1,4 @@
-import MaterialFull from './MaterialFull';
+import MaterialFull from './MaterialFull.js';
 
 const MaterialFullResponse = {
   "type": "object",

@@ -1,4 +1,4 @@
-import ProductionRunUnit from './ProductionRunUnit';
+import ProductionRunUnit from './ProductionRunUnit.js';
 
 const TradingCardSetBase = {
   "type": "object",

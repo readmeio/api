@@ -1,4 +1,4 @@
-import EpisodeFull from './EpisodeFull';
+import EpisodeFull from './EpisodeFull.js';
 
 const EpisodeFullResponse = {
   "type": "object",

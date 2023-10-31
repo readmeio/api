@@ -1,4 +1,4 @@
-import LocationFull from './LocationFull';
+import LocationFull from './LocationFull.js';
 
 const LocationFullResponse = {
   "type": "object",

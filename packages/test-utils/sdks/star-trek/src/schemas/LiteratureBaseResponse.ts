@@ -1,6 +1,6 @@
-import LiteratureBase from './LiteratureBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import LiteratureBase from './LiteratureBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const LiteratureBaseResponse = {
   "type": "object",

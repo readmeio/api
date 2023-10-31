@@ -1,5 +1,5 @@
 import type { FromSchema } from 'json-schema-to-ts';
-import * as schemas from './schemas';
+import * as schemas from './schemas.js';
 
 export type AnimalBase = FromSchema<typeof schemas.AnimalBase>;
 export type AnimalBaseResponse = FromSchema<typeof schemas.AnimalBaseResponse>;

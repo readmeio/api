@@ -1,6 +1,6 @@
-import CompanyBase from './CompanyBase';
-import EpisodeBase from './EpisodeBase';
-import SeasonBase from './SeasonBase';
+import CompanyBase from './CompanyBase.js';
+import EpisodeBase from './EpisodeBase.js';
+import SeasonBase from './SeasonBase.js';
 
 const SeriesFull = {
   "type": "object",

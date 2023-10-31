@@ -1,6 +1,6 @@
-import CompanyBase from './CompanyBase';
-import Reference from './Reference';
-import StaffBase from './StaffBase';
+import CompanyBase from './CompanyBase.js';
+import Reference from './Reference.js';
+import StaffBase from './StaffBase.js';
 
 const SoundtrackFull = {
   "type": "object",

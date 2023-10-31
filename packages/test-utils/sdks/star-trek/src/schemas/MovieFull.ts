@@ -1,6 +1,6 @@
-import CharacterBase from './CharacterBase';
-import PerformerBase from './PerformerBase';
-import StaffBase from './StaffBase';
+import CharacterBase from './CharacterBase.js';
+import PerformerBase from './PerformerBase.js';
+import StaffBase from './StaffBase.js';
 
 const MovieFull = {
   "type": "object",

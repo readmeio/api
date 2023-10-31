@@ -1,4 +1,4 @@
-import TechnologyFull from './TechnologyFull';
+import TechnologyFull from './TechnologyFull.js';
 
 const TechnologyFullResponse = {
   "type": "object",

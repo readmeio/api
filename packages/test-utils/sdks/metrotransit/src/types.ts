@@ -1,5 +1,5 @@
 import type { FromSchema } from 'json-schema-to-ts';
-import * as schemas from './schemas';
+import * as schemas from './schemas.js';
 
 export type Agency = FromSchema<typeof schemas.Agency>;
 export type AlertMessage = FromSchema<typeof schemas.AlertMessage>;

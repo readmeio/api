@@ -1,6 +1,6 @@
-import FoodBase from './FoodBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import FoodBase from './FoodBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const FoodBaseResponse = {
   "type": "object",

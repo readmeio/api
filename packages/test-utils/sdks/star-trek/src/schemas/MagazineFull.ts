@@ -1,6 +1,6 @@
-import CompanyBase from './CompanyBase';
-import MagazineSeriesBase from './MagazineSeriesBase';
-import StaffBase from './StaffBase';
+import CompanyBase from './CompanyBase.js';
+import MagazineSeriesBase from './MagazineSeriesBase.js';
+import StaffBase from './StaffBase.js';
 
 const MagazineFull = {
   "type": "object",

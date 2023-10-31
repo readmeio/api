@@ -1,9 +1,9 @@
-import ErrorApikeyEmpty from './ErrorApikeyEmpty';
-import ErrorApikeyMismatch from './ErrorApikeyMismatch';
-import ErrorApikeyNotfound from './ErrorApikeyNotfound';
-import ErrorVersionDuplicate from './ErrorVersionDuplicate';
-import ErrorVersionEmpty from './ErrorVersionEmpty';
-import ErrorVersionForkEmpty from './ErrorVersionForkEmpty';
+import ErrorApikeyEmpty from './ErrorApikeyEmpty.js';
+import ErrorApikeyMismatch from './ErrorApikeyMismatch.js';
+import ErrorApikeyNotfound from './ErrorApikeyNotfound.js';
+import ErrorVersionDuplicate from './ErrorVersionDuplicate.js';
+import ErrorVersionEmpty from './ErrorVersionEmpty.js';
+import ErrorVersionForkEmpty from './ErrorVersionForkEmpty.js';
 
 const CreateVersion = {
   "response": {

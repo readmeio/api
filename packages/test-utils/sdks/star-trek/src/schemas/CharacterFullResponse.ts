@@ -1,4 +1,4 @@
-import CharacterFull from './CharacterFull';
+import CharacterFull from './CharacterFull.js';
 
 const CharacterFullResponse = {
   "type": "object",

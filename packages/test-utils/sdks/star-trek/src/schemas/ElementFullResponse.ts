@@ -1,4 +1,4 @@
-import ElementFull from './ElementFull';
+import ElementFull from './ElementFull.js';
 
 const ElementFullResponse = {
   "type": "object",

@@ -1,4 +1,4 @@
-import type * as types from './types';
+import type * as types from './types.js';
 import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/response-title-quirks.json';

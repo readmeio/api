@@ -1,6 +1,6 @@
-import ComicStripBase from './ComicStripBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import ComicStripBase from './ComicStripBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const ComicStripBaseResponse = {
   "type": "object",
