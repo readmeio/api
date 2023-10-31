@@ -3,6 +3,7 @@ import path from 'node:path';
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import ora from 'ora';
+import prompts from 'prompts';
 
 import { SupportedLanguages, uninstallerFactory } from '../codegen/factory.js';
 import promptTerminal from '../lib/prompt.js';
@@ -35,20 +36,21 @@ cmd
     storage.setIdentifier(identifier);
 
     const directory = path.relative(process.cwd(), storage.getIdentifierStorageDir());
-    if (!options.yes) {
-      await promptTerminal({
-        type: 'confirm',
-        name: 'value',
-        message: `Are you sure you want to uninstall ${chalk.yellow(identifier)}? This will delete the ${chalk.yellow(
-          directory,
-        )} directory and potentially any changes you may have made there.`,
-        initial: true,
-      }).then(({ value }) => {
-        if (!value) {
-          throw new Error('Uninstallation cancelled.');
-        }
-      });
-    }
+
+    // funnels `--yes` option into prompt
+    prompts.override(options);
+    await promptTerminal({
+      type: 'confirm',
+      name: 'yes',
+      message: `Are you sure you want to uninstall ${chalk.yellow(identifier)}? This will delete the ${chalk.yellow(
+        directory,
+      )} directory and potentially any changes you may have made there.`,
+      initial: true,
+    }).then(({ yes }) => {
+      if (!yes) {
+        throw new Error('Uninstallation cancelled.');
+      }
+    });
 
     let spinner = ora({ text: `Uninstalling ${chalk.grey(identifier)}`, ...oraOptions() }).start();
 
