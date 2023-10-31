@@ -745,7 +745,7 @@ Generated at ${createdAt}
     const sourceFile = sourceDirectory.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
-      { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/lib' },
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/types' },
       { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
     ]);
 
