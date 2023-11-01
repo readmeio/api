@@ -1,6 +1,6 @@
 import type { AuthForHAR } from '@readme/oas-to-har/lib/types';
 import type Oas from 'oas';
-import type Operation from 'oas/operation';
+import type { Operation } from 'oas/operation';
 
 import APICore from '@readme/api-core';
 import apiSnippetPlugin from 'httpsnippet-client-api';

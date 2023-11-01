@@ -1,8 +1,8 @@
 import type { InstallerOptions } from '../../factory.js';
 import type { ExecaReturnValue } from 'execa';
 import type Oas from 'oas';
-import type Operation from 'oas/operation';
-import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
+import type { Operation } from 'oas/operation';
+import type { HttpMethods, SchemaObject } from 'oas/types';
 import type { OpenAPIV3_1 } from 'openapi-types';
 import type { SemVer } from 'semver';
 import type {
