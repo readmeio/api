@@ -1,7 +1,7 @@
 import type { ReducedHelperObject } from '@readme/httpsnippet/helpers/reducer';
 import type { Client, ClientPlugin } from '@readme/httpsnippet/targets';
-import type Operation from 'oas/operation';
-import type { HttpMethods, OASDocument } from 'oas/rmoas.types';
+import type { Operation } from 'oas/operation';
+import type { HttpMethods, OASDocument } from 'oas/types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
 import camelCase from 'camelcase';

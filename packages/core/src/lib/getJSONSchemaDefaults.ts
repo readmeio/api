@@ -1,5 +1,5 @@
 import type { SchemaWrapper } from 'oas/operation/get-parameters-as-json-schema';
-import type { SchemaObject } from 'oas/rmoas.types';
+import type { SchemaObject } from 'oas/types';
 
 import traverse from 'json-schema-traverse';
 

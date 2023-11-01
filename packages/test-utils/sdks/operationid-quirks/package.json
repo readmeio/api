@@ -20,8 +20,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@readme/api-core": "file:../../../../../core",
-    "json-schema-to-ts": "^2.9.2"
+    "@readme/api-core": "file:../../../../../core"
   },
   "devDependencies": {
     "tsup": "^7.2.0",

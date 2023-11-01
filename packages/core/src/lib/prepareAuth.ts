@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import type { AuthForHAR } from '@readme/oas-to-har/lib/types';
-import type Operation from 'oas/operation';
-import type { KeyedSecuritySchemeObject } from 'oas/rmoas.types';
+import type { Operation } from 'oas/operation';
+import type { KeyedSecuritySchemeObject } from 'oas/types';
 
 export default function prepareAuth(authKey: (number | string)[], operation: Operation) {
   if (authKey.length === 0) {
