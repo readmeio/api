@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from './codegen/factory.js';
 import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
-import type { OASDocument } from 'oas/rmoas.types';
+import type { OASDocument } from 'oas/types';
 
 import fs from 'node:fs';
 import path from 'node:path';

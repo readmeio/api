@@ -49,14 +49,14 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^23.1.0",
+    "@readme/oas-to-har": "^23.2.0",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
     "json-schema-to-ts": "^2.9.2",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^23.1.0",
+    "oas": "^24.0.0",
     "remove-undefined-objects": "^5.0.0"
   },
   "devDependencies": {
