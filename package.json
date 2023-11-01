@@ -12,7 +12,6 @@
     "lint:deadcode": "knip",
     "lint:js": "eslint . --ext .js,.ts",
     "lint:types": "npm run lint:types --if-present --workspaces",
-    "prepare": "husky install",
     "prettier": "prettier --check .",
     "prettier:write": "prettier --check --write .",
     "publish": "lerna publish",
@@ -33,34 +32,14 @@
   ],
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
-    "@commitlint/cli": "^17.8.0",
-    "@commitlint/config-conventional": "^17.8.0",
     "@readme/eslint-config": "^13.1.0",
     "@tsconfig/node18": "^18.2.2",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.51.0",
-    "husky": "^8.0.3",
     "knip": "^2.35.0",
     "lerna": "^7.4.1",
     "prettier": "^3.0.3",
     "tsup": "^7.2.0"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "body-max-line-length": [
-        0,
-        "always",
-        "Infinity"
-      ],
-      "footer-max-line-length": [
-        0,
-        "always",
-        "Infinity"
-      ]
-    }
   }
 }
