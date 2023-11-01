@@ -34,7 +34,7 @@
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
     "@commitlint/cli": "^17.8.0",
-    "@commitlint/config-conventional": "^17.8.0",
+    "@commitlint/config-conventional": "^18.1.0",
     "@readme/eslint-config": "^13.1.0",
     "@tsconfig/node18": "^18.2.2",
     "alex": "^11.0.1",
