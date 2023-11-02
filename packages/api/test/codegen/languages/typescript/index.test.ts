@@ -72,9 +72,6 @@ function assertSDKFixture(file: string, fixture: string) {
         const actual = actualFiles[filename];
         const expectedFilePath = path.join(dir, filename);
 
-        // We have to wrap in our current package version into the `<<useragent>>` placeholder so
-        // we don't need to worry about committing package versions into source control or trying
-        // to mock out our `packageInfo` library, potentially causing sideeffects in other tests.
         return fs.readFile(expectedFilePath, 'utf8').then(async expected => {
           if (actual !== expected && process.env.UPDATE_FIXTURES) {
             // eslint-disable-next-line no-console
