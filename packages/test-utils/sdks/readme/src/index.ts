@@ -7,7 +7,7 @@ class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'readme/4.355.0 (api/<<package version>>)');
+    this.core = new APICore(definition, 'readme/4.355.0 (api/7.0.0-mock)');
   }
 
   /**

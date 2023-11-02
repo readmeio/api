@@ -17,7 +17,7 @@ readme.getAPISpecification()
 
 Here's some additional info about the generated SDK:
 
-`api` version: <<package version>>
+`api` version: 7.0.0-mock
 Generated at 2023-10-25T00:00:00.000Z
 
 --->

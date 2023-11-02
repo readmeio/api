@@ -7,7 +7,7 @@ class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'optional-payload/1.0.0 (api/<<package version>>)');
+    this.core = new APICore(definition, 'optional-payload/1.0.0 (api/7.0.0-mock)');
   }
 
   /**
