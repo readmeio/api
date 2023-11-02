@@ -11,7 +11,6 @@ import uslug from 'uslug';
 import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
-import { buildCodeSnippetForOperation, getSuggestedOperation } from '../lib/suggestedOperations.js';
 import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
@@ -69,15 +68,6 @@ async function getIdentifier(oas: Oas, uri: string, options: Options) {
   }
 
   return identifier;
-}
-
-async function getExampleCodeSnippet(oas: Oas, identifier: string) {
-  const operation = getSuggestedOperation(oas);
-  if (!operation) {
-    return false;
-  }
-
-  return buildCodeSnippetForOperation(oas, operation, { identifier });
 }
 
 // @todo log logs to `.api/.logs` and have `.logs` ignored
@@ -213,7 +203,7 @@ cmd
       )} package.`,
     );
 
-    const exampleSnippet = await getExampleCodeSnippet(oas, identifier);
+    const exampleSnippet = await generator.getExampleCodeSnippet();
     if (exampleSnippet) {
       logger('');
       logger(chalk.bold("👇 Here's an example code snippet you can try out 👇"));
