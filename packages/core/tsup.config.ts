@@ -11,11 +11,14 @@ export default defineConfig((options: Options) => ({
   ...config,
 
   entry: ['src/errors/fetchError.ts', 'src/lib/index.ts', 'src/index.ts', 'src/types.ts'],
+
   noExternal: [
-    // `get-stream` is ESM-only and we need to build for CommonJS,
-    // so including it here means that its (tree-shaken!) source code
-    // will be included directly in our dist outputs.
+    // These dependencies are ESM-only but because we're building for ESM **and** CJS we can't
+    // treat them as external dependencies as CJS libraries can't load ESM code that uses `export`.
+    // `noExternal` will instead treeshake these dependencies down and include them in our compiled
+    // dists.
     'get-stream',
   ],
+
   silent: !options.watch,
 }));

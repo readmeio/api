@@ -4,12 +4,12 @@ import type { Operation } from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
-import camelCase from 'camelcase';
+import camelCase from 'camelcase'; // eslint-disable-line import/no-extraneous-dependencies
 import contentType from 'content-type';
 import Oas from 'oas';
 import { matchesMimeType } from 'oas/utils';
 import { isReservedOrBuiltinsLC } from 'reserved2';
-import stringifyObject from 'stringify-object';
+import stringifyObject from 'stringify-object'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * @note This regex also exists in `api/fetcher`.
