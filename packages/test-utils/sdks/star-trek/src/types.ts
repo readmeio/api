@@ -1,4 +1,4 @@
-import type { FromSchema } from 'json-schema-to-ts';
+import type { FromSchema } from '@readme/api-core/types';
 import * as schemas from './schemas';
 
 export type AnimalBase = FromSchema<typeof schemas.AnimalBase>;

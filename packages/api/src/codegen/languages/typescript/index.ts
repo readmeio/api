@@ -1,8 +1,8 @@
 import type { InstallerOptions } from '../../factory.js';
 import type { ExecaReturnValue } from 'execa';
 import type Oas from 'oas';
-import type Operation from 'oas/operation';
-import type { HttpMethods, SchemaObject } from 'oas/rmoas.types';
+import type { Operation } from 'oas/operation';
+import type { HttpMethods, SchemaObject } from 'oas/types';
 import type { OpenAPIV3_1 } from 'openapi-types';
 import type { SemVer } from 'semver';
 import type {
@@ -122,12 +122,6 @@ export default class TSGenerator extends CodeGenerator {
         reason: "Used for compiling your codegen'd SDK into code that can be used in JS environments.",
         url: 'https://tsup.egoist.dev/',
         version: '^7.2.0',
-      },
-      'json-schema-to-ts': {
-        dependencyType: 'production',
-        reason: 'Required for TypeScript type handling.',
-        url: 'https://npm.im/json-schema-to-ts',
-        version: '^2.9.2',
       },
       typescript: {
         dependencyType: 'development',
@@ -751,7 +745,7 @@ Generated at ${createdAt}
     const sourceFile = sourceDirectory.createSourceFile('types.ts', '');
 
     sourceFile.addImportDeclarations([
-      { defaultImport: 'type { FromSchema }', moduleSpecifier: 'json-schema-to-ts' },
+      { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/types' },
       { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
     ]);
 

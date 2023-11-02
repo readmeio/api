@@ -1,6 +1,6 @@
 import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
-import Operation from 'oas/operation';
+import { Operation } from 'oas/operation';
 import { describe, it, expect } from 'vitest';
 
 import { getSuggestedOperation, buildCodeSnippetForOperation } from '../../src/lib/suggestedOperations.js';
