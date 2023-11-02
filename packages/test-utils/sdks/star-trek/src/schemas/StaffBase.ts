@@ -1,4 +1,4 @@
-import Gender from './Gender';
+import Gender from './Gender.js';
 
 const StaffBase = {
   "type": "object",

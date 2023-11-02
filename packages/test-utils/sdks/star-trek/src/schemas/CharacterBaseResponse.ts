@@ -1,6 +1,6 @@
-import CharacterBase from './CharacterBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import CharacterBase from './CharacterBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const CharacterBaseResponse = {
   "type": "object",

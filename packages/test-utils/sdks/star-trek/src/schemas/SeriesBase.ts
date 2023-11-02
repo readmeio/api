@@ -1,4 +1,4 @@
-import CompanyHeader from './CompanyHeader';
+import CompanyHeader from './CompanyHeader.js';
 
 const SeriesBase = {
   "type": "object",

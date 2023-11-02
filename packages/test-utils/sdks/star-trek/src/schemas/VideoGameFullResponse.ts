@@ -1,4 +1,4 @@
-import VideoGameFull from './VideoGameFull';
+import VideoGameFull from './VideoGameFull.js';
 
 const VideoGameFullResponse = {
   "type": "object",

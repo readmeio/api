@@ -1,4 +1,4 @@
-import RuleResponse from './RuleResponse';
+import RuleResponse from './RuleResponse.js';
 
 const GetAppsAppIdRules = {
   "metadata": {

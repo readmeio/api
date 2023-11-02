@@ -1,5 +1,5 @@
-import AstronomicalObjectHeader from './AstronomicalObjectHeader';
-import AstronomicalObjectType from './AstronomicalObjectType';
+import AstronomicalObjectHeader from './AstronomicalObjectHeader.js';
+import AstronomicalObjectType from './AstronomicalObjectType.js';
 
 const AstronomicalObjectBase = {
   "type": "object",

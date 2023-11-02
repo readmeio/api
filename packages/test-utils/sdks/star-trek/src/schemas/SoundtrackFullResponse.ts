@@ -1,4 +1,4 @@
-import SoundtrackFull from './SoundtrackFull';
+import SoundtrackFull from './SoundtrackFull.js';
 
 const SoundtrackFullResponse = {
   "type": "object",

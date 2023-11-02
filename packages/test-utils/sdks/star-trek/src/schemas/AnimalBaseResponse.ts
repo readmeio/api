@@ -1,6 +1,6 @@
-import AnimalBase from './AnimalBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import AnimalBase from './AnimalBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const AnimalBaseResponse = {
   "type": "object",

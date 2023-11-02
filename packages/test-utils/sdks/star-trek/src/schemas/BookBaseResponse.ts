@@ -1,6 +1,6 @@
-import BookBase from './BookBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import BookBase from './BookBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const BookBaseResponse = {
   "type": "object",

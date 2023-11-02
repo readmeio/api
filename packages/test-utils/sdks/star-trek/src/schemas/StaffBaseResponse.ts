@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import StaffBase from './StaffBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import StaffBase from './StaffBase.js';
 
 const StaffBaseResponse = {
   "type": "object",

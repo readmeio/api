@@ -1,14 +1,14 @@
-import AmqpExternalRulePatch from './AmqpExternalRulePatch';
-import AmqpRulePatch from './AmqpRulePatch';
-import AwsKinesisRulePatch from './AwsKinesisRulePatch';
-import AwsLambdaRulePatch from './AwsLambdaRulePatch';
-import AwsSqsRulePatch from './AwsSqsRulePatch';
-import AzureFunctionRulePatch from './AzureFunctionRulePatch';
-import CloudflareWorkerRulePatch from './CloudflareWorkerRulePatch';
-import GoogleCloudFunctionRulePatch from './GoogleCloudFunctionRulePatch';
-import HttpRulePatch from './HttpRulePatch';
-import IftttRulePatch from './IftttRulePatch';
-import ZapierRulePatch from './ZapierRulePatch';
+import AmqpExternalRulePatch from './AmqpExternalRulePatch.js';
+import AmqpRulePatch from './AmqpRulePatch.js';
+import AwsKinesisRulePatch from './AwsKinesisRulePatch.js';
+import AwsLambdaRulePatch from './AwsLambdaRulePatch.js';
+import AwsSqsRulePatch from './AwsSqsRulePatch.js';
+import AzureFunctionRulePatch from './AzureFunctionRulePatch.js';
+import CloudflareWorkerRulePatch from './CloudflareWorkerRulePatch.js';
+import GoogleCloudFunctionRulePatch from './GoogleCloudFunctionRulePatch.js';
+import HttpRulePatch from './HttpRulePatch.js';
+import IftttRulePatch from './IftttRulePatch.js';
+import ZapierRulePatch from './ZapierRulePatch.js';
 
 const RulePatch = {
   "discriminator": {

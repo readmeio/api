@@ -1,5 +1,5 @@
-import TradingCardBase from './TradingCardBase';
-import TradingCardSetHeader from './TradingCardSetHeader';
+import TradingCardBase from './TradingCardBase.js';
+import TradingCardSetHeader from './TradingCardSetHeader.js';
 
 const TradingCardDeckFull = {
   "type": "object",

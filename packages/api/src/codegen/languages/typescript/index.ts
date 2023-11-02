@@ -222,7 +222,7 @@ export default class TSGenerator extends CodeGenerator {
       // If we don't have any schemas then we shouldn't import a `types` file that doesn't exist.
       sdkSource
         .getImportDeclarations()
-        .find(id => id.getText() === "import type * as types from './types';")
+        .find(id => id.getText() === "import type * as types from './types.js';")
         ?.remove();
     }
 
@@ -271,7 +271,7 @@ export default class TSGenerator extends CodeGenerator {
 
     sourceFile.addImportDeclarations([
       // This import will be automatically removed later if the SDK ends up not having any types.
-      { defaultImport: 'type * as types', moduleSpecifier: './types' },
+      { defaultImport: 'type * as types', moduleSpecifier: './types.js' },
       {
         // `HTTPMethodRange` will be conditionally removed later if it ends up not being used.
         defaultImport: 'type { ConfigOptions, FetchResponse, HTTPMethodRange }',
@@ -599,19 +599,20 @@ dist/
     const pkg: PackageJson = {
       name: `@api/${this.identifier}`,
       version: pkgVersion.version,
-      main: './dist/index.js',
-      types: './dist/index.d.ts',
-      module: './dist/index.mts',
+      type: 'module',
+      main: 'dist/index.cjs',
+      types: 'dist/index.d.cts',
+      module: 'dist/index.ts',
       exports: {
         '.': {
-          import: './dist/index.mjs',
-          require: './dist/index.js',
+          import: './dist/index.js',
+          require: './dist/index.cjs',
         },
         ...(hasTypes
           ? {
               './types': {
-                import: './dist/types.d.mts',
-                require: './dist/types.d.ts',
+                import: './dist/types.js',
+                require: './dist/types.cjs',
               },
             }
           : {}),
@@ -683,7 +684,7 @@ Generated at ${createdAt}
       // for these schemas into our main `schemas.ts` file.`
       sourceFile.addImportDeclaration({
         defaultImport: schemaName,
-        moduleSpecifier: `./schemas/${schemaName}`,
+        moduleSpecifier: `./schemas/${schemaName}.js`,
       });
 
       // Though we aren't using Prettier to make these generated SDKs look amazing we should at
@@ -702,7 +703,7 @@ Generated at ${createdAt}
           // declaration for it.
           schemaFile.addImportDeclaration({
             defaultImport: ref,
-            moduleSpecifier: `./${ref}`,
+            moduleSpecifier: `./${ref}.js`,
           });
         });
       }
@@ -746,7 +747,7 @@ Generated at ${createdAt}
 
     sourceFile.addImportDeclarations([
       { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/types' },
-      { defaultImport: '* as schemas', moduleSpecifier: './schemas' },
+      { defaultImport: '* as schemas', moduleSpecifier: './schemas.js' },
     ]);
 
     Array.from(new Map(Array.from(this.types.entries()).sort())).forEach(([typeName, typeExpression]) => {

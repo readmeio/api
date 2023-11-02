@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import WeaponBase from './WeaponBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import WeaponBase from './WeaponBase.js';
 
 const WeaponBaseResponse = {
   "type": "object",

@@ -1,5 +1,5 @@
-import AstronomicalObjectBase from './AstronomicalObjectBase';
-import AstronomicalObjectType from './AstronomicalObjectType';
+import AstronomicalObjectBase from './AstronomicalObjectBase.js';
+import AstronomicalObjectType from './AstronomicalObjectType.js';
 
 const AstronomicalObjectFull = {
   "type": "object",

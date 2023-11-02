@@ -1,6 +1,6 @@
-import MagazineSeriesBase from './MagazineSeriesBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import MagazineSeriesBase from './MagazineSeriesBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const MagazineSeriesBaseResponse = {
   "type": "object",

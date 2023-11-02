@@ -1,4 +1,4 @@
-import OccupationFull from './OccupationFull';
+import OccupationFull from './OccupationFull.js';
 
 const OccupationFullResponse = {
   "type": "object",

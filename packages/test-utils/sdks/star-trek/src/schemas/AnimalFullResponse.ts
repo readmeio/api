@@ -1,4 +1,4 @@
-import AnimalFull from './AnimalFull';
+import AnimalFull from './AnimalFull.js';
 
 const AnimalFullResponse = {
   "type": "object",

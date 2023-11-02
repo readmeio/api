@@ -1,6 +1,6 @@
-import MedicalConditionBase from './MedicalConditionBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import MedicalConditionBase from './MedicalConditionBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const MedicalConditionBaseResponse = {
   "type": "object",

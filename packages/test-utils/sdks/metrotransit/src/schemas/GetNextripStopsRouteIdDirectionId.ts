@@ -1,4 +1,4 @@
-import Place from './Place';
+import Place from './Place.js';
 
 const GetNextripStopsRouteIdDirectionId = {
   "metadata": {

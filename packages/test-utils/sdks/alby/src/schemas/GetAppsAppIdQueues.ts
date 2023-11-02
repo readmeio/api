@@ -1,4 +1,4 @@
-import QueueResponse from './QueueResponse';
+import QueueResponse from './QueueResponse.js';
 
 const GetAppsAppIdQueues = {
   "metadata": {

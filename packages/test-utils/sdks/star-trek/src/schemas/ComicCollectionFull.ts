@@ -1,9 +1,9 @@
-import CharacterBase from './CharacterBase';
-import ComicSeriesBase from './ComicSeriesBase';
-import ComicsBase from './ComicsBase';
-import CompanyBase from './CompanyBase';
-import Reference from './Reference';
-import StaffBase from './StaffBase';
+import CharacterBase from './CharacterBase.js';
+import ComicSeriesBase from './ComicSeriesBase.js';
+import ComicsBase from './ComicsBase.js';
+import CompanyBase from './CompanyBase.js';
+import Reference from './Reference.js';
+import StaffBase from './StaffBase.js';
 
 const ComicCollectionFull = {
   "type": "object",

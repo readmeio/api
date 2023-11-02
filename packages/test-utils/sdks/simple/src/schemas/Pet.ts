@@ -1,5 +1,5 @@
-import Category from './Category';
-import Tag from './Tag';
+import Category from './Category.js';
+import Tag from './Tag.js';
 
 const Pet = {
   "type": "object",

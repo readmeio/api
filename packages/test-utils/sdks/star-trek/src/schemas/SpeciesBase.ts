@@ -1,4 +1,4 @@
-import AstronomicalObjectHeader from './AstronomicalObjectHeader';
+import AstronomicalObjectHeader from './AstronomicalObjectHeader.js';
 
 const SpeciesBase = {
   "type": "object",

@@ -1,5 +1,5 @@
-import OrganizationHeader from './OrganizationHeader';
-import SpacecraftClassHeader from './SpacecraftClassHeader';
+import OrganizationHeader from './OrganizationHeader.js';
+import SpacecraftClassHeader from './SpacecraftClassHeader.js';
 
 const SpacecraftBase = {
   "type": "object",

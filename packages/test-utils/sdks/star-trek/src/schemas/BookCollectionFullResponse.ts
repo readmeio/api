@@ -1,4 +1,4 @@
-import BookCollectionFull from './BookCollectionFull';
+import BookCollectionFull from './BookCollectionFull.js';
 
 const BookCollectionFullResponse = {
   "type": "object",

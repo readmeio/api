@@ -1,4 +1,4 @@
-import LiteratureFull from './LiteratureFull';
+import LiteratureFull from './LiteratureFull.js';
 
 const LiteratureFullResponse = {
   "type": "object",

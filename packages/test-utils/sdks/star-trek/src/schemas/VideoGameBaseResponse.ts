@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import VideoGameBase from './VideoGameBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import VideoGameBase from './VideoGameBase.js';
 
 const VideoGameBaseResponse = {
   "type": "object",

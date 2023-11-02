@@ -1,9 +1,9 @@
-import ContentLanguage from './ContentLanguage';
-import ContentRating from './ContentRating';
-import Reference from './Reference';
-import SeasonBase from './SeasonBase';
-import SeriesBase from './SeriesBase';
-import VideoReleaseFormat from './VideoReleaseFormat';
+import ContentLanguage from './ContentLanguage.js';
+import ContentRating from './ContentRating.js';
+import Reference from './Reference.js';
+import SeasonBase from './SeasonBase.js';
+import SeriesBase from './SeriesBase.js';
+import VideoReleaseFormat from './VideoReleaseFormat.js';
 
 const VideoReleaseFull = {
   "type": "object",

@@ -1,4 +1,4 @@
-import Direction from './Direction';
+import Direction from './Direction.js';
 
 const GetNextripDirectionsRouteId = {
   "metadata": {

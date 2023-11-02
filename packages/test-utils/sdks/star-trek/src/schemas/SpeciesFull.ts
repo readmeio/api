@@ -1,5 +1,5 @@
-import AstronomicalObjectBase from './AstronomicalObjectBase';
-import CharacterBase from './CharacterBase';
+import AstronomicalObjectBase from './AstronomicalObjectBase.js';
+import CharacterBase from './CharacterBase.js';
 
 const SpeciesFull = {
   "type": "object",

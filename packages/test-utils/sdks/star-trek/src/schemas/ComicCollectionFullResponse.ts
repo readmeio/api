@@ -1,4 +1,4 @@
-import ComicCollectionFull from './ComicCollectionFull';
+import ComicCollectionFull from './ComicCollectionFull.js';
 
 const ComicCollectionFullResponse = {
   "type": "object",

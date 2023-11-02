@@ -1,4 +1,4 @@
-import KeyResponse from './KeyResponse';
+import KeyResponse from './KeyResponse.js';
 
 const GetAppsAppIdKeys = {
   "metadata": {

@@ -1,4 +1,4 @@
-import OrganizationFull from './OrganizationFull';
+import OrganizationFull from './OrganizationFull.js';
 
 const OrganizationFullResponse = {
   "type": "object",

@@ -1,6 +1,6 @@
-import BloodType from './BloodType';
-import Gender from './Gender';
-import MaritalStatus from './MaritalStatus';
+import BloodType from './BloodType.js';
+import Gender from './Gender.js';
+import MaritalStatus from './MaritalStatus.js';
 
 const CharacterBase = {
   "type": "object",

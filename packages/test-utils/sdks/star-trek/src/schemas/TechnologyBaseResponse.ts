@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import TechnologyBase from './TechnologyBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import TechnologyBase from './TechnologyBase.js';
 
 const TechnologyBaseResponse = {
   "type": "object",

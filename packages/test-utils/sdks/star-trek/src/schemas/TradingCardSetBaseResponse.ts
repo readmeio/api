@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import TradingCardSetBase from './TradingCardSetBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import TradingCardSetBase from './TradingCardSetBase.js';
 
 const TradingCardSetBaseResponse = {
   "type": "object",

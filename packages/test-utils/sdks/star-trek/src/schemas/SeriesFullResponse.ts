@@ -1,4 +1,4 @@
-import SeriesFull from './SeriesFull';
+import SeriesFull from './SeriesFull.js';
 
 const SeriesFullResponse = {
   "type": "object",

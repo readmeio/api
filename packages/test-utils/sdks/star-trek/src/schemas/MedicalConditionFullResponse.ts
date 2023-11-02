@@ -1,4 +1,4 @@
-import MedicalConditionFull from './MedicalConditionFull';
+import MedicalConditionFull from './MedicalConditionFull.js';
 
 const MedicalConditionFullResponse = {
   "type": "object",

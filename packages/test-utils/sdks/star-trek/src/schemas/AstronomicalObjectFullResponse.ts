@@ -1,4 +1,4 @@
-import AstronomicalObjectFull from './AstronomicalObjectFull';
+import AstronomicalObjectFull from './AstronomicalObjectFull.js';
 
 const AstronomicalObjectFullResponse = {
   "type": "object",

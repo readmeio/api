@@ -1,4 +1,4 @@
-import RuleSource from './RuleSource';
+import RuleSource from './RuleSource.js';
 
 const AzureFunctionRulePost = {
   "additionalProperties": false,

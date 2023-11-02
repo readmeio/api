@@ -1,4 +1,4 @@
-import CompanyFull from './CompanyFull';
+import CompanyFull from './CompanyFull.js';
 
 const CompanyFullResponse = {
   "type": "object",
