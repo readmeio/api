@@ -8,18 +8,43 @@ import { findLicense } from 'license';
 import { PACKAGE_NAME, PACKAGE_VERSION } from '../packageInfo.js';
 
 export default abstract class CodeGenerator {
+  /** The associated API definition */
   spec: Oas;
 
+  /**
+   * The path to the API definion (might be a local path, a URL, or an API registry identifier)
+   * @example https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+   * @example @petstore/v1.0#n6kvf10vakpemvplx
+   * @example ./petstore.json
+   */
   specPath: string;
 
+  /**
+   * The user-specified identifier for the SDK,
+   * used as the directory name in the `.api/apis` directory
+   * where the SDK source code is located.
+   */
   identifier: string;
 
+  /** The user agent which is set for all outgoing fetch requests */
   userAgent: string;
 
+  /**
+   * The license associated with the SDK.
+   * This is extrapolated from the API definition file.
+   */
   spdxLicense?: string;
 
+  /**
+   * Contact info for the API and/or SDK author in case users need support.
+   * This is extrapolated from the API definition file.
+   */
   apiContact: { name?: string; url?: string } = {};
 
+  /**
+   * An object containing any downstream packages that are required
+   * for building/executing the SDK.
+   */
   requiredPackages!: Record<
     string,
     {
