@@ -45,6 +45,10 @@
     "@readme/httpsnippet": ">=8.1.2",
     "oas": "^24.0.0"
   },
+  "bundledDependencies": [
+    "camelcase",
+    "stringify-object"
+  ],
   "devDependencies": {
     "@readme/oas-examples": "^5.12.0",
     "@readme/openapi-parser": "^2.5.0",
