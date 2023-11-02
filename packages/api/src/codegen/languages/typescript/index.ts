@@ -26,13 +26,13 @@ import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
+import { getExampleCodeSnippet } from '../../../lib/suggestedOperations.js';
 import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
 
 import { docblockEscape, generateTypeName, wordWrap } from './util.js';
-import { getExampleCodeSnippet } from '../../../lib/suggestedOperations.js';
 
 interface OperationTypeHousing {
   operation: Operation;
