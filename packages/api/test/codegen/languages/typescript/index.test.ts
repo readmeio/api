@@ -1,3 +1,5 @@
+import type { SpyInstance } from 'vitest';
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -73,19 +75,16 @@ function assertSDKFixture(file: string, fixture: string) {
         // We have to wrap in our current package version into the `<<useragent>>` placeholder so
         // we don't need to worry about committing package versions into source control or trying
         // to mock out our `packageInfo` library, potentially causing sideeffects in other tests.
-        return fs
-          .readFile(expectedFilePath, 'utf8')
-          .then(expected => expected.replace('<<package version>>', packageInfo.PACKAGE_VERSION))
-          .then(async expected => {
-            if (actual !== expected && process.env.UPDATE_FIXTURES) {
-              // eslint-disable-next-line no-console
-              console.info('[sdk fixture updated]', expectedFilePath);
-              await fs.writeFile(expectedFilePath, actual.replace(packageInfo.PACKAGE_VERSION, '<<package version>>'));
-              return;
-            }
+        return fs.readFile(expectedFilePath, 'utf8').then(async expected => {
+          if (actual !== expected && process.env.UPDATE_FIXTURES) {
+            // eslint-disable-next-line no-console
+            console.info('[sdk fixture updated]', expectedFilePath);
+            await fs.writeFile(expectedFilePath, actual);
+            return;
+          }
 
-            expect(actual).toBe(expected);
-          });
+          expect(actual).toBe(expected);
+        });
       }),
     );
 
@@ -96,12 +95,17 @@ function assertSDKFixture(file: string, fixture: string) {
 }
 
 describe('typescript', () => {
+  let packageInfoSpy: SpyInstance;
+
   beforeEach(() => {
+    // @ts-expect-error deliberately setting this const to another value
+    packageInfoSpy = vi.spyOn(packageInfo, 'PACKAGE_VERSION', 'get').mockReturnValue('7.0.0-mock');
     vi.setSystemTime(new Date('2023-10-25'));
     Storage.setStorageDir(uniqueTempDir());
   });
 
   afterEach(() => {
+    packageInfoSpy.mockReset();
     vi.useRealTimers();
     Storage.reset();
   });
