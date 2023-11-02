@@ -26,7 +26,7 @@ import setWith from 'lodash.setwith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
-import { getExampleCodeSnippet } from '../../../lib/suggestedOperations.js';
+import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../../lib/suggestedOperations.js';
 import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
@@ -259,6 +259,23 @@ export default class TSGenerator extends CodeGenerator {
         };
       }),
     ].reduce((prev, next) => Object.assign(prev, next));
+  }
+
+  async getExampleCodeSnippet() {
+    // if we've already built the code snippet, return it instead of re-building it!
+    if (typeof this.exampleCodeSnippet !== 'undefined') {
+      return this.exampleCodeSnippet;
+    }
+
+    const operation = getSuggestedOperation(this.spec);
+    if (!operation) {
+      this.exampleCodeSnippet = false;
+      return false;
+    }
+
+    const snippet = await buildCodeSnippetForOperation(this.spec, operation, { identifier: this.identifier });
+    this.exampleCodeSnippet = snippet;
+    return snippet;
   }
 
   /**
@@ -648,7 +665,7 @@ dist/
     if (currentAPI) createdAt = currentAPI.createdAt;
 
     let exampleUsage = 'Add SDK setup information and usage examples here so your users get started in a jiffy! 🚀';
-    const exampleSnippet = await getExampleCodeSnippet(this.spec, this.identifier);
+    const exampleSnippet = await this.getExampleCodeSnippet();
     if (exampleSnippet) {
       exampleUsage = `
 ## Example Usage 🚀

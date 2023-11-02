@@ -124,12 +124,3 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
 
   return snippet;
 }
-
-export async function getExampleCodeSnippet(oas: Oas, identifier: string) {
-  const operation = getSuggestedOperation(oas);
-  if (!operation) {
-    return false;
-  }
-
-  return buildCodeSnippetForOperation(oas, operation, { identifier });
-}

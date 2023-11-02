@@ -30,6 +30,11 @@ export default abstract class CodeGenerator {
     }
   >;
 
+  /**
+   * An example code snippet that a user can run to get started with the SDK.
+   */
+  exampleCodeSnippet?: string | false;
+
   constructor(spec: Oas, specPath: string, identifier: string) {
     this.spec = spec;
     this.specPath = specPath;
@@ -111,6 +116,8 @@ export default abstract class CodeGenerator {
   }
 
   abstract compile(storage: Storage, opts?: InstallerOptions): Promise<void>;
+
+  abstract getExampleCodeSnippet(): Promise<string | false>;
 
   hasRequiredPackages() {
     return Boolean(Object.keys(this.requiredPackages));

@@ -11,7 +11,6 @@ import uslug from 'uslug';
 import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
-import { getExampleCodeSnippet } from '../lib/suggestedOperations.js';
 import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
@@ -204,7 +203,7 @@ cmd
       )} package.`,
     );
 
-    const exampleSnippet = await getExampleCodeSnippet(oas, identifier);
+    const exampleSnippet = await generator.getExampleCodeSnippet();
     if (exampleSnippet) {
       logger('');
       logger(chalk.bold("👇 Here's an example code snippet you can try out 👇"));
