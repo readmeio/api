@@ -1,4 +1,4 @@
-import type { OASDocument } from 'oas/rmoas.types';
+import type { OASDocument } from 'oas/types';
 
 import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';

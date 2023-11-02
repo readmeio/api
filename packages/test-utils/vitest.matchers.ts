@@ -1,4 +1,4 @@
-import type { ParameterObject } from 'oas/rmoas.types';
+import type { ParameterObject } from 'oas/types';
 
 import caseless from 'caseless';
 import { expect } from 'vitest';

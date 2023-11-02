@@ -1,5 +1,5 @@
 import type { SnippetMock } from '../../index.test.js';
-import type { OASDocument } from 'oas/rmoas.types';
+import type { OASDocument } from 'oas/types';
 
 import definition from '@readme/oas-examples/3.0/json/server-variables.json';
 
