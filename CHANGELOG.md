@@ -1,3 +1,25 @@
+## 7.0.0-beta.4 (2023-11-02)
+
+* fix(api): run `npm install` with `--ignore-scripts` (#793) ([f93f152](https://github.com/readmeio/api/commit/f93f152)), closes [#793](https://github.com/readmeio/api/issues/793)
+* fix(httpsnippet-client-api): making external deps no longer external (#810) ([aa49eb5](https://github.com/readmeio/api/commit/aa49eb5)), closes [#810](https://github.com/readmeio/api/issues/810)
+* feat: add example code snippet to README (#809) ([aa22328](https://github.com/readmeio/api/commit/aa22328)), closes [#809](https://github.com/readmeio/api/issues/809)
+* feat: convert SDK output to module (#802) ([0dfd14c](https://github.com/readmeio/api/commit/0dfd14c)), closes [#802](https://github.com/readmeio/api/issues/802)
+* feat: syntax highlighting on example snippet (#795) ([16a402b](https://github.com/readmeio/api/commit/16a402b)), closes [#795](https://github.com/readmeio/api/issues/795)
+* feat: throw error for legacy dynamic `require` users (#794) ([1c66a59](https://github.com/readmeio/api/commit/1c66a59)), closes [#794](https://github.com/readmeio/api/issues/794)
+* feat(codegen): expose `package.json` in `exports` object (#796) ([5c82ca4](https://github.com/readmeio/api/commit/5c82ca4)), closes [#796](https://github.com/readmeio/api/issues/796)
+* feat(core): bring  `FromSchema` back into core (#801) ([f7679f4](https://github.com/readmeio/api/commit/f7679f4)), closes [#801](https://github.com/readmeio/api/issues/801) [#787](https://github.com/readmeio/api/issues/787)
+* test: add tests for CLI commands (#799) ([e456d46](https://github.com/readmeio/api/commit/e456d46)), closes [#799](https://github.com/readmeio/api/issues/799)
+* chore(api): fixing our smoketest system ([7a8b0e2](https://github.com/readmeio/api/commit/7a8b0e2))
+* chore(deps-dev): bump the minor-development-deps group with 19 updates (#804) ([2b0e7fa](https://github.com/readmeio/api/commit/2b0e7fa)), closes [#804](https://github.com/readmeio/api/issues/804)
+* chore(deps-dev): removing commitlint + husky, replacing it with a PR action ([e5007a7](https://github.com/readmeio/api/commit/e5007a7))
+* chore(deps): bump actions/setup-node from 3 to 4 (#803) ([c034fec](https://github.com/readmeio/api/commit/c034fec)), closes [#803](https://github.com/readmeio/api/issues/803)
+* chore(deps): bump figures from 5.0.0 to 6.0.1 (#805) ([099852c](https://github.com/readmeio/api/commit/099852c)), closes [#805](https://github.com/readmeio/api/issues/805)
+* chore(deps): upgrading `oas` to its latest release (#808) ([f06ad7f](https://github.com/readmeio/api/commit/f06ad7f)), closes [#808](https://github.com/readmeio/api/issues/808)
+* chore(deps): upgrading all of our oas deps to their latest releases (#797) ([6ac55ce](https://github.com/readmeio/api/commit/6ac55ce)), closes [#797](https://github.com/readmeio/api/issues/797)
+* refactor(snippets): moving the library over to be an HTTPSnippet plugin (#792) ([0b88a3b](https://github.com/readmeio/api/commit/0b88a3b)), closes [#792](https://github.com/readmeio/api/issues/792)
+
+
+
 ## 7.0.0-beta.3 (2023-10-25)
 
 * fix(core): refactoring  `FromSchema` out of core (#787) ([41cacf3](https://github.com/readmeio/api/commit/41cacf3)), closes [#787](https://github.com/readmeio/api/issues/787)
