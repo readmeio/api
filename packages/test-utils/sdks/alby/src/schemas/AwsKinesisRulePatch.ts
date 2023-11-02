@@ -1,6 +1,6 @@
-import AwsAccessKeys from './AwsAccessKeys';
-import AwsAssumeRole from './AwsAssumeRole';
-import RuleSource from './RuleSource';
+import AwsAccessKeys from './AwsAccessKeys.js';
+import AwsAssumeRole from './AwsAssumeRole.js';
+import RuleSource from './RuleSource.js';
 
 const AwsKinesisRulePatch = {
   "additionalProperties": false,

@@ -1,6 +1,6 @@
-import ElementBase from './ElementBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import ElementBase from './ElementBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const ElementBaseResponse = {
   "type": "object",

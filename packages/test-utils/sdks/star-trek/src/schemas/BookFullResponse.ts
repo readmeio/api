@@ -1,4 +1,4 @@
-import BookFull from './BookFull';
+import BookFull from './BookFull.js';
 
 const BookFullResponse = {
   "type": "object",

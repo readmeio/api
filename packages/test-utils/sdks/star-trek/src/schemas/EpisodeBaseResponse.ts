@@ -1,6 +1,6 @@
-import EpisodeBase from './EpisodeBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import EpisodeBase from './EpisodeBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const EpisodeBaseResponse = {
   "type": "object",

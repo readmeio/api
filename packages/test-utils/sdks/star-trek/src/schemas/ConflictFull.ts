@@ -1,6 +1,6 @@
-import CharacterBase from './CharacterBase';
-import LocationBase from './LocationBase';
-import OrganizationBase from './OrganizationBase';
+import CharacterBase from './CharacterBase.js';
+import LocationBase from './LocationBase.js';
+import OrganizationBase from './OrganizationBase.js';
 
 const ConflictFull = {
   "type": "object",

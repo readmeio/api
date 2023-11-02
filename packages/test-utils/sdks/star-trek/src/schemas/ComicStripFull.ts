@@ -1,6 +1,6 @@
-import CharacterBase from './CharacterBase';
-import ComicSeriesBase from './ComicSeriesBase';
-import StaffBase from './StaffBase';
+import CharacterBase from './CharacterBase.js';
+import ComicSeriesBase from './ComicSeriesBase.js';
+import StaffBase from './StaffBase.js';
 
 const ComicStripFull = {
   "type": "object",

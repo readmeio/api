@@ -1,4 +1,4 @@
-import MagazineSeriesFull from './MagazineSeriesFull';
+import MagazineSeriesFull from './MagazineSeriesFull.js';
 
 const MagazineSeriesFullResponse = {
   "type": "object",

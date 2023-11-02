@@ -1,4 +1,4 @@
-import ConflictFull from './ConflictFull';
+import ConflictFull from './ConflictFull.js';
 
 const ConflictFullResponse = {
   "type": "object",

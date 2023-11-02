@@ -1,6 +1,6 @@
-import BookBase from './BookBase';
-import BookSeriesBase from './BookSeriesBase';
-import CompanyBase from './CompanyBase';
+import BookBase from './BookBase.js';
+import BookSeriesBase from './BookSeriesBase.js';
+import CompanyBase from './CompanyBase.js';
 
 const BookSeriesFull = {
   "type": "object",

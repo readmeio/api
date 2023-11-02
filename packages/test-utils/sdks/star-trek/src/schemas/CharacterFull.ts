@@ -1,14 +1,14 @@
-import BloodType from './BloodType';
-import CharacterRelation from './CharacterRelation';
-import CharacterSpecies from './CharacterSpecies';
-import EpisodeBase from './EpisodeBase';
-import Gender from './Gender';
-import MaritalStatus from './MaritalStatus';
-import MovieBase from './MovieBase';
-import OccupationBase from './OccupationBase';
-import OrganizationBase from './OrganizationBase';
-import PerformerBase from './PerformerBase';
-import TitleBase from './TitleBase';
+import BloodType from './BloodType.js';
+import CharacterRelation from './CharacterRelation.js';
+import CharacterSpecies from './CharacterSpecies.js';
+import EpisodeBase from './EpisodeBase.js';
+import Gender from './Gender.js';
+import MaritalStatus from './MaritalStatus.js';
+import MovieBase from './MovieBase.js';
+import OccupationBase from './OccupationBase.js';
+import OrganizationBase from './OrganizationBase.js';
+import PerformerBase from './PerformerBase.js';
+import TitleBase from './TitleBase.js';
 
 const CharacterFull = {
   "type": "object",

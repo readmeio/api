@@ -1,4 +1,4 @@
-import StaffFull from './StaffFull';
+import StaffFull from './StaffFull.js';
 
 const StaffFullResponse = {
   "type": "object",

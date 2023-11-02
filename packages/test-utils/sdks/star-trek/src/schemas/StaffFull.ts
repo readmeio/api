@@ -1,6 +1,6 @@
-import EpisodeBase from './EpisodeBase';
-import Gender from './Gender';
-import MovieBase from './MovieBase';
+import EpisodeBase from './EpisodeBase.js';
+import Gender from './Gender.js';
+import MovieBase from './MovieBase.js';
 
 const StaffFull = {
   "type": "object",

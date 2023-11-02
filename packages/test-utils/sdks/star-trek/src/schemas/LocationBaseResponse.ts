@@ -1,6 +1,6 @@
-import LocationBase from './LocationBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import LocationBase from './LocationBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const LocationBaseResponse = {
   "type": "object",

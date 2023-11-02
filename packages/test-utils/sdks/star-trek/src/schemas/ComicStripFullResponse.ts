@@ -1,4 +1,4 @@
-import ComicStripFull from './ComicStripFull';
+import ComicStripFull from './ComicStripFull.js';
 
 const ComicStripFullResponse = {
   "type": "object",

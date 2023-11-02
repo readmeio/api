@@ -1,4 +1,4 @@
-import PerformerFull from './PerformerFull';
+import PerformerFull from './PerformerFull.js';
 
 const PerformerFullResponse = {
   "type": "object",

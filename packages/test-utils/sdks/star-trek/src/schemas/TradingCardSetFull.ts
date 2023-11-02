@@ -1,8 +1,8 @@
-import CompanyBase from './CompanyBase';
-import Country from './Country';
-import ProductionRunUnit from './ProductionRunUnit';
-import TradingCardBase from './TradingCardBase';
-import TradingCardDeckBase from './TradingCardDeckBase';
+import CompanyBase from './CompanyBase.js';
+import Country from './Country.js';
+import ProductionRunUnit from './ProductionRunUnit.js';
+import TradingCardBase from './TradingCardBase.js';
+import TradingCardDeckBase from './TradingCardDeckBase.js';
 
 const TradingCardSetFull = {
   "type": "object",

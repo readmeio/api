@@ -1,12 +1,12 @@
-import ErrorApikeyEmpty from './ErrorApikeyEmpty';
-import ErrorApikeyMismatch from './ErrorApikeyMismatch';
-import ErrorApikeyNotfound from './ErrorApikeyNotfound';
-import ErrorSpecFileEmpty from './ErrorSpecFileEmpty';
-import ErrorSpecIdDuplicate from './ErrorSpecIdDuplicate';
-import ErrorSpecIdInvalid from './ErrorSpecIdInvalid';
-import ErrorSpecInvalid from './ErrorSpecInvalid';
-import ErrorSpecInvalidSchema from './ErrorSpecInvalidSchema';
-import ErrorSpecVersionNotfound from './ErrorSpecVersionNotfound';
+import ErrorApikeyEmpty from './ErrorApikeyEmpty.js';
+import ErrorApikeyMismatch from './ErrorApikeyMismatch.js';
+import ErrorApikeyNotfound from './ErrorApikeyNotfound.js';
+import ErrorSpecFileEmpty from './ErrorSpecFileEmpty.js';
+import ErrorSpecIdDuplicate from './ErrorSpecIdDuplicate.js';
+import ErrorSpecIdInvalid from './ErrorSpecIdInvalid.js';
+import ErrorSpecInvalid from './ErrorSpecInvalid.js';
+import ErrorSpecInvalidSchema from './ErrorSpecInvalidSchema.js';
+import ErrorSpecVersionNotfound from './ErrorSpecVersionNotfound.js';
 
 const UpdateApiSpecification = {
   "body": {

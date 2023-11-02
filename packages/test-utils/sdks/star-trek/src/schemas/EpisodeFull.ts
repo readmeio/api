@@ -1,8 +1,8 @@
-import CharacterBase from './CharacterBase';
-import PerformerBase from './PerformerBase';
-import SeasonBase from './SeasonBase';
-import SeriesBase from './SeriesBase';
-import StaffBase from './StaffBase';
+import CharacterBase from './CharacterBase.js';
+import PerformerBase from './PerformerBase.js';
+import SeasonBase from './SeasonBase.js';
+import SeriesBase from './SeriesBase.js';
+import StaffBase from './StaffBase.js';
 
 const EpisodeFull = {
   "type": "object",

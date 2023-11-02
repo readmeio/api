@@ -1,5 +1,5 @@
-import SeasonHeader from './SeasonHeader';
-import SeriesHeader from './SeriesHeader';
+import SeasonHeader from './SeasonHeader.js';
+import SeriesHeader from './SeriesHeader.js';
 
 const EpisodeBase = {
   "type": "object",

@@ -6,7 +6,7 @@ import ora from 'ora';
 
 import { SupportedLanguages, uninstallerFactory } from '../codegen/factory.js';
 import promptTerminal from '../lib/prompt.js';
-import logger from '../logger.js';
+import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
 interface Options {
@@ -26,11 +26,9 @@ cmd
 
     const entry = Storage.getFromLockfile(identifier);
     if (!entry) {
-      logger(
+      throw new Error(
         `You do not appear to have ${identifier} installed. You can run \`npx api list\` to see what SDKs are present.`,
-        true,
       );
-      process.exit(1);
     }
 
     storage.setLanguage(entry?.language);
@@ -47,12 +45,12 @@ cmd
         initial: true,
       }).then(({ value }) => {
         if (!value) {
-          process.exit(1);
+          throw new Error('Uninstallation cancelled.');
         }
       });
     }
 
-    let spinner = ora(`Uninstalling ${chalk.grey(identifier)}`).start();
+    let spinner = ora({ text: `Uninstalling ${chalk.grey(identifier)}`, ...oraOptions() }).start();
 
     // If we have a known package name for this then we can uninstall it from within cooresponding
     // package manager.
@@ -65,12 +63,11 @@ cmd
         })
         .catch(err => {
           spinner.fail(spinner.text);
-          logger(err.message, true);
-          process.exit(1);
+          throw err;
         });
     }
 
-    spinner = ora(`Removing ${chalk.grey(directory)}`).start();
+    spinner = ora({ text: `Removing ${chalk.grey(directory)}`, ...oraOptions() }).start();
     await storage
       .remove()
       .then(() => {
@@ -78,8 +75,7 @@ cmd
       })
       .catch(err => {
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     logger('🚀 All done!');

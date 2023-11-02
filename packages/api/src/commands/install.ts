@@ -12,7 +12,7 @@ import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import { getExampleCodeSnippet } from '../lib/suggestedOperations.js';
-import logger from '../logger.js';
+import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
 interface Options {
@@ -94,7 +94,7 @@ cmd
       // logger(`It looks like you already have this API installed. Would you like to update it?`);
     }
 
-    let spinner = ora('Fetching your API definition').start();
+    let spinner = ora({ text: 'Fetching your API definition', ...oraOptions() }).start();
     const storage = new Storage(uri, language);
 
     const oas = await storage
@@ -111,14 +111,12 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     const identifier = await getIdentifier(oas, uri, options);
     if (!identifier) {
-      logger('You must tell us what you would like to identify this API as in order to install it.', true);
-      process.exit(1);
+      throw new Error('You must tell us what you would like to identify this API as in order to install it.');
     }
 
     // Now that we've got an identifier we can save their spec and generate the directory structure
@@ -127,7 +125,7 @@ cmd
     await storage.save(oas.api);
 
     // @todo look for a prettier config and if we find one ask them if we should use it
-    spinner = ora('Generating your SDK').start();
+    spinner = ora({ text: 'Generating your SDK', ...oraOptions() }).start();
     const generator = codegenFactory(language, oas, '../openapi.json', identifier);
     const sdkSource = await generator
       .generate()
@@ -138,11 +136,10 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
-    spinner = ora('Saving your SDK into your codebase').start();
+    spinner = ora({ text: 'Saving your SDK into your codebase', ...oraOptions() }).start();
     await storage
       .saveSourceFiles(sdkSource)
       .then(() => {
@@ -151,8 +148,7 @@ cmd
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       });
 
     if (generator.hasRequiredPackages()) {
@@ -175,33 +171,30 @@ cmd
         }).then(({ value }) => {
           if (!value) {
             // @todo cleanup installed files
-            logger('Installation cancelled.', true);
-            process.exit(1);
+            throw new Error('Installation cancelled.');
           }
         });
       }
 
-      spinner = ora('Installing required packages').start();
+      spinner = ora({ text: 'Installing required packages', ...oraOptions() }).start();
       try {
         await generator.install(storage);
         spinner.succeed(spinner.text);
       } catch (err) {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
-        logger(err.message, true);
-        process.exit(1);
+        throw err;
       }
     }
 
-    spinner = ora('Compiling your SDK').start();
+    spinner = ora({ text: 'Compiling your SDK', ...oraOptions() }).start();
     try {
       await generator.compile(storage);
       spinner.succeed(spinner.text);
     } catch (err) {
       // @todo cleanup installed files
       spinner.fail(spinner.text);
-      logger(err.message, true);
-      process.exit(1);
+      throw err;
     }
 
     logger('');

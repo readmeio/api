@@ -1,2 +1,2 @@
-import GetAnything from './schemas/GetAnything';
+import GetAnything from './schemas/GetAnything.js';
 export { GetAnything }

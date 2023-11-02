@@ -1,4 +1,4 @@
-import ContentRatingSystem from './ContentRatingSystem';
+import ContentRatingSystem from './ContentRatingSystem.js';
 
 const ContentRating = {
   "type": "object",

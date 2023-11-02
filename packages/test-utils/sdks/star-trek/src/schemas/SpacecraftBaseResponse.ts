@@ -1,6 +1,6 @@
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
-import SpacecraftBase from './SpacecraftBase';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
+import SpacecraftBase from './SpacecraftBase.js';
 
 const SpacecraftBaseResponse = {
   "type": "object",

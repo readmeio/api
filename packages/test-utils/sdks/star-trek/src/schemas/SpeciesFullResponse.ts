@@ -1,4 +1,4 @@
-import SpeciesFull from './SpeciesFull';
+import SpeciesFull from './SpeciesFull.js';
 
 const SpeciesFullResponse = {
   "type": "object",

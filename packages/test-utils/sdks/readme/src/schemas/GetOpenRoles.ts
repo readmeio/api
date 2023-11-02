@@ -1,4 +1,4 @@
-import JobOpening from './JobOpening';
+import JobOpening from './JobOpening.js';
 
 const GetOpenRoles = {
   "response": {

@@ -1,6 +1,6 @@
-import ErrorApikeyEmpty from './ErrorApikeyEmpty';
-import ErrorApikeyMismatch from './ErrorApikeyMismatch';
-import ErrorApikeyNotfound from './ErrorApikeyNotfound';
+import ErrorApikeyEmpty from './ErrorApikeyEmpty.js';
+import ErrorApikeyMismatch from './ErrorApikeyMismatch.js';
+import ErrorApikeyNotfound from './ErrorApikeyNotfound.js';
 
 const CreateDoc = {
   "metadata": {

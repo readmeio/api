@@ -1,6 +1,6 @@
-import ComicSeriesBase from './ComicSeriesBase';
-import ComicsBase from './ComicsBase';
-import CompanyBase from './CompanyBase';
+import ComicSeriesBase from './ComicSeriesBase.js';
+import ComicsBase from './ComicsBase.js';
+import CompanyBase from './CompanyBase.js';
 
 const ComicSeriesFull = {
   "type": "object",

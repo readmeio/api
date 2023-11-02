@@ -1,6 +1,6 @@
-import ConflictBase from './ConflictBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import ConflictBase from './ConflictBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const ConflictBaseResponse = {
   "type": "object",

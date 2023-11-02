@@ -1,6 +1,6 @@
-import AlertMessage from './AlertMessage';
-import Departure from './Departure';
-import Stop from './Stop';
+import AlertMessage from './AlertMessage.js';
+import Departure from './Departure.js';
+import Stop from './Stop.js';
 
 const NexTripResult = {
   "type": "object",

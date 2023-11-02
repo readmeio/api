@@ -1,6 +1,6 @@
-import AstronomicalObjectBase from './AstronomicalObjectBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import AstronomicalObjectBase from './AstronomicalObjectBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const AstronomicalObjectBaseResponse = {
   "type": "object",

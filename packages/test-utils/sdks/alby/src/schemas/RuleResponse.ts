@@ -1,14 +1,14 @@
-import AmqpExternalRuleResponse from './AmqpExternalRuleResponse';
-import AmqpRuleResponse from './AmqpRuleResponse';
-import AwsKinesisRuleResponse from './AwsKinesisRuleResponse';
-import AwsLambdaRuleResponse from './AwsLambdaRuleResponse';
-import AwsSqsRuleResponse from './AwsSqsRuleResponse';
-import AzureFunctionRuleResponse from './AzureFunctionRuleResponse';
-import CloudflareWorkerRuleResponse from './CloudflareWorkerRuleResponse';
-import GoogleCloudFunctionRuleResponse from './GoogleCloudFunctionRuleResponse';
-import HttpRuleResponse from './HttpRuleResponse';
-import IftttRuleResponse from './IftttRuleResponse';
-import ZapierRuleResponse from './ZapierRuleResponse';
+import AmqpExternalRuleResponse from './AmqpExternalRuleResponse.js';
+import AmqpRuleResponse from './AmqpRuleResponse.js';
+import AwsKinesisRuleResponse from './AwsKinesisRuleResponse.js';
+import AwsLambdaRuleResponse from './AwsLambdaRuleResponse.js';
+import AwsSqsRuleResponse from './AwsSqsRuleResponse.js';
+import AzureFunctionRuleResponse from './AzureFunctionRuleResponse.js';
+import CloudflareWorkerRuleResponse from './CloudflareWorkerRuleResponse.js';
+import GoogleCloudFunctionRuleResponse from './GoogleCloudFunctionRuleResponse.js';
+import HttpRuleResponse from './HttpRuleResponse.js';
+import IftttRuleResponse from './IftttRuleResponse.js';
+import ZapierRuleResponse from './ZapierRuleResponse.js';
 
 const RuleResponse = {
   "discriminator": {

@@ -1,4 +1,4 @@
-import TradingCardFull from './TradingCardFull';
+import TradingCardFull from './TradingCardFull.js';
 
 const TradingCardFullResponse = {
   "type": "object",

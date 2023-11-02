@@ -1,4 +1,4 @@
-import ReferenceType from './ReferenceType';
+import ReferenceType from './ReferenceType.js';
 
 const Reference = {
   "type": "object",

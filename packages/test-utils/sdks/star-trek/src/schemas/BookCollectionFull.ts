@@ -1,9 +1,9 @@
-import BookBase from './BookBase';
-import BookSeriesBase from './BookSeriesBase';
-import CharacterBase from './CharacterBase';
-import CompanyBase from './CompanyBase';
-import Reference from './Reference';
-import StaffBase from './StaffBase';
+import BookBase from './BookBase.js';
+import BookSeriesBase from './BookSeriesBase.js';
+import CharacterBase from './CharacterBase.js';
+import CompanyBase from './CompanyBase.js';
+import Reference from './Reference.js';
+import StaffBase from './StaffBase.js';
 
 const BookCollectionFull = {
   "type": "object",

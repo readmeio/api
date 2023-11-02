@@ -1,4 +1,4 @@
-import SeriesHeader from './SeriesHeader';
+import SeriesHeader from './SeriesHeader.js';
 
 const SeasonBase = {
   "type": "object",

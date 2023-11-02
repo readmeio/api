@@ -1,4 +1,4 @@
-import VideoReleaseFull from './VideoReleaseFull';
+import VideoReleaseFull from './VideoReleaseFull.js';
 
 const VideoReleaseFullResponse = {
   "type": "object",

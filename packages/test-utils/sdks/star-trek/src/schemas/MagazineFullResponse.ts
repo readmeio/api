@@ -1,4 +1,4 @@
-import MagazineFull from './MagazineFull';
+import MagazineFull from './MagazineFull.js';
 
 const MagazineFullResponse = {
   "type": "object",

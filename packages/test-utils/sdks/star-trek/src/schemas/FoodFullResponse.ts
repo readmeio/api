@@ -1,4 +1,4 @@
-import FoodFull from './FoodFull';
+import FoodFull from './FoodFull.js';
 
 const FoodFullResponse = {
   "type": "object",

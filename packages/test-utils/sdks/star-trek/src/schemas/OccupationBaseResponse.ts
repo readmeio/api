@@ -1,6 +1,6 @@
-import OccupationBase from './OccupationBase';
-import ResponsePage from './ResponsePage';
-import ResponseSort from './ResponseSort';
+import OccupationBase from './OccupationBase.js';
+import ResponsePage from './ResponsePage.js';
+import ResponseSort from './ResponseSort.js';
 
 const OccupationBaseResponse = {
   "type": "object",

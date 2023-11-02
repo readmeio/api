@@ -1,15 +1,15 @@
-import AmqpExternalRulePost from './AmqpExternalRulePost';
-import AmqpRulePost from './AmqpRulePost';
-import AwsKinesisRulePost from './AwsKinesisRulePost';
-import AwsLambdaRulePost from './AwsLambdaRulePost';
-import AwsSqsRulePost from './AwsSqsRulePost';
-import AzureFunctionRulePost from './AzureFunctionRulePost';
-import CloudflareWorkerRulePost from './CloudflareWorkerRulePost';
-import GoogleCloudFunctionRulePost from './GoogleCloudFunctionRulePost';
-import HttpRulePost from './HttpRulePost';
-import IftttRulePost from './IftttRulePost';
-import UnsupportedRuleResponse from './UnsupportedRuleResponse';
-import ZapierRulePost from './ZapierRulePost';
+import AmqpExternalRulePost from './AmqpExternalRulePost.js';
+import AmqpRulePost from './AmqpRulePost.js';
+import AwsKinesisRulePost from './AwsKinesisRulePost.js';
+import AwsLambdaRulePost from './AwsLambdaRulePost.js';
+import AwsSqsRulePost from './AwsSqsRulePost.js';
+import AzureFunctionRulePost from './AzureFunctionRulePost.js';
+import CloudflareWorkerRulePost from './CloudflareWorkerRulePost.js';
+import GoogleCloudFunctionRulePost from './GoogleCloudFunctionRulePost.js';
+import HttpRulePost from './HttpRulePost.js';
+import IftttRulePost from './IftttRulePost.js';
+import UnsupportedRuleResponse from './UnsupportedRuleResponse.js';
+import ZapierRulePost from './ZapierRulePost.js';
 
 const RulePost = {
   "discriminator": {

@@ -1,7 +1,7 @@
-import CharacterBase from './CharacterBase';
-import EpisodeBase from './EpisodeBase';
-import Gender from './Gender';
-import MovieBase from './MovieBase';
+import CharacterBase from './CharacterBase.js';
+import EpisodeBase from './EpisodeBase.js';
+import Gender from './Gender.js';
+import MovieBase from './MovieBase.js';
 
 const PerformerFull = {
   "type": "object",
