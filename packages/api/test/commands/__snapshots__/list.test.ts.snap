@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`install command > should list installed SDKs 1`] = `
+"[33m[4mpetstore[24m[39m
+
+package name ([31mprivate[39m): [90m@api/petstore[39m
+
+language: [90mjs[39m
+
+source: [90m@petstore/v1.0#n6kvf10vakpemvplx[39m
+
+installer version: [90m7.0.0-beta.3[39m
+
+created at: [90m2023-10-25T00:00:00.000Z[39m"
+`;
+
+exports[`install command > should print help screen 1`] = `
+"Usage: list|ls [options]
+
+list any installed API SDKs
+
+Options:
+  -h, --help  display help for command
+"
+`;

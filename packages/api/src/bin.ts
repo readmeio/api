@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 
 import commands from './commands/index.js';
+import logger from './logger.js';
 import * as pkg from './packageInfo.js';
 
 (async () => {
@@ -17,5 +18,8 @@ import * as pkg from './packageInfo.js';
     program.addCommand(cmd);
   });
 
-  await program.parseAsync(process.argv);
+  await program.parseAsync(process.argv).catch(err => {
+    if (err.message) logger(err.message, true);
+    process.exit(1);
+  });
 })();

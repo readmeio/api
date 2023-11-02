@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`install command > should print help screen 1`] = `
+"Usage: install [options] <uri>
+
+install an API SDK into your codebase
+
+Arguments:
+  uri                            an API to install
+
+Options:
+  -i, --identifier <identifier>  API identifier (eg. \`@api/petstore\`)
+  -l, --lang <language>          SDK language (choices: \\"js\\", default: \\"js\\")
+  -y, --yes                      Automatically answer \\"yes\\" to any prompts
+                                 printed
+  -h, --help                     display help for command
+
+
+Examples:
+  $ npx api install @developers/v2.0#nysezql0wwo236
+  $ npx api install https://raw.githubusercontent.com/readmeio/oas-examples/main/3.0/json/petstore-simple.json
+  $ npx api install ./petstore.json
+"
+`;

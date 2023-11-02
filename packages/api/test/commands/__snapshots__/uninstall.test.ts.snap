@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`install command > should print help screen 1`] = `
+"Usage: uninstall [options] <identifier>
+
+uninstall an SDK from your codebase
+
+Arguments:
+  identifier  the SDK to uninstall
+
+Options:
+  -y, --yes   Automatically answer \\"yes\\" to any prompts printed
+  -h, --help  display help for command
+
+
+Examples:
+  $ npx api uninstall petstore
+"
+`;
