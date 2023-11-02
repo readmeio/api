@@ -8,6 +8,7 @@ import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
 
 import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/list.js';
+import * as packageInfo from '../../src/packageInfo.js';
 import Storage from '../../src/storage.js';
 
 const baseCommand = ['api', 'list'];
@@ -18,6 +19,7 @@ describe('install command', () => {
   let stdout: string[];
   let stderr: string[];
   let consoleLogSpy: SpyInstance;
+  let packageInfoSpy: SpyInstance;
 
   const getCommandOutput = () => {
     return [consoleLogSpy.mock.calls.join('\n\n')].filter(Boolean).join('\n\n');
@@ -34,13 +36,16 @@ describe('install command', () => {
     });
 
     consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    // @ts-expect-error deliberately setting this const to another value
+    packageInfoSpy = vi.spyOn(packageInfo, 'PACKAGE_VERSION', 'get').mockReturnValue('7.0.0-mock');
     Storage.setStorageDir(uniqueTempDir());
     vi.setSystemTime(new Date('2023-10-25'));
   });
 
   afterEach(() => {
-    consoleLogSpy.mockRestore();
+    consoleLogSpy.mockReset();
     fetchMock.restore();
+    packageInfoSpy.mockReset();
     Storage.reset();
     vi.useRealTimers();
   });
