@@ -1,5 +1,5 @@
 import type { FromSchema } from '@readme/api-core/types';
-import * as schemas from './schemas.js';
+import type * as schemas from './schemas.js';
 
 export type AnimalBase = FromSchema<typeof schemas.AnimalBase>;
 export type AnimalBaseResponse = FromSchema<typeof schemas.AnimalBaseResponse>;
