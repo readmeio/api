@@ -201,7 +201,7 @@ const client: Client<APIOptions> = {
       sdkPackageName = registryUUID || 'company-name';
     }
 
-    let sdkVariable: string = 'sdk';
+    let sdkVariable = sdkPackageName;
     if (opts.api.variableName) {
       sdkVariable = toSafeString(opts.api.variableName);
       if (isReservedOrBuiltinsLC(sdkVariable)) {
