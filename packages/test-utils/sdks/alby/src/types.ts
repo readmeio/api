@@ -1,5 +1,5 @@
 import type { FromSchema } from '@readme/api-core/types';
-import * as schemas from './schemas.js';
+import type * as schemas from './schemas.js';
 
 export type AmqpExternalRulePatch = FromSchema<typeof schemas.AmqpExternalRulePatch>;
 export type AmqpExternalRulePost = FromSchema<typeof schemas.AmqpExternalRulePost>;
