@@ -778,7 +778,7 @@ Generated at ${createdAt}
 
     sourceFile.addImportDeclarations([
       { defaultImport: 'type { FromSchema }', moduleSpecifier: '@readme/api-core/types' },
-      { defaultImport: '* as schemas', moduleSpecifier: './schemas.js' },
+      { defaultImport: 'type * as schemas', moduleSpecifier: './schemas.js' },
     ]);
 
     Array.from(new Map(Array.from(this.types.entries()).sort())).forEach(([typeName, typeExpression]) => {
