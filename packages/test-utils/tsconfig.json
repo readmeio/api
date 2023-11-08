@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "lib": ["DOM", "ES2023"],
-    "noEmit": true
+    "noEmit": true,
+    "resolveJsonModule": true
   },
-  "include": ["./**/*"],
-  "exclude": ["./sdks/**/*"]
+  "include": ["./**/*"]
 }
