@@ -4,7 +4,6 @@ import type { Operation } from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
-import camelCase from 'camelcase'; // eslint-disable-line import/no-extraneous-dependencies
 import contentType from 'content-type';
 import Oas from 'oas';
 import { matchesMimeType } from 'oas/utils';
@@ -34,6 +33,42 @@ function getProjectPrefixFromRegistryUUID(uri: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
+}
+
+/**
+ * Convert a string that might contain spaces or special characters to one that can safely be used
+ * as a TypeScript interface or enum name.
+ *
+ * This function has been adapted and slighty modified from `json-schema-to-typescript`. This
+ * function also exists in `api` TS codegen.
+ *
+ * @license MIT
+ * @see {@link https://github.com/bcherny/json-schema-to-typescript}
+ */
+function toSafeString(str: string) {
+  // identifiers in javaScript/ts:
+  // First character: a-zA-Z | _ | $
+  // Rest: a-zA-Z | _ | $ | 0-9
+
+  // remove accents, umlauts, ... by their basic latin letters
+  return (
+    str
+      // if the string starts with a number, prefix it with character that typescript can accept
+      // https://github.com/bcherny/json-schema-to-typescript/issues/489
+      .replace(/^(\d){1}/, '$$1')
+      // replace chars which are not valid for typescript identifiers with whitespace
+      .replace(/(^\s*[^a-zA-Z_$])|([^a-zA-Z_$\d])/g, ' ')
+      // uppercase leading underscores followed by lowercase
+      .replace(/^_[a-z]/g, (match: string) => match.toUpperCase())
+      // remove non-leading underscores followed by lowercase (convert snake_case)
+      .replace(/_[a-z]/g, (match: string) => match.substr(1, match.length).toUpperCase())
+      // uppercase letters after digits, dollars
+      .replace(/([\d$]+[a-zA-Z])/g, (match: string) => match.toUpperCase())
+      // uppercase first letter after whitespace
+      .replace(/\s+([a-zA-Z])/g, (match: string) => match.toUpperCase().trim())
+      // remove remaining whitespace
+      .replace(/\s/g, '')
+  );
 }
 
 function buildAuthSnippet(sdkVariable: string, authKey: string | string[]) {
@@ -102,11 +137,11 @@ interface APIOptions {
 
     /**
      * The string to identify this SDK as. This is used in the `import sdk from '<identifier>'`
-     * sample as well as the the variable name we attach the SDK to.
+     * sample.
      *
      * @example `@api/developers`
      */
-    identifier?: string;
+    packageName?: string;
 
     /**
      * The URI that is used to download this API definition from `npx api install`.
@@ -114,6 +149,13 @@ interface APIOptions {
      * @example `@developers/v2.0#17273l2glm9fq4l5`
      */
     registryURI: string;
+
+    /**
+     * The variable name to use when importing an SDK. If not present we will default to `sdk`.
+     *
+     * @example `readme`
+     */
+    variableName?: string;
   };
   escapeBrackets?: boolean;
   indent?: string | false;
@@ -151,20 +193,22 @@ const client: Client<APIOptions> = {
       );
     }
 
-    let sdkPackageName;
-    let sdkVariable: string;
-    if (opts.api.identifier) {
-      sdkPackageName = opts.api.identifier;
+    let sdkPackageName: string;
+    if (opts.api.packageName) {
+      sdkPackageName = opts.api.packageName;
+    } else {
+      const registryUUID = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
+      sdkPackageName = registryUUID || 'company-name';
+    }
 
-      sdkVariable = camelCase(opts.api.identifier);
+    let sdkVariable: string = 'sdk';
+    if (opts.api.variableName) {
+      sdkVariable = toSafeString(opts.api.variableName);
       if (isReservedOrBuiltinsLC(sdkVariable)) {
         // If this identifier is a reserved JS word then we should prefix it with an underscore so
         // this snippet can be valid code.
         sdkVariable = `_${sdkVariable}`;
       }
-    } else {
-      sdkPackageName = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
-      sdkVariable = 'sdk';
     }
 
     const operationSlugs = foundOperation.url.slugs;

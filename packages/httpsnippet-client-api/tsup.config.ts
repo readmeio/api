@@ -17,7 +17,6 @@ export default defineConfig((options: Options) => ({
     // treat them as external dependencies as CJS libraries can't load ESM code that uses `export`.
     // `noExternal` will instead treeshake these dependencies down and include them in our compiled
     // dists.
-    'camelcase',
     'stringify-object',
   ],
 
