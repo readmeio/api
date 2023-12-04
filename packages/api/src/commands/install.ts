@@ -2,7 +2,7 @@ import type { SupportedLanguage } from '../codegen/factory.js';
 
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
-import { emphasize } from 'emphasize';
+import { createEmphasize, common } from 'emphasize';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
@@ -13,6 +13,8 @@ import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
+
+const { highlight } = createEmphasize(common);
 
 interface Options {
   identifier?: string;
@@ -208,7 +210,7 @@ cmd
       logger('');
       logger(chalk.bold("👇 Here's an example code snippet you can try out 👇"));
       logger('');
-      logger(emphasize.highlight(language, exampleSnippet).value);
+      logger(highlight(language, exampleSnippet).value);
     }
     logger('');
   })
