@@ -141,15 +141,16 @@ describe('httpsnippet-client-api', () => {
         const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
           api: {
             definition: mock.definition,
-            identifier: 'developers',
+            packageName: 'developers',
             registryURI: '@developers/v2.0#17273l2glm9fq4l5',
+            variableName: 'developersSDK',
           },
         });
 
-        expect(code).toStrictEqual(`import developers from '@api/developers';
+        expect(code).toStrictEqual(`import developersSDK from '@api/developers';
 
-developers.auth('123');
-developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
+developersSDK.auth('123');
+developersSDK.findPetsByStatus({status: 'available', accept: 'application/xml'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));`);
       });
@@ -160,15 +161,16 @@ developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
         const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
           api: {
             definition: mock.definition,
-            identifier: 'metro-transit',
+            packageName: 'metro-transit',
             registryURI: '@metro-transit/v2.0#17273l2glm9fq4l5',
+            variableName: 'metro-transit-SDK',
           },
         });
 
-        expect(code).toStrictEqual(`import metroTransit from '@api/metro-transit';
+        expect(code).toStrictEqual(`import metroTransitSDK from '@api/metro-transit';
 
-metroTransit.auth('123');
-metroTransit.findPetsByStatus({status: 'available', accept: 'application/xml'})
+metroTransitSDK.auth('123');
+metroTransitSDK.findPetsByStatus({status: 'available', accept: 'application/xml'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));`);
       });

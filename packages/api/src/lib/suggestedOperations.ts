@@ -116,8 +116,9 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
     {
       api: {
         definition: oas.getDefinition(),
-        identifier: opts.identifier,
+        packageName: opts.identifier,
         registryURI: opts.identifier,
+        variableName: opts.identifier,
       },
     },
   );
