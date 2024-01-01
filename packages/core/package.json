@@ -53,7 +53,7 @@
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
-    "json-schema-to-ts": "^2.9.2",
+    "json-schema-to-ts": "^3.0.0",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
     "oas": "^24.0.0",
