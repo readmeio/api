@@ -10,8 +10,8 @@ Arguments:
 
 Options:
   -i, --identifier <identifier>  API identifier (eg. \`@api/petstore\`)
-  -l, --lang <language>          SDK language (choices: \\"js\\", default: \\"js\\")
-  -y, --yes                      Automatically answer \\"yes\\" to any prompts
+  -l, --lang <language>          SDK language (choices: "js", default: "js")
+  -y, --yes                      Automatically answer "yes" to any prompts
                                  printed
   -h, --help                     display help for command
 

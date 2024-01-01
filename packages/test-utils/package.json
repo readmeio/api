@@ -9,7 +9,7 @@
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "formdata-to-string": "^2.0.1",
-    "vitest": "^0.34.5"
+    "vitest": "^1.1.1"
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",

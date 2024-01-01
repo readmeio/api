@@ -9,7 +9,7 @@ Arguments:
   identifier  the SDK to uninstall
 
 Options:
-  -y, --yes   Automatically answer \\"yes\\" to any prompts printed
+  -y, --yes   Automatically answer "yes" to any prompts printed
   -h, --help  display help for command
 
 
