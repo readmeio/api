@@ -4,7 +4,7 @@
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "module": "NodeNext",
     "outDir": "dist/",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*"],
 }

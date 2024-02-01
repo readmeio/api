@@ -2,8 +2,8 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "noImplicitAny": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "include": ["../src/**/*", "*.ts", "**/*"],
-  "exclude": ["__fixtures__/sdk/"]
+  "exclude": ["__fixtures__/sdk/"],
 }
