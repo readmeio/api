@@ -37,7 +37,7 @@
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^4.1.0",
     "eslint": "^8.56.0",
-    "knip": "^3.9.0",
+    "knip": "^4.2.3",
     "lerna": "^8.0.1",
     "prettier": "^3.1.1",
     "tsup": "^8.0.1"
