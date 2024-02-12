@@ -110,7 +110,7 @@ describe('#parseResponse', () => {
     expect(res).toBeInstanceOf(Response);
   });
 
-  it('original response object should remain unchanged', async () => {
+  it('should not modify original response object', async () => {
     const responseMethodSpyText = vi.spyOn(response, 'text');
     const responseMethodSpyArrayBuffer = vi.spyOn(response, 'arrayBuffer');
     const responseMethodSpyJson = vi.spyOn(response, 'json');
