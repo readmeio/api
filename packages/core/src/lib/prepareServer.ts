@@ -14,7 +14,7 @@ function stripTrailingSlash(url: string) {
  *
  */
 export default function prepareServer(spec: Oas, url: string, variables: Record<string, string | number> = {}) {
-  let serverIdx;
+  let serverIdx: number | undefined;
   const sanitizedUrl = stripTrailingSlash(url);
   (spec.api.servers || []).forEach((server, i) => {
     if (server.url === sanitizedUrl) {
