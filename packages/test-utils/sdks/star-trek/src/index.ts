@@ -3,7 +3,7 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@readme/oas-examples/3.0/json/star-trek.json';
 
-class SDK {
+export class SDK {
   core: APICore;
 
   constructor() {

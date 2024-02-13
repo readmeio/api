@@ -302,6 +302,7 @@ export default class TSGenerator extends CodeGenerator {
     this.sdk = sourceFile.addClass({
       name: 'SDK',
       properties: [{ name: 'core', type: 'APICore' }],
+      isExported: true,
     });
 
     this.sdk.addConstructor({

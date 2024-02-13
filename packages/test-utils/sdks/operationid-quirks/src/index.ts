@@ -2,7 +2,7 @@ import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/operationid-quirks.json';
 
-class SDK {
+export class SDK {
   core: APICore;
 
   constructor() {

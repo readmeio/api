@@ -3,7 +3,7 @@ import type { ConfigOptions, FetchResponse, HTTPMethodRange } from '@readme/api-
 import APICore from '@readme/api-core';
 import definition from '@api/test-utils/definitions/response-title-quirks.json';
 
-class SDK {
+export class SDK {
   core: APICore;
 
   constructor() {
