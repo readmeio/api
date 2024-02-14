@@ -39,7 +39,7 @@ petstore.listPets().then(({ data }) => {
 The ESM syntax is supported as well:
 
 ```js
-import api from 'api';
+import api from '@api/petstore';
 const petstore = api('@petstore/v1.0#tl1e4kl1cl8eg8');
 
 petstore.listPets().then(({ data }) => {
