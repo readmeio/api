@@ -10,6 +10,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./sdk": {
+      "import": "./dist/sdk.js",
+      "require": "./dist/sdk.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -31,7 +35,8 @@
     "clean": true,
     "dts": true,
     "entry": [
-      "./src/index.ts"
+      "./src/index.ts",
+      "./src/sdk.ts"
     ],
     "format": [
       "esm",
