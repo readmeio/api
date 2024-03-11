@@ -22,7 +22,7 @@ interface CustomMatchers<R = unknown> {
    * expect(request.headers).to.have.header('connection', ['close', 'keep-alive']);
    *
    */
-  toHaveHeader(header: string, expected: RegExp | (string | number)[] | string): R;
+  toHaveHeader(header: string, expected: (number | string)[] | RegExp | string): R;
 }
 
 declare module 'vitest' {
@@ -47,7 +47,7 @@ expect.extend({
     };
   },
 
-  toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
+  toHaveHeader(obj: Headers, header: string, expected: (number | string)[] | RegExp | string) {
     // @ts-expect-error `Headers.entries()` exists despite what the types here suggest.
     const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
 

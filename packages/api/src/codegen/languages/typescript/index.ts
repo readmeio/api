@@ -37,9 +37,9 @@ import { docblockEscape, generateTypeName, wordWrap } from './util.js';
 interface OperationTypeHousing {
   operation: Operation;
   types: {
-    params?: false | Record<'body' | 'formData' | 'metadata', string>;
+    params?: Record<'body' | 'formData' | 'metadata', string> | false;
     responses?: Record<
-      string | number,
+      number | string,
       {
         description?: string;
         type: string;
@@ -88,14 +88,14 @@ export default class TSGenerator extends CodeGenerator {
 
   schemas: Record<
     string,
+    // Wholesale collection of `$ref` pointer types
+    | Record<string, unknown>
     // Operation-level type
     | {
         body?: unknown;
         metadata?: unknown;
         response?: Record<string, unknown>;
       }
-    // Wholesale collection of `$ref` pointer types
-    | Record<string, unknown>
   >;
 
   usesHTTPMethodRangeInterface = false;
@@ -1090,7 +1090,7 @@ Generated at ${createdAt}
       .reduce((prev, next) => Object.assign(prev, next));
 
     return Object.entries(res)
-      .map(([paramType, schema]: [string, string | SchemaObject]) => {
+      .map(([paramType, schema]: [string, SchemaObject | string]) => {
         let typeName;
 
         if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {

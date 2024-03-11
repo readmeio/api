@@ -48,7 +48,7 @@ export default abstract class CodeGenerator {
   requiredPackages!: Record<
     string,
     {
-      dependencyType: 'production' | 'development';
+      dependencyType: 'development' | 'production';
       reason: string;
       url?: string;
       version: string;

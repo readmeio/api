@@ -20,14 +20,14 @@ export default class APICore {
     | false
     | {
         url: string;
-        variables?: Record<string, string | number>;
+        variables?: Record<string, number | string>;
       } = false;
 
   private config: ConfigOptions = {};
 
   private userAgent!: string;
 
-  constructor(definition?: Record<string, unknown> | OASDocument, userAgent?: string) {
+  constructor(definition?: OASDocument | Record<string, unknown>, userAgent?: string) {
     if (definition) this.spec = Oas.init(definition);
     if (userAgent) this.userAgent = userAgent;
   }
@@ -46,12 +46,12 @@ export default class APICore {
     return this;
   }
 
-  setAuth(...values: string[] | number[]) {
+  setAuth(...values: number[] | string[]) {
     this.auth = values;
     return this;
   }
 
-  setServer(url: string, variables: Record<string, string | number> = {}) {
+  setServer(url: string, variables: Record<string, number | string> = {}) {
     this.server = { url, variables };
     return this;
   }

@@ -13,7 +13,7 @@ function stripTrailingSlash(url: string) {
  * any server variables to be supplied to `@readme/oas-to-har`.
  *
  */
-export default function prepareServer(spec: Oas, url: string, variables: Record<string, string | number> = {}) {
+export default function prepareServer(spec: Oas, url: string, variables: Record<string, number | string> = {}) {
   let serverIdx: number | undefined;
   const sanitizedUrl = stripTrailingSlash(url);
   (spec.api.servers || []).forEach((server, i) => {

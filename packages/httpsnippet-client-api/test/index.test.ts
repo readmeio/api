@@ -146,7 +146,7 @@ describe('httpsnippet-client-api', () => {
           },
         });
 
-        expect(code).toStrictEqual(`import developers from '@api/developers';
+        expect(code).toBe(`import developers from '@api/developers';
 
 developers.auth('123');
 developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
@@ -165,7 +165,7 @@ developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
           },
         });
 
-        expect(code).toStrictEqual(`import metroTransit from '@api/metro-transit';
+        expect(code).toBe(`import metroTransit from '@api/metro-transit';
 
 metroTransit.auth('123');
 metroTransit.findPetsByStatus({status: 'available', accept: 'application/xml'})
