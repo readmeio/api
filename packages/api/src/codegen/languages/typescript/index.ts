@@ -22,7 +22,7 @@ import path from 'node:path';
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
-import setWith from 'lodash/setwith';
+import { setWith } from 'lodash-es';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
