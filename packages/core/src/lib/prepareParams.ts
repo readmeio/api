@@ -2,13 +2,9 @@ import type { ReadStream } from 'node:fs';
 import type { Operation } from 'oas/operation';
 import type { ParameterObject, SchemaObject } from 'oas/types';
 
-import fs from 'node:fs';
-import path from 'node:path';
 import stream from 'node:stream';
 
 import caseless from 'caseless';
-import DatauriParser from 'datauri/parser.js';
-import datauri from 'datauri/sync.js';
 // `get-stream` is included in our bundle, see `tsup.config.ts`
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getStreamAsBuffer } from 'get-stream';
@@ -76,10 +72,14 @@ function merge(src: unknown, target: unknown) {
  * into a parameters object for making an API request.
  *
  */
-function processFile(
+async function processFile(
   paramName: string | undefined,
   file: string | ReadStream,
 ): Promise<{ base64?: string; buffer?: Buffer; filename: string; paramName?: string } | undefined> {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const { default: DatauriParser } = await import('datauri/parser.js');
+  const { default: datauri } = await import('datauri/sync.js');
   if (typeof file === 'string') {
     // In order to support relative pathed files, we need to attempt to resolve them.
     const resolvedFile = path.resolve(file);
