@@ -36,7 +36,7 @@ function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
 
-function buildAuthSnippet(sdkVariable: string, authKey: string | string[]) {
+function buildAuthSnippet(sdkVariable: string, authKey: string[] | string) {
   // Auth key will be an array for Basic auth cases.
   if (Array.isArray(authKey)) {
     const auth: string[] = [];
@@ -195,7 +195,7 @@ const client: Client<APIOptions> = {
       }
     }
 
-    let metadata: Record<string, string | string[]> = {};
+    let metadata: Record<string, string[] | string> = {};
     Object.keys(queryObj).forEach(param => {
       if (authSources.query.includes(param)) {
         authData.push(buildAuthSnippet(sdkVariable, queryObj[param]));

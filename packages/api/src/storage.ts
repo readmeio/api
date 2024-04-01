@@ -16,7 +16,7 @@ import { PACKAGE_VERSION } from './packageInfo.js';
 export default class Storage {
   static dir: string;
 
-  static lockfile: false | Lockfile;
+  static lockfile: Lockfile | false;
 
   fetcher: Fetcher;
 
