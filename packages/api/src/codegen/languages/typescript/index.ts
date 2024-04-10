@@ -22,7 +22,7 @@ import path from 'node:path';
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
-import setWith from 'lodash.setwith';
+import { setWith } from 'lodash-es';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
@@ -37,9 +37,9 @@ import { docblockEscape, generateTypeName, wordWrap } from './util.js';
 interface OperationTypeHousing {
   operation: Operation;
   types: {
-    params?: false | Record<'body' | 'formData' | 'metadata', string>;
+    params?: Record<'body' | 'formData' | 'metadata', string> | false;
     responses?: Record<
-      string | number,
+      number | string,
       {
         description?: string;
         type: string;
@@ -89,6 +89,7 @@ export default class TSGenerator extends CodeGenerator {
   schemas: Record<
     string,
     // Operation-level type
+    // eslint-disable-next-line @typescript-eslint/sort-type-constituents
     | {
         body?: unknown;
         metadata?: unknown;
@@ -210,6 +211,7 @@ export default class TSGenerator extends CodeGenerator {
   async generate() {
     const srcDirectory = this.project.createDirectory('src');
     const sdkSource = this.createSDKSource(srcDirectory);
+    this.createIndexSource(srcDirectory);
 
     this.createGitIgnore();
     this.createPackageJSON();
@@ -279,13 +281,31 @@ export default class TSGenerator extends CodeGenerator {
   }
 
   /**
+   * Create our main `index.ts` file that will be the entrypoint for our SDK.
+   * This file will be used to export the SDK and any types that are generated.
+   *
+   */
+  private createIndexSource(sourceDirectory: Directory) {
+    const sourceFile = sourceDirectory.createSourceFile('index.ts', '');
+
+    sourceFile.addImportDeclaration({
+      defaultImport: 'SDK',
+      moduleSpecifier: './sdk.js',
+    });
+
+    this.createSDKExport(sourceFile);
+
+    return sourceFile;
+  }
+
+  /**
    * Create our main SDK source file.
    *
    */
   private createSDKSource(sourceDirectory: Directory) {
     const { operations } = this.loadOperationsAndMethods();
 
-    const sourceFile = sourceDirectory.createSourceFile('index.ts', '');
+    const sourceFile = sourceDirectory.createSourceFile('sdk.ts', '');
 
     sourceFile.addImportDeclarations([
       // This import will be automatically removed later if the SDK ends up not having any types.
@@ -302,6 +322,8 @@ export default class TSGenerator extends CodeGenerator {
     this.sdk = sourceFile.addClass({
       name: 'SDK',
       properties: [{ name: 'core', type: 'APICore' }],
+      isDefaultExport: true,
+      isExported: true,
     });
 
     this.sdk.addConstructor({
@@ -404,8 +426,6 @@ sdk.server('https://eu.api.example.com/v14');`),
     Object.entries(operations).forEach(([operationId, data]: [string, OperationTypeHousing]) => {
       this.createOperationAccessor(data.operation, operationId, data.types.params, data.types.responses);
     });
-
-    this.createSDKExport(sourceFile);
 
     return sourceFile;
   }
@@ -595,6 +615,7 @@ dist/
       dts: true,
       entry: [
         './src/index.ts',
+        './src/sdk.ts',
         // If this SDK has schemas and generated types then we should also export those too so
         // they're available to use.
         hasTypes ? './src/types.ts' : '',
@@ -625,6 +646,10 @@ dist/
         '.': {
           import: './dist/index.js',
           require: './dist/index.cjs',
+        },
+        './sdk': {
+          import: './dist/sdk.js',
+          require: './dist/sdk.cjs',
         },
         ...(hasTypes
           ? {
@@ -1066,7 +1091,7 @@ Generated at ${createdAt}
       .reduce((prev, next) => Object.assign(prev, next));
 
     return Object.entries(res)
-      .map(([paramType, schema]: [string, string | SchemaObject]) => {
+      .map(([paramType, schema]: [string, SchemaObject | string]) => {
         let typeName;
 
         if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {

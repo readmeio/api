@@ -30,7 +30,7 @@ export const responses = {
     };
   },
 
-  delay: (res: string | Record<string, unknown>, delay: number) => {
+  delay: (res: Record<string, unknown> | string, delay: number) => {
     return new Promise(resolve => {
       setTimeout(() => resolve(res), delay);
     });
@@ -54,7 +54,7 @@ export const responses = {
     };
   },
 
-  real: (res: string | Record<string, unknown>) => {
+  real: (res: Record<string, unknown> | string) => {
     return () => res;
   },
 

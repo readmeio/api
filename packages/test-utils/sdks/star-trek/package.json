@@ -10,6 +10,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./sdk": {
+      "import": "./dist/sdk.js",
+      "require": "./dist/sdk.cjs"
+    },
     "./types": {
       "import": "./dist/types.js",
       "require": "./dist/types.cjs"
@@ -36,6 +40,7 @@
     "dts": true,
     "entry": [
       "./src/index.ts",
+      "./src/sdk.ts",
       "./src/types.ts"
     ],
     "format": [
