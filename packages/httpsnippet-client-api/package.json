@@ -40,7 +40,7 @@
     "reserved2": "^0.1.5"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": ">=8.1.2",
+    "@readme/httpsnippet": ">=10.0.1",
     "oas": "^24.0.0"
   },
   "devDependencies": {
