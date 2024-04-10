@@ -32,6 +32,7 @@
   ],
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.13.3",
     "@readme/eslint-config": "^13.4.1",
     "@tsconfig/node18": "^18.2.2",
     "alex": "^11.0.1",
