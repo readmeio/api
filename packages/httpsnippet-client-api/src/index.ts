@@ -97,7 +97,7 @@ function getAuthSources(operation: Operation) {
 }
 
 interface APIOptions {
-  api: {
+  api?: {
     definition: OASDocument;
 
     /**
@@ -131,7 +131,7 @@ const client: Client<APIOptions> = {
   convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
       ...options,
-    } as APIOptions;
+    };
 
     if (!opts?.api) {
       throw new Error('This HTTPSnippet client must have an `api` config supplied to it.');
