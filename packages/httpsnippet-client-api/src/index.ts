@@ -151,7 +151,7 @@ const client: Client<APIOptions> = {
       );
     }
 
-    let sdkPackageName;
+    let sdkPackageName: string | undefined;
     let sdkVariable: string;
     if (opts.api.identifier) {
       sdkPackageName = opts.api.identifier;
