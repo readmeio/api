@@ -10,7 +10,6 @@ const config: KnipConfig = {
   ],
   ignoreDependencies: [
     'har-format', // this is loaded via `@types/har-format`
-    'ts-node', // this is loaded via `typescript`
   ],
   workspaces: {
     'packages/test-utils': {
