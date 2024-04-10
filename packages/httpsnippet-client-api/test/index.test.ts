@@ -84,7 +84,7 @@ describe('httpsnippet-client-api', () => {
   });
 
   // This test should fail because the url in the HAR is missing `/v1` in the path.
-  it('should error if no matching operation was found in the supplied API definition', async () => {
+  it('should error if no matching operation was found in the supplied API definition', () => {
     const har = {
       httpVersion: 'HTTP/1.1',
       method: 'GET',
