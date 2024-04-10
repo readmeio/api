@@ -1,3 +1,20 @@
+## 7.0.0-beta.6 (2024-04-10)
+
+* chore: bump deps, fix types (#874) ([f4e3264](https://github.com/readmeio/api/commit/f4e3264)), closes [#874](https://github.com/readmeio/api/issues/874)
+* chore(deps-dev): bump follow-redirects from 1.15.4 to 1.15.6 (#867) ([cc5ee91](https://github.com/readmeio/api/commit/cc5ee91)), closes [#867](https://github.com/readmeio/api/issues/867)
+* chore(deps-dev): bump ip from 2.0.0 to 2.0.1 (#858) ([9bde1e6](https://github.com/readmeio/api/commit/9bde1e6)), closes [#858](https://github.com/readmeio/api/issues/858)
+* chore(deps-dev): bump the minor-development-deps group with 10 updates (#872) ([8610c5a](https://github.com/readmeio/api/commit/8610c5a)), closes [#872](https://github.com/readmeio/api/issues/872)
+* chore(deps): bump es5-ext from 0.10.62 to 0.10.64 (#860) ([be0aaa5](https://github.com/readmeio/api/commit/be0aaa5)), closes [#860](https://github.com/readmeio/api/issues/860)
+* chore(deps): bump figures from 6.0.1 to 6.1.0 (#868) ([78c6f28](https://github.com/readmeio/api/commit/78c6f28)), closes [#868](https://github.com/readmeio/api/issues/868)
+* chore(deps): bump json-schema-to-ts from 3.0.0 to 3.0.1 (#869) ([b4dab0a](https://github.com/readmeio/api/commit/b4dab0a)), closes [#869](https://github.com/readmeio/api/issues/869)
+* chore(deps): bump semver and @types/semver (#862) ([201d22c](https://github.com/readmeio/api/commit/201d22c)), closes [#862](https://github.com/readmeio/api/issues/862)
+* chore(deps): bump ts-morph from 21.0.1 to 22.0.0 (#871) ([de6bc7f](https://github.com/readmeio/api/commit/de6bc7f)), closes [#871](https://github.com/readmeio/api/issues/871)
+* chore(deps): bump vitest from 1.2.2 to 1.3.1 (#861) ([2bbb8ca](https://github.com/readmeio/api/commit/2bbb8ca)), closes [#861](https://github.com/readmeio/api/issues/861)
+* chore(deps): use lodash instead of per method packages (#859) ([a199735](https://github.com/readmeio/api/commit/a199735)), closes [#859](https://github.com/readmeio/api/issues/859)
+* fix: swap out `ts-node` for `tsimp` (#873) ([429fcf9](https://github.com/readmeio/api/commit/429fcf9)), closes [#873](https://github.com/readmeio/api/issues/873)
+
+
+
 ## 7.0.0-beta.5 (2024-02-14)
 
 * feat: avoid modifying the response object when calling response.text() (#854) ([f95874b](https://github.com/readmeio/api/commit/f95874b)), closes [#854](https://github.com/readmeio/api/issues/854)
