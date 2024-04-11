@@ -1,3 +1,9 @@
+## 7.0.0-beta.7 (2024-04-11)
+
+* fix: zsh compatibility for `api` installation instructions (#875) ([858b485](https://github.com/readmeio/api/commit/858b485)), closes [#875](https://github.com/readmeio/api/issues/875)
+
+
+
 ## 7.0.0-beta.6 (2024-04-10)
 
 * chore: bump deps, fix types (#874) ([f4e3264](https://github.com/readmeio/api/commit/f4e3264)), closes [#874](https://github.com/readmeio/api/issues/874)

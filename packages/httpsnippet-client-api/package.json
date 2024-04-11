@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "7.0.0-beta.6",
+  "version": "7.0.0-beta.7",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "sideEffects": false,
   "type": "module",
