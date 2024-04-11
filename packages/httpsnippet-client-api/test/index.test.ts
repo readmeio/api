@@ -45,7 +45,7 @@ describe('httpsnippet-client-api', () => {
       link: 'https://npm.im/api',
       description: 'Automatic SDK generation from an OpenAPI definition.',
       extname: '.js',
-      installation: 'npx api install {packageName}',
+      installation: 'npx api install "{packageName}"',
     });
   });
 
