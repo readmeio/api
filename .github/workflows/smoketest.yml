@@ -2,7 +2,7 @@ name: smoketest
 
 on:
   schedule:
-    - cron: '30 0 * * 1' # every monday at 12:30am UTC
+    - cron: '0 0 1 * *' # 1am UTC the first of every month
 
 jobs:
   test:
