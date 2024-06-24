@@ -24,6 +24,7 @@ import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
 import { setWith } from 'lodash-es';
+import preferredPM from 'preferred-pm';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
@@ -80,23 +81,12 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
   throw err;
 }
 
-async function detectPackageManager(installDir: string): Promise<string> {
-  if (existsSync(join(installDir, 'deno.json')) || existsSync(join(installDir, 'deno.jsonc'))) {
-    return 'deno';
+async function detectPackageManager(installDir: string) {
+  const pm = await preferredPM(installDir);
+  if (pm) {
+    return pm.name;
   }
-  if (existsSync(join(installDir, 'bun.lockb'))) {
-    return 'bun';
-  }
-  if (existsSync(join(installDir, 'pnpm-lock.yaml'))) {
-    return 'pnpm';
-  }
-  if (existsSync(join(installDir, 'yarn.lock'))) {
-    return 'yarn';
-  }
-  if (existsSync(join(installDir, 'package-lock.json'))) {
-    return 'npm';
-  }
-  // Default to npm if no lock file is found
+  // Default to npm if no preferred package manager is detected
   return 'npm';
 }
 
@@ -175,13 +165,6 @@ export default class TSGenerator extends CodeGenerator {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager(installDir);
 
-    if (packageManager === 'deno') {
-      const denoInstallCommand = ['cache', join(installDir, 'deps.ts')];
-      return execa('deno', denoInstallCommand.filter(Boolean))
-        .then(res => handleExecSuccess(res, opts))
-        .catch(err => handleExecFailure(err, opts));
-    }
-
     const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
     // This will install the installed SDK as a dependency within the current working directory,
@@ -207,9 +190,11 @@ export default class TSGenerator extends CodeGenerator {
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const pkgName = storage.getPackageName() as string;
+    const installDir = storage.getIdentifierStorageDir();
+    const packageManager = await detectPackageManager(installDir);
 
     const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-    return execa('npm', args)
+    return execa(packageManager, args)
       .then(res => handleExecSuccess(res, opts))
       .catch(err => handleExecFailure(err, opts));
   }
