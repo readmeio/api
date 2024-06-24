@@ -17,8 +17,7 @@ import type {
 import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
-import { existsSync } from 'node:fs';
-import path, { join } from 'node:path';
+import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
 import { execa } from 'execa';
