@@ -164,7 +164,7 @@ const client: Client<APIOptions> = {
       }
     } else {
       sdkPackageName = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
-      sdkVariable = getProjectPrefixFromRegistryUUID(opts.api.registryURI) as string;
+      sdkVariable = camelCase(getProjectPrefixFromRegistryUUID(opts.api.registryURI) as string) as string;
     }
 
     const operationSlugs = foundOperation.url.slugs;
