@@ -191,7 +191,7 @@ const client: Client<APIOptions> = {
         const serverVars = oas.splitVariables(baseUrl);
         const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
 
-        configData.push(`sdk.server('${serverUrl}');`);
+        configData.push(`${sdkVariable}.server('${serverUrl}');`);
       }
     }
 
