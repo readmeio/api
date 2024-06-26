@@ -1,6 +1,6 @@
-import sdk from '@api/petstore';
+import petstore from '@api/petstore';
 
-sdk.auth('123');
-sdk.findPetsByStatus({status: 'available', accept: 'application/xml'})
+petstore.auth('123');
+petstore.findPetsByStatus({status: 'available', accept: 'application/xml'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

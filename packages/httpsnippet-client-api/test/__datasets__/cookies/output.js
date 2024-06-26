@@ -1,5 +1,5 @@
-import sdk from '@api/cookies';
+import cookies from '@api/cookies';
 
-sdk.postAnything({bar: 'baz', foo: 'bar'})
+cookies.postAnything({bar: 'baz', foo: 'bar'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

@@ -1,6 +1,6 @@
-import sdk from '@api/issue-76';
+import issue76 from '@api/issue-76';
 
-sdk.auth('a5a220e');
-sdk.getPetFindbystatus({status: 'available'})
+issue76.auth('a5a220e');
+issue76.getPetFindbystatus({status: 'available'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

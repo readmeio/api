@@ -1,5 +1,5 @@
-import sdk from '@api/http-insecure';
+import httpInsecure from '@api/http-insecure';
 
-sdk.getAnything()
+httpInsecure.getAnything()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

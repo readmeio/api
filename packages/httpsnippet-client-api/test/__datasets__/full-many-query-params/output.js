@@ -1,6 +1,6 @@
-import sdk from '@api/full-many-query-params';
+import fullManyQueryParams from '@api/full-many-query-params';
 
-sdk.postAnything({
+fullManyQueryParams.postAnything({
   foo: 'bar',
   foo2: 'bar2',
   foo3: 'bar3',

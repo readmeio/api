@@ -1,6 +1,6 @@
-import sdk from '@api/full';
+import full from '@api/full';
 
-sdk.postAnything({foo: 'bar'}, {
+full.postAnything({foo: 'bar'}, {
   foo: ['bar', 'baz'],
   baz: 'abc',
   key: 'value',

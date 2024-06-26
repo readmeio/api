@@ -1,6 +1,6 @@
-import sdk from '@api/issue-128';
+import issue128 from '@api/issue-128';
 
-sdk.auth('authKey\'With\'Apostrophes');
-sdk.getItem()
+issue128.auth('authKey\'With\'Apostrophes');
+issue128.getItem()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));
