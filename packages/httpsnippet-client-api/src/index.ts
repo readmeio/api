@@ -164,7 +164,7 @@ const client: Client<APIOptions> = {
       }
     } else {
       sdkPackageName = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
-      sdkVariable = 'sdk';
+      sdkVariable = camelCase(sdkPackageName || 'sdk');
     }
 
     const operationSlugs = foundOperation.url.slugs;
@@ -191,7 +191,7 @@ const client: Client<APIOptions> = {
         const serverVars = oas.splitVariables(baseUrl);
         const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
 
-        configData.push(`sdk.server('${serverUrl}');`);
+        configData.push(`${sdkVariable}.server('${serverUrl}');`);
       }
     }
 

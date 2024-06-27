@@ -1,5 +1,5 @@
-import sdk from '@api/short';
+import short from '@api/short';
 
-sdk.getAnything()
+short.getAnything()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

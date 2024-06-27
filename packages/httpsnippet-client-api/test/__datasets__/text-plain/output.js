@@ -1,5 +1,5 @@
-import sdk from '@api/text-plain';
+import textPlain from '@api/text-plain';
 
-sdk.postAnything('Hello World')
+textPlain.postAnything('Hello World')
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

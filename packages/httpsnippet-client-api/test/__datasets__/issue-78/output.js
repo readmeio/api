@@ -1,5 +1,5 @@
-import sdk from '@api/issue-78';
+import issue78 from '@api/issue-78';
 
-sdk.getStoreOrderOrderidTrackingTrackingid({orderId: '1234', trackingId: '5678'})
+issue78.getStoreOrderOrderidTrackingTrackingid({orderId: '1234', trackingId: '5678'})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

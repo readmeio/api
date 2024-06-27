@@ -1,6 +1,6 @@
-import sdk from '@api/auth-query';
+import authQuery from '@api/auth-query';
 
-sdk.auth('a5a220e');
-sdk.getAnythingApikey()
+authQuery.auth('a5a220e');
+authQuery.getAnythingApikey()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

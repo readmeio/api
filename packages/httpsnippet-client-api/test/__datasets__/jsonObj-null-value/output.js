@@ -1,5 +1,5 @@
-import sdk from '@api/jsonObj-null-value';
+import jsonObjNullValue from '@api/jsonObj-null-value';
 
-sdk.postAnything({foo: null})
+jsonObjNullValue.postAnything({foo: null})
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));
