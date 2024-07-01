@@ -65,7 +65,7 @@
     "prompts": "^2.4.2",
     "semver": "^7.3.8",
     "ssri": "^10.0.1",
-    "ts-morph": "^22.0.0",
+    "ts-morph": "^23.0.0",
     "update-notifier": "^7.0.0",
     "uslug": "^1.0.4",
     "validate-npm-package-name": "^5.0.0"
