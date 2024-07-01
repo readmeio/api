@@ -35,7 +35,7 @@
     "@readme/eslint-config": "^14.0.0",
     "@tsconfig/node18": "^18.2.2",
     "alex": "^11.0.1",
-    "conventional-changelog-cli": "^4.1.0",
+    "conventional-changelog-cli": "^5.0.0",
     "eslint": "^8.56.0",
     "knip": "^5.11.0",
     "lerna": "^8.0.1",
