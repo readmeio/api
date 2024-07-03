@@ -16,7 +16,7 @@ import fs from 'fs';
 import path from 'path';
 
 import execa from 'execa';
-import setWith from 'lodash.setwith';
+import setWith from 'lodash/setWith';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 

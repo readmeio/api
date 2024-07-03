@@ -1,6 +1,6 @@
-import camelCase from 'lodash.camelcase';
-import deburr from 'lodash.deburr';
-import startCase from 'lodash.startcase';
+import camelCase from 'lodash/camelCase';
+import deburr from 'lodash/deburr';
+import startCase from 'lodash/startCase';
 
 /**
  * This is a mix of reserved JS words and keywords in TypeScript that might be reserved or

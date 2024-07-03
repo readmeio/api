@@ -10,7 +10,7 @@ import caseless from 'caseless';
 import DatauriParser from 'datauri/parser';
 import datauri from 'datauri/sync';
 import getStream from 'get-stream';
-import lodashMerge from 'lodash.merge';
+import lodashMerge from 'lodash/merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
 
 import getJSONSchemaDefaults from './getJSONSchemaDefaults';
