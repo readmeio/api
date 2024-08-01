@@ -114,7 +114,7 @@ export default abstract class CodeGenerator {
         } else {
           this.apiContact.name = infoObject.contact.email
             ? `<${infoObject.contact.email}>`
-            : infoObject.contact.name ?? undefined;
+            : (infoObject.contact.name ?? undefined);
         }
       }
 
