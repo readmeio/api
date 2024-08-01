@@ -13,8 +13,7 @@ const GetAnything = {
                 "pending",
                 "sold"
               ],
-              "default": "available",
-              "description": "Default: available"
+              "default": "available"
             },
             "$schema": "https://json-schema.org/draft/2020-12/schema#",
             "description": "Status values that need to be considered for filter"

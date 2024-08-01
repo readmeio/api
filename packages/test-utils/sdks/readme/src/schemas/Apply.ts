@@ -15,7 +15,7 @@ const Apply = {
     },
     "job": {
       "type": "string",
-      "description": "The job you're looking to apply for (https://readme.com/careers).\n\nDefault: `Front End Engineer`",
+      "description": "The job you're looking to apply for (https://readme.com/careers).",
       "enum": [
         "Front End Engineer",
         "Full Stack Engineer",

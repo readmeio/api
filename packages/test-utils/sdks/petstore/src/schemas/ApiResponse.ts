@@ -3,9 +3,7 @@ const ApiResponse = {
   "properties": {
     "code": {
       "type": "integer",
-      "format": "int32",
-      "minimum": -2147483648,
-      "maximum": 2147483647
+      "format": "int32"
     },
     "type": {
       "type": "string"

@@ -8,30 +8,22 @@ const PostMagazineseriesSearch = {
       "publishedYearFrom": {
         "type": "integer",
         "description": "Starting year the magazine series was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "publishedYearTo": {
         "type": "integer",
         "description": "Ending year the magazine series was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfIssuesFrom": {
         "type": "integer",
         "description": "Minimal number of issues",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfIssuesTo": {
         "type": "integer",
         "description": "Maximal number of issues",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       }
     },
     "type": "object",
@@ -45,16 +37,12 @@ const PostMagazineseriesSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

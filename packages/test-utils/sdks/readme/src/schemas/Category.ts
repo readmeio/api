@@ -17,7 +17,7 @@ const Category = {
         "guide"
       ],
       "default": "guide",
-      "description": "A category can be part of your reference or guide documentation, which is determined by this field.\n\nDefault: `guide`"
+      "description": "A category can be part of your reference or guide documentation, which is determined by this field."
     }
   }
 } as const;

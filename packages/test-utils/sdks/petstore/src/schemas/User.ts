@@ -3,9 +3,7 @@ const User = {
   "properties": {
     "id": {
       "type": "integer",
-      "format": "int64",
-      "minimum": -9223372036854776000,
-      "maximum": 9223372036854776000
+      "format": "int64"
     },
     "username": {
       "type": "string"
@@ -28,9 +26,7 @@ const User = {
     "userStatus": {
       "type": "integer",
       "format": "int32",
-      "description": "User Status",
-      "minimum": -2147483648,
-      "maximum": 2147483647
+      "description": "User Status"
     }
   },
   "title": "User",

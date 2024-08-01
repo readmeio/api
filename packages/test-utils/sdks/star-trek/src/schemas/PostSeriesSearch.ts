@@ -12,30 +12,22 @@ const PostSeriesSearch = {
       "productionStartYearFrom": {
         "type": "integer",
         "description": "Minimal year the series production started",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionStartYearTo": {
         "type": "integer",
         "description": "Maximal year the series production started",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionEndYearFrom": {
         "type": "integer",
         "description": "Minimal year the series production ended",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionEndYearTo": {
         "type": "integer",
         "description": "Maximal year the series production ended",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "originalRunStartDateFrom": {
         "type": "string",
@@ -69,16 +61,12 @@ const PostSeriesSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },
