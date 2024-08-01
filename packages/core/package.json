@@ -64,7 +64,7 @@
     "@readme/oas-examples": "^5.12.0",
     "@types/caseless": "^0.12.5",
     "@types/lodash.merge": "^4.6.9",
-    "@vitest/coverage-v8": "^1.1.1",
+    "@vitest/coverage-v8": "^2.0.5",
     "fetch-mock": "^10.0.7",
     "get-stream": "^9.0.1",
     "typescript": "^5.2.2",
