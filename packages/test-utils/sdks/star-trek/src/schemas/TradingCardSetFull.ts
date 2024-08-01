@@ -48,16 +48,12 @@ const TradingCardSetFull = {
     "cardWidth": {
       "type": "number",
       "description": "Card width, in inches",
-      "format": "double",
-      "minimum": -1.7976931348623157e+308,
-      "maximum": 1.7976931348623157e+308
+      "format": "double"
     },
     "cardHeight": {
       "type": "number",
       "description": "Card height, in inches",
-      "format": "double",
-      "minimum": -1.7976931348623157e+308,
-      "maximum": 1.7976931348623157e+308
+      "format": "double"
     },
     "manufacturers": {
       "type": "array",

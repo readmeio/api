@@ -8,72 +8,52 @@ const PostTradingcardsetSearch = {
       "releaseYearFrom": {
         "type": "integer",
         "description": "Starting year the trading card set was released",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "releaseYearTo": {
         "type": "integer",
         "description": "Ending year the trading card set was released",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "cardsPerPackFrom": {
         "type": "integer",
         "description": "Minimal number of cards per deck",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "cardsPerPackTo": {
         "type": "integer",
         "description": "Minimal number of cards per deck",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "packsPerBoxFrom": {
         "type": "integer",
         "description": "Minimal number of packs per box",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "packsPerBoxTo": {
         "type": "integer",
         "description": "Minimal number of packs per box",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "boxesPerCaseFrom": {
         "type": "integer",
         "description": "Minimal number of boxes per case",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "boxesPerCaseTo": {
         "type": "integer",
         "description": "Minimal number of boxes per case",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionRunFrom": {
         "type": "integer",
         "description": "Minimal production run",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionRunTo": {
         "type": "integer",
         "description": "Minimal production run",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionRunUnit": {
         "type": "string",
@@ -82,30 +62,22 @@ const PostTradingcardsetSearch = {
       "cardWidthFrom": {
         "type": "number",
         "description": "Minimal card width, in inches",
-        "format": "double",
-        "minimum": -1.7976931348623157e+308,
-        "maximum": 1.7976931348623157e+308
+        "format": "double"
       },
       "cardWidthTo": {
         "type": "number",
         "description": "Minimal card width, in inches",
-        "format": "double",
-        "minimum": -1.7976931348623157e+308,
-        "maximum": 1.7976931348623157e+308
+        "format": "double"
       },
       "cardHeightFrom": {
         "type": "number",
         "description": "Minimal card height, in inches",
-        "format": "double",
-        "minimum": -1.7976931348623157e+308,
-        "maximum": 1.7976931348623157e+308
+        "format": "double"
       },
       "cardHeightTo": {
         "type": "number",
         "description": "Minimal card height, in inches",
-        "format": "double",
-        "minimum": -1.7976931348623157e+308,
-        "maximum": 1.7976931348623157e+308
+        "format": "double"
       }
     },
     "type": "object",
@@ -119,16 +91,12 @@ const PostTradingcardsetSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

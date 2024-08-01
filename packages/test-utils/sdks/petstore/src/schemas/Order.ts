@@ -3,21 +3,15 @@ const Order = {
   "properties": {
     "id": {
       "type": "integer",
-      "format": "int64",
-      "minimum": -9223372036854776000,
-      "maximum": 9223372036854776000
+      "format": "int64"
     },
     "petId": {
       "type": "integer",
-      "format": "int64",
-      "minimum": -9223372036854776000,
-      "maximum": 9223372036854776000
+      "format": "int64"
     },
     "quantity": {
       "type": "integer",
-      "format": "int32",
-      "minimum": -2147483648,
-      "maximum": 2147483647
+      "format": "int32"
     },
     "shipDate": {
       "type": "string",

@@ -8,58 +8,42 @@ const PostBookSearch = {
       "publishedYearFrom": {
         "type": "integer",
         "description": "Starting year the book was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "publishedYearTo": {
         "type": "integer",
         "description": "Ending year the book was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfPagesFrom": {
         "type": "integer",
         "description": "Minimal number of pages",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfPagesTo": {
         "type": "integer",
         "description": "Maximal number of pages",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "stardateFrom": {
         "type": "number",
         "description": "Starting stardate of book story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "stardateTo": {
         "type": "number",
         "description": "Ending stardate of book story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "yearFrom": {
         "type": "integer",
         "description": "Starting year of book story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "yearTo": {
         "type": "integer",
         "description": "Ending year of book story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "novel": {
         "type": "boolean",
@@ -100,30 +84,22 @@ const PostBookSearch = {
       "audiobookPublishedYearFrom": {
         "type": "integer",
         "description": "Starting year the audiobook was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "audiobookPublishedYearTo": {
         "type": "integer",
         "description": "Ending year the audiobook was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "audiobookRunTimeFrom": {
         "type": "integer",
         "description": "Minimal audiobook run time, in minutes",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "audiobookRunTimeTo": {
         "type": "integer",
         "description": "Maximal audiobook run time, in minutes",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       }
     },
     "type": "object",
@@ -137,16 +113,12 @@ const PostBookSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

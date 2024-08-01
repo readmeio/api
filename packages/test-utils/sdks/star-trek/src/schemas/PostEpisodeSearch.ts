@@ -8,30 +8,22 @@ const PostEpisodeSearch = {
       "seasonNumberFrom": {
         "type": "integer",
         "description": "Minimal season number",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "seasonNumberTo": {
         "type": "integer",
         "description": "Maximal season number",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "episodeNumberFrom": {
         "type": "integer",
         "description": "Minimal episode number in season",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "episodeNumberTo": {
         "type": "integer",
         "description": "Maximal episode number in season",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "productionSerialNumber": {
         "type": "string",
@@ -44,30 +36,22 @@ const PostEpisodeSearch = {
       "stardateFrom": {
         "type": "number",
         "description": "Starting stardate of episode story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "stardateTo": {
         "type": "number",
         "description": "Ending stardate of episode story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "yearFrom": {
         "type": "integer",
         "description": "Starting year of episode story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "yearTo": {
         "type": "integer",
         "description": "Ending year of episode story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "usAirDateFrom": {
         "type": "string",
@@ -101,16 +85,12 @@ const PostEpisodeSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

@@ -8,44 +8,32 @@ const PostBookseriesSearch = {
       "publishedYearFrom": {
         "type": "integer",
         "description": "Starting year the book series was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "publishedYearTo": {
         "type": "integer",
         "description": "Ending year the book series was published",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfBooksFrom": {
         "type": "integer",
         "description": "Minimal number of books",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "numberOfBooksTo": {
         "type": "integer",
         "description": "Maximal number of books",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "yearFrom": {
         "type": "integer",
         "description": "Starting year of book series stories",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "yearTo": {
         "type": "integer",
         "description": "Ending year of book series stories",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "miniseries": {
         "type": "boolean",
@@ -67,16 +55,12 @@ const PostBookseriesSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

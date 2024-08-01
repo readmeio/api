@@ -9,9 +9,7 @@ const Vehicle = {
     },
     "direction_id": {
       "type": "integer",
-      "format": "int32",
-      "minimum": -2147483648,
-      "maximum": 2147483647
+      "format": "int32"
     },
     "direction": {
       "type": [
@@ -21,9 +19,7 @@ const Vehicle = {
     },
     "location_time": {
       "type": "integer",
-      "format": "int64",
-      "minimum": -9223372036854776000,
-      "maximum": 9223372036854776000
+      "format": "int64"
     },
     "route_id": {
       "type": [
@@ -39,33 +35,23 @@ const Vehicle = {
     },
     "latitude": {
       "type": "number",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     },
     "longitude": {
       "type": "number",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     },
     "bearing": {
       "type": "number",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     },
     "odometer": {
       "type": "number",
-      "format": "double",
-      "minimum": -1.7976931348623157e+308,
-      "maximum": 1.7976931348623157e+308
+      "format": "double"
     },
     "speed": {
       "type": "number",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     }
   },
   "additionalProperties": false,
