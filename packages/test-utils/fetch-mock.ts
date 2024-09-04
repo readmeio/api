@@ -62,6 +62,7 @@ export const responses = {
     return (url: string, opts: RequestInit) => {
       return {
         uri: new URL(url).pathname,
+        // eslint-disable-next-line try-catch-failsafe/json-parse
         requestBody: JSON.parse(opts.body as string),
       };
     };

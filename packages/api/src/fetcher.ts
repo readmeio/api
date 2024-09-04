@@ -115,7 +115,11 @@ export default class Fetcher {
         return yaml.load(res);
       }
 
-      return JSON.parse(res);
+      try {
+        return JSON.parse(res);
+      } catch (err) {
+        throw new Error(`Sorry, we were unable to parse JSON from ${file}. Reason: ${err.message}`);
+      }
     });
   }
 
