@@ -48,7 +48,7 @@
     "@readme/openapi-parser": "^2.5.0",
     "@types/content-type": "^1.1.8",
     "@types/stringify-object": "^4.0.5",
-    "@vitest/coverage-v8": "^1.1.1",
+    "@vitest/coverage-v8": "^2.1.1",
     "camelcase": "^8.0.0",
     "stringify-object": "^5.0.0",
     "typescript": "^5.2.2",
