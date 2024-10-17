@@ -68,7 +68,7 @@
     "ts-morph": "^23.0.0",
     "update-notifier": "^7.0.0",
     "uslug": "^1.0.4",
-    "validate-npm-package-name": "^5.0.0"
+    "validate-npm-package-name": "^6.0.0"
   },
   "devDependencies": {
     "@api/test-utils": "file:../test-utils",
