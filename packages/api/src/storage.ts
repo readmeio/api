@@ -130,6 +130,7 @@ export default class Storage {
       const file = fs.readFileSync(Storage.getLockfilePath(), 'utf8');
       try {
         Storage.lockfile = JSON.parse(file) as Lockfile;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         // If we can't parse the lock file for whatever reason then it's probably corrupted so we
         // should reset it to the default.

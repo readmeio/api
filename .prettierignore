@@ -4,7 +4,6 @@ packages/**/dist/
 
 # api
 packages/api/.api/
-packages/api/.tsimp/
 packages/api/example.js
 
 # httpsnippet-client-api
