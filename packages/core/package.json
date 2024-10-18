@@ -49,7 +49,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^23.2.0",
+    "@readme/oas-to-har": "^24.0.0",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
