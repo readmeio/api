@@ -1,3 +1,9 @@
+## 7.0.0-beta.10 (2024-10-18)
+
+* chore(deps): bump (#949) ([dbb7a67](https://github.com/readmeio/api/commit/dbb7a67)), closes [#949](https://github.com/readmeio/api/issues/949)
+
+
+
 ## 7.0.0-beta.9 (2024-10-17)
 
 * chore(deps-dev): bump axios from 1.7.2 to 1.7.7 (#931) ([197f808](https://github.com/readmeio/api/commit/197f808)), closes [#931](https://github.com/readmeio/api/issues/931)
