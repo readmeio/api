@@ -33,7 +33,7 @@
   "author": "Jon Ursenbach <jon@readme.io>",
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": "^18.20.0 || >=20.10.0"
   },
   "files": [
     "dist",

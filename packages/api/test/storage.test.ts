@@ -11,7 +11,7 @@ import fetchMock from 'fetch-mock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
-import lockfileSchema from '../schema.json' assert { type: 'json' };
+import lockfileSchema from '../schema.json' with { type: 'json' };
 import { SupportedLanguages } from '../src/codegen/factory.js';
 import { PACKAGE_VERSION } from '../src/packageInfo.js';
 import Storage from '../src/storage.js';

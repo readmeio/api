@@ -7,7 +7,7 @@ import fs from 'node:fs';
 // eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-import
 import prettier from 'prettier';
 
-import pkg from '../package.json' assert { type: 'json' };
+import pkg from '../package.json' with { type: 'json' };
 import { lockfileSchema } from '../src/lockfileSchema.js';
 
 async function run() {
