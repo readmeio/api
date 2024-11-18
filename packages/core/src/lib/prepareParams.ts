@@ -77,6 +77,7 @@ async function processFile(
   file: ReadStream | string,
 ): Promise<{ base64?: string; buffer?: Buffer; filename: string; paramName?: string } | undefined> {
   const fs = await import('node:fs');
+  // eslint-disable-next-line unicorn/import-style
   const path = await import('node:path');
   const { default: DatauriParser } = await import('datauri/parser.js');
   const { default: datauri } = await import('datauri/sync.js');
