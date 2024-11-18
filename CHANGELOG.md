@@ -1,3 +1,14 @@
+## 7.0.0-beta.11 (2024-11-18)
+
+* fix: use correct import attributes syntax (#957) ([211e8fd](https://github.com/readmeio/api/commit/211e8fd)), closes [#957](https://github.com/readmeio/api/issues/957)
+* fix: use dynamic import for node-specific libraries (#820) ([b338098](https://github.com/readmeio/api/commit/b338098)), closes [#820](https://github.com/readmeio/api/issues/820)
+* chore(deps-dev): bump the minor-development-deps group with 5 updates (#951) ([353cd8b](https://github.com/readmeio/api/commit/353cd8b)), closes [#951](https://github.com/readmeio/api/issues/951)
+* chore(deps): bump @readme/oas-to-har from 24.0.0 to 24.0.1 (#952) ([0e736af](https://github.com/readmeio/api/commit/0e736af)), closes [#952](https://github.com/readmeio/api/issues/952)
+* chore(deps): bump oas from 25.0.2 to 25.0.3 (#956) ([6d42c56](https://github.com/readmeio/api/commit/6d42c56)), closes [#956](https://github.com/readmeio/api/issues/956)
+* chore(deps): bump ts-morph from 23.0.0 to 24.0.0 (#953) ([f70973c](https://github.com/readmeio/api/commit/f70973c)), closes [#953](https://github.com/readmeio/api/issues/953)
+
+
+
 ## 7.0.0-beta.10 (2024-10-18)
 
 * chore(deps): bump (#949) ([dbb7a67](https://github.com/readmeio/api/commit/dbb7a67)), closes [#949](https://github.com/readmeio/api/issues/949)
