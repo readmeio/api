@@ -15,8 +15,7 @@ const FindPetsByStatus = {
                 "pending",
                 "sold"
               ],
-              "default": "available",
-              "description": "Default: available"
+              "default": "available"
             },
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Status values that need to be considered for filter"

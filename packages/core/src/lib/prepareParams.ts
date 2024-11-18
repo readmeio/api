@@ -74,7 +74,7 @@ function merge(src: unknown, target: unknown) {
  */
 async function processFile(
   paramName: string | undefined,
-  file: string | ReadStream,
+  file: ReadStream | string,
 ): Promise<{ base64?: string; buffer?: Buffer; filename: string; paramName?: string } | undefined> {
   const fs = await import('node:fs');
   const path = await import('node:path');
@@ -192,16 +192,16 @@ export default async function prepareParams(operation: Operation, body?: unknown
   const params: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body?: any;
-    cookie?: Record<string, string | number | boolean>;
+    cookie?: Record<string, boolean | number | string>;
     files?: Record<string, Buffer>;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formData?: any;
-    header?: Record<string, string | number | boolean>;
-    path?: Record<string, string | number | boolean>;
-    query?: Record<string, string | number | boolean>;
+    header?: Record<string, boolean | number | string>;
+    path?: Record<string, boolean | number | string>;
+    query?: Record<string, boolean | number | string>;
     server?: {
       selected: number;
-      variables: Record<string, string | number>;
+      variables: Record<string, number | string>;
     };
   } = jsonSchemaDefaults;
 

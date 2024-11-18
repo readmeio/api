@@ -48,7 +48,7 @@ export default abstract class CodeGenerator {
   requiredPackages!: Record<
     string,
     {
-      dependencyType: 'production' | 'development';
+      dependencyType: 'development' | 'production';
       reason: string;
       url?: string;
       version: string;
@@ -114,7 +114,7 @@ export default abstract class CodeGenerator {
         } else {
           this.apiContact.name = infoObject.contact.email
             ? `<${infoObject.contact.email}>`
-            : infoObject.contact.name ?? undefined;
+            : (infoObject.contact.name ?? undefined);
         }
       }
 

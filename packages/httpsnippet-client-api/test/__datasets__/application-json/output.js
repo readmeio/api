@@ -1,6 +1,6 @@
-import sdk from '@api/application-json';
+import applicationJson from '@api/application-json';
 
-sdk.postAnything({
+applicationJson.postAnything({
   number: 1,
   string: 'f"oo',
   arr: [1, 2, 3],

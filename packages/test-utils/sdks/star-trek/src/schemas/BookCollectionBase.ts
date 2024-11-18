@@ -29,16 +29,12 @@ const BookCollectionBase = {
     "stardateFrom": {
       "type": "number",
       "description": "Starting stardate of book collection stories",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     },
     "stardateTo": {
       "type": "number",
       "description": "Ending stardate of book collection stories",
-      "format": "float",
-      "minimum": -3.402823669209385e+38,
-      "maximum": 3.402823669209385e+38
+      "format": "float"
     },
     "yearFrom": {
       "type": "integer",

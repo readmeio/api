@@ -15,9 +15,7 @@ const Pet = {
       "default": 40,
       "examples": [
         25
-      ],
-      "minimum": -9223372036854776000,
-      "maximum": 9223372036854776000
+      ]
     },
     "category": Category,
     "name": {

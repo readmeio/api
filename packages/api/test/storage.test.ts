@@ -69,7 +69,7 @@ describe('storage', () => {
   describe('#generateIntegrityHash', () => {
     it('should generate an integrity hash for an API definition', () => {
       expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).toBe(
-        'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
       );
     });
   });
@@ -158,7 +158,7 @@ describe('storage', () => {
         private: true,
         identifier: 'petstore',
         source,
-        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
         installerVersion: PACKAGE_VERSION,
         language: 'js',
         createdAt: expect.any(String),
@@ -181,7 +181,7 @@ describe('storage', () => {
         private: true,
         identifier: 'petstore',
         source,
-        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
         installerVersion: PACKAGE_VERSION,
         language: 'js',
         createdAt: expect.any(String),
@@ -202,7 +202,7 @@ describe('storage', () => {
         private: true,
         identifier: 'petstore',
         source,
-        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
         installerVersion: PACKAGE_VERSION,
         language: 'js',
         createdAt: expect.any(String),
@@ -237,7 +237,7 @@ describe('storage', () => {
 
         await expect(storage.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
-          title: 'Single Path',
+          title: 'Simple Petstore',
           description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
@@ -246,7 +246,7 @@ describe('storage', () => {
           private: true,
           identifier: 'petstore',
           source: '@petstore/v1.0#n6kvf10vakpemvplx',
-          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+          integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -262,7 +262,7 @@ describe('storage', () => {
 
         await expect(storage.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
-          title: 'Single Path',
+          title: 'Simple Petstore',
           description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
@@ -283,7 +283,7 @@ describe('storage', () => {
           private: true,
           identifier: 'petstore',
           source: '@petstore#n6kvf10vakpemvplx',
-          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+          integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -317,7 +317,7 @@ describe('storage', () => {
 
         await expect(storage.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
-          title: 'Single Path',
+          title: 'Simple Petstore',
           description: 'This is a slimmed down single path version of the Petstore definition.',
         });
 
@@ -326,7 +326,7 @@ describe('storage', () => {
           private: true,
           identifier: 'petstore',
           source: 'http://example.com/readme.json',
-          integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+          integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -483,7 +483,7 @@ describe('storage', () => {
         private: true,
         identifier: 'petstore-simple',
         source: file,
-        integrity: 'sha512-otRF5TLMeDczSJlrmWLNDHLfmXg+C98oa/I/X2WWycwngh+a6WsbnjTbfwKGRU5DFbagOn2qX2SRvtBGOBRVGg==',
+        integrity: 'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
         installerVersion: PACKAGE_VERSION,
         language: 'js',
         createdAt: expect.any(String),

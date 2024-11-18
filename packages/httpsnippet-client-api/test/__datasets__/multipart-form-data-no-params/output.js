@@ -1,5 +1,5 @@
-import sdk from '@api/multipart-form-data-no-params';
+import multipartFormDataNoParams from '@api/multipart-form-data-no-params';
 
-sdk.postAnything()
+multipartFormDataNoParams.postAnything()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

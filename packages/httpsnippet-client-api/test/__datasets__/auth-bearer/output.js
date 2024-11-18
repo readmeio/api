@@ -1,6 +1,6 @@
-import sdk from '@api/auth-bearer';
+import authBearer from '@api/auth-bearer';
 
-sdk.auth('myBearerToken');
-sdk.postAnythingBearer()
+authBearer.auth('myBearerToken');
+authBearer.postAnythingBearer()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

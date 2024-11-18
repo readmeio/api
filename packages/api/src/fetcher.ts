@@ -7,7 +7,7 @@ import OpenAPIParser from '@readme/openapi-parser';
 import yaml from 'js-yaml';
 
 export default class Fetcher {
-  uri: string | OASDocument;
+  uri: OASDocument | string;
 
   /**
    * @note This regex also exists in `httpsnippet-client-api`.
@@ -17,7 +17,7 @@ export default class Fetcher {
    */
   static registryUUIDRegex = /^@(?<project>[a-zA-Z0-9-_]+)(\/?(?<version>.+))?#(?<uuid>[a-z0-9]+)$/;
 
-  constructor(uri: string | OASDocument) {
+  constructor(uri: OASDocument | string) {
     if (typeof uri === 'string') {
       if (Fetcher.isAPIRegistryUUID(uri)) {
         // Resolve OpenAPI definition shorthand accessors from within the ReadMe API Registry.
@@ -71,6 +71,7 @@ export default class Fetcher {
         let url;
         try {
           url = new URL(uri);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
           // If that try fails for whatever reason than the URI that we have isn't a real URL and
           // we can safely attempt to look for it on the filesystem.
@@ -115,7 +116,11 @@ export default class Fetcher {
         return yaml.load(res);
       }
 
-      return JSON.parse(res);
+      try {
+        return JSON.parse(res);
+      } catch (err) {
+        throw new Error(`Sorry, we were unable to parse JSON from ${file}. Reason: ${err.message}`);
+      }
     });
   }
 

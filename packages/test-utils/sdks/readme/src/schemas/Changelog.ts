@@ -14,8 +14,7 @@ const Changelog = {
         "improved",
         "deprecated",
         "removed"
-      ],
-      "description": "Default: "
+      ]
     },
     "body": {
       "type": "string",

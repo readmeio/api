@@ -8,30 +8,22 @@ const PostMovieSearch = {
       "stardateFrom": {
         "type": "number",
         "description": "Starting stardate of movie story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "stardateTo": {
         "type": "number",
         "description": "Ending stardate of movie story",
-        "format": "float",
-        "minimum": -3.402823669209385e+38,
-        "maximum": 3.402823669209385e+38
+        "format": "float"
       },
       "yearFrom": {
         "type": "integer",
         "description": "Starting year of movie story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "yearTo": {
         "type": "integer",
         "description": "Ending year of movie story",
-        "format": "int32",
-        "minimum": -2147483648,
-        "maximum": 2147483647
+        "format": "int32"
       },
       "usReleaseDateFrom": {
         "type": "string",
@@ -55,16 +47,12 @@ const PostMovieSearch = {
           "pageNumber": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Zero-based page number"
           },
           "pageSize": {
             "type": "integer",
             "format": "int32",
-            "minimum": -2147483648,
-            "maximum": 2147483647,
             "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Page size"
           },

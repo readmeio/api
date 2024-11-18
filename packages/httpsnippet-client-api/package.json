@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "7.0.0-beta.4",
+  "version": "7.0.0-beta.9",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "sideEffects": false,
   "type": "module",
@@ -40,19 +40,19 @@
     "reserved2": "^0.1.5"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": ">=8.1.2",
-    "oas": "^24.0.0"
+    "@readme/httpsnippet": "^11.0.0",
+    "oas": "^25.0.1"
   },
   "devDependencies": {
     "@readme/oas-examples": "^5.12.0",
     "@readme/openapi-parser": "^2.5.0",
-    "@types/content-type": "^1.1.6",
-    "@types/stringify-object": "^4.0.3",
-    "@vitest/coverage-v8": "^0.34.4",
+    "@types/content-type": "^1.1.8",
+    "@types/stringify-object": "^4.0.5",
+    "@vitest/coverage-v8": "^2.1.3",
     "camelcase": "^8.0.0",
     "stringify-object": "^5.0.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.5"
+    "vitest": "^2.1.3"
   },
   "prettier": "@readme/eslint-config/prettier"
 }

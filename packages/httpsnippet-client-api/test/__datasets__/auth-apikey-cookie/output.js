@@ -1,6 +1,6 @@
-import sdk from '@api/auth-apikey-cookie';
+import authApikeyCookie from '@api/auth-apikey-cookie';
 
-sdk.auth('buster');
-sdk.postAnythingApikey()
+authApikeyCookie.auth('buster');
+authApikeyCookie.postAnythingApikey()
   .then(({ data }) => console.log(data))
   .catch(err => console.error(err));

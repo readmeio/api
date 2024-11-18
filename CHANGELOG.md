@@ -1,3 +1,110 @@
+## 7.0.0-beta.10 (2024-10-18)
+
+* chore(deps): bump (#949) ([dbb7a67](https://github.com/readmeio/api/commit/dbb7a67)), closes [#949](https://github.com/readmeio/api/issues/949)
+
+
+
+## 7.0.0-beta.9 (2024-10-17)
+
+* chore(deps-dev): bump axios from 1.7.2 to 1.7.7 (#931) ([197f808](https://github.com/readmeio/api/commit/197f808)), closes [#931](https://github.com/readmeio/api/issues/931)
+* chore(deps-dev): bump conventional-changelog-cli from 4.1.0 to 5.0.0 (#903) ([bff10dd](https://github.com/readmeio/api/commit/bff10dd)), closes [#903](https://github.com/readmeio/api/issues/903)
+* chore(deps-dev): bump fetch-mock from 10.1.1 to 11.1.3 (#929) ([0cd1d7b](https://github.com/readmeio/api/commit/0cd1d7b)), closes [#929](https://github.com/readmeio/api/issues/929)
+* chore(deps-dev): bump fetch-mock from 9.11.0 to 10.0.7 (#906) ([e2109a1](https://github.com/readmeio/api/commit/e2109a1)), closes [#906](https://github.com/readmeio/api/issues/906)
+* chore(deps-dev): bump the minor-development-deps group across 1 directory with 6 updates (#932) ([3fe2997](https://github.com/readmeio/api/commit/3fe2997)), closes [#932](https://github.com/readmeio/api/issues/932)
+* chore(deps-dev): bump the minor-development-deps group across 1 directory with 9 updates (#911) ([669adb9](https://github.com/readmeio/api/commit/669adb9)), closes [#911](https://github.com/readmeio/api/issues/911)
+* chore(deps-dev): bump the minor-development-deps group with 10 updates (#914) ([4ef0862](https://github.com/readmeio/api/commit/4ef0862)), closes [#914](https://github.com/readmeio/api/issues/914)
+* chore(deps): bump (#935) ([88090bc](https://github.com/readmeio/api/commit/88090bc)), closes [#935](https://github.com/readmeio/api/issues/935)
+* chore(deps): bump @readme/oas-to-har from 23.2.13 to 23.2.21 (#919) ([a9fe247](https://github.com/readmeio/api/commit/a9fe247)), closes [#919](https://github.com/readmeio/api/issues/919)
+* chore(deps): bump @readme/oas-to-har from 23.2.21 to 23.2.23 (#924) ([6040f4a](https://github.com/readmeio/api/commit/6040f4a)), closes [#924](https://github.com/readmeio/api/issues/924)
+* chore(deps): bump fetch-har from 11.1.0 to 11.1.1 (#905) ([cd8bad0](https://github.com/readmeio/api/commit/cd8bad0)), closes [#905](https://github.com/readmeio/api/issues/905)
+* chore(deps): bump json-schema-to-ts from 3.1.0 to 3.1.1 (#923) ([2d3d9a9](https://github.com/readmeio/api/commit/2d3d9a9)), closes [#923](https://github.com/readmeio/api/issues/923)
+* chore(deps): bump micromatch from 4.0.5 to 4.0.8 (#930) ([8c6b4fe](https://github.com/readmeio/api/commit/8c6b4fe)), closes [#930](https://github.com/readmeio/api/issues/930)
+* chore(deps): bump oas from 24.3.6 to 24.5.3 (#917) ([c53a0a1](https://github.com/readmeio/api/commit/c53a0a1)), closes [#917](https://github.com/readmeio/api/issues/917)
+* chore(deps): bump oas from 24.5.3 to 24.7.0 (#925) ([eae3c15](https://github.com/readmeio/api/commit/eae3c15)), closes [#925](https://github.com/readmeio/api/issues/925)
+* chore(deps): bump ora from 8.0.1 to 8.1.0 (#928) ([89279dd](https://github.com/readmeio/api/commit/89279dd)), closes [#928](https://github.com/readmeio/api/issues/928)
+* chore(deps): bump preferred-pm from 3.1.3 to 4.0.0 (#916) ([774c4ba](https://github.com/readmeio/api/commit/774c4ba)), closes [#916](https://github.com/readmeio/api/issues/916)
+* chore(deps): bump ts-morph from 22.0.0 to 23.0.0 (#907) ([6c51ee4](https://github.com/readmeio/api/commit/6c51ee4)), closes [#907](https://github.com/readmeio/api/issues/907)
+* chore(deps): bump update-notifier from 7.0.0 to 7.2.0 (#920) ([082879f](https://github.com/readmeio/api/commit/082879f)), closes [#920](https://github.com/readmeio/api/issues/920)
+* chore(deps): bump update-notifier from 7.2.0 to 7.3.0 (#926) ([29f78dd](https://github.com/readmeio/api/commit/29f78dd)), closes [#926](https://github.com/readmeio/api/issues/926)
+
+
+
+## 7.0.0-beta.8 (2024-06-27)
+
+* feat: support other package managers (#895) ([21230f8](https://github.com/readmeio/api/commit/21230f8)), closes [#895](https://github.com/readmeio/api/issues/895)
+* feat: use project name rather than `sdk` in sdk snippet (#898) ([6024ee0](https://github.com/readmeio/api/commit/6024ee0)), closes [#898](https://github.com/readmeio/api/issues/898)
+* chore: changing the smoketest ci job to run less frequently ([b48722c](https://github.com/readmeio/api/commit/b48722c))
+* chore(deps-dev): bump ejs from 3.1.9 to 3.1.10 (#881) ([9f4cbcd](https://github.com/readmeio/api/commit/9f4cbcd)), closes [#881](https://github.com/readmeio/api/issues/881)
+* chore(deps-dev): bump knip from 4.6.0 to 5.11.0 (#880) ([f63516e](https://github.com/readmeio/api/commit/f63516e)), closes [#880](https://github.com/readmeio/api/issues/880)
+* chore(deps-dev): bump the minor-development-deps group with 5 updates (#876) ([2b29cb6](https://github.com/readmeio/api/commit/2b29cb6)), closes [#876](https://github.com/readmeio/api/issues/876)
+* chore(deps-dev): bump the minor-development-deps group with 7 updates (#883) ([de453ae](https://github.com/readmeio/api/commit/de453ae)), closes [#883](https://github.com/readmeio/api/issues/883)
+* chore(deps): bump @readme/oas-to-har from 23.2.5 to 23.2.8 (#879) ([bdae61f](https://github.com/readmeio/api/commit/bdae61f)), closes [#879](https://github.com/readmeio/api/issues/879)
+* chore(deps): bump @readme/oas-to-har from 23.2.8 to 23.2.13 (#889) ([98b4412](https://github.com/readmeio/api/commit/98b4412)), closes [#889](https://github.com/readmeio/api/issues/889)
+* chore(deps): bump @readme/openapi-parser from 2.5.0 to 2.5.1 (#877) ([cad7d06](https://github.com/readmeio/api/commit/cad7d06)), closes [#877](https://github.com/readmeio/api/issues/877)
+* chore(deps): bump braces from 3.0.2 to 3.0.3 (#896) ([5e89873](https://github.com/readmeio/api/commit/5e89873)), closes [#896](https://github.com/readmeio/api/issues/896)
+* chore(deps): bump commander from 11.1.0 to 12.1.0 (#888) ([d9d82bd](https://github.com/readmeio/api/commit/d9d82bd)), closes [#888](https://github.com/readmeio/api/issues/888)
+* chore(deps): bump json-schema-to-ts from 3.0.1 to 3.1.0 (#891) ([a123ef7](https://github.com/readmeio/api/commit/a123ef7)), closes [#891](https://github.com/readmeio/api/issues/891)
+* chore(deps): bump oas from 24.2.1 to 24.3.1 (#878) ([0244bcc](https://github.com/readmeio/api/commit/0244bcc)), closes [#878](https://github.com/readmeio/api/issues/878)
+* chore(deps): bump semver from 7.6.0 to 7.6.2 (#884) ([1f7b9cb](https://github.com/readmeio/api/commit/1f7b9cb)), closes [#884](https://github.com/readmeio/api/issues/884)
+* chore(deps): bump ssri from 10.0.5 to 10.0.6 (#885) ([a2b9ef0](https://github.com/readmeio/api/commit/a2b9ef0)), closes [#885](https://github.com/readmeio/api/issues/885)
+* chore(deps): bump validate-npm-package-name from 5.0.0 to 5.0.1 (#892) ([1bd26c1](https://github.com/readmeio/api/commit/1bd26c1)), closes [#892](https://github.com/readmeio/api/issues/892)
+
+
+
+## 7.0.0-beta.7 (2024-04-11)
+
+* fix: zsh compatibility for `api` installation instructions (#875) ([858b485](https://github.com/readmeio/api/commit/858b485)), closes [#875](https://github.com/readmeio/api/issues/875)
+
+
+
+## 7.0.0-beta.6 (2024-04-10)
+
+* chore: bump deps, fix types (#874) ([f4e3264](https://github.com/readmeio/api/commit/f4e3264)), closes [#874](https://github.com/readmeio/api/issues/874)
+* chore(deps-dev): bump follow-redirects from 1.15.4 to 1.15.6 (#867) ([cc5ee91](https://github.com/readmeio/api/commit/cc5ee91)), closes [#867](https://github.com/readmeio/api/issues/867)
+* chore(deps-dev): bump ip from 2.0.0 to 2.0.1 (#858) ([9bde1e6](https://github.com/readmeio/api/commit/9bde1e6)), closes [#858](https://github.com/readmeio/api/issues/858)
+* chore(deps-dev): bump the minor-development-deps group with 10 updates (#872) ([8610c5a](https://github.com/readmeio/api/commit/8610c5a)), closes [#872](https://github.com/readmeio/api/issues/872)
+* chore(deps): bump es5-ext from 0.10.62 to 0.10.64 (#860) ([be0aaa5](https://github.com/readmeio/api/commit/be0aaa5)), closes [#860](https://github.com/readmeio/api/issues/860)
+* chore(deps): bump figures from 6.0.1 to 6.1.0 (#868) ([78c6f28](https://github.com/readmeio/api/commit/78c6f28)), closes [#868](https://github.com/readmeio/api/issues/868)
+* chore(deps): bump json-schema-to-ts from 3.0.0 to 3.0.1 (#869) ([b4dab0a](https://github.com/readmeio/api/commit/b4dab0a)), closes [#869](https://github.com/readmeio/api/issues/869)
+* chore(deps): bump semver and @types/semver (#862) ([201d22c](https://github.com/readmeio/api/commit/201d22c)), closes [#862](https://github.com/readmeio/api/issues/862)
+* chore(deps): bump ts-morph from 21.0.1 to 22.0.0 (#871) ([de6bc7f](https://github.com/readmeio/api/commit/de6bc7f)), closes [#871](https://github.com/readmeio/api/issues/871)
+* chore(deps): bump vitest from 1.2.2 to 1.3.1 (#861) ([2bbb8ca](https://github.com/readmeio/api/commit/2bbb8ca)), closes [#861](https://github.com/readmeio/api/issues/861)
+* chore(deps): use lodash instead of per method packages (#859) ([a199735](https://github.com/readmeio/api/commit/a199735)), closes [#859](https://github.com/readmeio/api/issues/859)
+* fix: swap out `ts-node` for `tsimp` (#873) ([429fcf9](https://github.com/readmeio/api/commit/429fcf9)), closes [#873](https://github.com/readmeio/api/issues/873)
+
+
+
+## 7.0.0-beta.5 (2024-02-14)
+
+* feat: avoid modifying the response object when calling response.text() (#854) ([f95874b](https://github.com/readmeio/api/commit/f95874b)), closes [#854](https://github.com/readmeio/api/issues/854)
+* feat(api): export SDK (#856) ([4bfdb53](https://github.com/readmeio/api/commit/4bfdb53)), closes [#856](https://github.com/readmeio/api/issues/856)
+* feat(api): import schemas in the types file as types (#815) ([2aa1a45](https://github.com/readmeio/api/commit/2aa1a45)), closes [#815](https://github.com/readmeio/api/issues/815)
+* feat(api): small CLI quality-of-life changes (#818) ([3339332](https://github.com/readmeio/api/commit/3339332)), closes [#818](https://github.com/readmeio/api/issues/818)
+* fix: ensure prepareServer respects server variables when custom url is the same as the OAS url (#855 ([01d1a00](https://github.com/readmeio/api/commit/01d1a00)), closes [#855](https://github.com/readmeio/api/issues/855)
+* fix: package name for ESM syntax (#857) ([036f95f](https://github.com/readmeio/api/commit/036f95f)), closes [#857](https://github.com/readmeio/api/issues/857)
+* chore(deps-dev): bump knip from 3.9.0 to 4.2.3 (#851) ([9640a1c](https://github.com/readmeio/api/commit/9640a1c)), closes [#851](https://github.com/readmeio/api/issues/851)
+* chore(deps-dev): bump lerna from 7.4.2 to 8.0.0 (#826) ([71f66a8](https://github.com/readmeio/api/commit/71f66a8)), closes [#826](https://github.com/readmeio/api/issues/826)
+* chore(deps-dev): bump tsup from 7.2.0 to 8.0.1 (#831) ([cc5b28a](https://github.com/readmeio/api/commit/cc5b28a)), closes [#831](https://github.com/readmeio/api/issues/831)
+* chore(deps): bump @readme/oas-to-har from 23.2.0 to 23.2.1 (#829) ([a18beca](https://github.com/readmeio/api/commit/a18beca)), closes [#829](https://github.com/readmeio/api/issues/829)
+* chore(deps): bump emphasize from 6.0.0 to 7.0.0 (#828) ([26d85ee](https://github.com/readmeio/api/commit/26d85ee)), closes [#828](https://github.com/readmeio/api/issues/828)
+* chore(deps): bump fetch-har from 11.0.1 to 11.1.0 (#830) ([7fa766a](https://github.com/readmeio/api/commit/7fa766a)), closes [#830](https://github.com/readmeio/api/issues/830)
+* chore(deps): bump formdata-to-string from 2.0.1 to 2.0.2 (#825) ([773e476](https://github.com/readmeio/api/commit/773e476)), closes [#825](https://github.com/readmeio/api/issues/825)
+* chore(deps): bump github/codeql-action from 2 to 3 (#837) ([b1d21eb](https://github.com/readmeio/api/commit/b1d21eb)), closes [#837](https://github.com/readmeio/api/issues/837)
+* chore(deps): bump json-schema-to-ts from 2.9.2 to 3.0.0 (#842) ([7495fba](https://github.com/readmeio/api/commit/7495fba)), closes [#842](https://github.com/readmeio/api/issues/842)
+* chore(deps): bump oas from 24.0.0 to 24.1.0 (#827) ([b2950fd](https://github.com/readmeio/api/commit/b2950fd)), closes [#827](https://github.com/readmeio/api/issues/827)
+* chore(deps): bump ora from 7.0.1 to 8.0.1 (#839) ([aafb757](https://github.com/readmeio/api/commit/aafb757)), closes [#839](https://github.com/readmeio/api/issues/839)
+* chore(deps): bump reserved2 from 0.1.5 to 0.1.6 (#853) ([06c9fc4](https://github.com/readmeio/api/commit/06c9fc4)), closes [#853](https://github.com/readmeio/api/issues/853)
+* chore(deps): bump ts-morph from 20.0.0 to 21.0.1 (#841) ([b3c11f9](https://github.com/readmeio/api/commit/b3c11f9)), closes [#841](https://github.com/readmeio/api/issues/841)
+* chore(deps): bump vite from 4.4.9 to 5.0.5 (#834) ([42de331](https://github.com/readmeio/api/commit/42de331)), closes [#834](https://github.com/readmeio/api/issues/834)
+* chore(deps): bump vite from 5.0.5 to 5.0.12 (#847) ([922a1d6](https://github.com/readmeio/api/commit/922a1d6)), closes [#847](https://github.com/readmeio/api/issues/847)
+* chore(deps): bump vitest from 1.1.1 to 1.2.2 (#852) ([6499518](https://github.com/readmeio/api/commit/6499518)), closes [#852](https://github.com/readmeio/api/issues/852)
+* chore(deps): upgrading out of date deps (#843) ([282a54c](https://github.com/readmeio/api/commit/282a54c)), closes [#843](https://github.com/readmeio/api/issues/843)
+* docs: swapping out our oss header image ([90b51c8](https://github.com/readmeio/api/commit/90b51c8))
+* test: add mocks for `packageVersion` (#811) ([590f372](https://github.com/readmeio/api/commit/590f372)), closes [#811](https://github.com/readmeio/api/issues/811)
+* test: run `tsc` on SDK fixtures (#819) ([ef49821](https://github.com/readmeio/api/commit/ef49821)), closes [#819](https://github.com/readmeio/api/issues/819)
+
+
+
 ## 7.0.0-beta.4 (2023-11-02)
 
 * fix(api): run `npm install` with `--ignore-scripts` (#793) ([f93f152](https://github.com/readmeio/api/commit/f93f152)), closes [#793](https://github.com/readmeio/api/issues/793)

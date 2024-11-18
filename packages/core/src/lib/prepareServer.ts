@@ -13,8 +13,8 @@ function stripTrailingSlash(url: string) {
  * any server variables to be supplied to `@readme/oas-to-har`.
  *
  */
-export default function prepareServer(spec: Oas, url: string, variables: Record<string, string | number> = {}) {
-  let serverIdx;
+export default function prepareServer(spec: Oas, url: string, variables: Record<string, number | string> = {}) {
+  let serverIdx: number | undefined;
   const sanitizedUrl = stripTrailingSlash(url);
   (spec.api.servers || []).forEach((server, i) => {
     if (server.url === sanitizedUrl) {
@@ -25,7 +25,7 @@ export default function prepareServer(spec: Oas, url: string, variables: Record<
   // If we were able to find the passed in server in the OAS servers, we should use that! If we
   // couldn't and server variables were passed in we should try our best to handle that, otherwise
   // we should ignore the passed in server and use whever the default from the OAS is.
-  if (serverIdx) {
+  if (serverIdx !== undefined) {
     return {
       selected: serverIdx,
       variables,

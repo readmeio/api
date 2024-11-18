@@ -30,7 +30,7 @@ export const responses = {
     };
   },
 
-  delay: (res: string | Record<string, unknown>, delay: number) => {
+  delay: (res: Record<string, unknown> | string, delay: number) => {
     return new Promise(resolve => {
       setTimeout(() => resolve(res), delay);
     });
@@ -54,7 +54,7 @@ export const responses = {
     };
   },
 
-  real: (res: string | Record<string, unknown>) => {
+  real: (res: Record<string, unknown> | string) => {
     return () => res;
   },
 
@@ -62,6 +62,7 @@ export const responses = {
     return (url: string, opts: RequestInit) => {
       return {
         uri: new URL(url).pathname,
+        // eslint-disable-next-line try-catch-failsafe/json-parse
         requestBody: JSON.parse(opts.body as string),
       };
     };

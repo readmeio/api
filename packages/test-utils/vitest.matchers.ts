@@ -22,12 +22,13 @@ interface CustomMatchers<R = unknown> {
    * expect(request.headers).to.have.header('connection', ['close', 'keep-alive']);
    *
    */
-  toHaveHeader(header: string, expected: RegExp | (string | number)[] | string): R;
+  toHaveHeader(header: string, expected: (number | string)[] | RegExp | string): R;
 }
 
 declare module 'vitest' {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-object-type
   interface Assertion<T = any> extends CustomMatchers<T> {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface AsymmetricMatchersContaining extends CustomMatchers {}
 }
 
@@ -47,7 +48,7 @@ expect.extend({
     };
   },
 
-  toHaveHeader(obj: Headers, header: string, expected: RegExp | (string | number)[] | string) {
+  toHaveHeader(obj: Headers, header: string, expected: (number | string)[] | RegExp | string) {
     // @ts-expect-error `Headers.entries()` exists despite what the types here suggest.
     const headers = caseless(Object.fromEntries(Array.from(obj.entries())));
 

@@ -36,7 +36,7 @@ function stringify(obj: any, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
 
-function buildAuthSnippet(sdkVariable: string, authKey: string | string[]) {
+function buildAuthSnippet(sdkVariable: string, authKey: string[] | string) {
   // Auth key will be an array for Basic auth cases.
   if (Array.isArray(authKey)) {
     const auth: string[] = [];
@@ -97,7 +97,7 @@ function getAuthSources(operation: Operation) {
 }
 
 interface APIOptions {
-  api: {
+  api?: {
     definition: OASDocument;
 
     /**
@@ -126,12 +126,12 @@ const client: Client<APIOptions> = {
     link: 'https://npm.im/api',
     description: 'Automatic SDK generation from an OpenAPI definition.',
     extname: '.js',
-    installation: 'npx api install {packageName}',
+    installation: 'npx api install "{packageName}"',
   },
   convert: ({ cookiesObj, headersObj, postData, queryObj, url, ...source }, options) => {
     const opts = {
       ...options,
-    } as APIOptions;
+    };
 
     if (!opts?.api) {
       throw new Error('This HTTPSnippet client must have an `api` config supplied to it.');
@@ -151,7 +151,7 @@ const client: Client<APIOptions> = {
       );
     }
 
-    let sdkPackageName;
+    let sdkPackageName: string | undefined;
     let sdkVariable: string;
     if (opts.api.identifier) {
       sdkPackageName = opts.api.identifier;
@@ -164,7 +164,7 @@ const client: Client<APIOptions> = {
       }
     } else {
       sdkPackageName = getProjectPrefixFromRegistryUUID(opts.api.registryURI);
-      sdkVariable = 'sdk';
+      sdkVariable = camelCase(sdkPackageName || 'sdk');
     }
 
     const operationSlugs = foundOperation.url.slugs;
@@ -191,11 +191,11 @@ const client: Client<APIOptions> = {
         const serverVars = oas.splitVariables(baseUrl);
         const serverUrl = serverVars ? oas.url(serverVars.selected, serverVars.variables) : baseUrl;
 
-        configData.push(`sdk.server('${serverUrl}');`);
+        configData.push(`${sdkVariable}.server('${serverUrl}');`);
       }
     }
 
-    let metadata: Record<string, string | string[]> = {};
+    let metadata: Record<string, string[] | string> = {};
     Object.keys(queryObj).forEach(param => {
       if (authSources.query.includes(param)) {
         authData.push(buildAuthSnippet(sdkVariable, queryObj[param]));

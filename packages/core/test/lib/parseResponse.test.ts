@@ -1,4 +1,4 @@
-import { describe, beforeEach, it, expect } from 'vitest';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import parseResponse from '../../src/lib/parseResponse.js';
 
@@ -108,5 +108,17 @@ describe('#parseResponse', () => {
     expect(status).toBe(204);
     expect(headers).toHaveHeader('content-type', 'application/json');
     expect(res).toBeInstanceOf(Response);
+  });
+
+  it('should not modify original response object', async () => {
+    const responseMethodSpyText = vi.spyOn(response, 'text');
+    const responseMethodSpyArrayBuffer = vi.spyOn(response, 'arrayBuffer');
+    const responseMethodSpyJson = vi.spyOn(response, 'json');
+
+    await parseResponse(response);
+
+    expect(responseMethodSpyText).not.toHaveBeenCalled();
+    expect(responseMethodSpyArrayBuffer).not.toHaveBeenCalled();
+    expect(responseMethodSpyJson).not.toHaveBeenCalled();
   });
 });

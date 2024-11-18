@@ -16,7 +16,7 @@ import { PACKAGE_VERSION } from './packageInfo.js';
 export default class Storage {
   static dir: string;
 
-  static lockfile: false | Lockfile;
+  static lockfile: Lockfile | false;
 
   fetcher: Fetcher;
 
@@ -128,7 +128,14 @@ export default class Storage {
 
     if (fs.existsSync(Storage.getLockfilePath())) {
       const file = fs.readFileSync(Storage.getLockfilePath(), 'utf8');
-      Storage.lockfile = JSON.parse(file) as Lockfile;
+      try {
+        Storage.lockfile = JSON.parse(file) as Lockfile;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (err) {
+        // If we can't parse the lock file for whatever reason then it's probably corrupted so we
+        // should reset it to the default.
+        Storage.lockfile = Storage.getDefaultLockfile();
+      }
     } else {
       Storage.lockfile = Storage.getDefaultLockfile();
     }
@@ -249,9 +256,14 @@ export default class Storage {
   }
 
   getAPIDefinition() {
-    const file = fs.readFileSync(this.getAPIDefinitionPath(), 'utf8');
+    const filePath = this.getAPIDefinitionPath();
+    const file = fs.readFileSync(filePath, 'utf8');
 
-    return JSON.parse(file);
+    try {
+      return JSON.parse(file);
+    } catch (err) {
+      throw new Error(`Sorry we were unable to parse JSON in ${filePath}. Reason: ${err.message}`);
+    }
   }
 
   saveSourceFiles(files: Record<string, string>) {

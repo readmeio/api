@@ -45,7 +45,7 @@ describe('httpsnippet-client-api', () => {
       link: 'https://npm.im/api',
       description: 'Automatic SDK generation from an OpenAPI definition.',
       extname: '.js',
-      installation: 'npx api install {packageName}',
+      installation: 'npx api install "{packageName}"',
     });
   });
 
@@ -53,38 +53,38 @@ describe('httpsnippet-client-api', () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
-    await expect(snippet.convert('node', 'api')).rejects.toThrow(/must have an `api` config supplied/);
-    await expect(snippet.convert('node', 'api', {})).rejects.toThrow(/must have an `api` config supplied/);
+    expect(() => snippet.convert('node', 'api')).toThrow(/must have an `api` config supplied/);
+    expect(() => snippet.convert('node', 'api', {})).toThrow(/must have an `api` config supplied/);
   });
 
   it('should error if no `api.definition` was supplied', async () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
-    await expect(
+    expect(() =>
       snippet.convert('node', 'api', {
         api: {
           registryURI: '@developers/v2.0#17273l2glm9fq4l5',
         },
       }),
-    ).rejects.toThrow(/must have an `api.definition` option supplied/);
+    ).toThrow(/must have an `api.definition` option supplied/);
   });
 
   it('should error if no `api.registryURI` was supplied', async () => {
     const { har } = await getSnippetDataset('petstore');
     const snippet = new HTTPSnippet(har);
 
-    await expect(
+    expect(() =>
       snippet.convert('node', 'api', {
         api: {
           definition: readme,
         },
       }),
-    ).rejects.toThrow(/must have an `api.registryURI` option supplied/);
+    ).toThrow(/must have an `api.registryURI` option supplied/);
   });
 
   // This test should fail because the url in the HAR is missing `/v1` in the path.
-  it('should error if no matching operation was found in the supplied API definition', async () => {
+  it('should error if no matching operation was found in the supplied API definition', () => {
     const har = {
       httpVersion: 'HTTP/1.1',
       method: 'GET',
@@ -97,14 +97,14 @@ describe('httpsnippet-client-api', () => {
 
     const snippet = new HTTPSnippet(har as Request);
 
-    await expect(
+    expect(() =>
       snippet.convert('node', 'api', {
         api: {
           definition: readme,
           registryURI: '@developers/v2.0#17273l2glm9fq4l5',
         },
       }),
-    ).rejects.toThrow(/unable to locate a matching operation/i);
+    ).toThrow(/unable to locate a matching operation/i);
   });
 
   describe('snippets', () => {
@@ -123,12 +123,12 @@ describe('httpsnippet-client-api', () => {
       it('should generate the expected snippet', async () => {
         const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
-        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
+        const code = new HTTPSnippet(mock.har).convert('node', 'api', {
           api: {
             definition: mock.definition,
             registryURI: `@${snippet}/v2.0#17273l2glm9fq4l5`,
           },
-        });
+        })[0];
 
         expect(`${code}\n`).toStrictEqual(expected);
       });
@@ -138,15 +138,15 @@ describe('httpsnippet-client-api', () => {
       it('should support custom SDK variable names', async () => {
         const mock = await getSnippetDataset('petstore');
 
-        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
+        const code = new HTTPSnippet(mock.har).convert('node', 'api', {
           api: {
             definition: mock.definition,
             identifier: 'developers',
             registryURI: '@developers/v2.0#17273l2glm9fq4l5',
           },
-        });
+        })[0];
 
-        expect(code).toStrictEqual(`import developers from '@api/developers';
+        expect(code).toBe(`import developers from '@api/developers';
 
 developers.auth('123');
 developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
@@ -157,15 +157,15 @@ developers.findPetsByStatus({status: 'available', accept: 'application/xml'})
       it('should make an unsafe variable name safe', async () => {
         const mock = await getSnippetDataset('petstore');
 
-        const code = await new HTTPSnippet(mock.har).convert('node', 'api', {
+        const code = new HTTPSnippet(mock.har).convert('node', 'api', {
           api: {
             definition: mock.definition,
             identifier: 'metro-transit',
             registryURI: '@metro-transit/v2.0#17273l2glm9fq4l5',
           },
-        });
+        })[0];
 
-        expect(code).toStrictEqual(`import metroTransit from '@api/metro-transit';
+        expect(code).toBe(`import metroTransit from '@api/metro-transit';
 
 metroTransit.auth('123');
 metroTransit.findPetsByStatus({status: 'available', accept: 'application/xml'})
