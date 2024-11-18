@@ -19,7 +19,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
 
-import corePkg from '@readme/api-core/package.json' assert { type: 'json' };
+import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
 import { setWith } from 'lodash-es';
