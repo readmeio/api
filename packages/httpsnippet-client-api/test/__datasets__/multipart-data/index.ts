@@ -1,7 +1,7 @@
 import type { SnippetMock } from '../../index.test.js';
 import type { OASDocument } from 'oas/types';
 
-import definition from './openapi.json' with { type: 'json' };
+import definition from './openapi.json';
 
 /**
  * This test case is testing that when we have HAR `postData` of a file and the `value` is present
