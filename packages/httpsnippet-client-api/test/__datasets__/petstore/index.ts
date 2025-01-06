@@ -1,7 +1,7 @@
 import type { SnippetMock } from '../../index.test.js';
 import type { OASDocument } from 'oas/types';
 
-import definition from '@readme/oas-examples/3.0/json/petstore.json';
+import definition from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
 
 const mock: SnippetMock = {
   har: {
