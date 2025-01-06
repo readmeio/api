@@ -1,7 +1,7 @@
 import type { SnippetMock } from '../../index.test.js';
 import type { OASDocument } from 'oas/types';
 
-import definition from './openapi.json';
+import definition from './openapi.json' with { type: 'json' };
 
 const mock: SnippetMock = {
   har: {
