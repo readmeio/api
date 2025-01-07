@@ -329,7 +329,7 @@ export default class TSGenerator extends CodeGenerator {
         moduleSpecifier: '@readme/api-core/types',
       },
       { defaultImport: 'APICore', moduleSpecifier: '@readme/api-core' },
-      { defaultImport: 'definition', moduleSpecifier: this.specPath },
+      { defaultImport: 'definition', moduleSpecifier: this.specPath, attributes: [{ name: 'type', value: 'json' }] },
     ]);
 
     this.sdk = sourceFile.addClass({
