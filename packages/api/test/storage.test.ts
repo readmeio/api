@@ -388,7 +388,7 @@ describe('storage', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const file = '../test-utils/definitions/simple.json';
+        const file = `${__dirname}/../../test-utils/definitions/simple.json`;
         const storage = new Storage(file, SupportedLanguages.JS, 'relative-path');
 
         expect(storage.isInLockfile()).toBe(false);

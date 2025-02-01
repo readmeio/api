@@ -1,4 +1,6 @@
 .api/
+coverage/
+**/coverage/**
 dist/
 node_modules/
 **/*.tsbuildinfo

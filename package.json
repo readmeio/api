@@ -16,7 +16,7 @@
     "prettier:write": "prettier --check --write .",
     "publish": "lerna publish",
     "pretest": "npm run build",
-    "test": "lerna run test --stream",
+    "test": "npx vitest run --coverage",
     "test:smoke": "npm run test:smoke --workspace=packages/api",
     "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
   },

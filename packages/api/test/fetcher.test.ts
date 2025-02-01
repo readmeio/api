@@ -204,7 +204,7 @@ describe('fetcher', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const fetcher = new Fetcher('../test-utils/definitions/simple.json');
+        const fetcher = new Fetcher(`${__dirname}/../../test-utils/definitions/simple.json`);
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',
