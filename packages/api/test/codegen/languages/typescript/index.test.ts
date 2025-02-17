@@ -173,6 +173,7 @@ describe('typescript', () => {
 
     it(
       'should work against a very large API definition that has `default` responses',
+      { timeout: 10000 },
       assertSDKFixture('@readme/oas-examples/3.0/json/star-trek.json', 'star-trek'),
     );
 
