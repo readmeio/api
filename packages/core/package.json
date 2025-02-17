@@ -1,6 +1,6 @@
 {
   "name": "@readme/api-core",
-  "version": "7.0.0-beta.11",
+  "version": "7.0.0-beta.12",
   "description": "The magic behind `api` 🧙",
   "sideEffects": false,
   "type": "module",

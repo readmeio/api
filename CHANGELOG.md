@@ -1,3 +1,31 @@
+## 7.0.0-beta.12 (2025-02-17)
+
+* chore: resolving a linting problem ([9bfd498](https://github.com/readmeio/api/commit/9bfd498))
+* chore(deps-dev): bump the minor-development-deps group across 1 directory with 5 updates (#977) ([4125980](https://github.com/readmeio/api/commit/4125980)), closes [#977](https://github.com/readmeio/api/issues/977)
+* chore(deps-dev): bump the minor-development-deps group with 5 updates (#981) ([89db51c](https://github.com/readmeio/api/commit/89db51c)), closes [#981](https://github.com/readmeio/api/issues/981)
+* chore(deps-dev): bumping `@vitest/coverage-v8` ([1041235](https://github.com/readmeio/api/commit/1041235))
+* chore(deps): bump @readme/oas-to-har from 24.0.1 to 24.0.2 (#960) ([0f6b7b8](https://github.com/readmeio/api/commit/0f6b7b8)), closes [#960](https://github.com/readmeio/api/issues/960)
+* chore(deps): bump @readme/oas-to-har from 24.0.2 to 24.0.5 (#975) ([9371a33](https://github.com/readmeio/api/commit/9371a33)), closes [#975](https://github.com/readmeio/api/issues/975)
+* chore(deps): bump @readme/oas-to-har from 24.0.5 to 24.0.7 (#986) ([6a219d9](https://github.com/readmeio/api/commit/6a219d9)), closes [#986](https://github.com/readmeio/api/issues/986)
+* chore(deps): bump chalk from 5.3.0 to 5.4.1 (#972) ([11594ea](https://github.com/readmeio/api/commit/11594ea)), closes [#972](https://github.com/readmeio/api/issues/972)
+* chore(deps): bump ci-info from 4.0.0 to 4.1.0 (#961) ([8319ba1](https://github.com/readmeio/api/commit/8319ba1)), closes [#961](https://github.com/readmeio/api/issues/961)
+* chore(deps): bump commander from 12.1.0 to 13.0.0 (#974) ([d275758](https://github.com/readmeio/api/commit/d275758)), closes [#974](https://github.com/readmeio/api/issues/974)
+* chore(deps): bump commander from 13.0.0 to 13.1.0 (#988) ([f55a8ad](https://github.com/readmeio/api/commit/f55a8ad)), closes [#988](https://github.com/readmeio/api/issues/988)
+* chore(deps): bump cross-spawn from 7.0.3 to 7.0.6 (#958) ([05b3cba](https://github.com/readmeio/api/commit/05b3cba)), closes [#958](https://github.com/readmeio/api/issues/958)
+* chore(deps): bump nanoid from 3.3.7 to 3.3.8 (#968) ([11f0211](https://github.com/readmeio/api/commit/11f0211)), closes [#968](https://github.com/readmeio/api/issues/968)
+* chore(deps): bump oas from 25.2.1 to 25.3.0 (#983) ([d6f2712](https://github.com/readmeio/api/commit/d6f2712)), closes [#983](https://github.com/readmeio/api/issues/983)
+* chore(deps): bump ora from 8.1.0 to 8.1.1 (#963) ([8201538](https://github.com/readmeio/api/commit/8201538)), closes [#963](https://github.com/readmeio/api/issues/963)
+* chore(deps): bump preferred-pm from 4.0.0 to 4.1.0 (#987) ([72c445c](https://github.com/readmeio/api/commit/72c445c)), closes [#987](https://github.com/readmeio/api/issues/987)
+* chore(deps): bump remove-undefined-objects from 5.0.0 to 6.0.0 (#989) ([549bbed](https://github.com/readmeio/api/commit/549bbed)), closes [#989](https://github.com/readmeio/api/issues/989)
+* chore(deps): bump semver from 7.6.3 to 7.7.0 (#982) ([ab72033](https://github.com/readmeio/api/commit/ab72033)), closes [#982](https://github.com/readmeio/api/issues/982)
+* chore(deps): bump ts-morph from 24.0.0 to 25.0.0 (#973) ([e37cd1e](https://github.com/readmeio/api/commit/e37cd1e)), closes [#973](https://github.com/readmeio/api/issues/973)
+* chore(deps): bump vite from 5.4.11 to 5.4.14 (#980) ([793655d](https://github.com/readmeio/api/commit/793655d)), closes [#980](https://github.com/readmeio/api/issues/980)
+* chore(deps): bump vitest from 3.0.4 to 3.0.5 (#994) ([ec98bb5](https://github.com/readmeio/api/commit/ec98bb5)), closes [#994](https://github.com/readmeio/api/issues/994)
+* chore(deps): upgrading out of date deps (#993) ([ec3b34a](https://github.com/readmeio/api/commit/ec3b34a)), closes [#993](https://github.com/readmeio/api/issues/993)
+* fix: import attributes, dep bumps (#978) ([f30d79c](https://github.com/readmeio/api/commit/f30d79c)), closes [#978](https://github.com/readmeio/api/issues/978)
+
+
+
 ## 7.0.0-beta.11 (2024-11-18)
 
 * fix: use correct import attributes syntax (#957) ([211e8fd](https://github.com/readmeio/api/commit/211e8fd)), closes [#957](https://github.com/readmeio/api/issues/957)
