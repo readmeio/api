@@ -13,7 +13,7 @@ const config: KnipConfig = {
   ],
   workspaces: {
     'packages/test-utils': {
-      entry: ['fetch-mock.ts'],
+      entry: ['nock-mocks.ts'],
     },
   },
 };
