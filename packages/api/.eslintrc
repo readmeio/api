@@ -6,7 +6,9 @@
         "allow": ["OpenAPIV3_1"]
       }
     ],
-    // This rule is only really applicable for OSS libraries and doesn't apply to api's case since it's a CLI.
+
+    // This rule is only really applicable for OSS libraries and doesn't apply to api's case since
+    // it's a CLI.
     "readme/no-dual-exports": "off"
   }
 }

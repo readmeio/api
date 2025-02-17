@@ -1,5 +1,7 @@
 import type { MockInstance } from 'vitest';
 
+import path from 'node:path';
+
 import { CommanderError } from 'commander';
 import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
@@ -76,11 +78,11 @@ describe('install command', () => {
   it('should handle user answering no to package installation confirmation prompt', () => {
     prompts.inject(['petstore', false]);
     return expect(
-      installCmd.parseAsync([...baseCommand, '../test-utils/definitions/simple.json']),
+      installCmd.parseAsync([...baseCommand, path.join(__dirname, '../../../test-utils/definitions/simple.json')]),
     ).rejects.toStrictEqual(new Error('Installation cancelled.'));
   });
 
-  it.only('should print help screen', async () => {
+  it('should print help screen', async () => {
     await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(
       cmdError({
         code: 'commander.helpDisplayed',

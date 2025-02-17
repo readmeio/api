@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/types';
+
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
 
@@ -7,7 +9,7 @@ import { describe, beforeAll, it, expect } from 'vitest';
 
 import Fetcher from '../src/fetcher.js';
 
-let readmeSpec;
+let readmeSpec: OASDocument;
 
 describe('fetcher', () => {
   beforeAll(async () => {

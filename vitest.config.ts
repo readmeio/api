@@ -22,9 +22,7 @@ export default defineConfig({
       {
         extends: true,
         test: {
-          exclude: [
-            '**/smoketest.test.ts',
-          ],
+          exclude: ['**/smoketest.test.ts'],
           include: ['packages/api/**/*.test.ts'],
           name: 'api',
         },
@@ -34,14 +32,14 @@ export default defineConfig({
         test: {
           include: ['packages/core/**/*.test.ts'],
           name: 'core',
-        }
+        },
       },
       {
         extends: true,
         test: {
           include: ['packages/httpsnippet-client-api/**/*.test.ts'],
           name: 'httpsnippet-client-api',
-        }
+        },
       },
     ],
   },

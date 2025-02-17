@@ -32,14 +32,14 @@
   ],
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
-    "@readme/eslint-config": "^14.0.0",
+    "@readme/eslint-config": "^14.2.0",
     "@tsconfig/node20": "^20.1.4",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^5.0.0",
     "eslint": "^8.56.0",
-    "knip": "^5.11.0",
+    "knip": "^5.44.1",
     "lerna": "^8.0.1",
-    "prettier": "^3.1.1",
+    "prettier": "^3.5.1",
     "tsup": "^8.0.1"
   }
 }

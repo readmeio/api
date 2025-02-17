@@ -1,4 +1,4 @@
-import type { SpyInstance } from 'vitest';
+import type { MockInstance } from 'vitest';
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -92,7 +92,7 @@ function assertSDKFixture(file: string, fixture: string) {
 }
 
 describe('typescript', () => {
-  let packageInfoSpy: SpyInstance;
+  let packageInfoSpy: MockInstance;
 
   beforeEach(() => {
     // @ts-expect-error deliberately setting this const to another value
