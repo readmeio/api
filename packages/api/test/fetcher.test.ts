@@ -1,3 +1,5 @@
+import type { OASDocument } from 'oas/types';
+
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
 
@@ -7,7 +9,7 @@ import { describe, beforeAll, it, expect } from 'vitest';
 
 import Fetcher from '../src/fetcher.js';
 
-let readmeSpec;
+let readmeSpec: OASDocument;
 
 describe('fetcher', () => {
   beforeAll(async () => {
@@ -204,7 +206,7 @@ describe('fetcher', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const fetcher = new Fetcher('../test-utils/definitions/simple.json');
+        const fetcher = new Fetcher(`${__dirname}/../../test-utils/definitions/simple.json`);
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 import { loadSpec } from '@api/test-utils';
-import payloadExamples from '@api/test-utils/definitions/payloads.json';
+import payloadExamples from '@api/test-utils/definitions/payloads.json' with { type: 'json' };
 import Oas from 'oas';
 import { describe, beforeEach, it, expect } from 'vitest';
 

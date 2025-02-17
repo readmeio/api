@@ -1,5 +1,4 @@
-!.alexrc.js
-
+coverage/**
 packages/**/coverage/
 packages/**/dist/
 

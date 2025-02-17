@@ -1,4 +1,4 @@
-import type { SpyInstance } from 'vitest';
+import type { MockInstance } from 'vitest';
 
 import { loadSpec } from '@api/test-utils';
 import { CommanderError } from 'commander';
@@ -14,12 +14,14 @@ import Storage from '../../src/storage.js';
 
 const baseCommand = ['api', 'uninstall'];
 
-const cmdError = (msg: string) => new CommanderError(0, '', msg);
+const cmdError = (opts: { code: string; exitCode: number; message: string }) => {
+  return new CommanderError(opts.exitCode, opts.code, opts.message);
+};
 
 describe('install command', () => {
   let stdout: string[];
   let stderr: string[];
-  let consoleLogSpy: SpyInstance;
+  let consoleLogSpy: MockInstance<typeof console.log>;
 
   const getCommandOutput = () => {
     return [consoleLogSpy.mock.calls.join('\n\n')].filter(Boolean).join('\n\n');
@@ -47,7 +49,11 @@ describe('install command', () => {
 
   it('should error out if identifier is not passed', () => {
     return expect(installCmd.parseAsync([...baseCommand])).rejects.toStrictEqual(
-      cmdError("error: missing required argument 'identifier'"),
+      cmdError({
+        code: 'commander.missingArgument',
+        exitCode: 1,
+        message: "error: missing required argument 'identifier'",
+      }),
     );
   });
 
@@ -60,7 +66,13 @@ describe('install command', () => {
   });
 
   it('should print help screen', async () => {
-    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(cmdError('(outputHelp)'));
+    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(
+      cmdError({
+        code: 'commander.helpDisplayed',
+        exitCode: 0,
+        message: '(outputHelp)',
+      }),
+    );
 
     expect(stdout.join('\n')).toMatchSnapshot();
   });

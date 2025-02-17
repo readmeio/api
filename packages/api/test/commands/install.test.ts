@@ -1,4 +1,6 @@
-import type { SpyInstance } from 'vitest';
+import type { MockInstance } from 'vitest';
+
+import path from 'node:path';
 
 import { CommanderError } from 'commander';
 import prompts from 'prompts';
@@ -11,12 +13,14 @@ import Storage from '../../src/storage.js';
 
 const baseCommand = ['api', 'install'];
 
-const cmdError = (msg: string) => new CommanderError(0, '', msg);
+const cmdError = (opts: { code: string; exitCode: number; message: string }) => {
+  return new CommanderError(opts.exitCode, opts.code, opts.message);
+};
 
 describe('install command', () => {
   let stdout: string[];
   let stderr: string[];
-  let consoleLogSpy: SpyInstance;
+  let consoleLogSpy: MockInstance<typeof console.log>;
 
   beforeEach(() => {
     stdout = [];
@@ -39,7 +43,11 @@ describe('install command', () => {
 
   it('should error out if uri is not passed', () => {
     return expect(installCmd.parseAsync([...baseCommand])).rejects.toStrictEqual(
-      cmdError("error: missing required argument 'uri'"),
+      cmdError({
+        code: 'commander.missingArgument',
+        exitCode: 1,
+        message: "error: missing required argument 'uri'",
+      }),
     );
   });
 
@@ -59,19 +67,29 @@ describe('install command', () => {
 
   it('should error out if invalid lang is passed', () => {
     return expect(installCmd.parseAsync([...baseCommand, '--lang', 'javascript'])).rejects.toStrictEqual(
-      cmdError("error: option '-l, --lang <language>' argument 'javascript' is invalid. Allowed choices are js."),
+      cmdError({
+        code: 'commander.invalidArgument',
+        exitCode: 1,
+        message: "error: option '-l, --lang <language>' argument 'javascript' is invalid. Allowed choices are js.",
+      }),
     );
   });
 
   it('should handle user answering no to package installation confirmation prompt', () => {
     prompts.inject(['petstore', false]);
     return expect(
-      installCmd.parseAsync([...baseCommand, '../test-utils/definitions/simple.json']),
+      installCmd.parseAsync([...baseCommand, path.join(__dirname, '../../../test-utils/definitions/simple.json')]),
     ).rejects.toStrictEqual(new Error('Installation cancelled.'));
   });
 
   it('should print help screen', async () => {
-    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(cmdError('(outputHelp)'));
+    await expect(installCmd.parseAsync([...baseCommand, '--help'])).rejects.toStrictEqual(
+      cmdError({
+        code: 'commander.helpDisplayed',
+        exitCode: 0,
+        message: '(outputHelp)',
+      }),
+    );
 
     expect(stdout.join('\n')).toMatchSnapshot();
   });
