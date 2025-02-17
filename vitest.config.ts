@@ -6,7 +6,9 @@ export default defineConfig({
     coverage: {
       exclude: [
         'packages/**/dist/**',
-        'packages/httpsnippet-client-api/test/__datasets__/**', 'packages/test-utils/sdks/**',],
+        'packages/httpsnippet-client-api/test/__datasets__/**',
+        'packages/test-utils/sdks/**',
+      ],
     },
     env: {
       // Vitest strips colors from content by default and `chalk` has troubles with color detection
