@@ -2,8 +2,8 @@ import assert from 'node:assert';
 
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import datauri from 'datauri';
-import fetchMock from 'fetch-mock';
-import { describe, beforeEach, afterEach, it, expect } from 'vitest';
+import nock from 'nock';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 import FetchError from '../src/errors/fetchError.js';
 import APICore from '../src/index.js';
@@ -40,10 +40,6 @@ describe('APICore', () => {
     );
   });
 
-  afterEach(() => {
-    fetchMock.restore();
-  });
-
   describe('#fetchOperation', () => {
     it('should make a request for a given operation with body + metadata parameters', async () => {
       const slug = 'new-release';
@@ -52,7 +48,7 @@ describe('APICore', () => {
         body: 'updated body',
       };
 
-      fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponse.requestBody);
+      nock('https://dash.readme.com').put(`/api/v1/changelogs/${slug}`).reply(mockResponse.requestBody);
 
       const operation = readme.spec.operation('/changelogs/{slug}', 'put');
 
@@ -69,10 +65,9 @@ describe('APICore', () => {
   describe('#fetch', () => {
     describe('error handling', () => {
       it('should reject for error-level status codes', async () => {
-        fetchMock.delete(`http://petstore.swagger.io/api/pets/${petId}`, {
-          body: 'Could not find that pet.',
-          status: 404,
-        });
+        nock('http://petstore.swagger.io')
+          .delete(`/api/pets/${petId}`)
+          .reply(404, 'Could not find that pet.', { 'content-type': 'text/plain' });
 
         await petstore
           .fetch('/pets/{id}', 'delete', undefined, { id: petId })
@@ -93,14 +88,14 @@ describe('APICore', () => {
       it('should pass through body for method + path', async () => {
         const body = { name: 'Buster' };
 
-        fetchMock.post('http://petstore.swagger.io/api/pets', mockResponse.real(body));
+        nock('http://petstore.swagger.io').post('/api/pets').reply(mockResponse.real(body));
 
         await petstore.fetch('/pets', 'post', body).then(({ data }) => expect(data).toStrictEqual(body));
       });
 
       it('should pass through parameters for method + path', async () => {
         const slug = 'new-release';
-        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponse.url('pathname'));
+        nock('https://dash.readme.com').put(`/api/v1/changelogs/${slug}`).reply(mockResponse.url('pathname'));
 
         readme.setServer('https://dash.readme.com/api/v1');
         await readme.fetch('/changelogs/{slug}', 'put', undefined, { slug }).then(({ data }) => {
@@ -115,7 +110,7 @@ describe('APICore', () => {
           body: 'updated body',
         };
 
-        fetchMock.put(`https://dash.readme.com/api/v1/changelogs/${slug}`, mockResponse.requestBody);
+        nock('https://dash.readme.com').put(`/api/v1/changelogs/${slug}`).reply(mockResponse.requestBody);
 
         readme.setServer('https://dash.readme.com/api/v1');
         await readme.fetch('/changelogs/{slug}', 'put', body, { slug }).then(({ data }) => {
@@ -163,7 +158,9 @@ describe('APICore', () => {
             ],
           };
 
-          fetchMock.get('glob:https://*.*', mockResponse.searchParams);
+          nock('https://httpbin.org')
+            .get(uri => uri.includes('/anything'))
+            .reply(mockResponse.searchParams);
 
           await queryEncoding.fetch('/anything', 'get', undefined, params).then(({ data }) => {
             expect(data).toBe(
@@ -185,7 +182,9 @@ describe('APICore', () => {
             ],
           };
 
-          fetchMock.get('glob:https://*.*', mockResponse.searchParams);
+          nock('https://httpbin.org')
+            .get(uri => uri.includes('/anything'))
+            .reply(mockResponse.searchParams);
 
           await queryEncoding.fetch('/anything', 'get', undefined, params).then(({ data }) => {
             expect(data).toBe(
@@ -205,7 +204,7 @@ describe('APICore', () => {
             })
             .then(spec => new APICore(spec));
 
-          fetchMock.post('https://httpbin.org/anything/v1/oa_citations/records', mockResponse.all);
+          nock('https://httpbin.org').post('/anything/v1/oa_citations/records').reply(mockResponse.all);
 
           const body = {
             criteria: 'propertyName:value',
@@ -225,7 +224,7 @@ describe('APICore', () => {
 
       describe('multipart/form-data', () => {
         it('should support `image/png` requests', async () => {
-          fetchMock.post('https://httpbin.org/anything/image-png', mockResponse.datauri);
+          nock('https://httpbin.org').post('/anything/image-png').reply(mockResponse.datauri);
 
           const file = require.resolve('@api/test-utils/fixtures/owlbert.png');
 
@@ -237,7 +236,7 @@ describe('APICore', () => {
         });
 
         it('should support `multipart/form-data` requests', async () => {
-          fetchMock.post('https://httpbin.org/anything/form-data/form', mockResponse.multipart);
+          nock('https://httpbin.org').post('/anything/form-data/form').reply(mockResponse.multipart);
 
           const body = {
             primitive: 'string',
@@ -261,7 +260,7 @@ describe('APICore', () => {
 
         describe('files', () => {
           it('should support plaintext files', async () => {
-            fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
+            nock('https://httpbin.org').post('/anything/multipart-formdata').reply(mockResponse.multipart);
 
             const body = {
               orderId: 1234,
@@ -280,7 +279,7 @@ describe('APICore', () => {
           });
 
           it('should support plaintext files containing unicode characters', async () => {
-            fetchMock.post('https://httpbin.org/anything/multipart-formdata', mockResponse.multipart);
+            nock('https://httpbin.org').post('/anything/multipart-formdata').reply(mockResponse.multipart);
 
             const body = {
               documentFile: require.resolve('@api/test-utils/fixtures/hello.jp.txt'),
@@ -302,7 +301,7 @@ describe('APICore', () => {
     it('should contain a custom user agent for the library in requests', async () => {
       const userAgent = 'customUserAgent 1.0';
 
-      fetchMock.delete(`http://petstore.swagger.io/api/pets/${petId}`, mockResponse.headers);
+      nock('http://petstore.swagger.io').delete(`/api/pets/${petId}`).reply(mockResponse.headers);
 
       await petstore
         .setUserAgent(userAgent)
@@ -319,7 +318,7 @@ describe('APICore', () => {
       const pass = 'hunter1';
 
       const authHeader = `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
-      fetchMock.post('https://httpbin.org/anything/basic', mockResponse.headers);
+      nock('https://httpbin.org').post('/anything/basic').reply(mockResponse.headers);
 
       await security
         .setAuth(user, pass)
@@ -332,7 +331,7 @@ describe('APICore', () => {
 
   describe('#setServer()', () => {
     it('should support supplying a full server url', async () => {
-      fetchMock.post('https://buster.example.com:3000/v14/', mockResponse.real(response));
+      nock('https://buster.example.com:3000').post('/v14/').reply(mockResponse.real(response));
 
       serverVariables.setServer('https://buster.example.com:3000/v14');
 
@@ -340,7 +339,7 @@ describe('APICore', () => {
     });
 
     it('should support supplying a server url with server variables', async () => {
-      fetchMock.post('http://dev.local/v14/', mockResponse.real(response));
+      nock('http://dev.local').post('/v14/').reply(mockResponse.real(response));
 
       serverVariables.setServer('http://{name}.local/{basePath}', {
         name: 'dev',
@@ -363,25 +362,21 @@ describe('APICore', () => {
         petstoreTimeout = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(spec => new APICore(spec));
       });
 
-      afterEach(() => {
-        fetchMock.restore();
-      });
-
       it('should override the default `fetch` timeout if present and fail if request takes too long', async () => {
-        fetchMock.delete(`http://petstore.swagger.io/v2/pet/${petId}`, mockResponse.delay(response, 500));
+        nock('http://petstore.swagger.io').delete(`/v2/pet/${petId}`).delay(500).reply(200);
 
         petstoreTimeout.setConfig({ timeout: 100 });
 
-        await expect(petstoreTimeout.fetch(`/pet/${petId}`, 'delete')).rejects.toThrow('The operation was aborted.');
+        await expect(petstoreTimeout.fetch(`/pet/${petId}`, 'delete')).rejects.toThrow('This operation was aborted');
       });
 
       it('should override the default `fetch` timeout and return if request is quick', async () => {
-        fetchMock.delete(`http://petstore.swagger.io/v2/pet/${petId}`, mockResponse.delay(response, 100));
+        nock('http://petstore.swagger.io').delete(`/v2/pet/${petId}`).delay(100).reply(204);
 
         petstoreTimeout.setConfig({ timeout: 500 });
 
-        await petstoreTimeout.fetch(`/pet/${petId}`, 'delete').then(({ data }) => {
-          expect(data).toStrictEqual(response);
+        await petstoreTimeout.fetch(`/pet/${petId}`, 'delete').then(({ status }) => {
+          expect(status).toBe(204);
         });
       });
     });

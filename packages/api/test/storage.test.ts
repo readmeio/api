@@ -7,7 +7,7 @@ import path from 'node:path';
 import { loadSpec } from '@api/test-utils';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
-import fetchMock from 'fetch-mock';
+import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
 
@@ -38,8 +38,6 @@ describe('storage', () => {
         // case we shouldn't fail these tests.
       });
     }
-
-    fetchMock.restore();
   });
 
   describe('#setStorageDir', () => {
@@ -93,7 +91,7 @@ describe('storage', () => {
     });
 
     it('should throw an error for when an identifier is already being used', async () => {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+      nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
@@ -121,7 +119,7 @@ describe('storage', () => {
 
   describe('#getLockfile', () => {
     it('should retrieve a lockfiles that match our schema', async () => {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+      nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       // `ajv` has funky types in ESM environments. https://github.com/ajv-validator/ajv/issues/2047
       // eslint-disable-next-line new-cap
@@ -147,7 +145,7 @@ describe('storage', () => {
 
   describe('#getFromLockfile (static)', () => {
     it('should retrieve an entry in the lockfile if it exists', async () => {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+      nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
@@ -168,7 +166,7 @@ describe('storage', () => {
 
   describe('#isInLockFile', () => {
     it('should be able to look up in the lockfile by a given source', async () => {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+      nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
@@ -189,7 +187,7 @@ describe('storage', () => {
     });
 
     it('should be able to look up in the lockfile by a given identifier', async () => {
-      fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+      nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       const source = '@petstore/v1.0#n6kvf10vakpemvplx';
       const storage = new Storage(source, SupportedLanguages.JS, 'petstore');
@@ -211,14 +209,27 @@ describe('storage', () => {
   });
 
   describe('#load', () => {
-    it('should throw an error when a non-HTTP(S) url is supplied', async () => {
-      await new Storage('htt://example.com/openapi.json', SupportedLanguages.JS, 'invalid-url')
-        .load()
-        .then(() => assert.fail())
-        .catch(err => {
-          expect(err.message).toBe('fetch failed');
-          expect(err.cause.message).toBe('unknown scheme');
-        });
+    describe('and the URL is non-HTTP(s)', () => {
+      beforeEach(() => {
+        // If we don't enable outbound traffic for this test then the exception that will be thrown
+        // will be from Nock not having a mocked request for this bad URL, not the `fetch`
+        // exception we're testing against.
+        nock.enableNetConnect();
+      });
+
+      afterEach(() => {
+        nock.disableNetConnect();
+      });
+
+      it('should throw an error', async () => {
+        await new Storage('htt://example.com/openapi.json', SupportedLanguages.JS, 'invalid-url')
+          .load()
+          .then(() => assert.fail())
+          .catch(err => {
+            expect(err.message).toBe('fetch failed');
+            expect(err.cause.message).toBe('unknown scheme');
+          });
+      });
     });
 
     it('should throw an error if neither a url or file are detected', async () => {
@@ -229,7 +240,7 @@ describe('storage', () => {
 
     describe('ReadMe registry UUID', () => {
       it('should resolve the shorthand `@petstore/v1.0#uuid` syntax to the ReadMe API', async () => {
-        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+        nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
         const storage = new Storage('@petstore/v1.0#n6kvf10vakpemvplx', SupportedLanguages.JS, 'petstore');
 
@@ -254,7 +265,7 @@ describe('storage', () => {
       });
 
       it('should resolve the shorthand `@petstore#uuid` syntax to the ReadMe API', async () => {
-        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+        nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
         const storage = new Storage('@petstore#n6kvf10vakpemvplx', SupportedLanguages.JS, 'petstore');
 
@@ -309,7 +320,7 @@ describe('storage', () => {
 
     describe('URL', () => {
       it('should be able to load a definition', async () => {
-        fetchMock.get('http://example.com/readme.json', petstoreSimple);
+        nock('http://example.com').get('/readme.json').reply(200, petstoreSimple);
 
         const storage = new Storage('http://example.com/readme.json', SupportedLanguages.JS, 'petstore');
 
@@ -334,7 +345,7 @@ describe('storage', () => {
       });
 
       it('should error if the url cannot be reached', async () => {
-        fetchMock.get('http://example.com/unknown.json', { status: 404 });
+        nock('http://example.com').get('/unknown.json').reply(404);
 
         await expect(
           new Storage('http://example.com/unknown.json', SupportedLanguages.JS, '404ing-url').load(),
@@ -343,7 +354,7 @@ describe('storage', () => {
 
       it('should convert yaml to json', async () => {
         const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
-        fetchMock.get('http://example.com/readme.yaml', spec);
+        nock('http://example.com').get('/readme.yaml').reply(200, spec);
 
         const storage = new Storage('http://example.com/readme.yaml', SupportedLanguages.JS, 'readme-yaml');
 

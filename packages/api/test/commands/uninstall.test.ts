@@ -2,7 +2,7 @@ import type { MockInstance } from 'vitest';
 
 import { loadSpec } from '@api/test-utils';
 import { CommanderError } from 'commander';
-import fetchMock from 'fetch-mock';
+import nock from 'nock';
 import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
@@ -42,7 +42,6 @@ describe('install command', () => {
   });
 
   afterEach(() => {
-    fetchMock.restore();
     Storage.reset();
     vi.restoreAllMocks();
   });
@@ -81,7 +80,7 @@ describe('install command', () => {
     prompts.inject([true]);
 
     const petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
-    fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+    nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
     const source = '@petstore/v1.0#n6kvf10vakpemvplx';
     const identifier = 'petstore-to-be-uninstalled';
@@ -101,7 +100,7 @@ describe('install command', () => {
 
   it('should uninstall SDK and bypass prompt with --yes option', async () => {
     const petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
-    fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplx', petstoreSimple);
+    nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
     const source = '@petstore/v1.0#n6kvf10vakpemvplx';
     const identifier = 'petstore-to-be-uninstalled';

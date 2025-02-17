@@ -5,7 +5,7 @@ import path from 'node:path';
 
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import { execa } from 'execa';
-import fetchMock from 'fetch-mock';
+import nock from 'nock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
 import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
@@ -183,16 +183,15 @@ describe('typescript', () => {
     );
 
     describe('integration', () => {
-      afterEach(() => {
-        fetchMock.restore();
-      });
-
       it('should be able to make an API request', async () => {
         // eslint-disable-next-line import/no-relative-packages
         const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
-        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.searchParams);
+        nock('http://petstore.swagger.io')
+          .get('/v2/pet/findByStatus?status=available')
+          .reply(mockResponse.searchParams);
 
-        // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
@@ -204,10 +203,11 @@ describe('typescript', () => {
       it('should be able to make an API request with an `accept` header`', async () => {
         // eslint-disable-next-line import/no-relative-packages
         const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
-        fetchMock.get('http://petstore.swagger.io/v2/pet/findByStatus?status=available', mockResponse.headers);
+        nock('http://petstore.swagger.io').get('/v2/pet/findByStatus?status=available').reply(mockResponse.headers);
 
         await sdk
-          // @ts-expect-error `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
           .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
           .then(({ data, status, headers, res }) => {
             expect(data).toHaveProperty('accept', 'application/xml');
