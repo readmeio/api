@@ -4,8 +4,8 @@ import assert from 'node:assert';
 import fs from 'node:fs/promises';
 
 import { loadSpec } from '@api/test-utils';
-import fetchMock from 'fetch-mock';
-import { describe, beforeAll, it, expect } from 'vitest';
+import nock from 'nock';
+import { describe, beforeAll, it, expect, afterEach, beforeEach } from 'vitest';
 
 import Fetcher from '../src/fetcher.js';
 
@@ -76,23 +76,36 @@ describe('fetcher', () => {
   });
 
   describe('#load', () => {
-    it('should throw an error when a non-HTTP(S) url is supplied', async () => {
-      await new Fetcher('htt://example.com/openapi.json')
-        .load()
-        .then(() => assert.fail())
-        .catch(err => {
-          expect(err.message).toBe('fetch failed');
-          expect(err.cause.message).toBe('unknown scheme');
-        });
-    });
+    describe('and the URL is non-HTTP(s)', () => {
+      beforeEach(() => {
+        // If we don't enable outbound traffic for this test then the exception that will be thrown
+        // will be from Nock not having a mocked request for this bad URL, not the `fetch`
+        // exception we're testing against.
+        nock.enableNetConnect();
+      });
 
-    it('should throw an error if neither a url or file are detected', async () => {
-      await new Fetcher('/this/is/not/a/real/path.json')
-        .load()
-        .then(() => assert.fail())
-        .catch(err => {
-          expect(err.message).toMatch(/supply a URL or a path on your filesystem/);
-        });
+      afterEach(() => {
+        nock.disableNetConnect();
+      });
+
+      it('should throw an error when a non-HTTP(S) url is supplied', async () => {
+        await new Fetcher('htt://example.com/openapi.json')
+          .load()
+          .then(() => assert.fail())
+          .catch(err => {
+            expect(err.message).toBe('fetch failed');
+            expect(err.cause.message).toBe('unknown scheme');
+          });
+      });
+
+      it('should throw an error if neither a url or file are detected', async () => {
+        await new Fetcher('/this/is/not/a/real/path.json')
+          .load()
+          .then(() => assert.fail())
+          .catch(err => {
+            expect(err.message).toMatch(/supply a URL or a path on your filesystem/);
+          });
+      });
     });
 
     describe('GitHub URLs', () => {
@@ -127,7 +140,7 @@ describe('fetcher', () => {
       });
 
       it('should be able to load a definition', async () => {
-        fetchMock.get('https://dash.readme.com/api/v1/api-registry/n6kvf10vakpemvplxn', readmeSpec);
+        nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplxn').reply(200, readmeSpec);
 
         const fetcher = new Fetcher('@readme/v1.0#n6kvf10vakpemvplxn');
 
@@ -141,14 +154,12 @@ describe('fetcher', () => {
             email: 'support@readme.io',
           },
         });
-
-        fetchMock.restore();
       });
     });
 
     describe('URL', () => {
       it('should be able to load a definition', async () => {
-        fetchMock.get('http://example.com/readme.json', readmeSpec);
+        nock('http://example.com').get('/readme.json').reply(200, readmeSpec);
         const fetcher = new Fetcher('http://example.com/readme.json');
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
@@ -161,23 +172,19 @@ describe('fetcher', () => {
             email: 'support@readme.io',
           },
         });
-
-        fetchMock.restore();
       });
 
       it('should error if the url cannot be reached', async () => {
-        fetchMock.get('http://example.com/unknown.json', { status: 404 });
+        nock('http://example.com').get('/unknown.json').reply(404);
 
         await expect(new Fetcher('http://example.com/unknown.json').load()).rejects.toThrow(
           'Unable to retrieve URL (http://example.com/unknown.json). Reason: Not Found',
         );
-
-        fetchMock.restore();
       });
 
       it('should convert yaml to json', async () => {
         const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
-        fetchMock.get('http://example.com/readme.yaml', spec);
+        nock('http://example.com').get('/readme.yaml').reply(200, spec);
 
         const definition = 'http://example.com/readme.yaml';
         const fetcher = new Fetcher(definition);
@@ -192,8 +199,6 @@ describe('fetcher', () => {
             email: 'support@readme.io',
           },
         });
-
-        fetchMock.restore();
       });
     });
 
