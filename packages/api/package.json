@@ -58,7 +58,7 @@
     "lodash": "^4.17.21",
     "make-dir": "^3.1.0",
     "node-abort-controller": "^3.1.1",
-    "oas": "^20.4.0",
+    "oas": "^20.11.0",
     "ora": "^5.4.1",
     "prompts": "^2.4.2",
     "remove-undefined-objects": "^2.0.2",
