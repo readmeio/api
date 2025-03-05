@@ -15,7 +15,7 @@
   "module": "dist/index.js",
   "types": "dist/index.d.cts",
   "scripts": {
-    "attw": "attw --pack --format table-flipped",
+    "attw": "attw --pack --format ascii --profile node16",
     "build": "tsup",
     "lint:types": "tsc --noEmit",
     "prebuild": "rm -rf dist/",
