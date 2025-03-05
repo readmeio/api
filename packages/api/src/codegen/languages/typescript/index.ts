@@ -133,12 +133,12 @@ export default class TSGenerator extends CodeGenerator {
         dependencyType: 'development',
         reason: "Used for compiling your codegen'd SDK into code that can be used in JS environments.",
         url: 'https://tsup.egoist.dev/',
-        version: '^7.2.0',
+        version: '^8.4.0',
       },
       typescript: {
         dependencyType: 'development',
         reason: 'Required for `tsup`.',
-        version: '^5.2.2',
+        version: '^5.8.2',
       },
     };
 
