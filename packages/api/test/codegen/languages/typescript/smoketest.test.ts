@@ -15,7 +15,7 @@
  * @example <caption>Everything</caption>
  * npm run test:smoke
  */
-import realWorldAPIs from '@api/test-utils/datasets/real-world-apis.json';
+import realWorldAPIs from '@api/test-utils/datasets/real-world-apis.json' with { type: 'json' };
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 import uniqueTempDir from 'unique-temp-dir';
@@ -62,12 +62,14 @@ describe('typescript smoketest', () => {
     Storage.reset();
   });
 
-  // eslint-disable-next-line vitest/require-hook
+  // eslint-disable-next-line @vitest/require-hook
   dataset.forEach(({ name, url }) => {
     // The test timeout is huge on this because CI can be slow as some API definitions are huge and
     // can take a while to download + codegen.
     it(`should generate an SDK for \`${name}\``, async () => {
-      const spec = await new OASNormalize(url).validate({ convertToLatest: true }).catch(err => {
+      const normalized = new OASNormalize(url);
+      const spec = await normalized.load();
+      await normalized.validate().catch(err => {
         // If this fails for any reason we should know. Catching and re-throwing here for the sake
         // of test verbosity.
         throw err;

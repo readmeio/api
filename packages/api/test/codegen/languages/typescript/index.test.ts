@@ -109,7 +109,7 @@ describe('typescript', () => {
 
   describe('#install', () => {
     it('should install the required packages', async () => {
-      const logger = vi.fn();
+      const logger = vi.fn<() => void>();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
       const oas = await loadSpec(file).then(Oas.init);
