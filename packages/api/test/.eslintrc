@@ -1,6 +1,7 @@
 {
   "extends": "@readme/eslint-config/testing/vitest",
   "rules": {
-    "vitest/no-conditional-expect": "off"
+    "@vitest/expect-expect": ["error", { "assertFunctionNames": ["expect", "assertSDKFixture"] }],
+    "@vitest/no-conditional-expect": "off"
   }
 }

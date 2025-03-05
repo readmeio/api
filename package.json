@@ -33,7 +33,7 @@
   "prettier": "@readme/eslint-config/prettier",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
-    "@readme/eslint-config": "^14.2.0",
+    "@readme/eslint-config": "^14.4.2",
     "@tsconfig/node20": "^20.1.4",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^5.0.0",
