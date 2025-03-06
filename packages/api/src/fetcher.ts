@@ -129,16 +129,18 @@ export default class Fetcher {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
 
-    const normalize = new OASNormalize(json, { parser: {
-      dereference: {
-        /**
-         * If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`.
-         * This allows us to not only do easy circular reference detection but also stringify and
-         * save dereferenced API definitions back into the cache directory.
-         */
-        circular: 'ignore',
+    const normalize = new OASNormalize(json, {
+      parser: {
+        dereference: {
+          /**
+           * If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`.
+           * This allows us to not only do easy circular reference detection but also stringify and
+           * save dereferenced API definitions back into the cache directory.
+           */
+          circular: 'ignore',
+        },
       },
-  }});
+    });
 
     await normalize.validate().catch(err => {
       // Zhuzh up this error message a bit so our errors here are consistenly prefixed with "Sorry".
