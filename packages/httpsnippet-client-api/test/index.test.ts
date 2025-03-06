@@ -7,11 +7,13 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { HTTPSnippet, addClientPlugin } from '@readme/httpsnippet';
-import readme from '@readme/oas-examples/3.0/json/readme.json';
-import openapiParser from '@readme/openapi-parser';
+import readme from '@readme/oas-examples/3.0/json/readme.json' with { type: 'json' };
+import toBeAValidOpenAPIDefinition from 'jest-expect-openapi';
 import { describe, beforeEach, expect, it } from 'vitest';
 
 import plugin from '../src/index.js';
+
+expect.extend({ toBeAValidOpenAPIDefinition });
 
 const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = readdirSync(DATASETS_DIR);
@@ -109,18 +111,14 @@ describe('httpsnippet-client-api', () => {
 
   describe('snippets', () => {
     describe.each(SNIPPETS)('%s', snippet => {
-      let mock: SnippetMock;
-
-      beforeEach(async () => {
-        mock = await getSnippetDataset(snippet);
+      it('should generate the expected snippet', async () => {
+        const mock = await getSnippetDataset(snippet);
 
         // `OpenAPIParser.validate()` updates the spec that's passed and we just want to validate
         // it here so we need to clone the object.
         const spec = JSON.parse(JSON.stringify(mock.definition));
-        await openapiParser.validate(spec);
-      });
+        await expect(spec).toBeAValidOpenAPIDefinition();
 
-      it('should generate the expected snippet', async () => {
         const expected = await fs.readFile(path.join(DATASETS_DIR, snippet, 'output.js'), 'utf-8');
 
         const code = new HTTPSnippet(mock.har).convert('node', 'api', {

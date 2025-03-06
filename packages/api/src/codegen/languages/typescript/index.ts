@@ -1151,7 +1151,10 @@ Generated at ${createdAt}
 
             return s;
           },
-        });
+          /**
+           * @todo can remove this casting after https://github.com/readmeio/oas/pull/956 is published
+           */
+        }) as SchemaObject[];
 
         if (!schema) {
           return false;

@@ -1,6 +1,6 @@
 import type { ReadStream } from 'node:fs';
 import type { Operation } from 'oas/operation';
-import type { ParameterObject, SchemaObject } from 'oas/types';
+import type { DataForHAR, ParameterObject, SchemaObject } from 'oas/types';
 
 import stream from 'node:stream';
 
@@ -12,6 +12,8 @@ import lodashMerge from 'lodash.merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
 
 import getJSONSchemaDefaults from './getJSONSchemaDefaults.js';
+
+type DataForHARWithFiles = DataForHAR & { files?: Record<string, Buffer> };
 
 // These headers are normally only defined by the OpenAPI definition but we allow the user to
 // manually supply them in their `metadata` parameter if they wish.
@@ -56,15 +58,15 @@ function isPrimitive(obj: unknown) {
   return obj === null || typeof obj === 'number' || typeof obj === 'string';
 }
 
-function merge(src: unknown, target: unknown) {
+function merge<R = unknown>(src: R, target: R): R {
   if (Array.isArray(target)) {
     // @todo we need to add support for merging array defaults with array body/metadata arguments
-    return target;
+    return target as R;
   } else if (!isObject(target)) {
-    return target;
+    return target as R;
   }
 
-  return lodashMerge(src, target);
+  return lodashMerge<R, R>(src, target);
 }
 
 /**
@@ -144,7 +146,11 @@ async function processFile(
  * with `@readme/oas-to-har`.
  *
  */
-export default async function prepareParams(operation: Operation, body?: unknown, metadata?: Record<string, unknown>) {
+export default async function prepareParams(
+  operation: Operation,
+  body?: unknown,
+  metadata?: Record<string, unknown>,
+): Promise<DataForHARWithFiles> {
   let metadataIntersected = false;
   const digestedParameters = digestParameters(operation.getParameters());
   const jsonSchema = operation.getParametersAsJSONSchema();
@@ -189,22 +195,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   }
 
   const jsonSchemaDefaults = jsonSchema ? getJSONSchemaDefaults(jsonSchema) : {};
-
-  const params: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body?: any;
-    cookie?: Record<string, boolean | number | string>;
-    files?: Record<string, Buffer>;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    formData?: any;
-    header?: Record<string, boolean | number | string>;
-    path?: Record<string, boolean | number | string>;
-    query?: Record<string, boolean | number | string>;
-    server?: {
-      selected: number;
-      variables: Record<string, number | string>;
-    };
-  } = jsonSchemaDefaults;
+  const params: DataForHARWithFiles = jsonSchemaDefaults;
 
   // If a body argument was supplied we need to do a bit of work to see if it's actually a body
   // argument or metadata because the library lets you supply either a body, metadata, or body with
@@ -321,7 +312,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
   // Form data should be placed within `formData` instead of `body` for it to properly get picked
   // up by `fetch-har`.
   if (operation.isFormUrlEncoded()) {
-    params.formData = merge(params.formData, params.body);
+    params.formData = merge<DataForHARWithFiles['formData']>(params.formData, params.body);
     delete params.body;
   }
 
@@ -380,7 +371,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
       // out anything that they sent that is a parameter from also being sent as part of a form
       // data payload for `x-www-form-urlencoded` requests.
       if (metadataIntersected && operation.isFormUrlEncoded()) {
-        if (paramName in params.formData) {
+        if (params.formData && paramName in params.formData) {
           delete params.formData[paramName];
         }
       }
@@ -412,7 +403,7 @@ export default async function prepareParams(operation: Operation, body?: unknown
       }
 
       if (operation.isFormUrlEncoded()) {
-        params.formData = merge(params.formData, metadata);
+        params.formData = merge<DataForHARWithFiles['formData']>(params.formData, metadata);
       } else {
         // Any other remaining unused metadata will be unused because we don't know where to place
         // it in the request.
