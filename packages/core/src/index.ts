@@ -104,11 +104,10 @@ export default class APICore {
         init.signal = controller.signal;
       }
 
-      return fetchHar(har as Har, {
-        files: data.files || {},
-        init,
-        userAgent: this.userAgent,
-      })
+      // `getHarForRequest` returns a partial HAR object, by way of `@readme/oas-to-har` but
+      // `fetch-har` is typed to expect the full thing. Though we're supplying an incomplete HAR
+      // object, at least the spec, our partial is fine.
+      return fetchHar(har as unknown as Har, { files: data.files || {}, init, userAgent: this.userAgent })
         .then(async (res: Response) => {
           const parsed = await parseResponse<HTTPStatus>(res);
 

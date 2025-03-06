@@ -3,8 +3,8 @@ import type { OASDocument } from 'oas/types';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import OpenAPIParser from '@readme/openapi-parser';
 import yaml from 'js-yaml';
+import OASNormalize from 'oas-normalize';
 
 export default class Fetcher {
   uri: OASDocument | string;
@@ -124,13 +124,12 @@ export default class Fetcher {
     });
   }
 
-  static validate(json: OASDocument) {
+  static async validate(json: OASDocument) {
     if (json.swagger) {
       throw new Error('Sorry, this module only supports OpenAPI definitions.');
     }
 
-    // The `validate` method handles dereferencing for us.
-    return OpenAPIParser.validate(json, {
+    const normalize = new OASNormalize(json, { parser: {
       dereference: {
         /**
          * If circular `$refs` are ignored they'll remain in the API definition as `$ref: String`.
@@ -139,12 +138,17 @@ export default class Fetcher {
          */
         circular: 'ignore',
       },
-    }).catch(err => {
-      if (/is not a valid openapi definition/i.test(err.message)) {
+  }});
+
+    await normalize.validate().catch(err => {
+      // Zhuzh up this error message a bit so our errors here are consistenly prefixed with "Sorry".
+      if (err.message === 'The supplied API definition is unsupported.') {
         throw new Error("Sorry, that doesn't look like a valid OpenAPI definition.");
       }
 
       throw err;
     });
+
+    return normalize.dereference();
   }
 }
