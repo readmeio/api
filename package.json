@@ -37,7 +37,7 @@
     "@tsconfig/node20": "^20.1.4",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^5.0.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.23.0",
     "knip": "^5.44.1",
     "lerna": "^8.0.1",
     "prettier": "^3.5.1",
