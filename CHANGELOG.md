@@ -1,3 +1,27 @@
+## 7.0.0-beta.13 (2025-04-04)
+
+* chore(deps-dev): bump axios from 1.7.7 to 1.8.4 (#1017) ([c336cc7](https://github.com/readmeio/api/commit/c336cc7)), closes [#1017](https://github.com/readmeio/api/issues/1017)
+* chore(deps-dev): bump the minor-development-deps group across 1 directory with 10 updates (#1019) ([aa63f1e](https://github.com/readmeio/api/commit/aa63f1e)), closes [#1019](https://github.com/readmeio/api/issues/1019)
+* chore(deps-dev): upgrading our eslint standards to support TS 5.8 (#1006) ([b23f301](https://github.com/readmeio/api/commit/b23f301)), closes [#1006](https://github.com/readmeio/api/issues/1006)
+* chore(deps): bump @babel/runtime from 7.25.7 to 7.27.0 (#1018) ([918d073](https://github.com/readmeio/api/commit/918d073)), closes [#1018](https://github.com/readmeio/api/issues/1018)
+* chore(deps): bump @readme/oas-to-har from 25.0.1 to 25.0.2 (#1015) ([9b46314](https://github.com/readmeio/api/commit/9b46314)), closes [#1015](https://github.com/readmeio/api/issues/1015)
+* chore(deps): bump ci-info from 4.1.0 to 4.2.0 (#1010) ([db2d141](https://github.com/readmeio/api/commit/db2d141)), closes [#1010](https://github.com/readmeio/api/issues/1010)
+* chore(deps): bump nock from 14.0.1 to 14.0.2 (#1016) ([dede283](https://github.com/readmeio/api/commit/dede283)), closes [#1016](https://github.com/readmeio/api/issues/1016)
+* chore(deps): bump oas from 26.0.1 to 26.0.2 (#1011) ([4b0b957](https://github.com/readmeio/api/commit/4b0b957)), closes [#1011](https://github.com/readmeio/api/issues/1011)
+* chore(deps): bump oas-normalize from 13.1.0 to 13.1.2 (#1012) ([f86218f](https://github.com/readmeio/api/commit/f86218f)), closes [#1012](https://github.com/readmeio/api/issues/1012)
+* chore(deps): bump ora from 8.1.1 to 8.2.0 (#1001) ([956cc84](https://github.com/readmeio/api/commit/956cc84)), closes [#1001](https://github.com/readmeio/api/issues/1001)
+* chore(deps): bump preferred-pm from 4.1.0 to 4.1.1 (#1002) ([c8495ab](https://github.com/readmeio/api/commit/c8495ab)), closes [#1002](https://github.com/readmeio/api/issues/1002)
+* chore(deps): bump semver from 7.7.0 to 7.7.1 (#998) ([68d4c25](https://github.com/readmeio/api/commit/68d4c25)), closes [#998](https://github.com/readmeio/api/issues/998)
+* chore(deps): bump ts-morph from 25.0.0 to 25.0.1 (#999) ([9bb1479](https://github.com/readmeio/api/commit/9bb1479)), closes [#999](https://github.com/readmeio/api/issues/999)
+* chore(deps): bump vitest from 3.0.5 to 3.0.7 (#1000) ([f135ea3](https://github.com/readmeio/api/commit/f135ea3)), closes [#1000](https://github.com/readmeio/api/issues/1000)
+* chore(deps): bump vitest from 3.0.7 to 3.1.1 (#1013) ([592612b](https://github.com/readmeio/api/commit/592612b)), closes [#1013](https://github.com/readmeio/api/issues/1013)
+* chore(deps): upgrading `typescript` and `tsup` (#1005) ([47c3682](https://github.com/readmeio/api/commit/47c3682)), closes [#1005](https://github.com/readmeio/api/issues/1005)
+* feat: drop support for node 18 (#1007) ([4ea0c81](https://github.com/readmeio/api/commit/4ea0c81)), closes [#1007](https://github.com/readmeio/api/issues/1007)
+* ci: running `attw` along our test suite (#1004) ([29d4e0e](https://github.com/readmeio/api/commit/29d4e0e)), closes [#1004](https://github.com/readmeio/api/issues/1004)
+* refactor: swapping out our test dependency on `fetch-mock` for `nock` (#995) ([d5cf4c5](https://github.com/readmeio/api/commit/d5cf4c5)), closes [#995](https://github.com/readmeio/api/issues/995)
+
+
+
 ## 7.0.0-beta.12 (2025-02-17)
 
 * chore: resolving a linting problem ([9bfd498](https://github.com/readmeio/api/commit/9bfd498))
