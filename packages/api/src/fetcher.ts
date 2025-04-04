@@ -71,7 +71,6 @@ export default class Fetcher {
         let url;
         try {
           url = new URL(uri);
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
           // If that try fails for whatever reason than the URI that we have isn't a real URL and
           // we can safely attempt to look for it on the filesystem.
