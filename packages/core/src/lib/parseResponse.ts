@@ -11,7 +11,6 @@ export default async function parseResponse<HTTPStatus extends number = number>(
   if (isJSON) {
     try {
       data = JSON.parse(responseBody);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       // If our JSON parsing failed then we can just return plaintext instead.
     }
