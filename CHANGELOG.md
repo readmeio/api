@@ -1,3 +1,9 @@
+## 7.0.0-beta.14 (2025-04-14)
+
+* fix: performance issue when dereferencing circular schemas (#1020) ([3c21677](https://github.com/readmeio/api/commit/3c21677)), closes [#1020](https://github.com/readmeio/api/issues/1020)
+
+
+
 ## 7.0.0-beta.13 (2025-04-04)
 
 * chore(deps-dev): bump axios from 1.7.7 to 1.8.4 (#1017) ([c336cc7](https://github.com/readmeio/api/commit/c336cc7)), closes [#1017](https://github.com/readmeio/api/issues/1017)
