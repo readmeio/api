@@ -9,7 +9,7 @@ export default class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'readme/4.355.0 (api/7.0.0-mock)');
+    this.core = new APICore(definition, 'readme/5.319.0 (api/7.0.0-mock)');
   }
 
   /**
@@ -70,6 +70,17 @@ export default class SDK {
    */
   server(url: string, variables = {}) {
     this.core.setServer(url, variables);
+  }
+
+  /**
+   * Returns project data for the API key.
+   *
+   * @summary Get metadata about the current project
+   * @throws FetchError<401, types.GetProjectResponse401> Unauthorized
+   * @throws FetchError<403, types.GetProjectResponse403> Unauthorized
+   */
+  getProject(): Promise<FetchResponse<200, types.CondensedProjectData>> {
+    return this.core.fetch('/', 'get');
   }
 
   /**
@@ -136,6 +147,17 @@ export default class SDK {
   }
 
   /**
+   * Validate an API specification.
+   *
+   * @summary Validate API specification
+   * @throws FetchError<400, types.ValidateApiSpecificationResponse400> The API specification is not valid.
+   * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
+   */
+  validateAPISpecification(body: types.ValidateApiSpecificationBodyParam): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/api-validation', 'post', body);
+  }
+
+  /**
    * Returns all the roles we're hiring for at ReadMe!
    *
    * @summary Get open roles
@@ -196,8 +218,6 @@ export default class SDK {
 
   /**
    * Delete the category with this slug.
-   * >⚠️Heads Up!
-   * > This will also delete all of the docs within this category.
    *
    * @summary Delete category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
@@ -322,6 +342,29 @@ export default class SDK {
   }
 
   /**
+   * Create a new doc inside of this project.
+   *
+   * @summary Create doc
+   * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
+   * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
+   * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
+   */
+  createDoc(body: types.DocSchemaPost, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<201, types.DocSchemaResponse>> {
+    return this.core.fetch('/docs', 'post', body, metadata);
+  }
+
+  /**
+   * Returns all docs that match the search.
+   *
+   * @summary Search docs
+   * @throws FetchError<401, types.SearchDocsResponse401> Unauthorized
+   * @throws FetchError<403, types.SearchDocsResponse403> Unauthorized
+   */
+  searchDocs(metadata: types.SearchDocsMetadataParam): Promise<FetchResponse<number, unknown>> {
+    return this.core.fetch('/docs/search', 'post', metadata);
+  }
+
+  /**
    * Returns the doc with this slug.
    *
    * @summary Get doc
@@ -373,37 +416,27 @@ export default class SDK {
   }
 
   /**
-   * Create a new doc inside of this project.
+   * Returns all of ReadMe’s IP addresses used for outbound webhook requests and the “Try
+   * It!” button on the API Explorer.
    *
-   * @summary Create doc
-   * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
-   * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
-   * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
+   * Although ReadMe’s outbound IP addresses may change, the IPs in this API response will be
+   * valid for at least 7 days. If you configure your API or webhooks to limit access based
+   * on these IPs, you should refresh the IP list from this endpoint weekly.
+   *
+   *
+   * @summary Get ReadMe’s outbound IP addresses
    */
-  createDoc(body: types.DocSchemaPost, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<201, types.DocSchemaResponse>> {
-    return this.core.fetch('/docs', 'post', body, metadata);
+  getOutboundIPs(): Promise<FetchResponse<200, types.GetOutboundIPsResponse200>> {
+    return this.core.fetch('/outbound-ips', 'get');
   }
 
   /**
-   * Returns all docs that match the search.
+   * Ask Owlbot a question about the content of your docs.
    *
-   * @summary Search docs
-   * @throws FetchError<401, types.SearchDocsResponse401> Unauthorized
-   * @throws FetchError<403, types.SearchDocsResponse403> Unauthorized
+   * @summary Ask Owlbot AI a question
    */
-  searchDocs(metadata: types.SearchDocsMetadataParam): Promise<FetchResponse<number, unknown>> {
-    return this.core.fetch('/docs/search', 'post', metadata);
-  }
-
-  /**
-   * Returns project data for the API key.
-   *
-   * @summary Get metadata about the current project
-   * @throws FetchError<401, types.GetProjectResponse401> Unauthorized
-   * @throws FetchError<403, types.GetProjectResponse403> Unauthorized
-   */
-  getProject(): Promise<FetchResponse<200, types.CondensedProjectData>> {
-    return this.core.fetch('/', 'get');
+  askOwlbot(body: types.AskOwlbotBodyParam): Promise<FetchResponse<200, types.AskOwlbotResponse200>> {
+    return this.core.fetch('/owlbot/ask', 'post', body);
   }
 
   /**

@@ -1,6 +1,6 @@
 {
   "name": "@api/readme",
-  "version": "4.355.0",
+  "version": "5.319.0",
   "type": "module",
   "main": "dist/index.cjs",
   "types": "dist/index.d.cts",

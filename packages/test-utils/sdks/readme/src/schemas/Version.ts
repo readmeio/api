@@ -28,6 +28,10 @@ const Version = {
     "is_deprecated": {
       "type": "boolean",
       "description": "Should this be deprecated? Only allowed in PUT operations."
+    },
+    "pdfStatus": {
+      "type": "string",
+      "description": "Status of pdf generations."
     }
   },
   "required": [
