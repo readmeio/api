@@ -7,7 +7,7 @@ const DocSchemaResponse = {
     },
     "type": {
       "type": "string",
-      "description": "Type of the page. The available types all show up under the /docs/ URL path of your docs project (also known as the \"guides\" section). Can be \"basic\" (most common), \"error\" (page desribing an API error), or \"link\" (page that redirects to an external link).\n\n`basic` `error` `link`",
+      "description": "Type of the page. This can be one of the following:\n- `basic` (most common)\n- `link` (page that redirects to an external link)\n- `error` (page describing an API error) [DEPRECATED]\n\n`basic` `error` `link`",
       "enum": [
         "basic",
         "error",
@@ -39,10 +39,12 @@ const DocSchemaResponse = {
     },
     "error": {
       "type": "object",
+      "deprecated": true,
+      "description": "This is used for docs with the `type` set to `error`. The `error` page type and this `error` object have been deprecated.",
       "properties": {
         "code": {
           "type": "string",
-          "description": "The error code for docs with the \"error\" type."
+          "description": "The error code for docs with the `error` type [DEPRECATED]."
         }
       }
     }

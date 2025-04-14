@@ -146,7 +146,7 @@ describe('fetcher', () => {
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '4.355.0',
+          version: '5.319.0',
           title: 'ReadMe API 🦉',
           contact: {
             name: 'API Support',
@@ -164,7 +164,7 @@ describe('fetcher', () => {
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '4.355.0',
+          version: '5.319.0',
           title: 'ReadMe API 🦉',
           contact: {
             name: 'API Support',

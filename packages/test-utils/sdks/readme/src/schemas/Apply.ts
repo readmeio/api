@@ -15,15 +15,7 @@ const Apply = {
     },
     "job": {
       "type": "string",
-      "description": "The job you're looking to apply for (https://readme.com/careers).",
-      "enum": [
-        "Front End Engineer",
-        "Full Stack Engineer",
-        "Head of Product",
-        "Head of Solutions Engineering",
-        "Product Designer"
-      ],
-      "default": "Front End Engineer"
+      "description": "The job you're looking to apply for (https://readme.com/careers)."
     },
     "pronouns": {
       "type": "string",

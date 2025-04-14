@@ -13,9 +13,14 @@ const UpdateApiSpecification = {
     "type": "object",
     "properties": {
       "spec": {
-        "description": "OpenAPI/Swagger file. We accept JSON or YAML.",
+        "description": "An OpenAPI/Swagger file. We accept JSON or YAML.",
         "type": "string",
         "format": "binary"
+      },
+      "url": {
+        "description": "A public URL to an OpenAPI/Swagger definition. We accept JSON or YAML.",
+        "type": "string",
+        "format": "url"
       }
     },
     "$schema": "http://json-schema.org/draft-04/schema#"

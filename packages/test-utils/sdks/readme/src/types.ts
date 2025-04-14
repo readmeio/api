@@ -2,6 +2,8 @@ import type { FromSchema } from '@readme/api-core/types';
 import type * as schemas from './schemas.js';
 
 export type Apply = FromSchema<typeof schemas.Apply>;
+export type AskOwlbotBodyParam = FromSchema<typeof schemas.AskOwlbot.body>;
+export type AskOwlbotResponse200 = FromSchema<typeof schemas.AskOwlbot.response['200']>;
 export type Category = FromSchema<typeof schemas.Category>;
 export type Changelog = FromSchema<typeof schemas.Changelog>;
 export type CondensedProjectData = FromSchema<typeof schemas.CondensedProjectData>;
@@ -82,6 +84,7 @@ export type GetDocMetadataParam = FromSchema<typeof schemas.GetDoc.metadata>;
 export type GetDocResponse401 = FromSchema<typeof schemas.GetDoc.response['401']>;
 export type GetDocResponse403 = FromSchema<typeof schemas.GetDoc.response['403']>;
 export type GetOpenRolesResponse200 = FromSchema<typeof schemas.GetOpenRoles.response['200']>;
+export type GetOutboundIPsResponse200 = FromSchema<typeof schemas.GetOutboundIPs.response['200']>;
 export type GetProductionDocMetadataParam = FromSchema<typeof schemas.GetProductionDoc.metadata>;
 export type GetProductionDocResponse401 = FromSchema<typeof schemas.GetProductionDoc.response['401']>;
 export type GetProductionDocResponse403 = FromSchema<typeof schemas.GetProductionDoc.response['403']>;
@@ -92,6 +95,7 @@ export type GetVersionResponse401 = FromSchema<typeof schemas.GetVersion.respons
 export type GetVersionResponse403 = FromSchema<typeof schemas.GetVersion.response['403']>;
 export type GetVersionsResponse401 = FromSchema<typeof schemas.GetVersions.response['401']>;
 export type GetVersionsResponse403 = FromSchema<typeof schemas.GetVersions.response['403']>;
+export type IpListEntry = FromSchema<typeof schemas.IpListEntry>;
 export type JobOpening = FromSchema<typeof schemas.JobOpening>;
 export type SearchDocsMetadataParam = FromSchema<typeof schemas.SearchDocs.metadata>;
 export type SearchDocsResponse401 = FromSchema<typeof schemas.SearchDocs.response['401']>;
@@ -117,4 +121,6 @@ export type UploadApiSpecificationMetadataParam = FromSchema<typeof schemas.Uplo
 export type UploadApiSpecificationResponse400 = FromSchema<typeof schemas.UploadApiSpecification.response['400']>;
 export type UploadApiSpecificationResponse401 = FromSchema<typeof schemas.UploadApiSpecification.response['401']>;
 export type UploadApiSpecificationResponse403 = FromSchema<typeof schemas.UploadApiSpecification.response['403']>;
+export type ValidateApiSpecificationBodyParam = FromSchema<typeof schemas.ValidateApiSpecification.body>;
+export type ValidateApiSpecificationResponse400 = FromSchema<typeof schemas.ValidateApiSpecification.response['400']>;
 export type Version = FromSchema<typeof schemas.Version>;

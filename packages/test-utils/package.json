@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",
-    "oas": "^26.0.1",
+    "oas": "^27.0.0",
     "typescript": "^5.8.2"
   },
   "prettier": "@readme/eslint-config/prettier"

@@ -13,7 +13,7 @@ describe('#getSuggestedOperation', () => {
     const suggested = getSuggestedOperation(spec);
 
     expect(suggested).toBeInstanceOf(Operation);
-    expect((suggested as Operation).getOperationId()).toBe('getAPISpecification');
+    expect((suggested as Operation).getOperationId()).toBe('getProject');
   });
 
   it('should not retrieve an operation from a spec thats only comprised of webhooks', async () => {
