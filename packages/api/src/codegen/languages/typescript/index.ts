@@ -18,6 +18,7 @@ import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
+import fs from 'node:fs';
 
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
@@ -81,6 +82,32 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
 }
 
 async function detectPackageManager(installDir: string) {
+  // Check for packageManager field in package.json
+  const packageJsonPath = path.join(installDir, 'package.json');
+  if (fs.existsSync(packageJsonPath)) {
+    try {
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      if (packageJson.packageManager) {
+        const [pm] = packageJson.packageManager.split('@');
+        // If the package manager is `npm` or `yarn` we should use that.
+        return pm;
+      }
+    } catch (err) {
+      logger(`Failed to read package.json: ${err.message}`);
+    }
+
+    if (fs.existsSync(path.join(installDir, 'yarn.lock'))) {
+      return 'yarn';
+    }
+    if (fs.existsSync(path.join(installDir, 'package-lock.json'))) {
+      return 'npm';
+    }
+    if (fs.existsSync(path.join(installDir, 'pnpm-lock.yaml'))) {
+      return 'pnpm';
+    }
+  }
+
+  // Fallback to preferredPM
   const pm = await preferredPM(installDir);
   if (pm) {
     return pm.name;
