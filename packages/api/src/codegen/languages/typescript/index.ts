@@ -191,7 +191,16 @@ export default class TSGenerator extends CodeGenerator {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager(installDir);
 
-    const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    let installCommand: string[];
+    if (packageManager === 'yarn') {
+      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    } else if (packageManager === 'pnpm') {
+      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    } else if (packageManager === 'bun') {
+      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    } else {
+      installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    }
 
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
