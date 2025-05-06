@@ -166,27 +166,43 @@ export default class TSGenerator extends CodeGenerator {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
 
-    const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-
-    // This will install the installed SDK as a dependency within the current working directory,
-    // adding `@api/<sdk identifier>` as a dependency there so you can load it with
-    // `require('@api/<sdk identifier>)`.
-    return execa(packageManager, [...installCommand, installDir].filter(Boolean))
-      .then(res => handleExecSuccess(res, opts))
-      .catch(err => {
-        // If `npm install` throws this error it always happens **after** our dependencies have been
-        // installed and is an annoying quirk that sometimes occurs when installing a package within
-        // our workspace as we're creating a circular dependency on `@readme/api-core`.
-        if (
+    const handleError = (err: any, opts: InstallerOptions): void => {
+      // If `npm install` throws this error it always happens **after** our dependencies have been
+      // installed and is an annoying quirk that sometimes occurs when installing a package within
+      // our workspace as we're creating a circular dependency on `@readme/api-core`.
+      if (
           process.env.NODE_ENV === 'test' &&
           err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
-        ) {
-          (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
-          return;
-        }
+      ) {
+        (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
+        return;
+      }
 
-        handleExecFailure(err, opts);
-      });
+      handleExecFailure(err, opts);
+    }
+
+    if (packageManager === 'yarn') {
+      const installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+      const installSubPackagesCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+
+      try {
+        const subPackagesResult = await execa(packageManager, [...installSubPackagesCommand], { cwd: installDir });
+        handleExecSuccess(subPackagesResult, opts);
+        const packageResult = await execa(packageManager, [...installCommand, installDir]);
+        handleExecSuccess(packageResult, opts);
+      } catch (err) {
+        handleError(err, opts);
+      }
+    } else {
+      const installCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+
+      try {
+        const result = await execa(packageManager, [...installCommand, installDir]);
+        handleExecSuccess(result, opts);
+      } catch (err) {
+        handleError(err, opts);
+      }
+    }
   }
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
