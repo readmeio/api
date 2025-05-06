@@ -18,7 +18,6 @@ import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
-import fs from 'node:fs';
 
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
@@ -81,34 +80,10 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
   throw err;
 }
 
-async function detectPackageManager(installDir: string) {
-  // Check for packageManager field in package.json
-  const packageJsonPath = path.join(installDir, 'package.json');
-  if (fs.existsSync(packageJsonPath)) {
-    try {
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-      if (packageJson.packageManager) {
-        const [pm] = packageJson.packageManager.split('@');
-        // If the package manager is `npm` or `yarn` we should use that.
-        return pm;
-      }
-    } catch (err) {
-      logger(`Failed to read package.json: ${err.message}`);
-    }
+async function detectPackageManager() {
+  const projectDir = Storage.getProjectDir();
 
-    if (fs.existsSync(path.join(installDir, 'yarn.lock'))) {
-      return 'yarn';
-    }
-    if (fs.existsSync(path.join(installDir, 'package-lock.json'))) {
-      return 'npm';
-    }
-    if (fs.existsSync(path.join(installDir, 'pnpm-lock.yaml'))) {
-      return 'pnpm';
-    }
-  }
-
-  // Fallback to preferredPM
-  const pm = await preferredPM(installDir);
+  const pm = await preferredPM(projectDir);
   if (pm) {
     return pm.name;
   }
@@ -189,18 +164,9 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
-    let installCommand: string[];
-    if (packageManager === 'yarn') {
-      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-    } else if (packageManager === 'pnpm') {
-      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-    } else if (packageManager === 'bun') {
-      installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-    } else {
-      installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-    }
+    const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
     // This will install the installed SDK as a dependency within the current working directory,
     // adding `@api/<sdk identifier>` as a dependency there so you can load it with
@@ -225,8 +191,7 @@ export default class TSGenerator extends CodeGenerator {
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const pkgName = storage.getPackageName() as string;
-    const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
     const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
     return execa(packageManager, args)
