@@ -166,20 +166,20 @@ export default class TSGenerator extends CodeGenerator {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
 
-    const handleError = (err: any, opts: InstallerOptions): void => {
+    const handleError = (err: Error, options: InstallerOptions): void => {
       // If `npm install` throws this error it always happens **after** our dependencies have been
       // installed and is an annoying quirk that sometimes occurs when installing a package within
       // our workspace as we're creating a circular dependency on `@readme/api-core`.
       if (
-          process.env.NODE_ENV === 'test' &&
-          err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
+        process.env.NODE_ENV === 'test' &&
+        err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
       ) {
-        (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
+        (options.logger ? options.logger : logger)("npm threw an error but we're ignoring it");
         return;
       }
 
-      handleExecFailure(err, opts);
-    }
+      handleExecFailure(err, options);
+    };
 
     if (packageManager === 'yarn') {
       const installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
