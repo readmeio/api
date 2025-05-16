@@ -433,6 +433,32 @@ sdk.server('https://eu.api.example.com/v14');`),
           },
         ],
       },
+      {
+        name: 'debug',
+        parameters: [],
+        returnType: 'SDK',
+        statements: writer => {
+          writer.writeLine('this.core.setDebugMode(true);');
+          writer.writeLine('const self = this;');
+          writer.writeLine('return new Proxy(this, {');
+          writer.writeLine('get(target: SDK, prop: keyof SDK) {');
+          writer.writeLine('if (typeof target[prop] === "function" && prop !== \'debug\') {');
+          writer.writeLine('return async(...args: unknown[]) => {');
+          writer.writeLine('try {');
+          writer.writeLine('return await (target[prop] as Function).apply(target, args);');
+          writer.writeLine('} catch (err) {');
+          writer.writeLine('throw err;');
+          writer.writeLine('} finally {');
+          writer.writeLine('self.core.setDebugMode(false);');
+          writer.writeLine('}');
+          writer.writeLine('}');
+          writer.writeLine('}');
+          writer.writeLine('return Reflect.get(target, prop);');
+          writer.writeLine('},');
+          writer.writeLine('});');
+          return writer;
+        },
+      }
     ]);
 
     // Add all available operation ID accessors into the SDK.
