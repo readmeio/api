@@ -73,6 +73,47 @@ export default class SDK {
   }
 
   /**
+   * Enables debug mode for SDK operations. Debug mode captures additional internal
+   * information such as request/response payloads and timing, which may assist in
+   * troubleshooting issues during development.
+   *
+   * This method can be used in two modes:
+   *
+   * - **Global mode**: Calls `sdk.debug();` and enables debug logging for all subsequent
+   * operations.
+   * - **Chained mode**: Calls `sdk.debug().operation();` and enables debug logging only for
+   * the single operation invoked. Debug mode is automatically turned off afterward.
+   *
+   * @example <caption>Global debug mode</caption>
+   * sdk.debug();
+   * sdk.getPets();
+   *
+   * @example <caption>Chained debug mode (single operation)</caption>
+   * sdk.debug().getPets();
+   *
+   */
+  debug(): SDK {
+    this.core.setDebugMode(true);
+    const self = this;
+    return new Proxy(this, {
+      get(target: SDK, prop: keyof SDK) {
+        if (typeof target[prop] === "function" && prop !== 'debug') {
+          return async (...args: unknown[]) => {
+            try {
+              return await (target[prop] as Function).apply(target, args);
+            } catch (err) {
+              throw err;
+            } finally {
+              self.core.setDebugMode(false);
+            }
+          }
+        }
+        return Reflect.get(target, prop);
+      },
+    });
+  }
+
+  /**
    * Returns project data for the API key.
    *
    * @summary Get metadata about the current project
