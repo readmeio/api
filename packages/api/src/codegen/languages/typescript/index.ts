@@ -458,6 +458,24 @@ sdk.server('https://eu.api.example.com/v14');`),
           writer.writeLine('});');
           return writer;
         },
+        docs: [
+          {
+            description: writer =>
+                writer.writeLine(wordWrap(`Enables debug mode for SDK operations. Debug mode captures additional internal information such as request/response payloads and timing, which may assist in troubleshooting issues during development.
+
+This method can be used in two modes:
+
+- **Global mode**: Calls \`sdk.debug();\` and enables debug logging for all subsequent operations.
+- **Chained mode**: Calls \`sdk.debug().operation();\` and enables debug logging only for the single operation invoked. Debug mode is automatically turned off afterward.
+
+@example <caption>Global debug mode</caption>
+sdk.debug();
+sdk.getPets();
+
+@example <caption>Chained debug mode (single operation)</caption>
+sdk.debug().getPets();`)),
+          },
+        ],
       }
     ]);
 
