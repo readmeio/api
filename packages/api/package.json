@@ -48,7 +48,7 @@
   ],
   "dependencies": {
     "@readme/api-core": "file:../core",
-    "@readme/api-shared": "*",
+    "@readme/api-shared": "file:../shared",
     "chalk": "^5.3.0",
     "ci-info": "^4.0.0",
     "commander": "^13.0.0",
