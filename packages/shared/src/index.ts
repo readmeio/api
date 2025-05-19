@@ -1,3 +1,3 @@
-import logger, { oraOptions } from './logger.js';
+import { logger, oraOptions } from './logger.js';
 
 export { logger, oraOptions };

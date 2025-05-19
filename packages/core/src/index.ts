@@ -4,7 +4,6 @@ import type { Har } from 'har-format';
 import type { Operation } from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/types';
 
-import { logger } from '@readme/api-shared';
 import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';
 import Oas from 'oas';
