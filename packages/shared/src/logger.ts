@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import type { Options as OraOptions } from 'ora';
 
-import chalk from 'chalk';
+import chalk from 'chalk'
+
+
 
 export default function logger(log: string, error?: boolean) {
   if (error) {

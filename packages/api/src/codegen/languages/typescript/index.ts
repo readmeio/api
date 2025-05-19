@@ -20,6 +20,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
+import { logger } from '@readme/api-shared';
 import { execa } from 'execa';
 import { getLicense } from 'license';
 import { setWith } from 'lodash-es';
@@ -28,7 +29,6 @@ import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../../lib/suggestedOperations.js';
-import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
