@@ -80,6 +80,21 @@ export default class Storage {
   }
 
   /**
+   * Retrieves the project's root directory path.
+   *
+   * If a storage directory has not been explicitly set, this method will default it to
+   * the current working directory. It then returns the directory name of the storage path.
+   *
+   */
+  static getProjectDir() {
+    if (!Storage.dir) {
+      Storage.setStorageDir();
+    }
+
+    return path.dirname(Storage.dir);
+  }
+
+  /**
    * Reset the state of the entire storage system.
    *
    * This will completely destroy the contents of the `.api/` directory!
