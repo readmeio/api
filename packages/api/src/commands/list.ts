@@ -1,8 +1,8 @@
+import { logger } from '@readme/api-shared';
 import chalk from 'chalk';
 import { Command } from 'commander';
 
 import { SupportedLanguages } from '../codegen/factory.js';
-import logger from '../logger.js';
 import Storage from '../storage.js';
 
 const cmd = new Command();

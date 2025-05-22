@@ -1,8 +1,8 @@
+import { logger } from '@readme/api-shared';
 import { Command } from 'commander';
 import updateNotifier from 'update-notifier';
 
 import commands from './commands/index.js';
-import logger from './logger.js';
 import * as pkg from './packageInfo.js';
 
 updateNotifier({ pkg: { name: pkg.PACKAGE_NAME, version: pkg.PACKAGE_VERSION } }).notify();
