@@ -50,7 +50,7 @@
     "@readme/api-core": "file:../core",
     "chalk": "^5.3.0",
     "ci-info": "^4.0.0",
-    "commander": "^13.0.0",
+    "commander": "^14.0.0",
     "emphasize": "^7.0.0",
     "execa": "^8.0.1",
     "figures": "^6.0.1",
