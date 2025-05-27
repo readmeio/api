@@ -11,6 +11,7 @@
     {
       "files": ["packages/**/test/**/*"],
       "rules": {
+        "readme/no-wildcard-imports": "off",
         "unicorn/prefer-module": "off"
       }
     }
