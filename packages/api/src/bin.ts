@@ -3,7 +3,7 @@ import updateNotifier from 'update-notifier';
 
 import commands from './commands/index.js';
 import logger from './logger.js';
-import * as pkg from './packageInfo.js';
+import * as pkg from './packageInfo.js'; // eslint-disable-line readme/no-wildcard-imports
 
 updateNotifier({ pkg: { name: pkg.PACKAGE_NAME, version: pkg.PACKAGE_VERSION } }).notify();
 
