@@ -80,8 +80,10 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
   throw err;
 }
 
-async function detectPackageManager(installDir: string) {
-  const pm = await preferredPM(installDir);
+async function detectPackageManager() {
+  const projectDir = Storage.getProjectDir();
+
+  const pm = await preferredPM(projectDir);
   if (pm) {
     return pm.name;
   }
@@ -162,35 +164,50 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
-    const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    const handleError = (err: Error, options: InstallerOptions): void => {
+      // If `npm install` throws this error it always happens **after** our dependencies have been
+      // installed and is an annoying quirk that sometimes occurs when installing a package within
+      // our workspace as we're creating a circular dependency on `@readme/api-core`.
+      if (
+        process.env.NODE_ENV === 'test' &&
+        err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
+      ) {
+        (options.logger ? options.logger : logger)("npm threw an error but we're ignoring it");
+        return;
+      }
 
-    // This will install the installed SDK as a dependency within the current working directory,
-    // adding `@api/<sdk identifier>` as a dependency there so you can load it with
-    // `require('@api/<sdk identifier>)`.
-    return execa(packageManager, [...installCommand, installDir].filter(Boolean))
-      .then(res => handleExecSuccess(res, opts))
-      .catch(err => {
-        // If `npm install` throws this error it always happens **after** our dependencies have been
-        // installed and is an annoying quirk that sometimes occurs when installing a package within
-        // our workspace as we're creating a circular dependency on `@readme/api-core`.
-        if (
-          process.env.NODE_ENV === 'test' &&
-          err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
-        ) {
-          (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
-          return;
-        }
+      handleExecFailure(err, options);
+    };
 
-        handleExecFailure(err, opts);
-      });
+    if (packageManager === 'yarn') {
+      const installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+      const installSubPackagesCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+
+      try {
+        const subPackagesResult = await execa(packageManager, [...installSubPackagesCommand], { cwd: installDir });
+        handleExecSuccess(subPackagesResult, opts);
+        const packageResult = await execa(packageManager, [...installCommand, installDir]);
+        handleExecSuccess(packageResult, opts);
+      } catch (err) {
+        handleError(err, opts);
+      }
+    } else {
+      const installCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+
+      try {
+        const result = await execa(packageManager, [...installCommand, installDir]);
+        handleExecSuccess(result, opts);
+      } catch (err) {
+        handleError(err, opts);
+      }
+    }
   }
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const pkgName = storage.getPackageName() as string;
-    const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
     const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
     return execa(packageManager, args)
@@ -620,6 +637,7 @@ dist/
       // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
       // handle it properly so we need to fallback to something it can.
       pkgVersion = semver.coerce('0.0.0') as SemVer;
+      logger(`Warning: OpenAPI info.version is missing or invalid. Defaulting to ${pkgVersion.version}`);
     }
 
     const tsupOptions: Options = {
