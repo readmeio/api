@@ -4,8 +4,6 @@ updates:
     directory: '/'
     schedule:
       interval: monthly
-    reviewers:
-      - erunion
     labels:
       - dependencies
     commit-message:
@@ -17,8 +15,6 @@ updates:
     schedule:
       interval: monthly
     open-pull-requests-limit: 10
-    reviewers:
-      - erunion
     labels:
       - dependencies
     groups:
