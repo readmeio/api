@@ -28,7 +28,7 @@ import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../../lib/suggestedOperations.js';
-import logger from '../../../logger.js';
+import logger from '@readme/api-core/logger';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';

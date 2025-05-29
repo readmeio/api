@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import { Command } from 'commander';
 
 import { SupportedLanguages } from '../codegen/factory.js';
-import logger from '../logger.js';
+import logger from '@readme/api-core/logger';
 import Storage from '../storage.js';
 
 const cmd = new Command();

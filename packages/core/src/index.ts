@@ -10,7 +10,7 @@ import Oas from 'oas';
 
 import FetchError from './errors/fetchError.js';
 import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib/index.js';
-import logger from 'api/dist/logger.js';
+import logger from './logger.js';
 
 export default class APICore {
   spec!: Oas;

@@ -6,7 +6,7 @@ import ora from 'ora';
 
 import { SupportedLanguages, uninstallerFactory } from '../codegen/factory.js';
 import promptTerminal from '../lib/prompt.js';
-import logger, { oraOptions } from '../logger.js';
+import logger, { oraOptions } from '@readme/api-core/logger';
 import Storage from '../storage.js';
 
 interface Options {

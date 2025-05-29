@@ -21,6 +21,10 @@
       "require": "./dist/types.d.cjs",
       "import": "./dist/types.d.js"
     },
+    "./logger": {
+        "require": "./dist/logger.cjs",
+        "import": "./dist/logger.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "dist/index.cjs",
