@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from '../codegen/factory.js';
 
+import { logger, oraOptions } from '@readme/api-core/logger';
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import { createEmphasize, common } from 'emphasize';
@@ -11,7 +12,6 @@ import uslug from 'uslug';
 import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
-import logger, { oraOptions } from '@readme/api-core/logger';
 import Storage from '../storage.js';
 
 const { highlight } = createEmphasize(common);

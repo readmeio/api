@@ -19,6 +19,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
 
+import { logger } from '@readme/api-core/logger';
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
@@ -28,7 +29,6 @@ import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../../lib/suggestedOperations.js';
-import logger from '@readme/api-core/logger';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
@@ -461,7 +461,8 @@ sdk.server('https://eu.api.example.com/v14');`),
         docs: [
           {
             description: writer =>
-                writer.writeLine(wordWrap(`Enables debug mode for SDK operations. Debug mode captures additional internal information such as request/response payloads and timing, which may assist in troubleshooting issues during development.
+              writer.writeLine(
+                wordWrap(`Enables debug mode for SDK operations. Debug mode captures additional internal information such as request/response payloads and timing, which may assist in troubleshooting issues during development.
 
 This method can be used in two modes:
 
@@ -473,10 +474,11 @@ sdk.debug();
 sdk.getPets();
 
 @example <caption>Chained debug mode (single operation)</caption>
-sdk.debug().getPets();`)),
+sdk.debug().getPets();`),
+              ),
           },
         ],
-      }
+      },
     ]);
 
     // Add all available operation ID accessors into the SDK.
