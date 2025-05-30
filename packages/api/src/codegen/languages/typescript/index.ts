@@ -621,7 +621,6 @@ dist/
       // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
       // handle it properly so we need to fallback to something it can.
       pkgVersion = semver.coerce('0.0.0') as SemVer;
-      logger(`Warning: OpenAPI info.version is missing or invalid. Defaulting to ${pkgVersion.version}`);
     }
 
     const tsupOptions: Options = {
