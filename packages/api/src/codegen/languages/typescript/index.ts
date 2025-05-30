@@ -80,8 +80,10 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
   throw err;
 }
 
-async function detectPackageManager(installDir: string) {
-  const pm = await preferredPM(installDir);
+async function detectPackageManager() {
+  const projectDir = Storage.getProjectDir();
+
+  const pm = await preferredPM(projectDir);
   if (pm) {
     return pm.name;
   }
@@ -162,7 +164,7 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
     const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
@@ -189,8 +191,7 @@ export default class TSGenerator extends CodeGenerator {
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const pkgName = storage.getPackageName() as string;
-    const installDir = storage.getIdentifierStorageDir();
-    const packageManager = await detectPackageManager(installDir);
+    const packageManager = await detectPackageManager();
 
     const args = ['uninstall', pkgName, opts.dryRun ? '--dry-run' : ''].filter(Boolean);
     return execa(packageManager, args)
