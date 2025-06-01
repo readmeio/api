@@ -52,7 +52,7 @@
     "ci-info": "^4.0.0",
     "commander": "^14.0.0",
     "emphasize": "^7.0.0",
-    "execa": "^8.0.1",
+    "execa": "^9.6.0",
     "figures": "^6.0.1",
     "httpsnippet-client-api": "file:../httpsnippet-client-api",
     "js-yaml": "^4.1.0",
