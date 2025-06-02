@@ -64,6 +64,22 @@ describe('storage', () => {
     });
   });
 
+  describe('#getProjectDir', () => {
+    it('should return the parent directory of the storage directory', () => {
+      Storage.setStorageDir(uniqueTempDir());
+      const projectDir = Storage.getProjectDir();
+      expect(projectDir).toBe(path.dirname(Storage.dir));
+    });
+
+    it('should set and return default storage directory if none is set', () => {
+      Storage.dir = '';
+      const projectDir = Storage.getProjectDir();
+      expect(Storage.dir).toBe(path.join(process.cwd(), '.api'));
+      expect(projectDir).toBe(path.dirname(Storage.dir));
+      expect(projectDir).toBe(process.cwd());
+    });
+  });
+
   describe('#generateIntegrityHash', () => {
     it('should generate an integrity hash for an API definition', () => {
       expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).toBe(
