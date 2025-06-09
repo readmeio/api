@@ -181,27 +181,32 @@ export default class TSGenerator extends CodeGenerator {
       handleExecFailure(err, options);
     };
 
-    if (packageManager === 'yarn') {
-      const installCommand = ['add', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
-      const installSubPackagesCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    const getInstallCommands = (pm: string, dryRun?: boolean): string[] => {
+      const dryRunFlag = dryRun ? '--dry-run' : '';
+      const baseCommand = pm === 'npm' ? 'install' : 'add';
+      return [baseCommand, dryRunFlag].filter(Boolean);
+    };
 
-      try {
-        const subPackagesResult = await execa(packageManager, [...installSubPackagesCommand], { cwd: installDir });
-        handleExecSuccess(subPackagesResult, opts);
-        const packageResult = await execa(packageManager, [...installCommand, installDir]);
-        handleExecSuccess(packageResult, opts);
-      } catch (err) {
-        handleError(err, opts);
+    try {
+      if (!['npm', 'bun'].includes(packageManager)) {
+        // install internal dependencies first
+        await execa(packageManager, ['install'], { cwd: installDir });
       }
-    } else {
-      const installCommand = ['install', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
 
-      try {
-        const result = await execa(packageManager, [...installCommand, installDir]);
-        handleExecSuccess(result, opts);
-      } catch (err) {
-        handleError(err, opts);
+      const installCommand = getInstallCommands(packageManager, opts.dryRun);
+      const result = await execa(packageManager, [...installCommand, installDir]);
+
+      if (['yarn', 'bun'].includes(packageManager)) {
+        const packageName = storage.getPackageName();
+        if (packageName) {
+          await execa(packageManager, ['link'], { cwd: installDir });
+          await execa(packageManager, ['link', packageName]);
+        }
       }
+
+      handleExecSuccess(result, opts);
+    } catch (err) {
+      handleError(err, opts);
     }
   }
 
@@ -222,12 +227,13 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
+    const packageManager = await detectPackageManager();
 
     await execa('npm', ['pkg', 'set', 'scripts.prepare=tsup'], { cwd: installDir })
       .then(res => handleExecSuccess(res, opts))
       .catch(err => handleExecFailure(err, opts));
 
-    await execa('npm', ['run', 'prepare'], {
+    await execa(packageManager, ['run', 'prepare'], {
       cwd: installDir,
     })
       .then(res => handleExecSuccess(res, opts))
