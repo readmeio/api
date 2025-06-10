@@ -182,14 +182,14 @@ export default class TSGenerator extends CodeGenerator {
     };
 
     const getInstallCommands = (pm: string, dryRun?: boolean): string[] => {
-      const dryRunFlag = dryRun ? '--dry-run' : '';
       const baseCommand = pm === 'npm' ? 'install' : 'add';
-      return [baseCommand, dryRunFlag].filter(Boolean);
+      return [baseCommand, dryRun ? '--dry-run' : ''].filter(Boolean);
     };
 
     try {
       if (!['npm', 'bun'].includes(packageManager)) {
         // install internal dependencies first
+        // npm and bun will handle this automatically
         await execa(packageManager, ['install'], { cwd: installDir });
       }
 
@@ -197,6 +197,8 @@ export default class TSGenerator extends CodeGenerator {
       const result = await execa(packageManager, [...installCommand, installDir]);
 
       if (['yarn', 'bun'].includes(packageManager)) {
+        // If we're using Yarn or Bun, we need to additionally link the package after installation
+        // so that it is correctly recognized as a local package.
         const packageName = storage.getPackageName();
         if (packageName) {
           await execa(packageManager, ['link'], { cwd: installDir });
