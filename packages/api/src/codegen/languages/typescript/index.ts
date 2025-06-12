@@ -166,27 +166,50 @@ export default class TSGenerator extends CodeGenerator {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
 
-    const installCommand = ['install', '--save', opts.dryRun ? '--dry-run' : ''].filter(Boolean);
+    const handleError = (err: Error, options: InstallerOptions): void => {
+      // If `npm install` throws this error it always happens **after** our dependencies have been
+      // installed and is an annoying quirk that sometimes occurs when installing a package within
+      // our workspace as we're creating a circular dependency on `@readme/api-core`.
+      if (
+        process.env.NODE_ENV === 'test' &&
+        err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
+      ) {
+        (options.logger ? options.logger : logger)("npm threw an error but we're ignoring it");
+        return;
+      }
 
-    // This will install the installed SDK as a dependency within the current working directory,
-    // adding `@api/<sdk identifier>` as a dependency there so you can load it with
-    // `require('@api/<sdk identifier>)`.
-    return execa(packageManager, [...installCommand, installDir].filter(Boolean))
-      .then(res => handleExecSuccess(res, opts))
-      .catch(err => {
-        // If `npm install` throws this error it always happens **after** our dependencies have been
-        // installed and is an annoying quirk that sometimes occurs when installing a package within
-        // our workspace as we're creating a circular dependency on `@readme/api-core`.
-        if (
-          process.env.NODE_ENV === 'test' &&
-          err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
-        ) {
-          (opts.logger ? opts.logger : logger)("npm threw an error but we're ignoring it");
-          return;
+      handleExecFailure(err, options);
+    };
+
+    const getInstallCommands = (pm: string, dryRun?: boolean): string[] => {
+      const baseCommand = pm === 'npm' ? 'install' : 'add';
+      return [baseCommand, dryRun ? '--dry-run' : ''].filter(Boolean);
+    };
+
+    try {
+      if (!['npm', 'bun'].includes(packageManager)) {
+        // install internal dependencies first
+        // npm and bun will handle this automatically
+        await execa(packageManager, ['install'], { cwd: installDir });
+      }
+
+      const installCommand = getInstallCommands(packageManager, opts.dryRun);
+      const result = await execa(packageManager, [...installCommand, installDir]);
+
+      if (['yarn', 'bun'].includes(packageManager)) {
+        // If we're using Yarn or Bun, we need to additionally link the package after installation
+        // so that it is correctly recognized as a local package.
+        const packageName = storage.getPackageName();
+        if (packageName) {
+          await execa(packageManager, ['link'], { cwd: installDir });
+          await execa(packageManager, ['link', packageName]);
         }
+      }
 
-        handleExecFailure(err, opts);
-      });
+      handleExecSuccess(result, opts);
+    } catch (err) {
+      handleError(err, opts);
+    }
   }
 
   static async uninstall(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
@@ -206,12 +229,13 @@ export default class TSGenerator extends CodeGenerator {
   // eslint-disable-next-line class-methods-use-this
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
+    const packageManager = await detectPackageManager();
 
     await execa('npm', ['pkg', 'set', 'scripts.prepare=tsup'], { cwd: installDir })
       .then(res => handleExecSuccess(res, opts))
       .catch(err => handleExecFailure(err, opts));
 
-    await execa('npm', ['run', 'prepare'], {
+    await execa(packageManager, ['run', 'prepare'], {
       cwd: installDir,
     })
       .then(res => handleExecSuccess(res, opts))
@@ -621,6 +645,7 @@ dist/
       // If the version that's in `info.version` isn't compatible with semver NPM won't be able to
       // handle it properly so we need to fallback to something it can.
       pkgVersion = semver.coerce('0.0.0') as SemVer;
+      logger(`Warning: OpenAPI info.version is missing or invalid. Defaulting to ${pkgVersion.version}`);
     }
 
     const tsupOptions: Options = {
