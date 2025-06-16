@@ -3,7 +3,7 @@ import type { Options as OraOptions } from 'ora';
 
 import chalk from 'chalk';
 
-export default function logger(log: string, error?: boolean) {
+export function logger(log: string, error?: boolean) {
   if (error) {
     console.error(chalk.red(log));
   } else {
