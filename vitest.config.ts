@@ -25,7 +25,7 @@ export default defineConfig({
       '**/node_modules/**',
     ],
     setupFiles: ['packages/test-utils/vitest.matchers.ts', 'packages/test-utils/vitest.setup.ts'],
-    workspace: [
+    projects: [
       {
         extends: true,
         test: {
