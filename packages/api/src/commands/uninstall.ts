@@ -1,12 +1,12 @@
 import path from 'node:path';
 
+import { logger, oraOptions } from '@readme/api-core/logger';
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import ora from 'ora';
 
 import { SupportedLanguages, uninstallerFactory } from '../codegen/factory.js';
 import promptTerminal from '../lib/prompt.js';
-import logger, { oraOptions } from '../logger.js';
 import Storage from '../storage.js';
 
 interface Options {

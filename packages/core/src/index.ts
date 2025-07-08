@@ -10,6 +10,7 @@ import Oas from 'oas';
 
 import FetchError from './errors/fetchError.js';
 import { parseResponse, prepareAuth, prepareParams, prepareServer } from './lib/index.js';
+import { logger } from './logger.js';
 
 export default class APICore {
   spec!: Oas;
@@ -26,6 +27,8 @@ export default class APICore {
   private config: ConfigOptions = {};
 
   private userAgent!: string;
+
+  private debugMode: boolean = false;
 
   constructor(definition?: OASDocument | Record<string, unknown>, userAgent?: string) {
     if (definition) this.spec = Oas.init(definition);
@@ -53,6 +56,11 @@ export default class APICore {
 
   setServer(url: string, variables: Record<string, number | string> = {}) {
     this.server = { url, variables };
+    return this;
+  }
+
+  setDebugMode(debugMode: boolean) {
+    this.debugMode = debugMode;
     return this;
   }
 
@@ -95,6 +103,10 @@ export default class APICore {
       }
 
       const har = this.getHARForRequest(operation, data, prepareAuth(this.auth, operation));
+
+      if (this.debugMode) {
+        logger(`[DEBUG] HAR: ${JSON.stringify(har, null, 2)}`);
+      }
 
       let timeoutSignal: NodeJS.Timeout;
       const init: RequestInit = {};

@@ -19,6 +19,7 @@ import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
 
 import path from 'node:path';
 
+import { logger } from '@readme/api-core/logger';
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
 import { getLicense } from 'license';
@@ -28,7 +29,6 @@ import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
 import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../../lib/suggestedOperations.js';
-import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
@@ -455,6 +455,52 @@ sdk.server('https://eu.api.example.com/v14');`),
               { tagName: 'param', text: 'url Server URL' },
               { tagName: 'param', text: 'variables An object of variables to replace into the server URL.' },
             ],
+          },
+        ],
+      },
+      {
+        name: 'debug',
+        parameters: [],
+        returnType: 'SDK',
+        statements: writer => {
+          writer.writeLine('this.core.setDebugMode(true);');
+          writer.writeLine('const self = this;');
+          writer.writeLine('return new Proxy(this, {');
+          writer.writeLine('get(target: SDK, prop: keyof SDK) {');
+          writer.writeLine('if (typeof target[prop] === "function" && prop !== \'debug\') {');
+          writer.writeLine('return async(...args: unknown[]) => {');
+          writer.writeLine('try {');
+          writer.writeLine('return await (target[prop] as Function).apply(target, args);');
+          writer.writeLine('} catch (err) {');
+          writer.writeLine('throw err;');
+          writer.writeLine('} finally {');
+          writer.writeLine('self.core.setDebugMode(false);');
+          writer.writeLine('}');
+          writer.writeLine('}');
+          writer.writeLine('}');
+          writer.writeLine('return Reflect.get(target, prop);');
+          writer.writeLine('},');
+          writer.writeLine('});');
+          return writer;
+        },
+        docs: [
+          {
+            description: writer =>
+              writer.writeLine(
+                wordWrap(`Enables debug mode for SDK operations. Debug mode captures additional internal information such as request/response payloads and timing, which may assist in troubleshooting issues during development.
+
+This method can be used in two modes:
+
+- **Global mode**: Calls \`sdk.debug();\` and enables debug logging for all subsequent operations.
+- **Chained mode**: Calls \`sdk.debug().operation();\` and enables debug logging only for the single operation invoked. Debug mode is automatically turned off afterward.
+
+@example <caption>Global debug mode</caption>
+sdk.debug();
+sdk.getPets();
+
+@example <caption>Chained debug mode (single operation)</caption>
+sdk.debug().getPets();`),
+              ),
           },
         ],
       },
