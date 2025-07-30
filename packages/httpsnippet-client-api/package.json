@@ -37,11 +37,11 @@
   },
   "dependencies": {
     "content-type": "^1.0.5",
+    "oas": "^27.2.1",
     "reserved2": "^0.1.5"
   },
   "peerDependencies": {
-    "@readme/httpsnippet": "^11.0.0",
-    "oas": "^27.0.0"
+    "@readme/httpsnippet": "^11.0.0"
   },
   "devDependencies": {
     "@readme/oas-examples": "^6.0.0",
