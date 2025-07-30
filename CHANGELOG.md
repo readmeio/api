@@ -1,3 +1,32 @@
+## 7.0.0-beta.15 (2025-07-30)
+
+* chore: moving the `oas` dep in `httpsnippet-client-api` off a peerDep (#1053) ([f76c830](https://github.com/readmeio/api/commit/f76c830)), closes [#1053](https://github.com/readmeio/api/issues/1053)
+* chore: replacing `reviewers` in dependabot with a CODEOWNERS ([14f731a](https://github.com/readmeio/api/commit/14f731a))
+* chore(deps-dev): bump brace-expansion from 1.1.11 to 1.1.12 (#1045) ([685212b](https://github.com/readmeio/api/commit/685212b)), closes [#1045](https://github.com/readmeio/api/issues/1045)
+* chore(deps-dev): bump the minor-development-deps group across 1 directory with 10 updates (#1049) ([25f5965](https://github.com/readmeio/api/commit/25f5965)), closes [#1049](https://github.com/readmeio/api/issues/1049)
+* chore(deps-dev): bump the minor-development-deps group with 5 updates (#1022) ([ede257b](https://github.com/readmeio/api/commit/ede257b)), closes [#1022](https://github.com/readmeio/api/issues/1022)
+* chore(deps-dev): bump the minor-development-deps group with 6 updates (#1031) ([55efd78](https://github.com/readmeio/api/commit/55efd78)), closes [#1031](https://github.com/readmeio/api/issues/1031)
+* chore(deps): bump @readme/oas-to-har from 26.0.0 to 26.0.1 (#1043) ([a782500](https://github.com/readmeio/api/commit/a782500)), closes [#1043](https://github.com/readmeio/api/issues/1043)
+* chore(deps): bump @readme/oas-to-har from 26.0.1 to 26.0.2 (#1048) ([684fc99](https://github.com/readmeio/api/commit/684fc99)), closes [#1048](https://github.com/readmeio/api/issues/1048)
+* chore(deps): bump commander from 13.1.0 to 14.0.0 (#1037) ([950604a](https://github.com/readmeio/api/commit/950604a)), closes [#1037](https://github.com/readmeio/api/issues/1037)
+* chore(deps): bump form-data from 4.0.1 to 4.0.4 (#1052) ([f03505e](https://github.com/readmeio/api/commit/f03505e)), closes [#1052](https://github.com/readmeio/api/issues/1052)
+* chore(deps): bump nock from 14.0.2 to 14.0.4 (#1024) ([89de731](https://github.com/readmeio/api/commit/89de731)), closes [#1024](https://github.com/readmeio/api/issues/1024)
+* chore(deps): bump nock from 14.0.4 to 14.0.5 (#1040) ([90e4dbe](https://github.com/readmeio/api/commit/90e4dbe)), closes [#1040](https://github.com/readmeio/api/issues/1040)
+* chore(deps): bump oas from 27.0.0 to 27.0.1 (#1044) ([10cfa1a](https://github.com/readmeio/api/commit/10cfa1a)), closes [#1044](https://github.com/readmeio/api/issues/1044)
+* chore(deps): bump oas from 27.0.1 to 27.1.0 (#1051) ([a49cb1d](https://github.com/readmeio/api/commit/a49cb1d)), closes [#1051](https://github.com/readmeio/api/issues/1051)
+* chore(deps): bump oas-normalize from 14.0.0 to 14.0.1 (#1039) ([27ef796](https://github.com/readmeio/api/commit/27ef796)), closes [#1039](https://github.com/readmeio/api/issues/1039)
+* chore(deps): bump oas-normalize from 14.0.1 to 14.1.0 (#1050) ([d6ce95f](https://github.com/readmeio/api/commit/d6ce95f)), closes [#1050](https://github.com/readmeio/api/issues/1050)
+* chore(deps): bump semver from 7.7.1 to 7.7.2 (#1034) ([948d8b4](https://github.com/readmeio/api/commit/948d8b4)), closes [#1034](https://github.com/readmeio/api/issues/1034)
+* chore(deps): bump ts-morph from 25.0.1 to 26.0.0 (#1033) ([78ab91f](https://github.com/readmeio/api/commit/78ab91f)), closes [#1033](https://github.com/readmeio/api/issues/1033)
+* chore(deps): bump validate-npm-package-name from 6.0.0 to 6.0.1 (#1047) ([a524ce4](https://github.com/readmeio/api/commit/a524ce4)), closes [#1047](https://github.com/readmeio/api/issues/1047)
+* chore(deps): bump vitest from 3.1.1 to 3.1.2 (#1025) ([2f26278](https://github.com/readmeio/api/commit/2f26278)), closes [#1025](https://github.com/readmeio/api/issues/1025)
+* chore(deps): bump vitest from 3.1.2 to 3.1.4 (#1036) ([c05d9e6](https://github.com/readmeio/api/commit/c05d9e6)), closes [#1036](https://github.com/readmeio/api/issues/1036)
+* feat: yarn, bun, pnpm support (#1027) ([c9e84ac](https://github.com/readmeio/api/commit/c9e84ac)), closes [#1027](https://github.com/readmeio/api/issues/1027)
+* fix: failing tests (multipart-formdata) (#1028) ([ae93ae9](https://github.com/readmeio/api/commit/ae93ae9)), closes [#1028](https://github.com/readmeio/api/issues/1028)
+* fix: preferred pm logic enhancement (#1026) ([20b7bc4](https://github.com/readmeio/api/commit/20b7bc4)), closes [#1026](https://github.com/readmeio/api/issues/1026)
+
+
+
 ## 7.0.0-beta.14 (2025-04-14)
 
 * fix: performance issue when dereferencing circular schemas (#1020) ([3c21677](https://github.com/readmeio/api/commit/3c21677)), closes [#1020](https://github.com/readmeio/api/issues/1020)
