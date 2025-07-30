@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "7.0.0-beta.15",
+  "version": "7.0.0-beta.16",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
   "type": "module",
   "bin": {

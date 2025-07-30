@@ -1,3 +1,9 @@
+## 7.0.0-beta.16 (2025-07-30)
+
+* chore(deps): upgrading all openapi dependencies (#1054) ([b18666d](https://github.com/readmeio/api/commit/b18666d)), closes [#1054](https://github.com/readmeio/api/issues/1054)
+
+
+
 ## 7.0.0-beta.15 (2025-07-30)
 
 * chore: moving the `oas` dep in `httpsnippet-client-api` off a peerDep (#1053) ([f76c830](https://github.com/readmeio/api/commit/f76c830)), closes [#1053](https://github.com/readmeio/api/issues/1053)
