@@ -22,6 +22,11 @@ export interface ConfigOptions {
    * in milliseconds.
    */
   timeout?: number;
+  /**
+   * Additional arguments to pass to the `init` object used in fetch requests.
+   * These will be shallow-merged with internal options. The `signal` property is always managed internally and cannot be overridden.
+   */
+  init?: Omit<RequestInit, 'signal'>;
 }
 
 export interface FetchResponse<status, data> {
@@ -109,7 +114,7 @@ export default class APICore {
       const har = oasToHar(this.spec, operation, data, prepareAuth(this.auth, operation));
 
       let timeoutSignal: any;
-      const init: RequestInit = {};
+      const init: RequestInit = { ...this.config.init };
       if (this.config.timeout) {
         const controller = new AbortController();
         timeoutSignal = setTimeout(() => controller.abort(), this.config.timeout);
