@@ -31,7 +31,7 @@ describe('APICore', () => {
 
     petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json').then(spec => new APICore(spec));
 
-    readme = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(spec => new APICore(spec));
+    readme = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(spec => new APICore(spec));
 
     security = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(spec => new APICore(spec));
 

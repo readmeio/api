@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { HTTPSnippet, addClientPlugin } from '@readme/httpsnippet';
-import readme from '@readme/oas-examples/3.0/json/readme.json' with { type: 'json' };
+import readme from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 import toBeAValidOpenAPIDefinition from 'jest-expect-openapi';
 import { describe, beforeEach, expect, it } from 'vitest';
 

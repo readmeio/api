@@ -1,7 +1,7 @@
 import SDK from './sdk.js';
 
 /**
- * ReadMe API 🦉
+ * Legacy API
  *
  * Create beautiful product and API documentation with our developer friendly platform.
  *

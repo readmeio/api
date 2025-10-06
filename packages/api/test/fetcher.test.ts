@@ -13,7 +13,7 @@ let readmeSpec: OASDocument;
 
 describe('fetcher', () => {
   beforeAll(async () => {
-    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme.json');
+    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json');
   });
 
   describe('#isAPIRegistryUUID', () => {
@@ -146,8 +146,8 @@ describe('fetcher', () => {
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '5.319.0',
-          title: 'ReadMe API 🦉',
+          version: '5.427.1',
+          title: 'Legacy API',
           contact: {
             name: 'API Support',
             url: 'https://docs.readme.com/main/docs/need-more-support',
@@ -164,8 +164,8 @@ describe('fetcher', () => {
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '5.319.0',
-          title: 'ReadMe API 🦉',
+          version: '5.427.1',
+          title: 'Legacy API',
           contact: {
             name: 'API Support',
             url: 'https://docs.readme.com/main/docs/need-more-support',
@@ -183,7 +183,7 @@ describe('fetcher', () => {
       });
 
       it('should convert yaml to json', async () => {
-        const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
+        const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme-legacy.yaml'), 'utf8');
         nock('http://example.com').get('/readme.yaml').reply(200, spec);
 
         const definition = 'http://example.com/readme.yaml';
@@ -191,8 +191,8 @@ describe('fetcher', () => {
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           description: 'Create beautiful product and API documentation with our developer friendly platform.',
-          version: '5.319.0',
-          title: 'ReadMe API 🦉',
+          version: '5.427.1',
+          title: 'Legacy API',
           contact: {
             name: 'API Support',
             url: 'https://docs.readme.com/main/docs/need-more-support',
@@ -204,7 +204,7 @@ describe('fetcher', () => {
 
     describe('file', () => {
       it('should be able to load a definition', async () => {
-        const fetcher = new Fetcher(require.resolve('@readme/oas-examples/3.0/json/readme.json'));
+        const fetcher = new Fetcher(require.resolve('@readme/oas-examples/3.0/json/readme-legacy.json'));
 
         const res = await fetcher.load();
         expect(res.paths?.['/api-specification']?.get?.parameters).toBeDereferenced();
@@ -224,7 +224,7 @@ describe('fetcher', () => {
       });
 
       it('should convert yaml to json', async () => {
-        const file = require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml');
+        const file = require.resolve('@readme/oas-examples/3.0/yaml/readme-legacy.yaml');
         const fetcher = new Fetcher(file);
 
         const res = await fetcher.load();

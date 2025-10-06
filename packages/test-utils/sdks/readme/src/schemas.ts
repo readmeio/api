@@ -1,4 +1,3 @@
-import Apply from './schemas/Apply.js';
 import AskOwlbot from './schemas/AskOwlbot.js';
 import Category from './schemas/Category.js';
 import Changelog from './schemas/Changelog.js';
@@ -53,14 +52,12 @@ import GetChangelogs from './schemas/GetChangelogs.js';
 import GetCustomPage from './schemas/GetCustomPage.js';
 import GetCustomPages from './schemas/GetCustomPages.js';
 import GetDoc from './schemas/GetDoc.js';
-import GetOpenRoles from './schemas/GetOpenRoles.js';
 import GetOutboundIPs from './schemas/GetOutboundIPs.js';
 import GetProductionDoc from './schemas/GetProductionDoc.js';
 import GetProject from './schemas/GetProject.js';
 import GetVersion from './schemas/GetVersion.js';
 import GetVersions from './schemas/GetVersions.js';
 import IpListEntry from './schemas/IpListEntry.js';
-import JobOpening from './schemas/JobOpening.js';
 import SearchDocs from './schemas/SearchDocs.js';
 import UpdateApiSpecification from './schemas/UpdateApiSpecification.js';
 import UpdateCategory from './schemas/UpdateCategory.js';
@@ -69,6 +66,5 @@ import UpdateCustomPage from './schemas/UpdateCustomPage.js';
 import UpdateDoc from './schemas/UpdateDoc.js';
 import UpdateVersion from './schemas/UpdateVersion.js';
 import UploadApiSpecification from './schemas/UploadApiSpecification.js';
-import ValidateApiSpecification from './schemas/ValidateApiSpecification.js';
 import Version from './schemas/Version.js';
-export { Apply, AskOwlbot, Category, Changelog, CondensedProjectData, CreateCategory, CreateCustomPage, CreateDoc, CreateVersion, CustomPage, DeleteApiSpecification, DeleteCategory, DeleteChangelog, DeleteCustomPage, DeleteDoc, DeleteVersion, DocSchemaPost, DocSchemaPut, DocSchemaResponse, ErrorApikeyEmpty, ErrorApikeyMismatch, ErrorApikeyNotfound, ErrorCategoryInvalid, ErrorCategoryNotfound, ErrorCustompageInvalid, ErrorCustompageNotfound, ErrorDocInvalid, ErrorDocNotfound, ErrorRegistryNotfound, ErrorSpecFileEmpty, ErrorSpecIdDuplicate, ErrorSpecIdInvalid, ErrorSpecInvalid, ErrorSpecInvalidSchema, ErrorSpecNotfound, ErrorSpecTimeout, ErrorSpecVersionNotfound, ErrorVersionCantDemoteStable, ErrorVersionCantRemoveStable, ErrorVersionDuplicate, ErrorVersionEmpty, ErrorVersionForkEmpty, ErrorVersionForkNotfound, ErrorVersionNotfound, GetApiRegistry, GetApiSchema, GetApiSpecification, GetCategories, GetCategory, GetCategoryDocs, GetChangelog, GetChangelogs, GetCustomPage, GetCustomPages, GetDoc, GetOpenRoles, GetOutboundIPs, GetProductionDoc, GetProject, GetVersion, GetVersions, IpListEntry, JobOpening, SearchDocs, UpdateApiSpecification, UpdateCategory, UpdateChangelog, UpdateCustomPage, UpdateDoc, UpdateVersion, UploadApiSpecification, ValidateApiSpecification, Version }
+export { AskOwlbot, Category, Changelog, CondensedProjectData, CreateCategory, CreateCustomPage, CreateDoc, CreateVersion, CustomPage, DeleteApiSpecification, DeleteCategory, DeleteChangelog, DeleteCustomPage, DeleteDoc, DeleteVersion, DocSchemaPost, DocSchemaPut, DocSchemaResponse, ErrorApikeyEmpty, ErrorApikeyMismatch, ErrorApikeyNotfound, ErrorCategoryInvalid, ErrorCategoryNotfound, ErrorCustompageInvalid, ErrorCustompageNotfound, ErrorDocInvalid, ErrorDocNotfound, ErrorRegistryNotfound, ErrorSpecFileEmpty, ErrorSpecIdDuplicate, ErrorSpecIdInvalid, ErrorSpecInvalid, ErrorSpecInvalidSchema, ErrorSpecNotfound, ErrorSpecTimeout, ErrorSpecVersionNotfound, ErrorVersionCantDemoteStable, ErrorVersionCantRemoveStable, ErrorVersionDuplicate, ErrorVersionEmpty, ErrorVersionForkEmpty, ErrorVersionForkNotfound, ErrorVersionNotfound, GetApiRegistry, GetApiSchema, GetApiSpecification, GetCategories, GetCategory, GetCategoryDocs, GetChangelog, GetChangelogs, GetCustomPage, GetCustomPages, GetDoc, GetOutboundIPs, GetProductionDoc, GetProject, GetVersion, GetVersions, IpListEntry, SearchDocs, UpdateApiSpecification, UpdateCategory, UpdateChangelog, UpdateCustomPage, UpdateDoc, UpdateVersion, UploadApiSpecification, Version }

@@ -1,7 +1,7 @@
 import type * as types from './types.js';
 import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';
 import APICore from '@readme/api-core';
-import definition from '@readme/oas-examples/3.0/json/readme.json' with {
+import definition from '@readme/oas-examples/3.0/json/readme-legacy.json' with {
   type: 'json'
 };
 
@@ -9,7 +9,7 @@ export default class SDK {
   core: APICore;
 
   constructor() {
-    this.core = new APICore(definition, 'readme/5.319.0 (api/7.0.0-mock)');
+    this.core = new APICore(definition, 'readme/5.427.1 (api/7.0.0-mock)');
   }
 
   /**
@@ -75,6 +75,12 @@ export default class SDK {
   /**
    * Returns project data for the API key.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get metadata about the current project
    * @throws FetchError<401, types.GetProjectResponse401> Unauthorized
    * @throws FetchError<403, types.GetProjectResponse403> Unauthorized
@@ -96,6 +102,12 @@ export default class SDK {
   /**
    * Get API specification metadata.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get metadata
    * @throws FetchError<400, types.ErrorVersionEmpty> No version was supplied.
    * @throws FetchError<401, types.GetApiSpecificationResponse401> Unauthorized
@@ -110,6 +122,12 @@ export default class SDK {
    * Upload an API specification to ReadMe. Or, to use a newer solution see
    * https://docs.readme.com/main/docs/rdme.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Upload specification
    * @throws FetchError<400, types.UploadApiSpecificationResponse400> There was a validation error during upload.
    * @throws FetchError<401, types.UploadApiSpecificationResponse401> Unauthorized
@@ -122,6 +140,12 @@ export default class SDK {
 
   /**
    * Update an API specification in ReadMe.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Update specification
    * @throws FetchError<400, types.UpdateApiSpecificationResponse400> There was a validation error during upload.
@@ -136,6 +160,12 @@ export default class SDK {
   /**
    * Delete an API specification in ReadMe.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Delete specification
    * @throws FetchError<400, types.ErrorSpecIdInvalid> The spec ID isn't valid.
    * @throws FetchError<401, types.DeleteApiSpecificationResponse401> Unauthorized
@@ -147,37 +177,13 @@ export default class SDK {
   }
 
   /**
-   * Validate an API specification.
-   *
-   * @summary Validate API specification
-   * @throws FetchError<400, types.ValidateApiSpecificationResponse400> The API specification is not valid.
-   * @throws FetchError<408, types.ErrorSpecTimeout> The spec upload timed out.
-   */
-  validateAPISpecification(body: types.ValidateApiSpecificationBodyParam): Promise<FetchResponse<number, unknown>> {
-    return this.core.fetch('/api-validation', 'post', body);
-  }
-
-  /**
-   * Returns all the roles we're hiring for at ReadMe!
-   *
-   * @summary Get open roles
-   */
-  getOpenRoles(): Promise<FetchResponse<200, types.GetOpenRolesResponse200>> {
-    return this.core.fetch('/apply', 'get');
-  }
-
-  /**
-   * This endpoint will let you apply to a job at ReadMe programatically, without having to
-   * go through our UI!
-   *
-   * @summary Submit your application!
-   */
-  applyToReadMe(body: types.Apply): Promise<FetchResponse<number, unknown>> {
-    return this.core.fetch('/apply', 'post', body);
-  }
-
-  /**
    * Returns all the categories for a specified version.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Get all categories
    */
@@ -187,6 +193,12 @@ export default class SDK {
 
   /**
    * Create a new category inside of this project.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Create category
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
@@ -198,6 +210,12 @@ export default class SDK {
   /**
    * Returns the category with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
@@ -207,6 +225,12 @@ export default class SDK {
 
   /**
    * Change the properties of a category.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Update category
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
@@ -219,6 +243,12 @@ export default class SDK {
   /**
    * Delete the category with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Delete category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
@@ -228,6 +258,12 @@ export default class SDK {
 
   /**
    * Returns the docs and children docs within this category.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Get docs for category
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
@@ -239,6 +275,12 @@ export default class SDK {
   /**
    * Returns a list of changelogs.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get changelogs
    */
   getChangelogs(metadata?: types.GetChangelogsMetadataParam): Promise<FetchResponse<200, types.GetChangelogsResponse200>> {
@@ -247,6 +289,12 @@ export default class SDK {
 
   /**
    * Create a new changelog entry.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Create changelog
    */
@@ -257,6 +305,12 @@ export default class SDK {
   /**
    * Returns the changelog with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get changelog
    */
   getChangelog(metadata: types.GetChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
@@ -265,6 +319,12 @@ export default class SDK {
 
   /**
    * Update a changelog with this slug.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Update changelog
    */
@@ -275,6 +335,12 @@ export default class SDK {
   /**
    * Delete the changelog with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Delete changelog
    */
   deleteChangelog(metadata: types.DeleteChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
@@ -283,6 +349,12 @@ export default class SDK {
 
   /**
    * Returns a list of custom pages.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Get custom pages
    * @throws FetchError<401, types.GetCustomPagesResponse401> Unauthorized
@@ -294,6 +366,12 @@ export default class SDK {
 
   /**
    * Create a new custom page inside of this project.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Create custom page
    * @throws FetchError<400, types.ErrorCustompageInvalid> The page couldn't be saved.
@@ -307,6 +385,12 @@ export default class SDK {
   /**
    * Returns the custom page with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get custom page
    * @throws FetchError<401, types.GetCustomPageResponse401> Unauthorized
    * @throws FetchError<403, types.GetCustomPageResponse403> Unauthorized
@@ -318,6 +402,12 @@ export default class SDK {
 
   /**
    * Update a custom page with this slug.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Update custom page
    * @throws FetchError<400, types.ErrorCustompageInvalid> The page couldn't be saved.
@@ -332,6 +422,12 @@ export default class SDK {
   /**
    * Delete the custom page with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Delete custom page
    * @throws FetchError<401, types.DeleteCustomPageResponse401> Unauthorized
    * @throws FetchError<403, types.DeleteCustomPageResponse403> Unauthorized
@@ -343,6 +439,12 @@ export default class SDK {
 
   /**
    * Create a new doc inside of this project.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Create doc
    * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
@@ -356,6 +458,12 @@ export default class SDK {
   /**
    * Returns all docs that match the search.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Search docs
    * @throws FetchError<401, types.SearchDocsResponse401> Unauthorized
    * @throws FetchError<403, types.SearchDocsResponse403> Unauthorized
@@ -366,6 +474,12 @@ export default class SDK {
 
   /**
    * Returns the doc with this slug.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Get doc
    * @throws FetchError<401, types.GetDocResponse401> Unauthorized
@@ -378,6 +492,12 @@ export default class SDK {
 
   /**
    * Update a doc with this slug.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Update doc
    * @throws FetchError<400, types.ErrorDocInvalid> The doc couldn't be saved.
@@ -392,6 +512,12 @@ export default class SDK {
   /**
    * Delete the doc with this slug.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Delete doc
    * @throws FetchError<401, types.DeleteDocResponse401> Unauthorized
    * @throws FetchError<403, types.DeleteDocResponse403> Unauthorized
@@ -405,6 +531,12 @@ export default class SDK {
    * This is intended for use by enterprise users with staging enabled. This endpoint will
    * return the live version of your document, whereas the standard endpoint will always
    * return staging.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Get production doc
    * @throws FetchError<401, types.GetProductionDocResponse401> Unauthorized
@@ -433,6 +565,12 @@ export default class SDK {
   /**
    * Ask Owlbot a question about the content of your docs.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Ask Owlbot AI a question
    */
   askOwlbot(body: types.AskOwlbotBodyParam): Promise<FetchResponse<200, types.AskOwlbotResponse200>> {
@@ -451,6 +589,12 @@ export default class SDK {
   /**
    * Retrieve a list of versions associated with a project API key.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get versions
    * @throws FetchError<401, types.GetVersionsResponse401> Unauthorized
    * @throws FetchError<403, types.GetVersionsResponse403> Unauthorized
@@ -461,6 +605,12 @@ export default class SDK {
 
   /**
    * Create a new version.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Create version
    * @throws FetchError<400, types.CreateVersionResponse400> There was a validation error during creation.
@@ -475,6 +625,12 @@ export default class SDK {
   /**
    * Returns the version with this version ID.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Get version
    * @throws FetchError<401, types.GetVersionResponse401> Unauthorized
    * @throws FetchError<403, types.GetVersionResponse403> Unauthorized
@@ -487,6 +643,12 @@ export default class SDK {
   /**
    * Update an existing version.
    *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
+   *
    * @summary Update version
    * @throws FetchError<400, types.ErrorVersionCantDemoteStable> A stable version can't be demoted.
    * @throws FetchError<401, types.UpdateVersionResponse401> Unauthorized
@@ -498,7 +660,13 @@ export default class SDK {
   }
 
   /**
-   * Delete a version
+   * Delete a version.
+   *
+   * >❗
+   * > API v1 and this route are not available to projects that are using [ReadMe
+   * Refactored](https://docs.readme.com/main/docs/welcome-to-readme-refactored). [Check out
+   * our API migration guide](https://docs.readme.com/main/reference/api-migration-guide) for
+   * information on how to migrate to the new API.
    *
    * @summary Delete version
    * @throws FetchError<400, types.ErrorVersionCantRemoveStable> A stable version can't be removed.

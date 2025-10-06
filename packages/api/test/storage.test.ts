@@ -369,7 +369,7 @@ describe('storage', () => {
       });
 
       it('should convert yaml to json', async () => {
-        const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml'), 'utf8');
+        const spec = await fs.readFile(require.resolve('@readme/oas-examples/3.0/yaml/readme-legacy.yaml'), 'utf8');
         nock('http://example.com').get('/readme.yaml').reply(200, spec);
 
         const storage = new Storage('http://example.com/readme.yaml', SupportedLanguages.JS, 'readme-yaml');
@@ -384,7 +384,7 @@ describe('storage', () => {
           private: true,
           identifier: 'readme-yaml',
           source: 'http://example.com/readme.yaml',
-          integrity: 'sha512-0oWnrEtFj8tH3RcDQCnls+emnD2hHft4KHPI1L3XFy9p5Ue3n9EXr96P3XR36zHxevtB2RJKAtVM34kq6b8UUQ==',
+          integrity: 'sha512-T2BM48FOVNKyAaGQRt3usC//ZDB+dbcV++NC5P5H9+UPpVExVyMY2616KyoFfaerNlF08v4LemRZ+ZfExvZW6g==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -394,7 +394,7 @@ describe('storage', () => {
 
     describe('file', () => {
       it('should be able to load a definition', async () => {
-        const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
+        const file = require.resolve('@readme/oas-examples/3.0/json/readme-legacy.json');
         const storage = new Storage(file, SupportedLanguages.JS, 'readme');
 
         expect(storage.isInLockfile()).toBe(false);
@@ -407,7 +407,7 @@ describe('storage', () => {
           private: true,
           identifier: 'readme',
           source: file,
-          integrity: 'sha512-0oWnrEtFj8tH3RcDQCnls+emnD2hHft4KHPI1L3XFy9p5Ue3n9EXr96P3XR36zHxevtB2RJKAtVM34kq6b8UUQ==',
+          integrity: 'sha512-T2BM48FOVNKyAaGQRt3usC//ZDB+dbcV++NC5P5H9+UPpVExVyMY2616KyoFfaerNlF08v4LemRZ+ZfExvZW6g==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -444,7 +444,7 @@ describe('storage', () => {
       });
 
       it('should convert yaml to json', async () => {
-        const file = require.resolve('@readme/oas-examples/3.0/yaml/readme.yaml');
+        const file = require.resolve('@readme/oas-examples/3.0/yaml/readme-legacy.yaml');
         const storage = new Storage(file, SupportedLanguages.JS, 'readme-yaml');
 
         expect(storage.isInLockfile()).toBe(false);
@@ -457,7 +457,7 @@ describe('storage', () => {
           private: true,
           identifier: 'readme-yaml',
           source: file,
-          integrity: 'sha512-0oWnrEtFj8tH3RcDQCnls+emnD2hHft4KHPI1L3XFy9p5Ue3n9EXr96P3XR36zHxevtB2RJKAtVM34kq6b8UUQ==',
+          integrity: 'sha512-T2BM48FOVNKyAaGQRt3usC//ZDB+dbcV++NC5P5H9+UPpVExVyMY2616KyoFfaerNlF08v4LemRZ+ZfExvZW6g==',
           installerVersion: PACKAGE_VERSION,
           language: 'js',
           createdAt: expect.any(String),
@@ -577,7 +577,7 @@ describe('storage', () => {
 
   describe('#getAPIDefinition', () => {
     it('should load a API definition out of storage', async () => {
-      const file = require.resolve('@readme/oas-examples/3.0/json/readme.json');
+      const file = require.resolve('@readme/oas-examples/3.0/json/readme-legacy.json');
       const storage = new Storage(file, SupportedLanguages.JS, 'readme');
       await storage.load();
 

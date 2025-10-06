@@ -7,7 +7,7 @@ import { getSuggestedOperation, buildCodeSnippetForOperation } from '../../src/l
 
 describe('#getSuggestedOperation', () => {
   it('should retrieve a suggested operation', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
+    const spec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
     await spec.dereference();
 
     const suggested = getSuggestedOperation(spec);
@@ -40,7 +40,7 @@ describe('#buildCodeSnippetForOperation', () => {
 
   describe('should prefill in example auth auth tokens for endpoints that have auth', () => {
     it('basic auth', async () => {
-      const spec = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
+      const spec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
       await spec.dereference();
 
       const operation = spec.operation('/api-specification', 'get');
