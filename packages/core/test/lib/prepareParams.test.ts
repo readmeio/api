@@ -16,7 +16,7 @@ describe('#prepareParams', () => {
     fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
     await fileUploads.dereference();
 
-    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme.json').then(Oas.init);
+    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
     await readmeSpec.dereference();
 
     usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
@@ -186,12 +186,12 @@ describe('#prepareParams', () => {
       it('should handle a multipart body when a property is a file path', async () => {
         const operation = fileUploads.operation('/anything/multipart-formdata', 'post');
         const body = {
-          documentFile: require.resolve('@readme/oas-examples/3.0/json/readme.json'),
+          documentFile: require.resolve('@readme/oas-examples/3.0/json/readme-legacy.json'),
         };
 
         const res = await prepareParams(operation, body);
-        expect(res.body.documentFile).toContain('data:application/json;name=readme.json;base64,');
-        expect(res.files?.['readme.json']).toBeInstanceOf(Buffer);
+        expect(res.body.documentFile).toContain('data:application/json;name=readme-legacy.json;base64,');
+        expect(res.files?.['readme-legacy.json']).toBeInstanceOf(Buffer);
       });
 
       it('should handle when the file path is relative', async () => {

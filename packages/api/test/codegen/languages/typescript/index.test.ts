@@ -158,7 +158,7 @@ describe('typescript', () => {
       assertSDKFixture('@api/test-utils/definitions/metrotransit.json', 'metrotransit'),
     );
 
-    it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme.json', 'readme'));
+    it('should work against our OAS', assertSDKFixture('@readme/oas-examples/3.0/json/readme-legacy.json', 'readme'));
 
     // This SDK only has an `index.ts` as it has no schemas.
     it(

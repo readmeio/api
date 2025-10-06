@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@api/test-utils": "file:../test-utils",
-    "@readme/oas-examples": "^6.1.4",
+    "@readme/oas-examples": "^7.0.0",
     "@types/caseless": "^0.12.5",
     "@types/lodash.merge": "^4.6.9",
     "@vitest/coverage-v8": "^3.0.5",
