@@ -1,6 +1,14 @@
 import assert from 'node:assert';
 
-import { loadSpec, responses as mockResponse } from '@api/test-utils';
+import { responses as mockResponse } from '@api/test-utils';
+import fileUploadsSpec from '@readme/oas-examples/3.0/json/file-uploads.json' with { type: 'json' };
+import petstoreSpec from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
+import petstoreExpandedSpec from '@readme/oas-examples/3.0/json/petstore-expanded.json' with { type: 'json' };
+import readmeSpec from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
+import securitySpec from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
+import serverVariablesSpec from '@readme/oas-examples/3.0/json/server-variables.json' with { type: 'json' };
+import usptoSpec from '@readme/oas-examples/3.0/json/uspto.json' with { type: 'json' };
+import parametersStyleSpec from '@readme/oas-examples/3.1/json/parameters-style.json' with { type: 'json' };
 import datauri from 'datauri';
 import nock from 'nock';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -23,21 +31,12 @@ describe('APICore', () => {
   };
 
   beforeEach(async () => {
-    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json').then(spec => new APICore(spec));
-
-    parametersStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(
-      spec => new APICore(spec),
-    );
-
-    petstore = await loadSpec('@readme/oas-examples/3.0/json/petstore-expanded.json').then(spec => new APICore(spec));
-
-    readme = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(spec => new APICore(spec));
-
-    security = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(spec => new APICore(spec));
-
-    serverVariables = await loadSpec('@readme/oas-examples/3.0/json/server-variables.json').then(
-      spec => new APICore(spec),
-    );
+    fileUploads = new APICore(fileUploadsSpec);
+    parametersStyle = new APICore(parametersStyleSpec);
+    petstore = new APICore(petstoreExpandedSpec);
+    readme = new APICore(readmeSpec);
+    security = new APICore(securitySpec);
+    serverVariables = new APICore(serverVariablesSpec);
   });
 
   describe('#fetchOperation', () => {
@@ -196,13 +195,11 @@ describe('APICore', () => {
 
       describe('application/x-www-form-urlencoded', () => {
         it('should support `application/x-www-form-urlencoded` requests', async () => {
-          const usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json')
-            .then(spec => {
-              // eslint-disable-next-line no-param-reassign
-              spec.servers[0].url = '{scheme}://httpbin.org/anything';
-              return spec;
-            })
-            .then(spec => new APICore(spec));
+          const spec = structuredClone(usptoSpec);
+          // eslint-disable-next-line no-param-reassign
+          spec.servers[0].url = '{scheme}://httpbin.org/anything';
+
+          const uspto = new APICore(spec);
 
           nock('https://httpbin.org').post('/anything/v1/oa_citations/records').reply(mockResponse.all);
 
@@ -215,7 +212,7 @@ describe('APICore', () => {
             version: 'oa_citations',
           };
 
-          const { data } = await usptoSpec.fetch('/{dataset}/{version}/records', 'post', body, metadata);
+          const { data } = await uspto.fetch('/{dataset}/{version}/records', 'post', body, metadata);
           expect(data.uri).toBe('/anything/v1/oa_citations/records');
           expect(data.requestBody).toBe('criteria=propertyName%3Avalue');
           expect(data.headers).toHaveProperty('content-type', 'application/x-www-form-urlencoded');
@@ -359,7 +356,7 @@ describe('APICore', () => {
       let petstoreTimeout: APICore;
 
       beforeEach(async () => {
-        petstoreTimeout = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(spec => new APICore(spec));
+        petstoreTimeout = new APICore(petstoreSpec);
       });
 
       it('should override the default `fetch` timeout if present and fail if request takes too long', async () => {

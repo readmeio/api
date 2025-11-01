@@ -2,8 +2,15 @@ import type { HttpMethods } from 'oas/types';
 
 import fs from 'node:fs';
 
-import { loadSpec } from '@api/test-utils';
+import basiqSpec from '@api/test-utils/definitions/basiq.json' with { type: 'json' };
+import nestedDefaultsSpec from '@api/test-utils/definitions/nested-defaults.json' with { type: 'json' };
 import payloadExamples from '@api/test-utils/definitions/payloads.json' with { type: 'json' };
+import fileUploadsSpec from '@readme/oas-examples/3.0/json/file-uploads.json' with { type: 'json' };
+import petstore from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
+import readmeLegacy from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
+import security from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
+import uspto from '@readme/oas-examples/3.0/json/uspto.json' with { type: 'json' };
+import parametersStyleSpec from '@readme/oas-examples/3.1/json/parameters-style.json' with { type: 'json' };
 import Oas from 'oas';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -15,18 +22,18 @@ describe('#prepareParams', () => {
   let usptoSpec: Oas;
 
   beforeEach(async () => {
-    fileUploads = await loadSpec('@readme/oas-examples/3.0/json/file-uploads.json').then(Oas.init);
+    fileUploads = Oas.init(structuredClone(fileUploadsSpec));
     await fileUploads.dereference();
 
-    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
+    readmeSpec = Oas.init(structuredClone(readmeLegacy));
     await readmeSpec.dereference();
 
-    usptoSpec = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
+    usptoSpec = Oas.init(structuredClone(uspto));
     await usptoSpec.dereference();
   });
 
   it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(security));
     await spec.dereference();
 
     const operation = spec.operation('/apiKey', 'get');
@@ -86,7 +93,7 @@ describe('#prepareParams', () => {
   });
 
   it('should ignore supplied body data if the request has no request body', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(petstore));
     await spec.dereference();
 
     const operation = spec.operation('/pet/{petId}', 'get');
@@ -102,7 +109,7 @@ describe('#prepareParams', () => {
   });
 
   it('should ignore a supplied second parameter if its an empty object', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(petstore));
     await spec.dereference();
 
     const operation = spec.operation('/pet/findByStatus', 'get');
@@ -347,7 +354,7 @@ describe('#prepareParams', () => {
     let parameterStyle: Oas;
 
     beforeEach(async () => {
-      parameterStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
+      parameterStyle = Oas.init(structuredClone(parametersStyleSpec));
       await parameterStyle.dereference();
     });
 
@@ -383,7 +390,7 @@ describe('#prepareParams', () => {
 
     describe('quirks', () => {
       it('should not send special headers in body payloads', async () => {
-        const basiq = await loadSpec('@api/test-utils/definitions/basiq.json').then(Oas.init);
+        const basiq = Oas.init(structuredClone(basiqSpec));
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');
@@ -402,7 +409,7 @@ describe('#prepareParams', () => {
       });
 
       it('should not duplicate a supplied header parameter if that header casing matches the spec', async () => {
-        const basiq = await loadSpec('@api/test-utils/definitions/basiq.json').then(Oas.init);
+        const basiq = Oas.init(structuredClone(basiqSpec));
         await basiq.dereference();
 
         const operation = basiq.operation('/token', 'post');
@@ -484,7 +491,7 @@ describe('#prepareParams', () => {
 
   describe('defaults', () => {
     it('should prefill defaults for required body parameters if not supplied', async () => {
-      const oas = await loadSpec('@api/test-utils/definitions/nested-defaults.json').then(Oas.init);
+      const oas = Oas.init(structuredClone(nestedDefaultsSpec));
       await oas.dereference();
 
       const operation = oas.operation('/pet', 'post');

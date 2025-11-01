@@ -1,6 +1,6 @@
 import type { MockInstance } from 'vitest';
 
-import { loadSpec } from '@api/test-utils';
+import petstoreSimple from '@readme/oas-examples/3.0/json/petstore-simple.json' with { type: 'json' };
 import { CommanderError } from 'commander';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
@@ -59,7 +59,6 @@ describe('install command', () => {
   });
 
   it('should list installed SDKs', async () => {
-    const petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
     nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
     const source = '@petstore/v1.0#n6kvf10vakpemvplx';

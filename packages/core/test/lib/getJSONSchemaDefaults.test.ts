@@ -1,4 +1,6 @@
-import { loadSpec } from '@api/test-utils';
+import nestedDefaultsSpec from '@api/test-utils/definitions/nested-defaults.json' with { type: 'json' };
+import usptoSpec from '@readme/oas-examples/3.0/json/uspto.json' with { type: 'json' };
+import parametersStyleSpec from '@readme/oas-examples/3.1/json/parameters-style.json' with { type: 'json' };
 import Oas from 'oas';
 import { describe, expect, it } from 'vitest';
 
@@ -6,7 +8,7 @@ import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults.js';
 
 describe('#getJSONSchemaDefaults()', () => {
   it('should get defaults off an operation', async () => {
-    const oas = await loadSpec('@readme/oas-examples/3.0/json/uspto.json').then(Oas.init);
+    const oas = Oas.init(structuredClone(usptoSpec));
     await oas.dereference();
 
     const operation = oas.operation('/{dataset}/{version}/records', 'post');
@@ -24,7 +26,7 @@ describe('#getJSONSchemaDefaults()', () => {
   });
 
   it('should be able to handle nested objects', async () => {
-    const oas = await loadSpec('@api/test-utils/definitions/nested-defaults.json').then(Oas.init);
+    const oas = Oas.init(structuredClone(nestedDefaultsSpec));
     await oas.dereference();
 
     const operation = oas.operation('/pet', 'post');
@@ -43,7 +45,7 @@ describe('#getJSONSchemaDefaults()', () => {
   it.todo('should be able to handle arrays with defaults');
 
   it('shouldnt add empty objects where there are no required defaults', async () => {
-    const oas = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
+    const oas = Oas.init(structuredClone(parametersStyleSpec));
     await oas.dereference();
 
     const operation = oas.operation('/cookies', 'get');

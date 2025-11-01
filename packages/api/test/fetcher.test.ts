@@ -3,7 +3,7 @@ import type { OASDocument } from 'oas/types';
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
 
-import { loadSpec } from '@api/test-utils';
+import readmeLegacy from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 import nock from 'nock';
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
@@ -13,7 +13,7 @@ let readmeSpec: OASDocument;
 
 describe('fetcher', () => {
   beforeAll(async () => {
-    readmeSpec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json');
+    readmeSpec = structuredClone(readmeLegacy) as OASDocument;
   });
 
   describe('#isAPIRegistryUUID', () => {

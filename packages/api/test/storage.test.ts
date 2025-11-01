@@ -4,7 +4,7 @@ import assert from 'node:assert';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { loadSpec } from '@api/test-utils';
+import petstore from '@readme/oas-examples/3.0/json/petstore-simple.json' with { type: 'json' };
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import nock from 'nock';
@@ -21,7 +21,7 @@ describe('storage', () => {
   let resetStorage: boolean;
 
   beforeAll(async () => {
-    petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
+    petstoreSimple = structuredClone(petstore) as OASDocument;
   });
 
   beforeEach(() => {
