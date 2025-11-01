@@ -3,7 +3,8 @@ import type { MockInstance } from 'vitest';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { loadSpec, responses as mockResponse } from '@api/test-utils';
+import { responses as mockResponse } from '@api/test-utils';
+import circular from '@readme/oas-examples/3.0/json/circular.json' with { type: 'json' };
 import { execa } from 'execa';
 import nock from 'nock';
 import Oas from 'oas';
@@ -15,6 +16,10 @@ import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 // biome-ignore lint/performance/noNamespaceImport: We're loading in the namespacein order to mock it.
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
+
+async function loadSpec(spec: string) {
+  return import(spec).then(({ default: data }) => JSON.stringify(data)).then(JSON.parse);
+}
 
 function assertSDKFixture(file: string, fixture: string) {
   return async () => {
@@ -231,7 +236,7 @@ describe('typescript', () => {
       });
 
       it('should fail on an API definition that contains circular references', async () => {
-        const oas = await loadSpec('@readme/oas-examples/3.0/json/circular.json').then(Oas.init);
+        const oas = Oas.init(structuredClone(circular));
         await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
 
         expect(() => {

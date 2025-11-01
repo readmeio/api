@@ -1,4 +1,7 @@
-import { loadSpec } from '@api/test-utils';
+import petstore from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
+import readmeLegacy from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
+import security from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
+import webhooks from '@readme/oas-examples/3.1/json/webhooks.json' with { type: 'json' };
 import Oas from 'oas';
 import { Operation } from 'oas/operation';
 import { describe, expect, it } from 'vitest';
@@ -7,7 +10,7 @@ import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../src/l
 
 describe('#getSuggestedOperation', () => {
   it('should retrieve a suggested operation', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(readmeLegacy));
     await spec.dereference();
 
     const suggested = getSuggestedOperation(spec);
@@ -17,7 +20,7 @@ describe('#getSuggestedOperation', () => {
   });
 
   it('should not retrieve an operation from a spec thats only comprised of webhooks', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.1/json/webhooks.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(webhooks));
     await spec.dereference();
 
     const suggested = getSuggestedOperation(spec);
@@ -27,7 +30,7 @@ describe('#getSuggestedOperation', () => {
 
 describe('#buildCodeSnippetForOperation', () => {
   it('should construct a code snippet for a given operation', async () => {
-    const spec = await loadSpec('@readme/oas-examples/3.0/json/petstore.json').then(Oas.init);
+    const spec = Oas.init(structuredClone(petstore));
     await spec.dereference();
 
     const operation = spec.operation('/pet/findByStatus', 'get');
@@ -40,7 +43,7 @@ describe('#buildCodeSnippetForOperation', () => {
 
   describe('should prefill in example auth auth tokens for endpoints that have auth', () => {
     it('basic auth', async () => {
-      const spec = await loadSpec('@readme/oas-examples/3.0/json/readme-legacy.json').then(Oas.init);
+      const spec = Oas.init(structuredClone(readmeLegacy));
       await spec.dereference();
 
       const operation = spec.operation('/api-specification', 'get');
@@ -52,7 +55,7 @@ describe('#buildCodeSnippetForOperation', () => {
     });
 
     it('query auth', async () => {
-      const spec = await loadSpec('@readme/oas-examples/3.0/json/security.json').then(Oas.init);
+      const spec = Oas.init(structuredClone(security));
       await spec.dereference();
 
       const operation = spec.operation('/anything/apiKey', 'get');
