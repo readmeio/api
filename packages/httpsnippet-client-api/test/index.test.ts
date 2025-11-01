@@ -1,15 +1,15 @@
-import type { HarRequest, Request } from '@readme/httpsnippet';
+import type { Request } from '@readme/httpsnippet';
 import type { ClientPlugin } from '@readme/httpsnippet/targets';
-import type { OASDocument } from 'oas/types';
+import type { SnippetMock } from './utils.js';
 
 import { readdirSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { HTTPSnippet, addClientPlugin } from '@readme/httpsnippet';
+import { addClientPlugin, HTTPSnippet } from '@readme/httpsnippet';
 import readme from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 import toBeAValidOpenAPIDefinition from 'jest-expect-openapi';
-import { describe, beforeEach, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import plugin from '../src/index.js';
 
@@ -17,11 +17,6 @@ expect.extend({ toBeAValidOpenAPIDefinition });
 
 const DATASETS_DIR = path.join(__dirname, '__datasets__');
 const SNIPPETS = readdirSync(DATASETS_DIR);
-
-export interface SnippetMock {
-  definition: OASDocument;
-  har: HarRequest;
-}
 
 function getSnippetDataset(snippet): Promise<SnippetMock> {
   return import(path.join(DATASETS_DIR, snippet, 'index')).then(r => r.default);

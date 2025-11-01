@@ -8,10 +8,11 @@ import { execa } from 'execa';
 import nock from 'nock';
 import Oas from 'oas';
 import uniqueTempDir from 'unique-temp-dir';
-import { describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupportedLanguages } from '../../../../src/codegen/factory.js';
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
+// biome-ignore lint/performance/noNamespaceImport: We're loading in the namespacein order to mock it.
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
 
@@ -55,7 +56,7 @@ function assertSDKFixture(file: string, fixture: string) {
         sortedActualFiles.map(actualFileName => {
           if (!expectedFiles.includes(actualFileName)) {
             const actualFilePath = path.join(dir, actualFileName);
-            // eslint-disable-next-line no-console
+            // biome-ignore lint/suspicious/noConsole: Debug when regenerating fixtures.
             console.info('[creating sdk fixture]', actualFilePath);
             return fs.writeFile(actualFilePath, actualFiles[actualFileName]);
           }
@@ -74,7 +75,7 @@ function assertSDKFixture(file: string, fixture: string) {
 
         return fs.readFile(expectedFilePath, 'utf8').then(async expected => {
           if (actual !== expected && process.env.UPDATE_FIXTURES) {
-            // eslint-disable-next-line no-console
+            // biome-ignore lint/suspicious/noConsole: Debug when regenerating fixtures.
             console.info('[sdk fixture updated]', expectedFilePath);
             await fs.writeFile(expectedFilePath, actual);
             return;
@@ -101,10 +102,10 @@ describe('typescript', () => {
     Storage.setStorageDir(uniqueTempDir());
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     packageInfoSpy.mockReset();
     vi.useRealTimers();
-    Storage.reset();
+    await Storage.reset();
   });
 
   describe('#install', () => {
@@ -184,14 +185,11 @@ describe('typescript', () => {
 
     describe('integration', () => {
       it('should be able to make an API request', async () => {
-        // eslint-disable-next-line import/no-relative-packages
         const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         nock('http://petstore.swagger.io')
           .get('/v2/pet/findByStatus?status=available')
           .reply(mockResponse.searchParams);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
         await sdk.findPetsByStatus({ status: ['available'] }).then(({ data, status, headers, res }) => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
@@ -201,13 +199,10 @@ describe('typescript', () => {
       });
 
       it('should be able to make an API request with an `accept` header`', async () => {
-        // eslint-disable-next-line import/no-relative-packages
         const sdk = await import('../../../../../test-utils/sdks/simple/src/index.js').then(r => r.default);
         nock('http://petstore.swagger.io').get('/v2/pet/findByStatus?status=available').reply(mockResponse.headers);
 
         await sdk
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore `findPetsByStatus` types are only present with a fully built out SDK dist which this fixture lacks.
           .findPetsByStatus({ status: ['available'], accept: 'application/xml' })
           .then(({ data, status, headers, res }) => {
             expect(data).toHaveProperty('accept', 'application/xml');

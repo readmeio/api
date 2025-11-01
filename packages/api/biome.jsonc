@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": "//",
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**/*.ts", "!coverage", "!dist"],
+  },
+  "linter": {
+    "rules": {
+      "performance": {
+        // Temporarily disabling these but they should be eventually addressed.
+        "noAccumulatingSpread": "off",
+      },
+      "style": {
+        // This rule is only really applicable for OSS libraries and doesn't apply to api's case
+        // since it's a CLI.
+        "noDefaultExport": "off",
+      },
+    },
+  },
+}

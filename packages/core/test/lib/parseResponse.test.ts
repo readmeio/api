@@ -1,4 +1,4 @@
-import { describe, beforeEach, it, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import parseResponse from '../../src/lib/parseResponse.js';
 
@@ -10,7 +10,7 @@ const responseBody = JSON.stringify({
   tags: [],
 });
 
-let response;
+let response: Response;
 
 describe('#parseResponse', () => {
   beforeEach(() => {

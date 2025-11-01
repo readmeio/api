@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { beforeAll, afterAll } from 'vitest';
+import { afterAll, beforeAll } from 'vitest';
 
 beforeAll(() => {
   nock.disableNetConnect();

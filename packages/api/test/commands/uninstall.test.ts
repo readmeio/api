@@ -5,10 +5,11 @@ import { CommanderError } from 'commander';
 import nock from 'nock';
 import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
-import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { SupportedLanguages } from '../../src/codegen/factory.js';
+// biome-ignore lint/performance/noNamespaceImport: We're loading in the namespace in order to mock it.
 import * as codegenFactoryModule from '../../src/codegen/factory.js';
+import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/uninstall.js';
 import Storage from '../../src/storage.js';
 
@@ -41,8 +42,8 @@ describe('install command', () => {
     Storage.setStorageDir(uniqueTempDir());
   });
 
-  afterEach(() => {
-    Storage.reset();
+  afterEach(async () => {
+    await Storage.reset();
     vi.restoreAllMocks();
   });
 

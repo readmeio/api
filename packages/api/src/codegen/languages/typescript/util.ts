@@ -148,7 +148,7 @@ function toSafeString(str: string) {
 }
 
 export function generateTypeName(...parts: string[]) {
-  let str;
+  let str: string | undefined;
 
   // If the end of our string ends with something like `2XX`, the combination of `startCase` and
   // `camelCase` will transform it into `2Xx`.

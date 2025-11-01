@@ -51,8 +51,9 @@
     "camelcase": "^8.0.0",
     "jest-expect-openapi": "^4.0.0",
     "stringify-object": "^6.0.0",
+    "tsup": "^8.5.0",
     "typescript": "^5.8.2",
     "vitest": "^3.0.4"
   },
-  "prettier": "@readme/eslint-config/prettier"
+  "prettier": "@readme/standards/prettier"
 }

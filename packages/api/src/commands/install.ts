@@ -2,13 +2,13 @@ import type { SupportedLanguage } from '../codegen/factory.js';
 
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
-import { createEmphasize, common } from 'emphasize';
+import { common, createEmphasize } from 'emphasize';
 import figures from 'figures';
 import Oas from 'oas';
 import ora from 'ora';
 import uslug from 'uslug';
 
-import { SupportedLanguages, codegenFactory } from '../codegen/factory.js';
+import { codegenFactory, SupportedLanguages } from '../codegen/factory.js';
 import Fetcher from '../fetcher.js';
 import promptTerminal from '../lib/prompt.js';
 import logger, { oraOptions } from '../logger.js';
@@ -40,7 +40,7 @@ async function getLanguage(options: Options) {
 }
 
 async function getIdentifier(oas: Oas, uri: string, options: Options) {
-  let identifier;
+  let identifier: string | undefined;
   if (options.identifier) {
     // `Storage.isIdentifierValid` will throw an exception if an identifier is invalid.
     if (Storage.isIdentifierValid(options.identifier)) {

@@ -47,10 +47,9 @@ export default async function promptTerminal<T extends string = string>(
   }
 
   if (Array.isArray(questions)) {
-    // eslint-disable-next-line no-param-reassign
+    // biome-ignore lint/style/noParameterAssign: We're mutating this parameter on purpose.
     questions = questions.map(question => ({ onRender, ...question }));
   } else {
-    // eslint-disable-next-line no-param-reassign
     questions.onRender = onRender;
   }
 

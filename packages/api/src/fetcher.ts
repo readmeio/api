@@ -68,10 +68,10 @@ export default class Fetcher {
 
     return Promise.resolve(this.uri)
       .then(uri => {
-        let url;
+        let url: URL;
         try {
           url = new URL(uri);
-        } catch (err) {
+        } catch {
           // If that try fails for whatever reason than the URI that we have isn't a real URL and
           // we can safely attempt to look for it on the filesystem.
           return Fetcher.getFile(uri);

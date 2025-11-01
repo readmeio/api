@@ -1,5 +1,5 @@
-import type { SnippetMock } from '../../index.test.js';
 import type { OASDocument } from 'oas/types';
+import type { SnippetMock } from '../../utils.js';
 
 import definition from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 

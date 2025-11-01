@@ -8,9 +8,12 @@
     "build": "lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
     "clean": "lerna clean",
+    "format": "npm run format:prettier && npm run format:js",
+    "format:js": "biome check --write",
+    "format:prettier": "prettier --check --write .",
     "lint": "npm run lint:types && npm run lint:js && npm run prettier",
     "lint:deadcode": "knip",
-    "lint:js": "eslint . --ext .js,.ts",
+    "lint:js": "biome check",
     "lint:types": "npm run lint:types --if-present --workspaces",
     "prettier": "prettier --check .",
     "prettier:write": "prettier --check --write .",
@@ -30,15 +33,15 @@
   "workspaces": [
     "./packages/*"
   ],
-  "prettier": "@readme/eslint-config/prettier",
+  "prettier": "@readme/standards/prettier",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
-    "@readme/eslint-config": "^14.4.2",
+    "@biomejs/biome": "^2.3.2",
+    "@readme/standards": "^2.4.0",
     "@tsconfig/node20": "^20.1.4",
     "alex": "^11.0.1",
     "conventional-changelog-cli": "^5.0.0",
-    "eslint": "^8.56.0",
-    "knip": "^5.44.1",
+    "knip": "^5.66.4",
     "lerna": "^8.0.1",
     "prettier": "^3.5.1",
     "tsup": "^8.4.0"

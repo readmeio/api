@@ -1,4 +1,3 @@
-import type { InstallerOptions } from '../../factory.js';
 import type { ExecaReturnValue } from 'execa';
 import type Oas from 'oas';
 import type { Operation } from 'oas/operation';
@@ -16,6 +15,7 @@ import type {
 } from 'ts-morph';
 import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
+import type { InstallerOptions } from '../../factory.js';
 
 import path from 'node:path';
 
@@ -32,7 +32,6 @@ import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
-
 import { docblockEscape, generateTypeName, wordWrap } from './util.js';
 
 interface OperationTypeHousing {
@@ -1131,7 +1130,7 @@ Generated at ${createdAt}
 
     return Object.entries(res)
       .map(([paramType, schema]: [string, SchemaObject | string]) => {
-        let typeName;
+        let typeName: string;
 
         if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
           // If this schema is a string and has our conversion prefix then we've already created
@@ -1194,7 +1193,7 @@ Generated at ${createdAt}
 
     const res = Object.entries(schemas)
       .map(([status, { description, schema }]) => {
-        let typeName;
+        let typeName: string;
 
         if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
           // If this schema is a string and has our conversion prefix then we've already created

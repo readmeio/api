@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 
 import { loadSpec } from '@api/test-utils';
 import nock from 'nock';
-import { describe, beforeAll, it, expect, afterEach, beforeEach } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import Fetcher from '../src/fetcher.js';
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@readme/standards/biome", "@readme/standards/biome/esm"],
+  "files": {
+    "includes": [
+      // This array is extended in each package. If we don't include this then Biome will scan
+      // **everything** in this repo.
+    ],
+  },
+  "linter": {
+    "enabled": true,
+    "domains": {
+      "project": "all",
+      "test": "all",
+    },
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        // This is wreaking havoc on our `.json` imports and attempts to rewrite them to `.js`.
+        "useImportExtensions": "off",
+      },
+    },
+  },
+  "overrides": [
+    {
+      "includes": ["**/tsup.config.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off",
+          },
+        },
+      },
+    },
+  ],
+}

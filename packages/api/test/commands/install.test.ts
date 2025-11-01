@@ -5,7 +5,7 @@ import path from 'node:path';
 import { CommanderError } from 'commander';
 import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
-import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/install.js';
@@ -36,9 +36,9 @@ describe('install command', () => {
     Storage.setStorageDir(uniqueTempDir());
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     consoleLogSpy.mockRestore();
-    Storage.reset();
+    await Storage.reset();
   });
 
   it('should error out if uri is not passed', () => {

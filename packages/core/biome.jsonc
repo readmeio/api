@@ -1,0 +1,30 @@
+{
+  "$schema": "../../node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": "//",
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**/*.ts", "!coverage", "!dist"],
+  },
+  "linter": {
+    "rules": {
+      "performance": {
+        // Temporarily disabling these but they should be eventually addressed.
+        "noAccumulatingSpread": "off",
+      },
+      "style": {
+        // Temporarily disabling this until we can clean these default exports up in an isolated
+        // PR.
+        "noDefaultExport": "off",
+
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "fs/promises": "Please use `fs` instead as some client frameworks don't polyfill `fs/promises`.",
+            },
+          },
+        },
+      },
+    },
+  },
+}

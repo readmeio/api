@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies, node/no-extraneous-import */
 import type { Options } from 'tsup';
 
 import { defineConfig } from 'tsup';
