@@ -135,7 +135,6 @@ export default abstract class CodeGenerator {
    *
    * @see {@link https://github.com/microsoft/TypeScript/issues/34516}
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static async uninstall(storage: Storage, opts?: InstallerOptions): Promise<void> {
     throw new TypeError('The uninstallation step for this language has not been implemented');
   }

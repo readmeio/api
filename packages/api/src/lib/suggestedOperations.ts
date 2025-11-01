@@ -78,7 +78,6 @@ export async function buildCodeSnippetForOperation(oas: Oas, operation: Operatio
       schemes.filter(Boolean).forEach(scheme => {
         if (!scheme) return;
 
-        // eslint-disable-next-line no-underscore-dangle
         const schemeName = scheme.security._key;
         if (scheme?.type === 'Basic') {
           auth[schemeName] = { user: 'username', pass: 'password' };

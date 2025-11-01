@@ -62,7 +62,6 @@ describe('typescript smoketest', () => {
     await Storage.reset();
   });
 
-  // eslint-disable-next-line @vitest/require-hook
   dataset.forEach(({ name, url }) => {
     // The test timeout is huge on this because CI can be slow as some API definitions are huge and
     // can take a while to download + codegen.

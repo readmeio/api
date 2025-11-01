@@ -5,9 +5,7 @@ import type { DataForHAR, ParameterObject, SchemaObject } from 'oas/types';
 import stream from 'node:stream';
 
 import caseless from 'caseless';
-// `get-stream` is included in our bundle, see `tsup.config.ts`
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { getStreamAsBuffer } from 'get-stream';
+import { getStreamAsBuffer } from 'get-stream'; // `get-stream` is included in our bundle, see `tsup.config.ts`
 import lodashMerge from 'lodash.merge';
 import removeUndefinedObjects from 'remove-undefined-objects';
 
@@ -79,7 +77,6 @@ async function processFile(
   file: ReadStream | string,
 ): Promise<{ base64?: string; buffer?: Buffer; filename: string; paramName?: string } | undefined> {
   const fs = await import('node:fs');
-  // eslint-disable-next-line unicorn/import-style
   const path = await import('node:path');
   const { default: DatauriParser } = await import('datauri/parser.js');
   const { default: datauri } = await import('datauri/sync.js');
@@ -345,7 +342,6 @@ export default async function prepareParams(
         return;
       }
 
-      /* eslint-disable no-param-reassign */
       switch (param.in) {
         case 'path':
           (params.path as NonNullable<typeof params.path>)[paramName] = value;
@@ -365,7 +361,6 @@ export default async function prepareParams(
           break;
         default: // no-op
       }
-      /* eslint-enable no-param-reassign */
 
       // Because a user might have sent just a metadata object, we want to make sure that we filter
       // out anything that they sent that is a parameter from also being sent as part of a form
@@ -395,7 +390,7 @@ export default async function prepareParams(
               if (typeof params.header === 'object') {
                 params.header[headerName] = metadata[headerParam] as string;
               }
-              // eslint-disable-next-line no-param-reassign
+
               delete metadata[headerParam];
             }
           }

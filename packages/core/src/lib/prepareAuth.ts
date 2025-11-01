@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import type { AuthForHAR } from '@readme/oas-to-har/lib/types';
 import type { Operation } from 'oas/operation';
 import type { KeyedSecuritySchemeObject } from 'oas/types';

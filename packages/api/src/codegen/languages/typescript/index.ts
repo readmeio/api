@@ -100,7 +100,6 @@ export default class TSGenerator extends CodeGenerator {
   schemas: Record<
     string,
     // Operation-level type
-    // eslint-disable-next-line @typescript-eslint/sort-type-constituents
     | {
         body?: unknown;
         metadata?: unknown;
@@ -126,8 +125,7 @@ export default class TSGenerator extends CodeGenerator {
           // (setting 'dev')" workspace error message because we're creating a funky circular
           // dependency.
           process.env.NODE_ENV === 'test'
-            ? // eslint-disable-next-line unicorn/prefer-module
-              `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
+            ? `file:${path.relative(__dirname, path.dirname(require.resolve('@readme/api-core/package.json')))}`
             : `^${corePkg.version}`,
       },
       tsup: {
@@ -160,7 +158,6 @@ export default class TSGenerator extends CodeGenerator {
     this.schemas = {};
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
@@ -225,7 +222,6 @@ export default class TSGenerator extends CodeGenerator {
    * Compile the TS code we generated into JS for use in CJS and ESM environments.
    *
    */
-  // eslint-disable-next-line class-methods-use-this
   async compile(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();

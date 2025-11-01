@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable import/no-commonjs */
 
 /**
  * In `api` v6, this package was a JS library used JavaScript Proxies to dynamically generate SDKs at runtime.

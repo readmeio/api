@@ -72,13 +72,11 @@ describe('APICore', () => {
           .fetch('/pets/{id}', 'delete', undefined, { id: petId })
           .then(() => assert.fail())
           .catch(err => {
-            /* eslint-disable @vitest/no-conditional-expect */
             expect(err).toBeInstanceOf(FetchError);
             expect(err.status).toBe(404);
             expect(err.data).toBe('Could not find that pet.');
             expect(err.headers).toHaveHeader('content-type', /text\/plain/);
             expect(err.res.constructor.name).toBe('Response');
-            /* eslint-enable @vitest/no-conditional-expect */
           });
       });
     });
@@ -196,7 +194,6 @@ describe('APICore', () => {
       describe('application/x-www-form-urlencoded', () => {
         it('should support `application/x-www-form-urlencoded` requests', async () => {
           const spec = structuredClone(usptoSpec);
-          // eslint-disable-next-line no-param-reassign
           spec.servers[0].url = '{scheme}://httpbin.org/anything';
 
           const uspto = new APICore(spec);
