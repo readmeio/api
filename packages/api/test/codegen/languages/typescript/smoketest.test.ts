@@ -19,7 +19,7 @@ import realWorldAPIs from '@api/test-utils/datasets/real-world-apis.json' with {
 import Oas from 'oas';
 import OASNormalize from 'oas-normalize';
 import uniqueTempDir from 'unique-temp-dir';
-import { beforeEach, afterEach, describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
 import Storage from '../../../../src/storage.js';
@@ -37,7 +37,7 @@ const args: { chunk?: string; chunks?: string; random?: boolean } = {
   random: !!process.env.SMOKETEST_RANDOM,
 };
 
-let dataset;
+let dataset: typeof realWorldAPIs;
 const datasetTotal = realWorldAPIs.length;
 if (args.chunks && args.chunk) {
   const chunkSize = Math.floor(datasetTotal / parseInt(args.chunks, 10));
@@ -58,8 +58,8 @@ describe('typescript smoketest', () => {
     Storage.setStorageDir(uniqueTempDir());
   });
 
-  afterEach(() => {
-    Storage.reset();
+  afterEach(async () => {
+    await Storage.reset();
   });
 
   // eslint-disable-next-line @vitest/require-hook

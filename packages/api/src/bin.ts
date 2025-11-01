@@ -3,14 +3,14 @@ import updateNotifier from 'update-notifier';
 
 import commands from './commands/index.js';
 import logger from './logger.js';
-import * as pkg from './packageInfo.js'; // eslint-disable-line readme/no-wildcard-imports
+import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo.js';
 
-updateNotifier({ pkg: { name: pkg.PACKAGE_NAME, version: pkg.PACKAGE_VERSION } }).notify();
+updateNotifier({ pkg: { name: PACKAGE_NAME, version: PACKAGE_VERSION } }).notify();
 
-(async () => {
+void (async () => {
   const program = new Command();
-  program.name(pkg.PACKAGE_NAME);
-  program.version(pkg.PACKAGE_VERSION);
+  program.name(PACKAGE_NAME);
+  program.version(PACKAGE_VERSION);
 
   /**
    * Instead of using Commander's `executableDir` API for loading in external command files we're

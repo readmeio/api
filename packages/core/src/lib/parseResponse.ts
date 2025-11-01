@@ -6,12 +6,12 @@ export default async function parseResponse<HTTPStatus extends number = number>(
 
   const responseBody = await response.clone().text();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: We don't know what this is.
   let data: any = responseBody;
   if (isJSON) {
     try {
       data = JSON.parse(responseBody);
-    } catch (e) {
+    } catch {
       // If our JSON parsing failed then we can just return plaintext instead.
     }
   }

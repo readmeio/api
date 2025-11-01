@@ -1,6 +1,6 @@
+import type { OASDocument } from 'oas/types';
 import type { SupportedLanguage } from './codegen/factory.js';
 import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
-import type { OASDocument } from 'oas/types';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -145,7 +145,7 @@ export default class Storage {
       const file = fs.readFileSync(Storage.getLockfilePath(), 'utf8');
       try {
         Storage.lockfile = JSON.parse(file) as Lockfile;
-      } catch (err) {
+      } catch {
         // If we can't parse the lock file for whatever reason then it's probably corrupted so we
         // should reset it to the default.
         Storage.lockfile = Storage.getDefaultLockfile();

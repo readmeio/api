@@ -1,3 +1,4 @@
+// biome-ignore lint/performance/noBarrelFile: We don't really have any other options here for re-exporting this.
 export { FromSchema } from 'json-schema-to-ts';
 
 export interface ConfigOptions {

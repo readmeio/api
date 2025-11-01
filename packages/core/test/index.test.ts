@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { loadSpec, responses as mockResponse } from '@api/test-utils';
 import datauri from 'datauri';
 import nock from 'nock';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import FetchError from '../src/errors/fetchError.js';
 import APICore from '../src/index.js';

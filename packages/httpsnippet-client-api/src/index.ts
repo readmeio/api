@@ -31,8 +31,7 @@ function getProjectPrefixFromRegistryUUID(uri: string) {
   return matches.groups?.project;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function stringify(obj: any, opts = {}) {
+function stringify(obj: unknown, opts = {}) {
   return stringifyObject(obj, { indent: '  ', ...opts });
 }
 
@@ -304,7 +303,7 @@ const client: Client<APIOptions> = {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: This is fine for now until we have stricter types.
     let body: any;
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':

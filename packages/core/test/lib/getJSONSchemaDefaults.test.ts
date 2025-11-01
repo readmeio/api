@@ -1,6 +1,6 @@
 import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults.js';
 

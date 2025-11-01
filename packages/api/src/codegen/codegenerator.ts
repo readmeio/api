@@ -1,7 +1,7 @@
-import type { InstallerOptions } from './factory.js';
-import type Storage from '../storage.js';
 import type Oas from 'oas';
 import type { OpenAPIV3_1 } from 'openapi-types';
+import type Storage from '../storage.js';
+import type { InstallerOptions } from './factory.js';
 
 import { findLicense } from 'license';
 
@@ -89,7 +89,7 @@ export default abstract class CodeGenerator {
 
     const infoObject = this.spec.api.info as OpenAPIV3_1.InfoObject;
     if (infoObject?.license?.name || infoObject?.license?.identifier) {
-      let spdxLicense;
+      let spdxLicense: string;
       if (infoObject?.license?.identifier) {
         spdxLicense = infoObject?.license?.identifier;
       } else {

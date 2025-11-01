@@ -1,9 +1,11 @@
+import type { HttpMethods } from 'oas/types';
+
 import fs from 'node:fs';
 
 import { loadSpec } from '@api/test-utils';
 import payloadExamples from '@api/test-utils/definitions/payloads.json' with { type: 'json' };
 import Oas from 'oas';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import prepareParams from '../../src/lib/prepareParams.js';
 
@@ -342,7 +344,7 @@ describe('#prepareParams', () => {
   });
 
   describe('parameter types', () => {
-    let parameterStyle;
+    let parameterStyle: Oas;
 
     beforeEach(async () => {
       parameterStyle = await loadSpec('@readme/oas-examples/3.1/json/parameters-style.json').then(Oas.init);
@@ -353,8 +355,8 @@ describe('#prepareParams', () => {
       ['cookies', '/cookies', 'get', 'cookie'],
       ['headers', '/anything/headers', 'get', 'header'],
       ['query', '/anything/query', 'get', 'query'],
-    ])('should support %s', async (_, path, method, paramName) => {
-      const operation = parameterStyle.operation(path, method);
+    ] as [string, string, HttpMethods, string][])('should support %s', async (_, path, method, paramName) => {
+      const operation = parameterStyle.operation(path, method as HttpMethods);
       const metadata = {
         primitive: 'buster',
       };

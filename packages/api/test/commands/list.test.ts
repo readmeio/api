@@ -4,10 +4,11 @@ import { loadSpec } from '@api/test-utils';
 import { CommanderError } from 'commander';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
-import { describe, beforeEach, it, expect, vi, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/list.js';
+// biome-ignore lint/performance/noNamespaceImport: We're loading in the namespace in order to mock it.
 import * as packageInfo from '../../src/packageInfo.js';
 import Storage from '../../src/storage.js';
 

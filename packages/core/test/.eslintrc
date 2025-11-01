@@ -1,3 +1,0 @@
-{
-  "extends": "@readme/eslint-config/testing/vitest"
-}

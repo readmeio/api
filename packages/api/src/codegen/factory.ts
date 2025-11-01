@@ -1,6 +1,6 @@
-import type CodeGenerator from './codegenerator.js';
-import type Storage from '../storage.js';
 import type Oas from 'oas';
+import type Storage from '../storage.js';
+import type CodeGenerator from './codegenerator.js';
 
 import TSGenerator from './languages/typescript/index.js';
 

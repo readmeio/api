@@ -41,9 +41,9 @@ function digestParameters(parameters: ParameterObject[]): Record<string, Paramet
 }
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: We don't know what this is.
 function isEmpty(obj: any) {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+  return [Object, Array].includes(obj?.constructor) && !Object.entries(obj || {}).length;
 }
 
 function isObject(thing: unknown) {
@@ -164,7 +164,7 @@ export default async function prepareParams(
    *
    * @see {@link https://github.com/readmeio/api/issues/449}
    */
-  // eslint-disable-next-line no-param-reassign
+  // biome-ignore lint/style/noParameterAssign: We're intentionally mutating the parameter.
   metadata = removeUndefinedObjects(metadata);
 
   if (!jsonSchema && (body !== undefined || metadata !== undefined)) {
@@ -238,11 +238,11 @@ export default async function prepareParams(
       // If more than 25% of the body intersects with the parameters that we've got on hand, then
       // we should treat it as a metadata object and organize into parameters.
       if (intersection && intersection / Object.keys(body as NonNullable<unknown>).length > 0.25) {
-        /* eslint-disable no-param-reassign */
+        // biome-ignore-start lint/style/noParameterAssign: We're intentionally mutating the parameter.
         metadataIntersected = true;
         metadata = merge(params.body, body) as Record<string, unknown>;
         body = undefined;
-        /* eslint-enable no-param-reassign */
+        // biome-ignore-end lint/style/noParameterAssign: end
       } else {
         // For all other cases, we should just treat the supplied body as a body.
         params.body = merge(params.body, body);
@@ -326,9 +326,9 @@ export default async function prepareParams(
     if (!('query' in params)) params.query = {};
 
     Object.entries(digestedParameters).forEach(([paramName, param]) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: We don't know what this is yet.
       let value: any;
-      let metadataHeaderParam;
+      let metadataHeaderParam: string | undefined;
       if (typeof metadata === 'object' && !isEmpty(metadata)) {
         if (paramName in metadata) {
           value = metadata[paramName];

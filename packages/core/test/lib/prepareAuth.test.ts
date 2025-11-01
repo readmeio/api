@@ -2,7 +2,7 @@ import type { OASDocument } from 'oas/types';
 
 import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
-import { describe, beforeAll, it, expect } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 import prepareAuth from '../../src/lib/prepareAuth.js';
 
@@ -163,8 +163,8 @@ describe('#prepareAuth()', () => {
   });
 
   describe('multi auth configurations', () => {
-    let authQuirksOas;
-    let securityMultipleOas;
+    let authQuirksOas: OASDocument;
+    let securityMultipleOas: OASDocument;
 
     beforeAll(async () => {
       authQuirksOas = await loadSpec('@api/test-utils/definitions/auth-quirks.json');
@@ -173,7 +173,7 @@ describe('#prepareAuth()', () => {
 
     describe('AND', () => {
       it('should throw an exception on an operation that requires two forms of auth', () => {
-        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const multipleAuth = Oas.init(securityMultipleOas);
         const operation = multipleAuth.operation('/anything/and', 'post');
         const authKeys = ['buster', 'hunter1'];
 
@@ -185,7 +185,7 @@ describe('#prepareAuth()', () => {
       });
 
       it('should allow usage if an operation has an AND config but one is a single token', () => {
-        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const multipleAuth = Oas.init(securityMultipleOas);
         const operation = multipleAuth.operation('/anything/many-and-or', 'post');
         const authKeys = ['123457890'];
 
@@ -195,7 +195,7 @@ describe('#prepareAuth()', () => {
       });
 
       it('should allow usage if an operation has an AND config but one is username + password', () => {
-        const multipleAuth = Oas.init(securityMultipleOas as unknown as OASDocument);
+        const multipleAuth = Oas.init(securityMultipleOas);
         const operation = multipleAuth.operation('/anything/many-and-or', 'post');
         const authKeys = ['buster', 'hunter1'];
 
@@ -210,7 +210,7 @@ describe('#prepareAuth()', () => {
 
     describe('OR', () => {
       it('should throw an exception on an operation that requires two forms of auth', () => {
-        const authQuirks = Oas.init(authQuirksOas as unknown as OASDocument);
+        const authQuirks = Oas.init(authQuirksOas);
         const operation = authQuirks.operation('/anything/or-and', 'post');
         const authKeys = ['buster', 'hunter1'];
 
@@ -220,7 +220,7 @@ describe('#prepareAuth()', () => {
       });
 
       it('should support supplying username+password credentials to an operation that allows OAuth 2 or Basic', () => {
-        const authQuirks = Oas.init(authQuirksOas as unknown as OASDocument);
+        const authQuirks = Oas.init(authQuirksOas);
         const operation = authQuirks.operation('/anything', 'post');
         const authKeys = ['buster', 'hunter1'];
 

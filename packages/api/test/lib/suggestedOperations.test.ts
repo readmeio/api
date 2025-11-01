@@ -1,9 +1,9 @@
 import { loadSpec } from '@api/test-utils';
 import Oas from 'oas';
 import { Operation } from 'oas/operation';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { getSuggestedOperation, buildCodeSnippetForOperation } from '../../src/lib/suggestedOperations.js';
+import { buildCodeSnippetForOperation, getSuggestedOperation } from '../../src/lib/suggestedOperations.js';
 
 describe('#getSuggestedOperation', () => {
   it('should retrieve a suggested operation', async () => {

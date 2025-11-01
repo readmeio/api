@@ -1,8 +1,9 @@
-import type { ConfigOptions } from './types.js';
 import type { AuthForHAR, DataForHAR } from '@readme/oas-to-har/lib/types';
+// biome-ignore lint/correctness/noUndeclaredDependencies: This is loaded via `@types/har-format`.
 import type { Har } from 'har-format';
 import type { Operation } from 'oas/operation';
 import type { HttpMethods, OASDocument } from 'oas/types';
+import type { ConfigOptions } from './types.js';
 
 import oasToHar from '@readme/oas-to-har';
 import fetchHar from 'fetch-har';

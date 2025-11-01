@@ -9,17 +9,16 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import nock from 'nock';
 import uniqueTempDir from 'unique-temp-dir';
-import { describe, beforeAll, beforeEach, afterEach, it, expect } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import lockfileSchema from '../schema.json' with { type: 'json' };
 import { SupportedLanguages } from '../src/codegen/factory.js';
 import { PACKAGE_VERSION } from '../src/packageInfo.js';
 import Storage from '../src/storage.js';
 
-let petstoreSimple;
-
 describe('storage', () => {
-  let resetStorage;
+  let petstoreSimple: OASDocument;
+  let resetStorage: boolean;
 
   beforeAll(async () => {
     petstoreSimple = await loadSpec('@readme/oas-examples/3.0/json/petstore-simple.json');
@@ -82,7 +81,7 @@ describe('storage', () => {
 
   describe('#generateIntegrityHash', () => {
     it('should generate an integrity hash for an API definition', () => {
-      expect(Storage.generateIntegrityHash(petstoreSimple as OASDocument)).toBe(
+      expect(Storage.generateIntegrityHash(petstoreSimple)).toBe(
         'sha512-RyezDd7FHtKDkFMZYMHstZ2ZkvBT4IojYcA/3WCw+ItFXLEO4RT/cY6qurqpqOLt6HF+zBEg7YygYzh2Aqf3rA==',
       );
     });

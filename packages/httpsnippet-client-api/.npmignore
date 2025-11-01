@@ -1,6 +1,6 @@
 coverage/
 test/
-.eslint*
+.biome*
 .gitignore
 .prettier*
 vitest.*
