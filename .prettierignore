@@ -11,3 +11,5 @@ packages/httpsnippet-client-api/test/__datasets__/**/output.js
 
 # test-utils
 packages/test-utils/sdks/**/*
+
+/.nx/workspace-data
