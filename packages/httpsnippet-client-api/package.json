@@ -48,7 +48,7 @@
     "@types/content-type": "^1.1.8",
     "@types/stringify-object": "^4.0.5",
     "@vitest/coverage-v8": "^4.0.6",
-    "camelcase": "^8.0.0",
+    "camelcase": "^9.0.0",
     "jest-expect-openapi": "^4.0.0",
     "stringify-object": "^6.0.0",
     "tsup": "^8.5.0",
