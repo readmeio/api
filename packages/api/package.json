@@ -58,7 +58,7 @@
     "js-yaml": "^4.1.0",
     "license": "^1.0.3",
     "lodash-es": "^4.18.1",
-    "oas": "^28.0.0",
+    "oas": "^32.1.15",
     "oas-normalize": "^15.0.0",
     "ora": "^9.0.0",
     "preferred-pm": "^4.0.0",
