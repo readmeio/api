@@ -66,10 +66,10 @@
     "@types/lodash.merge": "^4.6.9",
     "@vitest/coverage-v8": "^4.0.6",
     "get-stream": "^9.0.1",
-    "nock": "^14.0.1",
+    "nock": "^14.0.13",
     "tsup": "^8.5.0",
     "typescript": "^5.8.2",
-    "vitest": "^4.0.6"
+    "vitest": "^4.1.4"
   },
   "prettier": "@readme/standards/prettier"
 }
