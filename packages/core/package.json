@@ -68,7 +68,7 @@
     "get-stream": "^9.0.1",
     "nock": "^14.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.8.2",
+    "typescript": "^6.0.3",
     "vitest": "^4.0.6"
   },
   "prettier": "@readme/standards/prettier"
