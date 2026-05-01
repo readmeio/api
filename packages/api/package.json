@@ -60,11 +60,11 @@
     "lodash-es": "^4.18.1",
     "oas": "^28.0.0",
     "oas-normalize": "^15.0.0",
-    "ora": "^9.0.0",
+    "ora": "^9.4.0",
     "preferred-pm": "^4.0.0",
     "prompts": "^2.4.2",
-    "semver": "^7.3.8",
-    "ssri": "^13.0.0",
+    "semver": "^7.7.4",
+    "ssri": "^13.0.1",
     "ts-morph": "^28.0.0",
     "update-notifier": "^7.0.0",
     "uslug": "^1.0.4",
@@ -85,14 +85,14 @@
     "@vitest/coverage-v8": "^4.0.6",
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.1",
-    "nock": "^14.0.1",
+    "nock": "^14.0.14",
     "openapi-types": "^12.1.3",
     "tsup": "^8.5.0",
     "tsx": "^4.19.1",
     "type-fest": "^5.0.1",
     "typescript": "^5.8.2",
     "unique-temp-dir": "^1.0.0",
-    "vitest": "^4.0.6"
+    "vitest": "^4.1.5"
   },
   "prettier": "@readme/standards/prettier"
 }
