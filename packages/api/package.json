@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@api/test-utils": "file:../test-utils",
-    "@readme/oas-examples": "^7.0.0",
+    "@readme/oas-examples": "^8.2.1",
     "@readme/oas-to-har": "^28.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/lodash-es": "^4.17.12",
