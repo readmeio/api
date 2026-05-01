@@ -44,7 +44,7 @@
     "@readme/httpsnippet": "^11.0.0"
   },
   "devDependencies": {
-    "@readme/oas-examples": "^7.0.0",
+    "@readme/oas-examples": "^8.2.1",
     "@types/content-type": "^1.1.8",
     "@types/stringify-object": "^4.0.5",
     "@vitest/coverage-v8": "^4.0.6",
