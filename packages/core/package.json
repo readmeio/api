@@ -46,7 +46,7 @@
     "test": "echo 'Please run tests from the root!' && exit 1"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^28.0.0",
+    "@readme/oas-to-har": "^33.1.2",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^11.0.1",
