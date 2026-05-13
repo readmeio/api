@@ -2,10 +2,32 @@
   "name": "api",
   "version": "7.0.0-beta.16",
   "description": "Magical SDK generation from an OpenAPI definition 🪄",
-  "type": "module",
+  "keywords": [
+    "api",
+    "openapi",
+    "sdk",
+    "swagger"
+  ],
+  "homepage": "https://api.readme.dev",
+  "bugs": {
+    "url": "https://github.com/readmeio/api/issues"
+  },
+  "license": "MIT",
+  "author": "Jon Ursenbach <jon@readme.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readmeio/api.git",
+    "directory": "packages/api"
+  },
   "bin": {
     "api": "bin/api.js"
   },
+  "files": [
+    "dist",
+    "legacy-require-handler.**",
+    "schema.json"
+  ],
+  "type": "module",
   "main": "legacy-require-handler.cjs",
   "scripts": {
     "attw": "attw --pack --format ascii --profile node16",
@@ -21,31 +43,6 @@
     "test:smoke": "vitest --config=vitest-smoketest.config.ts",
     "version": "npm run build:versioned-files && git add schema.json src/packageInfo.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/readmeio/api.git",
-    "directory": "packages/api"
-  },
-  "homepage": "https://api.readme.dev",
-  "bugs": {
-    "url": "https://github.com/readmeio/api/issues"
-  },
-  "author": "Jon Ursenbach <jon@readme.io>",
-  "license": "MIT",
-  "engines": {
-    "node": ">=20.10.0"
-  },
-  "files": [
-    "dist",
-    "legacy-require-handler.**",
-    "schema.json"
-  ],
-  "keywords": [
-    "api",
-    "openapi",
-    "sdk",
-    "swagger"
-  ],
   "dependencies": {
     "@readme/api-core": "file:../core",
     "chalk": "^5.3.0",
@@ -93,5 +90,8 @@
     "typescript": "^5.8.2",
     "unique-temp-dir": "^1.0.0",
     "vitest": "^4.1.6"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   }
 }

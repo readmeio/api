@@ -1,6 +1,13 @@
 {
   "name": "api-monorepo",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readmeio/api.git"
+  },
+  "workspaces": [
+    "./packages/*"
+  ],
   "type": "module",
   "scripts": {
     "alex": "alex .",
@@ -18,16 +25,6 @@
     "test:smoke": "npm run test:smoke --workspace=packages/api",
     "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/readmeio/api.git"
-  },
-  "engines": {
-    "node": ">=20.10.0"
-  },
-  "workspaces": [
-    "./packages/*"
-  ],
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.1",
     "@readme/oxlint-config": "^1.3.1",
@@ -39,5 +36,8 @@
     "oxfmt": "^0.49.0",
     "oxlint": "^1.64.0",
     "tsup": "^8.4.0"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   }
 }

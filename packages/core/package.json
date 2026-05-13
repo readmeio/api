@@ -2,8 +2,22 @@
   "name": "@readme/api-core",
   "version": "7.0.0-beta.16",
   "description": "The magic behind `api` 🧙",
-  "sideEffects": false,
+  "homepage": "https://api.readme.dev",
+  "bugs": {
+    "url": "https://github.com/readmeio/api/issues"
+  },
+  "license": "MIT",
+  "author": "Jon Ursenbach <jon@readme.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/readmeio/api.git",
+    "directory": "packages/core"
+  },
   "type": "module",
+  "sideEffects": false,
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.cts",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
@@ -23,9 +37,6 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.cts",
   "scripts": {
     "attw": "attw --pack --format ascii --profile node16",
     "build": "tsup",
@@ -33,20 +44,6 @@
     "prebuild": "rm -rf dist/",
     "prepack": "npm run build",
     "test": "echo 'Please run tests from the root!' && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/readmeio/api.git",
-    "directory": "packages/core"
-  },
-  "homepage": "https://api.readme.dev",
-  "bugs": {
-    "url": "https://github.com/readmeio/api/issues"
-  },
-  "author": "Jon Ursenbach <jon@readme.io>",
-  "license": "MIT",
-  "engines": {
-    "node": ">=20.10.0"
   },
   "dependencies": {
     "@readme/oas-to-har": "^28.0.0",
@@ -70,5 +67,8 @@
     "tsup": "^8.5.0",
     "typescript": "^5.8.2",
     "vitest": "^4.1.6"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   }
 }

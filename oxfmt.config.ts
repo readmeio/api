@@ -6,6 +6,11 @@ export default defineConfig(
     sortImports: {
       ...oxfmtConfig.sortImports,
     },
-    ignorePatterns: ['coverage/', 'dist/', 'packages/httpsnippet-client-api/test/__datasets__/**/output.js'],
+    ignorePatterns: [
+      'coverage/',
+      'dist/',
+      'packages/httpsnippet-client-api/test/__datasets__/**/index.ts',
+      'packages/httpsnippet-client-api/test/__datasets__/**/output.js',
+    ],
   }),
 );
