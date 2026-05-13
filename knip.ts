@@ -9,10 +9,17 @@ const config: KnipConfig = {
   ignoreDependencies: [
     '@vitest/coverage-v8', // used by vitest --coverage
     'conventional-changelog-cli', // used by `npm version`
+    'eslint-plugin-readme', // This is used in our Oxlint config through another dependency.
     'har-format', // this is loaded via `@types/har-format`
     'vitest', // installed in individual packages
   ],
   ignoreBinaries: ['vitest'],
+  oxfmt: {
+    config: ['oxfmt.config.ts'],
+  },
+  oxlint: {
+    config: ['oxlint.config.ts'],
+  },
   workspaces: {
     'packages/test-utils': {
       entry: ['nock-mocks.ts'],
