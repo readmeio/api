@@ -10,7 +10,6 @@
   ],
   "type": "module",
   "scripts": {
-    "alex": "alex .",
     "attw": "npx lerna run attw --stream",
     "build": "lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
@@ -29,7 +28,6 @@
     "@arethetypeswrong/cli": "^0.18.1",
     "@readme/oxlint-config": "^1.3.1",
     "@tsconfig/node20": "^20.1.4",
-    "alex": "^11.0.1",
     "conventional-changelog-cli": "^5.0.0",
     "knip": "^6.13.1",
     "lerna": "^9.0.3",
