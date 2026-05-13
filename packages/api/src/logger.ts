@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noConsole: This is a CLI logger utility. */
+// oxlint-disable no-console -- This is a CLI logger utility.
 import type { Options as OraOptions } from 'ora';
 
 import chalk from 'chalk';

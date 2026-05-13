@@ -1,3 +1,4 @@
+// oxlint-disable typescript/no-empty-object-type -- This is the correct typing.
 import type { ParameterObject } from 'oas/types';
 
 import caseless from 'caseless';
@@ -26,7 +27,6 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
-  // biome-ignore lint/suspicious/noExplicitAny: This is the correct typing.
   interface Assertion<T = any> extends CustomMatchers<T> {}
   interface AsymmetricMatchersContaining extends CustomMatchers {}
 }

@@ -6,7 +6,6 @@ export default async function parseResponse<HTTPStatus extends number = number>(
 
   const responseBody = await response.clone().text();
 
-  // biome-ignore lint/suspicious/noExplicitAny: We don't know what this is.
   let data: any = responseBody;
   if (isJSON) {
     try {

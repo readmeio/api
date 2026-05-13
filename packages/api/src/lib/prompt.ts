@@ -1,3 +1,4 @@
+// oxlint-disable no-param-reassign
 import prompts from 'prompts';
 
 import isCI from './isCI.js';
@@ -13,22 +14,6 @@ export default async function promptTerminal<T extends string = string>(
   questions: prompts.PromptObject<T> | prompts.PromptObject<T>[],
   options?: prompts.Options,
 ) {
-  const enableTerminalCursor = () => {
-    process.stdout.write('\x1B[?25h');
-  };
-
-  /**
-   * The CTRL+C handler discussed above.
-   * @see {@link https://github.com/terkelg/prompts#optionsoncancel}
-   */
-  const onCancel = () => {
-    // If we don't re-enable the terminal cursor before exiting the program, the cursor will
-    // remain hidden.
-    enableTerminalCursor();
-    process.stdout.write('\n');
-    process.exit(1);
-  };
-
   /**
    * Runs a check before every prompt renders to make sure that
    * prompt is not being run in a CI environment.
@@ -47,11 +32,23 @@ export default async function promptTerminal<T extends string = string>(
   }
 
   if (Array.isArray(questions)) {
-    // biome-ignore lint/style/noParameterAssign: We're mutating this parameter on purpose.
     questions = questions.map(question => ({ onRender, ...question }));
   } else {
     questions.onRender = onRender;
   }
 
-  return prompts(questions, { onCancel, ...options });
+  return prompts(questions, {
+    /**
+     * The CTRL+C handler discussed above.
+     * @see {@link https://github.com/terkelg/prompts#optionsoncancel}
+     */
+    onCancel: () => {
+      // If we don't re-enable the terminal cursor before exiting the program, the cursor will
+      // remain hidden.
+      process.stdout.write('\x1B[?25h');
+      process.stdout.write('\n');
+      process.exit(1);
+    },
+    ...options,
+  });
 }

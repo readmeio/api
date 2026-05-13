@@ -1,3 +1,4 @@
+// oxlint-disable no-param-reassign -- We're intentionally mutating these parameters.
 import type { ReadStream } from 'node:fs';
 import type { Operation } from 'oas/operation';
 import type { DataForHAR, ParameterObject, SchemaObject } from 'oas/types';
@@ -39,7 +40,6 @@ function digestParameters(parameters: ParameterObject[]): Record<string, Paramet
 }
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_isempty
-// biome-ignore lint/suspicious/noExplicitAny: We don't know what this is.
 function isEmpty(obj: any) {
   return [Object, Array].includes(obj?.constructor) && !Object.entries(obj || {}).length;
 }
@@ -95,6 +95,7 @@ async function processFile(
             // We also can't really regex to see if `file` *looks*` like a path because one should be
             // able to pass in a relative `owlbert.png` (instead of `./owlbert.png`) and though that
             // doesn't *look* like a path, it is one that should still work.
+            // oxlint-disable-next-line unicorn/no-useless-undefined
             return resolve(undefined);
           }
 
@@ -161,7 +162,6 @@ export default async function prepareParams(
    *
    * @see {@link https://github.com/readmeio/api/issues/449}
    */
-  // biome-ignore lint/style/noParameterAssign: We're intentionally mutating the parameter.
   metadata = removeUndefinedObjects(metadata);
 
   if (!jsonSchema && (body !== undefined || metadata !== undefined)) {
@@ -235,11 +235,9 @@ export default async function prepareParams(
       // If more than 25% of the body intersects with the parameters that we've got on hand, then
       // we should treat it as a metadata object and organize into parameters.
       if (intersection && intersection / Object.keys(body as NonNullable<unknown>).length > 0.25) {
-        // biome-ignore-start lint/style/noParameterAssign: We're intentionally mutating the parameter.
         metadataIntersected = true;
         metadata = merge(params.body, body) as Record<string, unknown>;
         body = undefined;
-        // biome-ignore-end lint/style/noParameterAssign: end
       } else {
         // For all other cases, we should just treat the supplied body as a body.
         params.body = merge(params.body, body);
@@ -323,7 +321,6 @@ export default async function prepareParams(
     if (!('query' in params)) params.query = {};
 
     Object.entries(digestedParameters).forEach(([paramName, param]) => {
-      // biome-ignore lint/suspicious/noExplicitAny: We don't know what this is yet.
       let value: any;
       let metadataHeaderParam: string | undefined;
       if (typeof metadata === 'object' && !isEmpty(metadata)) {

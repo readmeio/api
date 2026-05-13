@@ -1,6 +1,6 @@
-import type { OASDocument } from 'oas/types';
 import type { SupportedLanguage } from './codegen/factory.js';
 import type { Lockfile, LockfileAPI } from './lockfileSchema.js';
+import type { OASDocument } from 'oas/types';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -102,6 +102,7 @@ export default class Storage {
    * @internal
    */
   static async reset() {
+    // oxlint-disable-next-line unicorn/consistent-function-scoping
     const noop = () => {
       // If any of these file and directory removals fail we don't need to throw any errors because
       // this method is only used internally in unit tests.
@@ -248,13 +249,11 @@ export default class Storage {
     return entry?.language || SupportedLanguages.JS;
   }
 
-  getPackageName() {
+  getPackageName(): string | undefined {
     const entry = this.getFromLockfile();
     if (entry?.private) {
       return `@api/${entry.identifier}`;
     }
-
-    return undefined;
   }
 
   getIdentifierStorageDir() {
@@ -276,7 +275,7 @@ export default class Storage {
     try {
       return JSON.parse(file);
     } catch (err) {
-      throw new Error(`Sorry we were unable to parse JSON in ${filePath}. Reason: ${err.message}`);
+      throw new Error(`Sorry we were unable to parse JSON in ${filePath}. Reason: ${err.message}`, { cause: err });
     }
   }
 

@@ -1,3 +1,4 @@
+import type { InstallerOptions } from '../../factory.js';
 import type { ExecaReturnValue } from 'execa';
 import type Oas from 'oas';
 import type { Operation } from 'oas/operation';
@@ -15,7 +16,6 @@ import type {
 } from 'ts-morph';
 import type { Options } from 'tsup';
 import type { JsonObject, PackageJson, TsConfigJson } from 'type-fest';
-import type { InstallerOptions } from '../../factory.js';
 
 import path from 'node:path';
 
@@ -32,6 +32,7 @@ import logger from '../../../logger.js';
 import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
+
 import { docblockEscape, generateTypeName, wordWrap } from './util.js';
 
 interface OperationTypeHousing {
@@ -158,6 +159,11 @@ export default class TSGenerator extends CodeGenerator {
     this.schemas = {};
   }
 
+  private getInstallCommands(pm: string, dryRun?: boolean): string[] {
+    const baseCommand = pm === 'npm' ? 'install' : 'add';
+    return [baseCommand, dryRun ? '--dry-run' : ''].filter(Boolean);
+  }
+
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
@@ -177,11 +183,6 @@ export default class TSGenerator extends CodeGenerator {
       handleExecFailure(err, options);
     };
 
-    const getInstallCommands = (pm: string, dryRun?: boolean): string[] => {
-      const baseCommand = pm === 'npm' ? 'install' : 'add';
-      return [baseCommand, dryRun ? '--dry-run' : ''].filter(Boolean);
-    };
-
     try {
       if (!['npm', 'bun'].includes(packageManager)) {
         // install internal dependencies first
@@ -189,7 +190,7 @@ export default class TSGenerator extends CodeGenerator {
         await execa(packageManager, ['install'], { cwd: installDir });
       }
 
-      const installCommand = getInstallCommands(packageManager, opts.dryRun);
+      const installCommand = this.getInstallCommands(packageManager, opts.dryRun);
       const result = await execa(packageManager, [...installCommand, installDir]);
 
       if (['yarn', 'bun'].includes(packageManager)) {
@@ -271,8 +272,9 @@ export default class TSGenerator extends CodeGenerator {
         ?.replaceWithText("import type { ConfigOptions, FetchResponse } from '@readme/api-core/types';");
     }
 
-    return [
-      ...this.project.getSourceFiles().map(sourceFile => {
+    return this.project
+      .getSourceFiles()
+      .map(sourceFile => {
         // `getFilePath` will always return a string that contains a preceeding directory separator
         // however when we're creating these codegen'd files that may cause us to create that file
         // in the root directory (because it's preceeded by a `/`). We don't want that to happen so
@@ -292,8 +294,8 @@ export default class TSGenerator extends CodeGenerator {
         return {
           [filePath]: sourceFile.getFullText(),
         };
-      }),
-    ].reduce((prev, next) => Object.assign(prev, next));
+      })
+      .reduce((prev, next) => Object.assign(prev, next));
   }
 
   async getExampleCodeSnippet() {
@@ -1153,7 +1155,7 @@ Generated at ${createdAt}
   private prepareResponseTypesForOperation(operation: Operation, operationId: string) {
     const responseStatusCodes = operation.getResponseStatusCodes();
     if (!responseStatusCodes.length) {
-      return undefined;
+      return;
     }
 
     const schemas = responseStatusCodes

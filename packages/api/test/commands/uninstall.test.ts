@@ -7,7 +7,6 @@ import prompts from 'prompts';
 import uniqueTempDir from 'unique-temp-dir';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// biome-ignore lint/performance/noNamespaceImport: We're loading in the namespace in order to mock it.
 import * as codegenFactoryModule from '../../src/codegen/factory.js';
 import { SupportedLanguages } from '../../src/codegen/factory.js';
 import installCmd from '../../src/commands/uninstall.js';

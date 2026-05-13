@@ -1,6 +1,4 @@
 coverage/
 test/
-.biome*
 .gitignore
-.prettier*
 vitest.*

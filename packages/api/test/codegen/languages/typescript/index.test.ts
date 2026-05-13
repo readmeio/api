@@ -1,3 +1,4 @@
+import type { OASDocument } from 'oas/types';
 import type { MockInstance } from 'vitest';
 
 import fs from 'node:fs/promises';
@@ -13,11 +14,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SupportedLanguages } from '../../../../src/codegen/factory.js';
 import TSGenerator from '../../../../src/codegen/languages/typescript/index.js';
-// biome-ignore lint/performance/noNamespaceImport: We're loading in the namespacein order to mock it.
 import * as packageInfo from '../../../../src/packageInfo.js';
 import Storage from '../../../../src/storage.js';
 
-async function loadSpec(spec: string) {
+function loadSpec(spec: string): Promise<OASDocument> {
   return import(spec).then(({ default: data }) => JSON.stringify(data)).then(JSON.parse);
 }
 
@@ -61,7 +61,7 @@ function assertSDKFixture(file: string, fixture: string) {
         sortedActualFiles.map(actualFileName => {
           if (!expectedFiles.includes(actualFileName)) {
             const actualFilePath = path.join(dir, actualFileName);
-            // biome-ignore lint/suspicious/noConsole: Debug when regenerating fixtures.
+            // oxlint-disable-next-line no-console -- Debug when regenerating fixtures.
             console.info('[creating sdk fixture]', actualFilePath);
             return fs.writeFile(actualFilePath, actualFiles[actualFileName]);
           }
@@ -80,7 +80,7 @@ function assertSDKFixture(file: string, fixture: string) {
 
         return fs.readFile(expectedFilePath, 'utf8').then(async expected => {
           if (actual !== expected && process.env.UPDATE_FIXTURES) {
-            // biome-ignore lint/suspicious/noConsole: Debug when regenerating fixtures.
+            // oxlint-disable-next-line no-console -- Debug when regenerating fixtures.
             console.info('[sdk fixture updated]', expectedFilePath);
             await fs.writeFile(expectedFilePath, actual);
             return;
