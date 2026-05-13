@@ -1,8 +1,8 @@
 import type { OASDocument } from 'oas/types';
 
 import authQuirksSpec from '@api/test-utils/definitions/auth-quirks.json' with { type: 'json' };
-import securitySpec from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
 import securityMultipleSpec from '@readme/oas-examples/3.0/json/security-multiple.json' with { type: 'json' };
+import securitySpec from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
 import usptoSpec from '@readme/oas-examples/3.0/json/uspto.json' with { type: 'json' };
 import Oas from 'oas';
 import { beforeAll, describe, expect, it } from 'vitest';
@@ -12,11 +12,11 @@ import prepareAuth from '../../src/lib/prepareAuth.js';
 let oas: Oas;
 
 describe('#prepareAuth()', () => {
-  beforeAll(async () => {
+  beforeAll(() => {
     oas = Oas.init(structuredClone(securitySpec));
   });
 
-  it('should not do anything if the operation has no auth', async () => {
+  it('should not do anything if the operation has no auth', () => {
     const uspto = Oas.init(structuredClone(usptoSpec));
     const operation = uspto.operation('/', 'get');
     const authKeys = ['12345'];
@@ -169,7 +169,7 @@ describe('#prepareAuth()', () => {
     let authQuirksOas: OASDocument;
     let securityMultipleOas: OASDocument;
 
-    beforeAll(async () => {
+    beforeAll(() => {
       authQuirksOas = structuredClone(authQuirksSpec) as unknown as OASDocument;
       securityMultipleOas = structuredClone(securityMultipleSpec) as unknown as OASDocument;
     });

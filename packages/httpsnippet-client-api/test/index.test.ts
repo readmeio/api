@@ -1,6 +1,6 @@
+import type { SnippetMock } from './utils.js';
 import type { Request } from '@readme/httpsnippet';
 import type { ClientPlugin } from '@readme/httpsnippet/targets';
-import type { SnippetMock } from './utils.js';
 
 import { readdirSync } from 'node:fs';
 import fs from 'node:fs/promises';

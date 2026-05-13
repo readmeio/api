@@ -1,7 +1,7 @@
-import type Oas from 'oas';
-import type { OpenAPIV3_1 } from 'openapi-types';
 import type Storage from '../storage.js';
 import type { InstallerOptions } from './factory.js';
+import type Oas from 'oas';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 import { findLicense } from 'license';
 
@@ -135,6 +135,7 @@ export default abstract class CodeGenerator {
    *
    * @see {@link https://github.com/microsoft/TypeScript/issues/34516}
    */
+  // oxlint-disable-next-line no-unused-vars -- This is an abstract class.
   static async uninstall(storage: Storage, opts?: InstallerOptions): Promise<void> {
     throw new TypeError('The uninstallation step for this language has not been implemented');
   }

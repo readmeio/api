@@ -2,6 +2,7 @@ import type { OASDocument } from 'oas/types';
 
 import assert from 'node:assert';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import readmeLegacy from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 import nock from 'nock';
@@ -12,7 +13,7 @@ import Fetcher from '../src/fetcher.js';
 let readmeSpec: OASDocument;
 
 describe('fetcher', () => {
-  beforeAll(async () => {
+  beforeAll(() => {
     readmeSpec = structuredClone(readmeLegacy) as OASDocument;
   });
 
@@ -211,7 +212,7 @@ describe('fetcher', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const fetcher = new Fetcher(`${__dirname}/../../test-utils/definitions/simple.json`);
+        const fetcher = new Fetcher(path.join(__dirname, '/../../test-utils/definitions/simple.json'));
 
         await expect(fetcher.load()).resolves.toHaveProperty('info', {
           version: '1.0.0',

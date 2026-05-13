@@ -2,8 +2,8 @@ import assert from 'node:assert';
 
 import { responses as mockResponse } from '@api/test-utils';
 import fileUploadsSpec from '@readme/oas-examples/3.0/json/file-uploads.json' with { type: 'json' };
-import petstoreSpec from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
 import petstoreExpandedSpec from '@readme/oas-examples/3.0/json/petstore-expanded.json' with { type: 'json' };
+import petstoreSpec from '@readme/oas-examples/3.0/json/petstore.json' with { type: 'json' };
 import readmeSpec from '@readme/oas-examples/3.0/json/readme-legacy.json' with { type: 'json' };
 import securitySpec from '@readme/oas-examples/3.0/json/security.json' with { type: 'json' };
 import serverVariablesSpec from '@readme/oas-examples/3.0/json/server-variables.json' with { type: 'json' };
@@ -30,7 +30,7 @@ describe('APICore', () => {
     name: 'Buster',
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     fileUploads = new APICore(fileUploadsSpec);
     parametersStyle = new APICore(parametersStyleSpec);
     petstore = new APICore(petstoreExpandedSpec);
@@ -352,7 +352,7 @@ describe('APICore', () => {
     describe('timeout', () => {
       let petstoreTimeout: APICore;
 
-      beforeEach(async () => {
+      beforeEach(() => {
         petstoreTimeout = new APICore(petstoreSpec);
       });
 

@@ -1,49 +1,41 @@
 {
   "name": "api-monorepo",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readmeio/api.git"
+  },
+  "workspaces": [
+    "./packages/*"
+  ],
   "type": "module",
   "scripts": {
-    "alex": "alex .",
     "attw": "npx lerna run attw --stream",
     "build": "lerna run build --stream",
     "build-docs": "node bin/build-markdown.js",
     "clean": "lerna clean",
-    "format": "npm run format:prettier && npm run format:js",
-    "format:js": "biome check --write",
-    "format:prettier": "prettier --check --write .",
-    "lint": "npm run lint:types && npm run lint:js && npm run prettier",
-    "lint:deadcode": "knip",
-    "lint:js": "biome check",
+    "format": "npx oxlint --fix && npx oxfmt --write",
+    "lint": "npm run lint:types && npx oxlint && npx oxfmt --check && npm run lint:dead-code",
+    "lint:dead-code": "knip",
     "lint:types": "npm run lint:types --if-present --workspaces",
-    "prettier": "prettier --check .",
-    "prettier:write": "prettier --check --write .",
     "publish": "lerna publish",
     "pretest": "npm run build",
     "test": "npx vitest run --coverage",
     "test:smoke": "npm run test:smoke --workspace=packages/api",
     "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/readmeio/api.git"
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.1",
+    "@readme/oxlint-config": "^1.3.1",
+    "@tsconfig/node20": "^20.1.4",
+    "conventional-changelog-cli": "^5.0.0",
+    "knip": "^6.13.1",
+    "lerna": "^9.0.3",
+    "oxfmt": "^0.49.0",
+    "oxlint": "^1.64.0",
+    "tsup": "^8.4.0"
   },
   "engines": {
     "node": ">=20.10.0"
-  },
-  "workspaces": [
-    "./packages/*"
-  ],
-  "prettier": "@readme/standards/prettier",
-  "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.1",
-    "@biomejs/biome": "^2.3.2",
-    "@readme/standards": "^2.4.0",
-    "@tsconfig/node20": "^20.1.4",
-    "alex": "^11.0.1",
-    "conventional-changelog-cli": "^5.0.0",
-    "knip": "^6.5.0",
-    "lerna": "^9.0.3",
-    "prettier": "^3.5.1",
-    "tsup": "^8.4.0"
   }
 }

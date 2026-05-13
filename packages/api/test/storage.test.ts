@@ -20,7 +20,7 @@ describe('storage', () => {
   let petstoreSimple: OASDocument;
   let resetStorage: boolean;
 
-  beforeAll(async () => {
+  beforeAll(() => {
     petstoreSimple = structuredClone(petstore) as OASDocument;
   });
 
@@ -137,6 +137,7 @@ describe('storage', () => {
       nock('https://dash.readme.com').get('/api/v1/api-registry/n6kvf10vakpemvplx').reply(200, petstoreSimple);
 
       // `ajv` has funky types in ESM environments. https://github.com/ajv-validator/ajv/issues/2047
+      // oxlint-disable-next-line new-cap
       const ajv = new Ajv.default();
       addFormats.default(ajv);
 
@@ -413,7 +414,7 @@ describe('storage', () => {
       });
 
       it('should be able to handle a relative path', async () => {
-        const file = `${__dirname}/../../test-utils/definitions/simple.json`;
+        const file = path.join(__dirname, '/../../test-utils/definitions/simple.json');
         const storage = new Storage(file, SupportedLanguages.JS, 'relative-path');
 
         expect(storage.isInLockfile()).toBe(false);

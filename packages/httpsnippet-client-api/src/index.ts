@@ -22,10 +22,10 @@ const registryUUIDRegex = /^@(?<project>[a-zA-Z0-9-_]+)(\/?(?<version>.+))?#(?<u
 /**
  * @note This function also exists in `api/fetcher`.
  */
-function getProjectPrefixFromRegistryUUID(uri: string) {
+function getProjectPrefixFromRegistryUUID(uri: string): string | undefined {
   const matches = uri.match(registryUUIDRegex);
   if (!matches) {
-    return undefined;
+    return;
   }
 
   return matches.groups?.project;
@@ -303,7 +303,6 @@ const client: Client<APIOptions> = {
       }
     }
 
-    // biome-ignore lint/suspicious/noExplicitAny: This is fine for now until we have stricter types.
     let body: any;
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':

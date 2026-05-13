@@ -3,7 +3,7 @@ import type { OASDocument } from 'oas/types';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import yaml from 'js-yaml';
+import { load as loadYAML } from 'js-yaml';
 import OASNormalize from 'oas-normalize';
 
 export default class Fetcher {
@@ -53,7 +53,7 @@ export default class Fetcher {
   static getProjectPrefixFromRegistryUUID(uri: string) {
     const matches = uri.match(Fetcher.registryUUIDRegex);
     if (!matches) {
-      return undefined;
+      return;
     }
 
     return matches.groups?.project;
@@ -92,7 +92,7 @@ export default class Fetcher {
 
       if (res.headers.get('content-type') === 'application/yaml' || /\.(yaml|yml)/.test(url)) {
         return res.text().then(text => {
-          return yaml.load(text);
+          return loadYAML(text);
         });
       }
 
@@ -112,13 +112,13 @@ export default class Fetcher {
 
     return Promise.resolve(fs.readFileSync(file, 'utf8')).then((res: string) => {
       if (/\.(yaml|yml)/.test(file)) {
-        return yaml.load(res);
+        return loadYAML(res);
       }
 
       try {
         return JSON.parse(res);
       } catch (err) {
-        throw new Error(`Sorry, we were unable to parse JSON from ${file}. Reason: ${err.message}`);
+        throw new Error(`Sorry, we were unable to parse JSON from ${file}. Reason: ${err.message}`, { cause: err });
       }
     });
   }
