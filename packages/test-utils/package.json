@@ -8,8 +8,8 @@
   "dependencies": {
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
-    "nock": "^14.0.1",
-    "vitest": "^4.1.6"
+    "nock": "^14.0.15",
+    "vitest": "^4.1.8"
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",
