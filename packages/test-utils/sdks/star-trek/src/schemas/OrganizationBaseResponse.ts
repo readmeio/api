@@ -15,6 +15,7 @@ const OrganizationBaseResponse = {
     }
   },
   "title": "OrganizationBaseResponse",
-  "x-readme-ref-name": "OrganizationBaseResponse"
+  "x-readme-ref-name": "OrganizationBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default OrganizationBaseResponse

@@ -2,11 +2,11 @@ const PostAccountsAccountIdApps = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "account_id": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "The account ID of the account in which to create the application."
           }
         },

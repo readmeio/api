@@ -15,6 +15,7 @@ const OccupationBaseResponse = {
     }
   },
   "title": "OccupationBaseResponse",
-  "x-readme-ref-name": "OccupationBaseResponse"
+  "x-readme-ref-name": "OccupationBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default OccupationBaseResponse

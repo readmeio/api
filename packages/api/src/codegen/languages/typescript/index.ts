@@ -21,8 +21,9 @@ import path from 'node:path';
 
 import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
+import traverse from 'json-schema-traverse';
 import { getLicense } from 'license';
-import { setWith } from 'lodash-es';
+import { get, setWith } from 'lodash-es';
 import preferredPM from 'preferred-pm';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
@@ -33,7 +34,7 @@ import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
 
-import { docblockEscape, generateTypeName, wordWrap } from './util.js';
+import { docblockEscape, generateTypeName, jsonPointerToPath, wordWrap } from './util.js';
 
 interface OperationTypeHousing {
   operation: Operation;
@@ -1103,19 +1104,6 @@ Generated at ${createdAt}
     const schemas = operation.getParametersAsJSONSchema({
       includeDiscriminatorMappingRefs: false,
       mergeIntoBodyAndMetadata: true,
-      retainDeprecatedProperties: true,
-      transformer: (s: SchemaObject) => {
-        // As our schemas are dereferenced in the `oas` library we don't want to pollute our
-        // codegen'd schemas file with duplicate schemas.
-        if ('x-readme-ref-name' in s && typeof s['x-readme-ref-name'] !== 'undefined') {
-          const typeName = generateTypeName(s['x-readme-ref-name']);
-          this.addSchemaToExport(s, typeName, typeName);
-
-          return `${REF_PLACEHOLDER}${typeName}` as SchemaObject;
-        }
-
-        return s;
-      },
     });
 
     if (!schemas || !schemas.length) {
@@ -1123,26 +1111,29 @@ Generated at ${createdAt}
     }
 
     const res = schemas
-      .map(param => ({ [param.type]: param.schema }))
+      .map(param => {
+        this.replaceSchemaReferences(param.schema);
+        return { [param.type]: param.schema };
+      })
       .reduce((prev, next) => Object.assign(prev, next));
 
     return Object.entries(res)
       .map(([paramType, schema]: [string, SchemaObject | string]) => {
-        let typeName: string;
+        const componentTypeName = this.getComponentSchemaTypeName(schema);
 
-        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
-          // If this schema is a string and has our conversion prefix then we've already created
-          // a type for it.
-          typeName = schema.replace(REF_PLACEHOLDER, '');
-        } else {
-          typeName = generateTypeName(operationId, paramType, 'param');
-          this.addSchemaToExport(schema as SchemaObject, typeName, `${generateTypeName(operationId)}.${paramType}`);
+        if (componentTypeName) {
+          return {
+            [paramType]: `types.${componentTypeName}`,
+          };
         }
+
+        const paramTypeName = generateTypeName(operationId, paramType, 'param');
+        this.addSchemaToExport(schema as SchemaObject, paramTypeName, `${generateTypeName(operationId)}.${paramType}`);
 
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
           // `types.d.ts`.
-          [paramType]: `types.${typeName}`,
+          [paramType]: `types.${paramTypeName}`,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {}) as Record<'body' | 'formData' | 'metadata', string>;
@@ -1162,55 +1153,54 @@ Generated at ${createdAt}
       .map(status => {
         const schema = operation.getResponseAsJSONSchema(status, {
           includeDiscriminatorMappingRefs: false,
-          transformer: (s: SchemaObject) => {
-            // As our schemas are dereferenced in the `oas` library we don't want to pollute our
-            // codegen'd schemas file with duplicate schemas.
-            if ('x-readme-ref-name' in s && typeof s['x-readme-ref-name'] !== 'undefined') {
-              const typeName = generateTypeName(s['x-readme-ref-name']);
-              this.addSchemaToExport(s, typeName, `${typeName}`);
-
-              return `${REF_PLACEHOLDER}${typeName}` as SchemaObject;
-            }
-
-            return s;
-          },
-          /**
-           * @todo can remove this casting after https://github.com/readmeio/oas/pull/956 is published
-           */
-        }) as SchemaObject[];
+        });
 
         if (!schema) {
           return false;
         }
 
+        const wrapped = schema.shift();
+        if (!wrapped) {
+          return false;
+        }
+
+        const currSchema = wrapped.schema;
+        this.replaceSchemaReferences(currSchema);
+
         return {
-          [status]: schema.shift(),
+          [status]: {
+            description: wrapped.description,
+            schema: currSchema,
+          },
         };
       })
       .reduce((prev, next) => Object.assign(prev, next));
 
     const res = Object.entries(schemas)
       .map(([status, { description, schema }]) => {
-        let typeName: string;
+        let responseTypeName = this.getComponentSchemaTypeName(schema);
 
-        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
-          // If this schema is a string and has our conversion prefix then we've already created
-          // a type for it.
-          typeName = schema.replace(REF_PLACEHOLDER, '');
-        } else {
-          typeName = generateTypeName(operationId, 'response', status);
-
-          // Because `status` will usually be a number here we need to set the pointer for it
-          // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
-          // TypeScript will throw a compilation error.
-          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.response['${status}']`);
+        if (responseTypeName) {
+          return {
+            [status]: {
+              type: `types.${responseTypeName}`,
+              description,
+            },
+          };
         }
+
+        responseTypeName = generateTypeName(operationId, 'response', status);
+
+        // Because `status` will usually be a number here we need to set the pointer for it
+        // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
+        // TypeScript will throw a compilation error.
+        this.addSchemaToExport(schema, responseTypeName, `${generateTypeName(operationId)}.response['${status}']`);
 
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
           // `types.d.ts`.
           [status]: {
-            type: `types.${typeName}`,
+            type: `types.${responseTypeName}`,
             description,
           },
         };
@@ -1231,6 +1221,113 @@ Generated at ${createdAt}
 
     setWith(this.schemas, pointer, schema, Object);
     this.types.set(typeName, `FromSchema<typeof schemas.${pointer}>`);
+  }
+
+  /**
+   * If a schema is a `$ref` component (identified by `x-readme-ref-name`), return its exported
+   * type name.
+   *
+   */
+  private getComponentSchemaTypeName(schema: SchemaObject | string): string | undefined {
+    if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
+      // If this schema is a string and has our conversion prefix then we've already created a type
+      // for it.
+      return schema.replace(REF_PLACEHOLDER, '');
+    }
+
+    if (
+      typeof schema === 'object' &&
+      schema !== null &&
+      'x-readme-ref-name' in schema &&
+      typeof schema['x-readme-ref-name'] === 'string'
+    ) {
+      return generateTypeName(schema['x-readme-ref-name']);
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Walk a schema and replace any nested `x-readme-ref-name` usages with type import placeholders.
+   *
+   * Exported schema files (eg. `Pet.ts`) are stored separately from the schema tree being
+   * traversed (eg. a response wrapper), so replacements must be applied in both places.
+   *
+   */
+  private replaceSchemaReferences(containerSchema: SchemaObject) {
+    const references: {
+      exportTarget?: { relativePath: (string | number)[]; schemaName: string };
+      schemaPath: (string | number)[];
+      typeName: string;
+    }[] = [];
+
+    traverse(containerSchema, {
+      allKeys: true,
+      cb: (s, pointer) => {
+        if ('x-readme-ref-name' in s && typeof s['x-readme-ref-name'] !== 'undefined') {
+          const typeName = generateTypeName(s['x-readme-ref-name']);
+          const schemaPath = jsonPointerToPath(pointer);
+
+          this.addSchemaToExport(s, typeName, typeName);
+
+          references.push({
+            schemaPath,
+            typeName,
+            exportTarget: this.findExportedSchemaAncestor(containerSchema, schemaPath, typeName),
+          });
+        }
+      },
+    });
+
+    references
+      .sort((a, b) => b.schemaPath.length - a.schemaPath.length)
+      .forEach(({ exportTarget, schemaPath, typeName }) => {
+        const placeholder = `${REF_PLACEHOLDER}${typeName}`;
+
+        if (schemaPath.length) {
+          setWith(containerSchema, schemaPath, placeholder, Object);
+        }
+
+        if (exportTarget) {
+          setWith(
+            this.schemas[exportTarget.schemaName] as SchemaObject,
+            exportTarget.relativePath,
+            placeholder,
+            Object,
+          );
+        }
+      });
+  }
+
+  /**
+   * Find the nearest exported schema ancestor for a nested `x-readme-ref-name` node.
+   *
+   */
+  private findExportedSchemaAncestor(
+    containerSchema: SchemaObject,
+    schemaPath: (string | number)[],
+    currentTypeName: string,
+  ): { relativePath: (string | number)[]; schemaName: string } | undefined {
+    for (let i = schemaPath.length; i >= 0; i -= 1) {
+      const node = i === 0 ? containerSchema : get(containerSchema, schemaPath.slice(0, i));
+
+      if (node && typeof node === 'object' && !Array.isArray(node)) {
+        const refName = node['x-readme-ref-name'];
+
+        if (typeof refName !== 'undefined') {
+          const schemaName = generateTypeName(refName);
+
+          if (schemaName !== currentTypeName && schemaName in this.schemas) {
+            return {
+              schemaName,
+              relativePath: schemaPath.slice(i),
+            };
+          }
+        }
+      }
+    }
+
+    return undefined;
   }
 
   /**

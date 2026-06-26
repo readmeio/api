@@ -6,11 +6,11 @@ const GetProductionDoc = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "slug": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "A URL-safe representation of the page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the title \"Getting Started\", enter the slug \"getting-started\"."
           }
         },
@@ -19,6 +19,7 @@ const GetProductionDoc = {
         ]
       },
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "x-readme-version": {
@@ -26,11 +27,9 @@ const GetProductionDoc = {
             "examples": [
               "v3.0"
             ],
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Version number of your docs project, for example, v3.0. By default the main project version is used. To see all valid versions for your docs project call https://docs.readme.com/main/reference/version#getversions."
           }
-        },
-        "required": []
+        }
       }
     ]
   },

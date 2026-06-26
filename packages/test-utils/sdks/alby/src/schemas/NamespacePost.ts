@@ -54,6 +54,7 @@ const NamespacePost = {
   ],
   "type": "object",
   "title": "namespace_post",
-  "x-readme-ref-name": "namespace_post"
+  "x-readme-ref-name": "namespace_post",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default NamespacePost

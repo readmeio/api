@@ -44,6 +44,7 @@ const NamespacePatch = {
   },
   "type": "object",
   "title": "namespace_patch",
-  "x-readme-ref-name": "namespace_patch"
+  "x-readme-ref-name": "namespace_patch",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default NamespacePatch

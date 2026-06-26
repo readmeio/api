@@ -2,16 +2,15 @@ const GetComiccollection = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "uid": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Comic collection unique ID"
           },
           "apiKey": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "API key"
           }
         },

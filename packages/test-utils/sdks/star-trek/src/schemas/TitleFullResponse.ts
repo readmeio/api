@@ -7,6 +7,7 @@ const TitleFullResponse = {
     "title": TitleFull
   },
   "title": "TitleFullResponse",
-  "x-readme-ref-name": "TitleFullResponse"
+  "x-readme-ref-name": "TitleFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TitleFullResponse

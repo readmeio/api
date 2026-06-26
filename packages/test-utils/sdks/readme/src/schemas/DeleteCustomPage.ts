@@ -6,11 +6,11 @@ const DeleteCustomPage = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "slug": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "A URL-safe representation of the page title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the title \"Getting Started\", enter the slug \"getting-started\"."
           }
         },

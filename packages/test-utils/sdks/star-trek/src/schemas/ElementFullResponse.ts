@@ -7,6 +7,7 @@ const ElementFullResponse = {
     "element": ElementFull
   },
   "title": "ElementFullResponse",
-  "x-readme-ref-name": "ElementFullResponse"
+  "x-readme-ref-name": "ElementFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ElementFullResponse

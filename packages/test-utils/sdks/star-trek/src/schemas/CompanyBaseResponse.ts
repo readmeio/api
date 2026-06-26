@@ -15,6 +15,7 @@ const CompanyBaseResponse = {
     }
   },
   "title": "CompanyBaseResponse",
-  "x-readme-ref-name": "CompanyBaseResponse"
+  "x-readme-ref-name": "CompanyBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default CompanyBaseResponse

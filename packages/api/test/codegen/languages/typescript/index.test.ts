@@ -4,7 +4,7 @@ import type { MockInstance } from 'vitest';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { responses as mockResponse } from '@api/test-utils';
+import { dereferenceAPI, responses as mockResponse } from '@api/test-utils';
 import circular from '@readme/oas-examples/3.0/json/circular.json' with { type: 'json' };
 import { execa } from 'execa';
 import nock from 'nock';
@@ -23,8 +23,9 @@ function loadSpec(spec: string): Promise<OASDocument> {
 
 function assertSDKFixture(file: string, fixture: string) {
   return async () => {
-    const oas = await loadSpec(require.resolve(file)).then(Oas.init);
-    await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+    const oas = await loadSpec(require.resolve(file))
+      .then(def => dereferenceAPI(structuredClone(def) as unknown as OASDocument))
+      .then(Oas.init);
 
     const ts = new TSGenerator(oas, file, fixture);
     const actualFiles = await ts.generate();
@@ -86,7 +87,7 @@ function assertSDKFixture(file: string, fixture: string) {
             return;
           }
 
-          expect(actual).toBe(expected);
+          expect(actual, `expected \`${filename}\` to match fixture`).toBe(expected);
         });
       }),
     );
@@ -118,8 +119,9 @@ describe('typescript', () => {
       const logger = vi.fn<() => void>();
 
       const file = require.resolve('@readme/oas-examples/3.0/json/petstore.json');
-      const oas = await loadSpec(file).then(Oas.init);
-      await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+      const oas = await loadSpec(file)
+        .then(def => dereferenceAPI(structuredClone(def) as unknown as OASDocument))
+        .then(Oas.init);
 
       const storage = new Storage(file, SupportedLanguages.JS, 'petstore');
       await storage.load();
@@ -146,7 +148,7 @@ describe('typescript', () => {
        * @fixme
        */
       // expect(logger).toHaveBeenCalledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
-    }, 20000);
+    }, 20_000);
   });
 
   describe('#compile', () => {
@@ -179,7 +181,7 @@ describe('typescript', () => {
 
     it(
       'should work against a very large API definition that has `default` responses',
-      { timeout: 20000 },
+      { timeout: 20_000 },
       assertSDKFixture('@readme/oas-examples/3.0/json/star-trek.json', 'star-trek'),
     );
 
@@ -236,8 +238,7 @@ describe('typescript', () => {
       });
 
       it('should fail on an API definition that contains circular references', async () => {
-        const oas = Oas.init(structuredClone(circular));
-        await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+        const oas = await dereferenceAPI(structuredClone(circular) as unknown as OASDocument).then(Oas.init);
 
         expect(() => {
           return new TSGenerator(oas, 'circular', './circular.json');

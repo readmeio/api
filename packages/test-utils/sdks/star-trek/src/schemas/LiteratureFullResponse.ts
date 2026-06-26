@@ -7,6 +7,7 @@ const LiteratureFullResponse = {
     "literature": LiteratureFull
   },
   "title": "LiteratureFullResponse",
-  "x-readme-ref-name": "LiteratureFullResponse"
+  "x-readme-ref-name": "LiteratureFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default LiteratureFullResponse

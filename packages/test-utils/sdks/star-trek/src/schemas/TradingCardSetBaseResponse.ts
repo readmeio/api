@@ -15,6 +15,7 @@ const TradingCardSetBaseResponse = {
     }
   },
   "title": "TradingCardSetBaseResponse",
-  "x-readme-ref-name": "TradingCardSetBaseResponse"
+  "x-readme-ref-name": "TradingCardSetBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TradingCardSetBaseResponse

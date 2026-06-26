@@ -7,6 +7,7 @@ const BookFullResponse = {
     "book": BookFull
   },
   "title": "BookFullResponse",
-  "x-readme-ref-name": "BookFullResponse"
+  "x-readme-ref-name": "BookFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default BookFullResponse

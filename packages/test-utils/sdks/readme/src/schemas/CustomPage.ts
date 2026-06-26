@@ -28,6 +28,7 @@ const CustomPage = {
     "title"
   ],
   "title": "customPage",
-  "x-readme-ref-name": "customPage"
+  "x-readme-ref-name": "customPage",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default CustomPage

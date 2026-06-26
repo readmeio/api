@@ -66,6 +66,7 @@ const AppPost = {
   ],
   "type": "object",
   "title": "app_post",
-  "x-readme-ref-name": "app_post"
+  "x-readme-ref-name": "app_post",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default AppPost

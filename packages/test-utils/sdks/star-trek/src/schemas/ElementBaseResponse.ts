@@ -15,6 +15,7 @@ const ElementBaseResponse = {
     }
   },
   "title": "ElementBaseResponse",
-  "x-readme-ref-name": "ElementBaseResponse"
+  "x-readme-ref-name": "ElementBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ElementBaseResponse

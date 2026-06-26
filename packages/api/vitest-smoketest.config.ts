@@ -4,6 +4,6 @@ export default defineConfig({
   test: {
     include: ['**/smoketest.test.ts'],
     setupFiles: ['@api/test-utils/vitest.matchers.ts'],
-    testTimeout: 20000,
+    testTimeout: 20_000,
   },
 });

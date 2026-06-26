@@ -7,6 +7,7 @@ const MedicalConditionFullResponse = {
     "medicalCondition": MedicalConditionFull
   },
   "title": "MedicalConditionFullResponse",
-  "x-readme-ref-name": "MedicalConditionFullResponse"
+  "x-readme-ref-name": "MedicalConditionFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MedicalConditionFullResponse

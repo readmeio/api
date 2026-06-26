@@ -1,3 +1,6 @@
+import type { OASDocument } from 'oas/types';
+
+import { dereferenceAPI } from '@api/test-utils';
 /**
  * With this smoketest suite you can run SDK codegen assertions a number of different ways:
  *
@@ -74,8 +77,7 @@ describe('typescript smoketest', () => {
         throw err;
       });
 
-      const oas = Oas.init(spec);
-      await oas.dereference({ preserveRefAsJSONSchemaTitle: true });
+      const oas = await dereferenceAPI(spec as OASDocument).then(Oas.init);
 
       const ts = new TSGenerator(oas, './path/not/needed.json', name);
       const res = await ts.generate();

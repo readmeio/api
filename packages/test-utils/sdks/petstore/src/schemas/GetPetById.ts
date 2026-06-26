@@ -2,12 +2,12 @@ const GetPetById = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "petId": {
             "type": "integer",
             "format": "int64",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "ID of pet to return"
           }
         },

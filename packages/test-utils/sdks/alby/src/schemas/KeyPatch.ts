@@ -29,6 +29,7 @@ const KeyPatch = {
   },
   "type": "object",
   "title": "key_patch",
-  "x-readme-ref-name": "key_patch"
+  "x-readme-ref-name": "key_patch",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default KeyPatch

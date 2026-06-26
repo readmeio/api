@@ -7,6 +7,7 @@ const ComicStripFullResponse = {
     "comicStrip": ComicStripFull
   },
   "title": "ComicStripFullResponse",
-  "x-readme-ref-name": "ComicStripFullResponse"
+  "x-readme-ref-name": "ComicStripFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ComicStripFullResponse

@@ -7,6 +7,7 @@ const SpeciesFullResponse = {
     "species": SpeciesFull
   },
   "title": "SpeciesFullResponse",
-  "x-readme-ref-name": "SpeciesFullResponse"
+  "x-readme-ref-name": "SpeciesFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default SpeciesFullResponse

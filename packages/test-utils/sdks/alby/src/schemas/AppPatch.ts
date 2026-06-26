@@ -63,6 +63,7 @@ const AppPatch = {
   },
   "type": "object",
   "title": "app_patch",
-  "x-readme-ref-name": "app_patch"
+  "x-readme-ref-name": "app_patch",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default AppPatch
