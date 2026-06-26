@@ -1,10 +1,12 @@
 import type { SupportedLanguage } from '../codegen/factory.js';
+import type { OASDocument, SchemaObject } from 'oas/types';
 
 import chalk from 'chalk';
 import { Command, Option } from 'commander';
 import { common, createEmphasize } from 'emphasize';
 import figures from 'figures';
 import Oas from 'oas';
+import OASNormalize from 'oas-normalize';
 import ora from 'ora';
 import uslug from 'uslug';
 
@@ -104,11 +106,35 @@ cmd
         spinner.succeed(spinner.text);
         return res;
       })
-      .then(Oas.init)
       .then(async spec => {
-        await spec.dereference({ preserveRefAsJSONSchemaTitle: true });
-        return spec;
+        // This may result in some data loss if there's already a `title` present, but in the case
+        // where we want to generate code for the API definition (see http://npm.im/api), we'd
+        // prefer to retain original reference name as a title for any generated types.
+        //
+        // This work used to exist within the `oas` library as a `preserveRefAsJSONSchemaTitle`
+        // option but was deprecated and removed in https://github.com/readmeio/oas/pull/1084.
+        if (spec?.components?.schemas && typeof spec.components?.schemas === 'object') {
+          Object.keys(spec.components.schemas).forEach(schemaName => {
+            // oxlint-disable-next-line no-param-reassign, no-unsafe-optional-chaining
+            (spec.components?.schemas?.[schemaName] as SchemaObject).title = schemaName;
+
+            // oxlint-disable-next-line no-param-reassign, no-unsafe-optional-chaining
+            (spec.components?.schemas?.[schemaName] as SchemaObject)['x-readme-ref-name'] = schemaName;
+          });
+        }
+
+        const normalize = new OASNormalize(spec, {
+          parser: {
+            dereference: {
+              circular: 'ignore',
+            },
+          },
+        });
+
+        return normalize.dereference();
       })
+      .then(spec => spec as OASDocument)
+      .then(Oas.init)
       .catch(err => {
         // @todo cleanup installed files
         spinner.fail(spinner.text);
