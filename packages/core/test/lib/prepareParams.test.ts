@@ -1,7 +1,8 @@
-import type { HttpMethods } from 'oas/types';
+import type { HttpMethods, OASDocument } from 'oas/types';
 
 import fs from 'node:fs';
 
+import { dereferenceAPI } from '@api/test-utils';
 import basiqSpec from '@api/test-utils/definitions/basiq.json' with { type: 'json' };
 import nestedDefaultsSpec from '@api/test-utils/definitions/nested-defaults.json' with { type: 'json' };
 import payloadExamples from '@api/test-utils/definitions/payloads.json' with { type: 'json' };
@@ -22,20 +23,13 @@ describe('#prepareParams', () => {
   let usptoSpec: Oas;
 
   beforeEach(async () => {
-    fileUploads = Oas.init(structuredClone(fileUploadsSpec));
-    await fileUploads.dereference();
-
-    readmeSpec = Oas.init(structuredClone(readmeLegacy));
-    await readmeSpec.dereference();
-
-    usptoSpec = Oas.init(structuredClone(uspto));
-    await usptoSpec.dereference();
+    fileUploads = await dereferenceAPI(structuredClone(fileUploadsSpec) as unknown as OASDocument).then(Oas.init);
+    readmeSpec = await dereferenceAPI(structuredClone(readmeLegacy) as unknown as OASDocument).then(Oas.init);
+    usptoSpec = await dereferenceAPI(structuredClone(uspto) as unknown as OASDocument).then(Oas.init);
   });
 
   it('should throw an error if the operation has no parameters or request bodies and a body/metadata was supplied', async () => {
-    const spec = Oas.init(structuredClone(security));
-    await spec.dereference();
-
+    const spec = await dereferenceAPI(structuredClone(security) as unknown as OASDocument).then(Oas.init);
     const operation = spec.operation('/apiKey', 'get');
 
     await expect(prepareParams(operation, {}, {})).rejects.toThrow(
@@ -93,9 +87,7 @@ describe('#prepareParams', () => {
   });
 
   it('should ignore supplied body data if the request has no request body', async () => {
-    const spec = Oas.init(structuredClone(petstore));
-    await spec.dereference();
-
+    const spec = await dereferenceAPI(structuredClone(petstore) as unknown as OASDocument).then(Oas.init);
     const operation = spec.operation('/pet/{petId}', 'get');
 
     const body = [{ name: 'Buster' }];
@@ -109,9 +101,7 @@ describe('#prepareParams', () => {
   });
 
   it('should ignore a supplied second parameter if its an empty object', async () => {
-    const spec = Oas.init(structuredClone(petstore));
-    await spec.dereference();
-
+    const spec = await dereferenceAPI(structuredClone(petstore) as unknown as OASDocument).then(Oas.init);
     const operation = spec.operation('/pet/findByStatus', 'get');
 
     const metadata = {
@@ -354,8 +344,9 @@ describe('#prepareParams', () => {
     let parameterStyle: Oas;
 
     beforeEach(async () => {
-      parameterStyle = Oas.init(structuredClone(parametersStyleSpec));
-      await parameterStyle.dereference();
+      parameterStyle = await dereferenceAPI(structuredClone(parametersStyleSpec) as unknown as OASDocument).then(
+        Oas.init,
+      );
     });
 
     it.each([
@@ -390,9 +381,7 @@ describe('#prepareParams', () => {
 
     describe('quirks', () => {
       it('should not send special headers in body payloads', async () => {
-        const basiq = Oas.init(structuredClone(basiqSpec));
-        await basiq.dereference();
-
+        const basiq = await dereferenceAPI(structuredClone(basiqSpec) as unknown as OASDocument).then(Oas.init);
         const operation = basiq.operation('/token', 'post');
 
         await expect(
@@ -409,9 +398,7 @@ describe('#prepareParams', () => {
       });
 
       it('should not duplicate a supplied header parameter if that header casing matches the spec', async () => {
-        const basiq = Oas.init(structuredClone(basiqSpec));
-        await basiq.dereference();
-
+        const basiq = await dereferenceAPI(structuredClone(basiqSpec) as unknown as OASDocument).then(Oas.init);
         const operation = basiq.operation('/token', 'post');
 
         await expect(
@@ -491,10 +478,9 @@ describe('#prepareParams', () => {
 
   describe('defaults', () => {
     it('should prefill defaults for required body parameters if not supplied', async () => {
-      const oas = Oas.init(structuredClone(nestedDefaultsSpec));
-      await oas.dereference();
-
+      const oas = await dereferenceAPI(structuredClone(nestedDefaultsSpec) as unknown as OASDocument).then(Oas.init);
       const operation = oas.operation('/pet', 'post');
+
       await expect(prepareParams(operation, { id: 404 })).resolves.toStrictEqual({
         body: {
           id: 404,

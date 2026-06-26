@@ -191,8 +191,10 @@ export default async function prepareParams(
     }
   }
 
-  const jsonSchemaDefaults = jsonSchema ? getJSONSchemaDefaults(jsonSchema) : {};
-  const params: DataForHARWithFiles = jsonSchemaDefaults;
+  const params: DataForHARWithFiles = jsonSchema ? getJSONSchemaDefaults(jsonSchema) : {};
+  if (!jsonSchema) {
+    return params;
+  }
 
   // If a body argument was supplied we need to do a bit of work to see if it's actually a body
   // argument or metadata because the library lets you supply either a body, metadata, or body with
