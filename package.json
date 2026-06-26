@@ -10,32 +10,32 @@
   ],
   "type": "module",
   "scripts": {
-    "attw": "npx lerna run attw --stream",
-    "build": "lerna run build --stream",
+    "attw": "turbo run attw --concurrency=1",
+    "build": "turbo run build",
     "build-docs": "node bin/build-markdown.js",
-    "clean": "lerna clean",
     "format": "npx oxlint --fix && npx oxfmt --write",
-    "lint": "npm run lint:types && npx oxlint && npx oxfmt --check && npm run lint:dead-code",
-    "lint:dead-code": "knip",
+    "lint": "knip && npm run lint:types && npx oxlint && npx oxfmt --check",
     "lint:types": "npm run lint:types --if-present --workspaces",
-    "publish": "lerna publish",
+    "prerelease": "npm run build",
     "pretest": "npm run build",
+    "release": "changeset publish",
     "test": "npx vitest run --coverage",
     "test:smoke": "npm run test:smoke --workspace=packages/api",
-    "version": "npx conventional-changelog-cli --pkg lerna.json -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "version-packages": "changeset version"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.1",
+    "@arethetypeswrong/cli": "^0.18.4",
+    "@changesets/cli": "^2.31.0",
     "@readme/oxlint-config": "^1.3.1",
-    "@tsconfig/node20": "^20.1.4",
-    "conventional-changelog-cli": "^5.0.0",
-    "knip": "^6.13.1",
-    "lerna": "^9.0.3",
+    "@tsconfig/node20": "^20.1.9",
+    "knip": "^6.21.0",
     "oxfmt": "^0.49.0",
     "oxlint": "^1.64.0",
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "turbo": "^2.10.0"
   },
   "engines": {
     "node": ">=20.10.0"
-  }
+  },
+  "packageManager": "npm@10.9.4"
 }

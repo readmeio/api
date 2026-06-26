@@ -8,7 +8,6 @@ const config: KnipConfig = {
   ],
   ignoreDependencies: [
     '@vitest/coverage-v8', // used by vitest --coverage
-    'conventional-changelog-cli', // used by `npm version`
     'eslint-plugin-readme', // This is used in our Oxlint config through another dependency.
     'har-format', // this is loaded via `@types/har-format`
     'vitest', // installed in individual packages
