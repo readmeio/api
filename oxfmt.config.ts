@@ -7,6 +7,7 @@ export default defineConfig(
       ...oxfmtConfig.sortImports,
     },
     ignorePatterns: [
+      '.changeset/',
       'coverage/',
       'dist/',
       'packages/api/schema.json',
