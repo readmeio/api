@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { docblockEscape, generateTypeName, jsonPointerToPath, wordWrap } from '../../../../src/codegen/languages/typescript/util.js';
+import {
+  docblockEscape,
+  generateTypeName,
+  jsonPointerToPath,
+  wordWrap,
+} from '../../../../src/codegen/languages/typescript/util.js';
 
 describe('ts codegen utils', () => {
   describe('#docblockEscape', () => {
