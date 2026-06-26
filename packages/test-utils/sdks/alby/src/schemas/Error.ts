@@ -34,6 +34,7 @@ const Error = {
   ],
   "type": "object",
   "title": "error",
-  "x-readme-ref-name": "error"
+  "x-readme-ref-name": "error",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Error

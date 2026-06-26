@@ -15,6 +15,7 @@ const EpisodeBaseResponse = {
     }
   },
   "title": "EpisodeBaseResponse",
-  "x-readme-ref-name": "EpisodeBaseResponse"
+  "x-readme-ref-name": "EpisodeBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default EpisodeBaseResponse

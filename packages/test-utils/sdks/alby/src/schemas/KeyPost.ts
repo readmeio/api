@@ -34,6 +34,7 @@ const KeyPost = {
   ],
   "type": "object",
   "title": "key_post",
-  "x-readme-ref-name": "key_post"
+  "x-readme-ref-name": "key_post",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default KeyPost

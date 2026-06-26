@@ -15,6 +15,7 @@ const MaterialBaseResponse = {
     }
   },
   "title": "MaterialBaseResponse",
-  "x-readme-ref-name": "MaterialBaseResponse"
+  "x-readme-ref-name": "MaterialBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MaterialBaseResponse

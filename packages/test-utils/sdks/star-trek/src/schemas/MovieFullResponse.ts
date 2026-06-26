@@ -7,6 +7,7 @@ const MovieFullResponse = {
     "movie": MovieFull
   },
   "title": "MovieFullResponse",
-  "x-readme-ref-name": "MovieFullResponse"
+  "x-readme-ref-name": "MovieFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MovieFullResponse

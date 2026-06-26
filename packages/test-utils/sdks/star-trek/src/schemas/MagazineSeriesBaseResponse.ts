@@ -15,6 +15,7 @@ const MagazineSeriesBaseResponse = {
     }
   },
   "title": "MagazineSeriesBaseResponse",
-  "x-readme-ref-name": "MagazineSeriesBaseResponse"
+  "x-readme-ref-name": "MagazineSeriesBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MagazineSeriesBaseResponse

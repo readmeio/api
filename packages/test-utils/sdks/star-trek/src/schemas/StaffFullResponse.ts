@@ -7,6 +7,7 @@ const StaffFullResponse = {
     "staff": StaffFull
   },
   "title": "StaffFullResponse",
-  "x-readme-ref-name": "StaffFullResponse"
+  "x-readme-ref-name": "StaffFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default StaffFullResponse

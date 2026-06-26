@@ -94,7 +94,7 @@ export default class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAccountsAccount_idApps(body: types.AppPost, metadata: types.PostAccountsAccountIdAppsMetadataParam): Promise<FetchResponse<201, types.AppResponse>> {
+  postAccountsAccount_idApps(body: types.PostAccountsAccountIdAppsBodyParam, metadata: types.PostAccountsAccountIdAppsMetadataParam): Promise<FetchResponse<201, types.AppResponse>> {
     return this.core.fetch('/accounts/{account_id}/apps', 'post', body, metadata);
   }
 
@@ -121,7 +121,7 @@ export default class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idKeys(body: types.KeyPost, metadata: types.PostAppsAppIdKeysMetadataParam): Promise<FetchResponse<201, types.KeyResponse>> {
+  postAppsApp_idKeys(body: types.PostAppsAppIdKeysBodyParam, metadata: types.PostAppsAppIdKeysMetadataParam): Promise<FetchResponse<201, types.KeyResponse>> {
     return this.core.fetch('/apps/{app_id}/keys', 'post', body, metadata);
   }
 
@@ -137,9 +137,9 @@ export default class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idKeysKey_id(body: types.KeyPatch, metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>>;
+  patchAppsApp_idKeysKey_id(body: types.PatchAppsAppIdKeysKeyIdBodyParam, metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>>;
   patchAppsApp_idKeysKey_id(metadata: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>>;
-  patchAppsApp_idKeysKey_id(body?: types.KeyPatch | types.PatchAppsAppIdKeysKeyIdMetadataParam, metadata?: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>> {
+  patchAppsApp_idKeysKey_id(body?: types.PatchAppsAppIdKeysKeyIdBodyParam | types.PatchAppsAppIdKeysKeyIdMetadataParam, metadata?: types.PatchAppsAppIdKeysKeyIdMetadataParam): Promise<FetchResponse<200, types.KeyResponse>> {
     return this.core.fetch('/apps/{app_id}/keys/{key_id}', 'patch', body, metadata);
   }
 
@@ -180,7 +180,7 @@ export default class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idNamespaces(body: types.NamespacePost, metadata: types.PostAppsAppIdNamespacesMetadataParam): Promise<FetchResponse<201, types.NamespaceResponse>> {
+  postAppsApp_idNamespaces(body: types.PostAppsAppIdNamespacesBodyParam, metadata: types.PostAppsAppIdNamespacesMetadataParam): Promise<FetchResponse<201, types.NamespaceResponse>> {
     return this.core.fetch('/apps/{app_id}/namespaces', 'post', body, metadata);
   }
 
@@ -208,9 +208,9 @@ export default class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idNamespacesNamespace_id(body: types.NamespacePatch, metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>>;
+  patchAppsApp_idNamespacesNamespace_id(body: types.PatchAppsAppIdNamespacesNamespaceIdBodyParam, metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>>;
   patchAppsApp_idNamespacesNamespace_id(metadata: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>>;
-  patchAppsApp_idNamespacesNamespace_id(body?: types.NamespacePatch | types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam, metadata?: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>> {
+  patchAppsApp_idNamespacesNamespace_id(body?: types.PatchAppsAppIdNamespacesNamespaceIdBodyParam | types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam, metadata?: types.PatchAppsAppIdNamespacesNamespaceIdMetadataParam): Promise<FetchResponse<200, types.NamespaceResponse>> {
     return this.core.fetch('/apps/{app_id}/namespaces/{namespace_id}', 'patch', body, metadata);
   }
 
@@ -239,7 +239,7 @@ export default class SDK {
    * @throws FetchError<422, types.Error> Invalid request
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsApp_idQueues(body: types.Queue, metadata: types.PostAppsAppIdQueuesMetadataParam): Promise<FetchResponse<201, types.QueueResponse>> {
+  postAppsApp_idQueues(body: types.PostAppsAppIdQueuesBodyParam, metadata: types.PostAppsAppIdQueuesMetadataParam): Promise<FetchResponse<201, types.QueueResponse>> {
     return this.core.fetch('/apps/{app_id}/queues', 'post', body, metadata);
   }
 
@@ -282,9 +282,9 @@ export default class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  postAppsApp_idRules(body: types.RulePost, metadata: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>>;
+  postAppsApp_idRules(body: types.PostAppsAppIdRulesBodyParam, metadata: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>>;
   postAppsApp_idRules(metadata: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>>;
-  postAppsApp_idRules(body?: types.RulePost | types.PostAppsAppIdRulesMetadataParam, metadata?: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>> {
+  postAppsApp_idRules(body?: types.PostAppsAppIdRulesBodyParam | types.PostAppsAppIdRulesMetadataParam, metadata?: types.PostAppsAppIdRulesMetadataParam): Promise<FetchResponse<201, types.RuleResponse>> {
     return this.core.fetch('/apps/{app_id}/rules', 'post', body, metadata);
   }
 
@@ -324,9 +324,9 @@ export default class SDK {
    * @throws FetchError<500, types.Error> Internal server error
    * @throws FetchError<504, types.Error> Gateway timeout
    */
-  patchAppsApp_idRulesRule_id(body: types.RulePatch, metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>>;
+  patchAppsApp_idRulesRule_id(body: types.PatchAppsAppIdRulesRuleIdBodyParam, metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>>;
   patchAppsApp_idRulesRule_id(metadata: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>>;
-  patchAppsApp_idRulesRule_id(body?: types.RulePatch | types.PatchAppsAppIdRulesRuleIdMetadataParam, metadata?: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>> {
+  patchAppsApp_idRulesRule_id(body?: types.PatchAppsAppIdRulesRuleIdBodyParam | types.PatchAppsAppIdRulesRuleIdMetadataParam, metadata?: types.PatchAppsAppIdRulesRuleIdMetadataParam): Promise<FetchResponse<200, types.RuleResponse>> {
     return this.core.fetch('/apps/{app_id}/rules/{rule_id}', 'patch', body, metadata);
   }
 
@@ -352,9 +352,9 @@ export default class SDK {
    * @throws FetchError<404, types.Error> App not found
    * @throws FetchError<500, types.Error> Internal server error
    */
-  patchAppsId(body: types.AppPatch, metadata: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>>;
+  patchAppsId(body: types.PatchAppsIdBodyParam, metadata: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>>;
   patchAppsId(metadata: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>>;
-  patchAppsId(body?: types.AppPatch | types.PatchAppsIdMetadataParam, metadata?: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
+  patchAppsId(body?: types.PatchAppsIdBodyParam | types.PatchAppsIdMetadataParam, metadata?: types.PatchAppsIdMetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
     return this.core.fetch('/apps/{id}', 'patch', body, metadata);
   }
 
@@ -367,7 +367,7 @@ export default class SDK {
    * @throws FetchError<404, types.Error> App not found
    * @throws FetchError<500, types.Error> Internal server error
    */
-  postAppsIdPkcs12(body: types.AppPkcs12, metadata: types.PostAppsIdPkcs12MetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
+  postAppsIdPkcs12(body: types.PostAppsIdPkcs12BodyParam, metadata: types.PostAppsIdPkcs12MetadataParam): Promise<FetchResponse<200, types.AppResponse>> {
     return this.core.fetch('/apps/{id}/pkcs12', 'post', body, metadata);
   }
 

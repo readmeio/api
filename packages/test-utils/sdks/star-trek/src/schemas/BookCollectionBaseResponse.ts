@@ -15,6 +15,7 @@ const BookCollectionBaseResponse = {
     }
   },
   "title": "BookCollectionBaseResponse",
-  "x-readme-ref-name": "BookCollectionBaseResponse"
+  "x-readme-ref-name": "BookCollectionBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default BookCollectionBaseResponse

@@ -15,6 +15,7 @@ const AnimalBaseResponse = {
     }
   },
   "title": "AnimalBaseResponse",
-  "x-readme-ref-name": "AnimalBaseResponse"
+  "x-readme-ref-name": "AnimalBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default AnimalBaseResponse

@@ -41,6 +41,7 @@ const RulePatch = {
     AmqpExternalRulePatch
   ],
   "title": "rule_patch",
-  "x-readme-ref-name": "rule_patch"
+  "x-readme-ref-name": "rule_patch",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default RulePatch

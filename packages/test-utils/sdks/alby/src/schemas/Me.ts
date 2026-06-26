@@ -93,6 +93,7 @@ const Me = {
   },
   "type": "object",
   "title": "me",
-  "x-readme-ref-name": "me"
+  "x-readme-ref-name": "me",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Me

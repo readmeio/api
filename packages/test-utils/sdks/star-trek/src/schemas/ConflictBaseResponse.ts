@@ -15,6 +15,7 @@ const ConflictBaseResponse = {
     }
   },
   "title": "ConflictBaseResponse",
-  "x-readme-ref-name": "ConflictBaseResponse"
+  "x-readme-ref-name": "ConflictBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ConflictBaseResponse

@@ -15,6 +15,7 @@ const MedicalConditionBaseResponse = {
     }
   },
   "title": "MedicalConditionBaseResponse",
-  "x-readme-ref-name": "MedicalConditionBaseResponse"
+  "x-readme-ref-name": "MedicalConditionBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MedicalConditionBaseResponse

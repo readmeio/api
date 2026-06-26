@@ -15,6 +15,7 @@ const StaffBaseResponse = {
     }
   },
   "title": "StaffBaseResponse",
-  "x-readme-ref-name": "StaffBaseResponse"
+  "x-readme-ref-name": "StaffBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default StaffBaseResponse

@@ -15,6 +15,7 @@ const VideoReleaseBaseResponse = {
     }
   },
   "title": "VideoReleaseBaseResponse",
-  "x-readme-ref-name": "VideoReleaseBaseResponse"
+  "x-readme-ref-name": "VideoReleaseBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default VideoReleaseBaseResponse

@@ -7,6 +7,7 @@ const ComicCollectionFullResponse = {
     "comicCollection": ComicCollectionFull
   },
   "title": "ComicCollectionFullResponse",
-  "x-readme-ref-name": "ComicCollectionFullResponse"
+  "x-readme-ref-name": "ComicCollectionFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ComicCollectionFullResponse

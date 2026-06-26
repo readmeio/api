@@ -15,6 +15,7 @@ const CharacterBaseResponse = {
     }
   },
   "title": "CharacterBaseResponse",
-  "x-readme-ref-name": "CharacterBaseResponse"
+  "x-readme-ref-name": "CharacterBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default CharacterBaseResponse

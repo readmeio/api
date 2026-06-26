@@ -15,6 +15,7 @@ const VideoGameBaseResponse = {
     }
   },
   "title": "VideoGameBaseResponse",
-  "x-readme-ref-name": "VideoGameBaseResponse"
+  "x-readme-ref-name": "VideoGameBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default VideoGameBaseResponse

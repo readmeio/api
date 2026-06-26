@@ -17,6 +17,7 @@ const AppPkcs12 = {
   ],
   "type": "object",
   "title": "app_pkcs12",
-  "x-readme-ref-name": "app_pkcs12"
+  "x-readme-ref-name": "app_pkcs12",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default AppPkcs12
