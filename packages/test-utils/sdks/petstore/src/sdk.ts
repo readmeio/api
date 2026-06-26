@@ -76,7 +76,7 @@ export default class SDK {
    * Add a new pet to the store
    *
    */
-  addPet(body: types.AddPetBodyParam): Promise<FetchResponse<number, unknown>> {
+  addPet(body: types.Pet): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet', 'post', body);
   }
 
@@ -84,7 +84,7 @@ export default class SDK {
    * Update an existing pet
    *
    */
-  updatePet(body: types.UpdatePetBodyParam): Promise<FetchResponse<number, unknown>> {
+  updatePet(body: types.Pet): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/pet', 'put', body);
   }
 
@@ -157,7 +157,7 @@ export default class SDK {
    * Place an order for a pet
    *
    */
-  placeOrder(body: types.PlaceOrderBodyParam): Promise<FetchResponse<200, types.Order>> {
+  placeOrder(body: types.Order): Promise<FetchResponse<200, types.Order>> {
     return this.core.fetch('/store/order', 'post', body);
   }
 
@@ -186,7 +186,7 @@ export default class SDK {
    *
    * @summary Create user
    */
-  createUser(body: types.CreateUserBodyParam): Promise<FetchResponse<number, unknown>> {
+  createUser(body: types.User): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/user', 'post', body);
   }
 
@@ -235,7 +235,7 @@ export default class SDK {
    *
    * @summary Updated user
    */
-  updateUser(body: types.UpdateUserBodyParam, metadata: types.UpdateUserMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateUser(body: types.User, metadata: types.UpdateUserMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/user/{username}', 'put', body, metadata);
   }
 
