@@ -1,4 +1,5 @@
 .api/
+**/.turbo/
 coverage/
 **/coverage/**
 dist/
