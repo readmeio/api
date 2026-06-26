@@ -2,6 +2,7 @@ const GetOrderById = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "orderId": {
@@ -9,7 +10,6 @@ const GetOrderById = {
             "format": "int64",
             "minimum": 1,
             "maximum": 10,
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "ID of pet that needs to be fetched"
           }
         },

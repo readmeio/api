@@ -23,7 +23,7 @@ import corePkg from '@readme/api-core/package.json' with { type: 'json' };
 import { execa } from 'execa';
 import traverse from 'json-schema-traverse';
 import { getLicense } from 'license';
-import { setWith } from 'lodash-es';
+import { get, setWith } from 'lodash-es';
 import preferredPM from 'preferred-pm';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
@@ -34,7 +34,7 @@ import { PACKAGE_VERSION } from '../../../packageInfo.js';
 import Storage from '../../../storage.js';
 import CodeGenerator from '../../codegenerator.js';
 
-import { docblockEscape, generateTypeName, getAtPath, jsonPointerToPath, wordWrap } from './util.js';
+import { docblockEscape, generateTypeName, jsonPointerToPath, wordWrap } from './util.js';
 
 interface OperationTypeHousing {
   operation: Operation;
@@ -1119,22 +1119,23 @@ Generated at ${createdAt}
 
     return Object.entries(res)
       .map(([paramType, schema]: [string, SchemaObject | string]) => {
-        let typeName: string;
+        const paramTypeName = generateTypeName(operationId, paramType, 'param');
+        const componentTypeName = this.getComponentSchemaTypeName(schema);
 
-        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
-          // If this schema is a string and has our conversion prefix then we've already created
-          // a type for it.
-          typeName = schema.replace(REF_PLACEHOLDER, '');
+        if (componentTypeName) {
+          this.addTypeAlias(paramTypeName, componentTypeName);
         } else {
-          typeName = generateTypeName(operationId, paramType, 'param');
-          this.replaceSchemaReferences(schema as SchemaObject);
-          this.addSchemaToExport(schema as SchemaObject, typeName, `${generateTypeName(operationId)}.${paramType}`);
+          this.addSchemaToExport(
+            schema as SchemaObject,
+            paramTypeName,
+            `${generateTypeName(operationId)}.${paramType}`,
+          );
         }
 
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
           // `types.d.ts`.
-          [paramType]: `types.${typeName}`,
+          [paramType]: `types.${paramTypeName}`,
         };
       })
       .reduce((prev, next) => Object.assign(prev, next), {}) as Record<'body' | 'formData' | 'metadata', string>;
@@ -1275,10 +1276,7 @@ Generated at ${createdAt}
     currentTypeName: string,
   ): { relativePath: (string | number)[]; schemaName: string } | undefined {
     for (let i = schemaPath.length; i >= 0; i -= 1) {
-      const node =
-        i === 0
-          ? containerSchema
-          : getAtPath<SchemaObject>(containerSchema as Record<string, unknown>, schemaPath.slice(0, i));
+      const node = i === 0 ? containerSchema : get(containerSchema, schemaPath.slice(0, i));
 
       if (node && typeof node === 'object' && !Array.isArray(node)) {
         const refName = node['x-readme-ref-name'];

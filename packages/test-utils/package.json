@@ -6,6 +6,7 @@
     "lint:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@readme/oas-examples": "^7.0.0",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "nock": "^14.0.1",

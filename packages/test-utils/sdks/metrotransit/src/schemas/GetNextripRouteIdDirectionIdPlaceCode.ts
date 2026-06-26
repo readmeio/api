@@ -2,20 +2,18 @@ const GetNextripRouteIdDirectionIdPlaceCode = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "route_id": {
-            "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#"
+            "type": "string"
           },
           "direction_id": {
             "type": "integer",
-            "format": "int32",
-            "$schema": "http://json-schema.org/draft-04/schema#"
+            "format": "int32"
           },
           "place_code": {
-            "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#"
+            "type": "string"
           }
         },
         "required": [

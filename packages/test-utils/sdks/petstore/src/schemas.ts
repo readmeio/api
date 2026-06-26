@@ -1,5 +1,7 @@
+import AddPet from './schemas/AddPet.js';
 import ApiResponse from './schemas/ApiResponse.js';
 import Category from './schemas/Category.js';
+import CreateUser from './schemas/CreateUser.js';
 import CreateUsersWithArrayInput from './schemas/CreateUsersWithArrayInput.js';
 import CreateUsersWithListInput from './schemas/CreateUsersWithListInput.js';
 import DeleteOrder from './schemas/DeleteOrder.js';
@@ -14,9 +16,11 @@ import GetUserByName from './schemas/GetUserByName.js';
 import LoginUser from './schemas/LoginUser.js';
 import Order from './schemas/Order.js';
 import Pet from './schemas/Pet.js';
+import PlaceOrder from './schemas/PlaceOrder.js';
 import Tag from './schemas/Tag.js';
+import UpdatePet from './schemas/UpdatePet.js';
 import UpdatePetWithForm from './schemas/UpdatePetWithForm.js';
 import UpdateUser from './schemas/UpdateUser.js';
 import UploadFile from './schemas/UploadFile.js';
 import User from './schemas/User.js';
-export { ApiResponse, Category, CreateUsersWithArrayInput, CreateUsersWithListInput, DeleteOrder, DeletePet, DeleteUser, FindPetsByStatus, FindPetsByTags, GetInventory, GetOrderById, GetPetById, GetUserByName, LoginUser, Order, Pet, Tag, UpdatePetWithForm, UpdateUser, UploadFile, User }
+export { AddPet, ApiResponse, Category, CreateUser, CreateUsersWithArrayInput, CreateUsersWithListInput, DeleteOrder, DeletePet, DeleteUser, FindPetsByStatus, FindPetsByTags, GetInventory, GetOrderById, GetPetById, GetUserByName, LoginUser, Order, Pet, PlaceOrder, Tag, UpdatePet, UpdatePetWithForm, UpdateUser, UploadFile, User }

@@ -32,6 +32,7 @@ const Order = {
     }
   },
   "title": "Order",
-  "x-readme-ref-name": "Order"
+  "x-readme-ref-name": "Order",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Order

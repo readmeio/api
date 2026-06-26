@@ -2,12 +2,12 @@ const GetNextripStopId = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "stop_id": {
             "type": "integer",
-            "format": "int32",
-            "$schema": "http://json-schema.org/draft-04/schema#"
+            "format": "int32"
           }
         },
         "required": [

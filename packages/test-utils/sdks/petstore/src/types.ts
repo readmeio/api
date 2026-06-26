@@ -1,8 +1,10 @@
 import type { FromSchema } from '@readme/api-core/types';
 import type * as schemas from './schemas.js';
 
+export type AddPetBodyParam = FromSchema<typeof schemas.AddPet.body>;
 export type ApiResponse = FromSchema<typeof schemas.ApiResponse>;
 export type Category = FromSchema<typeof schemas.Category>;
+export type CreateUserBodyParam = FromSchema<typeof schemas.CreateUser.body>;
 export type CreateUsersWithArrayInputBodyParam = FromSchema<typeof schemas.CreateUsersWithArrayInput.body>;
 export type CreateUsersWithListInputBodyParam = FromSchema<typeof schemas.CreateUsersWithListInput.body>;
 export type DeleteOrderMetadataParam = FromSchema<typeof schemas.DeleteOrder.metadata>;
@@ -20,9 +22,12 @@ export type LoginUserMetadataParam = FromSchema<typeof schemas.LoginUser.metadat
 export type LoginUserResponse200 = FromSchema<typeof schemas.LoginUser.response['200']>;
 export type Order = FromSchema<typeof schemas.Order>;
 export type Pet = FromSchema<typeof schemas.Pet>;
+export type PlaceOrderBodyParam = FromSchema<typeof schemas.PlaceOrder.body>;
 export type Tag = FromSchema<typeof schemas.Tag>;
+export type UpdatePetBodyParam = FromSchema<typeof schemas.UpdatePet.body>;
 export type UpdatePetWithFormFormDataParam = FromSchema<typeof schemas.UpdatePetWithForm.formData>;
 export type UpdatePetWithFormMetadataParam = FromSchema<typeof schemas.UpdatePetWithForm.metadata>;
+export type UpdateUserBodyParam = FromSchema<typeof schemas.UpdateUser.body>;
 export type UpdateUserMetadataParam = FromSchema<typeof schemas.UpdateUser.metadata>;
 export type UploadFileBodyParam = FromSchema<typeof schemas.UploadFile.body>;
 export type UploadFileMetadataParam = FromSchema<typeof schemas.UploadFile.metadata>;
