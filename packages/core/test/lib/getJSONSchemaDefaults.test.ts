@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 import getJSONSchemaDefaults from '../../src/lib/getJSONSchemaDefaults.js';
 
 describe('#getJSONSchemaDefaults()', () => {
-  it.only('should get defaults off an operation', async () => {
+  it('should get defaults off an operation', async () => {
     const oas = await dereferenceAPI(structuredClone(usptoSpec) as OASDocument).then(Oas.init);
 
     const operation = oas.operation('/{dataset}/{version}/records', 'post');
