@@ -1,4 +1,4 @@
-const UpdateChangelog = {
+const CreateChangelog = {
   "body": {
     "type": "object",
     "properties": {
@@ -34,23 +34,6 @@ const UpdateChangelog = {
     "title": "changelog",
     "x-readme-ref-name": "changelog",
     "$schema": "http://json-schema.org/draft-04/schema#"
-  },
-  "metadata": {
-    "allOf": [
-      {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "slug": {
-            "type": "string",
-            "description": "A URL-safe representation of the changelog title. Slugs must be all lowercase, and replace spaces with hyphens. For example, for the changelog \"Owlet Weekly Update\", enter the slug \"owlet-weekly-update\"."
-          }
-        },
-        "required": [
-          "slug"
-        ]
-      }
-    ]
   }
 } as const;
-export default UpdateChangelog
+export default CreateChangelog

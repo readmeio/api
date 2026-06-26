@@ -59,6 +59,7 @@ const DocSchemaPut = {
   },
   "additionalProperties": true,
   "title": "docSchemaPut",
-  "x-readme-ref-name": "docSchemaPut"
+  "x-readme-ref-name": "docSchemaPut",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default DocSchemaPut

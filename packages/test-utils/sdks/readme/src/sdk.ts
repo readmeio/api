@@ -203,7 +203,7 @@ export default class SDK {
    * @summary Create category
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
    */
-  createCategory(body: types.Category, metadata?: types.CreateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
+  createCategory(body: types.CreateCategoryBodyParam, metadata?: types.CreateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories', 'post', body, metadata);
   }
 
@@ -236,7 +236,7 @@ export default class SDK {
    * @throws FetchError<400, types.ErrorCategoryInvalid> The category couldn't be saved.
    * @throws FetchError<404, types.ErrorCategoryNotfound> The category couldn't be found.
    */
-  updateCategory(body: types.Category, metadata: types.UpdateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateCategory(body: types.UpdateCategoryBodyParam, metadata: types.UpdateCategoryMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/categories/{slug}', 'put', body, metadata);
   }
 
@@ -298,7 +298,7 @@ export default class SDK {
    *
    * @summary Create changelog
    */
-  createChangelog(body: types.Changelog): Promise<FetchResponse<number, unknown>> {
+  createChangelog(body: types.CreateChangelogBodyParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs', 'post', body);
   }
 
@@ -328,7 +328,7 @@ export default class SDK {
    *
    * @summary Update changelog
    */
-  updateChangelog(body: types.Changelog, metadata: types.UpdateChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateChangelog(body: types.UpdateChangelogBodyParam, metadata: types.UpdateChangelogMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/changelogs/{slug}', 'put', body, metadata);
   }
 
@@ -378,7 +378,7 @@ export default class SDK {
    * @throws FetchError<401, types.CreateCustomPageResponse401> Unauthorized
    * @throws FetchError<403, types.CreateCustomPageResponse403> Unauthorized
    */
-  createCustomPage(body: types.CustomPage): Promise<FetchResponse<number, unknown>> {
+  createCustomPage(body: types.CreateCustomPageBodyParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages', 'post', body);
   }
 
@@ -415,7 +415,7 @@ export default class SDK {
    * @throws FetchError<403, types.UpdateCustomPageResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorCustompageNotfound> The custom page couldn't be found.
    */
-  updateCustomPage(body: types.CustomPage, metadata: types.UpdateCustomPageMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateCustomPage(body: types.UpdateCustomPageBodyParam, metadata: types.UpdateCustomPageMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/custompages/{slug}', 'put', body, metadata);
   }
 
@@ -451,7 +451,7 @@ export default class SDK {
    * @throws FetchError<401, types.CreateDocResponse401> Unauthorized
    * @throws FetchError<403, types.CreateDocResponse403> Unauthorized
    */
-  createDoc(body: types.DocSchemaPost, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<201, types.DocSchemaResponse>> {
+  createDoc(body: types.CreateDocBodyParam, metadata?: types.CreateDocMetadataParam): Promise<FetchResponse<201, types.DocSchemaResponse>> {
     return this.core.fetch('/docs', 'post', body, metadata);
   }
 
@@ -505,7 +505,7 @@ export default class SDK {
    * @throws FetchError<403, types.UpdateDocResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorDocNotfound> The doc couldn't be found.
    */
-  updateDoc(body: types.DocSchemaPut, metadata: types.UpdateDocMetadataParam): Promise<FetchResponse<200, types.DocSchemaResponse>> {
+  updateDoc(body: types.UpdateDocBodyParam, metadata: types.UpdateDocMetadataParam): Promise<FetchResponse<200, types.DocSchemaResponse>> {
     return this.core.fetch('/docs/{slug}', 'put', body, metadata);
   }
 
@@ -618,7 +618,7 @@ export default class SDK {
    * @throws FetchError<403, types.CreateVersionResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorVersionForkNotfound> The version couldn't be found.
    */
-  createVersion(body: types.Version): Promise<FetchResponse<number, unknown>> {
+  createVersion(body: types.CreateVersionBodyParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version', 'post', body);
   }
 
@@ -655,7 +655,7 @@ export default class SDK {
    * @throws FetchError<403, types.UpdateVersionResponse403> Unauthorized
    * @throws FetchError<404, types.ErrorVersionNotfound> The version couldn't be found.
    */
-  updateVersion(body: types.Version, metadata: types.UpdateVersionMetadataParam): Promise<FetchResponse<number, unknown>> {
+  updateVersion(body: types.UpdateVersionBodyParam, metadata: types.UpdateVersionMetadataParam): Promise<FetchResponse<number, unknown>> {
     return this.core.fetch('/version/{versionId}', 'put', body, metadata);
   }
 

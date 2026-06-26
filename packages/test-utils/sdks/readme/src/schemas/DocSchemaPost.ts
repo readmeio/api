@@ -7,6 +7,7 @@ const DocSchemaPost = {
         "category"
       ],
       "title": "`category` Parameter",
+      "type": "object",
       "properties": {
         "title": {
           "type": "string",
@@ -63,8 +64,7 @@ const DocSchemaPost = {
           "type": "string",
           "description": "If this page is a subpage, this field will be the slug of the parent document. You can get this through https://docs.readme.com/main/reference/docs#getdoc. This field is an alternative to the `parentDoc` field."
         }
-      },
-      "type": "object"
+      }
     },
     {
       "required": [
@@ -72,6 +72,7 @@ const DocSchemaPost = {
         "categorySlug"
       ],
       "title": "`categorySlug` Parameter",
+      "type": "object",
       "properties": {
         "title": {
           "type": "string",
@@ -128,12 +129,12 @@ const DocSchemaPost = {
           "type": "string",
           "description": "If this page is a subpage, this field will be the slug of the parent document. You can get this through https://docs.readme.com/main/reference/docs#getdoc. This field is an alternative to the `parentDoc` field."
         }
-      },
-      "type": "object"
+      }
     }
   ],
   "additionalProperties": true,
   "title": "docSchemaPost",
-  "x-readme-ref-name": "docSchemaPost"
+  "x-readme-ref-name": "docSchemaPost",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default DocSchemaPost
