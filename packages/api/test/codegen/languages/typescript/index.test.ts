@@ -87,7 +87,7 @@ function assertSDKFixture(file: string, fixture: string) {
             return;
           }
 
-          expect(actual).toBe(expected);
+          expect(actual, `expected \`${filename}\` to match fixture`).toBe(expected);
         });
       }),
     );
@@ -148,13 +148,13 @@ describe('typescript', () => {
        * @fixme
        */
       // expect(logger).toHaveBeenCalledWith(`npm install --save --dry-run ${storage.getIdentifierStorageDir()}`);
-    }, 20000);
+    }, 20_000);
   });
 
   describe('#compile', () => {
     it('should generate an sdk', assertSDKFixture('@api/test-utils/definitions/simple.json', 'simple'));
 
-    it.only(
+    it(
       'should be able to generate valid TS when a body is optional but metadata isnt',
       assertSDKFixture('@api/test-utils/definitions/optional-payload.json', 'optional-payload'),
     );
@@ -181,7 +181,7 @@ describe('typescript', () => {
 
     it(
       'should work against a very large API definition that has `default` responses',
-      { timeout: 20000 },
+      { timeout: 20_000 },
       assertSDKFixture('@readme/oas-examples/3.0/json/star-trek.json', 'star-trek'),
     );
 

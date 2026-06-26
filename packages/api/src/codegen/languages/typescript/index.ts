@@ -1119,18 +1119,16 @@ Generated at ${createdAt}
 
     return Object.entries(res)
       .map(([paramType, schema]: [string, SchemaObject | string]) => {
-        const paramTypeName = generateTypeName(operationId, paramType, 'param');
         const componentTypeName = this.getComponentSchemaTypeName(schema);
 
         if (componentTypeName) {
-          this.addTypeAlias(paramTypeName, componentTypeName);
-        } else {
-          this.addSchemaToExport(
-            schema as SchemaObject,
-            paramTypeName,
-            `${generateTypeName(operationId)}.${paramType}`,
-          );
+          return {
+            [paramType]: `types.${componentTypeName}`,
+          };
         }
+
+        const paramTypeName = generateTypeName(operationId, paramType, 'param');
+        this.addSchemaToExport(schema as SchemaObject, paramTypeName, `${generateTypeName(operationId)}.${paramType}`);
 
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
@@ -1161,37 +1159,48 @@ Generated at ${createdAt}
           return false;
         }
 
-        const currSchema = schema.shift() as SchemaObject;
+        const wrapped = schema.shift();
+        if (!wrapped) {
+          return false;
+        }
+
+        const currSchema = wrapped.schema;
         this.replaceSchemaReferences(currSchema);
 
         return {
-          [status]: currSchema,
+          [status]: {
+            description: wrapped.description,
+            schema: currSchema,
+          },
         };
       })
       .reduce((prev, next) => Object.assign(prev, next));
 
     const res = Object.entries(schemas)
       .map(([status, { description, schema }]) => {
-        let typeName: string;
+        let responseTypeName = this.getComponentSchemaTypeName(schema);
 
-        if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
-          // If this schema is a string and has our conversion prefix then we've already created
-          // a type for it.
-          typeName = schema.replace(REF_PLACEHOLDER, '');
-        } else {
-          typeName = generateTypeName(operationId, 'response', status);
-
-          // Because `status` will usually be a number here we need to set the pointer for it
-          // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
-          // TypeScript will throw a compilation error.
-          this.addSchemaToExport(schema, typeName, `${generateTypeName(operationId)}.response['${status}']`);
+        if (responseTypeName) {
+          return {
+            [status]: {
+              type: `types.${responseTypeName}`,
+              description,
+            },
+          };
         }
+
+        responseTypeName = generateTypeName(operationId, 'response', status);
+
+        // Because `status` will usually be a number here we need to set the pointer for it
+        // within  an `[]` as if we do `FromSchema<typeof schemas.operation.response.200>`,
+        // TypeScript will throw a compilation error.
+        this.addSchemaToExport(schema, responseTypeName, `${generateTypeName(operationId)}.response['${status}']`);
 
         return {
           // Types are prefixed with `types.` because that's how we're importing them from
           // `types.d.ts`.
           [status]: {
-            type: `types.${typeName}`,
+            type: `types.${responseTypeName}`,
             description,
           },
         };
@@ -1212,6 +1221,30 @@ Generated at ${createdAt}
 
     setWith(this.schemas, pointer, schema, Object);
     this.types.set(typeName, `FromSchema<typeof schemas.${pointer}>`);
+  }
+
+  /**
+   * If a schema is a `$ref` component (identified by `x-readme-ref-name`), return its exported
+   * type name.
+   *
+   */
+  private getComponentSchemaTypeName(schema: SchemaObject | string): string | undefined {
+    if (typeof schema === 'string' && schema.startsWith(REF_PLACEHOLDER)) {
+      // If this schema is a string and has our conversion prefix then we've already created a type
+      // for it.
+      return schema.replace(REF_PLACEHOLDER, '');
+    }
+
+    if (
+      typeof schema === 'object' &&
+      schema !== null &&
+      'x-readme-ref-name' in schema &&
+      typeof schema['x-readme-ref-name'] === 'string'
+    ) {
+      return generateTypeName(schema['x-readme-ref-name']);
+    }
+
+    return undefined;
   }
 
   /**
