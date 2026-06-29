@@ -15,6 +15,7 @@ const TitleBaseResponse = {
     }
   },
   "title": "TitleBaseResponse",
-  "x-readme-ref-name": "TitleBaseResponse"
+  "x-readme-ref-name": "TitleBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TitleBaseResponse

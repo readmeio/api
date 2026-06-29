@@ -38,6 +38,7 @@ const Queue = {
   ],
   "type": "object",
   "title": "queue",
-  "x-readme-ref-name": "queue"
+  "x-readme-ref-name": "queue",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Queue

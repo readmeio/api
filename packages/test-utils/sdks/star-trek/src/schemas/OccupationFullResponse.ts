@@ -7,6 +7,7 @@ const OccupationFullResponse = {
     "occupation": OccupationFull
   },
   "title": "OccupationFullResponse",
-  "x-readme-ref-name": "OccupationFullResponse"
+  "x-readme-ref-name": "OccupationFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default OccupationFullResponse

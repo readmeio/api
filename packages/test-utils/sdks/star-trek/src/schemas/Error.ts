@@ -12,6 +12,7 @@ const Error = {
     }
   },
   "title": "Error",
-  "x-readme-ref-name": "Error"
+  "x-readme-ref-name": "Error",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Error

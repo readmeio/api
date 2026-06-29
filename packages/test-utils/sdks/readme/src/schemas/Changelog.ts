@@ -31,6 +31,7 @@ const Changelog = {
     "body"
   ],
   "title": "changelog",
-  "x-readme-ref-name": "changelog"
+  "x-readme-ref-name": "changelog",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Changelog

@@ -4,6 +4,7 @@ const FindPetsByTags = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "tags": {
@@ -11,7 +12,6 @@ const FindPetsByTags = {
             "items": {
               "type": "string"
             },
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Tags to filter by"
           }
         },

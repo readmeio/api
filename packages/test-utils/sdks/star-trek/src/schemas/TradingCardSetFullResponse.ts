@@ -7,6 +7,7 @@ const TradingCardSetFullResponse = {
     "tradingCardSet": TradingCardSetFull
   },
   "title": "TradingCardSetFullResponse",
-  "x-readme-ref-name": "TradingCardSetFullResponse"
+  "x-readme-ref-name": "TradingCardSetFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TradingCardSetFullResponse

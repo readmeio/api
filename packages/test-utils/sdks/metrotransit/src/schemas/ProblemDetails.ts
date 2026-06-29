@@ -35,6 +35,7 @@ const ProblemDetails = {
   },
   "additionalProperties": true,
   "title": "ProblemDetails",
-  "x-readme-ref-name": "ProblemDetails"
+  "x-readme-ref-name": "ProblemDetails",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ProblemDetails

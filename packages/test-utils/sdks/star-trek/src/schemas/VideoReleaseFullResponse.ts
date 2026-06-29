@@ -7,6 +7,7 @@ const VideoReleaseFullResponse = {
     "videoRelease": VideoReleaseFull
   },
   "title": "VideoReleaseFullResponse",
-  "x-readme-ref-name": "VideoReleaseFullResponse"
+  "x-readme-ref-name": "VideoReleaseFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default VideoReleaseFullResponse

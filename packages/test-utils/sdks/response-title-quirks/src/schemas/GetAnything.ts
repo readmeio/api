@@ -2,6 +2,7 @@ const GetAnything = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "https://json-schema.org/draft/2020-12/schema#",
         "type": "object",
         "properties": {
           "status": {
@@ -15,7 +16,6 @@ const GetAnything = {
               ],
               "default": "available"
             },
-            "$schema": "https://json-schema.org/draft/2020-12/schema#",
             "description": "Status values that need to be considered for filter"
           }
         },

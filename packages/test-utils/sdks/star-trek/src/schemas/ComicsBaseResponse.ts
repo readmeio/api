@@ -15,6 +15,7 @@ const ComicsBaseResponse = {
     }
   },
   "title": "ComicsBaseResponse",
-  "x-readme-ref-name": "ComicsBaseResponse"
+  "x-readme-ref-name": "ComicsBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ComicsBaseResponse

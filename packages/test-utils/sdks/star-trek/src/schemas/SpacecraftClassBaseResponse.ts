@@ -15,6 +15,7 @@ const SpacecraftClassBaseResponse = {
     }
   },
   "title": "SpacecraftClassBaseResponse",
-  "x-readme-ref-name": "SpacecraftClassBaseResponse"
+  "x-readme-ref-name": "SpacecraftClassBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default SpacecraftClassBaseResponse

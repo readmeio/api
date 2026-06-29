@@ -4,6 +4,7 @@ const FindPetsByStatus = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "status": {
@@ -17,7 +18,6 @@ const FindPetsByStatus = {
               ],
               "default": "available"
             },
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Status values that need to be considered for filter"
           }
         },

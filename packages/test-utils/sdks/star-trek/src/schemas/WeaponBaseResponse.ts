@@ -15,6 +15,7 @@ const WeaponBaseResponse = {
     }
   },
   "title": "WeaponBaseResponse",
-  "x-readme-ref-name": "WeaponBaseResponse"
+  "x-readme-ref-name": "WeaponBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default WeaponBaseResponse

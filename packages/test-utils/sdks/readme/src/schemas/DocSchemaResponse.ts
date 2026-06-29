@@ -51,6 +51,7 @@ const DocSchemaResponse = {
   },
   "additionalProperties": true,
   "title": "docSchemaResponse",
-  "x-readme-ref-name": "docSchemaResponse"
+  "x-readme-ref-name": "docSchemaResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default DocSchemaResponse

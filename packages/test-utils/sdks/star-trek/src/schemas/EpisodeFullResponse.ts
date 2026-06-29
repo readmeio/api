@@ -7,6 +7,7 @@ const EpisodeFullResponse = {
     "episode": EpisodeFull
   },
   "title": "EpisodeFullResponse",
-  "x-readme-ref-name": "EpisodeFullResponse"
+  "x-readme-ref-name": "EpisodeFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default EpisodeFullResponse

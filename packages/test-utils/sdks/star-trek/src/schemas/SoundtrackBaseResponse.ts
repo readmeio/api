@@ -15,6 +15,7 @@ const SoundtrackBaseResponse = {
     }
   },
   "title": "SoundtrackBaseResponse",
-  "x-readme-ref-name": "SoundtrackBaseResponse"
+  "x-readme-ref-name": "SoundtrackBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default SoundtrackBaseResponse

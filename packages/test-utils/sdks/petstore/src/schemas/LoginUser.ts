@@ -2,16 +2,15 @@ const LoginUser = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "username": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "The user name for login"
           },
           "password": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "The password for login in clear text"
           }
         },

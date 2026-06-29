@@ -15,6 +15,7 @@ const AstronomicalObjectBaseResponse = {
     }
   },
   "title": "AstronomicalObjectBaseResponse",
-  "x-readme-ref-name": "AstronomicalObjectBaseResponse"
+  "x-readme-ref-name": "AstronomicalObjectBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default AstronomicalObjectBaseResponse

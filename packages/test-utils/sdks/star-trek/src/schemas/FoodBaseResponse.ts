@@ -15,6 +15,7 @@ const FoodBaseResponse = {
     }
   },
   "title": "FoodBaseResponse",
-  "x-readme-ref-name": "FoodBaseResponse"
+  "x-readme-ref-name": "FoodBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default FoodBaseResponse

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { docblockEscape, generateTypeName, wordWrap } from '../../../../src/codegen/languages/typescript/util.js';
+import {
+  docblockEscape,
+  generateTypeName,
+  jsonPointerToPath,
+  wordWrap,
+} from '../../../../src/codegen/languages/typescript/util.js';
 
 describe('ts codegen utils', () => {
   describe('#docblockEscape', () => {
@@ -40,6 +45,19 @@ describe('ts codegen utils', () => {
       expect(generateTypeName('delete')).toBe('$Delete');
       expect(generateTypeName('let')).toBe('$Let');
       expect(generateTypeName('new')).toBe('$New');
+    });
+  });
+
+  describe('#jsonPointerToPath', () => {
+    it('should convert JSON Pointers into lodash-compatible paths', () => {
+      expect(jsonPointerToPath('/properties/category')).toStrictEqual(['properties', 'category']);
+      expect(jsonPointerToPath('/properties/foo~1bar')).toStrictEqual(['properties', 'foo/bar']);
+      expect(jsonPointerToPath('/properties/foo~0bar')).toStrictEqual(['properties', 'foo~bar']);
+    });
+
+    it('should return an empty path for the root pointer', () => {
+      expect(jsonPointerToPath('')).toStrictEqual([]);
+      expect(jsonPointerToPath('/')).toStrictEqual([]);
     });
   });
 

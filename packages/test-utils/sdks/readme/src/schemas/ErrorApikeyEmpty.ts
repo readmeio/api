@@ -34,15 +34,15 @@ const ErrorApikeyEmpty = {
     "poem": {
       "type": "array",
       "description": "A short poem we wrote you about your error.",
-      "items": {
-        "type": "string"
-      },
       "examples": [
         "If you're seeing this error,",
         "Things didn't quite go the way we hoped.",
         "When we tried to process your request,",
         "Maybe trying again it'll work—who knows!"
-      ]
+      ],
+      "items": {
+        "type": "string"
+      }
     }
   }
 } as const;

@@ -7,6 +7,7 @@ const TechnologyFullResponse = {
     "technology": TechnologyFull
   },
   "title": "TechnologyFullResponse",
-  "x-readme-ref-name": "TechnologyFullResponse"
+  "x-readme-ref-name": "TechnologyFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TechnologyFullResponse

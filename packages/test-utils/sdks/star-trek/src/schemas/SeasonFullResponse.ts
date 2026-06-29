@@ -7,6 +7,7 @@ const SeasonFullResponse = {
     "season": SeasonFull
   },
   "title": "SeasonFullResponse",
-  "x-readme-ref-name": "SeasonFullResponse"
+  "x-readme-ref-name": "SeasonFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default SeasonFullResponse

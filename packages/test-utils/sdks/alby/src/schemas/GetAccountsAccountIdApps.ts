@@ -4,11 +4,11 @@ const GetAccountsAccountIdApps = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "account_id": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "The account ID for which to retrieve the associated applications."
           }
         },

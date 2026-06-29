@@ -15,6 +15,7 @@ const MovieBaseResponse = {
     }
   },
   "title": "MovieBaseResponse",
-  "x-readme-ref-name": "MovieBaseResponse"
+  "x-readme-ref-name": "MovieBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MovieBaseResponse

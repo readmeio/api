@@ -28,11 +28,11 @@ const UpdateApiSpecification = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page."
           }
         },

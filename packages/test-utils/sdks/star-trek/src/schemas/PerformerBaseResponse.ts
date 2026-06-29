@@ -15,6 +15,7 @@ const PerformerBaseResponse = {
     }
   },
   "title": "PerformerBaseResponse",
-  "x-readme-ref-name": "PerformerBaseResponse"
+  "x-readme-ref-name": "PerformerBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default PerformerBaseResponse

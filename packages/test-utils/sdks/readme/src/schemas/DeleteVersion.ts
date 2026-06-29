@@ -6,6 +6,7 @@ const DeleteVersion = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "versionId": {
@@ -13,7 +14,6 @@ const DeleteVersion = {
             "examples": [
               "v1.0.0"
             ],
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Semver identifier for the project version. For best results, use the formatted `version_clean` value listed in the response from the [Get Versions endpoint](/reference/getversions)."
           }
         },

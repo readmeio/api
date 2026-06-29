@@ -39,6 +39,7 @@ const Version = {
     "from"
   ],
   "title": "version",
-  "x-readme-ref-name": "version"
+  "x-readme-ref-name": "version",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Version

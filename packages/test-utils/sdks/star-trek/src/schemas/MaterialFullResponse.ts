@@ -7,6 +7,7 @@ const MaterialFullResponse = {
     "material": MaterialFull
   },
   "title": "MaterialFullResponse",
-  "x-readme-ref-name": "MaterialFullResponse"
+  "x-readme-ref-name": "MaterialFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default MaterialFullResponse

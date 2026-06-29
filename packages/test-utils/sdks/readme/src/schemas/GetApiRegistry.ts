@@ -2,11 +2,11 @@ const GetApiRegistry = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "uuid": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "An API Registry UUID. This can be found by navigating to your API Reference page and viewing code snippets for Node with the `api` library."
           }
         },

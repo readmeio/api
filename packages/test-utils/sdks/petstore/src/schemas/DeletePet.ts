@@ -2,12 +2,12 @@ const DeletePet = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "petId": {
             "type": "integer",
             "format": "int64",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Pet id to delete"
           }
         },
@@ -16,14 +16,13 @@ const DeletePet = {
         ]
       },
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "api_key": {
-            "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#"
+            "type": "string"
           }
-        },
-        "required": []
+        }
       }
     ]
   }

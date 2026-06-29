@@ -29,6 +29,7 @@ const NexTripResult = {
   },
   "additionalProperties": false,
   "title": "NexTripResult",
-  "x-readme-ref-name": "NexTripResult"
+  "x-readme-ref-name": "NexTripResult",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default NexTripResult

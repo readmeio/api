@@ -19,6 +19,7 @@ const Category = {
       "default": "guide",
       "description": "A category can be part of your reference or guide documentation, which is determined by this field."
     }
-  }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Category

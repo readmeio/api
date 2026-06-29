@@ -7,6 +7,7 @@ const CompanyFullResponse = {
     "company": CompanyFull
   },
   "title": "CompanyFullResponse",
-  "x-readme-ref-name": "CompanyFullResponse"
+  "x-readme-ref-name": "CompanyFullResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default CompanyFullResponse

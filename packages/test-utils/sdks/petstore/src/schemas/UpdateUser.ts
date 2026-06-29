@@ -2,11 +2,11 @@ const UpdateUser = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "username": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "name that need to be updated"
           }
         },

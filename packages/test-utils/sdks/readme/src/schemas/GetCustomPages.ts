@@ -6,6 +6,7 @@ const GetCustomPages = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "perPage": {
@@ -13,18 +14,15 @@ const GetCustomPages = {
             "default": 10,
             "minimum": 1,
             "maximum": 100,
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Number of items to include in pagination (up to 100, defaults to 10)."
           },
           "page": {
             "type": "integer",
             "default": 1,
             "minimum": 1,
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Used to specify further pages (starts at 1)."
           }
-        },
-        "required": []
+        }
       }
     ]
   },

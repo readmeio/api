@@ -113,6 +113,23 @@ export function docblockEscape(str: string) {
 }
 
 /**
+ * Convert a JSON Pointer from `json-schema-traverse` into a path that lodash `set`/`setWith`
+ * understands.
+ *
+ * @see {@link https://datatracker.ietf.org/doc/html/rfc6901}
+ */
+export function jsonPointerToPath(pointer: string): (string | number)[] {
+  if (!pointer || pointer === '/') {
+    return [];
+  }
+
+  return pointer
+    .replace(/^\//, '')
+    .split('/')
+    .map(part => part.replace(/~1/g, '/').replace(/~0/g, '~'));
+}
+
+/**
  * Convert a string that might contain spaces or special characters to one that can safely be used
  * as a TypeScript interface or enum name.
  *

@@ -44,6 +44,7 @@ const RulePost = {
     UnsupportedRuleResponse
   ],
   "title": "rule_post",
-  "x-readme-ref-name": "rule_post"
+  "x-readme-ref-name": "rule_post",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default RulePost

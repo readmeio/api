@@ -48,6 +48,7 @@ const Pet = {
     }
   },
   "title": "Pet",
-  "x-readme-ref-name": "Pet"
+  "x-readme-ref-name": "Pet",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default Pet

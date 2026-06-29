@@ -15,6 +15,7 @@ const TechnologyBaseResponse = {
     }
   },
   "title": "TechnologyBaseResponse",
-  "x-readme-ref-name": "TechnologyBaseResponse"
+  "x-readme-ref-name": "TechnologyBaseResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default TechnologyBaseResponse

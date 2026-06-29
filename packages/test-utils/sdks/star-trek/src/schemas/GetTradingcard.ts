@@ -2,16 +2,15 @@ const GetTradingcard = {
   "metadata": {
     "allOf": [
       {
+        "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
           "uid": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "Trading card unique ID"
           },
           "apiKey": {
             "type": "string",
-            "$schema": "http://json-schema.org/draft-04/schema#",
             "description": "API key"
           }
         },

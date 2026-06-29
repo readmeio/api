@@ -13,6 +13,7 @@ const ApiResponse = {
     }
   },
   "title": "ApiResponse",
-  "x-readme-ref-name": "ApiResponse"
+  "x-readme-ref-name": "ApiResponse",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default ApiResponse

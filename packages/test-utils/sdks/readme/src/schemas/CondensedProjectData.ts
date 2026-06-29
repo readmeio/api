@@ -20,6 +20,7 @@ const CondensedProjectData = {
     }
   },
   "title": "condensedProjectData",
-  "x-readme-ref-name": "condensedProjectData"
+  "x-readme-ref-name": "condensedProjectData",
+  "$schema": "http://json-schema.org/draft-04/schema#"
 } as const;
 export default CondensedProjectData
