@@ -14,7 +14,13 @@ import nock from 'nock';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import FetchError from '../src/errors/fetchError.js';
-import APICore from '../src/index.js';
+import APICore, { FetchError as FetchErrorFromCore } from '../src/index.js';
+
+describe('exports', () => {
+  it('should re-export `FetchError` as a named export alongside the default `APICore` export', () => {
+    expect(FetchErrorFromCore).toBe(FetchError);
+  });
+});
 
 describe('APICore', () => {
   let fileUploads: APICore;
