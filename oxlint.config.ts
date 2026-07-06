@@ -36,6 +36,8 @@ export default defineConfig({
       files: ['packages/**/*.test.{js,ts}'],
       ...oxlintConfigVitest,
       rules: Object.assign(structuredClone(oxlintConfigVitest.rules), {
+        'vitest/expect-expect': ['error', { assertFunctionNames: ['expect', 'assertSDKFixture'] }],
+
         'vitest/no-conditional-expect': 'off',
         'vitest/require-hook': 'off',
         'vitest/warn-todo': 'off',

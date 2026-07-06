@@ -76,7 +76,7 @@ describe('APICore', () => {
             expect(err.status).toBe(404);
             expect(err.data).toBe('Could not find that pet.');
             expect(err.headers).toHaveHeader('content-type', /text\/plain/);
-            expect(err.res.constructor.name).toBe('Response');
+            expect(err.res.constructor.name).toBe('FetchResponse');
           });
       });
     });
