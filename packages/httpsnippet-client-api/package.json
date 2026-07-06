@@ -33,13 +33,13 @@
     "test": "echo 'Please run tests from the root!' && exit 1"
   },
   "dependencies": {
-    "content-type": "^1.0.5",
+    "content-type": "^2.0.0",
     "oas": "^37.1.0",
     "reserved2": "^0.1.5"
   },
   "devDependencies": {
     "@readme/oas-examples": "^8.2.2",
-    "@types/content-type": "^1.1.8",
+    "@types/content-type": "^2.0.0",
     "@types/stringify-object": "^4.0.5",
     "@vitest/coverage-v8": "^4.1.10",
     "camelcase": "^8.0.0",
