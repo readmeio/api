@@ -201,7 +201,7 @@ describe('typescript', () => {
           expect(data).toBe('/v2/pet/findByStatus?status=available');
           expect(status).toBe(200);
           expect(headers.constructor.name).toBe('Headers');
-          expect(res.constructor.name).toBe('Response');
+          expect(res.constructor.name).toBe('FetchResponse');
         });
       });
 
@@ -215,7 +215,7 @@ describe('typescript', () => {
             expect(data).toHaveProperty('accept', 'application/xml');
             expect(status).toBe(200);
             expect(headers.constructor.name).toBe('Headers');
-            expect(res.constructor.name).toBe('Response');
+            expect(res.constructor.name).toBe('FetchResponse');
           });
       });
     });

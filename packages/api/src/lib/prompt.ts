@@ -4,6 +4,23 @@ import prompts from 'prompts';
 import isCI from './isCI.js';
 
 /**
+ * Runs a check before every prompt renders to make sure that prompt is not being run in a CI
+ * environment.
+ */
+function onRender() {
+  if (isCI()) {
+    process.stdout.write('\n');
+    process.stdout.write(
+      'Yikes! Looks like we were about to prompt you for something in a CI environment. Are you missing an argument?',
+    );
+    process.stdout.write('\n\n');
+    process.stdout.write('Try running `api <command> --help` to get more information.');
+    process.stdout.write('\n\n');
+    process.exit(1);
+  }
+}
+
+/**
  * The `prompts` library doesn't always interpret CTRL+C and release the terminal back to the user
  * so we need handle this ourselves. This function is just a simple overload of the main `prompts`
  * import that we use.
@@ -14,23 +31,6 @@ export default async function promptTerminal<T extends string = string>(
   questions: prompts.PromptObject<T> | prompts.PromptObject<T>[],
   options?: prompts.Options,
 ) {
-  /**
-   * Runs a check before every prompt renders to make sure that
-   * prompt is not being run in a CI environment.
-   */
-  function onRender() {
-    if (isCI()) {
-      process.stdout.write('\n');
-      process.stdout.write(
-        'Yikes! Looks like we were about to prompt you for something in a CI environment. Are you missing an argument?',
-      );
-      process.stdout.write('\n\n');
-      process.stdout.write('Try running `api <command> --help` to get more information.');
-      process.stdout.write('\n\n');
-      process.exit(1);
-    }
-  }
-
   if (Array.isArray(questions)) {
     questions = questions.map(question => ({ onRender, ...question }));
   } else {
