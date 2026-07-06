@@ -8,6 +8,11 @@
     "@api/test-utils": "7.0.0-beta.16"
   },
   "changesets": [
-    "gentle-planets-exist"
+    "beige-zebras-repair",
+    "brave-keys-glow",
+    "four-yaks-own",
+    "gentle-planets-exist",
+    "long-mails-battle",
+    "tame-rivers-jog"
   ]
 }
