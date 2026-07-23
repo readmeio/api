@@ -17,7 +17,7 @@ module.exports = function legacyHandler(input) {
 
   throw new Error(`Oops! You're attempting to use a legacy usage pattern that no longer exists.
 
-You can read more about this in our docs: TKTK
+You can read more about this in our docs: https://api.readme.dev/docs/usage
 
 \`api\` can now generate strongly-typed SDKs that work in pretty much every JS runtime!
 
