@@ -2,6 +2,14 @@ export { FromSchema } from 'json-schema-to-ts';
 
 export interface ConfigOptions {
   /**
+   * Additional arguments to pass to the `init` object used in fetch requests.
+   *
+   * These will be shallow-merged with internal options. The `signal` property is always managed
+   * internally and cannot be overridden.
+   */
+  init?: Omit<RequestInit, 'signal'>;
+
+  /**
    * Override the default `fetch` request timeout of 30 seconds. This number should be represented
    * in milliseconds.
    */
