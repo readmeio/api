@@ -4,25 +4,32 @@ import updateNotifier from 'update-notifier';
 import commands from './commands/index.js';
 import logger from './logger.js';
 import { PACKAGE_NAME, PACKAGE_VERSION } from './packageInfo.js';
+import { classifyInvocation, dispatchToRestlessCli } from './router.js';
 
-updateNotifier({ pkg: { name: PACKAGE_NAME, version: PACKAGE_VERSION } }).notify();
+const cliArgs = process.argv.slice(2);
 
-void (async () => {
-  const program = new Command();
-  program.name(PACKAGE_NAME);
-  program.version(PACKAGE_VERSION);
+if (classifyInvocation(cliArgs) === 'restless') {
+  dispatchToRestlessCli(cliArgs);
+} else {
+  updateNotifier({ pkg: { name: PACKAGE_NAME, version: PACKAGE_VERSION } }).notify();
 
-  /**
-   * Instead of using Commander's `executableDir` API for loading in external command files we're
-   * programatically doing it like this because it's cleaner for us to let Commander manage option
-   * and argument parsing within this file than having each command  manage that itself.
-   */
-  Object.entries(commands).forEach(([, cmd]: [string, Command]) => {
-    program.addCommand(cmd);
-  });
+  void (async () => {
+    const program = new Command();
+    program.name(PACKAGE_NAME);
+    program.version(PACKAGE_VERSION);
 
-  await program.parseAsync(process.argv).catch(err => {
-    if (err.message) logger(err.message, true);
-    process.exit(1);
-  });
-})();
+    /**
+     * Instead of using Commander's `executableDir` API for loading in external command files we're
+     * programatically doing it like this because it's cleaner for us to let Commander manage option
+     * and argument parsing within this file than having each command  manage that itself.
+     */
+    Object.entries(commands).forEach(([, cmd]: [string, Command]) => {
+      program.addCommand(cmd);
+    });
+
+    await program.parseAsync(process.argv).catch(err => {
+      if (err.message) logger(err.message, true);
+      process.exit(1);
+    });
+  })();
+}
