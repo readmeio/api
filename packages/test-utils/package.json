@@ -1,6 +1,6 @@
 {
   "name": "@api/test-utils",
-  "version": "7.0.0-beta.16",
+  "version": "7.0.0",
   "private": true,
   "scripts": {
     "lint:types": "tsc --noEmit"

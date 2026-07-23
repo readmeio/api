@@ -1,6 +1,6 @@
 {
   "name": "httpsnippet-client-api",
-  "version": "7.0.0-next.18",
+  "version": "7.0.0",
   "description": "An HTTPSnippet client for generating snippets for the `api` module.",
   "bugs": {
     "url": "https://github.com/readmeio/api/issues"

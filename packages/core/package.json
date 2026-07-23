@@ -1,6 +1,6 @@
 {
   "name": "@readme/api-core",
-  "version": "7.0.0-next.18",
+  "version": "7.0.0",
   "description": "The magic behind `api` 🧙",
   "homepage": "https://api.readme.dev",
   "bugs": {
