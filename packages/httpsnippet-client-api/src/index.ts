@@ -5,7 +5,7 @@ import type { HttpMethods, OASDocument } from 'oas/types';
 
 import { CodeBuilder } from '@readme/httpsnippet/helpers/code-builder';
 import camelCase from 'camelcase';
-import contentType from 'content-type';
+import { parse as parseContentType } from 'content-type';
 import Oas from 'oas';
 import { matchesMimeType } from 'oas/utils';
 import { isReservedOrBuiltinsLC } from 'reserved2';
@@ -273,7 +273,7 @@ const client: Client<APIOptions> = {
           // `Content-Type` headers are automatically added within the SDK so we can filter them out
           // if they don't have parameters attached to them.
           // @ts-expect-error `headers[header]` is typed improperly in HTTPSnippet.
-          const parsedContentType = contentType.parse(headers[header]);
+          const parsedContentType = parseContentType(headers[header]);
           if (!Object.keys(parsedContentType.parameters).length) {
             delete headers[header];
             return;
