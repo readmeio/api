@@ -1,5 +1,11 @@
 # httpsnippet-client-api
 
+## 7.0.1
+
+### Patch Changes
+
+- 77a3e60: Fix `content-type` dependency not having a `default` export for CJS environments.
+
 ## 7.0.0
 
 ### Minor Changes
