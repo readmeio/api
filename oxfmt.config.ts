@@ -10,6 +10,7 @@ export default defineConfig(
       '.changeset/',
       'coverage/',
       'dist/',
+      'packages/**/CHANGELOG.md',
       'packages/api/schema.json',
       'packages/httpsnippet-client-api/test/__datasets__/**/index.ts',
       'packages/httpsnippet-client-api/test/__datasets__/**/output.js',
