@@ -8,6 +8,7 @@ export default defineConfig(
     },
     ignorePatterns: [
       '.changeset/',
+      '.claude/',
       'coverage/',
       'dist/',
       'packages/**/CHANGELOG.md',
