@@ -46,14 +46,14 @@
     "test": "echo 'Please run tests from the root!' && exit 1"
   },
   "dependencies": {
-    "@readme/oas-to-har": "^37.0.0",
+    "@readme/oas-to-har": "^38.0.0",
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "fetch-har": "^12.0.4",
     "json-schema-to-ts": "^3.0.0",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^37.1.0",
+    "oas": "^38.1.0",
     "remove-undefined-objects": "^9.0.0"
   },
   "devDependencies": {

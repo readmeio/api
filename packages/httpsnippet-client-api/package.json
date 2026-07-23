@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "content-type": "^2.0.0",
-    "oas": "^37.1.0",
+    "oas": "^38.1.0",
     "reserved2": "^0.1.5"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "@types/stringify-object": "^4.0.5",
     "@vitest/coverage-v8": "^4.1.10",
     "camelcase": "^8.0.0",
-    "jest-expect-openapi": "^6.2.0",
+    "jest-expect-openapi": "^6.3.0",
     "stringify-object": "^6.0.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.2",
