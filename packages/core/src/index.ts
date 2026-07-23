@@ -99,7 +99,7 @@ export default class APICore {
       const har = this.getHARForRequest(operation, data, prepareAuth(this.auth, operation));
 
       let timeoutSignal: NodeJS.Timeout;
-      const init: RequestInit = {};
+      const init: RequestInit = { ...this.config.init };
       if (this.config.timeout) {
         const controller = new AbortController();
         timeoutSignal = setTimeout(() => controller.abort(), this.config.timeout);
