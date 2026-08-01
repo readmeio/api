@@ -43,7 +43,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "camelcase": "^8.0.0",
     "jest-expect-openapi": "^6.3.0",
-    "stringify-object": "^6.0.0",
+    "stringify-object": "^7.0.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.2",
     "vitest": "^4.1.10"
