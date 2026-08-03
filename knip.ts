@@ -26,7 +26,7 @@ const config: KnipConfig = {
   },
   vitest: {
     config: ['vitest.config.ts'],
-    entry: ['packages/**test/**/*.ts'],
+    entry: ['packages/**/test/**/*.ts'],
   },
 };
 
