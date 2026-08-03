@@ -53,7 +53,7 @@
     "json-schema-to-ts": "^3.0.0",
     "json-schema-traverse": "^1.0.0",
     "lodash.merge": "^4.6.2",
-    "oas": "^38.1.0",
+    "oas": "^38.1.1",
     "remove-undefined-objects": "^9.0.0"
   },
   "devDependencies": {

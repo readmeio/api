@@ -10,8 +10,8 @@
     "caseless": "^0.12.0",
     "datauri": "^4.1.0",
     "nock": "^14.0.16",
-    "oas": "^38.1.0",
-    "oas-normalize": "^16.1.1",
+    "oas": "^38.1.1",
+    "oas-normalize": "^16.1.2",
     "vitest": "^4.1.10"
   },
   "devDependencies": {
