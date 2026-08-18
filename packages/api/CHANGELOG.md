@@ -1,5 +1,16 @@
 # api
 
+## 7.0.2
+
+### Patch Changes
+
+- 80166c4: chore(deps): bump js-yaml from 5.2.1 to 5.2.2
+- 46f53e6: feat: only dispatch the `debug` command to the Restless CLI, now published as `restless`
+- dece4fb: chore(deps): bump the minor-production-deps group with 2 updates
+- Updated dependencies [dece4fb]
+  - @readme/api-core@7.0.2
+  - httpsnippet-client-api@7.0.2
+
 ## 7.0.0
 
 ### Minor Changes

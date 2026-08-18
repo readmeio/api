@@ -1,5 +1,11 @@
 # @readme/api-core
 
+## 7.0.2
+
+### Patch Changes
+
+- dece4fb: chore(deps): bump the minor-production-deps group with 2 updates
+
 ## 7.0.0
 
 ### Minor Changes

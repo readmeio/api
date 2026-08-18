@@ -1,5 +1,11 @@
 # httpsnippet-client-api
 
+## 7.0.2
+
+### Patch Changes
+
+- dece4fb: chore(deps): bump the minor-production-deps group with 2 updates
+
 ## 7.0.1
 
 ### Patch Changes
