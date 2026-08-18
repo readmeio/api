@@ -28,6 +28,15 @@ describe('#classifyInvocation', () => {
   });
 
   it.each([
+    ['init', ['init']],
+    ['reset', ['reset']],
+    ['skill', ['skill', 'https://example.com/petstore.json']],
+    ['some-unknown-cmd', ['some-unknown-cmd']],
+  ])('should not dispatch `%s` to the Restless CLI', (_, args) => {
+    expect(classifyInvocation(args)).toBe('codegen');
+  });
+
+  it.each([
     ['(empty)', []],
     ['--help', ['--help']],
     ['-h', ['-h']],
@@ -39,13 +48,10 @@ describe('#classifyInvocation', () => {
   });
 
   it.each([
-    ['init', ['init']],
-    ['reset', ['reset']],
-    ['debug', ['debug', 'req_12345']],
-    ['skill', ['skill', 'https://example.com/petstore.json']],
-    ['some-unknown-cmd', ['some-unknown-cmd']],
-    ['init --help', ['init', '--help']],
-    ['--yes init', ['--yes', 'init']],
+    ['debug', ['debug']],
+    ['debug req_12345', ['debug', 'req_12345']],
+    ['debug --help', ['debug', '--help']],
+    ['--yes debug', ['--yes', 'debug']],
   ])('should classify `%s` as a Restless CLI command', (_, args) => {
     expect(classifyInvocation(args)).toBe('restless');
   });
@@ -72,12 +78,12 @@ describe('#dispatchToRestlessCli', () => {
   });
 
   it('should spawn `npx` without writing anything to stderr itself', () => {
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     expect(stderrSpy).not.toHaveBeenCalled();
     expect(spawn).toHaveBeenCalledWith(
       'npx',
-      ['-y', '@restlessai/cli@latest', 'init'],
+      ['-y', 'restless@latest', 'debug'],
       expect.objectContaining({ stdio: 'inherit' }),
     );
   });
@@ -87,13 +93,13 @@ describe('#dispatchToRestlessCli', () => {
 
     expect(spawn).toHaveBeenCalledWith(
       'npx',
-      ['-y', '@restlessai/cli@latest', 'debug', 'req_12345', '--verbose'],
+      ['-y', 'restless@latest', 'debug', 'req_12345', '--verbose'],
       expect.objectContaining({ stdio: 'inherit' }),
     );
   });
 
   it("should exit with the child's exit code", () => {
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     child.emit('close', 3, null);
 
@@ -104,7 +110,7 @@ describe('#dispatchToRestlessCli', () => {
     const sigintListeners = process.listeners('SIGINT');
     const sigtermListeners = process.listeners('SIGTERM');
 
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     const forwardSigint = process.listeners('SIGINT').find(listener => !sigintListeners.includes(listener));
     const forwardSigterm = process.listeners('SIGTERM').find(listener => !sigtermListeners.includes(listener));
@@ -120,7 +126,7 @@ describe('#dispatchToRestlessCli', () => {
     const sigintListeners = process.listenerCount('SIGINT');
     const sigtermListeners = process.listenerCount('SIGTERM');
 
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     expect(process.listenerCount('SIGINT')).toBe(sigintListeners + 1);
     expect(process.listenerCount('SIGTERM')).toBe(sigtermListeners + 1);
@@ -134,7 +140,7 @@ describe('#dispatchToRestlessCli', () => {
   it('should re-raise the signal that killed the child instead of exiting normally', () => {
     const killSpy = vi.spyOn(process, 'kill').mockImplementation(() => true);
 
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     child.emit('close', null, 'SIGTERM');
 
@@ -143,7 +149,7 @@ describe('#dispatchToRestlessCli', () => {
   });
 
   it('should exit with code 1 if the child fails to spawn', () => {
-    dispatchToRestlessCli(['init']);
+    dispatchToRestlessCli(['debug']);
 
     child.emit('error', new Error('spawn npx ENOENT'));
 
