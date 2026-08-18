@@ -1,18 +1,18 @@
 import { spawn } from 'node:child_process';
 
 /**
- * Commands that are handled by this package's own Commander program. Anything else is dispatched
- * to the Restless CLI.
+ * Commands that are dispatched to the Restless CLI. Anything else is handled by this package's own
+ * Commander program.
  */
-const CODEGEN_COMMANDS = new Set(['install', 'list', 'uninstall']);
+const RESTLESS_COMMANDS = new Set(['debug']);
 
 const HELP_AND_VERSION_FLAGS = new Set(['--help', '-h', '--version', '-V']);
 
 export type Route = 'codegen' | 'restless';
 
 /**
- * Determine whether an invocation should be handled by our own Commander program (`codegen`) or
- * dispatched to the separately published Restless CLI.
+ * Determine whether an invocation should be dispatched to the separately published Restless CLI
+ * (`restless`) or handled by our own Commander program (`codegen`).
  *
  * @param args CLI arguments — `process.argv` minus the Node binary and the script path.
  */
@@ -25,7 +25,7 @@ export function classifyInvocation(args: string[]): Route {
 
     // The first non-flag argument is the command.
     if (!arg.startsWith('-')) {
-      return CODEGEN_COMMANDS.has(arg) ? 'codegen' : 'restless';
+      return RESTLESS_COMMANDS.has(arg) ? 'restless' : 'codegen';
     }
   }
 
@@ -34,15 +34,15 @@ export function classifyInvocation(args: string[]): Route {
 }
 
 /**
- * Re-run the invocation against the Restless CLI (published on npm as `@restlessai/cli`) in a
- * child process, forwarding its exit code and any termination signals. The Restless CLI is
- * intentionally **not** a dependency of this package: `npx -y` fetches (and caches) it on
- * demand, keeping the two fully decoupled.
+ * Re-run the invocation against the Restless CLI (published on npm as `restless`) in a child
+ * process, forwarding its exit code and any termination signals. The Restless CLI is intentionally
+ * **not** a dependency of this package: `npx -y` fetches (and caches) it on demand, keeping the two
+ * fully decoupled.
  *
  * @param args CLI arguments — `process.argv` minus the Node binary and the script path.
  */
 export function dispatchToRestlessCli(args: string[]): void {
-  const child = spawn('npx', ['-y', '@restlessai/cli@latest', ...args], {
+  const child = spawn('npx', ['-y', 'restless@latest', ...args], {
     // `npx` is a `.cmd` shim on Windows and can't be spawned directly there.
     shell: process.platform === 'win32',
     stdio: 'inherit',

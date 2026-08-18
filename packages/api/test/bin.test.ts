@@ -55,16 +55,20 @@ describe.skipIf(process.platform === 'win32')('bin routing', () => {
     fs.rmSync(stubDir, { force: true, recursive: true });
   });
 
-  it(
-    'should dispatch unknown commands to the Restless CLI and forward the exit code',
-    { timeout: 60_000 },
-    async () => {
-      const result = await runBin(['init', '--help']);
+  it('should dispatch `debug` to the Restless CLI and forward the exit code', { timeout: 60_000 }, async () => {
+    const result = await runBin(['debug', 'req_12345']);
 
-      expect(result.stdout).toContain('npx-stub:-y @restlessai/cli@latest init --help');
-      expect(result.code).toBe(7);
-    },
-  );
+    expect(result.stdout).toContain('npx-stub:-y restless@latest debug req_12345');
+    expect(result.code).toBe(7);
+  });
+
+  it('should not dispatch commands other than `debug`', { timeout: 60_000 }, async () => {
+    const result = await runBin(['some-unknown-cmd']);
+
+    expect(result.stdout).not.toContain('npx-stub');
+    expect(result.stderr).toContain("unknown command 'some-unknown-cmd'");
+    expect(result.code).toBe(1);
+  });
 
   it('should not dispatch `--help` and should not mention the Restless CLI in it', { timeout: 60_000 }, async () => {
     const result = await runBin(['--help']);
