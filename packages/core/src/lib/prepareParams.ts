@@ -352,7 +352,7 @@ export default async function prepareParams(
           if (metadata?.[paramName]) delete metadata[paramName];
           break;
         case 'header':
-          (params.header as NonNullable<typeof params.header>)[paramName.toLowerCase()] = value;
+          (params.header as NonNullable<typeof params.header>)[paramName] = value;
           if (metadataHeaderParam && metadata?.[metadataHeaderParam]) delete metadata[metadataHeaderParam];
           break;
         case 'cookie':
@@ -388,7 +388,7 @@ export default async function prepareParams(
             if (typeof metadata === 'object') {
               // this if-statement below is a typeguard
               if (typeof params.header === 'object') {
-                params.header[headerName] = metadata[headerParam] as string;
+                params.header[headerParam] = metadata[headerParam] as string;
               }
 
               delete metadata[headerParam];
