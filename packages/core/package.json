@@ -61,7 +61,7 @@
     "@readme/oas-examples": "^8.2.2",
     "@types/caseless": "^0.12.5",
     "@types/lodash.merge": "^4.6.9",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.11",
     "get-stream": "^9.0.1",
     "nock": "^14.0.16",
     "tsup": "^8.5.0",
