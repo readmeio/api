@@ -89,7 +89,7 @@
     "type-fest": "^5.8.0",
     "typescript": "^5.8.2",
     "unique-temp-dir": "^1.0.0",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=20.10.0"

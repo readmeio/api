@@ -12,7 +12,7 @@
     "nock": "^14.0.16",
     "oas": "^38.1.1",
     "oas-normalize": "^16.1.2",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",
