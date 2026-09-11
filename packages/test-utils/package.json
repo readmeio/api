@@ -11,7 +11,7 @@
     "datauri": "^4.1.0",
     "nock": "^14.0.17",
     "oas": "^38.5.2",
-    "oas-normalize": "^16.1.2",
+    "oas-normalize": "^18.0.2",
     "vitest": "^4.1.10"
   },
   "devDependencies": {
