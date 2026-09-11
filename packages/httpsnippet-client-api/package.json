@@ -33,7 +33,7 @@
     "test": "echo 'Please run tests from the root!' && exit 1"
   },
   "dependencies": {
-    "content-type": "^2.0.0",
+    "content-type": "^3.0.0",
     "oas": "^38.5.2",
     "reserved2": "^0.1.5"
   },
