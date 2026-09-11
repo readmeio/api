@@ -11,6 +11,7 @@ export default defineConfig({
   ignorePatterns: [
     '**/coverage',
     '**/dist',
+    'packages/test-utils/sdks/**/*.ts',
 
     // `httpsnippet-client-api` datasets
     'packages/httpsnippet-client-api/test/__datasets__/**/*.js',
