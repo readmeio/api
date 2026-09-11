@@ -57,7 +57,7 @@
     "license": "^1.0.3",
     "lodash-es": "^4.18.1",
     "oas": "^38.5.2",
-    "oas-normalize": "^16.1.2",
+    "oas-normalize": "^18.0.2",
     "ora": "^9.4.1",
     "preferred-pm": "^4.0.0",
     "prompts": "^2.4.2",
