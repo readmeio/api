@@ -16,6 +16,7 @@ export default defineConfig((options: Options) => ({
     // `noExternal` will instead treeshake these dependencies down and include them in our compiled
     // dists.
     'camelcase',
+    'content-type',
     'stringify-object',
   ],
 
