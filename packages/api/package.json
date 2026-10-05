@@ -59,7 +59,7 @@
     "oas": "^38.5.2",
     "oas-normalize": "^18.0.2",
     "ora": "^9.4.1",
-    "preferred-pm": "^4.0.0",
+    "preferred-pm": "^5.0.1",
     "prompts": "^2.4.2",
     "semver": "^7.8.5",
     "ssri": "^14.0.0",

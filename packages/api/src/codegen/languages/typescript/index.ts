@@ -24,7 +24,7 @@ import { execa } from 'execa';
 import traverse from 'json-schema-traverse';
 import { getLicense } from 'license';
 import { get, setWith } from 'lodash-es';
-import preferredPM from 'preferred-pm';
+import { preferredPM } from 'preferred-pm';
 import semver from 'semver';
 import { IndentationText, Project, QuoteKind, ScriptTarget, VariableDeclarationKind } from 'ts-morph';
 
