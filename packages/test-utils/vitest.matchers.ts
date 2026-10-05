@@ -1,34 +1,30 @@
-// oxlint-disable typescript/no-empty-object-type -- This is the correct typing.
 import type { ParameterObject } from 'oas/types';
 
 import caseless from 'caseless';
 import { expect } from 'vitest';
 
-interface CustomMatchers<R = unknown> {
-  /**
-   * Assert that a given array within an OpenAPI definition has been dereferenced.
-   */
-  toBeDereferenced(): R;
-
-  /**
-   * Determine if a given `Headers` object has a given header matching a specific value.
-   *
-   * @example <caption>should match a value</caption>
-   * expect(request.headers).to.have.header('connection', 'close');
-   *
-   * @example <caption>should match a regex</caption>
-   * expect(response.headers).to.have.header('content-type', /application\/json(;\s?charset=utf-8)?/);
-   *
-   * @example <caption>should match one of many values</caption>
-   * expect(request.headers).to.have.header('connection', ['close', 'keep-alive']);
-   *
-   */
-  toHaveHeader(header: string, expected: (number | string)[] | RegExp | string): R;
-}
-
 declare module 'vitest' {
-  interface Assertion<T = any> extends CustomMatchers<T> {}
-  interface AsymmetricMatchersContaining extends CustomMatchers {}
+  interface Matchers<R> {
+    /**
+     * Assert that a given array within an OpenAPI definition has been dereferenced.
+     */
+    toBeDereferenced(): R;
+
+    /**
+     * Determine if a given `Headers` object has a given header matching a specific value.
+     *
+     * @example <caption>should match a value</caption>
+     * expect(request.headers).to.have.header('connection', 'close');
+     *
+     * @example <caption>should match a regex</caption>
+     * expect(response.headers).to.have.header('content-type', /application\/json(;\s?charset=utf-8)?/);
+     *
+     * @example <caption>should match one of many values</caption>
+     * expect(request.headers).to.have.header('connection', ['close', 'keep-alive']);
+     *
+     */
+    toHaveHeader(header: string, expected: (number | string)[] | RegExp | string): R;
+  }
 }
 
 expect.extend({
