@@ -81,6 +81,21 @@ function handleExecFailure(err: Error, opts: InstallerOptions = {}) {
   throw err;
 }
 
+function handleError(err: Error, options: InstallerOptions): void {
+  // If `npm install` throws this error it always happens **after** our dependencies have been
+  // installed and is an annoying quirk that sometimes occurs when installing a package within
+  // our workspace as we're creating a circular dependency on `@readme/api-core`.
+  if (
+    process.env.NODE_ENV === 'test' &&
+    err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
+  ) {
+    (options.logger ? options.logger : logger)("npm threw an error but we're ignoring it");
+    return;
+  }
+
+  handleExecFailure(err, options);
+}
+
 async function detectPackageManager() {
   const projectDir = Storage.getProjectDir();
 
@@ -168,21 +183,6 @@ export default class TSGenerator extends CodeGenerator {
   async install(storage: Storage, opts: InstallerOptions = {}): Promise<void> {
     const installDir = storage.getIdentifierStorageDir();
     const packageManager = await detectPackageManager();
-
-    const handleError = (err: Error, options: InstallerOptions): void => {
-      // If `npm install` throws this error it always happens **after** our dependencies have been
-      // installed and is an annoying quirk that sometimes occurs when installing a package within
-      // our workspace as we're creating a circular dependency on `@readme/api-core`.
-      if (
-        process.env.NODE_ENV === 'test' &&
-        err.message.includes("npm ERR! Cannot set properties of null (setting 'dev')")
-      ) {
-        (options.logger ? options.logger : logger)("npm threw an error but we're ignoring it");
-        return;
-      }
-
-      handleExecFailure(err, options);
-    };
 
     try {
       if (!['npm', 'bun'].includes(packageManager)) {
