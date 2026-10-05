@@ -28,7 +28,6 @@ const config: KnipConfig = {
   ignoreDependencies: [
     '@readme/oas-examples', // these are used in our SDK fixtures
     '@vitest/coverage-v8', // used by vitest --coverage
-    'eslint-plugin-readme', // This is used in our Oxlint config through another dependency.
     'har-format', // this is loaded via `@types/har-format`
     'vitest', // installed in individual packages
 
