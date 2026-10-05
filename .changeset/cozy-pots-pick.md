@@ -1,5 +1,4 @@
 ---
-"@readme/api-core": patch
 "httpsnippet-client-api": patch
 ---
 
