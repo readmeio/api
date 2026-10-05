@@ -1,5 +1,12 @@
 # @readme/api-core
 
+## 7.0.3
+
+### Patch Changes
+
+- 0ed8c77: chore(deps): bump the minor-production-deps group across 1 directory with 3 updates
+- 9330356: chore(deps): bump the minor-production-deps group across 1 directory with 3 updates
+
 ## 7.0.2
 
 ### Patch Changes

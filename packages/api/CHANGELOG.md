@@ -1,5 +1,20 @@
 # api
 
+## 7.0.3
+
+### Patch Changes
+
+- 0ed8c77: chore(deps): bump the minor-production-deps group across 1 directory with 3 updates
+- 9330356: chore(deps): bump the minor-production-deps group across 1 directory with 3 updates
+- 180ac14: chore(deps): bump chalk from 5.6.2 to 6.0.1
+- 1953234: chore(deps): bump oas-normalize from 16.1.2 to 18.0.2- #1204
+- f4ee8e4: chore(deps): bump preferred-pm from 4.1.1 to 5.0.1
+- Updated dependencies [0ed8c77]
+- Updated dependencies [ec0d7b3]
+- Updated dependencies [9330356]
+  - @readme/api-core@7.0.3
+  - httpsnippet-client-api@7.0.3
+
 ## 7.0.2
 
 ### Patch Changes
