@@ -27,7 +27,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@changesets/cli": "^3.0.3",
-    "@readme/oxlint-config": "^1.8.0",
+    "@readme/oxlint-config": "^1.9.0",
     "@tsconfig/node20": "^20.1.10",
     "@vitest/coverage-v8": "^5.0.3",
     "knip": "^6.38.0",
