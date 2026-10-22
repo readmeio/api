@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process';
  * Commands that are dispatched to the Restless CLI. Anything else is handled by this package's own
  * Commander program.
  */
-const RESTLESS_COMMANDS = new Set(['debug']);
+const RESTLESS_COMMANDS = new Set(['debug', 'feedback']);
 
 const HELP_AND_VERSION_FLAGS = new Set(['--help', '-h', '--version', '-V']);
 

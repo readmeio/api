@@ -52,6 +52,10 @@ describe('#classifyInvocation', () => {
     ['debug req_12345', ['debug', 'req_12345']],
     ['debug --help', ['debug', '--help']],
     ['--yes debug', ['--yes', 'debug']],
+    ['feedback', ['feedback']],
+    ['feedback req_12345', ['feedback', 'req_12345']],
+    ['feedback req_12345 --message "..."', ['feedback', 'req_12345', '--message', 'Pagination is off by one']],
+    ['feedback --help', ['feedback', '--help']],
   ])('should classify `%s` as a Restless CLI command', (_, args) => {
     expect(classifyInvocation(args)).toBe('restless');
   });
