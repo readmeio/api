@@ -1,5 +1,11 @@
 # api
 
+## 7.0.4
+
+### Patch Changes
+
+- 6d97886: feat: dispatch the `feedback` command to the Restless CLI so `npx api feedback <request-id>` works
+
 ## 7.0.3
 
 ### Patch Changes
