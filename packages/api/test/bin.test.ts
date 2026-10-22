@@ -62,7 +62,16 @@ describe.skipIf(process.platform === 'win32')('bin routing', () => {
     expect(result.code).toBe(7);
   });
 
-  it('should not dispatch commands other than `debug`', { timeout: 60_000 }, async () => {
+  it('should dispatch `feedback` to the Restless CLI and forward the exit code', { timeout: 60_000 }, async () => {
+    const result = await runBin(['feedback', 'req_12345', '--message', 'Pagination is off by one']);
+
+    expect(result.stdout).toContain(
+      'npx-stub:-y restless@latest feedback req_12345 --message Pagination is off by one',
+    );
+    expect(result.code).toBe(7);
+  });
+
+  it('should not dispatch commands other than `debug` and `feedback`', { timeout: 60_000 }, async () => {
     const result = await runBin(['some-unknown-cmd']);
 
     expect(result.stdout).not.toContain('npx-stub');
