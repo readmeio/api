@@ -62,7 +62,7 @@
     "@types/caseless": "^0.12.5",
     "@types/lodash.merge": "^4.6.9",
     "get-stream": "^9.0.1",
-    "nock": "^14.0.17",
+    "nock": "^15.0.5",
     "tsup": "^8.5.0",
     "typescript": "^5.8.2",
     "vitest": "^5.0.3"
