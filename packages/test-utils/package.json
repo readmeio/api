@@ -11,8 +11,8 @@
     "datauri": "^4.1.0",
     "nock": "^14.0.17",
     "oas": "^38.6.0",
-    "oas-normalize": "^18.0.2",
-    "vitest": "^5.0.3"
+    "oas-normalize": "^18.0.3",
+    "vitest": "^5.0.5"
   },
   "devDependencies": {
     "@types/caseless": "^0.12.3",
