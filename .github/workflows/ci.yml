@@ -40,6 +40,9 @@ jobs:
           # see the following:
           # https://github.com/actions/setup-node?tab=readme-ov-file#supported-version-syntax
           # https://github.com/nvm-sh/nvm/issues/1998#issuecomment-594958684
+          # 22 is the minimum supported release. The LTS aliases below track
+          # newer lines and do not cover this floor.
+          - 22
           - lts/-1
           - lts/*
           - latest
