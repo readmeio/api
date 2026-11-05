@@ -76,7 +76,7 @@
     "@types/prompts": "^2.4.9",
     "@types/semver": "^7.8.0",
     "@types/ssri": "^7.1.5",
-    "@types/update-notifier": "^6.0.8",
+    "@types/update-notifier": "^6.0.9",
     "@types/uslug": "^1.0.4",
     "@types/validate-npm-package-name": "^4.0.2",
     "ajv": "^8.12.0",

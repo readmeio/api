@@ -29,12 +29,12 @@
     "@changesets/cli": "^3.0.3",
     "@readme/oxlint-config": "^15.0.9",
     "@tsconfig/node20": "^20.1.10",
-    "@vitest/coverage-v8": "^5.0.3",
-    "knip": "^6.38.0",
-    "oxfmt": "^0.70.0",
-    "oxlint": "^1.85.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "knip": "^6.44.1",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
     "tsup": "^8.4.0",
-    "turbo": "^2.11.5",
+    "turbo": "^2.11.10",
     "vitest": "^5.1.0"
   },
   "engines": {
