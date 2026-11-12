@@ -1,5 +1,24 @@
 # api
 
+## 8.0.0
+
+### Major Changes
+
+- be1ac0e: Dropping support for Node 20. Node 22 is now the minimum supported release.
+
+### Patch Changes
+
+- 94b1e92: chore(deps): bump nock from 14.0.17 to 15.0.5
+- 7bc6484: chore(deps): bump the minor-production-deps group across 1 directory with 6 updates
+- dc9d4b5: chore(deps-dev): bump the minor-development-deps group across 1 directory with 6 updates
+- Updated dependencies [be1ac0e]
+- Updated dependencies [94b1e92]
+- Updated dependencies [7412101]
+- Updated dependencies [314c142]
+- Updated dependencies [7bc6484]
+  - @readme/api-core@8.0.0
+  - httpsnippet-client-api@8.0.0
+
 ## 7.0.4
 
 ### Patch Changes

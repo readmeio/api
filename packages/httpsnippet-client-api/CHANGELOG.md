@@ -1,5 +1,16 @@
 # httpsnippet-client-api
 
+## 8.0.0
+
+### Major Changes
+
+- be1ac0e: Dropping support for Node 20. Node 22 is now the minimum supported release.
+
+### Patch Changes
+
+- 7412101: chore(deps-dev): bump jest-expect-openapi from 9.0.0 to 10.0.0
+- 7bc6484: chore(deps): bump the minor-production-deps group across 1 directory with 6 updates
+
 ## 7.0.3
 
 ### Patch Changes
