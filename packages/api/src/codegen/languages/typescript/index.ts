@@ -1333,10 +1333,18 @@ Generated at ${createdAt}
   /**
    * Add a new JSDoc `@tag` to an existing docblock.
    *
+   * Tag text is escaped here so every caller is covered. OpenAPI metadata such as
+   * `info.contact`, `info.license`, and `info.termsOfService` is copied into these tags, and an
+   * unescaped comment terminator in that text would otherwise close the docblock and be emitted
+   * as TypeScript.
+   *
    */
   static #addTagToDocblock(docblock: OptionalKind<JSDocStructure>, tag: OptionalKind<JSDocTagStructure>) {
     const tags = docblock.tags ?? [];
-    tags.push(tag);
+    tags.push({
+      ...tag,
+      ...(typeof tag.text === 'string' ? { text: docblockEscape(tag.text) } : {}),
+    });
 
     return {
       ...docblock,
