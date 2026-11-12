@@ -1,5 +1,11 @@
 # api
 
+## 8.0.1
+
+### Patch Changes
+
+- ae45477: fix: escape comment delimiters in generated SDK JSDoc
+
 ## 8.0.0
 
 ### Major Changes
