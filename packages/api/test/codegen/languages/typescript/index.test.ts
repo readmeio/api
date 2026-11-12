@@ -1,6 +1,7 @@
 import type { OASDocument } from 'oas/types';
 import type { MockInstance } from 'vitest';
 
+import { randomUUID } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -19,6 +20,60 @@ import Storage from '../../../../src/storage.js';
 
 function loadSpec(spec: string): Promise<OASDocument> {
   return import(spec).then(({ default: data }) => JSON.stringify(data)).then(JSON.parse);
+}
+
+const commentBreakoutMarker = '__readme_cx4045_codegen_comment_breakout__';
+
+function commentBreakout(label: string) {
+  return `${label} */ globalThis.${commentBreakoutMarker} = true; /*`;
+}
+
+function definitionWithInfo(info: OASDocument['info']): OASDocument {
+  return {
+    openapi: '3.0.3',
+    info: {
+      title: 'Example API',
+      version: '1.0.0',
+      ...info,
+    },
+    paths: {
+      '/ping': {
+        get: {
+          operationId: 'ping',
+          responses: {
+            '200': {
+              description: 'ok',
+            },
+          },
+        },
+      },
+    },
+  };
+}
+
+function generateSdk(definition: OASDocument) {
+  const ts = new TSGenerator(Oas.init(definition), '../openapi.json', 'comment-escape');
+  return ts.generate();
+}
+
+async function importGeneratedSdk(definition: OASDocument, files: Record<string, string>) {
+  const dir = path.join(__dirname, `.tmp-comment-escape-${randomUUID()}`);
+
+  await fs.mkdir(dir, { recursive: true });
+  await fs.writeFile(path.join(dir, 'openapi.json'), JSON.stringify(definition));
+  await Promise.all(
+    Object.entries(files).map(async ([filename, contents]) => {
+      const filePath = path.join(dir, filename);
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, contents);
+    }),
+  );
+
+  try {
+    return await import(path.join(dir, 'src/index.ts')).then(mod => mod.default);
+  } finally {
+    await fs.rm(dir, { recursive: true, force: true });
+  }
 }
 
 function assertSDKFixture(file: string, fixture: string) {
@@ -217,6 +272,72 @@ describe('typescript', () => {
             expect(headers.constructor.name).toBe('Headers');
             expect(res.constructor.name).toBe('Response');
           });
+      });
+    });
+
+    describe('jsdoc comment delimiters', () => {
+      afterEach(() => {
+        Reflect.deleteProperty(globalThis, commentBreakoutMarker);
+      });
+
+      it('should escape comment delimiters in OpenAPI metadata copied into JSDoc tags', async () => {
+        const definition = definitionWithInfo({
+          contact: {
+            name: commentBreakout('contact-name'),
+            url: `https://example.com/${commentBreakout('contact-url')}`,
+          },
+          termsOfService: `https://example.com/${commentBreakout('terms')}`,
+          license: {
+            name: commentBreakout('license-name'),
+            url: `https://example.com/${commentBreakout('license-url')}`,
+          },
+        });
+
+        const files = await generateSdk(definition);
+        const index = files['src/index.ts'];
+
+        // User-supplied `*/` is escaped, so the docblock has a single terminator.
+        expect(index.match(/\*\//g)).toStrictEqual(['*/']);
+        expect(index).toContain('contact-name *\\/');
+        expect(index).toContain('contact-url *\\/');
+        expect(index).toContain('terms *\\/');
+        expect(index).toContain('license-name *\\/');
+        expect(index).toContain('license-url *\\/');
+        expect(index).toContain('/\\*');
+        expect(index).not.toContain('contact-name */');
+
+        const sdk = await importGeneratedSdk(definition, files);
+        expect(sdk.constructor.name).toBe('SDK');
+        expect(Reflect.get(globalThis, commentBreakoutMarker)).toBeUndefined();
+      });
+
+      it('should still emit benign OpenAPI metadata into JSDoc tags', async () => {
+        const definition = definitionWithInfo({
+          contact: {
+            name: 'Ada Lovelace',
+            email: 'ada@example.com',
+            url: 'https://example.com/contact',
+          },
+          termsOfService: 'https://example.com/terms',
+          license: {
+            name: 'Proprietary Example',
+            url: 'https://example.com/license',
+          },
+        });
+
+        const files = await generateSdk(definition);
+        const index = files['src/index.ts'];
+
+        expect(index).toContain('@author Ada Lovelace <ada@example.com>');
+        expect(index).toContain('@see {@link https://example.com/contact}');
+        expect(index).toContain('@see {@link https://example.com/terms Terms of Service}');
+        expect(index).toContain('@license Proprietary Example');
+        expect(index).toContain('@see {@link https://example.com/license}');
+        expect(index.match(/\*\//g)).toStrictEqual(['*/']);
+
+        const sdk = await importGeneratedSdk(definition, files);
+        expect(sdk.constructor.name).toBe('SDK');
+        expect(Reflect.get(globalThis, commentBreakoutMarker)).toBeUndefined();
       });
     });
 
