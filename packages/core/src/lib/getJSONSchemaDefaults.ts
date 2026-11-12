@@ -32,29 +32,39 @@ export default function getJSONSchemaDefaults(jsonSchemas: SchemaWrapper[]) {
           }
 
           if (Array.isArray(parentSchema?.required) && parentSchema?.required.includes(String(indexProperty))) {
-            if (schema.type === 'object' && indexProperty) {
-              defaults[indexProperty] = {};
-            }
-
-            let destination = defaults;
+            // Find this property's parent object in `defaults`. The traversal visits a parent before its
+            // children, so a required parent object has already been seeded. When a parent is missing (it is
+            // optional, or sits inside an array) there is nowhere to put the value, so leave it out rather than
+            // writing it at the root of the payload.
+            let destination: Record<string, unknown> | undefined = defaults;
             if (parentPointer) {
               // To map nested objects correct we need to pick apart the parent pointer.
               parentPointer
                 .replace(/\/properties/g, '')
                 .split('/')
                 .forEach((subSchema: string) => {
-                  if (subSchema === '') {
+                  if (subSchema === '' || destination === undefined) {
                     return;
                   }
 
-                  destination = (destination?.[subSchema] as Record<string, unknown>) || {};
+                  const next = destination[subSchema];
+                  destination =
+                    next && typeof next === 'object' && !Array.isArray(next)
+                      ? (next as Record<string, unknown>)
+                      : undefined;
                 });
             }
 
+            if (destination === undefined || indexProperty === undefined) {
+              return;
+            }
+
+            if (schema.type === 'object' && indexProperty && destination[indexProperty] === undefined) {
+              destination[indexProperty] = {};
+            }
+
             if (schema.default !== undefined) {
-              if (indexProperty !== undefined) {
-                destination[indexProperty] = schema.default;
-              }
+              destination[indexProperty] = schema.default;
             }
           }
         },
